@@ -1,14 +1,14 @@
 <?php
 /**
- * Component: Gallery Talent (slider orizzontale CSS-only)
+ * Component: Gallery Talent (nastro auto-scroll continuo)
  * Usage: toa_component('gallery-talent', array('images' => [...], 'columns' => 4))
  *
- * $columns = numero foto visibili contemporaneamente su desktop (default 4)
- * FIX 2026-05-22 marco — ripristino slider orizzontale (regressione)
+ * Effetto: foto piccole, scroll orizzontale automatico continuo, pausa su hover.
+ * FIX 2026-05-22b marco — versione tape (sostituisce slider scrollabile).
  */
-$columns = isset($columns) ? (int)$columns : 4;
 if (empty($images)) return;
 
+// Dedup
 $seen = array();
 $unique = array();
 foreach ($images as $img) {
@@ -18,13 +18,20 @@ foreach ($images as $img) {
     }
 }
 $images = $unique;
+
+// Duplica per loop continuo (l'animazione fa translateX(-50%) e riparte → continuo visivo)
+$doubled = array_merge($images, $images);
 ?>
 <section class="gallery-section">
-  <div class="gallery-slider" data-cols="<?php echo $columns; ?>" role="list" aria-label="Gallery talent">
-    <?php foreach ($images as $img) : ?>
-    <div class="gallery-item" role="listitem">
-      <img src="<?php echo esc_url($img['src']); ?>" alt="<?php echo esc_attr($img['alt']); ?>" loading="lazy">
+  <div class="gallery-tape" role="list" aria-label="Gallery talent">
+    <div class="gallery-track">
+      <?php foreach ($doubled as $idx => $img) :
+        $is_clone = ($idx >= count($images));
+      ?>
+      <div class="gallery-item" role="listitem"<?php echo $is_clone ? ' aria-hidden="true"' : ''; ?>>
+        <img src="<?php echo esc_url($img['src']); ?>" alt="<?php echo esc_attr($img['alt']); ?>" loading="lazy">
+      </div>
+      <?php endforeach; ?>
     </div>
-    <?php endforeach; ?>
   </div>
 </section>

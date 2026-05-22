@@ -1040,48 +1040,61 @@ img { max-width: 100%; height: auto; display: block; }
   color: #f5c518 !important;
   border: 1px solid #f5c518 !important;
 }
-/* === BEGIN FIX 2026-05-22 marco — GALLERY SLIDER ORIZZONTALE === */
+/* === BEGIN FIX 2026-05-22b marco — GALLERY TAPE AUTO-SCROLL === */
 .gallery-section {
   padding: 0;
   margin: 0;
   overflow: hidden;
+  background: #0a0a0a;
 }
-.gallery-slider {
+.gallery-tape {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  /* mask gradient ai bordi per effetto fade (estetica) */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
+}
+.gallery-track {
   display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  gap: 0;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  width: max-content;
+  animation: toa-tape-scroll 18s linear infinite;
+  will-change: transform;
 }
-.gallery-slider::-webkit-scrollbar { display: none; }
-.gallery-slider .gallery-item {
+.gallery-tape:hover .gallery-track {
+  animation-play-state: paused;
+}
+.gallery-track .gallery-item {
   flex: 0 0 auto;
-  scroll-snap-align: start;
-  width: calc(100% / 4);
+  width: 160px;
   aspect-ratio: 3 / 4;
   overflow: hidden;
+  margin-right: 8px;
 }
-.gallery-slider .gallery-item img {
+.gallery-track .gallery-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 @media (max-width: 1024px) {
-  .gallery-slider .gallery-item { width: calc(100% / 3); }
+  .gallery-track .gallery-item { width: 130px; margin-right: 6px; }
+  .gallery-track { animation-duration: 14s; }
 }
 @media (max-width: 640px) {
-  .gallery-slider .gallery-item { width: 75%; }
+  .gallery-track .gallery-item { width: 110px; margin-right: 5px; }
+  .gallery-track { animation-duration: 10s; }
 }
-.gallery-slider[data-cols="3"] .gallery-item { width: calc(100% / 3); }
-@media (max-width: 1024px) {
-  .gallery-slider[data-cols="3"] .gallery-item { width: 50%; }
+@keyframes toa-tape-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
-@media (max-width: 640px) {
-  .gallery-slider[data-cols="3"] .gallery-item { width: 80%; }
+/* Accessibilità: chi disabilita movimento dal sistema vede scroll manuale */
+@media (prefers-reduced-motion: reduce) {
+  .gallery-track {
+    animation: none;
+    overflow-x: auto;
+    width: 100%;
+  }
 }
-/* === END FIX 2026-05-22 marco — GALLERY SLIDER === */
+/* === END FIX 2026-05-22b marco — GALLERY TAPE === */
