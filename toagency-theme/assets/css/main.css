@@ -742,16 +742,6 @@ img { max-width: 100%; height: auto; display: block; }
   padding: 40px 24px;
 }
 
-.gallery-grid {
-  display: grid;
-  gap: 4px;
-  max-width: 1280px;
-  margin: 0 auto;
-}
-
-.gallery-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
-.gallery-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
-
 .gallery-item {
   aspect-ratio: 3/4;
   overflow: hidden;
@@ -1010,7 +1000,6 @@ img { max-width: 100%; height: auto; display: block; }
   .services-grid { grid-template-columns: repeat(2, 1fr); }
   .coverage-grid { grid-template-columns: repeat(2, 1fr); }
   .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-  .gallery-grid.cols-4 { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 640px) {
@@ -1025,8 +1014,6 @@ img { max-width: 100%; height: auto; display: block; }
   .section-heading { font-size: 2rem; }
   .feature-card { padding: 32px 24px; }
   .why-section, .services-section, .cta-section { padding: 60px 20px; }
-  .gallery-grid.cols-4,
-  .gallery-grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
   .page-hero { padding: 120px 20px 40px; }
   .page-hero-title { font-size: 2.5rem; }
   .cta-buttons-row { flex-direction: column; align-items: center; }
