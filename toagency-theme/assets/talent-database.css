@@ -1,0 +1,1549 @@
+/**
+ * TOAgency — Talent Database (pagina pubblica)
+ * v1.0 — 8 Maggio 2026
+ * Path: /wp-content/themes/toagency-theme/assets/talent-database.css
+ *
+ * Stile per page-talent-database.php. Dark mode coerente con talent-form.css
+ * (accent #c8ff00, brutalist black, border-radius 8/12/16, spacing 4/6/8/12/14/18/24/32/60).
+ *
+ * Mobile-first responsive:
+ *   - <768px:  drawer filtri + grid 2 col (1 col sotto 380)
+ *   - 768-1199: sidebar 240 + grid 3 col
+ *   - >=1200:  sidebar 280 + grid 4 col
+ *
+ * Le card della grid sono renderizzate dal JS (talent-database.js) usando
+ * questa struttura (mantenere allineata):
+ *
+ *   <article class="toa-tdb-card[ selected]" data-id="ID">
+ *     <button class="toa-tdb-card-add">+</button>
+ *     <img class="toa-tdb-card-img" src="…" alt="">
+ *     <div class="toa-tdb-card-meta">
+ *       <h3 class="toa-tdb-card-name">Nome</h3>
+ *       <div class="toa-tdb-card-info"><span>32</span><span>175 cm</span><span>Milano</span></div>
+ *     </div>
+ *   </article>
+ */
+
+/* ═════ Reset locale + base ═════ */
+.toa-tdb-wrap *,
+.toa-tdb-wrap *::before,
+.toa-tdb-wrap *::after { box-sizing: border-box; }
+
+.toa-tdb-wrap {
+    color: #fff;
+    background: #0a0a0a;
+    padding: 48px 32px 120px;
+    font-family: inherit;
+    min-height: 60vh;
+}
+@media (max-width: 767px) {
+    .toa-tdb-wrap { padding: 28px 16px 100px; }
+}
+
+/* ═════ Hero ═════ */
+.toa-tdb-hero { margin-bottom: 32px; max-width: 760px; }
+.toa-tdb-hero-eyebrow {
+    color: #c8ff00;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+.toa-tdb-hero-title {
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 700;
+    line-height: 1;
+    margin: 0 0 14px;
+    letter-spacing: -0.02em;
+}
+.toa-tdb-hero-subtitle {
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    line-height: 1.5;
+    font-size: 1rem;
+    max-width: 560px;
+}
+
+/* ═════ Toggle filtri (mobile) ═════ */
+.toa-tdb-filters-toggle {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border-radius: 12px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 18px;
+    font-family: inherit;
+}
+.toa-tdb-filters-toggle .close-label { display: none; }
+.toa-tdb-filters-toggle[aria-expanded="true"] .open-label { display: none; }
+.toa-tdb-filters-toggle[aria-expanded="true"] .close-label { display: inline; }
+
+/* ═════ Layout sidebar + content ═════ */
+.toa-tdb-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+@media (max-width: 1199px) {
+    .toa-tdb-layout { grid-template-columns: 240px 1fr; gap: 24px; }
+}
+@media (max-width: 767px) {
+    .toa-tdb-layout { grid-template-columns: 1fr; gap: 0; }
+}
+
+/* ═════ Sidebar ═════ */
+.toa-tdb-sidebar {
+    position: sticky;
+    top: 24px;
+}
+
+/* Sidebar drawer su mobile */
+@media (max-width: 767px) {
+    .toa-tdb-filters-toggle { display: inline-flex; }
+    .toa-tdb-sidebar {
+        position: fixed;
+        top: 0; left: 0; bottom: 0;
+        width: 320px;
+        max-width: 88vw;
+        max-height: 100vh;
+        overflow-y: auto;
+        background: #0a0a0a;
+        border: none;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 0;
+        padding: 56px 18px 32px;
+        z-index: 9001;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toa-tdb-sidebar.open { transform: translateX(0); }
+    body.tdb-drawer-open { overflow: hidden; }
+    body.tdb-drawer-open::before {
+        content: '';
+        position: fixed; inset: 0;
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+        z-index: 9000;
+        animation: tdbFadeIn 0.25s ease;
+    }
+}
+
+/* ═════ Filtri — container ═════ */
+.toa-tdb-filters {
+    width: 100%;
+    padding: 14px;
+    background: #141416;
+    border: 1px solid #2a2a2e;
+    border-radius: 8px;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+    box-sizing: border-box;
+}
+
+/* Sezioni */
+.toa-tdb-field { display: flex; flex-direction: column; gap: 4px; }
+.toa-tdb-filters .toa-tdb-field {
+    display: block;
+    margin: 0 0 12px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #1f1f23;
+}
+.toa-tdb-filters .toa-tdb-field:has(+ .toa-tdb-filters-actions) {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Label */
+.toa-tdb-label { font-size: 0.78rem; color: rgba(255,255,255,0.55); text-transform: uppercase; font-weight: 600; }
+.toa-tdb-filters .toa-tdb-label {
+    display: block !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.8px !important;
+    text-transform: uppercase;
+    color: #6b7280 !important;
+    margin: 0 0 6px 0 !important;
+}
+
+/* ═════ Input / Select (base globale) ═════ */
+.toa-tdb-input,
+.toa-tdb-select,
+.toa-tdb-textarea {
+    width: 100%;
+    background: #1a1a1e;
+    border: 1px solid #2a2a2e;
+    color: #f5f5f3;
+    padding: 9px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+.toa-tdb-textarea { min-height: 90px; resize: vertical; }
+.toa-tdb-input:hover,
+.toa-tdb-select:hover { border-color: #444; }
+.toa-tdb-input:focus,
+.toa-tdb-select:focus,
+.toa-tdb-textarea:focus { outline: none; border-color: #c8ff00; }
+.toa-tdb-wrap :focus-visible { outline: 2px solid #c8ff00; outline-offset: 2px; }
+.toa-tdb-input:focus-visible,
+.toa-tdb-select:focus-visible,
+.toa-tdb-textarea:focus-visible { outline: 2px solid #c8ff00; outline-offset: 0; }
+.toa-tdb-input::placeholder { color: rgba(255,255,255,0.35); }
+.toa-tdb-input-sm { padding: 7px 8px; font-size: 12px; }
+
+/* Select chevron globale */
+.toa-tdb-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='none' stroke='%23ffffff99' stroke-width='1.5' d='M1 1l4 4 4-4'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+    cursor: pointer;
+}
+.toa-tdb-select option { background: #0e0e0e; color: #fff; }
+
+/* Input / Select dentro sidebar — altezza fissa 32px */
+.toa-tdb-filters .toa-tdb-input,
+.toa-tdb-filters .toa-tdb-select {
+    height: 32px;
+    padding: 0 10px;
+    font-size: 12px;
+    line-height: normal;
+}
+.toa-tdb-filters .toa-tdb-select { padding-right: 28px; }
+.toa-tdb-filters .toa-tdb-input-sm { height: 30px; padding: 0 8px; font-size: 11px; }
+.toa-tdb-filters .toa-tdb-input::placeholder { color: rgba(255,255,255,0.35); }
+
+/* ═════ Toggle group — genere (grid 4 colonne) ═════ */
+.toa-tdb-toggle-group { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.toa-tdb-toggle {
+    padding: 8px 4px;
+    background: #1a1a1e; border: 1px solid #2a2a2e; color: #f5f5f3;
+    border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;
+    font-family: inherit; min-width: 0; text-align: center;
+    transition: all 150ms ease;
+}
+.toa-tdb-toggle:not(.active):hover { background: #222; border-color: #444; }
+.toa-tdb-toggle.active { background: #c8ff00; color: #000; border-color: #c8ff00; font-weight: 700; }
+
+/* Toggle dentro sidebar — height fissa + flex center */
+.toa-tdb-filters .toa-tdb-toggle-group { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 6px; }
+.toa-tdb-filters .toa-tdb-toggle {
+    height: 30px;
+    padding: 0;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 4px;
+    font-size: 11px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.toa-tdb-filters .toa-tdb-toggle.active {
+    background: #c8ff00 !important;
+    color: #000 !important;
+    border-color: #c8ff00 !important;
+}
+
+/* ═════ Chip group — taglie (grid 3 colonne) ═════ */
+.toa-tdb-chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+.toa-tdb-chip {
+    padding: 7px 10px;
+    background: #1a1a1e; border: 1px solid #2a2a2e; color: #f5f5f3;
+    border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;
+    font-family: inherit; min-width: 0; text-align: center; box-sizing: border-box;
+    transition: all 150ms ease;
+}
+.toa-tdb-chip:not(.active):hover { background: #222; border-color: #444; }
+.toa-tdb-chip.active { background: #c8ff00; color: #000; border-color: #c8ff00; font-weight: 700; }
+
+/* Chip dentro sidebar — grid 3col + height fissa */
+.toa-tdb-filters .toa-tdb-chip-group { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 6px; }
+.toa-tdb-filters .toa-tdb-chip {
+    height: 30px;
+    padding: 0;
+    flex: unset !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 4px;
+    font-size: 11px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.toa-tdb-filters .toa-tdb-chip.active {
+    background: #c8ff00 !important;
+    color: #000 !important;
+    border-color: #c8ff00 !important;
+}
+
+/* ═════ Range (Da / A) — grid 1fr 12px 1fr ═════ */
+.toa-tdb-range { display: flex; gap: 8px; align-items: center; }
+.toa-tdb-range-sep { color: rgba(255,255,255,0.3); font-size: 0.85rem; flex: none; }
+
+.toa-tdb-filters .toa-tdb-range {
+    display: grid !important;
+    grid-template-columns: 1fr 12px 1fr !important;
+    gap: 4px;
+    align-items: center;
+}
+.toa-tdb-filters .toa-tdb-range .toa-tdb-input,
+.toa-tdb-filters .toa-tdb-range .toa-tdb-input-sm { flex: unset !important; width: 100%; min-width: 0; }
+.toa-tdb-filters .toa-tdb-range-sep { color: #6b7280; font-size: 11px; text-align: center; }
+
+/* ═════ Azioni APPLICA / RESET ═════ */
+.toa-tdb-filters-actions {
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 0;
+    border-top: none;
+}
+.toa-tdb-filters-actions .toa-tdb-btn-primary {
+    height: 34px;
+    padding: 0 !important;
+    background: #c8ff00 !important;
+    color: #000 !important;
+    border: none !important;
+    border-radius: 5px;
+    font-size: 11px !important;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: inherit;
+    flex: unset !important;
+    box-shadow: none !important;
+    transform: none !important;
+    transition: opacity 150ms ease;
+}
+.toa-tdb-filters-actions .toa-tdb-btn-primary:hover { opacity: 0.88; }
+.toa-tdb-filters-actions .toa-tdb-btn-ghost {
+    height: 34px;
+    padding: 0 14px !important;
+    background: transparent !important;
+    border: 1px solid #333 !important;
+    color: #f5f5f3 !important;
+    border-radius: 5px;
+    font-size: 11px !important;
+    cursor: pointer;
+    font-family: inherit;
+    flex: unset !important;
+    transition: opacity 150ms ease;
+}
+.toa-tdb-filters-actions .toa-tdb-btn-ghost:hover { opacity: 0.88; border-color: #555 !important; }
+
+/* ═════ Bottoni ═════ */
+.toa-tdb-btn {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+.toa-tdb-btn-primary {
+    background: #c8ff00;
+    color: #0a0a0a;
+}
+.toa-tdb-btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(200, 255, 0, 0.32);
+}
+.toa-tdb-btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.toa-tdb-btn-ghost {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.toa-tdb-btn-ghost:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #fff;
+}
+
+/* ═════ Content area ═════ */
+.toa-tdb-results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.toa-tdb-results-count {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+.toa-tdb-results-count strong { color: #c8ff00; font-weight: 700; }
+
+/* Grid */
+.toa-tdb-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+@media (max-width: 1199px) { .toa-tdb-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; } }
+@media (max-width: 767px)  { .toa-tdb-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+@media (max-width: 380px)  { .toa-tdb-grid { grid-template-columns: 1fr; } }
+
+/* Empty / Load more */
+.toa-tdb-grid-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(255, 255, 255, 0.5);
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+}
+.toa-tdb-loadmore-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+/* ═════ Global transitions ═════ */
+.toa-tdb-wrap a {
+    transition: color 200ms ease, opacity 200ms ease;
+}
+.toa-tdb-wrap button,
+.toa-tdb-wrap input,
+.toa-tdb-wrap select {
+    transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+    transition-duration: 200ms;
+    transition-timing-function: ease;
+}
+
+/* ═════ Card talent ═════ */
+.toa-tdb-card {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.25s ease, border-color 0.2s, box-shadow 0.25s;
+}
+.toa-tdb-card.is-visible { opacity: 1; }
+.toa-tdb-card:hover {
+    transform: scale(1.02);
+    border-color: rgba(200, 255, 0, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+.toa-tdb-card.selected {
+    border-color: #c8ff00;
+    box-shadow: 0 0 0 2px rgba(200, 255, 0, 0.35);
+}
+.toa-tdb-card-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #1a1a1a;
+}
+.toa-tdb-card-img.lazy {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+.toa-tdb-card-img.loaded { opacity: 1; }
+.toa-tdb-card-meta {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 24px 14px 12px;
+    background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.55) 55%, transparent 100%);
+}
+.toa-tdb-card-name {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 4px;
+    line-height: 1.2;
+}
+.toa-tdb-card-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    font-size: 0.74rem;
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.3;
+}
+.toa-tdb-card-info span {
+    position: relative;
+}
+.toa-tdb-card-info span:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: -7px;
+    top: 50%;
+    width: 2px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transform: translateY(-50%);
+}
+.toa-tdb-card-add {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 34px;
+    height: 34px;
+    background: rgba(0, 0, 0, 0.55);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    z-index: 2;
+    font-family: inherit;
+}
+.toa-tdb-card-add:hover {
+    background: #c8ff00;
+    color: #0a0a0a;
+    border-color: #c8ff00;
+}
+.toa-tdb-card.selected .toa-tdb-card-add {
+    background: #c8ff00;
+    color: #0a0a0a;
+    border-color: #c8ff00;
+}
+
+/* ═════ Modal (base condivisa) ═════ */
+.toa-tdb-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+.toa-tdb-modal[hidden] { display: none; }
+.toa-tdb-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    animation: tdbFadeIn 0.25s ease;
+}
+.toa-tdb-modal-card {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    max-height: 90vh;
+    background: #0e0e0e;
+    border: 1px solid rgba(200, 255, 0, 0.18);
+    border-radius: 22px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: tdbScaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.toa-tdb-modal-card-narrow { max-width: 560px; overflow: visible; }
+.toa-tdb-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    padding: 0 !important;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1 !important;
+    z-index: 3;
+    transition: all 0.2s;
+    font-family: inherit;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.toa-tdb-modal-close:hover {
+    background: #c8ff00;
+    color: #0a0a0a;
+    border-color: #c8ff00;
+}
+
+/* ═════ Modal scheda — layout 60/40 ═════ */
+.toa-tdb-modal-grid {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    overflow: hidden;
+    height: 100%;
+    min-height: 0;
+}
+@media (max-width: 767px) {
+    .toa-tdb-modal-grid { grid-template-columns: 1fr; grid-template-rows: auto auto; overflow-y: auto; }
+}
+
+/* Galleria */
+.toa-tdb-gallery {
+    position: relative;
+    background: #050505;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    user-select: none;
+}
+@media (max-width: 767px) {
+    .toa-tdb-gallery { aspect-ratio: 4 / 5; }
+}
+.toa-tdb-gallery-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.toa-tdb-gallery-track > img {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.toa-tdb-gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    z-index: 2;
+    font-family: inherit;
+}
+.toa-tdb-gallery-nav:hover { background: #c8ff00; color: #0a0a0a; border-color: #c8ff00; }
+.toa-tdb-gallery-nav:disabled { opacity: 0; pointer-events: none; }
+.toa-tdb-gallery-prev { left: 14px; }
+.toa-tdb-gallery-next { right: 14px; }
+.toa-tdb-gallery-dots {
+    position: absolute;
+    bottom: 14px;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    z-index: 2;
+}
+.toa-tdb-gallery-dots > button {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s;
+}
+.toa-tdb-gallery-dots > button.active {
+    background: #c8ff00;
+    width: 22px;
+    border-radius: 4px;
+}
+
+/* Info */
+.toa-tdb-modal-info {
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+    min-height: 0;
+}
+@media (max-width: 767px) {
+    .toa-tdb-modal-info { padding: 22px 18px; }
+}
+.toa-tdb-modal-name {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+    letter-spacing: -0.01em;
+}
+.toa-tdb-modal-fields {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 14px;
+}
+.toa-tdb-modal-fields li {
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+.toa-tdb-modal-fields .field-label {
+    display: block;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 2px;
+}
+.toa-tdb-modal-fields .field-value {
+    color: #fff;
+    font-weight: 500;
+}
+.toa-tdb-modal-anonymous {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.5;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.025);
+    border-left: 2px solid rgba(200, 255, 0, 0.4);
+    border-radius: 4px;
+    margin: 4px 0 0;
+}
+.toa-tdb-modal-add { margin-top: auto; }
+
+/* ═════ Carrello fluttuante ═════ */
+.toa-tdb-cart {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #0a0a0a;
+    border: 1px solid #c8ff00;
+    border-radius: 14px;
+    padding: 12px 14px 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(200, 255, 0, 0.18);
+    z-index: 8500;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(140%);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.3s ease,
+                visibility 0s linear 0.45s;
+    font-family: inherit;
+}
+.toa-tdb-cart.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0s;
+}
+.toa-tdb-cart[hidden] { display: flex; }
+@media (max-width: 580px) {
+    .toa-tdb-cart {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        padding: 10px 12px;
+        justify-content: space-between;
+    }
+}
+.toa-tdb-cart-info {
+    color: #fff;
+    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    line-height: 1.2;
+}
+.toa-tdb-cart-info strong {
+    font-size: 1.4rem;
+    color: #c8ff00;
+    font-weight: 700;
+    line-height: 1;
+}
+.toa-tdb-cart-clear {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.5);
+    border: none;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-family: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    padding: 4px 8px;
+    transition: color 0.2s;
+}
+.toa-tdb-cart-clear:hover { color: #fff; }
+.toa-tdb-btn-cart { padding: 10px 16px; font-size: 0.88rem; }
+
+/* ═════ Modal form richiesta ═════ */
+.toa-tdb-modal-card-narrow form {
+    padding: 32px 28px 24px;
+    overflow-y: auto;
+    max-height: 90vh;
+}
+@media (max-width: 580px) {
+    .toa-tdb-modal-card-narrow form { padding: 24px 18px 20px; }
+}
+.toa-tdb-modal-card-narrow h2 {
+    font-size: 1.4rem;
+    margin: 0 0 6px;
+    font-weight: 700;
+}
+.toa-tdb-form-intro {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    margin: 0 0 18px;
+}
+.toa-tdb-form-summary-wrap {
+    background: rgba(200, 255, 0, 0.05);
+    border: 1px solid rgba(200, 255, 0, 0.18);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 18px;
+}
+.toa-tdb-form-summary-label {
+    font-size: 0.7rem;
+    color: rgba(200, 255, 0, 0.85);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.toa-tdb-form-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.toa-tdb-form-summary-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 999px;
+    font-size: 0.78rem;
+    color: #fff;
+}
+.toa-tdb-form-summary-chip button {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1;
+}
+.toa-tdb-form-summary-chip button:hover { color: #ff7080; }
+
+.toa-tdb-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+@media (max-width: 580px) { .toa-tdb-field-row { grid-template-columns: 1fr; } }
+
+.toa-tdb-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.4;
+}
+.toa-tdb-checkbox input { margin-top: 3px; flex-shrink: 0; accent-color: #c8ff00; }
+.toa-tdb-checkbox a { color: #c8ff00; text-decoration: underline; }
+
+.toa-tdb-label .req { color: #c8ff00; }
+
+.toa-tdb-form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.toa-tdb-form-msg {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+.toa-tdb-form-msg.error {
+    background: rgba(255, 80, 96, 0.08);
+    border: 1px solid rgba(255, 80, 96, 0.4);
+    color: #ffacb5;
+}
+
+/* ═════ Modal successo ═════ */
+.toa-tdb-success {
+    position: fixed;
+    inset: 0;
+    z-index: 9600;
+    background: rgba(0, 0, 0, 0.85);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+.toa-tdb-success[hidden] { display: none; }
+.toa-tdb-success-card {
+    text-align: center;
+    max-width: 460px;
+    padding: 50px 32px;
+    background: linear-gradient(180deg, rgba(20,20,20,0.95), rgba(10,10,10,0.95));
+    border: 1px solid rgba(200, 255, 0, 0.3);
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(200, 255, 0, 0.15), 0 0 0 1px rgba(200, 255, 0, 0.12) inset;
+    animation: tdbScaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.toa-tdb-success-icon {
+    width: 88px;
+    height: 88px;
+    margin: 0 auto 24px;
+    background: #c8ff00;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0a0a0a;
+    font-size: 44px;
+    animation: tdbIconPulse 2s ease-in-out infinite;
+}
+.toa-tdb-success h2 { font-size: 1.6rem; margin: 0 0 12px; color: #fff; }
+.toa-tdb-success p { color: rgba(255, 255, 255, 0.75); line-height: 1.5; margin: 0 0 20px; }
+
+/* ═════ Gallery (modal scheda) ═════ */
+.toa-tdb-detail-photo-col {
+    display: flex;
+    flex-direction: column;
+    background: #050505;
+}
+.toa-tdb-gallery-prev,
+.toa-tdb-gallery-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 30px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    font-family: inherit;
+    transition: opacity 0.2s, background 0.2s;
+}
+.toa-tdb-gallery-prev { left: 12px; }
+.toa-tdb-gallery-next { right: 12px; }
+.toa-tdb-gallery-prev:hover,
+.toa-tdb-gallery-next:hover { opacity: 0.9; background: rgba(0, 0, 0, 0.85); }
+.toa-tdb-gallery-prev[hidden],
+.toa-tdb-gallery-next[hidden] { display: none; }
+.toa-tdb-gallery-counter {
+    position: absolute;
+    bottom: 8px;
+    right: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 4px 8px;
+    border-radius: 4px;
+    z-index: 2;
+    pointer-events: none;
+}
+.toa-tdb-gallery-counter[hidden] { display: none; }
+.toa-tdb-gallery-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+    z-index: 1;
+}
+.toa-tdb-gallery-video[hidden] { display: none; }
+.toa-tdb-gallery-thumbs {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 10px 8px 8px;
+    background: #050505;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(200, 255, 0, 0.25) transparent;
+    flex-shrink: 0;
+}
+.toa-tdb-gallery-thumbs[hidden] { display: none; }
+.toa-tdb-gallery-thumbs::-webkit-scrollbar { height: 4px; }
+.toa-tdb-gallery-thumbs::-webkit-scrollbar-thumb {
+    background: rgba(200, 255, 0, 0.25);
+    border-radius: 2px;
+}
+.toa-tdb-gallery-thumb {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 64px;
+    border-radius: 6px;
+    overflow: hidden;
+    opacity: 0.5;
+    transition: opacity 200ms ease, border-color 200ms ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+    background: #1a1a1a;
+}
+.toa-tdb-gallery-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+}
+.toa-tdb-gallery-thumb.is-active {
+    opacity: 1;
+    border-color: #c8ff00;
+}
+.toa-tdb-gallery-thumb:hover:not(.is-active) { opacity: 0.8; }
+.toa-tdb-gallery-thumb-video {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    font-size: 24px;
+    width: 100%;
+    height: 100%;
+}
+
+/* ═════ Detail card (talent modal) ═════ */
+.toa-tdb-detail-card {
+    position: relative;
+    width: 100%;
+    max-width: 860px;
+    max-height: 90vh;
+    background: #0e0e0e;
+    border: 1px solid rgba(200, 255, 0, 0.18);
+    border-radius: 22px;
+    overflow: hidden;
+    animation: tdbScaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+}
+.toa-tdb-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+.toa-tdb-detail-photo-wrap {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: #050505;
+}
+.toa-tdb-detail-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: opacity 150ms ease;
+}
+.toa-tdb-detail-info {
+    padding: 32px 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+    max-height: 88vh;
+    min-height: 0;
+    background: #0e0e0e;
+}
+.toa-tdb-detail-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+.toa-tdb-detail-table {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.86rem;
+}
+.toa-tdb-detail-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.toa-tdb-detail-row:last-child { border-bottom: none; }
+.toa-tdb-detail-key {
+    color: rgba(255, 255, 255, 0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.72rem;
+    min-width: 72px;
+    flex-shrink: 0;
+}
+.toa-tdb-detail-val { color: #e8e8e8; }
+.toa-tdb-detail-add-btn { margin-top: auto; }
+.toa-tdb-modal-load-error {
+    padding: 12px 0;
+    color: rgba(255, 80, 96, 0.9);
+    font-size: 0.85rem;
+    font-family: inherit;
+}
+@media (max-width: 767px) {
+    .toa-tdb-detail-grid {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+        max-height: 88vh;
+    }
+    .toa-tdb-detail-photo-col { flex-direction: column; }
+    .toa-tdb-detail-photo-wrap { aspect-ratio: 4 / 5; }
+    .toa-tdb-detail-info { max-height: none; overflow-y: visible; }
+}
+
+/* ═════ Animazioni ═════ */
+@keyframes tdbFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@keyframes tdbScaleIn {
+    from { opacity: 0; transform: scale(0.92); }
+    to   { opacity: 1; transform: scale(1); }
+}
+@keyframes tdbIconPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(200, 255, 0, 0.6); }
+    50%      { box-shadow: 0 0 0 22px rgba(200, 255, 0, 0); }
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+    .toa-tdb-card,
+    .toa-tdb-modal-overlay,
+    .toa-tdb-modal-card,
+    .toa-tdb-detail-card,
+    .toa-tdb-success-card,
+    .toa-tdb-success-icon,
+    .toa-tdb-cart,
+    .toa-tdb-gallery-track,
+    .toa-tdb-sidebar {
+        animation: none;
+        transition: none;
+    }
+    .toa-tdb-card { opacity: 1; }
+}
+
+/* ═════ Gallery v1.3 — override ═════ */
+.toa-tdb-gallery {
+    display: flex;
+    flex-direction: column;
+    background: #050505;
+}
+.toa-tdb-gallery-main {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5 !important;
+    overflow: hidden;
+    background: #0a0a0a;
+    flex-shrink: 0;
+}
+.toa-tdb-gallery-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center top !important;
+    display: block;
+    transition: opacity 200ms ease;
+}
+.toa-tdb-gallery-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 150ms ease;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+    padding: 0;
+}
+.toa-tdb-gallery-arrow:hover { background: #c8ff00; color: #000; border-color: #c8ff00; }
+.toa-tdb-gallery-prev { left: 10px; }
+.toa-tdb-gallery-next { right: 10px; }
+.toa-tdb-gallery-arrow.is-disabled { opacity: 0.3; pointer-events: none; }
+.toa-tdb-gallery-counter {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-family: 'Courier New', Courier, monospace;
+    color: #fff;
+    z-index: 2;
+    pointer-events: none;
+}
+.toa-tdb-gallery-current { color: #c8ff00; font-weight: 700; }
+.toa-tdb-gallery-thumbs {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 8px;
+    background: #050505;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(200, 255, 0, 0.25) transparent;
+    flex-shrink: 0;
+}
+.toa-tdb-gallery-thumbs::-webkit-scrollbar { height: 4px; }
+.toa-tdb-gallery-thumbs::-webkit-scrollbar-thumb {
+    background: rgba(200, 255, 0, 0.25);
+    border-radius: 2px;
+}
+.toa-tdb-gallery-thumb {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 64px;
+    object-fit: cover;
+    object-position: top center;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 150ms ease, opacity 150ms ease;
+    opacity: 0.55;
+    display: block;
+}
+.toa-tdb-gallery-thumb:hover { opacity: 0.85; }
+.toa-tdb-gallery-thumb.is-active { border-color: #c8ff00; opacity: 1; }
+@media (max-width: 767px) {
+    .toa-tdb-gallery-main { aspect-ratio: 4 / 5 !important; }
+}
+
+/* ═════ Card grid v1.4 — uniformi + hover ═════ */
+.toa-tdb-card {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: #0a0a0a;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0;
+    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.4s ease;
+}
+.toa-tdb-card.is-visible { opacity: 1; }
+.toa-tdb-card.selected {
+    box-shadow: 0 0 0 2px #c8ff00;
+}
+.toa-tdb-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(200, 255, 0, 0.15);
+}
+.toa-tdb-card-img {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center top !important;
+    display: block;
+    transition: transform 400ms ease;
+    background: #111;
+}
+.toa-tdb-card-img.lazy { opacity: 0; transition: opacity 0.4s ease, transform 400ms ease; }
+.toa-tdb-card-img.loaded { opacity: 1; }
+.toa-tdb-card:hover .toa-tdb-card-img {
+    transform: scale(1.04);
+}
+.toa-tdb-card-meta {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 28px 12px 12px;
+    background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.85) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    pointer-events: none;
+}
+.toa-tdb-card-name {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 3px;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+}
+.toa-tdb-card-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px 8px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 11px;
+    letter-spacing: 0.2px;
+    line-height: 1.3;
+}
+
+/* === FIX DEFINITIVO ASPECT-RATIO MODAL PHOTO === */
+body .toa-tdb-modal .toa-tdb-detail-photo-col .toa-tdb-gallery .toa-tdb-gallery-main,
+body .toa-tdb-modal .toa-tdb-gallery-main,
+.toa-tdb-gallery-main {
+  aspect-ratio: 4 / 5 !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  position: relative !important;
+  overflow: hidden !important;
+  background: #0a0a0a !important;
+  display: block !important;
+}
+body .toa-tdb-modal .toa-tdb-gallery-main > #tdbGalleryImage,
+body .toa-tdb-modal .toa-tdb-gallery-main > .toa-tdb-gallery-img,
+.toa-tdb-gallery-main > img,
+#tdbGalleryImage {
+  position: absolute !important;
+  top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+  width: 100% !important; height: 100% !important;
+  object-fit: cover !important;
+  object-position: center top !important;
+  display: block !important;
+  max-width: none !important; max-height: none !important;
+  min-width: 0 !important; min-height: 0 !important;
+}
+body .toa-tdb-modal .toa-tdb-detail-photo-col {
+  height: auto !important;
+  align-self: stretch !important;
+}
+.toa-tdb-card-info span { position: static; }
+.toa-tdb-card-info span::after { display: none; }
+.toa-tdb-card-add {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 200ms ease, opacity 200ms ease, transform 200ms ease;
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: auto;
+    z-index: 2;
+}
+.toa-tdb-card:hover .toa-tdb-card-add {
+    opacity: 1;
+    transform: translateY(0);
+}
+.toa-tdb-card.selected .toa-tdb-card-add {
+    opacity: 1;
+    transform: translateY(0);
+    background: #c8ff00;
+    color: #0a0a0a;
+    border-color: #c8ff00;
+}
+.toa-tdb-card-add:hover {
+    background: #c8ff00 !important;
+    color: #0a0a0a !important;
+    border-color: #c8ff00 !important;
+}
+
+/* ═════════════════════════════════════════════
+   FIX MODAL DIMENSIONI FISSE — TUTTI POP-UP IDENTICI
+   La foto si adatta al box, il box NON si adatta alla foto
+   ════════════════════════════════════════════ */
+
+@media (min-width: 768px) {
+  /* Modal sempre stessa dimensione su desktop */
+  body .toa-tdb-modal .toa-tdb-detail-card {
+    width: 1100px !important;
+    max-width: 92vw !important;
+    height: 680px !important;
+    max-height: 88vh !important;
+    overflow: hidden !important;
+  }
+
+  /* Griglia 2 colonne 50/50, altezza piena */
+  body .toa-tdb-modal .toa-tdb-detail-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* Colonna foto a sinistra: altezza piena del modal */
+  body .toa-tdb-modal .toa-tdb-detail-photo-col {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    align-self: stretch !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  /* Gallery wrapper riempie la colonna foto */
+  body .toa-tdb-modal .toa-tdb-detail-photo-col .toa-tdb-gallery {
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  /* Container foto principale: altezza fissa basata sul flex parent, niente aspect-ratio */
+  body .toa-tdb-modal .toa-tdb-gallery-main {
+    flex: 1 1 auto !important;
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: unset !important;
+    overflow: hidden !important;
+    background: #0a0a0a !important;
+  }
+
+  /* La foto si adatta al box via object-fit cover, position absolute riempie */
+  body .toa-tdb-modal .toa-tdb-gallery-main > img,
+  body .toa-tdb-modal #tdbGalleryImage,
+  body .toa-tdb-modal .toa-tdb-gallery-main .toa-tdb-gallery-img {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    display: block !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+  }
+
+  /* Thumbnail strip: altezza fissa sotto la foto */
+  body .toa-tdb-modal .toa-tdb-gallery-thumbs {
+    flex: 0 0 auto !important;
+    height: 80px !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding: 8px !important;
+  }
+
+  /* Info column a destra: altezza piena con scroll interno se serve */
+  body .toa-tdb-modal .toa-tdb-detail-info {
+    width: 100% !important;
+    height: 100% !important;
+    overflow-y: auto !important;
+    padding: 20px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Mobile: modal full width, foto in alto in formato 4:5, info sotto */
+  body .toa-tdb-modal .toa-tdb-detail-card {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 95vh !important;
+    overflow-y: auto !important;
+  }
+
+  body .toa-tdb-modal .toa-tdb-detail-grid {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  body .toa-tdb-modal .toa-tdb-detail-photo-col {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  body .toa-tdb-modal .toa-tdb-gallery-main {
+    width: 100% !important;
+    aspect-ratio: 4 / 5 !important;
+    height: auto !important;
+    position: relative !important;
+    overflow: hidden !important;
+  }
+
+  body .toa-tdb-modal .toa-tdb-gallery-main > img,
+  body .toa-tdb-modal #tdbGalleryImage {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+}

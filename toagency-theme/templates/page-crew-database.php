@@ -1,0 +1,249 @@
+<?php
+/**
+ * Template Name: Crew Database
+ * v1.0 — 2026-05-19
+ *
+ * Path: /wp-content/themes/toagency-theme/templates/page-crew-database.php
+ *
+ * Catalogo pubblico backstage (fotografi, MUA, stylist, ecc.).
+ * Mostra crew_database WHERE visibile_pubblico=1, stato_profilo='attivo',
+ * eliminato=0, consenso_pubblicazione_immagini=1.
+ *
+ * Privacy: solo nome (no cognome, contatti). UUID breve come codice univoco.
+ * Multilingua IT/EN/FR/ES (helper inline, no WPML interferenza).
+ *
+ * API:    /crm_toagency/actions/crew-public-search.php
+ * Lead:   /crm_toagency/actions/crew-lead.php
+ */
+
+toa_component('header');
+
+$__l = function_exists('toa_current_lang') ? toa_current_lang() : 'it';
+if (!in_array($__l, ['it','en','fr','es'], true)) $__l = 'it';
+$_t = function ($a) use ($__l) { return $a[$__l] ?? $a['it']; };
+
+// ─── Categorie crew (mirror di page-registrati-crew.php) ─────────────
+$CREW_CATEGORIES = [
+    ['code'=>'fotografo',          'label'=>['it'=>'Fotografo','en'=>'Photographer','fr'=>'Photographe','es'=>'Fotógrafo']],
+    ['code'=>'videomaker',         'label'=>['it'=>'Videomaker','en'=>'Videomaker','fr'=>'Vidéaste','es'=>'Videomaker']],
+    ['code'=>'makeup_artist',      'label'=>['it'=>'Make-Up Artist','en'=>'Make-Up Artist','fr'=>'Maquilleur','es'=>'Maquillador']],
+    ['code'=>'hairstylist',        'label'=>['it'=>'Hairstylist','en'=>'Hairstylist','fr'=>'Hairstylist','es'=>'Hairstylist']],
+    ['code'=>'parrucchiere',       'label'=>['it'=>'Parrucchiere','en'=>'Hairdresser','fr'=>'Coiffeur','es'=>'Peluquero']],
+    ['code'=>'stylist',            'label'=>['it'=>'Stylist','en'=>'Stylist','fr'=>'Styliste','es'=>'Estilista']],
+    ['code'=>'fashion_designer',   'label'=>['it'=>'Fashion Designer','en'=>'Fashion Designer','fr'=>'Créateur de mode','es'=>'Diseñador de moda']],
+    ['code'=>'postproduzione',     'label'=>['it'=>'Postproduzione','en'=>'Photo Post-Production','fr'=>'Post-production','es'=>'Postproducción']],
+    ['code'=>'video_editing',      'label'=>['it'=>'Video Editing','en'=>'Video Editing','fr'=>'Montage vidéo','es'=>'Edición de vídeo']],
+    ['code'=>'social_media',       'label'=>['it'=>'Social Media Manager','en'=>'Social Media Manager','fr'=>'Social Media Manager','es'=>'Social Media Manager']],
+    ['code'=>'content_creator',    'label'=>['it'=>'Content Creator','en'=>'Content Creator','fr'=>'Créateur de contenu','es'=>'Creador de contenido']],
+    ['code'=>'fashion_journalist', 'label'=>['it'=>'Fashion Journalist','en'=>'Fashion Journalist','fr'=>'Journaliste mode','es'=>'Periodista de moda']],
+    ['code'=>'art_director',       'label'=>['it'=>'Art Director','en'=>'Art Director','fr'=>'Directeur artistique','es'=>'Director de arte']],
+    ['code'=>'dj',                 'label'=>['it'=>'DJ','en'=>'DJ','fr'=>'DJ','es'=>'DJ']],
+    ['code'=>'security',           'label'=>['it'=>'Security','en'=>'Security','fr'=>'Sécurité','es'=>'Seguridad']],
+    ['code'=>'tecnico_luci',       'label'=>['it'=>'Tecnico Luci','en'=>'Lighting Tech','fr'=>'Tech. lumière','es'=>'Téc. iluminación']],
+    ['code'=>'tecnico_suono',      'label'=>['it'=>'Tecnico Suono','en'=>'Sound Tech','fr'=>'Tech. son','es'=>'Téc. sonido']],
+    ['code'=>'runner',             'label'=>['it'=>'Runner','en'=>'Runner','fr'=>'Runner','es'=>'Runner']],
+    ['code'=>'altro',              'label'=>['it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro']],
+];
+
+$PAESI = [
+    'IT' => ['it'=>'Italia','en'=>'Italy','fr'=>'Italie','es'=>'Italia'],
+    'FR' => ['it'=>'Francia','en'=>'France','fr'=>'France','es'=>'Francia'],
+    'ES' => ['it'=>'Spagna','en'=>'Spain','fr'=>'Espagne','es'=>'España'],
+    'CH' => ['it'=>'Svizzera','en'=>'Switzerland','fr'=>'Suisse','es'=>'Suiza'],
+    'GB' => ['it'=>'Regno Unito','en'=>'UK','fr'=>'Royaume-Uni','es'=>'Reino Unido'],
+];
+
+// String table
+$T = [
+    'hero_eyebrow'    => ['it'=>'TOAGENCY/CREW','en'=>'TOAGENCY/CREW','fr'=>'TOAGENCY/CREW','es'=>'TOAGENCY/CREW'],
+    'hero_title'      => ['it'=>'Crew.','en'=>'Crew.','fr'=>'Crew.','es'=>'Crew.'],
+    'hero_subtitle'   => [
+        'it'=>'I professionisti backstage TOAgency: fotografi, MUA, stylist e tutti i pro dietro la fotocamera.',
+        'en'=>'Backstage professionals: photographers, makeup artists, stylists and every pro behind the camera.',
+        'fr'=>'Les pros du backstage : photographes, maquilleurs, stylistes et tous les pros derrière la caméra.',
+        'es'=>'Los pros del backstage: fotógrafos, maquilladores, estilistas.',
+    ],
+    'filter_all_cat'  => ['it'=>'Tutte le categorie','en'=>'All categories','fr'=>'Toutes catégories','es'=>'Todas categorías'],
+    'filter_all_paesi'=> ['it'=>'Tutti i paesi','en'=>'All countries','fr'=>'Tous pays','es'=>'Todos países'],
+    'loading'         => ['it'=>'Carico crew…','en'=>'Loading crew…','fr'=>'Chargement…','es'=>'Cargando…'],
+    'results_label'   => ['it'=>'crew trovati','en'=>'crew found','fr'=>'crew trouvés','es'=>'crew encontrados'],
+    'no_results'      => ['it'=>'Nessun crew con questi filtri.','en'=>'No crew matching.','fr'=>'Aucun crew.','es'=>'Ningún crew.'],
+    'selected_count'  => ['it'=>'selezionati','en'=>'selected','fr'=>'sélectionnés','es'=>'seleccionados'],
+    'request_info'    => ['it'=>'📧 Richiedi info','en'=>'📧 Request info','fr'=>'📧 Demander info','es'=>'📧 Solicitar info'],
+    'clear_selection' => ['it'=>'Svuota','en'=>'Clear','fr'=>'Vider','es'=>'Vaciar'],
+    'modal_title'     => ['it'=>'Richiedi info sui crew selezionati','en'=>'Request info on selected crew','fr'=>'Demander des infos','es'=>'Solicitar info'],
+    'modal_intro'     => [
+        'it'=>'Ti ricontatteremo entro 24h con disponibilità e tariffe.',
+        'en'=>'We\'ll reply within 24h with availability and rates.',
+        'fr'=>'Réponse sous 24h.',
+        'es'=>'Respondemos en 24h.',
+    ],
+    'form_azienda'    => ['it'=>'Nome azienda','en'=>'Company name','fr'=>'Société','es'=>'Empresa'],
+    'form_email'      => ['it'=>'Email','en'=>'Email','fr'=>'Email','es'=>'Email'],
+    'form_tel'        => ['it'=>'Telefono','en'=>'Phone','fr'=>'Téléphone','es'=>'Teléfono'],
+    'form_messaggio'  => ['it'=>'Messaggio','en'=>'Message','fr'=>'Message','es'=>'Mensaje'],
+    'form_msg_ph'     => ['it'=>'Tipo progetto, periodo, location...','en'=>'Project, dates, location...','fr'=>'Projet, dates, lieu...','es'=>'Proyecto, fechas, lugar...'],
+    'form_required'   => ['it'=>'campo obbligatorio','en'=>'required','fr'=>'requis','es'=>'requerido'],
+    'btn_cancel'      => ['it'=>'Annulla','en'=>'Cancel','fr'=>'Annuler','es'=>'Cancelar'],
+    'btn_send'        => ['it'=>'Invia','en'=>'Send','fr'=>'Envoyer','es'=>'Enviar'],
+    'success_msg'     => ['it'=>'Grazie! Ti contatteremo a breve.','en'=>'Thanks! We\'ll be in touch.','fr'=>'Merci !','es'=>'¡Gracias!'],
+    'error_msg'       => ['it'=>'Errore invio: ','en'=>'Send error: ','fr'=>'Erreur: ','es'=>'Error: '],
+    'anonymous_hint'  => [
+        'it'=>'Per privacy mostriamo solo il nome. Contatta TOAgency per dettagli.',
+        'en'=>'For privacy we show only the first name. Contact TOAgency for details.',
+        'fr'=>'Confidentialité : seul le prénom.',
+        'es'=>'Privacidad: solo nombre.',
+    ],
+];
+
+$theme_uri = get_stylesheet_directory_uri();
+?>
+
+<style>
+.crew-pub-wrap { background:#0a0a0a; color:#fff; min-height:100vh; font-family:'DM Sans','Inter',sans-serif; }
+.crew-pub-hero { padding:48px 24px 24px; text-align:center; border-bottom:1px solid #2a2a2e; }
+.crew-pub-hero-eyebrow { color:#c8ff00; font-size:13px; letter-spacing:2px; font-weight:600; margin-bottom:8px; }
+.crew-pub-hero-title { font-size:56px; font-weight:800; color:#fff; margin:0; letter-spacing:-1.5px; }
+.crew-pub-hero-subtitle { color:#9ca3af; margin-top:12px; max-width:640px; margin-left:auto; margin-right:auto; line-height:1.5; }
+
+.crew-pub-filters { display:flex; gap:12px; padding:24px; flex-wrap:wrap; align-items:center; border-bottom:1px solid #2a2a2e; }
+.crew-pub-filters select { background:#1a1a1e; border:1px solid #2a2a2e; color:#fff; padding:10px 14px; border-radius:6px; font-size:14px; min-width:200px; cursor:pointer; }
+.crew-pub-filters select:focus { outline:none; border-color:#c8ff00; }
+.crew-pub-results-count { color:#9ca3af; font-size:14px; margin-left:auto; }
+
+.crew-pub-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:16px; padding:24px; padding-bottom:120px; }
+.crew-pub-card { background:#1a1a1e; border:1px solid #2a2a2e; border-radius:10px; overflow:hidden; cursor:pointer; transition:all .2s; position:relative; }
+.crew-pub-card:hover { border-color:#c8ff00; transform:translateY(-2px); }
+.crew-pub-card.selected { border:2px solid #c8ff00; box-shadow:0 0 0 3px rgba(200,255,0,.18); }
+.crew-pub-card.selected::after { content:'✓'; position:absolute; top:8px; right:8px; background:#c8ff00; color:#0a0a0a; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; }
+.crew-pub-photo { width:100%; aspect-ratio:1; background:#0a0a0a center/cover no-repeat; display:flex; align-items:center; justify-content:center; color:#3a3a3e; font-size:56px; }
+.crew-pub-body { padding:14px; }
+.crew-pub-name { font-size:15px; font-weight:600; color:#fff; }
+.crew-pub-uuid { font-size:11px; color:#6b7280; margin-top:2px; font-family:monospace; }
+.crew-pub-categories { display:flex; flex-wrap:wrap; gap:4px; margin-top:10px; }
+.crew-pub-cat-chip { background:#c8ff00; color:#0a0a0a; padding:3px 8px; border-radius:4px; font-size:11px; font-weight:600; }
+.crew-pub-meta { font-size:12px; color:#9ca3af; margin-top:8px; text-transform:capitalize; }
+.crew-pub-empty { text-align:center; padding:80px 20px; color:#6b7280; grid-column:1/-1; }
+
+.crew-pub-actionbar { position:fixed; bottom:0; left:0; right:0; background:#1a1a1e; border-top:1px solid #c8ff00; padding:14px 24px; display:none; align-items:center; justify-content:space-between; z-index:100; box-shadow:0 -4px 16px rgba(0,0,0,.4); }
+.crew-pub-actionbar.visible { display:flex; }
+.crew-pub-actionbar .count { color:#c8ff00; font-weight:700; }
+.crew-pub-actionbar .actions { display:flex; gap:10px; }
+.crew-pub-actionbar .btn-clear { background:transparent; border:1px solid #6b7280; color:#fff; padding:9px 16px; border-radius:6px; cursor:pointer; font-weight:500; }
+.crew-pub-actionbar .btn-req { background:#c8ff00; color:#0a0a0a; border:none; padding:10px 20px; border-radius:6px; cursor:pointer; font-weight:700; }
+
+.crew-pub-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:200; display:none; align-items:center; justify-content:center; padding:20px; }
+.crew-pub-modal-overlay.show { display:flex; }
+.crew-pub-modal { background:#1a1a1e; border:1px solid #c8ff00; border-radius:12px; padding:28px; max-width:520px; width:100%; max-height:90vh; overflow-y:auto; }
+.crew-pub-modal h2 { color:#c8ff00; margin:0 0 8px; font-size:20px; }
+.crew-pub-modal .intro { color:#9ca3af; font-size:14px; margin-bottom:18px; }
+.crew-pub-modal .field { margin-bottom:14px; }
+.crew-pub-modal label { display:block; font-size:11px; color:#9ca3af; margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px; }
+.crew-pub-modal label .req { color:#c8ff00; }
+.crew-pub-modal input, .crew-pub-modal textarea { width:100%; background:#0a0a0a; border:1px solid #2a2a2e; color:#fff; padding:11px 12px; border-radius:6px; font-size:14px; font-family:inherit; box-sizing:border-box; }
+.crew-pub-modal input:focus, .crew-pub-modal textarea:focus { outline:none; border-color:#c8ff00; }
+.crew-pub-modal textarea { resize:vertical; min-height:80px; }
+.crew-pub-modal .summary { background:#0a0a0a; border:1px solid #2a2a2e; border-radius:6px; padding:10px 12px; margin-bottom:16px; font-size:13px; color:#9ca3af; }
+.crew-pub-modal .summary strong { color:#c8ff00; }
+.crew-pub-modal .actions { display:flex; gap:10px; justify-content:flex-end; margin-top:18px; }
+.crew-pub-modal .btn-cancel { background:transparent; border:1px solid #6b7280; color:#fff; padding:10px 20px; border-radius:6px; cursor:pointer; }
+.crew-pub-modal .btn-send { background:#c8ff00; color:#0a0a0a; padding:10px 22px; border:none; border-radius:6px; cursor:pointer; font-weight:700; }
+.crew-pub-modal .btn-send:disabled { opacity:.5; cursor:not-allowed; }
+.crew-pub-modal .msg { padding:10px; border-radius:6px; margin-top:12px; font-size:14px; }
+.crew-pub-modal .msg.ok { background:rgba(200,255,0,.15); color:#c8ff00; }
+.crew-pub-modal .msg.err { background:rgba(239,68,68,.15); color:#ef4444; }
+
+@media (max-width:640px) {
+    .crew-pub-hero-title { font-size:38px; }
+    .crew-pub-filters { padding:16px; }
+    .crew-pub-filters select { flex:1; min-width:140px; }
+    .crew-pub-results-count { width:100%; text-align:center; margin-top:4px; }
+    .crew-pub-grid { grid-template-columns:repeat(auto-fill, minmax(160px,1fr)); padding:16px; padding-bottom:120px; gap:12px; }
+}
+</style>
+
+<section class="crew-pub-wrap">
+    <header class="crew-pub-hero">
+        <div class="crew-pub-hero-eyebrow"><?= esc_html($_t($T['hero_eyebrow'])) ?></div>
+        <h1 class="crew-pub-hero-title"><?= esc_html($_t($T['hero_title'])) ?></h1>
+        <p class="crew-pub-hero-subtitle"><?= esc_html($_t($T['hero_subtitle'])) ?></p>
+    </header>
+
+    <div class="crew-pub-filters">
+        <select id="filter-categoria">
+            <option value=""><?= esc_html($_t($T['filter_all_cat'])) ?></option>
+            <?php foreach ($CREW_CATEGORIES as $cat): ?>
+                <option value="<?= esc_attr($cat['code']) ?>"><?= esc_html($_t($cat['label'])) ?></option>
+            <?php endforeach; ?>
+        </select>
+        <select id="filter-paese">
+            <option value=""><?= esc_html($_t($T['filter_all_paesi'])) ?></option>
+            <?php foreach ($PAESI as $code => $label): ?>
+                <option value="<?= esc_attr($code) ?>"><?= esc_html($_t($label)) ?></option>
+            <?php endforeach; ?>
+        </select>
+        <span class="crew-pub-results-count" id="results-count"><?= esc_html($_t($T['loading'])) ?></span>
+    </div>
+
+    <div class="crew-pub-grid" id="crew-grid"></div>
+
+    <!-- Bottom action bar -->
+    <div class="crew-pub-actionbar" id="actionbar">
+        <span><span class="count" id="selection-count">0</span> <?= esc_html($_t($T['selected_count'])) ?></span>
+        <div class="actions">
+            <button type="button" class="btn-clear" onclick="crewPubClearSelection()"><?= esc_html($_t($T['clear_selection'])) ?></button>
+            <button type="button" class="btn-req" onclick="crewPubOpenLeadModal()"><?= esc_html($_t($T['request_info'])) ?></button>
+        </div>
+    </div>
+
+    <!-- Modal lead -->
+    <div class="crew-pub-modal-overlay" id="modal-lead">
+        <div class="crew-pub-modal">
+            <h2><?= esc_html($_t($T['modal_title'])) ?></h2>
+            <p class="intro"><?= esc_html($_t($T['modal_intro'])) ?></p>
+            <div class="summary"><strong id="lead-selection-count">0</strong> <?= esc_html($_t($T['selected_count'])) ?></div>
+            <div class="field">
+                <label><?= esc_html($_t($T['form_azienda'])) ?> <span class="req">*</span></label>
+                <input type="text" id="lead-azienda" autocomplete="organization">
+            </div>
+            <div class="field">
+                <label><?= esc_html($_t($T['form_email'])) ?> <span class="req">*</span></label>
+                <input type="email" id="lead-email" autocomplete="email">
+            </div>
+            <div class="field">
+                <label><?= esc_html($_t($T['form_tel'])) ?></label>
+                <input type="tel" id="lead-tel" autocomplete="tel">
+            </div>
+            <div class="field">
+                <label><?= esc_html($_t($T['form_messaggio'])) ?> <span class="req">*</span></label>
+                <textarea id="lead-msg" rows="4" placeholder="<?= esc_attr($_t($T['form_msg_ph'])) ?>"></textarea>
+            </div>
+            <!-- Honeypot anti-spam -->
+            <div style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
+                <label>Non compilare<input type="text" id="lead-honeypot" tabindex="-1" autocomplete="off"></label>
+            </div>
+            <div class="actions">
+                <button type="button" class="btn-cancel" onclick="crewPubCloseLeadModal()"><?= esc_html($_t($T['btn_cancel'])) ?></button>
+                <button type="button" class="btn-send" id="lead-send-btn" onclick="crewPubSubmitLead()"><?= esc_html($_t($T['btn_send'])) ?></button>
+            </div>
+            <div id="lead-msg-result"></div>
+        </div>
+    </div>
+</section>
+
+<script>
+window.crewPubConfig = {
+    apiSearch: '/crm_toagency/actions/crew-public-search.php',
+    apiLead:   '/crm_toagency/actions/crew-lead.php',
+    lang: <?= json_encode($__l) ?>,
+    strings: {
+        empty:    <?= json_encode($_t($T['no_results'])) ?>,
+        resultsLabel: <?= json_encode($_t($T['results_label'])) ?>,
+        success:  <?= json_encode($_t($T['success_msg'])) ?>,
+        errorPrefix: <?= json_encode($_t($T['error_msg'])) ?>,
+    }
+};
+</script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.0" defer></script>
+
+<?php toa_component('footer'); ?>

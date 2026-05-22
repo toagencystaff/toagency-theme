@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+._*
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Utility locali workflow (non versionati nel tema)
+_scripts/
+
+# Log
+*.log
+php_errorlog
+
+# Sensitive
+.env
+.env.*

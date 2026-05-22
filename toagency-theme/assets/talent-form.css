@@ -1,0 +1,802 @@
+/**
+ * TOAgency — Form registrazione talent
+ * v1.0 — 7 Maggio 2026
+ * Path: /wp-content/themes/toagency-theme/assets/talent-form.css
+ *
+ * Clone strutturale di crew-form.css con classi rinominate
+ * .toa-crew-* → .toa-talent-*. In fondo sono aggiunte le classi
+ * specifiche talent (tipo-card, caratteristiche fisiche, misure,
+ * banner secondario, badge "6-13", field-hint).
+ */
+
+/* ═════ Layout base ═════ */
+.toa-talent-wrap {
+    max-width: 760px;
+    margin: 60px auto;
+    padding: 32px 24px 80px;
+    color: #fff;
+}
+.toa-talent-eyebrow {
+    color: #c8ff00;
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+.toa-talent-title {
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.05;
+    margin: 0 0 18px;
+}
+.toa-talent-subtitle {
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+/* ─── Banner avviso 7 giorni ─── */
+.toa-talent-info-banner {
+    background: rgba(200,255,0,0.06);
+    border: 1px solid rgba(200,255,0,0.25);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 32px;
+    color: rgba(255,255,255,0.85);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+.toa-talent-info-banner strong { color: #c8ff00; }
+
+/* ─── Progress bar ─── */
+.toa-talent-progress {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 36px;
+}
+.toa-talent-progress-step {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+.toa-talent-progress-step.active { background: #c8ff00; }
+
+/* ─── Step ─── */
+.toa-talent-step { display: none; animation: toaTalentFadeIn 0.4s ease; }
+.toa-talent-step.active { display: block; }
+@keyframes toaTalentFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.toa-talent-step h3 {
+    font-size: 1.4rem;
+    margin: 0 0 6px;
+    font-weight: 600;
+}
+.toa-talent-step-help {
+    color: rgba(255,255,255,0.55);
+    font-size: 0.92rem;
+    margin-bottom: 24px;
+}
+
+/* ═════ Form fields ═════ */
+.toa-talent-field { margin-bottom: 18px; position: relative; }
+.toa-talent-label {
+    display: block;
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+.toa-talent-label .req { color: #c8ff00; }
+.toa-talent-input,
+.toa-talent-textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s, background 0.2s;
+}
+.toa-talent-input:focus,
+.toa-talent-textarea:focus {
+    outline: none;
+    border-color: #c8ff00;
+    background: rgba(255,255,255,0.06);
+}
+.toa-talent-input.error,
+.toa-talent-customselect.error .toa-talent-customselect-trigger {
+    border-color: #ff5060;
+}
+.toa-talent-error-msg {
+    display: none;
+    color: #ff7080;
+    font-size: 0.82rem;
+    margin-top: 4px;
+}
+.toa-talent-error-msg.show { display: block; }
+.toa-talent-textarea { min-height: 90px; resize: vertical; }
+
+.toa-talent-field-row {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 580px) {
+    .toa-talent-field-row { grid-template-columns: 1fr; }
+}
+
+/* ═════ Telefono con prefisso ═════ */
+.toa-talent-phone-group {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 8px;
+}
+@media (max-width: 580px) {
+    .toa-talent-phone-group { grid-template-columns: 110px 1fr; }
+}
+
+/* ═════ Custom Select ═════ */
+.toa-talent-customselect {
+    position: relative;
+    user-select: none;
+}
+.toa-talent-customselect-trigger {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+    padding: 12px 40px 12px 14px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: border-color 0.2s, background 0.2s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.toa-talent-customselect-trigger:hover { border-color: rgba(200,255,0,0.4); }
+.toa-talent-customselect.open .toa-talent-customselect-trigger {
+    border-color: #c8ff00;
+    background: rgba(255,255,255,0.06);
+}
+.toa-talent-customselect-trigger::after {
+    content: '';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid rgba(255,255,255,0.6);
+    border-bottom: 2px solid rgba(255,255,255,0.6);
+    transform: translateY(-65%) rotate(45deg);
+    transition: transform 0.25s;
+}
+.toa-talent-customselect.open .toa-talent-customselect-trigger::after {
+    transform: translateY(-30%) rotate(-135deg);
+    border-color: #c8ff00;
+}
+.toa-talent-customselect-search {
+    padding: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: none;
+}
+.toa-talent-customselect.searchable.open .toa-talent-customselect-search { display: block; }
+.toa-talent-customselect-search input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    outline: none;
+}
+.toa-talent-customselect-search input:focus { border-color: #c8ff00; }
+
+.toa-talent-customselect-options {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: #0e0e0e;
+    border: 1px solid rgba(200,255,0,0.3);
+    border-radius: 8px;
+    max-height: 320px;
+    overflow-y: auto;
+    z-index: 100;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    display: none;
+    padding: 4px 0;
+}
+.toa-talent-customselect.open .toa-talent-customselect-options { display: block; }
+.toa-talent-customselect-option {
+    padding: 11px 16px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 0.95rem;
+    transition: background 0.15s, color 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.toa-talent-customselect-option:hover { background: rgba(200,255,0,0.12); }
+.toa-talent-customselect-option.selected {
+    background: #c8ff00;
+    color: #0a0a0a;
+    font-weight: 600;
+}
+.toa-talent-customselect-option.selected:hover { background: #b5e500; }
+.toa-talent-customselect-option .flag { font-size: 1.05rem; }
+.toa-talent-customselect-option .small-info {
+    font-size: 0.78rem;
+    opacity: 0.55;
+    margin-left: auto;
+}
+.toa-talent-customselect-option.selected .small-info { color: #0a0a0a; opacity: 0.7; }
+
+.toa-talent-customselect-options::-webkit-scrollbar { width: 8px; }
+.toa-talent-customselect-options::-webkit-scrollbar-track { background: transparent; }
+.toa-talent-customselect-options::-webkit-scrollbar-thumb {
+    background: rgba(200,255,0,0.3);
+    border-radius: 4px;
+}
+
+/* Trigger compatto per prefisso telefono */
+.toa-talent-customselect-compact .toa-talent-customselect-trigger {
+    font-size: 0.92rem;
+    padding: 12px 32px 12px 12px;
+}
+
+/* ═════ Categorie chip ═════ */
+.toa-talent-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.toa-talent-category-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.92rem;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+.toa-talent-category-chip input { display: none; }
+.toa-talent-category-chip:hover {
+    border-color: #c8ff00;
+    background: rgba(200,255,0,0.05);
+}
+.toa-talent-category-chip.checked {
+    background: #c8ff00;
+    color: #0a0a0a;
+    border-color: #c8ff00;
+    font-weight: 600;
+}
+.toa-talent-category-chip.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+.toa-talent-category-chip .age-badge {
+    font-size: 0.7rem;
+    padding: 1px 6px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 4px;
+    margin-left: 4px;
+}
+.toa-talent-category-chip.checked .age-badge {
+    background: rgba(0,0,0,0.18);
+    color: #0a0a0a;
+}
+
+/* ═════ Toggle sì/no ═════ */
+.toa-talent-toggle-group {
+    display: flex;
+    gap: 8px;
+}
+.toa-talent-toggle {
+    flex: 1;
+    padding: 12px 18px;
+    text-align: center;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+.toa-talent-toggle:hover {
+    border-color: #c8ff00;
+    background: rgba(200,255,0,0.05);
+}
+.toa-talent-toggle.active {
+    background: #c8ff00;
+    color: #0a0a0a;
+    border-color: #c8ff00;
+}
+
+.toa-talent-conditional {
+    margin-top: 12px;
+    display: none;
+    animation: toaTalentFadeIn 0.3s ease;
+}
+.toa-talent-conditional.show { display: block; }
+
+/* Box domicilio (appare se diverso da residenza) */
+.toa-talent-domicilio-box {
+    margin-top: 16px;
+    padding: 18px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+}
+.toa-talent-domicilio-info {
+    color: rgba(200,255,0,0.85);
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    background: rgba(200,255,0,0.05);
+    border-radius: 8px;
+    border-left: 3px solid #c8ff00;
+}
+
+/* ═════ Buttons ═════ */
+.toa-talent-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    gap: 12px;
+}
+.toa-talent-btn {
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: inherit;
+}
+.toa-talent-btn-primary {
+    background: #c8ff00;
+    color: #0a0a0a;
+}
+.toa-talent-btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(200,255,0,0.32);
+}
+.toa-talent-btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.toa-talent-btn-ghost {
+    background: transparent;
+    color: rgba(255,255,255,0.85);
+    border: 1px solid rgba(255,255,255,0.18);
+}
+.toa-talent-btn-ghost:hover {
+    border-color: rgba(255,255,255,0.4);
+    color: #fff;
+}
+
+/* ═════ Genitore section ═════ */
+.toa-talent-genitore {
+    display: none;
+    margin-top: 24px;
+    padding: 20px;
+    background: rgba(200,255,0,0.04);
+    border: 1px solid rgba(200,255,0,0.18);
+    border-radius: 16px;
+}
+.toa-talent-genitore.show { display: block; animation: toaTalentFadeIn 0.4s ease; }
+.toa-talent-genitore h4 { color: #c8ff00; font-size: 1rem; margin: 0 0 6px; }
+.toa-talent-genitore p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin-bottom: 16px; }
+
+/* ═════ Checkbox ═════ */
+.toa-talent-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.45;
+}
+.toa-talent-checkbox input { margin-top: 4px; flex-shrink: 0; accent-color: #c8ff00; }
+.toa-talent-checkbox a { color: #c8ff00; text-decoration: underline; }
+
+/* ─── Alert età ─── */
+.toa-talent-age-block {
+    display: none;
+    padding: 24px;
+    background: rgba(255, 80, 96, 0.08);
+    border: 1px solid rgba(255, 80, 96, 0.4);
+    border-radius: 16px;
+    color: #ffacb5;
+    margin-top: 16px;
+}
+.toa-talent-age-block.show { display: block; animation: toaTalentFadeIn 0.4s ease; }
+.toa-talent-age-block strong { color: #fff; display: block; margin-bottom: 4px; }
+
+/* ═════ Disclaimer pre-upload ═════ */
+.toa-talent-disclaimer {
+    background: rgba(255, 200, 50, 0.08);
+    border: 1px solid rgba(255, 200, 50, 0.35);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+.toa-talent-disclaimer h4 {
+    color: #ffd84d;
+    margin: 0 0 12px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.toa-talent-disclaimer p {
+    color: rgba(255,255,255,0.85);
+    line-height: 1.55;
+    margin-bottom: 14px;
+    font-size: 0.92rem;
+}
+.toa-talent-disclaimer .toa-talent-no-list,
+.toa-talent-disclaimer .toa-talent-yes-list {
+    list-style: none;
+    padding: 0;
+    margin: 14px 0;
+}
+.toa-talent-disclaimer li {
+    padding: 6px 0 6px 28px;
+    position: relative;
+    color: rgba(255,255,255,0.85);
+    font-size: 0.92rem;
+}
+.toa-talent-no-list li::before {
+    content: '✗';
+    position: absolute;
+    left: 0;
+    color: #ff5060;
+    font-weight: 700;
+}
+.toa-talent-yes-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #c8ff00;
+    font-weight: 700;
+}
+
+/* ═════ Uploader ═════ */
+.toa-talent-upload-section { margin-bottom: 28px; }
+.toa-talent-upload-section h5 {
+    font-size: 1rem;
+    margin: 0 0 6px;
+    color: rgba(255,255,255,0.95);
+}
+.toa-talent-upload-counter {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 12px;
+}
+.toa-talent-upload-counter strong { color: #c8ff00; }
+
+.toa-talent-dropzone {
+    border: 2px dashed rgba(200,255,0,0.3);
+    border-radius: 16px;
+    padding: 32px 20px;
+    text-align: center;
+    background: rgba(200,255,0,0.03);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.toa-talent-dropzone:hover {
+    background: rgba(200,255,0,0.07);
+    border-color: rgba(200,255,0,0.55);
+}
+.toa-talent-dropzone.dragover {
+    background: rgba(200,255,0,0.12);
+    border-color: #c8ff00;
+}
+.toa-talent-dropzone-icon {
+    font-size: 2.4rem;
+    margin-bottom: 8px;
+    opacity: 0.7;
+}
+.toa-talent-dropzone-text {
+    color: rgba(255,255,255,0.85);
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+}
+.toa-talent-dropzone-text strong { color: #c8ff00; }
+.toa-talent-dropzone-hint {
+    color: rgba(255,255,255,0.4);
+    font-size: 0.8rem;
+}
+
+/* Foto profilo singola (più piccola) */
+.toa-talent-dropzone-small {
+    padding: 18px 16px;
+    max-width: 280px;
+    margin: 0 auto;
+}
+.toa-talent-profile-thumb {
+    width: 140px;
+    height: 140px;
+    margin: 14px auto 0;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #1a1a1a;
+    border: 2px solid rgba(200,255,0,0.4);
+    position: relative;
+}
+.toa-talent-profile-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.toa-talent-profile-thumb-remove {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 24px;
+    height: 24px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toa-talent-thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+}
+.toa-talent-thumb {
+    position: relative;
+    aspect-ratio: 1;
+    background: #1a1a1a;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.toa-talent-thumb img,
+.toa-talent-thumb video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.toa-talent-thumb-remove {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 26px;
+    height: 26px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.toa-talent-thumb-remove:hover { background: #ff5060; }
+
+/* ═════ Modal successo ═════ */
+.toa-talent-success {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+.toa-talent-success.show { display: flex; opacity: 1; }
+.toa-talent-success-card {
+    text-align: center;
+    max-width: 460px;
+    padding: 50px 32px;
+    background: linear-gradient(180deg, rgba(20,20,20,0.95), rgba(10,10,10,0.95));
+    border: 1px solid rgba(200,255,0,0.3);
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(200,255,0,0.15), 0 0 0 1px rgba(200,255,0,0.12) inset;
+    transform: scale(0.85);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.toa-talent-success.show .toa-talent-success-card { transform: scale(1); }
+.toa-talent-success-icon {
+    width: 88px;
+    height: 88px;
+    margin: 0 auto 24px;
+    background: #c8ff00;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0a0a0a;
+    font-size: 44px;
+    animation: toaTalentIconPulse 2s ease-in-out infinite;
+}
+@keyframes toaTalentIconPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(200,255,0,0.6); }
+    50%      { box-shadow: 0 0 0 22px rgba(200,255,0,0); }
+}
+.toa-talent-success h2 {
+    font-size: 1.8rem;
+    margin: 0 0 12px;
+    color: #fff;
+}
+.toa-talent-success p {
+    color: rgba(255,255,255,0.75);
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+.toa-talent-success-info {
+    background: rgba(200,255,0,0.06);
+    border: 1px solid rgba(200,255,0,0.2);
+    border-radius: 10px;
+    padding: 12px;
+    margin: 0 0 24px;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.85);
+}
+.toa-talent-success-close {
+    color: rgba(255,255,255,0.5);
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 10px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+}
+.toa-talent-success-close:hover {
+    color: #fff;
+    border-color: rgba(255,255,255,0.5);
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   CLASSI SPECIFICHE TALENT (non presenti in crew-form.css)
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ─── Banner secondario (registrazione minore) ─── */
+.toa-talent-banner-secondary {
+    background: rgba(120,180,255,0.05);
+    border-color: rgba(120,180,255,0.25);
+}
+.toa-talent-banner-secondary strong { color: #7cb6ff; }
+
+/* ─── Hint sotto i campi (es. "email del talent o del genitore") ─── */
+.toa-talent-field-hint {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.78rem;
+    margin: 4px 0 0;
+    line-height: 1.4;
+}
+
+/* ─── Badge età "6-13" sul chip "bambino" ─── */
+.age-badge-kid {
+    background: rgba(120,180,255,0.18) !important;
+    color: #7cb6ff !important;
+    border: 1px solid rgba(120,180,255,0.4) !important;
+}
+
+/* ─── Card "Tipo di talent" (immagine vs backstage) ─── */
+.toa-talent-tipo-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 6px;
+}
+@media (max-width: 580px) {
+    .toa-talent-tipo-group { grid-template-columns: 1fr; }
+}
+.toa-talent-tipo-card {
+    background: rgba(255,255,255,0.04);
+    border: 2px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 22px 18px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    text-align: center;
+}
+.toa-talent-tipo-card:hover {
+    border-color: rgba(200,255,0,0.4);
+    background: rgba(255,255,255,0.06);
+    transform: translateY(-2px);
+}
+.toa-talent-tipo-card.active {
+    border-color: #c8ff00;
+    background: rgba(200,255,0,0.08);
+}
+.toa-talent-tipo-card.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+.toa-talent-tipo-icon {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+.toa-talent-tipo-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #fff;
+}
+.toa-talent-tipo-desc {
+    font-size: 0.84rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.45;
+}
+
+/* ─── Blocco caratteristiche fisiche (tipo=immagine) ─── */
+.toa-talent-fisico {
+    margin-top: 24px;
+    padding: 22px 20px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    animation: toaTalentFadeIn 0.3s ease;
+}
+.toa-talent-fisico h4 {
+    margin: 0 0 6px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+/* ─── Sotto-blocco misure corpo (mostrato solo se sesso=F) ─── */
+.toa-talent-misure {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed rgba(255,255,255,0.1);
+}
+
+/* ─── Tipo card disabled state per età ─── */
+.toa-talent-tipo-card[data-disabled="1"] {
+    position: relative;
+}
+.toa-talent-tipo-card[data-disabled="1"]::after {
+    content: attr(data-disabled-msg);
+    position: absolute;
+    bottom: 10px;
+    left: 14px;
+    right: 14px;
+    font-size: 0.72rem;
+    color: #ff7080;
+    font-style: italic;
+}
+
+/* ─── Chip categoria disabilitato (per età incompatibile) ─── */
+.toa-talent-category-chip.disabled-by-age {
+    opacity: 0.35;
+    pointer-events: none;
+    text-decoration: line-through;
+}

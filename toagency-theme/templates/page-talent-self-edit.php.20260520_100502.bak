@@ -1,0 +1,411 @@
+<?php
+/**
+ * Template Name: Talent Self-Edit
+ * v2.0 — 2026-05-19 (S8.A: aggiunge sezione album 4 tab + disclaimer per-album)
+ * v1.0 — 2026-05-19 (S7, replica pattern crew self-edit)
+ *
+ * Pagina pubblica per il self-edit dei talent.
+ * URL: /talent-self-edit/?uuid={uuid}&t={token_profilo}
+ *
+ * S7: campi anagrafici (telefono/social/misure/aspetto) con workflow review-then-apply.
+ * S8.A: sezione "📸 Le tue foto" con 4 album (polaroid/dettaglio/portfolio/eventi),
+ *       upload con compressione GD lato server, disclaimer legale + veridicità per-album,
+ *       approvazione staff prima della pubblicazione.
+ */
+
+toa_component('header');
+
+$__l = function_exists('toa_current_lang') ? toa_current_lang() : 'it';
+if (!in_array($__l, ['it','en','fr','es'], true)) $__l = 'it';
+$_t = function ($a) use ($__l) { return $a[$__l] ?? $a['it']; };
+
+$T = [
+    'hero_eyebrow'   => ['it'=>'TOAGENCY/TALENT','en'=>'TOAGENCY/TALENT','fr'=>'TOAGENCY/TALENT','es'=>'TOAGENCY/TALENT'],
+    'hero_title'     => ['it'=>'Aggiorna la tua scheda talent','en'=>'Update your talent profile','fr'=>'Mets à jour ta fiche talent','es'=>'Actualiza tu ficha talent'],
+    'hero_subtitle'  => [
+        'it'=>'Le modifiche saranno revisionate dal nostro staff prima di andare live.',
+        'en'=>'Changes will be reviewed by our staff before going live.',
+        'fr'=>'Les modifications seront revues avant publication.',
+        'es'=>'Los cambios serán revisados antes de publicarse.',
+    ],
+    'loading'        => ['it'=>'Caricamento…','en'=>'Loading…','fr'=>'Chargement…','es'=>'Cargando…'],
+    'invalid_link'   => ['it'=>'Link non valido o scaduto.','en'=>'Invalid or expired link.','fr'=>'Lien invalide.','es'=>'Enlace inválido.'],
+    'pending_msg'    => [
+        'it'=>'⏳ Hai già modifiche in attesa di revisione. Nuove modifiche le sostituiranno.',
+        'en'=>'⏳ You have pending changes. New changes will replace them.',
+        'fr'=>'⏳ Modifications en attente.',
+        'es'=>'⏳ Modificaciones pendientes.',
+    ],
+    'section_contatti' => ['it'=>'Contatti & social','en'=>'Contacts & social','fr'=>'Contacts & social','es'=>'Contactos & social'],
+    'section_misure'   => ['it'=>'Misure','en'=>'Measurements','fr'=>'Mensurations','es'=>'Medidas'],
+    'section_aspetto'  => ['it'=>'Aspetto','en'=>'Appearance','fr'=>'Apparence','es'=>'Apariencia'],
+    'field_telefono'   => ['it'=>'Telefono','en'=>'Phone','fr'=>'Téléphone','es'=>'Teléfono'],
+    'field_instagram'  => ['it'=>'Instagram','en'=>'Instagram','fr'=>'Instagram','es'=>'Instagram'],
+    'field_tiktok'     => ['it'=>'TikTok','en'=>'TikTok','fr'=>'TikTok','es'=>'TikTok'],
+    'field_altezza'    => ['it'=>'Altezza (cm)','en'=>'Height (cm)','fr'=>'Taille (cm)','es'=>'Altura (cm)'],
+    'field_peso'       => ['it'=>'Peso (kg)','en'=>'Weight (kg)','fr'=>'Poids (kg)','es'=>'Peso (kg)'],
+    'field_taglia'     => ['it'=>'Taglia abbigliamento','en'=>'Clothing size','fr'=>'Taille','es'=>'Talla'],
+    'field_scarpe'     => ['it'=>'Numero scarpe','en'=>'Shoe size','fr'=>'Pointure','es'=>'Calzado'],
+    'field_capelli'    => ['it'=>'Colore capelli','en'=>'Hair color','fr'=>'Cheveux','es'=>'Cabello'],
+    'field_lunghezza'  => ['it'=>'Lunghezza capelli','en'=>'Hair length','fr'=>'Longueur cheveux','es'=>'Largo del cabello'],
+    'btn_save'         => ['it'=>'Invia modifiche','en'=>'Submit changes','fr'=>'Envoyer','es'=>'Enviar'],
+    'btn_saving'       => ['it'=>'Invio…','en'=>'Sending…','fr'=>'Envoi…','es'=>'Enviando…'],
+    'success_msg'      => [
+        'it'=>'✓ Modifiche inviate. Lo staff le revisiona entro 24h.',
+        'en'=>'✓ Changes submitted. Staff will review within 24h.',
+        'fr'=>'✓ Modifications envoyées.',
+        'es'=>'✓ Cambios enviados.',
+    ],
+    'no_changes'   => ['it'=>'Nessuna modifica rilevata.','en'=>'No changes.','fr'=>'Aucune modification.','es'=>'Sin cambios.'],
+    'error_prefix' => ['it'=>'Errore: ','en'=>'Error: ','fr'=>'Erreur: ','es'=>'Error: '],
+    'opt_select'   => ['it'=>'—','en'=>'—','fr'=>'—','es'=>'—'],
+
+    // ─── S8.A — Sezione album foto ───
+    'section_foto'   => ['it'=>'Le tue foto','en'=>'Your photos','fr'=>'Tes photos','es'=>'Tus fotos'],
+    'foto_subtitle'  => [
+        'it'=>'Carica foto in 4 album diversi. Ogni foto è verificata dallo staff prima di essere pubblicata.',
+        'en'=>'Upload photos in 4 different albums. Each photo is reviewed by staff before publication.',
+        'fr'=>'Charge des photos dans 4 albums. Chaque photo est revue avant publication.',
+        'es'=>'Sube fotos en 4 álbumes. Cada foto se revisa antes de publicarse.',
+    ],
+    'tab_polaroid'   => ['it'=>'Polaroid','en'=>'Polaroid','fr'=>'Polaroid','es'=>'Polaroid'],
+    'tab_dettaglio'  => ['it'=>'Dettagli','en'=>'Details','fr'=>'Détails','es'=>'Detalles'],
+    'tab_portfolio'  => ['it'=>'Portfolio','en'=>'Portfolio','fr'=>'Portfolio','es'=>'Portfolio'],
+    'tab_eventi'     => ['it'=>'Eventi','en'=>'Events','fr'=>'Événements','es'=>'Eventos'],
+    'album_desc' => [
+        'polaroid'  => ['it'=>'Foto recenti senza trucco/filtri che mostrano il tuo aspetto reale (richiede data scatto).','en'=>'Recent photos without make-up/filters showing your actual look (date required).','fr'=>'Photos récentes sans maquillage/filtres (date requise).','es'=>'Fotos recientes sin maquillaje/filtros (fecha obligatoria).'],
+        'dettaglio' => ['it'=>'Primi piani, mani, occhi, profilo, sorriso — utili per casting specifici.','en'=>'Close-ups, hands, eyes, profile, smile — useful for specific castings.','fr'=>'Gros plans, mains, yeux, profil — pour castings spécifiques.','es'=>'Primeros planos, manos, ojos, perfil — para castings específicos.'],
+        'portfolio' => ['it'=>'Foto professionali da shooting/lavori già pubblicati.','en'=>'Professional photos from past shoots/published work.','fr'=>'Photos pro de shootings/travaux déjà publiés.','es'=>'Fotos profesionales de shootings/trabajos publicados.'],
+        'eventi'    => ['it'=>'Foto da eventi pubblici, red carpet, premiazioni.','en'=>'Photos from public events, red carpet, awards.','fr'=>'Photos d\'événements publics, tapis rouge.','es'=>'Fotos de eventos públicos, alfombra roja.'],
+    ],
+    'field_data_scatto' => ['it'=>'Data scatto polaroid','en'=>'Polaroid date','fr'=>'Date de la polaroid','es'=>'Fecha de la polaroid'],
+    'hint_data_scatto'  => ['it'=>'Obbligatoria. Max 5 anni fa, non futura.','en'=>'Required. Max 5 years ago, not future.','fr'=>'Obligatoire. Max 5 ans, pas dans le futur.','es'=>'Obligatoria. Máx 5 años, no futura.'],
+    'btn_upload'        => ['it'=>'Carica foto','en'=>'Upload photo','fr'=>'Charger photo','es'=>'Subir foto'],
+    'btn_uploading'     => ['it'=>'Caricamento…','en'=>'Uploading…','fr'=>'Chargement…','es'=>'Subiendo…'],
+    'choose_file'       => ['it'=>'Scegli file','en'=>'Choose file','fr'=>'Choisir fichier','es'=>'Elegir archivo'],
+    'no_photos'         => ['it'=>'Nessuna foto in questo album.','en'=>'No photos in this album.','fr'=>'Aucune photo.','es'=>'Sin fotos.'],
+    'pending_badge'     => ['it'=>'In attesa di approvazione','en'=>'Pending approval','fr'=>'En attente','es'=>'Pendiente'],
+    'rejected_badge'    => ['it'=>'Rifiutata','en'=>'Rejected','fr'=>'Refusée','es'=>'Rechazada'],
+
+    'legal_summary'  => ['it'=>'📋 Leggi disclaimer legale','en'=>'📋 Read legal disclaimer','fr'=>'📋 Lire avis légal','es'=>'📋 Leer aviso legal'],
+    'legal_text'     => [
+        'it' => "Caricando la foto dichiari sotto la tua responsabilità che:\n\n"
+              . "1. SEI IL SOGGETTO RITRATTO o sei autorizzato da chi è ritratto a usarne l'immagine.\n\n"
+              . "2. SEI L'AUTORE DELLA FOTO o hai una licenza/autorizzazione valida per usarla. La foto non viola diritti d'autore di terzi.\n\n"
+              . "3. NON SONO PRESENTI WATERMARK, firme, loghi, contatti, marchi di altre agenzie o riferimenti che identifichino te o l'autore, in conformità con le linee guida del database TOAgency.\n\n"
+              . "4. AUTORIZZI TOAgency a pubblicare la foto sui propri canali ufficiali (sito web, presentazioni a clienti business, materiale promozionale) per finalità di promozione professionale del tuo profilo talent, ai sensi della Legge 633/1941 artt. 96-97 e del GDPR Reg. UE 2016/679 artt. 6-7.\n\n"
+              . "5. TRATTAMENTO DATI: i dati e l'immagine saranno trattati esclusivamente per la gestione del profilo talent e la presentazione a clienti aziendali (casting). Maggiori info nella Privacy Policy.\n\n"
+              . "6. PUOI REVOCARE questo consenso in qualsiasi momento scrivendo a castingtoa@gmail.com (art. 17 GDPR — diritto all'oblio). La rimozione avverrà entro 30 giorni dalla richiesta.",
+        'en' => "By uploading the photo you declare under your responsibility that:\n\n"
+              . "1. YOU ARE THE SUBJECT shown or you are authorized by the person depicted to use the image.\n\n"
+              . "2. YOU ARE THE AUTHOR of the photo or hold a valid license/authorization. The photo does not infringe third-party copyrights.\n\n"
+              . "3. NO WATERMARKS, signatures, logos, contacts, other agency marks or identifying references are present, per TOAgency database guidelines.\n\n"
+              . "4. YOU AUTHORIZE TOAgency to publish the photo on its official channels (website, business client presentations, promotional materials) for professional talent profile promotion, under Italian Law 633/1941 art. 96-97 and GDPR Reg. EU 2016/679 art. 6-7.\n\n"
+              . "5. DATA PROCESSING: data and image will be used only for talent profile management and presentation to corporate clients (casting). See the Privacy Policy.\n\n"
+              . "6. YOU MAY REVOKE this consent any time by writing to castingtoa@gmail.com (GDPR Art. 17 — right to erasure). Removal within 30 days of request.",
+        'fr' => "En téléchargeant la photo, tu déclares sous ta responsabilité que :\n\n"
+              . "1. TU ES LE SUJET représenté ou tu es autorisé par la personne représentée à utiliser l'image.\n\n"
+              . "2. TU ES L'AUTEUR de la photo ou tu disposes d'une licence/autorisation valide.\n\n"
+              . "3. AUCUN FILIGRANE, signature, logo, contact, marque d'autre agence ou référence identifiante n'est présent.\n\n"
+              . "4. TU AUTORISES TOAgency à publier la photo sur ses canaux officiels pour la promotion professionnelle, conformément à la Loi italienne 633/1941 art. 96-97 et au RGPD art. 6-7.\n\n"
+              . "5. TRAITEMENT DES DONNÉES : usage exclusif pour la gestion du profil talent et les castings.\n\n"
+              . "6. TU PEUX RÉVOQUER ce consentement à tout moment via castingtoa@gmail.com (Art. 17 RGPD).",
+        'es' => "Al subir la foto declaras bajo tu responsabilidad que:\n\n"
+              . "1. ERES EL SUJETO retratado o estás autorizado por la persona retratada a usar la imagen.\n\n"
+              . "2. ERES EL AUTOR de la foto o tienes licencia/autorización válida.\n\n"
+              . "3. NO HAY MARCAS DE AGUA, firmas, logotipos, contactos, marcas de otras agencias.\n\n"
+              . "4. AUTORIZAS a TOAgency a publicar la foto en sus canales oficiales para la promoción profesional, según la Ley italiana 633/1941 art. 96-97 y RGPD art. 6-7.\n\n"
+              . "5. TRATAMIENTO DE DATOS: uso exclusivo para gestión del perfil talent y castings.\n\n"
+              . "6. PUEDES REVOCAR este consentimiento escribiendo a castingtoa@gmail.com (Art. 17 RGPD).",
+    ],
+    'legal_consent'  => ['it'=>'Accetto il disclaimer legale qui sopra','en'=>'I accept the legal disclaimer above','fr'=>'J\'accepte l\'avis légal ci-dessus','es'=>'Acepto el aviso legal anterior'],
+    // veridicità per album (testo dinamico in JS)
+    'verita_polaroid'  => ['it'=>'Confermo che questa polaroid è stata scattata negli ultimi 5 anni e rappresenta il mio aspetto attuale (no trucco/filtri)','en'=>'I confirm this polaroid was taken in the last 5 years and represents my current look (no make-up/filters)','fr'=>'Je confirme que cette polaroid date des 5 dernières années et représente mon apparence actuelle','es'=>'Confirmo que esta polaroid es de los últimos 5 años y representa mi apariencia actual'],
+    'verita_dettaglio' => ['it'=>'Confermo che il dettaglio mostrato (mani/occhi/profilo/sorriso ecc.) è mio e rappresenta il mio aspetto attuale','en'=>'I confirm the detail shown (hands/eyes/profile/smile etc.) is mine and represents my current appearance','fr'=>'Je confirme que le détail montré est le mien et représente mon apparence actuelle','es'=>'Confirmo que el detalle mostrado es mío y representa mi apariencia actual'],
+    'verita_portfolio' => ['it'=>'Confermo di avere i diritti per usare questa foto di portfolio (autore o licenza) e che mi raffigura realisticamente','en'=>'I confirm I hold the rights to use this portfolio photo (author or license) and it depicts me realistically','fr'=>'Je confirme avoir les droits sur cette photo de portfolio et qu\'elle me représente fidèlement','es'=>'Confirmo tener los derechos sobre esta foto de portfolio y que me representa fielmente'],
+    'verita_eventi'    => ['it'=>'Confermo che questa foto è stata scattata in un evento pubblico e ho il diritto di pubblicarla','en'=>'I confirm this photo was taken at a public event and I have the right to publish it','fr'=>'Je confirme que cette photo a été prise lors d\'un événement public et que j\'ai le droit de la publier','es'=>'Confirmo que esta foto fue tomada en un evento público y tengo derecho a publicarla'],
+];
+
+// Enum coerenti con S4 (DB normalizzato) + form registrazione (S4 + page-registrati-talent.php)
+$CAPELLI_OPTS = [
+    'biondi'=>['it'=>'Biondi','en'=>'Blonde','fr'=>'Blonds','es'=>'Rubios'],
+    'castani'=>['it'=>'Castani','en'=>'Brown','fr'=>'Châtains','es'=>'Castaños'],
+    'neri'=>['it'=>'Neri','en'=>'Black','fr'=>'Noirs','es'=>'Negros'],
+    'rossi'=>['it'=>'Rossi','en'=>'Red','fr'=>'Roux','es'=>'Pelirrojos'],
+    'grigi'=>['it'=>'Grigi','en'=>'Gray','fr'=>'Gris','es'=>'Grises'],
+    'bianchi'=>['it'=>'Bianchi','en'=>'White','fr'=>'Blancs','es'=>'Blancos'],
+    'calvi'=>['it'=>'Calvi','en'=>'Bald','fr'=>'Chauves','es'=>'Calvos'],
+    'altro'=>['it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro'],
+];
+$LUNGHEZZA_OPTS = [
+    'corto'=>['it'=>'Corti','en'=>'Short','fr'=>'Courts','es'=>'Cortos'],
+    'medio'=>['it'=>'Medi','en'=>'Medium','fr'=>'Moyens','es'=>'Medios'],
+    'lungo'=>['it'=>'Lunghi','en'=>'Long','fr'=>'Longs','es'=>'Largos'],
+];
+$TAGLIE_OPTS = ['XS','S','M','L','XL','XXL'];
+
+$theme_uri = get_stylesheet_directory_uri();
+$uuid_get  = $_GET['uuid'] ?? '';
+$token_get = $_GET['t']    ?? '';
+?>
+
+<style>
+.tse-wrap { background:#0a0a0a; color:#fff; min-height:100vh; font-family:'DM Sans','Inter',sans-serif; padding-bottom:80px; }
+.tse-hero { padding:48px 24px 24px; text-align:center; border-bottom:1px solid #2a2a2e; }
+.tse-hero-eyebrow { color:#c8ff00; font-size:12px; letter-spacing:2px; font-weight:600; margin-bottom:8px; }
+.tse-hero-title { font-size:36px; font-weight:800; color:#fff; margin:0; letter-spacing:-0.5px; }
+.tse-hero-subtitle { color:#9ca3af; margin-top:10px; max-width:560px; margin-left:auto; margin-right:auto; line-height:1.5; font-size:14px; }
+.tse-uuid { font-family:monospace; font-size:12px; color:#6b7280; margin-top:6px; }
+.tse-container { max-width:580px; margin:32px auto; padding:0 20px; }
+.tse-status { text-align:center; padding:60px 20px; color:#9ca3af; }
+.tse-status.error { color:#ef4444; }
+.tse-pending-notice { background:rgba(200,255,0,.10); border:1px solid #c8ff00; color:#c8ff00; padding:12px 16px; border-radius:8px; font-size:13px; margin-bottom:24px; }
+.tse-form { display:none; }
+.tse-form.visible { display:block; }
+.tse-name-display { background:#1a1a1e; border:1px solid #2a2a2e; padding:10px 13px; border-radius:6px; color:#9ca3af; font-size:13px; margin-bottom:18px; }
+.tse-name-display strong { color:#fff; }
+.tse-section { margin-bottom:18px; padding:16px; background:#0f0f12; border:1px solid #2a2a2e; border-radius:8px; }
+.tse-section-title { font-size:11px; color:#c8ff00; text-transform:uppercase; letter-spacing:.6px; font-weight:700; margin-bottom:14px; }
+.tse-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.tse-field { margin-bottom:14px; }
+.tse-label { display:block; font-size:11px; color:#9ca3af; margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px; font-weight:600; }
+.tse-input, .tse-select { width:100%; background:#1a1a1e; border:1px solid #2a2a2e; color:#fff; padding:11px 13px; border-radius:6px; font-size:14px; font-family:inherit; box-sizing:border-box; }
+.tse-input:focus, .tse-select:focus { outline:none; border-color:#c8ff00; }
+.tse-actions { margin-top:24px; }
+.tse-btn-save { width:100%; background:#c8ff00; color:#0a0a0a; border:none; padding:14px; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; transition:opacity .15s; }
+.tse-btn-save:hover { opacity:.9; }
+.tse-btn-save:disabled { opacity:.5; cursor:not-allowed; }
+.tse-result { margin-top:16px; padding:12px; border-radius:8px; font-size:14px; text-align:center; }
+.tse-result.ok  { background:rgba(200,255,0,.15); color:#c8ff00; border:1px solid rgba(200,255,0,.3); }
+.tse-result.err { background:rgba(239,68,68,.15); color:#ef4444; border:1px solid rgba(239,68,68,.3); }
+
+/* ─── S8.A — Sezione album ─── */
+.tse-album-tabs { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+.tse-album-tab { flex:1 1 calc(50% - 6px); min-width:120px; background:#1a1a1e; border:1px solid #2a2a2e; color:#9ca3af; padding:9px 6px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:600; transition:all .15s; text-align:center; }
+.tse-album-tab:hover { color:#fff; }
+.tse-album-tab.active { background:#c8ff00; color:#0a0a0a; border-color:#c8ff00; }
+.tse-album-desc { font-size:12px; color:#9ca3af; margin-bottom:14px; line-height:1.45; padding:8px 10px; background:#0a0a0a; border-radius:6px; border-left:3px solid #c8ff00; }
+.tse-album-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:16px; }
+.tse-album-empty { color:#6b7280; font-size:12px; text-align:center; padding:20px; font-style:italic; grid-column:1/-1; }
+.tse-album-thumb { position:relative; aspect-ratio:1/1; background:#1a1a1e; border:1px solid #2a2a2e; border-radius:6px; overflow:hidden; }
+.tse-album-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+.tse-album-thumb-badge { position:absolute; bottom:0; left:0; right:0; padding:3px 6px; font-size:10px; text-align:center; font-weight:600; }
+.tse-album-thumb-badge.pending { background:rgba(255,179,0,.85); color:#0a0a0a; }
+.tse-album-thumb-badge.rejected { background:rgba(239,68,68,.85); color:#fff; }
+.tse-upload-box { background:#0a0a0a; border:1px dashed #2a2a2e; border-radius:8px; padding:14px; }
+.tse-upload-field { margin-bottom:10px; }
+.tse-upload-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.tse-upload-fname { font-size:12px; color:#9ca3af; flex:1 1 auto; min-width:0; word-break:break-all; }
+.tse-upload-btn-file { background:#1a1a1e; border:1px solid #2a2a2e; color:#fff; padding:9px 14px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:600; }
+.tse-upload-btn-file:hover { border-color:#c8ff00; }
+.tse-upload-btn-go { background:#c8ff00; color:#0a0a0a; border:none; padding:11px 18px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; }
+.tse-upload-btn-go:hover { opacity:.9; }
+.tse-upload-btn-go:disabled { opacity:.5; cursor:not-allowed; }
+.tse-upload-status { font-size:12px; margin-top:8px; min-height:18px; }
+.tse-upload-status.ok { color:#c8ff00; }
+.tse-upload-status.err { color:#ef4444; }
+.tse-upload-status.loading { color:#9ca3af; }
+
+/* Disclaimer */
+.tse-legal-disclaimer { margin:10px 0; background:#1a1a1e; border:1px solid #2a2a2e; border-radius:6px; padding:10px; text-align:left; }
+.tse-legal-disclaimer summary { cursor:pointer; color:#c8ff00; font-weight:600; font-size:12px; outline:none; user-select:none; }
+.tse-legal-text { margin-top:10px; font-size:11px; line-height:1.55; color:#d1d5db; max-height:180px; overflow-y:auto; padding:6px 4px; white-space:pre-line; }
+.tse-legal-checkbox { display:flex; gap:8px; align-items:flex-start; margin:8px 0; font-size:12px; color:#d1d5db; cursor:pointer; line-height:1.45; }
+.tse-legal-checkbox input[type="checkbox"] { margin-top:2px; flex-shrink:0; transform:scale(1.15); cursor:pointer; }
+
+@media (max-width:520px) {
+    .tse-hero-title { font-size:28px; }
+    .tse-container { padding:0 16px; margin-top:20px; }
+    .tse-row { grid-template-columns:1fr; }
+    .tse-album-grid { grid-template-columns:repeat(2,1fr); }
+    .tse-album-tab { flex:1 1 calc(50% - 6px); }
+    .tse-legal-text { max-height:140px; }
+}
+</style>
+
+<section class="tse-wrap">
+    <header class="tse-hero">
+        <div class="tse-hero-eyebrow"><?= esc_html($_t($T['hero_eyebrow'])) ?></div>
+        <h1 class="tse-hero-title"><?= esc_html($_t($T['hero_title'])) ?></h1>
+        <p class="tse-hero-subtitle"><?= esc_html($_t($T['hero_subtitle'])) ?></p>
+        <div class="tse-uuid" id="tse-uuid-display"></div>
+    </header>
+
+    <div class="tse-container">
+        <div id="tse-status" class="tse-status"><?= esc_html($_t($T['loading'])) ?></div>
+        <div id="tse-pending" class="tse-pending-notice" style="display:none;"></div>
+
+        <form id="tse-form" class="tse-form" autocomplete="on">
+            <div class="tse-name-display" id="tse-name-display"></div>
+
+            <div class="tse-section">
+                <div class="tse-section-title">📞 <?= esc_html($_t($T['section_contatti'])) ?></div>
+                <div class="tse-field">
+                    <label class="tse-label"><?= esc_html($_t($T['field_telefono'])) ?></label>
+                    <input type="tel" id="f-telefono" class="tse-input" autocomplete="tel">
+                </div>
+                <div class="tse-row">
+                    <div class="tse-field">
+                        <label class="tse-label"><?= esc_html($_t($T['field_instagram'])) ?></label>
+                        <input type="text" id="f-instagram" class="tse-input" placeholder="@username" maxlength="255">
+                    </div>
+                    <div class="tse-field">
+                        <label class="tse-label"><?= esc_html($_t($T['field_tiktok'])) ?></label>
+                        <input type="text" id="f-tiktok" class="tse-input" placeholder="@username" maxlength="255">
+                    </div>
+                </div>
+            </div>
+
+            <div class="tse-section">
+                <div class="tse-section-title">📐 <?= esc_html($_t($T['section_misure'])) ?></div>
+                <div class="tse-row">
+                    <div class="tse-field">
+                        <label class="tse-label"><?= esc_html($_t($T['field_altezza'])) ?></label>
+                        <input type="number" id="f-altezza" class="tse-input" min="80" max="230" placeholder="170">
+                    </div>
+                    <div class="tse-field">
+                        <label class="tse-label"><?= esc_html($_t($T['field_peso'])) ?></label>
+                        <input type="number" id="f-peso" class="tse-input" min="20" max="200" step="0.1" placeholder="60">
+                    </div>
+                </div>
+                <div class="tse-row">
+                    <div class="tse-field">
+                        <label class="tse-label"><?= esc_html($_t($T['field_taglia'])) ?></label>
+                        <select id="f-taglia" class="tse-select">
+                            <option value=""><?= esc_html($_t($T['opt_select'])) ?></option>
+                            <?php foreach ($TAGLIE_OPTS as $t): ?>
+                                <option value="<?= esc_attr($t) ?>"><?= esc_html($t) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="tse-field">
+                        <label class="tse-label"><?= esc_html($_t($T['field_scarpe'])) ?></label>
+                        <input type="number" id="f-scarpe" class="tse-input" min="20" max="55" placeholder="40">
+                    </div>
+                </div>
+            </div>
+
+            <div class="tse-section">
+                <div class="tse-section-title">💇 <?= esc_html($_t($T['section_aspetto'])) ?></div>
+                <div class="tse-row">
+                    <div class="tse-field">
+                        <label class="tse-label"><?= esc_html($_t($T['field_capelli'])) ?></label>
+                        <select id="f-capelli" class="tse-select">
+                            <option value=""><?= esc_html($_t($T['opt_select'])) ?></option>
+                            <?php foreach ($CAPELLI_OPTS as $code => $labels): ?>
+                                <option value="<?= esc_attr($code) ?>"><?= esc_html($_t($labels)) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="tse-field">
+                        <label class="tse-label"><?= esc_html($_t($T['field_lunghezza'])) ?></label>
+                        <select id="f-lunghezza_capelli" class="tse-select">
+                            <option value=""><?= esc_html($_t($T['opt_select'])) ?></option>
+                            <?php foreach ($LUNGHEZZA_OPTS as $code => $labels): ?>
+                                <option value="<?= esc_attr($code) ?>"><?= esc_html($_t($labels)) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Honeypot -->
+            <div style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
+                <label>Non compilare<input type="text" id="f-honeypot" tabindex="-1" autocomplete="off"></label>
+            </div>
+
+            <div class="tse-actions">
+                <button type="button" id="tse-btn-save" class="tse-btn-save" onclick="talentEditSubmit()"><?= esc_html($_t($T['btn_save'])) ?></button>
+            </div>
+
+            <div id="tse-result"></div>
+        </form>
+
+        <!-- ─── S8.A — Sezione album foto ─── -->
+        <div id="tse-foto-section" class="tse-section" style="display:none; margin-top:20px;">
+            <div class="tse-section-title">📸 <?= esc_html($_t($T['section_foto'])) ?></div>
+            <p style="font-size:12px; color:#9ca3af; margin:0 0 14px; line-height:1.45;"><?= esc_html($_t($T['foto_subtitle'])) ?></p>
+
+            <div class="tse-album-tabs">
+                <button type="button" class="tse-album-tab active" data-album="polaroid" onclick="talentAlbumSwitch('polaroid')"><?= esc_html($_t($T['tab_polaroid'])) ?></button>
+                <button type="button" class="tse-album-tab" data-album="dettaglio" onclick="talentAlbumSwitch('dettaglio')"><?= esc_html($_t($T['tab_dettaglio'])) ?></button>
+                <button type="button" class="tse-album-tab" data-album="portfolio" onclick="talentAlbumSwitch('portfolio')"><?= esc_html($_t($T['tab_portfolio'])) ?></button>
+                <button type="button" class="tse-album-tab" data-album="eventi" onclick="talentAlbumSwitch('eventi')"><?= esc_html($_t($T['tab_eventi'])) ?></button>
+            </div>
+
+            <div id="tse-album-desc" class="tse-album-desc"></div>
+
+            <div id="tse-album-grid" class="tse-album-grid"></div>
+
+            <div class="tse-upload-box">
+                <div class="tse-upload-field" id="tse-data-scatto-wrap">
+                    <label class="tse-label"><?= esc_html($_t($T['field_data_scatto'])) ?></label>
+                    <input type="date" id="tse-data-scatto" class="tse-input">
+                    <div style="font-size:11px; color:#6b7280; margin-top:4px;"><?= esc_html($_t($T['hint_data_scatto'])) ?></div>
+                </div>
+
+                <details class="tse-legal-disclaimer">
+                    <summary><?= esc_html($_t($T['legal_summary'])) ?></summary>
+                    <div class="tse-legal-text"><?= esc_html($_t($T['legal_text'])) ?></div>
+                </details>
+
+                <label class="tse-legal-checkbox">
+                    <input type="checkbox" id="tse-legal-ok">
+                    <span><?= esc_html($_t($T['legal_consent'])) ?></span>
+                </label>
+                <label class="tse-legal-checkbox">
+                    <input type="checkbox" id="tse-verita-ok">
+                    <span id="tse-verita-text"></span>
+                </label>
+
+                <div class="tse-upload-row" style="margin-top:10px;">
+                    <input type="file" id="tse-file-input" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="talentFileChosen(this)">
+                    <button type="button" class="tse-upload-btn-file" onclick="document.getElementById('tse-file-input').click()"><?= esc_html($_t($T['choose_file'])) ?></button>
+                    <span id="tse-upload-fname" class="tse-upload-fname">—</span>
+                    <button type="button" id="tse-upload-go" class="tse-upload-btn-go" onclick="talentUploadGo()"><?= esc_html($_t($T['btn_upload'])) ?></button>
+                </div>
+                <div id="tse-upload-status" class="tse-upload-status"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+window.talentEditConfig = {
+    apiLoad:     '/crm_toagency/actions/talent-self-edit-load.php',
+    apiSave:     '/crm_toagency/actions/talent-self-edit-save.php',
+    apiMediaList:'/crm_toagency/actions/talent-media-list.php',
+    apiMediaUp:  '/crm_toagency/actions/talent-media-upload.php',
+    uuid:    <?= json_encode($uuid_get) ?>,
+    token:   <?= json_encode($token_get) ?>,
+    strings: {
+        invalidLink: <?= json_encode($_t($T['invalid_link'])) ?>,
+        pending:     <?= json_encode($_t($T['pending_msg'])) ?>,
+        saving:      <?= json_encode($_t($T['btn_saving'])) ?>,
+        save:        <?= json_encode($_t($T['btn_save'])) ?>,
+        successMsg:  <?= json_encode($_t($T['success_msg'])) ?>,
+        noChanges:   <?= json_encode($_t($T['no_changes'])) ?>,
+        errorPrefix: <?= json_encode($_t($T['error_prefix'])) ?>,
+        uploading:   <?= json_encode($_t($T['btn_uploading'])) ?>,
+        upload:      <?= json_encode($_t($T['btn_upload'])) ?>,
+        noPhotos:    <?= json_encode($_t($T['no_photos'])) ?>,
+        pendingBadge: <?= json_encode($_t($T['pending_badge'])) ?>,
+        rejectedBadge:<?= json_encode($_t($T['rejected_badge'])) ?>,
+        verita: {
+            polaroid:  <?= json_encode($_t($T['verita_polaroid'])) ?>,
+            dettaglio: <?= json_encode($_t($T['verita_dettaglio'])) ?>,
+            portfolio: <?= json_encode($_t($T['verita_portfolio'])) ?>,
+            eventi:    <?= json_encode($_t($T['verita_eventi'])) ?>,
+        },
+        albumDesc: {
+            polaroid:  <?= json_encode($_t($T['album_desc']['polaroid'])) ?>,
+            dettaglio: <?= json_encode($_t($T['album_desc']['dettaglio'])) ?>,
+            portfolio: <?= json_encode($_t($T['album_desc']['portfolio'])) ?>,
+            eventi:    <?= json_encode($_t($T['album_desc']['eventi'])) ?>,
+        }
+    }
+};
+</script>
+<script src="<?= esc_url($theme_uri . '/assets/talent-self-edit.js') ?>?v=2.0" defer></script>
+
+<?php toa_component('footer'); ?>
