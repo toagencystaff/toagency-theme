@@ -21,6 +21,9 @@
  */
 
 toa_component('header');
+// FIX 2026-05-22 marco — pre-fill email da ?email=XXX&ref=kappa (funnel Kappa Future Festival)
+$prefill_email = isset($_GET['email']) ? sanitize_email($_GET['email']) : '';
+$ref_kappa     = (isset($_GET['ref']) && $_GET['ref'] === 'kappa');
 $__l = function_exists('toa_current_lang') ? toa_current_lang() : 'it';
 if (!in_array($__l, array('it','en','fr','es'))) $__l = 'it';
 
@@ -173,7 +176,8 @@ $theme_uri = get_stylesheet_directory_uri();
 
             <div class="toa-talent-field">
                 <label class="toa-talent-label">Email <span class="req">*</span></label>
-                <input type="email" name="email" class="toa-talent-input" required autocomplete="email">
+                <input type="email" name="email" class="toa-talent-input" required autocomplete="email"
+                       value="<?php echo esc_attr($prefill_email); ?>">
                 <div class="toa-talent-error-msg"></div>
                 <p class="toa-talent-field-hint"><?php echo _ht_talent(array(
                     'it'=>'Email del talent (se maggiorenne) o del genitore (se minore).',
