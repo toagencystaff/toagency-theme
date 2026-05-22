@@ -814,9 +814,11 @@ if (!wp_next_scheduled('toa_gdpr_retention')) {
 }
 
 // === BEGIN FIX 2026-05-22 marco — REDIRECT IT SLUG ===
-// Reindirizza con 301 chi digita slug italiani intuitivi verso pagine esistenti
-// (slug originali EN restano canoniche per Google Ads — NON tocchiamo)
-add_action('template_redirect', function() {
+// Reindirizza con 301 chi digita slug italiani intuitivi verso pagine esistenti.
+// Hook init priority 1 per girare PRIMA del redirect_canonical di WP
+// (che cattura slug parziali, es. /modelli → /cerchiamo-modelli-a-rimini/modelli).
+add_action('init', function() {
+    if (is_admin() || (defined('DOING_AJAX') && DOING_AJAX) || (defined('DOING_CRON') && DOING_CRON)) return;
     $req = rtrim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/');
     $req = strtolower($req);
     $map = [
@@ -832,5 +834,5 @@ add_action('template_redirect', function() {
         wp_safe_redirect(home_url($map[$req]), 301);
         exit;
     }
-});
+}, 1);
 // === END FIX 2026-05-22 marco — REDIRECT IT SLUG ===
