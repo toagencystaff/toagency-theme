@@ -1040,7 +1040,7 @@ img { max-width: 100%; height: auto; display: block; }
   color: #f5c518 !important;
   border: 1px solid #f5c518 !important;
 }
-/* === BEGIN FIX 2026-05-22b marco — GALLERY TAPE AUTO-SCROLL === */
+/* === BEGIN FIX 2026-05-22c marco — GALLERY TAPE AUTO-SCROLL v2 (dim. ottimizzate) === */
 .gallery-section {
   padding: 0;
   margin: 0;
@@ -1051,14 +1051,13 @@ img { max-width: 100%; height: auto; display: block; }
   width: 100%;
   overflow: hidden;
   position: relative;
-  /* mask gradient ai bordi per effetto fade (estetica) */
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
           mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
 }
 .gallery-track {
   display: flex;
   width: max-content;
-  animation: toa-tape-scroll 18s linear infinite;
+  animation: toa-tape-scroll 22s linear infinite;
   will-change: transform;
 }
 .gallery-tape:hover .gallery-track {
@@ -1066,7 +1065,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .gallery-track .gallery-item {
   flex: 0 0 auto;
-  width: 160px;
+  width: 180px;
   aspect-ratio: 3 / 4;
   overflow: hidden;
   margin-right: 8px;
@@ -1078,18 +1077,17 @@ img { max-width: 100%; height: auto; display: block; }
   display: block;
 }
 @media (max-width: 1024px) {
-  .gallery-track .gallery-item { width: 130px; margin-right: 6px; }
-  .gallery-track { animation-duration: 14s; }
+  .gallery-track .gallery-item { width: 145px; margin-right: 6px; }
+  .gallery-track { animation-duration: 17s; }
 }
 @media (max-width: 640px) {
-  .gallery-track .gallery-item { width: 110px; margin-right: 5px; }
-  .gallery-track { animation-duration: 10s; }
+  .gallery-track .gallery-item { width: 120px; margin-right: 5px; }
+  .gallery-track { animation-duration: 13s; }
 }
 @keyframes toa-tape-scroll {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-/* Accessibilità: chi disabilita movimento dal sistema vede scroll manuale */
 @media (prefers-reduced-motion: reduce) {
   .gallery-track {
     animation: none;
@@ -1097,4 +1095,4 @@ img { max-width: 100%; height: auto; display: block; }
     width: 100%;
   }
 }
-/* === END FIX 2026-05-22b marco — GALLERY TAPE === */
+/* === END FIX 2026-05-22c marco — GALLERY TAPE v2 === */
