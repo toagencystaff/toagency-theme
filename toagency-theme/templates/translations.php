@@ -979,6 +979,12 @@ if (!function_exists('toa_get_translations')) {
                     'fr' => 'Votre nom',
                     'es' => 'Tu nombre',
                 ),
+                'ph_phone' => array(
+                    'it' => '+39 333 000 0000',
+                    'en' => '+44 7000 000000',
+                    'fr' => '+33 6 00 00 00 00',
+                    'es' => '+34 600 000 000',
+                ),
                 'ph_period' => array(
                     'it' => 'Es: 15 maggio, fine aprile',
                     'en' => 'E.g.: May 15, end of April',
