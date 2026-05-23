@@ -682,3 +682,37 @@ add_action('init', function() {
     }
 }, 1);
 // === END FIX 2026-05-22 marco — REDIRECT IT SLUG ===
+
+// === BEGIN FIX 2026-05-23 marco — PERF QUICK WINS ===
+// 1) Lazy load + async decoding su tutte le img frontend (no admin)
+add_filter('wp_get_attachment_image_attributes', function($attr) {
+    if (is_admin()) return $attr;
+    if (empty($attr['loading'])) $attr['loading'] = 'lazy';
+    if (empty($attr['decoding'])) $attr['decoding'] = 'async';
+    return $attr;
+}, 99);
+
+// Anche per immagini inline (the_content)
+add_filter('wp_lazy_loading_enabled', '__return_true');
+
+// 2) Defer JS non critici (NO jquery che serve sync per molti plugin)
+add_filter('script_loader_tag', function($tag, $handle) {
+    if (is_admin()) return $tag;
+    $defer_handles = ['lazysizes', 'toagency-main', 'main', 'wp-embed'];
+    foreach ($defer_handles as $h) {
+        if (strpos($handle, $h) !== false && strpos($tag, 'defer') === false && strpos($tag, 'async') === false) {
+            return str_replace(' src=', ' defer src=', $tag);
+        }
+    }
+    return $tag;
+}, 10, 2);
+
+// 3) Preconnect ai domini esterni critici
+add_action('wp_head', function() {
+    if (is_admin()) return;
+    echo '<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>' . "\n";
+    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+    echo '<link rel="preconnect" href="https://www.googletagmanager.com">' . "\n";
+    echo '<link rel="dns-prefetch" href="https://www.google-analytics.com">' . "\n";
+}, 1);
+// === END FIX 2026-05-23 marco — PERF QUICK WINS ===

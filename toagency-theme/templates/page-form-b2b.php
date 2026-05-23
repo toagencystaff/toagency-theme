@@ -41,7 +41,7 @@ $b2b_js = array(
     <h2 style="font-size:1.3rem;font-weight:700;text-transform:uppercase;text-align:center;margin-bottom:6px"><?php echo toa_t('form_b2b', 'form_heading'); ?></h2>
     <p style="font-size:0.85rem;opacity:0.5;text-align:center;margin-bottom:24px"><?php echo toa_t('form_b2b', 'form_subheading'); ?></p>
 
-    <form id="leadForm">
+    <form id="leadForm" method="post">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
         <div class="form-group">
           <label class="form-label" for="company"><?php echo toa_t('form_b2b', 'label_company'); ?></label>
@@ -59,7 +59,7 @@ $b2b_js = array(
         </div>
         <div class="form-group">
           <label class="form-label" for="phone"><?php echo toa_t('form_b2b', 'label_phone'); ?></label>
-          <input type="tel" id="phone" name="phone" placeholder="<?php echo esc_attr(toa_t('form_b2b', 'ph_contact')); ?>" class="form-input">
+          <input type="tel" id="phone" name="phone" placeholder="<?php echo esc_attr(toa_t('form_b2b', 'ph_phone')); ?>" class="form-input">
         </div>
       </div>
       <div class="form-group" style="margin-bottom:12px">
