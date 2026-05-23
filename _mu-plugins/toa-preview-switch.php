@@ -56,10 +56,3 @@ add_action('template_redirect', function() {
         return $html . $banner;
     });
 });
-
-// DEBUG: emette commento HTML con stato runtime per diagnosi
-add_action('send_headers', function() {
-    header('X-Toa-Preview-Cookie: ' . (!empty($_COOKIE['toa_preview']) ? '1' : '0'), true);
-    header('X-Toa-Preview-Template: ' . get_option('template'), true);
-    header('X-Toa-Preview-Stylesheet: ' . get_option('stylesheet'), true);
-});
