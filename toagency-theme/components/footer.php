@@ -37,7 +37,7 @@
   $toa_cta_labels = array('en' => 'Get a Quote', 'fr' => 'Devis', 'es' => 'Presupuesto');
   $toa_cta_label = isset($toa_cta_labels[$toa_lang]) ? $toa_cta_labels[$toa_lang] : 'Preventivo';
   ?>
-  <a href="<?php echo home_url('/contatti/'); ?>" class="btn-cta-mobile"><?php echo esc_html($toa_cta_label); ?></a>
+  <a href="<?php echo home_url('/form-b2b/'); ?>" class="btn-cta-mobile"><?php echo esc_html($toa_cta_label); ?></a>
 </div>
 <?php endif; ?>
 
