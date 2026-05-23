@@ -56,8 +56,8 @@ toa_component('header');
 ?>
 
 <?php toa_component('page-hero', array(
-    'breadcrumb' => 'ABOUT',
-    'title'      => 'About.',
+    'breadcrumb' => _t_raw(array('it'=>'CHI SIAMO','en'=>'ABOUT','fr'=>'À PROPOS','es'=>'QUIÉNES SOMOS')),
+    'title'      => _t_raw(array('it'=>'Chi Siamo.','en'=>'About.','fr'=>'À Propos.','es'=>'Quiénes Somos.')),
     'subtitle'   => $_t($t['hero_subtitle']),
 )); ?>
 

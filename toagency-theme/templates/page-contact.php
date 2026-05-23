@@ -39,8 +39,8 @@ toa_component('header');
 ?>
 
 <?php toa_component('page-hero', array(
-    'breadcrumb' => 'CONTACTS',
-    'title'      => 'Contacts.',
+    'breadcrumb' => _t_raw(array('it'=>'CONTATTI','en'=>'CONTACTS','fr'=>'CONTACT','es'=>'CONTACTO')),
+    'title'      => _t_raw(array('it'=>'Contatti.','en'=>'Contacts.','fr'=>'Contact.','es'=>'Contacto.')),
     'subtitle'   => $_t($t['hero_subtitle']),
 )); ?>
 
