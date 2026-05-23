@@ -134,7 +134,7 @@ $images = array(
 
 <?php toa_component('page-hero', array(
     'breadcrumb' => 'MODELS',
-    'title'      => 'Models.',
+    'title'      => _t_raw(array('it'=>'Modelli.','en'=>'Models.','fr'=>'Mannequins.','es'=>'Modelos.')),
     'subtitle'   => $_t($t['hero_subtitle']),
 )); ?>
 

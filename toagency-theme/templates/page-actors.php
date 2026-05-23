@@ -123,7 +123,7 @@ $images = array(
 
 <?php toa_component('page-hero', array(
     'breadcrumb' => 'ACTORS',
-    'title'      => 'Actors.',
+    'title'      => _t_raw(array('it'=>'Attori.','en'=>'Actors.','fr'=>'Acteurs.','es'=>'Actores.')),
     'subtitle'   => $_t($t['hero_subtitle']),
 )); ?>
 

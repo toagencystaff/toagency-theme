@@ -716,3 +716,14 @@ add_action('wp_head', function() {
     echo '<link rel="dns-prefetch" href="https://www.google-analytics.com">' . "\n";
 }, 1);
 // === END FIX 2026-05-23 marco — PERF QUICK WINS ===
+
+// === BEGIN FIX 2026-05-23 marco — _t_raw helper for page-hero title (i18n) ===
+// Ritorna stringa RAW (no esc_html) — chi la usa è responsabile dell'escape.
+// Usato per passare titoli i18n a toa_component('page-hero', ['title' => _t_raw([...])])
+// che internamente fa esc_html. Evita double-escape vs _ht() di page-home.php.
+function _t_raw($strings) {
+    $lang = function_exists('toa_current_lang') ? toa_current_lang() : 'it';
+    if (!in_array($lang, array('it','en','fr','es'))) $lang = 'it';
+    return isset($strings[$lang]) ? $strings[$lang] : (isset($strings['it']) ? $strings['it'] : '');
+}
+// === END FIX 2026-05-23 marco — _t_raw helper ===
