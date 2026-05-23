@@ -172,7 +172,7 @@ function _ht($strings) {
       <p><?php echo _ht(array('it'=>'Londra','en'=>'London','fr'=>'Londres','es'=>'Londres')); ?></p>
     </div>
     <div class="coverage-country">
-      <h4>EUROPA</h4>
+      <h4><?php echo _ht(array('it'=>'EUROPA','en'=>'EUROPE','fr'=>'EUROPE','es'=>'EUROPA')); ?></h4>
       <p><?php echo _ht(array('it'=>'Berlino, Amsterdam, Bruxelles, Vienna, Lisbona... + ovunque serva','en'=>'Berlin, Amsterdam, Brussels, Vienna, Lisbon... + wherever needed','fr'=>'Berlin, Amsterdam, Bruxelles, Vienne, Lisbonne... + partout où il faut','es'=>'Berlín, Ámsterdam, Bruselas, Viena, Lisboa... + donde haga falta')); ?></p>
     </div>
   </div>
