@@ -152,7 +152,7 @@ function _ht($strings) {
 <section class="coverage-section">
   <div class="container">
     <div class="section-eyebrow"><?php echo _ht(array('it'=>'Dove operiamo','en'=>'Where we operate','fr'=>'Où nous opérons','es'=>'Dónde operamos')); ?></div>
-    <h2 class="section-heading" style="margin-bottom:40px"><?php echo _ht(array('it'=>'4 paesi, 50+ città','en'=>'4 countries, 50+ cities','fr'=>'4 pays, 50+ villes','es'=>'4 países, 50+ ciudades')); ?></h2>
+    <h2 class="section-heading" style="margin-bottom:40px"><?php echo _ht(array('it'=>'Italia + Europa: i nostri hub, il tuo raggio','en'=>'Italy + Europe: our hubs, your reach','fr'=>'Italie + Europe : nos hubs, votre portée','es'=>'Italia + Europa: nuestros hubs, tu alcance')); ?></h2>
   </div>
   <div class="coverage-grid container">
     <div class="coverage-country">
@@ -170,6 +170,10 @@ function _ht($strings) {
     <div class="coverage-country">
       <h4><?php echo _ht(array('it'=>'UK','en'=>'UK','fr'=>'Royaume-Uni','es'=>'Reino Unido')); ?></h4>
       <p><?php echo _ht(array('it'=>'Londra','en'=>'London','fr'=>'Londres','es'=>'Londres')); ?></p>
+    </div>
+    <div class="coverage-country">
+      <h4>EUROPA</h4>
+      <p><?php echo _ht(array('it'=>'Berlino, Amsterdam, Bruxelles, Vienna, Lisbona... + ovunque serva','en'=>'Berlin, Amsterdam, Brussels, Vienna, Lisbon... + wherever needed','fr'=>'Berlin, Amsterdam, Bruxelles, Vienne, Lisbonne... + partout où il faut','es'=>'Berlín, Ámsterdam, Bruselas, Viena, Lisboa... + donde haga falta')); ?></p>
     </div>
   </div>
 </section>
