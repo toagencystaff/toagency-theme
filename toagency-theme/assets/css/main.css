@@ -1113,3 +1113,50 @@ img { max-width: 100%; height: auto; display: block; }
   }
 }
 /* === END FIX 2026-05-23 marco — STICKY CTA === */
+
+/* === BEGIN FIX 2026-05-24 marco — BRAND TICKER RESTYLE === */
+/* Più respiro, label più leggibile, hover accent, bullet separator */
+.brand-section {
+  padding: 44px 0;
+}
+.brand-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--gray-5);
+  margin-bottom: 26px;
+}
+.ticker-row {
+  gap: 60px;
+}
+.ticker-row span {
+  opacity: 0.5;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  transition: opacity 0.35s var(--ease-out), color 0.35s var(--ease-out);
+  cursor: default;
+}
+.ticker-row span:hover {
+  opacity: 1;
+  color: var(--accent);
+}
+/* Bullet separator tra brand (centrato nel gap, non interferisce con flex) */
+.ticker-row span:not(:last-child)::after {
+  content: '•';
+  position: absolute;
+  right: -34px;
+  top: 50%;
+  transform: translateY(-55%);
+  color: var(--gray-4);
+  opacity: 0.45;
+  font-size: 0.8em;
+  pointer-events: none;
+}
+@media (max-width: 640px) {
+  .brand-section { padding: 32px 0; }
+  .brand-label { font-size: 0.7rem; margin-bottom: 18px; }
+  .ticker-row { gap: 40px; }
+  .ticker-row span:not(:last-child)::after { right: -24px; }
+}
+/* === END FIX 2026-05-24 marco — BRAND TICKER RESTYLE === */
