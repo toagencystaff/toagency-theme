@@ -327,12 +327,8 @@ $hub_sections = array(
         'title'  => array('it'=>'Creator & Influencer','en'=>'Creator & Influencer','fr'=>'Créateurs & Influenceurs','es'=>'Creadores & Influencers'),
         'desc'   => array('it'=>'Content creator e influencer per campagne social, UGC e brand collaboration.','en'=>'Content creators and influencers for social campaigns, UGC and brand collaborations.','fr'=>'Créateurs de contenu et influenceurs pour campagnes sociales et collaborations.','es'=>'Creadores e influencers para campañas sociales, UGC y colaboraciones.'),
     ),
-    array(
-        'icon'   => '🎬',
-        'ruolo'  => 'altro',
-        'title'  => array('it'=>'Crew & Tecnici','en'=>'Crew & Technicians','fr'=>'Équipe & Techniciens','es'=>'Crew & Técnicos'),
-        'desc'   => array('it'=>'Fotografi, videomaker, MUA, stylist e figure tecniche per produzioni.','en'=>'Photographers, videographers, MUAs, stylists and technical crew for productions.','fr'=>'Photographes, vidéastes, MUA, stylistes et équipe technique.','es'=>'Fotógrafos, videógrafos, MUA, estilistas y equipo técnico.'),
-    ),
+    // 2026-05-24 marco — card "Crew & Tecnici" rimossa per campagna lancio talent.
+    // Ripristino: vedi backup page-talent-database.php.bak_20260524 sul server.
 );
 ?>
 
@@ -473,7 +469,6 @@ $hub_sections = array(
                         <option value="comparsa">👶 <?php echo esc_html($_t(array('it'=>'Kids & Giovani','en'=>'Kids & Young','fr'=>'Enfants & Jeunes','es'=>'Niños & Jóvenes'))); ?></option>
                         <option value="creator">📱 <?php echo esc_html($_t(array('it'=>'Creator & Influencer','en'=>'Creator & Influencer','fr'=>'Créateurs & Influenceurs','es'=>'Creadores & Influencers'))); ?></option>
                         <option value="influencer">🌟 Influencer</option>
-                        <option value="altro">🎬 <?php echo esc_html($_t(array('it'=>'Crew & Tecnici','en'=>'Crew & Technicians','fr'=>'Équipe & Techniciens','es'=>'Crew & Técnicos'))); ?></option>
                     </select>
                 </div>
 
