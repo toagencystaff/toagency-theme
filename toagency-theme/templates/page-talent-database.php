@@ -135,241 +135,11 @@ window.toaTdbRequestUrl = "/actions/talent-database-request.php";
 window.toaTdbFotoUrl    = "/actions/foto-talent-public.php";
 </script>
 
-<style>
-/* ── HUB SEZIONI CATEGORIA 2026-05-22 marco ──────────────────── */
-.toa-hub {
-    background: #000;
-    padding: 100px 0 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-.toa-hub-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-}
-.toa-hub-eyebrow {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #c8ff00;
-    margin-bottom: 12px;
-}
-.toa-hub-title {
-    font-size: clamp(36px, 5vw, 64px);
-    font-weight: 900;
-    color: #fff;
-    line-height: 1.05;
-    letter-spacing: -1.5px;
-    margin: 0 0 12px;
-}
-.toa-hub-subtitle {
-    font-size: 16px;
-    color: #666;
-    margin: 0 0 48px;
-    max-width: 520px;
-    line-height: 1.6;
-}
-/* Griglia 3×2 sezioni */
-.toa-hub-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-bottom: 60px;
-}
-.toa-hub-card {
-    position: relative;
-    background: #0d0d0d;
-    border: 1px solid #1a1a1a;
-    border-radius: 16px;
-    overflow: hidden;
-    text-decoration: none;
-    color: #fff;
-    cursor: pointer;
-    transition: border-color 0.25s, transform 0.25s;
-    display: flex;
-    flex-direction: column;
-    min-height: 180px;
-    padding: 28px 24px 22px;
-}
-.toa-hub-card:hover {
-    border-color: #333;
-    transform: translateY(-3px);
-}
-.toa-hub-card-icon {
-    font-size: 32px;
-    line-height: 1;
-    margin-bottom: 14px;
-}
-.toa-hub-card-title {
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: -0.3px;
-    margin-bottom: 6px;
-}
-.toa-hub-card-desc {
-    font-size: 13px;
-    color: #555;
-    line-height: 1.5;
-    flex: 1;
-}
-.toa-hub-card-cta {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #c8ff00;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 18px;
-    transition: gap 0.2s;
-}
-.toa-hub-card:hover .toa-hub-card-cta { gap: 10px; }
-/* Card accent strip (colore sinistra) */
-.toa-hub-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; bottom: 0;
-    width: 3px;
-    background: var(--hub-accent, #1a1a1a);
-    transition: background 0.25s;
-}
-.toa-hub-card:hover::before { background: #c8ff00; }
-/* Bottone "Esplora tutto" */
-.toa-hub-cta-all {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 48px;
-}
-.toa-hub-cta-all a {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 13px 28px;
-    background: transparent;
-    border: 1px solid #333;
-    border-radius: 100px;
-    color: #aaa;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    letter-spacing: 0.3px;
-    transition: all 0.2s;
-}
-.toa-hub-cta-all a:hover {
-    border-color: #c8ff00;
-    color: #c8ff00;
-    background: rgba(200,255,0,0.05);
-}
-/* Divisore verso filtri */
-.toa-hub-divider {
-    border: none;
-    border-top: 1px solid #111;
-    margin: 0;
-}
-/* Responsive */
-@media (max-width: 900px) {
-    .toa-hub-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 560px) {
-    .toa-hub { padding: 80px 0 0; }
-    .toa-hub-grid { grid-template-columns: 1fr; gap: 10px; }
-    .toa-hub-card { min-height: 140px; padding: 20px 18px 16px; }
-    .toa-hub-card-icon { font-size: 26px; margin-bottom: 10px; }
-    .toa-hub-card-title { font-size: 17px; }
-}
-</style>
+<!-- 2026-05-24 marco — hub CSS rimosso (campagna lancio talent). Backup: page-talent-database.php.bak_20260524 -->
 
-<?php
-// PATCH 2026-05-22 marco — sezioni hub con traduzioni
-$hub_labels = array(
-    'eyebrow'  => array('it'=>'TOAgency / Talent Database','en'=>'TOAgency / Talent Database','fr'=>'TOAgency / Talent Database','es'=>'TOAgency / Talent Database'),
-    'title'    => array('it'=>'Esplora i Talent.','en'=>'Explore the Talent.','fr'=>'Explorez les Talents.','es'=>'Explora los Talents.'),
-    'subtitle' => array(
-        'it' => 'Scegli la categoria che ti interessa e trova il profilo giusto per il tuo progetto.',
-        'en' => 'Choose the category you need and find the right profile for your project.',
-        'fr' => 'Choisissez la catégorie qui vous intéresse et trouvez le profil idéal.',
-        'es' => 'Elige la categoría que necesitas y encuentra el perfil ideal para tu proyecto.',
-    ),
-    'cta_all'  => array('it'=>'Esplora tutto il database','en'=>'Browse the full database','fr'=>'Explorer toute la base','es'=>'Explorar toda la base'),
-    'explore'  => array('it'=>'Esplora','en'=>'Explore','fr'=>'Explorer','es'=>'Explorar'),
-);
-$tdb_url = get_permalink();
-$hub_sections = array(
-    array(
-        'icon'   => '🎭',
-        'ruolo'  => 'actor',
-        'title'  => array('it'=>'Attori & Cinema','en'=>'Actors & Cinema','fr'=>'Acteurs & Cinéma','es'=>'Actores & Cine'),
-        'desc'   => array('it'=>'Attori, attrici e comparse per spot, film, serie TV e video.','en'=>'Actors, actresses and extras for commercials, films, series and videos.','fr'=>'Acteurs, actrices et figurants pour pubs, films, séries et vidéos.','es'=>'Actores, actrices y figurantes para spots, películas, series y vídeos.'),
-    ),
-    array(
-        'icon'   => '👗',
-        'ruolo'  => 'model',
-        'title'  => array('it'=>'Modelle & Modelli','en'=>'Models','fr'=>'Modèles','es'=>'Modelos'),
-        'desc'   => array('it'=>'Modelli e modelle per sfilate, shooting fotografici, cataloghi e brand.','en'=>'Male and female models for fashion shows, photo shoots, catalogues and brands.','fr'=>'Mannequins pour défilés, shootings photo, catalogues et marques.','es'=>'Modelos para desfiles, shootings, catálogos y marcas.'),
-    ),
-    array(
-        'icon'   => '✈️',
-        'ruolo'  => 'hostess',
-        'title'  => array('it'=>'Hostess & Steward','en'=>'Hostess & Steward','fr'=>'Hôtesses & Stewards','es'=>'Azafatas & Steward'),
-        'desc'   => array('it'=>'Hostess e steward per eventi, fiere, congressi e attività promozionali.','en'=>'Hostesses and stewards for events, trade fairs, congresses and promotions.','fr'=>'Hôtesses et stewards pour événements, salons et promotions.','es'=>'Azafatas y stewards para eventos, ferias, congresos y promociones.'),
-    ),
-    array(
-        'icon'   => '👶',
-        'ruolo'  => 'comparsa',
-        'title'  => array('it'=>'Kids & Giovani','en'=>'Kids & Young','fr'=>'Enfants & Jeunes','es'=>'Niños & Jóvenes'),
-        'desc'   => array('it'=>'Bambini, ragazzi e giovani adulti per spot, campagne e contenuti digitali.','en'=>'Children, teens and young adults for commercials, campaigns and digital content.','fr'=>'Enfants, ados et jeunes adultes pour pubs, campagnes et contenus.','es'=>'Niños, adolescentes y jóvenes para spots, campañas y contenidos.'),
-    ),
-    array(
-        'icon'   => '📱',
-        'ruolo'  => 'creator',
-        'title'  => array('it'=>'Creator & Influencer','en'=>'Creator & Influencer','fr'=>'Créateurs & Influenceurs','es'=>'Creadores & Influencers'),
-        'desc'   => array('it'=>'Content creator e influencer per campagne social, UGC e brand collaboration.','en'=>'Content creators and influencers for social campaigns, UGC and brand collaborations.','fr'=>'Créateurs de contenu et influenceurs pour campagnes sociales et collaborations.','es'=>'Creadores e influencers para campañas sociales, UGC y colaboraciones.'),
-    ),
-    // 2026-05-24 marco — card "Crew & Tecnici" rimossa per campagna lancio talent.
-    // Ripristino: vedi backup page-talent-database.php.bak_20260524 sul server.
-);
-?>
+<?php // 2026-05-24 marco — hub arrays $hub_labels/$hub_sections/$tdb_url rimossi (campagna lancio talent). ?>
 
-<!-- ══════════════════════════════════════════════════════
-     HUB SEZIONI CATEGORIA — TOA Talent Database
-     PATCH 2026-05-22 marco
-     ══════════════════════════════════════════════════════ -->
-<section class="toa-hub">
-    <div class="toa-hub-inner">
-
-        <div class="toa-hub-eyebrow"><?php echo esc_html($_t($hub_labels['eyebrow'])); ?></div>
-        <h1 class="toa-hub-title"><?php echo esc_html($_t($hub_labels['title'])); ?></h1>
-        <p class="toa-hub-subtitle"><?php echo esc_html($_t($hub_labels['subtitle'])); ?></p>
-
-        <div class="toa-hub-grid">
-        <?php foreach ($hub_sections as $sec) :
-            // FIX 2026-05-22 marco — hub cards portano al database completo (no filtro ruolo pre-applicato)
-            // Tutti i 9000+ talent visibili al click; filtro Categoria disponibile in sidebar
-            $sec_url = esc_url($tdb_url) . '#tdb-database';
-        ?>
-            <a href="<?php echo $sec_url; ?>" class="toa-hub-card" data-ruolo="<?php echo esc_attr($sec['ruolo']); ?>">
-                <div class="toa-hub-card-icon"><?php echo $sec['icon']; ?></div>
-                <div class="toa-hub-card-title"><?php echo esc_html($_t($sec['title'])); ?></div>
-                <div class="toa-hub-card-desc"><?php echo esc_html($_t($sec['desc'])); ?></div>
-                <div class="toa-hub-card-cta">
-                    <?php echo esc_html($_t($hub_labels['explore'])); ?> →
-                </div>
-            </a>
-        <?php endforeach; ?>
-        </div>
-
-        <div class="toa-hub-cta-all">
-            <a href="<?php echo esc_url($tdb_url); ?>#tdb-database">
-                <?php echo esc_html($_t($hub_labels['cta_all'])); ?> →
-            </a>
-        </div>
-
-    </div>
-</section>
-
-<hr class="toa-hub-divider">
+<!-- 2026-05-24 marco — sezione hub <section class="toa-hub"> + <hr> rimossi (campagna lancio talent) -->
 
 <script>
 /* PATCH 2026-05-22 marco — fetch interceptor: inietta ruolo + cache-bust nel payload API search */
@@ -446,6 +216,12 @@ $hub_sections = array(
     </button>
 
     <div class="toa-tdb-layout">
+
+        <!-- 2026-05-24 marco — toggle sidebar (mostra/nasconde filtri) -->
+        <button type="button" id="tdbSidebarToggle" class="toa-tdb-sidebar-toggle" aria-label="Mostra/nascondi filtri">
+            <span class="tdb-toggle-icon">&#8249;</span>
+            <span class="tdb-toggle-label">Filtri</span>
+        </button>
 
         <!-- ═════ Sidebar filtri ═════ -->
         <aside class="toa-tdb-sidebar" id="tdbSidebar" aria-label="<?php echo esc_attr($_t($T['filters_open'])); ?>">
@@ -702,6 +478,27 @@ $hub_sections = array(
         <button type="button" class="toa-tdb-btn toa-tdb-btn-ghost" data-tdb-close="1"><?php echo esc_html($_t($T['modal_close'])); ?></button>
     </div>
 </div>
+
+<script>
+/* 2026-05-24 marco — toggle sidebar filtri */
+(function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        var btn = document.getElementById('tdbSidebarToggle');
+        var sidebar = document.getElementById('tdbSidebar');
+        if (!btn || !sidebar) return;
+        var KEY = 'tdb_sidebar_collapsed';
+        if (localStorage.getItem(KEY) === '1') {
+            sidebar.classList.add('collapsed');
+            btn.classList.add('is-collapsed');
+        }
+        btn.addEventListener('click', function() {
+            var isCollapsed = sidebar.classList.toggle('collapsed');
+            btn.classList.toggle('is-collapsed', isCollapsed);
+            localStorage.setItem(KEY, isCollapsed ? '1' : '0');
+        });
+    });
+})();
+</script>
 
 <script src="<?php echo esc_url($theme_uri . '/assets/talent-database.js'); ?>?v=2.0" defer></script>
 
