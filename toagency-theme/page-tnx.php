@@ -396,7 +396,7 @@
         <div>
             <a href="<?php echo esc_url(home_url('/privacy-policy-3/')); ?>">Privacy Policy</a>
             <a href="<?php echo esc_url(home_url('/cookie-policy-ue/')); ?>">Cookie Policy</a>
-            <a href="<?php echo esc_url(home_url('/therms-and-conditions/')); ?>">Termini e Condizioni</a>
+            <a href="<?php echo esc_url(home_url('/terms-and-conditions/')); ?>">Termini e Condizioni</a>
         </div>
     </footer>
 

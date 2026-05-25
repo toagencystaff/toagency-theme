@@ -25,7 +25,7 @@
     ?>
     <a href="<?php echo esc_url($toa_privacy_url); ?>" target="_blank">Privacy Policy</a>
     <a href="https://toagency.it/cookie-policy-ue/" target="_blank">Cookie Policy</a>
-    <a href="<?php echo home_url('/therms-and-conditions/'); ?>"><?php echo esc_html($toa_terms_label); ?></a>
+    <a href="<?php echo home_url('/terms-and-conditions/'); ?>"><?php echo esc_html($toa_terms_label); ?></a>
     <a href="<?php echo esc_url(home_url('/blog/')); ?>">Blog</a>
   </div>
 </footer>

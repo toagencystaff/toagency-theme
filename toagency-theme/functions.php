@@ -675,6 +675,11 @@ add_action('init', function() {
         '/preventivo' => '/form-b2b/',
         '/servizi'    => '/b2bservices/',
         '/talenti'    => '/talent-database/',
+        // === ADDED 2026-05-24 marco — typo terms + crew-database disabled ===
+        '/therms-and-conditions'    => '/terms-and-conditions/',
+        '/en/therms-and-conditions' => '/en/terms-and-conditions/',
+        '/es/therms-and-conditions' => '/es/terms-and-conditions/',
+        '/crew-database'            => '/talent-database/',
     ];
     if (isset($map[$req])) {
         wp_safe_redirect(home_url($map[$req]), 301);
