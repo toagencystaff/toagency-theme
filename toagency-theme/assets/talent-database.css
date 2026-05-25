@@ -1547,3 +1547,23 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
     object-position: center center !important;
   }
 }
+
+/* ── SIDEBAR COLLASSABILE 2026-05-24 marco ── */
+.toa-tdb-sidebar-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    color: #aaa;
+    font-size: 13px;
+    padding: 6px 12px;
+    cursor: pointer;
+    margin-bottom: 12px;
+    transition: color .2s, border-color .2s;
+}
+.toa-tdb-sidebar-toggle:hover { color: #c8ff00; border-color: #c8ff00; }
+.tdb-toggle-icon { font-size: 18px; line-height: 1; transition: transform .25s; }
+.toa-tdb-sidebar.collapsed { width: 0 !important; min-width: 0 !important; padding: 0 !important; overflow: hidden; visibility: hidden; }
+.toa-tdb-sidebar-toggle.is-collapsed .tdb-toggle-icon { transform: rotate(180deg); }
