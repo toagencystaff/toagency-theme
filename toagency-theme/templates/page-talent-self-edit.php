@@ -43,11 +43,9 @@ $T = [
     'field_instagram'  => ['it'=>'Instagram','en'=>'Instagram','fr'=>'Instagram','es'=>'Instagram'],
     'field_tiktok'     => ['it'=>'TikTok','en'=>'TikTok','fr'=>'TikTok','es'=>'TikTok'],
     'field_altezza'    => ['it'=>'Altezza (cm)','en'=>'Height (cm)','fr'=>'Taille (cm)','es'=>'Altura (cm)'],
-    'field_peso'       => ['it'=>'Peso (kg)','en'=>'Weight (kg)','fr'=>'Poids (kg)','es'=>'Peso (kg)'],
     'field_taglia'     => ['it'=>'Taglia abbigliamento','en'=>'Clothing size','fr'=>'Taille','es'=>'Talla'],
     'field_scarpe'     => ['it'=>'Numero scarpe','en'=>'Shoe size','fr'=>'Pointure','es'=>'Calzado'],
     'field_capelli'    => ['it'=>'Colore capelli','en'=>'Hair color','fr'=>'Cheveux','es'=>'Cabello'],
-    'field_lunghezza'  => ['it'=>'Lunghezza capelli','en'=>'Hair length','fr'=>'Longueur cheveux','es'=>'Largo del cabello'],
     'btn_save'         => ['it'=>'Invia modifiche','en'=>'Submit changes','fr'=>'Envoyer','es'=>'Enviar'],
     'btn_saving'       => ['it'=>'Invio…','en'=>'Sending…','fr'=>'Envoi…','es'=>'Enviando…'],
     'success_msg'      => [
@@ -134,13 +132,8 @@ $CAPELLI_OPTS = [
     'rossi'=>['it'=>'Rossi','en'=>'Red','fr'=>'Roux','es'=>'Pelirrojos'],
     'grigi'=>['it'=>'Grigi','en'=>'Gray','fr'=>'Gris','es'=>'Grises'],
     'bianchi'=>['it'=>'Bianchi','en'=>'White','fr'=>'Blancs','es'=>'Blancos'],
-    'calvi'=>['it'=>'Calvi','en'=>'Bald','fr'=>'Chauves','es'=>'Calvos'],
+    'calvo'=>['it'=>'Calvo','en'=>'Bald','fr'=>'Chauve','es'=>'Calvo'],
     'altro'=>['it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro'],
-];
-$LUNGHEZZA_OPTS = [
-    'corto'=>['it'=>'Corti','en'=>'Short','fr'=>'Courts','es'=>'Cortos'],
-    'medio'=>['it'=>'Medi','en'=>'Medium','fr'=>'Moyens','es'=>'Medios'],
-    'lungo'=>['it'=>'Lunghi','en'=>'Long','fr'=>'Longs','es'=>'Largos'],
 ];
 $TAGLIE_OPTS = ['XS','S','M','L','XL','XXL'];
 
@@ -217,6 +210,13 @@ $token_get = $_GET['t']    ?? '';
 .tse-legal-checkbox { display:flex; gap:8px; align-items:flex-start; margin:8px 0; font-size:12px; color:#d1d5db; cursor:pointer; line-height:1.45; }
 .tse-legal-checkbox input[type="checkbox"] { margin-top:2px; flex-shrink:0; transform:scale(1.15); cursor:pointer; }
 
+/* FIX 2026-05-26 marco — highlight campi mancanti + photo alert */
+.tse-input.tse-missing,.tse-select.tse-missing{border-color:#ef4444!important;box-shadow:0 0 0 2px rgba(239,68,68,.2);}
+.tse-missing-hint{font-size:11px;color:#ef4444;margin-top:3px;font-weight:600;}
+.tse-photo-alert{background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.4);border-radius:8px;padding:14px 16px;margin-bottom:20px;display:none;cursor:pointer;text-align:center;}
+.tse-photo-alert-title{color:#ef4444;font-weight:700;font-size:14px;margin-bottom:4px;}
+.tse-photo-alert-sub{color:#9ca3af;font-size:12px;}
+
 @media (max-width:520px) {
     .tse-hero-title { font-size:28px; }
     .tse-container { padding:0 16px; margin-top:20px; }
@@ -238,6 +238,11 @@ $token_get = $_GET['t']    ?? '';
     <div class="tse-container">
         <div id="tse-status" class="tse-status"><?= esc_html($_t($T['loading'])) ?></div>
         <div id="tse-pending" class="tse-pending-notice" style="display:none;"></div>
+
+        <div id="tse-photo-alert" class="tse-photo-alert" onclick="document.getElementById('tse-foto-section').scrollIntoView({behavior:'smooth'})">
+            <div class="tse-photo-alert-title">📸 Nessuna foto nel profilo!</div>
+            <div class="tse-photo-alert-sub">Le foto sono essenziali — clicca qui per aggiungerle ↓</div>
+        </div>
 
         <form id="tse-form" class="tse-form" autocomplete="on">
             <div class="tse-name-display" id="tse-name-display"></div>
@@ -262,15 +267,9 @@ $token_get = $_GET['t']    ?? '';
 
             <div class="tse-section">
                 <div class="tse-section-title">📐 <?= esc_html($_t($T['section_misure'])) ?></div>
-                <div class="tse-row">
-                    <div class="tse-field">
-                        <label class="tse-label"><?= esc_html($_t($T['field_altezza'])) ?></label>
-                        <input type="number" id="f-altezza" class="tse-input" min="80" max="230" placeholder="170">
-                    </div>
-                    <div class="tse-field">
-                        <label class="tse-label"><?= esc_html($_t($T['field_peso'])) ?></label>
-                        <input type="number" id="f-peso" class="tse-input" min="20" max="200" step="0.1" placeholder="60">
-                    </div>
+                <div class="tse-field">
+                    <label class="tse-label"><?= esc_html($_t($T['field_altezza'])) ?></label>
+                    <input type="number" id="f-altezza" class="tse-input" min="80" max="230" placeholder="170">
                 </div>
                 <div class="tse-row">
                     <div class="tse-field">
@@ -291,25 +290,14 @@ $token_get = $_GET['t']    ?? '';
 
             <div class="tse-section">
                 <div class="tse-section-title">💇 <?= esc_html($_t($T['section_aspetto'])) ?></div>
-                <div class="tse-row">
-                    <div class="tse-field">
-                        <label class="tse-label"><?= esc_html($_t($T['field_capelli'])) ?></label>
-                        <select id="f-capelli" class="tse-select">
-                            <option value=""><?= esc_html($_t($T['opt_select'])) ?></option>
-                            <?php foreach ($CAPELLI_OPTS as $code => $labels): ?>
-                                <option value="<?= esc_attr($code) ?>"><?= esc_html($_t($labels)) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="tse-field">
-                        <label class="tse-label"><?= esc_html($_t($T['field_lunghezza'])) ?></label>
-                        <select id="f-lunghezza_capelli" class="tse-select">
-                            <option value=""><?= esc_html($_t($T['opt_select'])) ?></option>
-                            <?php foreach ($LUNGHEZZA_OPTS as $code => $labels): ?>
-                                <option value="<?= esc_attr($code) ?>"><?= esc_html($_t($labels)) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+                <div class="tse-field">
+                    <label class="tse-label"><?= esc_html($_t($T['field_capelli'])) ?></label>
+                    <select id="f-capelli" class="tse-select">
+                        <option value=""><?= esc_html($_t($T['opt_select'])) ?></option>
+                        <?php foreach ($CAPELLI_OPTS as $code => $labels): ?>
+                            <option value="<?= esc_attr($code) ?>"><?= esc_html($_t($labels)) ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
             </div>
 
@@ -323,6 +311,10 @@ $token_get = $_GET['t']    ?? '';
             </div>
 
             <div id="tse-result"></div>
+            <div id="tse-community-block" style="display:none;margin-top:20px;padding:16px;background:#0f0f12;border:1px solid #25D366;border-radius:8px;text-align:center;">
+                <p style="color:#d1d5db;font-size:13px;margin:0 0 12px;">🇮🇹 Sei in Italia? Ricevi i casting della tua città prima degli altri!</p>
+                <a href="https://toagency.it/itacommunities-new.html" target="_blank" rel="noopener" style="display:inline-block;background:#25D366;color:#fff;padding:12px 24px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;">📲 Entra nel gruppo WhatsApp</a>
+            </div>
         </form>
 
         <!-- ─── S8.A — Sezione album foto ─── -->

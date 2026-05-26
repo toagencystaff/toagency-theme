@@ -16,10 +16,11 @@
     var TOKEN = cfg.token || '';
     var STR   = cfg.strings || {};
 
-    var FIELDS = ['telefono','instagram','tiktok','altezza','peso','taglia','scarpe','capelli','lunghezza_capelli'];
+    var FIELDS = ['telefono','instagram','tiktok','altezza','taglia','scarpe','capelli'];
     var ALBUMS = ['polaroid','dettaglio','portfolio','eventi'];
     var currentAlbum = 'polaroid';
     var albumsData = { polaroid:[], dettaglio:[], portfolio:[], eventi:[] };
+    var paeseResidenza = '';
 
     function $(id) { return document.getElementById(id); }
 
@@ -53,6 +54,14 @@
                 var el = $('f-' + f);
                 if (el) el.value = (d.talent[f] !== null && d.talent[f] !== undefined) ? d.talent[f] : '';
             });
+
+            // FIX 2026-05-26 marco — community IT + highlight campi mancanti
+            paeseResidenza = d.talent.paese_residenza || '';
+            if (paeseResidenza === 'IT') {
+                var cb = $('tse-community-block');
+                if (cb) cb.style.display = 'block';
+            }
+            highlightMissingFields(d.talent);
 
             $('tse-status').style.display = 'none';
             $('tse-form').classList.add('visible');
@@ -116,6 +125,9 @@
         .then(function (d) {
             if (!d.ok) return;
             ALBUMS.forEach(function (a) { albumsData[a] = d.albums[a] || []; });
+            // FIX 2026-05-26 marco — photo alert se nessuna polaroid
+            var pa = $('tse-photo-alert');
+            if (pa) pa.style.display = albumsData['polaroid'].length === 0 ? 'block' : 'none';
             $('tse-foto-section').style.display = 'block';
             renderAlbum(currentAlbum);
         })
@@ -274,6 +286,37 @@
 
     function showResult(type, text) {
         $('tse-result').innerHTML = '<div class="tse-result ' + type + '">' + escapeHtml(text) + '</div>';
+    }
+
+    // FIX 2026-05-26 marco — evidenzia campi obbligatori mancanti
+    function highlightMissingFields(talent) {
+        var checks = {
+            'f-altezza':  talent.altezza,
+            'f-taglia':   talent.taglia,
+            'f-scarpe':   talent.scarpe,
+            'f-capelli':  talent.capelli,
+            'f-telefono': talent.telefono
+        };
+        var hasSocial = !!(talent.instagram || talent.tiktok);
+        Object.keys(checks).forEach(function (id) {
+            var el = $(id);
+            if (!el) return;
+            var missing = !checks[id];
+            el.classList.toggle('tse-missing', missing);
+            var hint = el.parentElement.querySelector('.tse-missing-hint');
+            if (missing && !hint) {
+                var h = document.createElement('div');
+                h.className = 'tse-missing-hint';
+                h.textContent = 'Campo mancante — completalo';
+                el.parentElement.appendChild(h);
+            } else if (!missing && hint) {
+                hint.remove();
+            }
+        });
+        ['f-instagram','f-tiktok'].forEach(function (id) {
+            var el = $(id);
+            if (el) el.classList.toggle('tse-missing', !hasSocial);
+        });
     }
 
     function escapeHtml(s) {
