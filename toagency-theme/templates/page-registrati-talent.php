@@ -758,6 +758,18 @@ $theme_uri = get_stylesheet_directory_uri();
                 'es'=>'Escríbenos por WhatsApp para novedades',
             )); ?>
         </a>
+        <!-- FIX 2026-05-26 marco — community link post-registrazione (solo IT) -->
+        <div id="toa-community-block" style="display:none;margin:.6rem 0 .4rem;">
+            <a href="https://toagency.it/itacommunities-new.html" target="_blank" rel="noopener"
+               style="display:block;background:#4f46e5;color:#fff;border-radius:8px;padding:.6rem 1.2rem;font-weight:700;text-decoration:none;text-align:center;font-size:.9rem;">
+                📣 <?php echo _ht_talent(array(
+                    'it'=>'Unisciti alla community della tua città → casting in diretta ogni giorno',
+                    'en'=>'Join your city\'s community → live castings every day',
+                    'fr'=>'Rejoins la communauté de ta ville → castings en direct chaque jour',
+                    'es'=>'Únete a la comunidad de tu ciudad → castings en directo cada día',
+                )); ?>
+            </a>
+        </div>
         <button type="button" class="toa-talent-success-close" id="toaTalentSuccessClose"><?php echo _ht_talent(array('it'=>'Chiudi','en'=>'Close','fr'=>'Fermer','es'=>'Cerrar')); ?></button>
     </div>
 </div>
@@ -765,6 +777,24 @@ $theme_uri = get_stylesheet_directory_uri();
 <script src="<?php echo esc_url($theme_uri . '/assets/talent-form.js'); ?>?v=3.2" defer></script>
 
 <script>
+// FIX 2026-05-26 marco — mostra community block se paese=IT
+document.addEventListener('DOMContentLoaded', function() {
+    var successModal = document.getElementById('toaTalentSuccess');
+    if (!successModal) return;
+    var observer = new MutationObserver(function() {
+        if (successModal.classList.contains('toa-talent-success--visible') ||
+            successModal.style.display !== 'none' && successModal.style.display !== '') {
+            var paeseEl = document.querySelector('[name="paese_residenza"]') ||
+                          document.querySelector('[name="nation"]') ||
+                          document.querySelector('select[name*="paese"]');
+            var paese = paeseEl ? paeseEl.value : 'IT';
+            var block = document.getElementById('toa-community-block');
+            if (block) block.style.display = (paese === 'IT' || paese === '' || !paese) ? 'block' : 'none';
+        }
+    });
+    observer.observe(successModal, { attributes: true, attributeFilter: ['class','style'] });
+});
+
 // 2026-05-19 — limite 2 etnie selezionabili (mirror server-side $ETNIA_ALLOWED hard limit)
 document.addEventListener('DOMContentLoaded', function() {
     var boxes = document.querySelectorAll('#toaTalentEtnieList input[name="etnia[]"]');
