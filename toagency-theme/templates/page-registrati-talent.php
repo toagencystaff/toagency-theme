@@ -770,6 +770,16 @@ $theme_uri = get_stylesheet_directory_uri();
                 'es'=>'Nuestro equipo revisará el perfil y te contactará para oportunidades.',
             )); ?>
         </div>
+        <!-- FIX 2026-05-26 marco — WhatsApp post-registrazione multilingua -->
+        <a href="https://wa.me/393518468516" target="_blank" rel="noopener"
+           style="display:block;margin:.8rem 0 .4rem;background:#25d366;color:#fff;border-radius:8px;padding:.6rem 1.2rem;font-weight:700;text-decoration:none;text-align:center;font-size:.95rem;">
+            💬 <?php echo _ht_talent(array(
+                'it'=>'Scrivici su WhatsApp per aggiornamenti',
+                'en'=>'Message us on WhatsApp for updates',
+                'fr'=>'Écris-nous sur WhatsApp pour les mises à jour',
+                'es'=>'Escríbenos por WhatsApp para novedades',
+            )); ?>
+        </a>
         <button type="button" class="toa-talent-success-close" id="toaTalentSuccessClose"><?php echo _ht_talent(array('it'=>'Chiudi','en'=>'Close','fr'=>'Fermer','es'=>'Cerrar')); ?></button>
     </div>
 </div>
