@@ -88,13 +88,8 @@ $TALENT_CAPELLI = array(
     array('code'=>'rossi',   'label'=>array('it'=>'Rossi','en'=>'Red','fr'=>'Roux','es'=>'Pelirrojos')),
     array('code'=>'grigi',   'label'=>array('it'=>'Grigi','en'=>'Gray','fr'=>'Gris','es'=>'Grises')),
     array('code'=>'bianchi', 'label'=>array('it'=>'Bianchi','en'=>'White','fr'=>'Blancs','es'=>'Blancos')),
-    array('code'=>'calvi',   'label'=>array('it'=>'Calvi','en'=>'Bald','fr'=>'Chauves','es'=>'Calvos')),
+    array('code'=>'calvo',   'label'=>array('it'=>'Calvo','en'=>'Bald','fr'=>'Chauve','es'=>'Calvo')),
     array('code'=>'altro',   'label'=>array('it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro')),
-);
-$TALENT_LUNGHEZZA = array(
-    array('code'=>'corto', 'label'=>array('it'=>'Corti','en'=>'Short','fr'=>'Courts','es'=>'Cortos')),
-    array('code'=>'medio', 'label'=>array('it'=>'Medi','en'=>'Medium','fr'=>'Moyens','es'=>'Medios')),
-    array('code'=>'lungo', 'label'=>array('it'=>'Lunghi','en'=>'Long','fr'=>'Longs','es'=>'Largos')),
 );
 $TALENT_ETNIA = array(
     array('code'=>'caucasica', 'label'=>array('it'=>'Caucasica','en'=>'Caucasian','fr'=>'Caucasienne','es'=>'Caucásica')),
@@ -467,10 +462,6 @@ $theme_uri = get_stylesheet_directory_uri();
                         <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Altezza (cm)','en'=>'Height (cm)','fr'=>'Taille (cm)','es'=>'Altura (cm)')); ?> <span class="req">*</span></label>
                         <input type="number" name="altezza" class="toa-talent-input" min="80" max="230" placeholder="170" required>
                     </div>
-                    <div class="toa-talent-field">
-                        <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Peso (kg)','en'=>'Weight (kg)','fr'=>'Poids (kg)','es'=>'Peso (kg)')); ?> <span class="req">*</span></label>
-                        <input type="number" name="peso" class="toa-talent-input" min="20" max="200" step="0.1" placeholder="60" required>
-                    </div>
                 </div>
 
                 <div class="toa-talent-field-row">
@@ -526,19 +517,6 @@ $theme_uri = get_stylesheet_directory_uri();
                 </div>
 
                 <div class="toa-talent-field-row">
-                    <div class="toa-talent-field">
-                        <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Lunghezza capelli','en'=>'Hair length','fr'=>'Longueur cheveux','es'=>'Largo del cabello')); ?> <span class="req">*</span></label>
-                        <div class="toa-talent-customselect">
-                            <input type="hidden" name="lunghezza_capelli" value="">
-                            <div class="toa-talent-customselect-trigger"><span class="toa-talent-customselect-label">—</span></div>
-                            <div class="toa-talent-customselect-options">
-                                <?php foreach ($TALENT_LUNGHEZZA as $l): ?>
-                                    <div class="toa-talent-customselect-option" data-value="<?php echo esc_attr($l['code']); ?>"><?php echo _ht_talent($l['label']); ?></div>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-                        <div class="toa-talent-error-msg"></div>
-                    </div>
                     <div class="toa-talent-field" id="toaTalentEtniaField">
                         <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Etnia (selezione multipla)','en'=>'Ethnicity (multi-select)','fr'=>'Origine (sélection multiple)','es'=>'Etnia (selección múltiple)')); ?> <span class="req">*</span></label>
                         <div class="toa-talent-categories" id="toaTalentEtnieList">
