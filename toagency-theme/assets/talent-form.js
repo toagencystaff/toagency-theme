@@ -809,12 +809,12 @@
             }
 
             // Caratteristiche fisiche obbligatorie
-            ['altezza','peso','scarpe'].forEach(function(name) {
+            ['altezza','scarpe'].forEach(function(name) {
                 var f = scope.querySelector('[name="'+name+'"]');
                 if (f && !f.value.trim()) { showFieldError(f, 'Campo obbligatorio'); ok = false; }
             });
             // Custom select obbligatori
-            ['taglia','occhi','capelli','lunghezza_capelli'].forEach(function(name) {
+            ['taglia','occhi','capelli'].forEach(function(name) {
                 var f = scope.querySelector('[name="'+name+'"]');
                 if (f && !f.value) {
                     var cs = f.closest('.toa-talent-customselect');

@@ -460,7 +460,7 @@ $theme_uri = get_stylesheet_directory_uri();
                 <div class="toa-talent-field-row">
                     <div class="toa-talent-field">
                         <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Altezza (cm)','en'=>'Height (cm)','fr'=>'Taille (cm)','es'=>'Altura (cm)')); ?> <span class="req">*</span></label>
-                        <input type="number" name="altezza" class="toa-talent-input" min="80" max="230" placeholder="170" required>
+                        <input type="number" name="altezza" class="toa-talent-input" min="100" max="220" placeholder="170" required>
                     </div>
                 </div>
 
@@ -482,7 +482,7 @@ $theme_uri = get_stylesheet_directory_uri();
                     </div>
                     <div class="toa-talent-field">
                         <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Numero di scarpe','en'=>'Shoe size','fr'=>'Pointure','es'=>'Calzado')); ?> <span class="req">*</span></label>
-                        <input type="number" name="scarpe" class="toa-talent-input" min="20" max="55" placeholder="40" required>
+                        <input type="number" name="scarpe" class="toa-talent-input" min="30" max="50" placeholder="40" required>
                         <div class="toa-talent-error-msg"></div>
                     </div>
                 </div>
