@@ -121,12 +121,14 @@
 
     // ─── 3. Categorie chip ───────────────────────────────────
     document.querySelectorAll('.toa-talent-category-chip').forEach(function(chip) {
-        chip.addEventListener('click', function() {
-            if (false) return; // no age restrictions on roles
-            setTimeout(function() {
-                var cb = chip.querySelector('input');
-                chip.classList.toggle('checked', cb.checked);
-            }, 0);
+        chip.addEventListener('click', function(e) {
+            e.preventDefault(); // FIX 2026-05-29 marco — previeni double-toggle su mobile (label+input)
+            var cb = chip.querySelector('input');
+            cb.checked = !cb.checked;
+            chip.classList.toggle('checked', cb.checked);
+            // Toggle sincrono → rilancia 'change' (setattr JS non lo emette):
+            // mantiene updateMisureVisibility + limite max-2 etnie funzionanti.
+            cb.dispatchEvent(new Event('change', { bubbles: true }));
         });
     });
 
@@ -995,12 +997,15 @@
                 talentUuidAfterRegister = res.uuid;
                 talentTokenAfterRegister = res.token_profilo;
                 var isMinore = (res.is_minore === true);
-                // Avvia upload sequenziale dei file caricati
-                uploadAllFiles(res.talent_id, res.token_profilo)
+                // Avvia upload sequenziale dei file caricati.
+                // NB: return → la .finally() attende il completamento upload
+                // prima di riabilitare il bottone (evita doppio invio durante upload).
+                return uploadAllFiles(res.talent_id, res.token_profilo)
                     .then(function() { showSuccess(); })
                     .catch(function(err) {
                         console.error('[upload] error:', err);
-                        // Profilo creato ma upload fallito → mostra success con avviso
+                        // Profilo creato ma upload fallito → avvisa l'utente
+                        alert('Profilo creato correttamente, ma il caricamento dei file non è andato a buon fine. Potrai aggiungerli più tardi dalla tua area personale.');
                         showSuccess();
                     });
             } else {

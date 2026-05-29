@@ -596,11 +596,15 @@ $theme_uri = get_stylesheet_directory_uri();
             <div class="toa-talent-upload-section">
                 <h5>👤 <?php echo _ht_talent(array('it'=>'Foto profilo','en'=>'Profile photo','fr'=>'Photo de profil','es'=>'Foto de perfil')); ?> <span class="req">*</span></h5>
                 <p class="toa-talent-step-help"><?php echo _ht_talent(array(
-                    'it'=>'Una foto chiara del viso, frontale, luce naturale. Sarà la tua immagine principale.',
-                    'en'=>'A clear frontal photo of the face. Will be your main image.',
-                    'fr'=>'Photo claire de face. Image principale.',
-                    'es'=>'Foto clara frontal. Imagen principal.',
+                    'it'=>'Una foto chiara del viso, frontale, su sfondo neutro e luce naturale, come nell\'esempio qui sotto. Sarà la tua immagine principale.',
+                    'en'=>'A clear, frontal photo of the face on a neutral background in natural light, like the example below. It will be your main image.',
+                    'fr'=>'Une photo claire du visage, de face, sur fond neutre et en lumière naturelle, comme dans l\'exemple ci-dessous. Ce sera votre image principale.',
+                    'es'=>'Una foto clara del rostro, frontal, con fondo neutro y luz natural, como en el ejemplo de abajo. Será tu imagen principal.',
                 )); ?></p>
+                <figure class="toa-talent-photo-example" style="margin:10px 0;text-align:center;">
+                    <img src="<?php echo esc_url($theme_uri . '/assets/foto-esempio-profilo.jpg'); ?>" alt="<?php echo esc_attr(_ht_talent_raw(array('it'=>'Esempio di foto profilo ideale','en'=>'Example of an ideal profile photo','fr'=>'Exemple de photo de profil idéale','es'=>'Ejemplo de foto de perfil ideal'))); ?>" width="150" loading="lazy" style="border-radius:8px;max-width:150px;height:auto;">
+                    <figcaption style="font-size:0.78rem;color:#9ca3af;margin-top:4px;"><?php echo _ht_talent(array('it'=>'Esempio di foto ideale','en'=>'Example of an ideal photo','fr'=>'Exemple de photo idéale','es'=>'Ejemplo de foto ideal')); ?></figcaption>
+                </figure>
                 <div class="toa-talent-dropzone toa-talent-dropzone-small" id="toaTalentProfileDrop">
                     <div class="toa-talent-dropzone-icon">👤</div>
                     <div class="toa-talent-dropzone-text"><strong><?php echo _ht_talent(array('it'=>'Clicca','en'=>'Click','fr'=>'Clique','es'=>'Clic')); ?></strong> <?php echo _ht_talent(array('it'=>'per caricare','en'=>'to upload','fr'=>'pour charger','es'=>'para subir')); ?></div>
@@ -774,7 +778,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form.js'); ?>?v=3.2" defer></script>
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form.js'); ?>?v=3.3" defer></script>
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
