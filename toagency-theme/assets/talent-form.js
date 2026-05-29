@@ -180,7 +180,7 @@
     var sessoToggleParent = sessoGroup ? sessoGroup.closest('.toa-talent-toggle-group') : null;
     function updateMisureVisibility() {
         if (!misureBox) return;
-        var modelChecked = form.querySelector('input[value="model_f"]:checked') || form.querySelector('input[value="model_m"]:checked');
+        var modelChecked = form.querySelector('input[name="ruoli_immagine[]"][value="model"]:checked');
         misureBox.style.display = modelChecked ? '' : 'none';
         if (!modelChecked) {
             misureBox.querySelectorAll('input').forEach(function(i){ i.value = ''; });
