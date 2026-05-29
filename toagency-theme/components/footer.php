@@ -42,5 +42,6 @@
 <?php endif; ?>
 
 <?php wp_footer(); ?>
+<?php toa_component('whatsapp-button'); ?>
 </body>
 </html>
