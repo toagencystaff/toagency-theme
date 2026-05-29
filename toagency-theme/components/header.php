@@ -64,8 +64,8 @@ a{color:inherit}
 <!-- Navigation -->
 <nav class="nav" id="mainNav">
     <a href="<?php echo home_url('/'); ?>" class="nav-logo">
-        <img src="/wp-content/uploads/2025/09/LogoToanew.png" alt="TOAgency — Agenzia casting B2B per eventi in Italia ed Europa" class="logo-white">
-        <img src="/wp-content/uploads/2025/09/LogoToanewBlack.png" alt="TOAgency — Agenzia casting B2B per eventi in Italia ed Europa" class="logo-black">
+        <img src="/wp-content/uploads/2025/09/LogoToanew.png" alt="TOAgency — Agenzia casting per eventi, moda e pubblicità in Italia ed Europa" class="logo-white">
+        <img src="/wp-content/uploads/2025/09/LogoToanewBlack.png" alt="TOAgency — Agenzia casting per eventi, moda e pubblicità in Italia ed Europa" class="logo-black">
     </a>
     <div class="nav-links">
         <?php foreach ($menu_items as $item) : ?>
