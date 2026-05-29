@@ -65,6 +65,9 @@ function _ht($strings) {
   </div>
 </section>
 
+<!-- ═══════════ TIMELINE (compact) ═══════════ -->
+<?php toa_component('timeline', array('compact' => true)); ?>
+
 <!-- ═══════════ WHY SECTION ═══════════ -->
 <section class="why-section">
   <div class="container">

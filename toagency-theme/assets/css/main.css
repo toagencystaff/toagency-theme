@@ -1160,3 +1160,35 @@ img { max-width: 100%; height: auto; display: block; }
   .ticker-row span:not(:last-child)::after { right: -24px; }
 }
 /* === END FIX 2026-05-24 marco — BRAND TICKER RESTYLE === */
+
+/* === BEGIN FIX 2026-05-29 marco — TIMELINE SCROLL-REVEAL + CTA === */
+.timeline-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+}
+.timeline-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Stagger progressivo (fino a 5 milestone) */
+.timeline-reveal:nth-child(1) { transition-delay: 0s; }
+.timeline-reveal:nth-child(2) { transition-delay: 0.12s; }
+.timeline-reveal:nth-child(3) { transition-delay: 0.24s; }
+.timeline-reveal:nth-child(4) { transition-delay: 0.36s; }
+.timeline-reveal:nth-child(5) { transition-delay: 0.48s; }
+.timeline-cta {
+  display: inline-block;
+  margin-top: 28px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  transition: opacity 0.3s;
+}
+.timeline-cta:hover { opacity: 0.7; }
+@media (prefers-reduced-motion: reduce) {
+  .timeline-reveal { opacity: 1; transform: none; transition: none; }
+}
+/* === END FIX 2026-05-29 marco — TIMELINE SCROLL-REVEAL === */

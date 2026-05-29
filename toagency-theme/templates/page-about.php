@@ -71,20 +71,8 @@ toa_component('header');
     </div>
 </section>
 
-<!-- Storia -->
-<section class="why-section">
-    <div class="container">
-        <div class="section-eyebrow"><?php echo $_t($t['storia_eyebrow']); ?></div>
-        <h2 class="section-heading"><?php echo $_t($t['storia_heading']); ?></h2>
-        <div class="timeline">
-            <div class="timeline-item"><div class="timeline-year">2009</div><p><?php echo $_t($t['timeline_2009']); ?></p></div>
-            <div class="timeline-item"><div class="timeline-year">2015</div><p><?php echo $_t($t['timeline_2015']); ?></p></div>
-            <div class="timeline-item"><div class="timeline-year">2021</div><p><?php echo $_t($t['timeline_2021']); ?></p></div>
-            <div class="timeline-item"><div class="timeline-year">2023</div><p><?php echo $_t($t['timeline_2023']); ?></p></div>
-            <div class="timeline-item"><div class="timeline-year">2024</div><p><?php echo $_t($t['timeline_2024']); ?></p></div>
-        </div>
-    </div>
-</section>
+<!-- Storia (component riusabile, versione intera) -->
+<?php toa_component('timeline'); ?>
 
 <!-- Valori -->
 <section class="services-section">
