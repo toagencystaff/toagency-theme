@@ -138,18 +138,8 @@ function _ht($strings) {
   </div>
 </section>
 
-<!-- ═══════════ CTA ═══════════ -->
-<section class="cta-section">
-  <div class="container" style="text-align:center">
-    <div class="section-eyebrow"><?php echo _ht(array('it'=>'Inizia ora','en'=>'Start now','fr'=>'Commencez maintenant','es'=>'Empieza ahora')); ?></div>
-    <h2 class="section-heading"><?php echo _ht(array('it'=>'Raccontaci il tuo progetto','en'=>'Tell us about your project','fr'=>'Parlez-nous de votre projet','es'=>'Cuéntanos tu proyecto')); ?></h2>
-    <p class="section-subtitle" style="max-width:600px;margin:0 auto 32px;opacity:.7"><?php echo _ht(array('it'=>'Compila il form e in 30 minuti ricevi le prime proposte con preventivo gratuito.','en'=>'Fill in the form and in 30 minutes you\'ll receive the first proposals with a free quote.','fr'=>'Remplissez le formulaire et en 30 minutes vous recevez les premières propositions avec un devis gratuit.','es'=>'Rellena el formulario y en 30 minutos recibes las primeras propuestas con presupuesto gratuito.')); ?></p>
-    <div class="cta-buttons-row" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
-      <a href="<?php echo home_url('/form-b2b/'); ?>" class="btn-hero btn-hero-primary"><span><?php echo _ht(array('it'=>'Richiedi preventivo gratuito','en'=>'Request a free quote','fr'=>'Demander un devis gratuit','es'=>'Solicitar presupuesto gratuito')); ?></span></a>
-      <div class="btn-hero btn-hero-secondary" onclick="window.location.href='<?php echo home_url('/b-t-l/'); ?>'" style="cursor:pointer" role="link" tabindex="0"><span><?php echo _ht(array('it'=>'Sei un talent? Registrati','en'=>'Are you a talent? Sign up','fr'=>'Vous êtes un talent ? Inscrivez-vous','es'=>'¿Eres un talento? Regístrate')); ?></span></div>
-    </div>
-  </div>
-</section>
+<!-- ═══════════ FORM PREVENTIVO INLINE (sostituisce la vecchia CTA) ═══════════ -->
+<?php toa_component('form-b2b-inline'); ?>
 
 <!-- ═══════════ COVERAGE ═══════════ -->
 <section class="coverage-section">
