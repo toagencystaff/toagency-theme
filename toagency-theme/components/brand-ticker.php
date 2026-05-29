@@ -17,6 +17,5 @@ $__tr = function($a) use ($__lang) {
     'es'=>'Eligieron TOAgency'
   ])); ?></div>
   <div class="ticker-row" id="tickerRow1"></div>
-  <div style="height:10px"></div>
   <div class="ticker-row reverse" id="tickerRow2"></div>
 </section>
