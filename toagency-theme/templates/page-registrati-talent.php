@@ -89,7 +89,6 @@ $TALENT_CAPELLI = array(
     array('code'=>'grigi',   'label'=>array('it'=>'Grigi','en'=>'Gray','fr'=>'Gris','es'=>'Grises')),
     array('code'=>'bianchi', 'label'=>array('it'=>'Bianchi','en'=>'White','fr'=>'Blancs','es'=>'Blancos')),
     array('code'=>'calvo',   'label'=>array('it'=>'Calvo','en'=>'Bald','fr'=>'Chauve','es'=>'Calvo')),
-    array('code'=>'altro',   'label'=>array('it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro')),
 );
 $TALENT_ETNIA = array(
     array('code'=>'caucasica', 'label'=>array('it'=>'Caucasica','en'=>'Caucasian','fr'=>'Caucasienne','es'=>'Caucásica')),
