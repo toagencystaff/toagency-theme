@@ -803,3 +803,6 @@ function _t_raw($strings) {
     return isset($strings[$lang]) ? $strings[$lang] : (isset($strings['it']) ? $strings['it'] : '');
 }
 // === END FIX 2026-05-23 marco — _t_raw helper ===
+
+// === FIX 2026-05-30 marco — schema markup #33 ===
+require_once get_template_directory() . '/inc/schema.php';
