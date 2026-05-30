@@ -802,6 +802,9 @@
         }
 
         if (n === 3) {
+            // Fix iOS 2026-05-30: forza input.checked dallo stato visuale (.checked) prima di validare —
+            // su iOS Safari la proprietà input.checked può desincronizzarsi dalla classe che l'utente vede.
+            scope.querySelectorAll('.toa-talent-category-chip').forEach(function(c){ var i = c.querySelector('input'); if (i) i.checked = c.classList.contains('checked'); });
             // Almeno un ruolo immagine selezionato
             var checked = scope.querySelectorAll('input[name="ruoli_immagine[]"]:checked');
             if (!checked.length) {
