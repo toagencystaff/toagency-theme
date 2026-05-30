@@ -102,22 +102,22 @@ $t = array(
 toa_component('header');
 
 $images = array(
-    array('src' => '/wp-content/uploads/2025/09/22-yo.jpeg', 'alt' => 'Attrice giovane'),
-    array('src' => '/wp-content/uploads/2025/09/70-yo-asian.jpg', 'alt' => 'Attore senior asiatico'),
-    array('src' => '/wp-content/uploads/2025/09/30-yo-punk.jpeg', 'alt' => 'Attore punk'),
-    array('src' => '/wp-content/uploads/2025/09/9-yo-asian.jpeg', 'alt' => 'Bambino asiatico'),
-    array('src' => '/wp-content/uploads/2025/09/35-yo-african.jpeg', 'alt' => 'Attore africano'),
-    array('src' => '/wp-content/uploads/2025/09/24-yo.jpeg', 'alt' => 'Attore giovane'),
-    array('src' => '/wp-content/uploads/2025/09/40-yo-mediterranean.jpeg', 'alt' => 'Attore mediterraneo'),
-    array('src' => '/wp-content/uploads/2025/09/8-yo.jpeg', 'alt' => 'Attore bambino'),
-    array('src' => '/wp-content/uploads/2025/09/30-yo-girl.jpeg', 'alt' => 'Attrice'),
-    array('src' => '/wp-content/uploads/2025/09/58-yo.jpeg', 'alt' => 'Attore senior'),
-    array('src' => '/wp-content/uploads/2025/09/24-yosize.jpg', 'alt' => 'Attore plus size'),
-    array('src' => '/wp-content/uploads/2025/09/45-yo.jpeg', 'alt' => 'Attore character'),
-    array('src' => '/wp-content/uploads/2025/09/20-yo-ispanic.jpeg', 'alt' => 'Attore ispanico'),
-    array('src' => '/wp-content/uploads/2025/09/32-yo.jpeg', 'alt' => 'Attrice'),
-    array('src' => '/wp-content/uploads/2025/09/24-yo-trap.jpeg', 'alt' => 'Attore urban'),
-    array('src' => '/wp-content/uploads/2025/09/37-yo.jpeg', 'alt' => 'Attore maturo'),
+    array('src' => '/wp-content/uploads/2025/09/22-yo.jpeg', 'alt' => 'Attrice giovane 22 anni per film e spot pubblicitari — casting TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/70-yo-asian.jpg', 'alt' => 'Attore senior asiatico 70 anni per cinema e serie TV — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/30-yo-punk.jpeg', 'alt' => 'Attore look punk 30 anni per spot e videoclip — casting TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/9-yo-asian.jpeg', 'alt' => 'Bambino attore asiatico 9 anni per film e pubblicità — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/35-yo-african.jpeg', 'alt' => 'Attore africano 35 anni per cinema e commercial — casting TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/24-yo.jpeg', 'alt' => 'Attore giovane 24 anni per serie TV e spot — casting TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/40-yo-mediterranean.jpeg', 'alt' => 'Attore mediterraneo 40 anni per film e fiction — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/8-yo.jpeg', 'alt' => 'Bambino attore 8 anni per pubblicità e cinema — casting TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/30-yo-girl.jpeg', 'alt' => 'Attrice 30 anni per spot pubblicitari e serie TV — casting TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/58-yo.jpeg', 'alt' => 'Attore senior 58 anni per cinema e fiction — casting TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/24-yosize.jpg', 'alt' => 'Attore plus size 24 anni per campagne e spot — casting TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/45-yo.jpeg', 'alt' => 'Attore caratterista 45 anni per film e serie TV — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/20-yo-ispanic.jpeg', 'alt' => 'Attore ispanico 20 anni per spot e videoclip — casting TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/32-yo.jpeg', 'alt' => 'Attrice 32 anni per cinema e pubblicità — casting TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/24-yo-trap.jpeg', 'alt' => 'Attore urban 24 anni per videoclip e spot — casting TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/37-yo.jpeg', 'alt' => 'Attore maturo 37 anni per fiction e commercial — casting TOAgency'),
 );
 ?>
 

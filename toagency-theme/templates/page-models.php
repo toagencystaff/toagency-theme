@@ -115,20 +115,20 @@ $t = array(
 toa_component('header');
 
 $images = array(
-    array('src' => '/wp-content/uploads/2025/09/female-white-7-yo.jpg', 'alt' => 'Bambina modella'),
-    array('src' => '/wp-content/uploads/2025/09/male-caucasian-35-yo.jpg', 'alt' => 'Modello uomo'),
-    array('src' => '/wp-content/uploads/2025/09/female-italian-22-yo.jpg', 'alt' => 'Modella italiana'),
-    array('src' => '/wp-content/uploads/2025/09/male-black-24-yo.jpg', 'alt' => 'Modello uomo'),
-    array('src' => '/wp-content/uploads/2025/09/female-redhair-24.jpg', 'alt' => 'Modella rossa'),
-    array('src' => '/wp-content/uploads/2025/09/female-white-70-yo.jpg', 'alt' => 'Modella senior'),
-    array('src' => '/wp-content/uploads/2025/09/male-white-23-yo.jpg', 'alt' => 'Modello uomo'),
-    array('src' => '/wp-content/uploads/2025/09/male-asian-6-yo.jpg', 'alt' => 'Bambino modello'),
-    array('src' => '/wp-content/uploads/2025/09/female-magrebina-25-yo.jpg', 'alt' => 'Modella magrebina'),
-    array('src' => '/wp-content/uploads/2025/09/female-mulatta-22-yo.jpg', 'alt' => 'Modella donna'),
-    array('src' => '/wp-content/uploads/2025/09/male-brasiliano-24-yo.jpg', 'alt' => 'Modello brasiliano'),
-    array('src' => '/wp-content/uploads/2025/09/male-white-55-yo.jpg', 'alt' => 'Modello maturo'),
-    array('src' => '/wp-content/uploads/2025/09/female-caucasian-38-yo.jpg', 'alt' => 'Modella donna'),
-    array('src' => '/wp-content/uploads/2025/09/female-afro-6-yo.jpg', 'alt' => 'Bambina modella'),
+    array('src' => '/wp-content/uploads/2025/09/female-white-7-yo.jpg', 'alt' => 'Bambina modella caucasica 7 anni — casting baby model TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/male-caucasian-35-yo.jpg', 'alt' => 'Modello uomo caucasico 35 anni per shooting e campagne — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/female-italian-22-yo.jpg', 'alt' => 'Modella italiana 22 anni per fashion ed e-commerce — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/male-black-24-yo.jpg', 'alt' => 'Modello uomo black 24 anni per campagne pubblicitarie — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/female-redhair-24.jpg', 'alt' => 'Modella capelli rossi 24 anni per beauty e moda — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/female-white-70-yo.jpg', 'alt' => 'Modella senior caucasica 70 anni per campagne lifestyle — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/male-white-23-yo.jpg', 'alt' => 'Modello uomo caucasico 23 anni per fashion e advertising — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/male-asian-6-yo.jpg', 'alt' => 'Bambino modello asiatico 6 anni — casting baby model TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/female-magrebina-25-yo.jpg', 'alt' => 'Modella nordafricana 25 anni per moda e campagne — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/female-mulatta-22-yo.jpg', 'alt' => 'Modella mixed-race 22 anni per e-commerce e shooting — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/male-brasiliano-24-yo.jpg', 'alt' => 'Modello brasiliano 24 anni per campagne e sfilate — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/male-white-55-yo.jpg', 'alt' => 'Modello uomo maturo 55 anni per campagne corporate — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/female-caucasian-38-yo.jpg', 'alt' => 'Modella caucasica 38 anni per advertising e cataloghi — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/female-afro-6-yo.jpg', 'alt' => 'Bambina modella afro 6 anni — casting baby model TOAgency'),
 );
 ?>
 

@@ -117,22 +117,22 @@ $t = array(
 toa_component('header');
 
 $images = array(
-    array('src' => '/wp-content/uploads/2025/09/hostess-38-yo-caucasian.jpg', 'alt' => 'Hostess professionale'),
-    array('src' => '/wp-content/uploads/2025/09/steward-35-yo-caucasian.jpg', 'alt' => 'Steward evento'),
-    array('src' => '/wp-content/uploads/2025/09/sport-hostess-23-yo-latina.jpg', 'alt' => 'Hostess sport'),
-    array('src' => '/wp-content/uploads/2025/09/hostess-29-yo-african.jpg', 'alt' => 'Hostess congresso'),
-    array('src' => '/wp-content/uploads/2025/09/steward-26-yo-east-asian-1.jpg', 'alt' => 'Steward asiatico'),
-    array('src' => '/wp-content/uploads/2025/09/hostess-32-yo-caucasian.jpg', 'alt' => 'Hostess fiera'),
-    array('src' => '/wp-content/uploads/2025/09/steward-50-yo-african.jpg', 'alt' => 'Steward senior'),
-    array('src' => '/wp-content/uploads/2025/09/sport-hostess-25-yo-caucasian.jpg', 'alt' => 'Hostess sportiva'),
-    array('src' => '/wp-content/uploads/2025/09/steward-31-yo-ispanic.jpg', 'alt' => 'Steward ispanico'),
-    array('src' => '/wp-content/uploads/2025/09/hostess-26-yo-caucasian.jpg', 'alt' => 'Hostess evento'),
-    array('src' => '/wp-content/uploads/2025/09/steward-40-yo-caucasian.jpg', 'alt' => 'Steward maturo'),
-    array('src' => '/wp-content/uploads/2025/09/sport-hostess-26-yo-african-2.jpg', 'alt' => 'Hostess africana'),
-    array('src' => '/wp-content/uploads/2025/09/hostess-29-yo-east-asian.jpg', 'alt' => 'Hostess asiatica'),
-    array('src' => '/wp-content/uploads/2025/09/steward-39-north-european.jpg', 'alt' => 'Steward nordico'),
-    array('src' => '/wp-content/uploads/2025/09/hostess-31.5-yo-caucasian.jpg', 'alt' => 'Hostess professionale'),
-    array('src' => '/wp-content/uploads/2025/09/steward-28-yo-african.jpg', 'alt' => 'Steward africano'),
+    array('src' => '/wp-content/uploads/2025/09/hostess-38-yo-caucasian.jpg', 'alt' => 'Hostess professionale 38 anni per fiere ed eventi aziendali — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/steward-35-yo-caucasian.jpg', 'alt' => 'Steward 35 anni per eventi e congressi aziendali — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/sport-hostess-23-yo-latina.jpg', 'alt' => 'Hostess sportiva 23 anni per eventi sport e promozioni — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/hostess-29-yo-african.jpg', 'alt' => 'Hostess 29 anni per congressi e fiere internazionali — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/steward-26-yo-east-asian-1.jpg', 'alt' => 'Steward asiatico 26 anni per eventi e accoglienza — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/hostess-32-yo-caucasian.jpg', 'alt' => 'Hostess 32 anni per fiere e attivazioni di brand — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/steward-50-yo-african.jpg', 'alt' => 'Steward senior 50 anni per eventi e congressi — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/sport-hostess-25-yo-caucasian.jpg', 'alt' => 'Hostess sportiva 25 anni per eventi sport e promozioni — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/steward-31-yo-ispanic.jpg', 'alt' => 'Steward ispanico 31 anni per eventi e accoglienza — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/hostess-26-yo-caucasian.jpg', 'alt' => 'Hostess 26 anni per eventi aziendali e fiere — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/steward-40-yo-caucasian.jpg', 'alt' => 'Steward 40 anni per congressi ed eventi corporate — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/sport-hostess-26-yo-african-2.jpg', 'alt' => 'Hostess sportiva africana 26 anni per eventi sport — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/hostess-29-yo-east-asian.jpg', 'alt' => 'Hostess asiatica 29 anni per fiere ed eventi — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/steward-39-north-european.jpg', 'alt' => 'Steward nord-europeo 39 anni per eventi e congressi — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/hostess-31.5-yo-caucasian.jpg', 'alt' => 'Hostess professionale 31 anni per fiere ed eventi aziendali — TOAgency'),
+    array('src' => '/wp-content/uploads/2025/09/steward-28-yo-african.jpg', 'alt' => 'Steward africano 28 anni per eventi e accoglienza — TOAgency'),
 );
 ?>
 
