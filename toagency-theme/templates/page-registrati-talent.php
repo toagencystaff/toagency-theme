@@ -600,10 +600,31 @@ $theme_uri = get_stylesheet_directory_uri();
                     'fr'=>'Une photo claire du visage, de face, sur fond neutre et en lumière naturelle, comme dans l\'exemple ci-dessous. Ce sera votre image principale.',
                     'es'=>'Una foto clara del rostro, frontal, con fondo neutro y luz natural, como en el ejemplo de abajo. Será tu imagen principal.',
                 )); ?></p>
-                <figure class="toa-talent-photo-example" style="margin:10px 0;text-align:center;">
-                    <img src="<?php echo esc_url($theme_uri . '/assets/foto-esempio-profilo.jpg'); ?>" alt="<?php echo esc_attr(_ht_talent_raw(array('it'=>'Esempio di foto profilo ideale','en'=>'Example of an ideal profile photo','fr'=>'Exemple de photo de profil idéale','es'=>'Ejemplo de foto de perfil ideal'))); ?>" width="150" loading="lazy" style="border-radius:8px;max-width:150px;height:auto;">
-                    <figcaption style="font-size:0.78rem;color:#9ca3af;margin-top:4px;"><?php echo _ht_talent(array('it'=>'Esempio di foto ideale','en'=>'Example of an ideal photo','fr'=>'Exemple de photo idéale','es'=>'Ejemplo de foto ideal')); ?></figcaption>
-                </figure>
+                <!-- FOTO GUIDA: slideshow ✅/❌ — 2s auto-rotate -->
+                <div class="toa-foto-gallery" id="toaFotoGallery">
+                  <div class="toa-fg-slide active"><img src="<?= $theme_uri ?>/assets/foto-esempio-profilo.jpg" alt="ok"><span class="toa-fg-badge ok">✅ Così sì</span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-2.jpg" alt="ok 2"><span class="toa-fg-badge ok">✅ Così sì</span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-sfondo.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-occhiali.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-angolo.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-trucco.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-cappello.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-selfie-alto.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-lontana.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-spiaggia.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
+                </div>
+                <style>
+                .toa-foto-gallery{position:relative;width:160px;height:220px;margin:10px auto 16px;border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+                .toa-fg-slide{display:none;position:relative;width:100%;height:100%}
+                .toa-fg-slide.active{display:block}
+                .toa-fg-slide img{width:100%;height:100%;object-fit:cover;display:block}
+                .toa-fg-badge{position:absolute;bottom:0;left:0;right:0;text-align:center;padding:5px 0;font-size:13px;font-weight:700;letter-spacing:.3px}
+                .toa-fg-badge.ok{background:rgba(16,185,129,.88);color:#fff}
+                .toa-fg-badge.wrong{background:rgba(220,38,38,.88);color:#fff}
+                </style>
+                <script>
+                (function(){var s=document.querySelectorAll('#toaFotoGallery .toa-fg-slide'),i=0;if(!s.length)return;setInterval(function(){s[i].classList.remove('active');i=(i+1)%s.length;s[i].classList.add('active');},2000);})();
+                </script>
                 <div class="toa-talent-dropzone toa-talent-dropzone-small" id="toaTalentProfileDrop">
                     <div class="toa-talent-dropzone-icon">👤</div>
                     <div class="toa-talent-dropzone-text"><strong><?php echo _ht_talent(array('it'=>'Clicca','en'=>'Click','fr'=>'Clique','es'=>'Clic')); ?></strong> <?php echo _ht_talent(array('it'=>'per caricare','en'=>'to upload','fr'=>'pour charger','es'=>'para subir')); ?></div>
