@@ -811,7 +811,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form.js'); ?>?v=3.4" defer></script>
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form.js'); ?>?v=3.5" defer></script>
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT

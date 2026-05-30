@@ -831,13 +831,17 @@
         }
 
         if (n === 3) {
-            // Fix iOS (2026-05-30, additivo 2026-05-31): se un chip è visivamente selezionato
-            // (classe .checked) forza input.checked=true. ADDITIVO: non deseleziona MAI un input
-            // realmente checked se la classe è desincronizzata (era il bug "Seleziona almeno un ruolo").
-            scope.querySelectorAll('.toa-talent-category-chip').forEach(function(c){ var i = c.querySelector('input'); if (i && c.classList.contains('checked')) i.checked = true; });
-            // Almeno un ruolo immagine selezionato
-            var checked = scope.querySelectorAll('input[name="ruoli_immagine[]"]:checked');
-            if (!checked.length) {
+            // Ruolo "selezionato" = chip con classe .checked (verità visiva: la checkbox è display:none).
+            // Sincronizziamo input.checked alla classe così il valore parte anche nel FormData. (fix 2026-05-31)
+            var roleChips = scope.querySelectorAll('#toaTalentCategoriesImmagine .toa-talent-category-chip');
+            var rolesSelected = 0;
+            roleChips.forEach(function(c){
+                var i = c.querySelector('input[name="ruoli_immagine[]"]');
+                var sel = c.classList.contains('checked') || (i && i.checked);
+                if (i) i.checked = sel;
+                if (sel) rolesSelected++;
+            });
+            if (!rolesSelected) {
                 var ruoliErr = ruoliImmagineBox ? ruoliImmagineBox.querySelector('.toa-talent-error-msg') : null;
                 if (ruoliErr) { ruoliErr.textContent = tmsg(MSG.pickRole); ruoliErr.classList.add('show'); }
                 ok = false;
@@ -863,9 +867,16 @@
                 }
             });
 
-            // Etnia: almeno 1 checkbox selezionata (multi-valore)
-            var etnieChecked = scope.querySelectorAll('input[name="etnia[]"]:checked');
-            if (!etnieChecked.length) {
+            // Etnia: almeno 1 selezionata — match sulla classe .checked (checkbox display:none) + sync input
+            var etniaChips = scope.querySelectorAll('#toaTalentEtnieList .toa-talent-category-chip');
+            var etnieSelected = 0;
+            etniaChips.forEach(function(c){
+                var i = c.querySelector('input[name="etnia[]"]');
+                var sel = c.classList.contains('checked') || (i && i.checked);
+                if (i) i.checked = sel;
+                if (sel) etnieSelected++;
+            });
+            if (!etnieSelected) {
                 var etniaField = scope.querySelector('#toaTalentEtniaField');
                 var etniaErr = etniaField ? etniaField.querySelector('.toa-talent-error-msg') : null;
                 if (etniaErr) { etniaErr.textContent = tmsg(MSG.pickEthnicity); etniaErr.classList.add('show'); }
@@ -877,7 +888,9 @@
 
         if (n === 4) {
             if (!uploadState.photoProfile) {
-                alert(tmsg(MSG.photoReq));
+                var photoSec = scope.querySelector('.toa-talent-upload-section');
+                var photoErr = photoSec ? photoSec.querySelector('.toa-talent-error-msg') : null;
+                if (photoErr) { photoErr.textContent = tmsg(MSG.photoReq); photoErr.classList.add('show'); }
                 ok = false;
             }
             var disclaimer = scope.querySelector('[name="disclaimer_consent"]');
