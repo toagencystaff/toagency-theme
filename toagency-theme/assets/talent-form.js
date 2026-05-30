@@ -700,7 +700,7 @@
                 var sessoBox = sessoF.closest('.toa-talent-field');
                 if (sessoBox) {
                     var er = sessoBox.querySelector('.toa-talent-error-msg');
-                    if (er) { er.textContent = 'Indica il sesso'; er.classList.add('show'); }
+                    if (er) { er.textContent = tmsg(MSG.pickGender); er.classList.add('show'); }
                 }
                 ok = false;
             }
@@ -712,7 +712,7 @@
                 // 0-15: dati genitore obbligatori
                 ['genitore1_nome','genitore1_email','genitore1_telefono'].forEach(function(name) {
                     var f = scope.querySelector('[name="'+name+'"]');
-                    if (f && !f.value.trim()) { showFieldError(f, 'Campo obbligatorio per minori sotto 16 anni'); ok = false; }
+                    if (f && !f.value.trim()) { showFieldError(f, tmsg(MSG.reqMinor)); ok = false; }
                 });
                 var gEmail = scope.querySelector('[name="genitore1_email"]');
                 if (gEmail && gEmail.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gEmail.value)) {
@@ -725,7 +725,7 @@
                     var pcBox = parentConfirm.closest('.toa-talent-field');
                     if (pcBox) {
                         var pcErr = pcBox.querySelector('.toa-talent-error-msg');
-                        if (pcErr) { pcErr.textContent = 'La conferma del genitore è obbligatoria'; pcErr.classList.add('show'); }
+                        if (pcErr) { pcErr.textContent = tmsg(MSG.parentConfirm); pcErr.classList.add('show'); }
                     }
                     ok = false;
                 }
@@ -772,7 +772,7 @@
                     ok = false;
                     failReasons.push('residenza: nessun campo città visibile\n' + debugCityList.join('\n'));
                 } else if (!visibleCityInput.value.trim()) {
-                    showFieldError(visibleCityInput, 'Indica la città');
+                    showFieldError(visibleCityInput, tmsg(MSG.pickCity));
                     ok = false;
                     failReasons.push('residenza: città vuota (input visibile=' + (visibleCityInput.closest('.city-typeahead, .city-select, .city-free')||{}).className + ')');
                 }
@@ -815,7 +815,7 @@
                         ok = false;
                         failReasons.push('domicilio: nessun campo città visibile\n' + debugDomList.join('\n'));
                     } else if (!visDom.value.trim()) {
-                        showFieldError(visDom, 'Indica la città');
+                        showFieldError(visDom, tmsg(MSG.pickCity));
                         ok = false;
                         failReasons.push('domicilio: città vuota');
                     }
@@ -837,7 +837,7 @@
             var checked = scope.querySelectorAll('input[name="ruoli_immagine[]"]:checked');
             if (!checked.length) {
                 var ruoliErr = ruoliImmagineBox ? ruoliImmagineBox.querySelector('.toa-talent-error-msg') : null;
-                if (ruoliErr) { ruoliErr.textContent = 'Seleziona almeno un ruolo'; ruoliErr.classList.add('show'); }
+                if (ruoliErr) { ruoliErr.textContent = tmsg(MSG.pickRole); ruoliErr.classList.add('show'); }
                 ok = false;
             }
 
@@ -856,7 +856,7 @@
                     var cs = f.closest('.toa-talent-customselect');
                     if (cs) cs.classList.add('error');
                     var errDiv = f.closest('.toa-talent-field') ? f.closest('.toa-talent-field').querySelector('.toa-talent-error-msg') : null;
-                    if (errDiv) { errDiv.textContent = 'Campo obbligatorio'; errDiv.classList.add('show'); }
+                    if (errDiv) { errDiv.textContent = tmsg(MSG.required); errDiv.classList.add('show'); }
                     ok = false;
                 }
             });
@@ -866,7 +866,7 @@
             if (!etnieChecked.length) {
                 var etniaField = scope.querySelector('#toaTalentEtniaField');
                 var etniaErr = etniaField ? etniaField.querySelector('.toa-talent-error-msg') : null;
-                if (etniaErr) { etniaErr.textContent = 'Seleziona almeno un\'etnia'; etniaErr.classList.add('show'); }
+                if (etniaErr) { etniaErr.textContent = tmsg(MSG.pickEthnicity); etniaErr.classList.add('show'); }
                 ok = false;
             }
 
@@ -875,7 +875,7 @@
 
         if (n === 4) {
             if (!uploadState.photoProfile) {
-                alert('La foto profilo è obbligatoria.');
+                alert(tmsg(MSG.photoReq));
                 ok = false;
             }
             var disclaimer = scope.querySelector('[name="disclaimer_consent"]');
@@ -883,7 +883,7 @@
                 var b = disclaimer.closest('.toa-talent-field');
                 if (b) {
                     var er = b.querySelector('.toa-talent-error-msg');
-                    if (er) { er.textContent = 'Devi confermare di aver letto le regole'; er.classList.add('show'); }
+                    if (er) { er.textContent = tmsg(MSG.rulesReq); er.classList.add('show'); }
                 }
                 ok = false;
             }
@@ -892,7 +892,7 @@
                 var b2 = gdpr.closest('.toa-talent-field');
                 if (b2) {
                     var er2 = b2.querySelector('.toa-talent-error-msg');
-                    if (er2) { er2.textContent = 'Devi accettare la privacy policy'; er2.classList.add('show'); }
+                    if (er2) { er2.textContent = tmsg(MSG.gdprReq); er2.classList.add('show'); }
                 }
                 ok = false;
             }

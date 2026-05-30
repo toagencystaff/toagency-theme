@@ -600,21 +600,25 @@ $theme_uri = get_stylesheet_directory_uri();
                     'fr'=>'Une photo claire du visage, de face, sur fond neutre et en lumière naturelle, comme dans l\'exemple ci-dessous. Ce sera votre image principale.',
                     'es'=>'Una foto clara del rostro, frontal, con fondo neutro y luz natural, como en el ejemplo de abajo. Será tu imagen principal.',
                 )); ?></p>
-                <!-- FOTO GUIDA: slideshow ✅/❌ interleaved — 1s auto-rotate (13 slide) -->
+                <?php
+                $badge_ok = _ht_talent(array('it'=>'✅ Così sì','en'=>'✅ Yes like this','es'=>'✅ Así sí','fr'=>'✅ Oui comme ça'));
+                $badge_no = _ht_talent(array('it'=>'❌ Così no','en'=>'❌ Not like this','es'=>'❌ Así no','fr'=>'❌ Pas comme ça'));
+                ?>
+                <!-- FOTO GUIDA: slideshow ✅/❌ interleaved — 1s auto-rotate (13 slide), badge multilingua -->
                 <div class="toa-foto-gallery" id="toaFotoGallery">
-                  <div class="toa-fg-slide active"><img src="<?= $theme_uri ?>/assets/foto-esempio-profilo.jpg" alt="ok"><span class="toa-fg-badge ok">✅ Così sì</span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-sfondo.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-2.jpg" alt="ok"><span class="toa-fg-badge ok">✅ Così sì</span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-occhiali.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-3.jpg" alt="ok"><span class="toa-fg-badge ok">✅ Così sì</span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-angolo.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-4.jpg" alt="ok"><span class="toa-fg-badge ok">✅ Così sì</span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-trucco.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-5.jpg" alt="ok"><span class="toa-fg-badge ok">✅ Così sì</span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-cappello.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-selfie-alto.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-lontana.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-spiaggia.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
+                  <div class="toa-fg-slide active"><img src="<?= $theme_uri ?>/assets/foto-esempio-profilo.jpg" alt="ok"><span class="toa-fg-badge ok"><?= $badge_ok ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-sfondo.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-2.jpg" alt="ok"><span class="toa-fg-badge ok"><?= $badge_ok ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-occhiali.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-3.jpg" alt="ok"><span class="toa-fg-badge ok"><?= $badge_ok ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-angolo.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-4.jpg" alt="ok"><span class="toa-fg-badge ok"><?= $badge_ok ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-trucco.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-5.jpg" alt="ok"><span class="toa-fg-badge ok"><?= $badge_ok ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-cappello.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-selfie-alto.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-lontana.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-spiaggia.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
                 </div>
                 <style>
                 .toa-foto-gallery{position:relative;width:160px;height:220px;margin:10px auto 16px;border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.25)}
@@ -634,7 +638,7 @@ $theme_uri = get_stylesheet_directory_uri();
                     <div class="toa-talent-dropzone-hint">JPG, PNG • <?php echo _ht_talent(array('it'=>'max 5MB','en'=>'max 5MB','fr'=>'max 5MB','es'=>'max 5MB')); ?></div>
                     <input type="file" id="toaTalentProfileInput" accept="image/*" style="display:none;">
                 </div>
-                <p class="toa-talent-foto-nono" style="text-align:center;margin:8px 0 0;font-size:0.82rem;color:#f87171;font-weight:600;letter-spacing:.2px;"><?php echo _ht_talent(array(
+                <p class="toa-talent-foto-nono" style="text-align:center;margin:12px auto 0;max-width:max-content;padding:7px 16px;background:rgba(220,38,38,0.12);border:1px solid rgba(220,38,38,0.4);border-radius:8px;font-size:0.86rem;color:#f87171;font-weight:700;letter-spacing:.2px;"><?php echo _ht_talent(array(
                     'it'=>'❌ NO testi · NO loghi · NO firme',
                     'en'=>'❌ NO text · NO logos · NO signatures',
                     'es'=>'❌ NO textos · NO logos · NO firmas',
