@@ -811,10 +811,11 @@ require_once get_template_directory() . '/inc/schema.php';
 
 // === FIX 2026-05-30 marco — google-reviews CSS ===
 add_action('wp_enqueue_scripts', function() {
+    $toa_gr_css = get_template_directory() . '/assets/css/google-reviews.css';
     wp_enqueue_style(
         'toa-google-reviews',
         get_template_directory_uri() . '/assets/css/google-reviews.css',
         [],
-        '2026-05-30'
+        file_exists($toa_gr_css) ? filemtime($toa_gr_css) : '2026-05-30'
     );
 });
