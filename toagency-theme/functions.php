@@ -208,7 +208,7 @@ add_action('wp_footer', function() {
   function goThankYou(){ window.location.href = TNX; }
   function getB2BData(){
     var d = {};
-    var fields = ["company","contact","email","phone","event_type","period","location","message"];
+    var fields = ["company","contact","email","phone","event_type","period","location","budget","message"];
     for(var i=0;i<fields.length;i++){
       var el = document.getElementById(fields[i]);
       d[fields[i]] = el ? el.value : "";
@@ -261,6 +261,77 @@ add_action('wp_footer', function() {
 </script>';
 }, 999);
 
+
+// === TALENT PREVIEW su /tnx/ post-form B2B — 2026-05-30 marco ===
+add_action('wp_footer', function() {
+    $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+    if (strpos($uri, '/tnx') === false) return;
+    ?>
+    <style>
+    #toa-talent-preview{background:#0a0a0a;padding:48px 20px;margin-top:0}
+    .toa-preview-hd{text-align:center;margin-bottom:32px}
+    .toa-preview-hd h3{font-size:clamp(18px,3vw,26px);font-weight:700;color:#fff;margin:0 0 8px}
+    .toa-preview-hd p{color:rgba(255,255,255,.5);font-size:14px;margin:0}
+    .toa-preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;max-width:960px;margin:0 auto 28px}
+    .toa-card{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:3/4;background:#1a1a1a}
+    .toa-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+    .toa-card:hover img{transform:scale(1.04)}
+    .toa-card-info{position:absolute;bottom:0;left:0;right:0;padding:10px 8px 8px;background:linear-gradient(transparent,rgba(0,0,0,.85));color:#fff;font-size:12px;line-height:1.3}
+    .toa-card-info strong{display:block;font-weight:600}
+    .toa-card-info span{color:rgba(255,255,255,.55)}
+    .toa-preview-cta{text-align:center;margin-top:8px}
+    .toa-preview-cta a{display:inline-block;padding:12px 28px;background:#c8ff00;color:#000;border-radius:6px;font-weight:700;font-size:14px;letter-spacing:.05em;text-decoration:none;transition:opacity .2s}
+    .toa-preview-cta a:hover{opacity:.85}
+    .toa-preview-loading{text-align:center;padding:32px;color:rgba(255,255,255,.3);font-size:13px;grid-column:1/-1}
+    @media(max-width:480px){.toa-preview-grid{grid-template-columns:repeat(2,1fr);gap:8px}}
+    </style>
+    <script>
+    (function(){
+      var KEY = 'toa_lead';
+      var ENDPOINT = '/crm_toagency/actions/api-talent-preview-b2b.php';
+      var DB_URL   = '/talent-database/';
+      function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+      function hideSec(){var s=document.getElementById('toa-talent-preview');if(s)s.remove();}
+      function renderGrid(data){
+        var grid=document.getElementById('toa-preview-grid');
+        if(!grid)return;
+        if(!data||!data.ok||!data.results||data.results.length===0){hideSec();return;}
+        var html='';
+        data.results.forEach(function(t){
+          var age=t.eta?t.eta+' anni':'';
+          var loc=t.citta?escH(t.citta):'';
+          var sub=[age,loc].filter(Boolean).join(' · ');
+          html+='<div class="toa-card"><img src="'+escH(t.foto_url)+'" alt="'+escH(t.nome||'talent')+'" loading="lazy" decoding="async" onerror="this.closest(\'.toa-card\').style.display=\'none\'"><div class="toa-card-info"><strong>'+escH(t.nome||'')+'</strong>'+(sub?'<span>'+sub+'</span>':'')+'</div></div>';
+        });
+        grid.innerHTML=html;
+        try{sessionStorage.removeItem(KEY);}catch(e){}
+      }
+      function init(){
+        var raw;try{raw=sessionStorage.getItem(KEY);}catch(e){return;}
+        if(!raw)return;
+        var lead;try{lead=JSON.parse(raw);}catch(e){return;}
+        if(!lead||lead.form_type!=='b2b')return;
+        var footer=document.querySelector('.tnx-footer');
+        var wrap=document.querySelector('.tnx-wrap');
+        if(!footer&&!wrap)return;
+        var sec=document.createElement('section');
+        sec.id='toa-talent-preview';
+        var locLabel=lead.location?' a <em>'+escH(lead.location)+'</em>':'';
+        sec.innerHTML='<div class="toa-preview-hd"><h3>Selezionati per il tuo progetto'+locLabel+'</h3><p>In attesa della nostra risposta — profili aggiornati ogni giorno</p></div><div id="toa-preview-grid" class="toa-preview-grid"><div class="toa-preview-loading">Caricamento profili…</div></div><div class="toa-preview-cta"><a href="'+DB_URL+'">Vedi tutti i profili &rarr;</a></div>';
+        if(footer){footer.parentNode.insertBefore(sec,footer);}else{wrap.appendChild(sec);}
+        setTimeout(function(){
+          fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:lead.location||'',event_type:lead.event_type||'',roles:Array.isArray(lead.roles)?lead.roles:[],budget:lead.budget||''})})
+          .then(function(r){return r.json();})
+          .then(function(d){renderGrid(d);})
+          .catch(function(){hideSec();});
+        },800);
+      }
+      if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
+    })();
+    </script>
+    <?php
+}, 999);
+// === END TALENT PREVIEW su /tnx/ — 2026-05-30 ===
 
 // === LOGO SIZE OVERRIDE (bypass SG cache) ===
 add_action('wp_head', function() {
