@@ -36,6 +36,7 @@ add_filter( 'wpseo_schema_organization', function ( $data ) {
         'streetAddress'   => 'Via Cavour',
         'addressLocality' => 'Torino',
         'addressRegion'   => 'TO',
+        'postalCode'      => '10123',
         'addressCountry'  => 'IT',
     ];
     $data['areaServed'] = [
