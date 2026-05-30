@@ -36,7 +36,9 @@
         pickEthnicity: { it:"Seleziona almeno un'etnia", en:'Select at least one ethnicity', es:'Selecciona al menos una etnia', fr:'Sélectionne au moins une origine' },
         photoReq:      { it:'Il primo piano è obbligatorio.', en:'The close-up photo is required.', es:'El primer plano es obligatorio.', fr:'Le gros plan est obligatoire.' },
         rulesReq:      { it:'Devi confermare di aver letto le regole', en:'You must confirm you have read the rules', es:'Debes confirmar que has leído las reglas', fr:'Tu dois confirmer avoir lu les règles' },
-        gdprReq:       { it:'Devi accettare la privacy policy', en:'You must accept the privacy policy', es:'Debes aceptar la política de privacidad', fr:'Tu dois accepter la politique de confidentialité' }
+        gdprReq:       { it:'Devi accettare la privacy policy', en:'You must accept the privacy policy', es:'Debes aceptar la política de privacidad', fr:'Tu dois accepter la politique de confidentialité' },
+        emailInvalid:       { it:'Email non valida', en:'Invalid email', fr:'Email invalide', es:'Email no válida' },
+        parentEmailInvalid: { it:'Email genitore non valida', en:'Invalid parent email', fr:'Email du parent invalide', es:'Email del padre no válida' }
     };
     var FLBL = {
         altezza: { it:'Altezza', en:'Height', es:'Altura', fr:'Taille' },
@@ -691,7 +693,7 @@
             });
             var emailF = scope.querySelector('[name="email"]');
             if (emailF && emailF.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailF.value)) {
-                showFieldError(emailF, 'Email non valida'); ok = false;
+                showFieldError(emailF, tmsg(MSG.emailInvalid)); ok = false;
             }
 
             // Sesso obbligatorio
@@ -716,7 +718,7 @@
                 });
                 var gEmail = scope.querySelector('[name="genitore1_email"]');
                 if (gEmail && gEmail.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gEmail.value)) {
-                    showFieldError(gEmail, 'Email genitore non valida'); ok = false;
+                    showFieldError(gEmail, tmsg(MSG.parentEmailInvalid)); ok = false;
                 }
             } else if (age >= 16 && age < 18) {
                 // 16-17: checkbox conferma genitore obbligatorio
