@@ -1,7 +1,7 @@
 /**
  * TOAgency — Form registrazione talent
  * v2.0 — 8 Maggio 2026
- * Path: /wp-content/themes/toagency-theme/assets/talent-form.js
+ * Path: /wp-content/themes/toagency-theme/assets/talent-form-v36.js
  *
  * v2.0 changes:
  * - Tipo talent forzato a 'immagine' (backstage → form crew)
