@@ -1,7 +1,7 @@
-/* === Google Reviews Widget — FIX 2026-05-30 marco === */
+/* === Google Reviews Widget — FIX 2026-05-30 marco — dark theme === */
 .toa-google-reviews {
   padding: 60px 20px;
-  background: #f9f9f9;
+  background: #0d0d0f;
   text-align: center;
 }
 .toa-reviews-inner {
@@ -31,7 +31,7 @@
   font-size: 2.4rem;
   font-weight: 700;
   line-height: 1;
-  color: #111;
+  color: #fff;
 }
 .toa-reviews-stars {
   display: flex;
@@ -44,7 +44,7 @@
 }
 .toa-reviews-count {
   font-size: 0.85rem;
-  color: #666;
+  color: #999;
 }
 .toa-reviews-grid {
   display: grid;
@@ -54,10 +54,10 @@
   text-align: left;
 }
 .toa-review-card {
-  background: #fff;
+  background: #181818;
+  border: 1px solid #2a2a2a;
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
 }
 .toa-review-stars-row {
   display: flex;
@@ -66,7 +66,7 @@
 }
 .toa-review-text {
   font-size: 0.95rem;
-  color: #333;
+  color: #bbb;
   line-height: 1.6;
   margin-bottom: 16px;
   font-style: italic;
@@ -74,23 +74,23 @@
 .toa-review-author {
   font-size: 0.82rem;
   font-weight: 600;
-  color: #555;
+  color: #e0e0e0;
 }
 .toa-review-author span {
   font-weight: 400;
-  color: #888;
+  color: #777;
 }
 .toa-reviews-cta {
   display: inline-block;
   font-size: 0.9rem;
   font-weight: 600;
-  color: #1a73e8;
+  color: #4d9eff;
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s;
 }
 .toa-reviews-cta:hover {
-  border-color: #1a73e8;
+  border-color: #4d9eff;
 }
 /* Mobile */
 @media (max-width: 768px) {
