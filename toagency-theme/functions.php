@@ -316,8 +316,10 @@ add_action('wp_footer', function() {
         if(!footer&&!wrap)return;
         var sec=document.createElement('section');
         sec.id='toa-talent-preview';
-        var locLabel=lead.location?' a <em>'+escH(lead.location)+'</em>':'';
-        sec.innerHTML='<div class="toa-preview-hd"><h3>Selezionati per il tuo progetto'+locLabel+'</h3><p>In attesa della nostra risposta — profili aggiornati ogni giorno</p></div><div id="toa-preview-grid" class="toa-preview-grid"><div class="toa-preview-loading">Caricamento profili…</div></div><div class="toa-preview-cta"><a href="'+DB_URL+'">Vedi tutti i profili &rarr;</a></div>';
+        var lang=(document.documentElement.lang||'it').substring(0,2);
+        var _i18n={it:{h:'Alcuni profili che potrebbero fare al caso tuo',p:'In attesa della nostra risposta — aggiornati ogni giorno',loading:'Caricamento profili…',cta:'Vedi tutti i profili →'},en:{h:'Some profiles that might be right for you',p:'While we review your request — updated daily',loading:'Loading profiles…',cta:'View all profiles →'},fr:{h:'Des profils qui pourraient vous correspondre',p:'En attendant notre réponse — mis à jour chaque jour',loading:'Chargement des profils…',cta:'Voir tous les profils →'},es:{h:'Algunos perfiles que podrían interesarte',p:'Mientras revisamos tu solicitud — actualizados cada día',loading:'Cargando perfiles…',cta:'Ver todos los perfiles →'}};
+        var _t=_i18n[lang]||_i18n.it;
+        sec.innerHTML='<div class="toa-preview-hd"><h3>'+_t.h+'</h3><p>'+_t.p+'</p></div><div id="toa-preview-grid" class="toa-preview-grid"><div class="toa-preview-loading">'+_t.loading+'</div></div><div class="toa-preview-cta"><a href="'+DB_URL+'">'+_t.cta+'</a></div>';
         if(footer){footer.parentNode.insertBefore(sec,footer);}else{wrap.appendChild(sec);}
         setTimeout(function(){
           fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:lead.location||'',event_type:lead.event_type||'',roles:Array.isArray(lead.roles)?lead.roles:[],budget:lead.budget||''})})
