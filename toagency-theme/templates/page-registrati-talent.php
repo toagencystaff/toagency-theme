@@ -641,43 +641,20 @@ $theme_uri = get_stylesheet_directory_uri();
                     <div class="toa-talent-dropzone-hint">JPG, PNG • <?php echo _ht_talent(array('it'=>'max 5MB','en'=>'max 5MB','fr'=>'max 5MB','es'=>'max 5MB')); ?></div>
                     <input type="file" id="toaTalentProfileInput" accept="image/*" style="display:none;">
                 </div>
-                <p class="toa-talent-foto-nono" style="text-align:center;margin:12px auto 0;max-width:max-content;padding:7px 16px;background:rgba(220,38,38,0.12);border:1px solid rgba(220,38,38,0.4);border-radius:8px;font-size:0.86rem;color:#f87171;font-weight:700;letter-spacing:.2px;"><?php echo _ht_talent(array(
-                    'it'=>'❌ NO testi · NO loghi · NO firme',
-                    'en'=>'❌ NO text · NO logos · NO signatures',
-                    'es'=>'❌ NO textos · NO logos · NO firmas',
-                    'fr'=>'❌ PAS de texte · PAS de logo · PAS de signature',
+                <p class="toa-talent-foto-nono" style="text-align:center;margin:12px auto 0;max-width:380px;padding:8px 16px;background:rgba(220,38,38,0.12);border:1px solid rgba(220,38,38,0.4);border-radius:8px;font-size:0.84rem;line-height:1.5;color:#f87171;font-weight:700;letter-spacing:.2px;"><?php echo _ht_talent(array(
+                    'it'=>'❌ NO testi · NO loghi · NO watermark · NO filtri · NO effetti',
+                    'en'=>'❌ NO text · NO logos · NO watermarks · NO filters · NO effects',
+                    'es'=>'❌ NO textos · NO logos · NO marcas de agua · NO filtros · NO efectos',
+                    'fr'=>'❌ PAS de texte · PAS de logo · PAS de filigrane · PAS de filtre · PAS d\'effet',
                 )); ?></p>
                 <div class="toa-talent-profile-thumb" id="toaTalentProfileThumb"></div>
                 <div class="toa-talent-error-msg" id="toaTalentProfileError"></div>
             </div>
 
-            <!-- Disclaimer -->
-            <div class="toa-talent-disclaimer">
-                <h4>⚠️ <?php echo _ht_talent(array('it'=>'IMPORTANTE — Cosa NON puoi caricare','en'=>'IMPORTANT — What NOT to upload','fr'=>'IMPORTANT','es'=>'IMPORTANTE')); ?></h4>
-                <p><?php echo _ht_talent(array(
-                    'it'=>'Il tuo profilo sarà visibile ai clienti TOAgency in modalità anonima. Per proteggere la tua identità, le foto NON devono contenere:',
-                    'en'=>'Your profile is shown anonymously. Photos must NOT contain:',
-                    'fr'=>'Profil visible anonymement. Les photos ne doivent PAS contenir :',
-                    'es'=>'Perfil anónimo. Las fotos NO deben contener:',
-                )); ?></p>
-                <ul class="toa-talent-no-list">
-                    <li><?php echo _ht_talent(array('it'=>'Watermark, firme, loghi (es. "© Mario Rossi")','en'=>'Watermarks, signatures','fr'=>'Filigranes, signatures','es'=>'Marcas, firmas')); ?></li>
-                    <li><?php echo _ht_talent(array('it'=>'Email, telefoni, link a social','en'=>'Emails, phones, social links','fr'=>'Emails, téléphones','es'=>'Emails, teléfonos')); ?></li>
-                    <li><?php echo _ht_talent(array('it'=>'Nome o cognome visibili','en'=>'Visible name','fr'=>'Nom visible','es'=>'Nombre visible')); ?></li>
-                    <li><?php echo _ht_talent(array('it'=>'URL o handle Instagram/TikTok','en'=>'URLs or handles','fr'=>'URL pseudos','es'=>'URL usuarios')); ?></li>
-                    <li><?php echo _ht_talent(array('it'=>'Loghi di altri brand/agenzie','en'=>'Other brand logos','fr'=>'Logos d\'autres marques','es'=>'Logos de otras marcas')); ?></li>
-                </ul>
-                <p style="color:rgba(255,255,255,0.85);"><?php echo _ht_talent(array(
-                    'it'=>'I clienti potranno contattarti SOLO tramite TOAgency.',
-                    'en'=>'Clients reach you ONLY via TOAgency.',
-                    'fr'=>'Contact UNIQUEMENT via TOAgency.',
-                    'es'=>'Contacto SOLO vía TOAgency.',
-                )); ?></p>
-            </div>
-
             <!-- Foto portfolio -->
             <div class="toa-talent-upload-section">
                 <h5>📷 <?php echo _ht_talent(array('it'=>'Foto del portfolio (facoltative)','en'=>'Portfolio photos (optional)','fr'=>'Photos portfolio (facultatif)','es'=>'Fotos portfolio (opcional)')); ?></h5>
+                <span style="display:inline-block;margin:2px 0 8px;font-size:0.78rem;color:#c8ff00;font-weight:600;letter-spacing:.2px;"><?php echo _ht_talent(array('it'=>'Facoltativo ma consigliato','en'=>'Optional but recommended','es'=>'Opcional pero recomendado','fr'=>'Facultatif mais conseillé')); ?></span>
                 <p class="toa-talent-step-help"><?php echo _ht_talent(array(
                     'it'=>'Facoltativo — puoi aggiungerle anche dopo la registrazione. Ti consigliamo almeno 2-3 foto: i casting le guardano prima di contattarti.',
                     'en'=>'Optional — you can add them after registration. We recommend at least 2-3 photos: casting directors check them before reaching out.',
