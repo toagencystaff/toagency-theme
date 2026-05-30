@@ -819,3 +819,11 @@ add_action('wp_enqueue_scripts', function() {
         file_exists($toa_gr_css) ? filemtime($toa_gr_css) : '2026-05-30'
     );
 });
+
+// === FIX 2026-05-30 marco — landing-geo CSS ===
+add_action('wp_enqueue_scripts', function() {
+    if (is_page_template('templates/page-landing-geo.php')) {
+        $f = get_template_directory() . '/assets/css/landing-geo.css';
+        wp_enqueue_style('toa-landing-geo', get_template_directory_uri().'/assets/css/landing-geo.css', [], file_exists($f) ? filemtime($f) : '1');
+    }
+});
