@@ -38,7 +38,15 @@
         rulesReq:      { it:'Devi confermare di aver letto le regole', en:'You must confirm you have read the rules', es:'Debes confirmar que has leído las reglas', fr:'Tu dois confirmer avoir lu les règles' },
         gdprReq:       { it:'Devi accettare la privacy policy', en:'You must accept the privacy policy', es:'Debes aceptar la política de privacidad', fr:'Tu dois accepter la politique de confidentialité' },
         emailInvalid:       { it:'Email non valida', en:'Invalid email', fr:'Email invalide', es:'Email no válida' },
-        parentEmailInvalid: { it:'Email genitore non valida', en:'Invalid parent email', fr:'Email du parent invalide', es:'Email del padre no válida' }
+        parentEmailInvalid: { it:'Email genitore non valida', en:'Invalid parent email', fr:'Email du parent invalide', es:'Email del padre no válida' },
+        photoMustBeImage:  { it:'La foto deve essere un\'immagine', en:'The photo must be an image', es:'La foto debe ser una imagen', fr:'La photo doit être une image' },
+        photoTooBig:       { it:'Foto troppo grande', en:'Photo too large', es:'Foto demasiado grande', fr:'Photo trop grande' },
+        maxPhotos:         { it:'Hai raggiunto il limite di foto', en:'You reached the photo limit', es:'Has alcanzado el límite de fotos', fr:'Limite de photos atteinte' },
+        fileInvalid:       { it:'File non valido', en:'Invalid file', es:'Archivo no válido', fr:'Fichier non valide' },
+        fileTooBig:        { it:'File troppo grande', en:'File too large', es:'Archivo demasiado grande', fr:'Fichier trop grand' },
+        uploadPartialFail: { it:'Profilo creato, ma il caricamento di alcuni file non è riuscito: potrai aggiungerli più tardi dalla tua area personale.', en:'Profile created, but some files failed to upload — you can add them later from your area.', es:'Perfil creado, pero algunos archivos no se subieron: podrás añadirlos más tarde desde tu área.', fr:'Profil créé, mais certains fichiers n\'ont pas pu être chargés : tu pourras les ajouter plus tard depuis ton espace.' },
+        networkError:      { it:'Errore di connessione. Riprova fra qualche secondo.', en:'Connection error. Please try again in a few seconds.', es:'Error de conexión. Inténtalo de nuevo en unos segundos.', fr:'Erreur de connexion. Réessaie dans quelques secondes.' },
+        emailExists:       { it:'Questa email è già registrata. Se è la tua, contattaci.', en:'This email is already registered. If it is yours, contact us.', es:'Este email ya está registrado. Si es el tuyo, contáctanos.', fr:'Cet email est déjà enregistré. Si c\'est le tien, contacte-nous.' }
     };
     var FLBL = {
         altezza: { it:'Altezza', en:'Height', es:'Altura', fr:'Taille' },
@@ -602,8 +610,8 @@
             // 1 sola foto profilo
             var file = files[0];
             if (!file) return;
-            if (!/^image\//i.test(file.type)) { alert('La foto profilo deve essere un\'immagine'); return; }
-            if (file.size > MAX_PHOTO_SIZE_MB * 1024 * 1024) { alert('Foto profilo troppo grande (max ' + MAX_PHOTO_SIZE_MB + 'MB)'); return; }
+            if (!/^image\//i.test(file.type)) { showInlineError('toaTalentProfileError', tmsg(MSG.photoMustBeImage), true); return; }
+            if (file.size > MAX_PHOTO_SIZE_MB * 1024 * 1024) { showInlineError('toaTalentProfileError', tmsg(MSG.photoTooBig) + ' (max ' + MAX_PHOTO_SIZE_MB + 'MB)', true); return; }
             uploadState.photoProfile = { file: file, id: 'profile_' + Date.now() };
             renderProfileThumb(uploadState.photoProfile);
             return;
@@ -614,12 +622,12 @@
 
         Array.prototype.forEach.call(files, function(file) {
             if (uploadState.photos.length >= MAX_PHOTOS) {
-                alert('Hai raggiunto il limite di ' + MAX_PHOTOS + ' foto.');
+                showInlineError('toaTalentPhotosError', tmsg(MSG.maxPhotos) + ' (' + MAX_PHOTOS + ')', true);
                 return;
             }
-            if (!/^image\//i.test(file.type)) { alert('File non valido: ' + file.name); return; }
+            if (!/^image\//i.test(file.type)) { showInlineError('toaTalentPhotosError', tmsg(MSG.fileInvalid) + ': ' + file.name, true); return; }
             if (file.size > maxSize) {
-                alert('File troppo grande: ' + file.name + ' (max ' + MAX_PHOTO_SIZE_MB + ' MB)');
+                showInlineError('toaTalentPhotosError', tmsg(MSG.fileTooBig) + ': ' + file.name + ' (max ' + MAX_PHOTO_SIZE_MB + 'MB)', true);
                 return;
             }
             var fileObj = { file: file, id: Date.now() + '_' + Math.random().toString(36).slice(2,8) };
@@ -679,6 +687,17 @@
     function clearFieldErrors(scope) {
         scope.querySelectorAll('.toa-talent-input, .toa-talent-customselect').forEach(function(f){ f.classList.remove('error'); });
         scope.querySelectorAll('.toa-talent-error-msg').forEach(function(e){ e.classList.remove('show'); e.textContent = ''; });
+    }
+    // Mostra un messaggio inline in un .toa-talent-error-msg (sostituisce alert()).
+    // el può essere un elemento o un id. auto=true → si auto-nasconde dopo 6s (errori upload transitori).
+    function showInlineError(el, msg, auto) {
+        if (typeof el === 'string') el = document.getElementById(el);
+        if (!el) return;
+        el.textContent = msg;
+        el.classList.add('show');
+        try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+        if (el._hideT) clearTimeout(el._hideT);
+        if (auto) el._hideT = setTimeout(function(){ el.classList.remove('show'); el.textContent = ''; }, 6000);
     }
     function validateStep(n) {
         var scope = form.querySelector('.toa-talent-step[data-step="'+n+'"]');
@@ -995,6 +1014,9 @@
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();
+        // Pulisci eventuale errore form-level (network/server) da un tentativo precedente
+        var _fe = document.getElementById('toaTalentFormError');
+        if (_fe) { _fe.classList.remove('show'); _fe.textContent = ''; }
         for (var i = 1; i <= 4; i++) {
             if (!validateStep(i)) { showStep(i); return; }
         }
@@ -1053,8 +1075,9 @@
                     .then(function() { showSuccess(); })
                     .catch(function(err) {
                         console.error('[upload] error:', err);
-                        // Profilo creato ma upload fallito → avvisa l'utente
-                        alert('Profilo creato correttamente, ma il caricamento dei file non è andato a buon fine. Potrai aggiungerli più tardi dalla tua area personale.');
+                        // Profilo creato ma upload fallito → avviso inline nel modale di successo
+                        var _w = document.getElementById('toaTalentUploadWarn');
+                        if (_w) { _w.textContent = tmsg(MSG.uploadPartialFail); _w.style.display = 'block'; }
                         showSuccess();
                     });
             } else {
@@ -1063,7 +1086,7 @@
         })
         .catch(function(err) {
             console.error('[register] errore network:', err);
-            alert('Errore di connessione. Riprova fra qualche secondo.');
+            showInlineError('toaTalentFormError', tmsg(MSG.networkError));
         })
         .finally(function() {
             if (submitBtn) {
@@ -1104,14 +1127,14 @@
                 stepToGo = 3;
                 break;
             case 'email_exists':
-                errorMsg = 'Questa email è già registrata. Se è la tua, contattaci.';
+                errorMsg = tmsg(MSG.emailExists);
                 stepToGo = 1;
                 break;
             default:
                 stepToGo = 4;
         }
 
-        alert('⚠️ ' + errorMsg);
+        showInlineError('toaTalentFormError', '⚠️ ' + errorMsg);
         showStep(stepToGo);
     }
 

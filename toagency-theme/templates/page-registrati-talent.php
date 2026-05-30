@@ -150,6 +150,9 @@ $theme_uri = get_stylesheet_directory_uri();
             <div class="toa-talent-progress-step" data-step="4"></div>
         </div>
 
+        <!-- Errore form-level (network / server) — inline, sostituisce alert() -->
+        <div class="toa-talent-error-msg toa-talent-form-error" id="toaTalentFormError" role="alert" style="text-align:center;margin:0 0 14px;"></div>
+
         <!-- ═════ STEP 1 — Chi sei ═════ -->
         <div class="toa-talent-step active" data-step="1">
             <h3><?php echo _ht_talent(array('it'=>'Chi sei','en'=>'Who you are','fr'=>'Qui es-tu','es'=>'Quién eres')); ?></h3>
@@ -645,7 +648,7 @@ $theme_uri = get_stylesheet_directory_uri();
                     'fr'=>'❌ PAS de texte · PAS de logo · PAS de signature',
                 )); ?></p>
                 <div class="toa-talent-profile-thumb" id="toaTalentProfileThumb"></div>
-                <div class="toa-talent-error-msg"></div>
+                <div class="toa-talent-error-msg" id="toaTalentProfileError"></div>
             </div>
 
             <!-- Disclaimer -->
@@ -689,6 +692,7 @@ $theme_uri = get_stylesheet_directory_uri();
                     <input type="file" id="toaTalentPhotosInput" accept="image/*" multiple style="display:none;">
                 </div>
                 <div class="toa-talent-thumbs" id="toaTalentPhotosThumbs"></div>
+                <div class="toa-talent-error-msg" id="toaTalentPhotosError"></div>
             </div>
 
             <!-- Conferma upload -->
@@ -785,6 +789,8 @@ $theme_uri = get_stylesheet_directory_uri();
                 'es'=>'Nuestro equipo revisará el perfil y te contactará para oportunidades.',
             )); ?>
         </div>
+        <!-- Avviso upload parziale fallito (inline, sostituisce alert()) -->
+        <div id="toaTalentUploadWarn" role="alert" style="display:none;margin:.6rem 0;padding:.6rem .9rem;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.4);border-radius:8px;color:#fbbf24;font-size:.85rem;line-height:1.4;"></div>
         <!-- FIX 2026-05-26 marco — WhatsApp post-registrazione multilingua -->
         <a href="https://wa.me/393518468516" target="_blank" rel="noopener"
            style="display:block;margin:.8rem 0 .4rem;background:#25d366;color:#fff;border-radius:8px;padding:.6rem 1.2rem;font-weight:700;text-decoration:none;text-align:center;font-size:.95rem;">
@@ -811,7 +817,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form.js'); ?>?v=3.5" defer></script>
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form.js'); ?>?v=3.6" defer></script>
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
