@@ -69,7 +69,13 @@
         btn.addEventListener('click', function() {
             var to = parseInt(this.dataset.go);
             var current = parseInt(form.querySelector('.toa-talent-step.active').dataset.step);
-            if (to > current && !validateStep(current)) return;
+            if (to > current && !validateStep(current)) {
+                // Scroll automatico al primo campo in errore — niente "blocco silenzioso" (2026-05-30)
+                var stepEl = form.querySelector('.toa-talent-step[data-step="'+current+'"]');
+                var firstErr = stepEl ? stepEl.querySelector('.error, .toa-talent-error-msg.show') : null;
+                if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
             showStep(to);
         });
     });
@@ -813,10 +819,20 @@
                 ok = false;
             }
 
-            // Caratteristiche fisiche obbligatorie
+            // Caratteristiche fisiche obbligatorie — messaggio multilingua "[campo] è obbligatorio" (2026-05-30)
+            var _TL = (window.toaTalentLang || 'it');
+            var _REQ = { it:'è obbligatorio', en:'is required', es:'es obligatorio', fr:'est obligatoire' };
+            var _FLBL = {
+                altezza: { it:'Altezza', en:'Height', es:'Altura', fr:'Taille' },
+                scarpe:  { it:'Numero scarpe', en:'Shoe size', es:'Número de calzado', fr:'Pointure' }
+            };
             ['altezza','scarpe'].forEach(function(name) {
                 var f = scope.querySelector('[name="'+name+'"]');
-                if (f && !f.value.trim()) { showFieldError(f, 'Campo obbligatorio'); ok = false; }
+                if (f && !f.value.trim()) {
+                    var _lbl = _FLBL[name] ? (_FLBL[name][_TL] || _FLBL[name].it) : '';
+                    showFieldError(f, (_lbl ? _lbl + ' ' : '') + (_REQ[_TL] || _REQ.it));
+                    ok = false;
+                }
             });
             // Custom select obbligatori
             ['taglia','occhi','capelli'].forEach(function(name) {

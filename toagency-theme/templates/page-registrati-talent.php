@@ -593,21 +593,24 @@ $theme_uri = get_stylesheet_directory_uri();
 
             <!-- Foto profilo -->
             <div class="toa-talent-upload-section">
-                <h5>👤 <?php echo _ht_talent(array('it'=>'Foto profilo','en'=>'Profile photo','fr'=>'Photo de profil','es'=>'Foto de perfil')); ?> <span class="req">*</span></h5>
+                <h5>👤 <?php echo _ht_talent(array('it'=>'Primo piano','en'=>'Close-up','fr'=>'Gros plan','es'=>'Primer plano')); ?> <span class="req">*</span></h5>
                 <p class="toa-talent-step-help"><?php echo _ht_talent(array(
                     'it'=>'Una foto chiara del viso, frontale, su sfondo neutro e luce naturale, come nell\'esempio qui sotto. Sarà la tua immagine principale.',
                     'en'=>'A clear, frontal photo of the face on a neutral background in natural light, like the example below. It will be your main image.',
                     'fr'=>'Une photo claire du visage, de face, sur fond neutre et en lumière naturelle, comme dans l\'exemple ci-dessous. Ce sera votre image principale.',
                     'es'=>'Una foto clara del rostro, frontal, con fondo neutro y luz natural, como en el ejemplo de abajo. Será tu imagen principal.',
                 )); ?></p>
-                <!-- FOTO GUIDA: slideshow ✅/❌ — 2s auto-rotate -->
+                <!-- FOTO GUIDA: slideshow ✅/❌ interleaved — 1s auto-rotate (13 slide) -->
                 <div class="toa-foto-gallery" id="toaFotoGallery">
                   <div class="toa-fg-slide active"><img src="<?= $theme_uri ?>/assets/foto-esempio-profilo.jpg" alt="ok"><span class="toa-fg-badge ok">✅ Così sì</span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-2.jpg" alt="ok 2"><span class="toa-fg-badge ok">✅ Così sì</span></div>
                   <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-sfondo.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-2.jpg" alt="ok"><span class="toa-fg-badge ok">✅ Così sì</span></div>
                   <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-occhiali.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-3.jpg" alt="ok"><span class="toa-fg-badge ok">✅ Così sì</span></div>
                   <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-angolo.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-4.jpg" alt="ok"><span class="toa-fg-badge ok">✅ Così sì</span></div>
                   <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-trucco.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-5.jpg" alt="ok"><span class="toa-fg-badge ok">✅ Così sì</span></div>
                   <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-cappello.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
                   <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-selfie-alto.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
                   <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-lontana.jpg" alt="no"><span class="toa-fg-badge wrong">❌ Così no</span></div>
@@ -623,14 +626,20 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-fg-badge.wrong{background:rgba(220,38,38,.88);color:#fff}
                 </style>
                 <script>
-                (function(){var s=document.querySelectorAll('#toaFotoGallery .toa-fg-slide'),i=0;if(!s.length)return;setInterval(function(){s[i].classList.remove('active');i=(i+1)%s.length;s[i].classList.add('active');},2000);})();
+                (function(){var s=document.querySelectorAll('#toaFotoGallery .toa-fg-slide'),i=0;if(!s.length)return;setInterval(function(){s[i].classList.remove('active');i=(i+1)%s.length;s[i].classList.add('active');},1000);})();
                 </script>
                 <div class="toa-talent-dropzone toa-talent-dropzone-small" id="toaTalentProfileDrop">
                     <div class="toa-talent-dropzone-icon">👤</div>
-                    <div class="toa-talent-dropzone-text"><strong><?php echo _ht_talent(array('it'=>'Clicca','en'=>'Click','fr'=>'Clique','es'=>'Clic')); ?></strong> <?php echo _ht_talent(array('it'=>'per caricare','en'=>'to upload','fr'=>'pour charger','es'=>'para subir')); ?></div>
+                    <div class="toa-talent-dropzone-text"><?php echo _ht_talent(array('it'=>'Carica foto o scatta selfie','en'=>'Upload photo or take a selfie','es'=>'Sube una foto o hazte un selfie','fr'=>'Charge une photo ou prends un selfie')); ?></div>
                     <div class="toa-talent-dropzone-hint">JPG, PNG • <?php echo _ht_talent(array('it'=>'max 5MB','en'=>'max 5MB','fr'=>'max 5MB','es'=>'max 5MB')); ?></div>
                     <input type="file" id="toaTalentProfileInput" accept="image/*" style="display:none;">
                 </div>
+                <p class="toa-talent-foto-nono" style="text-align:center;margin:8px 0 0;font-size:0.82rem;color:#f87171;font-weight:600;letter-spacing:.2px;"><?php echo _ht_talent(array(
+                    'it'=>'❌ NO testi · NO loghi · NO firme',
+                    'en'=>'❌ NO text · NO logos · NO signatures',
+                    'es'=>'❌ NO textos · NO logos · NO firmas',
+                    'fr'=>'❌ PAS de texte · PAS de logo · PAS de signature',
+                )); ?></p>
                 <div class="toa-talent-profile-thumb" id="toaTalentProfileThumb"></div>
                 <div class="toa-talent-error-msg"></div>
             </div>
@@ -663,10 +672,10 @@ $theme_uri = get_stylesheet_directory_uri();
             <div class="toa-talent-upload-section">
                 <h5>📷 <?php echo _ht_talent(array('it'=>'Foto del portfolio (facoltative)','en'=>'Portfolio photos (optional)','fr'=>'Photos portfolio (facultatif)','es'=>'Fotos portfolio (opcional)')); ?></h5>
                 <p class="toa-talent-step-help"><?php echo _ht_talent(array(
-                    'it'=>'Aggiungi foto del tuo lavoro o book. Massimo 15 foto.',
-                    'en'=>'Add work or book photos. Max 15.',
-                    'fr'=>'Photos book ou travail. Max 15.',
-                    'es'=>'Fotos book o trabajo. Máx 15.',
+                    'it'=>'Facoltativo — puoi aggiungerle anche dopo la registrazione. Ti consigliamo almeno 2-3 foto: i casting le guardano prima di contattarti.',
+                    'en'=>'Optional — you can add them after registration. We recommend at least 2-3 photos: casting directors check them before reaching out.',
+                    'fr'=>'Facultatif — tu peux les ajouter aussi après l\'inscription. Nous te conseillons au moins 2-3 photos : les directeurs de casting les regardent avant de te contacter.',
+                    'es'=>'Opcional — puedes añadirlas también después del registro. Te recomendamos al menos 2-3 fotos: los directores de casting las miran antes de contactarte.',
                 )); ?></p>
                 <div class="toa-talent-upload-counter" id="toaTalentPhotosCounter"><strong>0</strong> / 15</div>
                 <div class="toa-talent-dropzone" id="toaTalentPhotosDrop">
