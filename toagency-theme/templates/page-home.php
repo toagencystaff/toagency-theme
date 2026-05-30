@@ -171,6 +171,9 @@ function _ht($strings) {
   </div>
 </section>
 
+<!-- ═══════════ GOOGLE REVIEWS ═══════════ -->
+<?php toa_component('google-reviews'); // FIX 2026-05-30 marco — google-reviews ?>
+
 <?php toa_component('footer'); ?>
 
 <script>

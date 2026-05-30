@@ -33,7 +33,7 @@ add_filter( 'wpseo_schema_organization', function ( $data ) {
     $data['priceRange'] = '€€€';
     $data['address']    = [
         '@type'           => 'PostalAddress',
-        'streetAddress'   => 'Via Cavour',
+        'streetAddress'   => 'Via Cavour, 21',
         'addressLocality' => 'Torino',
         'addressRegion'   => 'TO',
         'postalCode'      => '10123',

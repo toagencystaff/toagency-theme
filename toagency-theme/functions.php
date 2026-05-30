@@ -808,3 +808,13 @@ function _t_raw($strings) {
 
 // === FIX 2026-05-30 marco — schema markup #33 ===
 require_once get_template_directory() . '/inc/schema.php';
+
+// === FIX 2026-05-30 marco — google-reviews CSS ===
+add_action('wp_enqueue_scripts', function() {
+    wp_enqueue_style(
+        'toa-google-reviews',
+        get_template_directory_uri() . '/assets/css/google-reviews.css',
+        [],
+        '2026-05-30'
+    );
+});
