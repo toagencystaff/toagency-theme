@@ -22,6 +22,27 @@
     var MAX_PHOTOS = 15;
     var MAX_PHOTO_SIZE_MB = 5;
 
+    // ─── i18n messaggi runtime (lingua WP corrente — window.toaTalentLang) ───
+    var TLANG = (window.toaTalentLang || 'it');
+    function tmsg(m) { return m[TLANG] || m.it; }
+    var MSG = {
+        required:      { it:'Campo obbligatorio', en:'Required field', es:'Campo obligatorio', fr:'Champ obligatoire' },
+        reqSuffix:     { it:'è obbligatorio', en:'is required', es:'es obligatorio', fr:'est obligatoire' },
+        pickGender:    { it:'Indica il sesso', en:'Please select gender', es:'Indica el género', fr:'Indique le genre' },
+        reqMinor:      { it:'Campo obbligatorio per minori sotto 16 anni', en:'Required for minors under 16', es:'Obligatorio para menores de 16 años', fr:'Obligatoire pour les mineurs de moins de 16 ans' },
+        parentConfirm: { it:'La conferma del genitore è obbligatoria', en:'Parent confirmation is required', es:'La confirmación del padre es obligatoria', fr:'La confirmation du parent est obligatoire' },
+        pickCity:      { it:'Indica la città', en:'Please enter the city', es:'Indica la ciudad', fr:'Indique la ville' },
+        pickRole:      { it:'Seleziona almeno un ruolo', en:'Select at least one role', es:'Selecciona al menos un rol', fr:'Sélectionne au moins un rôle' },
+        pickEthnicity: { it:"Seleziona almeno un'etnia", en:'Select at least one ethnicity', es:'Selecciona al menos una etnia', fr:'Sélectionne au moins une origine' },
+        photoReq:      { it:'Il primo piano è obbligatorio.', en:'The close-up photo is required.', es:'El primer plano es obligatorio.', fr:'Le gros plan est obligatoire.' },
+        rulesReq:      { it:'Devi confermare di aver letto le regole', en:'You must confirm you have read the rules', es:'Debes confirmar que has leído las reglas', fr:'Tu dois confirmer avoir lu les règles' },
+        gdprReq:       { it:'Devi accettare la privacy policy', en:'You must accept the privacy policy', es:'Debes aceptar la política de privacidad', fr:'Tu dois accepter la politique de confidentialité' }
+    };
+    var FLBL = {
+        altezza: { it:'Altezza', en:'Height', es:'Altura', fr:'Taille' },
+        scarpe:  { it:'Numero scarpe', en:'Shoe size', es:'Número de calzado', fr:'Pointure' }
+    };
+
     var uploadState = {
         photoProfile: null,
         photos: []
@@ -666,7 +687,7 @@
         if (n === 1) {
             ['nome','cognome','email','telefono','data_nascita'].forEach(function(name) {
                 var f = scope.querySelector('[name="'+name+'"]');
-                if (f && !f.value.trim()) { showFieldError(f, 'Campo obbligatorio'); ok = false; }
+                if (f && !f.value.trim()) { showFieldError(f, tmsg(MSG.required)); ok = false; }
             });
             var emailF = scope.querySelector('[name="email"]');
             if (emailF && emailF.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailF.value)) {
@@ -808,9 +829,10 @@
         }
 
         if (n === 3) {
-            // Fix iOS 2026-05-30: forza input.checked dallo stato visuale (.checked) prima di validare —
-            // su iOS Safari la proprietà input.checked può desincronizzarsi dalla classe che l'utente vede.
-            scope.querySelectorAll('.toa-talent-category-chip').forEach(function(c){ var i = c.querySelector('input'); if (i) i.checked = c.classList.contains('checked'); });
+            // Fix iOS (2026-05-30, additivo 2026-05-31): se un chip è visivamente selezionato
+            // (classe .checked) forza input.checked=true. ADDITIVO: non deseleziona MAI un input
+            // realmente checked se la classe è desincronizzata (era il bug "Seleziona almeno un ruolo").
+            scope.querySelectorAll('.toa-talent-category-chip').forEach(function(c){ var i = c.querySelector('input'); if (i && c.classList.contains('checked')) i.checked = true; });
             // Almeno un ruolo immagine selezionato
             var checked = scope.querySelectorAll('input[name="ruoli_immagine[]"]:checked');
             if (!checked.length) {
@@ -819,18 +841,11 @@
                 ok = false;
             }
 
-            // Caratteristiche fisiche obbligatorie — messaggio multilingua "[campo] è obbligatorio" (2026-05-30)
-            var _TL = (window.toaTalentLang || 'it');
-            var _REQ = { it:'è obbligatorio', en:'is required', es:'es obligatorio', fr:'est obligatoire' };
-            var _FLBL = {
-                altezza: { it:'Altezza', en:'Height', es:'Altura', fr:'Taille' },
-                scarpe:  { it:'Numero scarpe', en:'Shoe size', es:'Número de calzado', fr:'Pointure' }
-            };
+            // Caratteristiche fisiche obbligatorie — messaggio multilingua "[campo] è obbligatorio"
             ['altezza','scarpe'].forEach(function(name) {
                 var f = scope.querySelector('[name="'+name+'"]');
                 if (f && !f.value.trim()) {
-                    var _lbl = _FLBL[name] ? (_FLBL[name][_TL] || _FLBL[name].it) : '';
-                    showFieldError(f, (_lbl ? _lbl + ' ' : '') + (_REQ[_TL] || _REQ.it));
+                    showFieldError(f, tmsg(FLBL[name]) + ' ' + tmsg(MSG.reqSuffix));
                     ok = false;
                 }
             });
