@@ -41,7 +41,7 @@
           <li><a href="<?php echo home_url('/casting-roma/'); ?>"><?php echo _ht(['it'=>'Roma','en'=>'Rome','fr'=>'Rome','es'=>'Roma']); ?></a></li>
           <li><a href="<?php echo home_url('/casting-napoli/'); ?>">Napoli</a></li>
           <li><a href="<?php echo home_url('/casting-firenze/'); ?>"><?php echo _ht(['it'=>'Firenze','en'=>'Florence','fr'=>'Florence','es'=>'Florencia']); ?></a></li>
-          <li><a href="<?php echo home_url('/casting/'); ?>" class="toa-fll-more"><?php echo _ht(['it'=>'Tutte le città →','en'=>'All cities →','fr'=>'Toutes les villes →','es'=>'Todas las ciudades →']); ?></a></li>
+          <li><a href="<?php echo home_url('/casting-italia/'); ?>" class="toa-fll-more"><?php echo _ht(['it'=>'Tutte le città →','en'=>'All cities →','fr'=>'Toutes les villes →','es'=>'Todas las ciudades →']); ?></a></li>
         </ul>
       </div>
 
@@ -53,7 +53,7 @@
           <li><a href="<?php echo home_url('/agenzia-comparse-milano/'); ?>"><?php echo _ht(['it'=>'Comparse Milano','en'=>'Extras Milan','fr'=>'Figurants Milan','es'=>'Extras Milán']); ?></a></li>
           <li><a href="<?php echo home_url('/agenzia-modelle-marche/'); ?>"><?php echo _ht(['it'=>'Modelle Marche','en'=>'Marche Models','fr'=>'Mannequins Marches','es'=>'Modelos Marche']); ?></a></li>
           <li><a href="<?php echo home_url('/hostess-eicma/'); ?>">Hostess EICMA</a></li>
-          <li><a href="<?php echo home_url('/casting/'); ?>" class="toa-fll-more"><?php echo _ht(['it'=>'Tutti i servizi →','en'=>'All services →','fr'=>'Tous les services →','es'=>'Todos los servicios →']); ?></a></li>
+          <li><a href="<?php echo home_url('/casting-italia/'); ?>" class="toa-fll-more"><?php echo _ht(['it'=>'Tutti i servizi →','en'=>'All services →','fr'=>'Tous les services →','es'=>'Todos los servicios →']); ?></a></li>
         </ul>
       </div>
 
