@@ -119,6 +119,22 @@ function toa_current_lang() {
 }
 
 /**
+ * i18n helper globale — ritorna la stringa per la lingua corrente, esc_html'd.
+ * FIX 2026-05-31 marco — promosso a globale (era locale a page-home.php) per uso in componenti globali (footer).
+ * Guardato: page-home.php / page-landing-geo.php definiscono _ht solo se non già presente.
+ */
+if (!function_exists('_ht')) {
+    function _ht($strings) {
+        global $__l;
+        $l = (!empty($__l) && in_array($__l, array('it','en','fr','es'), true))
+            ? $__l
+            : (function_exists('toa_current_lang') ? toa_current_lang() : 'it');
+        if (!in_array($l, array('it','en','fr','es'), true)) $l = 'it';
+        return esc_html(isset($strings[$l]) ? $strings[$l] : (isset($strings['it']) ? $strings['it'] : ''));
+    }
+}
+
+/**
  * Check if current page uses a specific template
  */
 function toa_is_template($template_name) {

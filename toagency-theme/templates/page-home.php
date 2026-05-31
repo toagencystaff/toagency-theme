@@ -8,10 +8,12 @@ toa_component('header');
 $__l = function_exists('toa_current_lang') ? toa_current_lang() : 'it';
 if (!in_array($__l, array('it','en','fr','es'))) $__l = 'it';
 
-// ─── Translations ───
-function _ht($strings) {
-    global $__l;
-    return esc_html(isset($strings[$__l]) ? $strings[$__l] : $strings['it']);
+// ─── Translations ─── (_ht ora globale in functions.php; def locale guardata per retrocompat)
+if (!function_exists('_ht')) {
+    function _ht($strings) {
+        global $__l;
+        return esc_html(isset($strings[$__l]) ? $strings[$__l] : $strings['it']);
+    }
 }
 ?>
 <!-- TOA-HOME-V6 -->
