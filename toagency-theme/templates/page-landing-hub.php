@@ -15,12 +15,16 @@ $group_labels = [
     'casting'        => _ht(['it'=>'Casting per città','en'=>'Casting by city','fr'=>'Casting par ville','es'=>'Casting por ciudad']),
     'modelle'        => _ht(['it'=>'Agenzia modelle','en'=>'Model agency','fr'=>'Agence de mannequins','es'=>'Agencia de modelos']),
     'modelle-mature' => _ht(['it'=>'Modelle mature e over 50','en'=>'Mature & 50+ models','fr'=>'Mannequins matures','es'=>'Modelos maduras']),
+    'attori'         => _ht(['it'=>'Attori','en'=>'Actors','fr'=>'Acteurs','es'=>'Actores']),
     'comparse'       => _ht(['it'=>'Comparse e figuranti','en'=>'Extras & background','fr'=>'Figurants','es'=>'Extras']),
+    'influencer'     => _ht(['it'=>'Influencer & Creator','en'=>'Influencers & Creators','fr'=>'Influenceurs & Créateurs','es'=>'Influencers & Creadores']),
+    'promoter'       => _ht(['it'=>'Promoter','en'=>'Promoters','fr'=>'Promoteurs','es'=>'Promotores']),
     'hostess-fiere'  => _ht(['it'=>'Hostess per fiere','en'=>'Trade show hostess','fr'=>'Hôtesses foires','es'=>'Azafatas ferias']),
     'hostess-eventi' => _ht(['it'=>'Hostess per eventi specifici','en'=>'Event hostess','fr'=>'Hôtesses événements','es'=>'Azafatas eventos']),
+    'produzione'     => _ht(['it'=>'Produzione & Visual','en'=>'Production & Visual','fr'=>'Production & Visuel','es'=>'Producción & Visual']),
     'model-agency'   => _ht(['it'=>'Agenzia internazionale','en'=>'International agency','fr'=>'Agence internationale','es'=>'Agencia internacional']),
 ];
-$group_order = ['casting','modelle','modelle-mature','comparse','hostess-fiere','hostess-eventi','model-agency'];
+$group_order = ['casting','modelle','modelle-mature','attori','comparse','influencer','promoter','hostess-fiere','hostess-eventi','produzione','model-agency'];
 
 // Query tutte le landing
 $query = new WP_Query([
