@@ -104,7 +104,7 @@ $TALENT_TAGLIE = array('XS','S','M','L','XL','XXL');
 $theme_uri = get_stylesheet_directory_uri();
 ?>
 <!-- TOA-TALENT-FORM-V1 -->
-<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-form.css'); ?>?v=1.1">
+<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-form.css'); ?>?v=1.2">
 <script>
     window.toaThemeUri = "<?php echo esc_js($theme_uri); ?>";
     window.toaTalentLang = "<?php echo esc_js($__l); ?>";

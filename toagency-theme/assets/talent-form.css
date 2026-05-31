@@ -276,7 +276,11 @@
     transition: all 0.2s ease;
     user-select: none;
 }
-.toa-talent-category-chip input { display: none; }
+/* FIX mobile-tap 2026-05-31 marco: display:none bloccava il toggle della label su touch (iOS) */
+.toa-talent-category-chip input {
+    position: absolute; opacity: 0; width: 1px; height: 1px;
+    margin: 0; padding: 0; border: 0; pointer-events: none;
+}
 .toa-talent-category-chip:hover {
     border-color: #c8ff00;
     background: rgba(200,255,0,0.05);
