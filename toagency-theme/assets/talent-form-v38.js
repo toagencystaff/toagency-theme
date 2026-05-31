@@ -1,7 +1,7 @@
 /**
  * TOAgency — Form registrazione talent
  * v2.0 — 8 Maggio 2026
- * Path: /wp-content/themes/toagency-theme/assets/talent-form-v37.js
+ * Path: /wp-content/themes/toagency-theme/assets/talent-form-v38.js
  *
  * v2.0 changes:
  * - Tipo talent forzato a 'immagine' (backstage → form crew)
@@ -157,15 +157,16 @@
     }
 
     // ─── 3. Categorie chip ───────────────────────────────────
+    // input.checked = unica fonte di verità. La <label> esegue il toggle NATIVO della
+    // checkbox (display:none) e noi reagiamo al 'change' nativo per aggiornare la classe
+    // visiva. Niente preventDefault / toggle manuale → un solo 'change' per tap → niente
+    // double-fire su iOS, e updateMisureVisibility + limite max-2 etnie (che ascoltano
+    // 'change' nativo) continuano a funzionare. (fix iOS 2026-05-31)
     document.querySelectorAll('.toa-talent-category-chip').forEach(function(chip) {
-        chip.addEventListener('click', function(e) {
-            e.preventDefault(); // FIX 2026-05-29 marco — previeni double-toggle su mobile (label+input)
-            var cb = chip.querySelector('input');
-            cb.checked = !cb.checked;
+        var cb = chip.querySelector('input');
+        if (!cb) return;
+        cb.addEventListener('change', function() {
             chip.classList.toggle('checked', cb.checked);
-            // Toggle sincrono → rilancia 'change' (setattr JS non lo emette):
-            // mantiene updateMisureVisibility + limite max-2 etnie funzionanti.
-            cb.dispatchEvent(new Event('change', { bubbles: true }));
         });
     });
 
@@ -856,8 +857,8 @@
             var rolesSelected = 0;
             roleChips.forEach(function(c){
                 var i = c.querySelector('input[name="ruoli_immagine[]"]');
-                var sel = c.classList.contains('checked') || (i && i.checked);
-                if (i) i.checked = sel;
+                var sel = (i && i.checked) || c.classList.contains('checked');
+                if (i) i.checked = !!sel; // assicura sincronizzazione
                 if (sel) rolesSelected++;
             });
             if (!rolesSelected) {
@@ -891,8 +892,8 @@
             var etnieSelected = 0;
             etniaChips.forEach(function(c){
                 var i = c.querySelector('input[name="etnia[]"]');
-                var sel = c.classList.contains('checked') || (i && i.checked);
-                if (i) i.checked = sel;
+                var sel = (i && i.checked) || c.classList.contains('checked');
+                if (i) i.checked = !!sel; // assicura sincronizzazione
                 if (sel) etnieSelected++;
             });
             if (!etnieSelected) {
