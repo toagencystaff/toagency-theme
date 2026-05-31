@@ -543,6 +543,8 @@
     border: 2px solid rgba(200,255,0,0.4);
     position: relative;
 }
+/* FIX 2026-05-31: nascondi il cerchio vuoto finché non c'è una foto profilo caricata */
+.toa-talent-profile-thumb:empty { display: none; }
 .toa-talent-profile-thumb img {
     width: 100%;
     height: 100%;

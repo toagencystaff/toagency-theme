@@ -838,8 +838,24 @@ add_action('wp_enqueue_scripts', function() {
 
 // === FIX 2026-05-30 marco — landing-geo CSS ===
 add_action('wp_enqueue_scripts', function() {
-    if (is_page_template('templates/page-landing-geo.php')) {
+    if (is_page_template('templates/page-landing-geo.php') || is_page_template('templates/page-landing-hub.php')) {
         $f = get_template_directory() . '/assets/css/landing-geo.css';
         wp_enqueue_style('toa-landing-geo', get_template_directory_uri().'/assets/css/landing-geo.css', [], file_exists($f) ? filemtime($f) : '1');
     }
+});
+
+// === FIX 2026-05-31 marco — nascondi CTA "Preventivo" sulle pagine form registrati-* (talent/crew) ===
+// Sul form di registrazione il CTA preventivo (nav desktop, mobile menu, sticky mobile) è fuori contesto.
+function toa_is_registrati_page() {
+    if (!is_page()) return false;
+    $slug = get_post_field('post_name', get_queried_object_id());
+    return $slug && strpos($slug, 'registrati') === 0; // registrati-talent, registrati-crew, ...
+}
+add_filter('body_class', function($classes) {
+    if (toa_is_registrati_page()) $classes[] = 'toa-hide-quote-cta';
+    return $classes;
+});
+add_action('wp_head', function() {
+    if (!toa_is_registrati_page()) return;
+    echo '<style id="toa-hide-quote-cta-css">body.toa-hide-quote-cta .nav-cta-btn,body.toa-hide-quote-cta .sticky-cta-mobile,body.toa-hide-quote-cta .mobile-menu-cta{display:none!important}</style>' . "\n";
 });
