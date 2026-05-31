@@ -36,21 +36,24 @@
       <div class="toa-fll-col">
         <h4><?php echo _ht(['it'=>'Casting per città','en'=>'Casting by city','fr'=>'Casting par ville','es'=>'Casting por ciudad']); ?></h4>
         <ul>
-          <li><a href="<?php echo home_url('/casting-torino/'); ?>"><?php echo _ht(['it'=>'Casting Torino','en'=>'Casting Turin','fr'=>'Casting Turin','es'=>'Casting Turín']); ?></a></li>
-          <li><a href="<?php echo home_url('/casting-milano/'); ?>"><?php echo _ht(['it'=>'Casting Milano','en'=>'Casting Milan','fr'=>'Casting Milan','es'=>'Casting Milán']); ?></a></li>
-          <li><a href="<?php echo home_url('/casting-roma/'); ?>"><?php echo _ht(['it'=>'Casting Roma','en'=>'Casting Rome','fr'=>'Casting Rome','es'=>'Casting Roma']); ?></a></li>
-          <li><a href="<?php echo home_url('/agenzia-modelle-milano/'); ?>"><?php echo _ht(['it'=>'Modelle Milano','en'=>'Models Milan','fr'=>'Mannequins Milan','es'=>'Modelos Milán']); ?></a></li>
-          <li><a href="<?php echo home_url('/casting-modelle-over-50/'); ?>"><?php echo _ht(['it'=>'Modelle Over 50','en'=>'Mature Models','fr'=>'Mannequins Matures','es'=>'Modelos Maduras']); ?></a></li>
+          <li><a href="<?php echo home_url('/casting-torino/'); ?>"><?php echo _ht(['it'=>'Torino','en'=>'Turin','fr'=>'Turin','es'=>'Turín']); ?></a></li>
+          <li><a href="<?php echo home_url('/casting-milano/'); ?>"><?php echo _ht(['it'=>'Milano','en'=>'Milan','fr'=>'Milan','es'=>'Milán']); ?></a></li>
+          <li><a href="<?php echo home_url('/casting-roma/'); ?>"><?php echo _ht(['it'=>'Roma','en'=>'Rome','fr'=>'Rome','es'=>'Roma']); ?></a></li>
+          <li><a href="<?php echo home_url('/casting-napoli/'); ?>">Napoli</a></li>
+          <li><a href="<?php echo home_url('/casting-firenze/'); ?>"><?php echo _ht(['it'=>'Firenze','en'=>'Florence','fr'=>'Florence','es'=>'Florencia']); ?></a></li>
+          <li><a href="<?php echo home_url('/casting/'); ?>" class="toa-fll-more"><?php echo _ht(['it'=>'Tutte le città →','en'=>'All cities →','fr'=>'Toutes les villes →','es'=>'Todas las ciudades →']); ?></a></li>
         </ul>
       </div>
 
       <div class="toa-fll-col">
-        <h4><?php echo _ht(['it'=>'Hostess per fiere','en'=>'Trade show hostess','fr'=>'Hôtesses foires','es'=>'Azafatas ferias']); ?></h4>
+        <h4><?php echo _ht(['it'=>'Hostess & servizi','en'=>'Hostess & services','fr'=>'Hôtesses & services','es'=>'Azafatas & servicios']); ?></h4>
         <ul>
-          <li><a href="<?php echo home_url('/hostess-fiere/'); ?>"><?php echo _ht(['it'=>'Hostess per Fiere','en'=>'Trade Show Hostess','fr'=>'Hôtesses Foires','es'=>'Azafatas Ferias']); ?></a></li>
-          <li><a href="<?php echo home_url('/hostess-eicma/'); ?>">Hostess EICMA</a></li>
-          <li><a href="<?php echo home_url('/hostess-rimini-wellness/'); ?>">Hostess Rimini Wellness</a></li>
+          <li><a href="<?php echo home_url('/hostess-fiere/'); ?>"><?php echo _ht(['it'=>'Hostess Fiere','en'=>'Trade Show Hostess','fr'=>'Hôtesses Foires','es'=>'Azafatas Ferias']); ?></a></li>
+          <li><a href="<?php echo home_url('/casting-modelle-over-50/'); ?>"><?php echo _ht(['it'=>'Modelle Over 50','en'=>'Mature Models','fr'=>'Mannequins 50+','es'=>'Modelos 50+']); ?></a></li>
           <li><a href="<?php echo home_url('/agenzia-comparse-milano/'); ?>"><?php echo _ht(['it'=>'Comparse Milano','en'=>'Extras Milan','fr'=>'Figurants Milan','es'=>'Extras Milán']); ?></a></li>
+          <li><a href="<?php echo home_url('/agenzia-modelle-marche/'); ?>"><?php echo _ht(['it'=>'Modelle Marche','en'=>'Marche Models','fr'=>'Mannequins Marches','es'=>'Modelos Marche']); ?></a></li>
+          <li><a href="<?php echo home_url('/hostess-eicma/'); ?>">Hostess EICMA</a></li>
+          <li><a href="<?php echo home_url('/casting/'); ?>" class="toa-fll-more"><?php echo _ht(['it'=>'Tutti i servizi →','en'=>'All services →','fr'=>'Tous les services →','es'=>'Todos los servicios →']); ?></a></li>
         </ul>
       </div>
 
