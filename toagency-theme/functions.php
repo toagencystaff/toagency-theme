@@ -213,13 +213,15 @@ add_action('wp_footer', function() {
 
 // === FIX: Form B2B submit handler ===
 add_action('wp_footer', function() {
-    if (!is_page('form-b2b')) return;
+    $uri = $_SERVER['REQUEST_URI'] ?? '/';
+    if (strpos($uri, '/form-b2b') === false) return;
+    $tnx_lang = (function_exists('toa_current_lang') && toa_current_lang() !== 'it') ? '/' . toa_current_lang() : '';
     echo '<script>
 (function(){
   var form = document.getElementById("leadForm");
   if(!form) return;
   var CRM = "/crm_toagency/actions/lead-from-website.php";
-  var TNX = window.location.origin + "/tnx/";
+  var TNX = window.location.origin + "' . $tnx_lang . '/tnx/";
   var TIMEOUT = 8000;
   function goThankYou(){ window.location.href = TNX; }
   function getB2BData(){
