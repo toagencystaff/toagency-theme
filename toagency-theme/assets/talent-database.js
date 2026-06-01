@@ -335,9 +335,13 @@
         var id = parseInt(t.id, 10) || 0;
         var sel = TD.selectedIds.has(id) ? ' selected' : '';
         var fotoSrc = FOTO_URL + '?id=' + encodeURIComponent(id);
-        // 2026-06-01 marco — rotazione foto profilo (talent_database.foto_rotazione via API)
+        // 2026-06-01 marco — rotazione + posizione foto profilo (talent_database.foto_rotazione/foto_position via API)
         var rot = parseInt(t.foto_rotazione, 10) || 0;
-        var rotStyle = rot ? (' style="transform:rotate(' + rot + 'deg) scale(' + ((rot === 90 || rot === 270) ? 1.35 : 1) + ');"') : '';
+        var pos = (typeof t.foto_position === 'string' && /^\d{1,3}%\s+\d{1,3}%$/.test(t.foto_position.trim())) ? t.foto_position.trim() : '';
+        var cssParts = [];
+        if (rot) cssParts.push('transform:rotate(' + rot + 'deg) scale(' + ((rot === 90 || rot === 270) ? 1.35 : 1) + ')');
+        if (pos) cssParts.push('object-position:' + pos);
+        var rotStyle = cssParts.length ? (' style="' + cssParts.join(';') + ';"') : '';
         var bits = [];
         if (t.eta)     bits.push(escapeHtml(String(t.eta)));
         if (t.altezza) bits.push(escapeHtml(t.altezza + ' cm'));
@@ -572,9 +576,10 @@
                     thumb.src       = item.url || '';
                     thumb.loading   = 'lazy';
                     thumb.alt       = '';
-                    // 2026-06-01 marco — rotazione coerente con la foto profilo
+                    // 2026-06-01 marco — rotazione + posizione coerenti con la foto profilo
                     var tRot = parseInt(item.rotazione, 10) || 0;
                     if (tRot) thumb.style.transform = 'rotate(' + tRot + 'deg) scale(' + ((tRot === 90 || tRot === 270) ? 1.35 : 1) + ')';
+                    if (typeof item.position === 'string' && /^\d{1,3}%\s+\d{1,3}%$/.test(item.position.trim())) thumb.style.objectPosition = item.position.trim();
                     thumb.className = 'toa-tdb-gallery-thumb' + (i === 0 ? ' is-active' : '');
                     thumb.setAttribute('data-idx', String(i));
                     thumbsEl.appendChild(thumb);
@@ -609,9 +614,10 @@
             var capturedIdx = idx;
             imgEl.style.transition = 'opacity 150ms ease';
             imgEl.style.opacity = '0';
-            // 2026-06-01 marco — rotazione solo per la foto profilo (item.rotazione dall'API)
+            // 2026-06-01 marco — rotazione + posizione solo per la foto profilo (item.rotazione/position dall'API)
             var gRot = parseInt(item.rotazione, 10) || 0;
             imgEl.style.transform = gRot ? ('rotate(' + gRot + 'deg) scale(' + ((gRot === 90 || gRot === 270) ? 1.35 : 1) + ')') : '';
+            imgEl.style.objectPosition = (typeof item.position === 'string' && /^\d{1,3}%\s+\d{1,3}%$/.test(item.position.trim())) ? item.position.trim() : '';
             setTimeout(function () {
                 if (TD.galleryIdx !== capturedIdx) return;
                 imgEl.src = item.url || '';
