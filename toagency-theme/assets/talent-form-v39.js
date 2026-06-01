@@ -1,7 +1,7 @@
 /**
  * TOAgency — Form registrazione talent
  * v2.0 — 8 Maggio 2026
- * Path: /wp-content/themes/toagency-theme/assets/talent-form-v38.js
+ * Path: /wp-content/themes/toagency-theme/assets/talent-form-v39.js
  *
  * v2.0 changes:
  * - Tipo talent forzato a 'immagine' (backstage → form crew)
@@ -12,6 +12,19 @@
  * - GDPR potenziato per minori
  * - Rimossa email genitore / token / attesa_genitore
  */
+
+/* DEBUG-v39 2026-06-01 marco -- RIMUOVERE DOPO TEST */
+window.addEventListener('error', function (ev) {
+    var d = document.getElementById('toaErr') || document.body.appendChild(Object.assign(document.createElement('div'), { id: 'toaErr' }));
+    d.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#b00;color:#fff;font:12px monospace;padding:6px;white-space:pre-wrap';
+    d.textContent = 'JS ERROR: ' + ev.message + ' @' + (ev.filename || '').split('/').pop() + ':' + ev.lineno;
+});
+document.addEventListener('DOMContentLoaded', function () {
+    var m = document.body.appendChild(document.createElement('div'));
+    m.style.cssText = 'position:fixed;left:0;bottom:0;z-index:99998;background:#000;color:#0f0;font:10px monospace;padding:2px 6px;opacity:.6';
+    m.textContent = 'v39';
+});
+/* FINE DEBUG-v39 */
 
 (function () {
     'use strict';
@@ -868,7 +881,14 @@
             });
             if (!rolesSelected) {
                 var ruoliErr = ruoliImmagineBox ? ruoliImmagineBox.querySelector('.toa-talent-error-msg') : null;
-                if (ruoliErr) { ruoliErr.textContent = tmsg(MSG.pickRole); ruoliErr.classList.add('show'); }
+                if (ruoliErr) {
+                    /* DEBUG-v39 contatori -- RIMUOVERE DOPO TEST */
+                    ruoliErr.textContent = tmsg(MSG.pickRole)
+                        + ' [chips:' + roleChips.length
+                        + ' chk:' + document.querySelectorAll('input[name="ruoli_immagine[]"]:checked').length
+                        + ' cls:' + [].filter.call(roleChips, function (c) { return c.classList.contains('checked'); }).length + ']';
+                    ruoliErr.classList.add('show');
+                }
                 ok = false;
             }
 
