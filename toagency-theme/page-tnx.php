@@ -403,6 +403,10 @@
 </div><!-- fine .tnx-wrap -->
 
 <script>
+// Lingua iniziale = lingua corrente WPML (server-side), fallback IT.
+// Le pagine /fr/tnx/ /es/tnx/ /en/tnx/ partono già nella lingua giusta.
+var TNX_INIT_LANG = <?php echo json_encode( ( defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE ) ? ICL_LANGUAGE_CODE : 'it' ); ?>;
+
 // ── TRADUZIONI ──────────────────────────────────────────────
 var TNX_TRANSLATIONS = {
     it: {
@@ -509,8 +513,15 @@ function copyRef(btn) {
     });
 }
 
-// ── INIT — default Italiano ──────────────────────────────────
-document.addEventListener('DOMContentLoaded', function() { setLang('it'); });
+// ── INIT — lingua da WPML, fallback prefisso URL, poi IT ─────
+document.addEventListener('DOMContentLoaded', function() {
+    var lang = TNX_INIT_LANG;
+    if (!TNX_TRANSLATIONS[lang]) {
+        var m = location.pathname.match(/^\/(fr|es|en)(\/|$)/);
+        lang = m ? m[1] : 'it';
+    }
+    setLang(lang);
+});
 </script>
 
 <?php wp_footer(); ?>
