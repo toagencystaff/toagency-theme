@@ -794,7 +794,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v39.js'); ?>" defer></script>
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260601" defer></script>
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
