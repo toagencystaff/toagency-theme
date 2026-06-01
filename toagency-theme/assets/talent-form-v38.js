@@ -157,16 +157,21 @@
     }
 
     // ─── 3. Categorie chip ───────────────────────────────────
-    // input.checked = unica fonte di verità. La <label> esegue il toggle NATIVO della
-    // checkbox (display:none) e noi reagiamo al 'change' nativo per aggiornare la classe
-    // visiva. Niente preventDefault / toggle manuale → un solo 'change' per tap → niente
-    // double-fire su iOS, e updateMisureVisibility + limite max-2 etnie (che ascoltano
-    // 'change' nativo) continuano a funzionare. (fix iOS 2026-05-31)
-    document.querySelectorAll('.toa-talent-category-chip').forEach(function(chip) {
+    document.querySelectorAll('.toa-talent-category-chip').forEach(function(chip){
         var cb = chip.querySelector('input');
-        if (!cb) return;
-        cb.addEventListener('change', function() {
+        if(!cb) return;
+        // sync visivo anche per cambi programmatici / nativi
+        cb.addEventListener('change', function(){ chip.classList.toggle('checked', cb.checked); });
+        // FIX tap mobile 2026-05-31 marco: toggle esplicito, una volta sola (anti doppio-fire iOS)
+        chip.addEventListener('click', function(e){
+            e.preventDefault();                 // toglie il toggle nativo (inaffidabile su touch)
+            if(cb.disabled) return;             // rispetta il limite max-2 etnie
+            if(chip._toaLock) return;           // guardia: iOS fa partire il click 2 volte sulla label
+            chip._toaLock = true;
+            setTimeout(function(){ chip._toaLock = false; }, 60);
+            cb.checked = !cb.checked;
             chip.classList.toggle('checked', cb.checked);
+            cb.dispatchEvent(new Event('change', {bubbles:true})); // tiene vive misure + limite etnie
         });
     });
 
