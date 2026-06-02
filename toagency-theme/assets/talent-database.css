@@ -1302,7 +1302,8 @@
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
-    object-position: center top !important;
+    /* 2026-06-02 marco — niente !important: l'object-position inline (foto_position) deve poter vincere */
+    object-position: center top;
     display: block;
     transition: transform 400ms ease;
     background: #111;
@@ -1567,3 +1568,70 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
 .tdb-toggle-icon { font-size: 18px; line-height: 1; transition: transform .25s; }
 .toa-tdb-sidebar.collapsed { width: 0 !important; min-width: 0 !important; padding: 0 !important; overflow: hidden; visibility: hidden; }
 .toa-tdb-sidebar-toggle.is-collapsed .tdb-toggle-icon { transform: rotate(180deg); }
+
+/* ════════════════════════════════════════════════════════════════
+   REDESIGN 2026-06-02 marco — header compatto, chip categoria,
+   sidebar collassabile desktop (4↔5 col), card a riga unica.
+   Blocco in coda: vince per ordine sorgente sui duplicati precedenti.
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Header compatto ── */
+.toa-tdb-hero-compact { margin-bottom: 16px; max-width: none; }
+.toa-tdb-hero-compact .toa-tdb-hero-title { font-size: clamp(1.5rem, 3vw, 2.1rem); margin: 0 0 6px; }
+.toa-tdb-hero-compact .toa-tdb-hero-subtitle {
+    font-size: 0.92rem; line-height: 1.4; max-width: 640px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+@media (max-width: 767px) {
+    .toa-tdb-hero-compact .toa-tdb-hero-subtitle { white-space: normal; }
+}
+
+/* ── Chip categoria (sostituiscono l'hub grande) ── */
+.toa-tdb-cat-chips {
+    display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px;
+}
+@media (max-width: 767px) {
+    .toa-tdb-cat-chips { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+}
+.toa-tdb-cat-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border-radius: 999px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14);
+    color: rgba(255,255,255,0.82); font-size: 0.8rem; font-weight: 600;
+    font-family: inherit; cursor: pointer; white-space: nowrap;
+    transition: background .15s, border-color .15s, color .15s;
+}
+.toa-tdb-cat-chip:hover { border-color: rgba(200,255,0,0.5); color: #fff; }
+.toa-tdb-cat-chip.is-active { background: #c8ff00; border-color: #c8ff00; color: #0a0a0a; }
+.toa-tdb-cat-chip-icon { font-size: 0.95rem; line-height: 1; }
+
+/* ── Results header + toggle sidebar desktop ── */
+.toa-tdb-results-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.toa-tdb-sidebar-toggle { margin-bottom: 0; flex-shrink: 0; font-size: 16px; line-height: 1; padding: 7px 11px; }
+@media (max-width: 767px) {
+    /* su mobile la sidebar è un drawer gestito da #tdbFiltersToggle: nascondo il toggle desktop */
+    .toa-tdb-sidebar-toggle { display: none; }
+}
+
+/* ── Sidebar collassabile (desktop) — guidata da .tdb-sidebar-collapsed sul wrap ── */
+.toa-tdb-layout { transition: grid-template-columns .3s ease; }
+.toa-tdb-grid   { transition: grid-template-columns .3s ease; }
+.toa-tdb-sidebar { transition: opacity .25s ease; }
+@media (min-width: 768px) {
+    .toa-tdb-wrap.tdb-sidebar-collapsed .toa-tdb-layout { grid-template-columns: 0 1fr; gap: 0; }
+    .toa-tdb-wrap.tdb-sidebar-collapsed .toa-tdb-sidebar {
+        width: 0; min-width: 0; padding: 0; margin: 0;
+        overflow: hidden; visibility: hidden; opacity: 0; pointer-events: none;
+    }
+}
+@media (min-width: 1200px) {
+    .toa-tdb-wrap.tdb-sidebar-collapsed .toa-tdb-grid { grid-template-columns: repeat(5, 1fr); }
+}
+
+/* ── Card: riga unica (nome · #id · età · altezza · provincia) ── */
+.toa-tdb-card-meta { padding: 20px 10px 9px; }
+.toa-tdb-card-line {
+    font-size: 0.72rem; color: rgba(255,255,255,0.9); line-height: 1.3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.toa-tdb-card-line strong { font-weight: 700; color: #fff; }

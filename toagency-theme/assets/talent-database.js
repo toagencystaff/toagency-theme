@@ -342,13 +342,15 @@
         if (rot) cssParts.push('transform:rotate(' + rot + 'deg) scale(' + ((rot === 90 || rot === 270) ? 1.35 : 1) + ')');
         if (pos) cssParts.push('object-position:' + pos);
         var rotStyle = cssParts.length ? (' style="' + cssParts.join(';') + ';"') : '';
-        var bits = [];
-        if (t.eta)     bits.push(escapeHtml(String(t.eta)));
-        if (t.altezza) bits.push(escapeHtml(t.altezza + ' cm'));
-        if (t.citta)            bits.push(escapeHtml(t.citta));
-        else if (t.paese_label) bits.push(escapeHtml(t.paese_label));
-        else if (t.paese)       bits.push(escapeHtml(t.paese));
-        var infoHtml = bits.map(function (b) { return '<span>' + b + '</span>'; }).join('');
+        // 2026-06-02 marco — riga unica: nome · #codice · età anni · altezza cm · provincia (NO nazione)
+        var tid = parseInt(t.talent_id, 10) || 0;
+        var line = [];
+        line.push('<strong>' + escapeHtml(t.nome || '—') + '</strong>');
+        if (tid)       line.push('#' + tid);
+        if (t.eta)     line.push(escapeHtml(t.eta + ' anni'));
+        if (t.altezza) line.push(escapeHtml(t.altezza + ' cm'));
+        if (t.provincia) line.push(escapeHtml(String(t.provincia).toUpperCase()));
+        var lineHtml = line.join(' · ');
 
         return '<article class="toa-tdb-card' + sel + '" data-id="' + id + '">' +
                  '<button type="button" class="toa-tdb-card-add" data-add="1" aria-label="' + escapeHtml(i18n('btn_add')) + '">' +
@@ -356,8 +358,7 @@
                  '</button>' +
                  '<img class="toa-tdb-card-img lazy"' + rotStyle + ' data-src="' + escapeHtml(fotoSrc) + '" alt="' + escapeHtml(t.nome || '') + '">' +
                  '<div class="toa-tdb-card-meta">' +
-                   '<h3 class="toa-tdb-card-name">' + escapeHtml(t.nome || '—') + '</h3>' +
-                   '<div class="toa-tdb-card-info">' + infoHtml + '</div>' +
+                   '<div class="toa-tdb-card-line">' + lineHtml + '</div>' +
                  '</div>' +
                '</article>';
     }
@@ -1157,6 +1158,41 @@
         $('#tdbFiltersToggle').addEventListener('click', function () {
             toggleSidebar(!$('#tdbSidebar').classList.contains('open'));
         });
+
+        // 2026-06-02 marco — toggle sidebar DESKTOP: collassa la sidebar → griglia a 5 colonne. Stato persistito.
+        var deskBtn = $('#tdbSidebarToggle');
+        var wrap = $('#tdb-database');
+        if (deskBtn && wrap) {
+            var KEY = 'toaTdbSidebarCollapsed';
+            function applyCollapsed(collapsed) {
+                wrap.classList.toggle('tdb-sidebar-collapsed', collapsed);
+                deskBtn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+                deskBtn.textContent = collapsed ? '✕' : '☰';
+            }
+            deskBtn.addEventListener('click', function () {
+                var collapsed = !wrap.classList.contains('tdb-sidebar-collapsed');
+                applyCollapsed(collapsed);
+                try { localStorage.setItem(KEY, collapsed ? '1' : '0'); } catch (e) {}
+            });
+            try { if (localStorage.getItem(KEY) === '1') applyCollapsed(true); } catch (e) {}
+        }
+
+        // 2026-06-02 marco — chip categoria → imposta il filtro Categoria (#tdbFilterRuolo) + lancia la ricerca
+        var chips = $('#tdbCatChips');
+        if (chips) {
+            chips.addEventListener('click', function (e) {
+                var chip = e.target.closest('.toa-tdb-cat-chip');
+                if (!chip) return;
+                $$('.toa-tdb-cat-chip', chips).forEach(function (c) { c.classList.toggle('is-active', c === chip); });
+                var sel = $('#tdbFilterRuolo');
+                if (sel) {
+                    sel.value = chip.getAttribute('data-ruolo') || '';
+                    sel.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+                var form = $('#tdbFilters');
+                if (form) form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+            });
+        }
     }
 
     // ═════════════════════════════════════════════════════════════════

@@ -126,7 +126,7 @@ $T = array(
 );
 ?>
 <!-- TOA-TALENT-DATABASE-V1 — PATCH 2026-05-22 marco hub sezioni categoria -->
-<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database.css'); ?>?v=2.0">
+<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database.css'); ?>?v=2.3">
 <script>
 window.toaThemeUri      = "<?php echo esc_js($theme_uri); ?>";
 window.toaTdbLang       = "<?php echo esc_js($__l); ?>";
@@ -332,44 +332,9 @@ $hub_sections = array(
 );
 ?>
 
-<!-- ══════════════════════════════════════════════════════
-     HUB SEZIONI CATEGORIA — TOA Talent Database
-     PATCH 2026-05-22 marco
-     ══════════════════════════════════════════════════════ -->
-<section class="toa-hub">
-    <div class="toa-hub-inner">
-
-        <div class="toa-hub-eyebrow"><?php echo esc_html($_t($hub_labels['eyebrow'])); ?></div>
-        <h1 class="toa-hub-title"><?php echo esc_html($_t($hub_labels['title'])); ?></h1>
-        <p class="toa-hub-subtitle"><?php echo esc_html($_t($hub_labels['subtitle'])); ?></p>
-
-        <div class="toa-hub-grid">
-        <?php foreach ($hub_sections as $sec) :
-            // FIX 2026-05-22 marco — hub cards portano al database completo (no filtro ruolo pre-applicato)
-            // Tutti i 9000+ talent visibili al click; filtro Categoria disponibile in sidebar
-            $sec_url = esc_url($tdb_url) . '#tdb-database';
-        ?>
-            <a href="<?php echo $sec_url; ?>" class="toa-hub-card" data-ruolo="<?php echo esc_attr($sec['ruolo']); ?>">
-                <div class="toa-hub-card-icon"><?php echo $sec['icon']; ?></div>
-                <div class="toa-hub-card-title"><?php echo esc_html($_t($sec['title'])); ?></div>
-                <div class="toa-hub-card-desc"><?php echo esc_html($_t($sec['desc'])); ?></div>
-                <div class="toa-hub-card-cta">
-                    <?php echo esc_html($_t($hub_labels['explore'])); ?> →
-                </div>
-            </a>
-        <?php endforeach; ?>
-        </div>
-
-        <div class="toa-hub-cta-all">
-            <a href="<?php echo esc_url($tdb_url); ?>#tdb-database">
-                <?php echo esc_html($_t($hub_labels['cta_all'])); ?> →
-            </a>
-        </div>
-
-    </div>
-</section>
-
-<hr class="toa-hub-divider">
+<!-- 2026-06-02 marco — REDESIGN: blocco hub categorie grande RIMOSSO (occupava mezza pagina).
+     Header compatto + chip categoria sottili sopra la griglia (vedi sotto). $hub_sections riusato per le chip. -->
+<?php // (hub_sections/hub_labels restano definiti sopra e vengono usati per le chip categoria) ?>
 
 <script>
 /* PATCH 2026-05-22 marco — fetch interceptor: inietta ruolo + cache-bust nel payload API search */
@@ -432,10 +397,9 @@ $hub_sections = array(
 
 <section class="toa-tdb-wrap" id="tdb-database">
 
-    <!-- ═════ Hero ═════ -->
-    <header class="toa-tdb-hero">
-        <div class="toa-tdb-hero-eyebrow"><?php echo esc_html($_t($T['hero_eyebrow'])); ?></div>
-        <h1 class="toa-tdb-hero-title"><?php echo esc_html($_t($T['hero_title'])); ?></h1>
+    <!-- ═════ Hero compatto (redesign 2026-06-02) ═════ -->
+    <header class="toa-tdb-hero toa-tdb-hero-compact">
+        <h1 class="toa-tdb-hero-title"><?php echo esc_html($_t($hub_labels['title'])); ?></h1>
         <p class="toa-tdb-hero-subtitle"><?php echo esc_html($_t($T['hero_subtitle'])); ?></p>
     </header>
 
@@ -572,7 +536,20 @@ $hub_sections = array(
 
         <!-- ═════ Content ═════ -->
         <div class="toa-tdb-content">
+
+            <!-- 2026-06-02 marco — chip categoria sottili (sostituiscono l'hub grande); settano il filtro Categoria -->
+            <div class="toa-tdb-cat-chips" id="tdbCatChips" role="tablist" aria-label="Categoria">
+                <button type="button" class="toa-tdb-cat-chip is-active" data-ruolo=""><?php echo esc_html($_t(array('it'=>'Tutti','en'=>'All','fr'=>'Tous','es'=>'Todos'))); ?></button>
+                <?php foreach ($hub_sections as $sec) : ?>
+                <button type="button" class="toa-tdb-cat-chip" data-ruolo="<?php echo esc_attr($sec['ruolo']); ?>">
+                    <span class="toa-tdb-cat-chip-icon"><?php echo $sec['icon']; ?></span>
+                    <span><?php echo esc_html($_t($sec['title'])); ?></span>
+                </button>
+                <?php endforeach; ?>
+            </div>
+
             <div class="toa-tdb-results-header">
+                <button type="button" class="toa-tdb-sidebar-toggle" id="tdbSidebarToggle" aria-controls="tdbSidebar" aria-expanded="true" title="Mostra/nascondi filtri">☰</button>
                 <span class="toa-tdb-results-count" id="tdbResultsCount"><?php echo esc_html($_t($T['results_loading'])); ?></span>
             </div>
             <div class="toa-tdb-grid" id="tdbGrid" aria-live="polite"></div>
@@ -703,6 +680,6 @@ $hub_sections = array(
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-database.js'); ?>?v=2.2" defer></script>
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-database.js'); ?>?v=2.3" defer></script>
 
 <?php toa_component('footer'); ?>
