@@ -102,7 +102,10 @@
 /* ═════ Sidebar ═════ */
 .toa-tdb-sidebar {
     position: sticky;
-    top: 24px;
+    top: 60px;            /* sotto il menu fisso del sito */
+    align-self: start;    /* non stirare nella griglia: indispensabile per lo sticky */
+    max-height: calc(100vh - 76px);
+    overflow-y: auto;     /* se i filtri superano l'altezza viewport, scrollano dentro la sidebar */
 }
 
 /* Sidebar drawer su mobile */
@@ -1635,3 +1638,27 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .toa-tdb-card-line strong { font-weight: 700; color: #fff; }
+
+/* ════════════════════════════════════════════════════════════════
+   FIX STICKY 2026-06-02 marco — la sidebar/chip scomparivano scrollando.
+   Causa: main.css ha `body{overflow-x:hidden}` che rende il body uno
+   scroll-container e ROMPE position:sticky dei discendenti.
+   Fix scoped (questo CSS è caricato solo su /talent-database/):
+   overflow-x:clip NON crea scroll-container → lo sticky torna a funzionare,
+   e l'overflow orizzontale resta comunque tagliato (niente scrollbar).
+   ════════════════════════════════════════════════════════════════ */
+@media (min-width: 768px) {
+    html, body { overflow-x: clip; }
+}
+
+/* Chip categoria sticky in cima al contenuto durante lo scroll */
+@media (min-width: 768px) {
+    .toa-tdb-cat-chips {
+        position: sticky;
+        top: 60px;
+        z-index: 60;
+        background: #08080a;
+        margin: 0 0 12px;
+        padding: 8px 0;
+    }
+}

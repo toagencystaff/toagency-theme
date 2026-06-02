@@ -331,10 +331,13 @@
     }
 
     // Costruisce il markup HTML di una card talent (escape XSS sui campi dinamici).
-    function cardHtml(t) {
+    function cardHtml(t, idx) {
         var id = parseInt(t.id, 10) || 0;
         var sel = TD.selectedIds.has(id) ? ' selected' : '';
         var fotoSrc = FOTO_URL + '?id=' + encodeURIComponent(id);
+        // 2026-06-02 marco — BUG FIX foto bianche: le prime 12 card (above-the-fold) caricano la foto
+        // SUBITO (src diretto, niente lazy) → nessuna dipendenza da lazySizes/observer per ciò che è già visibile.
+        var eager = (parseInt(idx, 10) || 0) < 12;
         // 2026-06-01 marco — rotazione + posizione foto profilo (talent_database.foto_rotazione/foto_position via API)
         var rot = parseInt(t.foto_rotazione, 10) || 0;
         var pos = (typeof t.foto_position === 'string' && /^\d{1,3}%\s+\d{1,3}%$/.test(t.foto_position.trim())) ? t.foto_position.trim() : '';
@@ -356,7 +359,9 @@
                  '<button type="button" class="toa-tdb-card-add" data-add="1" aria-label="' + escapeHtml(i18n('btn_add')) + '">' +
                    (sel ? '✓' : '+') +
                  '</button>' +
-                 '<img class="toa-tdb-card-img lazyload"' + rotStyle + ' data-src="' + escapeHtml(fotoSrc) + '" alt="' + escapeHtml(t.nome || '') + '">' +
+                 (eager
+                    ? '<img class="toa-tdb-card-img"' + rotStyle + ' src="' + escapeHtml(fotoSrc) + '" alt="' + escapeHtml(t.nome || '') + '">'
+                    : '<img class="toa-tdb-card-img lazyload"' + rotStyle + ' data-src="' + escapeHtml(fotoSrc) + '" alt="' + escapeHtml(t.nome || '') + '">') +
                  '<div class="toa-tdb-card-meta">' +
                    '<div class="toa-tdb-card-line">' + lineHtml + '</div>' +
                  '</div>' +
@@ -369,9 +374,9 @@
         var empty = $('#tdbGridEmpty');
         if (append) {
             var startIdx = grid.children.length;
-            grid.insertAdjacentHTML('beforeend', TD.results.slice(startIdx).map(cardHtml).join(''));
+            grid.insertAdjacentHTML('beforeend', TD.results.slice(startIdx).map(function (t, i) { return cardHtml(t, startIdx + i); }).join(''));
         } else {
-            grid.innerHTML = TD.results.map(cardHtml).join('');
+            grid.innerHTML = TD.results.map(function (t, i) { return cardHtml(t, i); }).join('');
         }
         empty.hidden = TD.results.length > 0;
         tdLazyLoadPhotos();
