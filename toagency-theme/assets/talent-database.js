@@ -356,7 +356,7 @@
                  '<button type="button" class="toa-tdb-card-add" data-add="1" aria-label="' + escapeHtml(i18n('btn_add')) + '">' +
                    (sel ? '✓' : '+') +
                  '</button>' +
-                 '<img class="toa-tdb-card-img lazy"' + rotStyle + ' data-src="' + escapeHtml(fotoSrc) + '" alt="' + escapeHtml(t.nome || '') + '">' +
+                 '<img class="toa-tdb-card-img lazyload"' + rotStyle + ' data-src="' + escapeHtml(fotoSrc) + '" alt="' + escapeHtml(t.nome || '') + '">' +
                  '<div class="toa-tdb-card-meta">' +
                    '<div class="toa-tdb-card-line">' + lineHtml + '</div>' +
                  '</div>' +
@@ -379,34 +379,33 @@
     }
 
     // Avvia/aggiorna IntersectionObserver per caricare le foto card on-demand.
+    // 2026-06-02 marco — classe allineata a SiteGround lazySizes ('lazyload'). Questo observer resta
+    // come fallback indipendente da SG; quando carica rimuove 'lazyload' così lazySizes non riprocessa
+    // (ed evita che resti invisibile se SG applica .lazyload{opacity:0}).
     function tdLazyLoadPhotos() {
+        function loadImg(img) {
+            if (!img.dataset.src) return;
+            var done = function () { img.classList.add('loaded'); img.classList.remove('lazyload'); };
+            img.addEventListener('load', done, { once: true });
+            img.addEventListener('error', done, { once: true });
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+        }
         if (!('IntersectionObserver' in window)) {
             // Fallback: load immediato (browser legacy).
-            $$('img.toa-tdb-card-img.lazy').forEach(function (img) {
-                if (img.dataset.src) {
-                    img.src = img.dataset.src;
-                    img.classList.add('loaded');
-                }
-            });
+            $$('img.toa-tdb-card-img.lazyload').forEach(loadImg);
             return;
         }
         if (!TD.intersectionObserver) {
             TD.intersectionObserver = new IntersectionObserver(function (entries) {
                 entries.forEach(function (e) {
                     if (!e.isIntersecting) return;
-                    var img = e.target;
-                    if (img.dataset.src) {
-                        var done = function () { img.classList.add('loaded'); };
-                        img.addEventListener('load', done, { once: true });
-                        img.addEventListener('error', done, { once: true });
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
-                    }
-                    TD.intersectionObserver.unobserve(img);
+                    loadImg(e.target);
+                    TD.intersectionObserver.unobserve(e.target);
                 });
             }, { rootMargin: '200px' });
         }
-        $$('img.toa-tdb-card-img.lazy').forEach(function (img) {
+        $$('img.toa-tdb-card-img.lazyload').forEach(function (img) {
             if (img.dataset.src) TD.intersectionObserver.observe(img);
         });
     }
