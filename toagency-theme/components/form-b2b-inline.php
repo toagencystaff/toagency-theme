@@ -123,7 +123,7 @@ $hq_js = array(
 
   form.addEventListener('submit', async function(e){
     e.preventDefault();
-    if (!document.getElementById('hqConsent').checked) { alert(STR.privacy); return; }
+    if (!document.getElementById('hq_consent').checked) { alert(STR.privacy); return; }
 
     var btn = document.getElementById('hqSubmit');
     var txt = document.getElementById('hqSubmitText');
