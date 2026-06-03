@@ -972,3 +972,183 @@ add_action('wp_footer', function() {
     <?php
 }, 999);
 // === END 2026-06-03 marco — LOGHI + GRIGLIA TALENT casting ===
+
+// === BEGIN 2026-06-03 marco — HELPER striscia loghi CRO (riuso brand-ticker /form-b2b/) ===
+// Echo di uno <script> che inietta una <section.brand-section.toa-cro-loghi> subito dopo
+// l'elemento .page-hero. Idempotente. $label = etichetta localizzata. CSS .brand-section /
+// .ticker-row e classi b-* sono globali in main.css (stessa resa di /form-b2b/).
+if (!function_exists('toa_cro_loghi_block')) {
+function toa_cro_loghi_block($label) {
+    ?>
+    <script>
+    (function(){
+      if (document.querySelector('.toa-cro-loghi')) return;
+      var hero = document.querySelector('.page-hero');
+      if (!hero) return;
+      var b1=[{t:'JUVENTUS',c:'b-juventus'},{t:'FERRARI',c:'b-ferrari'},{t:'BMW',c:'b-bmw'},{t:'SAMSUNG',c:'b-samsung'},{t:'RED BULL',c:'b-redbull'},{t:'MERCEDES-BENZ',c:'b-mercedes'},{t:'VOGUE SPOSA',c:'b-vogue'},{t:'KAPPA',c:'b-kappa'},{t:'SKY',c:'b-sky'},{t:'MASERATI',c:'b-maserati'},{t:'FIAT',c:'b-fiat'},{t:'VODAFONE',c:'b-vodafone'},{t:'AUDI',c:'b-audi'},{t:'JEEP',c:'b-jeep'},{t:'MICHELIN',c:'b-michelin'},{t:'KINDER',c:'b-kinder'},{t:"L'ORÉAL",c:'b-loreal'},{t:'GQ ITALIA',c:'b-gq'},{t:'ALFA ROMEO',c:'b-alfaromeo'},{t:'EATALY',c:'b-eataly'},{t:'K-WAY',c:'b-kway'},{t:'FORMULA 1',c:'b-formula1'},{t:'MOTOGP',c:'b-motogp'},{t:'LUXOTTICA',c:'b-luxottica'},{t:'SANREMO',c:'b-sanremo'},{t:'MISS UNIVERSE',c:'b-missuniverse'},{t:'EDISON',c:'b-edison'},{t:'QC TERME',c:'b-qcterme'},{t:'POLICE',c:'b-police'}];
+      var b2=[{t:'FC INTERNAZIONALE',c:'b-inter'},{t:'WOLT',c:'b-wolt'},{t:'AXA',c:'b-axa'},{t:'SERIE A',c:'b-seriea'},{t:'LOACKER',c:'b-loacker'},{t:'MEDIASET',c:'b-mediaset'},{t:'PARIS FASHION WEEK',c:'b-pfw'},{t:'SALONE DEL MOBILE',c:'b-salone'},{t:'LA RINASCENTE',c:'b-rinascente'},{t:'EXPO 2015',c:'b-expo'},{t:'FIERA MILANO',c:'b-fieramilano'},{t:'RIMINI FIERA',c:'b-rimini'},{t:'BOLOGNA FIERE',c:'b-bologna'},{t:'TEATRO REGIO',c:'b-teatro'},{t:'VIRGIN ACTIVE',c:'b-virgin'},{t:'WRANGLER',c:'b-wrangler'},{t:'FIORUCCI',c:'b-fiorucci'},{t:'TORINO FC',c:'b-torino'},{t:'ALGIDA',c:'b-algida'},{t:'MIZUNO',c:'b-mizuno'},{t:'KINGS LEAGUE',c:'b-kingsleague'},{t:'AIA',c:'b-aia'},{t:'REVLON',c:'b-revlon'},{t:'COIN',c:'b-coin'}];
+      function row(a){return a.concat(a).map(function(b){return '<span class="'+b.c+'">'+b.t+'</span>';}).join('');}
+      var s=document.createElement('section');
+      s.className='brand-section toa-cro-loghi';
+      s.innerHTML='<div class="brand-label">'+<?php echo json_encode($label, JSON_UNESCAPED_UNICODE); ?>+'</div><div class="ticker-row">'+row(b1)+'</div><div class="ticker-row reverse">'+row(b2)+'</div>';
+      hero.parentNode.insertBefore(s, hero.nextSibling);
+    })();
+    </script>
+    <?php
+}
+}
+
+// Etichetta loghi localizzata via get_locale()
+if (!function_exists('toa_cro_loghi_label')) {
+function toa_cro_loghi_label() {
+    $loc = substr(get_locale(), 0, 2);
+    $m = array('it'=>'Hanno scelto TOAgency','en'=>'They chose TOAgency','fr'=>'Ils ont choisi TOAgency','es'=>'Eligieron TOAgency');
+    return isset($m[$loc]) ? $m[$loc] : $m['it'];
+}
+}
+// === END 2026-06-03 marco — HELPER striscia loghi CRO ===
+
+// === BEGIN 2026-06-03 marco — STRISCIA LOGHI su /hostess-steward/ (CRO) ===
+// Solo loghi clienti dopo l'hero (no form: la pagina ha gia il calcolatore live).
+// Slug unico su tutte le lingue (WPML) -> is_page basta per it/en/fr/es.
+add_action('wp_footer', function() {
+    if (!is_page('hostess-steward')) return;
+    toa_cro_loghi_block(toa_cro_loghi_label());
+}, 999);
+// === END 2026-06-03 marco — STRISCIA LOGHI hostess-steward ===
+
+// === BEGIN 2026-06-03 marco — LOGHI + GRIGLIA MODELLI + FORM su /models/ (CRO) ===
+// /models/ (slug unico WPML it/en/fr/es): A) loghi  B) griglia 12 modelli (ruolo=model, nazionale)
+// C) form preventivo inline dopo "COME FUNZIONA" (.how-it-works). Form = port di form-b2b-inline
+// con consent FIX (id corretto) e id prefissati tm_ (no collisioni). i18n via array PHP -> json_encode.
+add_action('wp_footer', function() {
+    if (!is_page('models')) return;
+
+    // A) loghi (helper condiviso)
+    toa_cro_loghi_block(toa_cro_loghi_label());
+
+    $grid_i18n = array(
+      'it'=>array('title'=>'ALCUNI DEI NOSTRI MODELLI E MODELLE','sub'=>'Selezione aggiornata ogni giorno · <strong>20.000+ profili nel database</strong>','note'=>'Questi sono solo alcuni profili. Selezione personalizzata in 24h.','cta'=>'Richiedi una selezione personalizzata →'),
+      'en'=>array('title'=>'SOME OF OUR MODELS','sub'=>'Selection updated daily · <strong>20,000+ profiles in database</strong>','note'=>'These are just some profiles. Personalised selection in 24h.','cta'=>'Request a personalised selection →'),
+      'fr'=>array('title'=>'QUELQUES-UNS DE NOS MANNEQUINS','sub'=>'Sélection mise à jour chaque jour · <strong>20 000+ profils dans la base</strong>','note'=>'Ce ne sont que quelques profils. Sélection personnalisée en 24h.','cta'=>'Demander une sélection personnalisée →'),
+      'es'=>array('title'=>'ALGUNOS DE NUESTROS MODELOS','sub'=>'Selección actualizada cada día · <strong>20.000+ perfiles en la base</strong>','note'=>'Estos son solo algunos perfiles. Selección personalizada en 24h.','cta'=>'Solicitar una selección personalizada →'),
+    );
+    $form_i18n = array(
+      'it'=>array('eyebrow'=>'Inizia ora','heading'=>'Chiedi un preventivo gratuito','sub'=>'Risposta entro 24 ore lavorative','company'=>'Azienda','contact'=>'Nome e cognome','email'=>'Email','phone'=>'Telefono','service'=>'Servizio','select'=>'Seleziona...','message'=>'Messaggio','msgph'=>'Raccontaci brevemente il tuo progetto...','consent'=>'Accetto il trattamento dei dati secondo la','privacy'=>'Privacy Policy','submit'=>'Invia richiesta','sending'=>'Invio...','alert'=>'Devi accettare la privacy policy per continuare.','error'=>'Invio non riuscito. Vuoi scriverci su WhatsApp?','wa'=>'Ciao TOAgency, richiesta preventivo da: '),
+      'en'=>array('eyebrow'=>'Start now','heading'=>'Request a free quote','sub'=>'Response within 24 working hours','company'=>'Company','contact'=>'Full name','email'=>'Email','phone'=>'Phone','service'=>'Service','select'=>'Select...','message'=>'Message','msgph'=>'Tell us briefly about your project...','consent'=>'I accept the processing of my data according to the','privacy'=>'Privacy Policy','submit'=>'Send request','sending'=>'Sending...','alert'=>'You must accept the privacy policy to continue.','error'=>'Sending failed. Do you want to message us on WhatsApp?','wa'=>'Hi TOAgency, quote request from: '),
+      'fr'=>array('eyebrow'=>'Commencez maintenant','heading'=>'Demandez un devis gratuit','sub'=>'Réponse sous 24 heures ouvrées','company'=>'Entreprise','contact'=>'Nom et prénom','email'=>'Email','phone'=>'Téléphone','service'=>'Service','select'=>'Sélectionnez...','message'=>'Message','msgph'=>'Décrivez brièvement votre projet...','consent'=>"J'accepte le traitement de mes données selon la",'privacy'=>'Politique de confidentialité','submit'=>'Envoyer la demande','sending'=>'Envoi...','alert'=>'Vous devez accepter la politique de confidentialité pour continuer.','error'=>"Échec de l'envoi. Voulez-vous nous écrire sur WhatsApp ?",'wa'=>'Bonjour TOAgency, demande de devis de : '),
+      'es'=>array('eyebrow'=>'Empieza ahora','heading'=>'Solicita un presupuesto gratuito','sub'=>'Respuesta en 24 horas laborables','company'=>'Empresa','contact'=>'Nombre y apellidos','email'=>'Email','phone'=>'Teléfono','service'=>'Servicio','select'=>'Selecciona...','message'=>'Mensaje','msgph'=>'Cuéntanos brevemente tu proyecto...','consent'=>'Acepto el tratamiento de mis datos según la','privacy'=>'Política de privacidad','submit'=>'Enviar solicitud','sending'=>'Enviando...','alert'=>'Debes aceptar la política de privacidad para continuar.','error'=>'Error en el envío. ¿Quieres escribirnos por WhatsApp?','wa'=>'Hola TOAgency, solicitud de presupuesto de: '),
+    );
+    $svc = array(
+      'shooting'=>array('it'=>'Shooting / Servizio foto','en'=>'Photo shoot','fr'=>'Shooting photo','es'=>'Sesión de fotos'),
+      'social-content'=>array('it'=>'Contenuti social','en'=>'Social content','fr'=>'Contenu social','es'=>'Contenido social'),
+      'showroom-fitting'=>array('it'=>'Showroom / Fitting','en'=>'Showroom / Fitting','fr'=>'Showroom / Fitting','es'=>'Showroom / Fitting'),
+      'fiera-salone'=>array('it'=>'Fiera / Salone','en'=>'Trade fair','fr'=>'Salon','es'=>'Feria'),
+      'evento'=>array('it'=>'Evento','en'=>'Event','fr'=>'Événement','es'=>'Evento'),
+      'attivita-promozionale'=>array('it'=>'Attività promozionale','en'=>'Promotional activity','fr'=>'Activité promotionnelle','es'=>'Actividad promocional'),
+      'pubblicita'=>array('it'=>'Pubblicità','en'=>'Advertising','fr'=>'Publicité','es'=>'Publicidad'),
+      'film'=>array('it'=>'Film / Serie TV','en'=>'Film / TV series','fr'=>'Film / Série TV','es'=>'Película / Serie TV'),
+      'sfilata'=>array('it'=>'Sfilata','en'=>'Fashion show','fr'=>'Défilé','es'=>'Desfile'),
+      'altro'=>array('it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro'),
+    );
+    ?>
+    <style>
+    #toa-models-talent{padding:8px 16px 4px;max-width:1080px;margin:0 auto}
+    .toa-cast-hd{text-align:center;margin:0 0 22px}
+    .toa-cast-hd h2{font-family:var(--font-display,Georgia,serif);font-size:clamp(20px,3vw,28px);font-weight:900;color:var(--white,#fff);margin:0 0 6px;text-transform:uppercase;letter-spacing:.5px}
+    .toa-cast-hd p{font-size:12px;color:var(--gray-4,rgba(255,255,255,.45));margin:0;text-transform:uppercase;letter-spacing:1px}
+    .toa-cast-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+    .toa-cast-card{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:3/4;background:#141414;border:1px solid rgba(255,255,255,.06)}
+    .toa-cast-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s cubic-bezier(.2,.8,.3,1)}
+    .toa-cast-card:hover img{transform:scale(1.05)}
+    .toa-cast-card .ov{position:absolute;left:0;right:0;bottom:0;padding:14px 12px 11px;background:linear-gradient(transparent,rgba(0,0,0,.88));color:#fff}
+    .toa-cast-card .ov b{display:block;font-size:13px;font-weight:700;letter-spacing:.4px}
+    .toa-cast-card .ov span{display:block;font-size:12px;color:rgba(255,255,255,.6);margin-top:2px}
+    .toa-cast-cta{text-align:center;margin:26px 0 6px}
+    .toa-cast-cta a{display:inline-block;padding:14px 30px;background:#c8ff00;color:#000;border-radius:8px;font-weight:700;font-size:14px;letter-spacing:.04em;text-decoration:none;transition:opacity .2s}
+    .toa-cast-cta a:hover{opacity:.85}
+    @media(max-width:900px){.toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:12px}}
+    @media(max-width:520px){.toa-cast-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
+    </style>
+    <script>
+    (function(){
+      var L = <?php echo json_encode(substr(get_locale(),0,2)); ?>;
+      var GI = <?php echo json_encode($grid_i18n, JSON_UNESCAPED_UNICODE); ?>;
+      var FT_ALL = <?php echo json_encode($form_i18n, JSON_UNESCAPED_UNICODE); ?>;
+      var SVC = <?php echo json_encode($svc, JSON_UNESCAPED_UNICODE); ?>;
+      var GX = GI[L] || GI['it'];
+      var ft = FT_ALL[L] || FT_ALL['it'];
+      var API='/actions/api-talent-database.php?action=search', FOTO='/actions/foto-talent-public.php?id=', SHOW=12, FETCH=30;
+      var ENDPOINT='https://toagency.it/crm_toagency/actions/lead-from-website.php', TOKEN='toa_lead_2026_x7k9m2p4q8w1', THANKYOU=<?php echo json_encode(home_url('/tnx/')); ?>;
+      function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+      function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+      // --- B) GRIGLIA MODELLI (nazionale, ruolo=model) ---
+      if (!document.getElementById('toa-models-talent')) {
+        var anchor = document.querySelector('.toa-cro-loghi') || document.querySelector('.page-hero');
+        if (anchor) {
+          var sec=document.createElement('section');
+          sec.id='toa-models-talent'; sec.style.display='none';
+          sec.innerHTML='<div class="toa-cast-hd"><h2>'+GX.title+'</h2><p>'+GX.sub+'</p></div><div class="toa-cast-grid" id="toaModelsGrid"></div><div class="toa-cast-cta"><a href="#tm-form-anchor">'+GX.cta+'</a><p style="font-size:11px;color:rgba(255,255,255,.4);margin:10px 0 0;text-align:center">'+GX.note+'</p></div>';
+          anchor.parentNode.insertBefore(sec, anchor.nextSibling);
+          sec.querySelector('.toa-cast-cta a').addEventListener('click',function(e){var tgt=document.querySelector('#tm-form-anchor');if(tgt){e.preventDefault();tgt.scrollIntoView({behavior:'smooth',block:'start'});}});
+          fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ruolo:'model',per_page:FETCH,page:1})})
+            .then(function(r){return r.json();})
+            .then(function(d){
+              if(!d||!d.ok||!d.results||!d.results.length){ sec.remove(); return; }
+              var list=shuffle(d.results.slice()).slice(0,SHOW);
+              document.getElementById('toaModelsGrid').innerHTML=list.map(function(t){
+                var m=[]; if(t.eta)m.push(t.eta+' anni'); if(t.altezza)m.push(t.altezza+' cm'); if(t.citta)m.push(t.citta);
+                return '<div class="toa-cast-card"><img src="'+FOTO+encodeURIComponent(t.id)+'" alt="Profilo" loading="lazy" decoding="async" onerror="this.closest(\'.toa-cast-card\').remove()" onload="if(!this.naturalWidth||this.naturalWidth<10)this.closest(\'.toa-cast-card\').remove()"><div class="ov"><b>Profilo #'+esc(t.id)+'</b>'+(m.length?'<span>'+esc(m.join(' · '))+'</span>':'')+'</div></div>';
+              }).join('');
+              sec.style.display='';
+            })
+            .catch(function(){ try{sec.remove();}catch(e){} });
+        }
+      }
+
+      // --- C) FORM PREVENTIVO inline (dopo COME FUNZIONA) ---
+      if (!document.getElementById('tmForm')) {
+        var hiw = document.querySelector('.how-it-works');
+        var svcOpts=''; Object.keys(SVC).forEach(function(k){ svcOpts+='<option value="'+esc(k)+'">'+esc(SVC[k][L]||SVC[k]['it'])+'</option>'; });
+        var fsec=document.createElement('section');
+        fsec.className='cta-section inline-quote-section'; fsec.id='tm-form-anchor';
+        fsec.innerHTML='<div class="container"><div class="inline-quote-card">'+
+          '<div class="section-eyebrow">'+esc(ft.eyebrow)+'</div>'+
+          '<h2 class="section-heading">'+esc(ft.heading)+'</h2>'+
+          '<p class="inline-quote-sub">'+esc(ft.sub)+'</p>'+
+          '<form id="tmForm" method="post" novalidate>'+
+            '<div class="iq-grid"><div class="iq-field"><label class="iq-label" for="tm_company">'+esc(ft.company)+'</label><input type="text" id="tm_company" name="company" required class="iq-input"></div>'+
+            '<div class="iq-field"><label class="iq-label" for="tm_contact">'+esc(ft.contact)+'</label><input type="text" id="tm_contact" name="contact" required class="iq-input"></div></div>'+
+            '<div class="iq-grid"><div class="iq-field"><label class="iq-label" for="tm_email">'+esc(ft.email)+'</label><input type="email" id="tm_email" name="email" required placeholder="email@azienda.it" class="iq-input"></div>'+
+            '<div class="iq-field"><label class="iq-label" for="tm_phone">'+esc(ft.phone)+'</label><input type="tel" id="tm_phone" name="phone" class="iq-input"></div></div>'+
+            '<div class="iq-field"><label class="iq-label" for="tm_event_type">'+esc(ft.service)+'</label><select id="tm_event_type" name="event_type" required class="iq-input"><option value="">'+esc(ft.select)+'</option>'+svcOpts+'</select></div>'+
+            '<div class="iq-field"><label class="iq-label" for="tm_message">'+esc(ft.message)+'</label><textarea id="tm_message" name="message" class="iq-input" placeholder="'+esc(ft.msgph)+'"></textarea></div>'+
+            '<label class="inline-quote-consent" for="tm_consent"><input type="checkbox" id="tm_consent" required> <span>'+esc(ft.consent)+' <a href="https://www.iubenda.com/privacy-policy/58462877" target="_blank" rel="noopener">'+esc(ft.privacy)+'</a></span></label>'+
+            '<button type="submit" class="btn-hero btn-hero-primary iq-submit" id="tmSubmit"><span class="iq-spinner" id="tmSpinner" style="display:none"></span><span id="tmSubmitText">'+esc(ft.submit)+'</span></button>'+
+          '</form></div></div>';
+        if (hiw) { hiw.parentNode.insertBefore(fsec, hiw.nextSibling); }
+        else { document.body.appendChild(fsec); }
+
+        document.getElementById('tmForm').addEventListener('submit', async function(e){
+          e.preventDefault();
+          if(!document.getElementById('tm_consent').checked){ alert(ft.alert); return; }
+          var btn=document.getElementById('tmSubmit'),txt=document.getElementById('tmSubmitText'),sp=document.getElementById('tmSpinner');
+          btn.disabled=true; if(sp)sp.style.display='inline-block'; txt.textContent=ft.sending;
+          function v(id){var el=document.getElementById(id);return el?el.value.trim():'';}
+          var isMobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+          var payload={source:isMobile?'Form Models Mobile':'Form Models Desktop',company:v('tm_company'),contact:v('tm_contact'),email:v('tm_email'),phone:v('tm_phone'),event_type:v('tm_event_type'),message:v('tm_message')};
+          var ok=false;
+          for(var i=0;i<3 && !ok;i++){
+            try{ var r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','X-Lead-Token':TOKEN},body:JSON.stringify(payload)}); var d=await r.json(); if(d&&d.success)ok=true; }
+            catch(ex){ await new Promise(function(rs){setTimeout(rs,1000*(i+1));}); }
+          }
+          if(ok){ window.location.href=THANKYOU; }
+          else{ if(confirm(ft.error)){ window.open('https://wa.me/393517899225?text='+encodeURIComponent(ft.wa+payload.company+' — '+payload.event_type),'_blank'); } btn.disabled=false; if(sp)sp.style.display='none'; txt.textContent=ft.submit; }
+        });
+      }
+    })();
+    </script>
+    <?php
+}, 999);
+// === END 2026-06-03 marco — LOGHI + GRIGLIA MODELLI + FORM models ===
