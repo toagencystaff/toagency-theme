@@ -861,3 +861,114 @@ add_action('wp_head', function() {
     if (!toa_is_registrati_page()) return;
     echo '<style id="toa-hide-quote-cta-css">body.toa-hide-quote-cta .nav-cta-btn,body.toa-hide-quote-cta .sticky-cta-mobile,body.toa-hide-quote-cta .mobile-menu-cta{display:none!important}</style>' . "\n";
 });
+
+// === BEGIN 2026-06-03 marco — LOGHI + GRIGLIA TALENT su landing casting (CRO) ===
+// Inietta su /casting-torino/ e /casting-roma/ + traduzioni WPML EN/FR/ES (template page-landing-geo):
+//  A) striscia loghi clienti (replica brand-ticker di /form-b2b/, CSS globale gia caricato)
+//  B) griglia 12 talent anonimi della provincia, fetch 30 + shuffle, fallback silenzioso
+// Testi localizzati via get_locale(); PROV resta il nome IT (match provincia_residenza nel DB).
+// Pattern: stesso del blocco "TALENT PREVIEW su /tnx/" (iniezione wp_footer, no template edit).
+add_action('wp_footer', function() {
+    $prov_map = array(
+        // Torino (it + traduzioni WPML)
+        'casting-torino'       => 'Torino',
+        'casting-turin-italy'  => 'Torino', // en
+        'casting-turin-italie' => 'Torino', // fr
+        'casting-turin-italia' => 'Torino', // es
+        // Roma (it + traduzioni WPML)
+        'casting-roma'         => 'Roma',
+        'casting-rome-italy'   => 'Roma',   // en
+        'casting-rome-italie'  => 'Roma',   // fr
+        'casting-roma-italia'  => 'Roma',   // es
+    );
+    $provincia = null;
+    foreach ($prov_map as $slug => $prov) {
+        if (is_page($slug)) { $provincia = $prov; break; }
+    }
+    if ($provincia === null) return;
+    ?>
+    <style>
+    #toa-cast-talent{padding:8px 16px 4px;max-width:1080px;margin:0 auto}
+    .toa-cast-hd{text-align:center;margin:0 0 22px}
+    .toa-cast-hd h2{font-family:var(--font-display,Georgia,serif);font-size:clamp(20px,3vw,28px);font-weight:900;color:var(--white,#fff);margin:0 0 6px;text-transform:uppercase;letter-spacing:.5px}
+    .toa-cast-hd p{font-size:12px;color:var(--gray-4,rgba(255,255,255,.45));margin:0;text-transform:uppercase;letter-spacing:1px}
+    .toa-cast-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+    .toa-cast-card{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:3/4;background:#141414;border:1px solid rgba(255,255,255,.06)}
+    .toa-cast-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s cubic-bezier(.2,.8,.3,1)}
+    .toa-cast-card:hover img{transform:scale(1.05)}
+    .toa-cast-card .ov{position:absolute;left:0;right:0;bottom:0;padding:14px 12px 11px;background:linear-gradient(transparent,rgba(0,0,0,.88));color:#fff}
+    .toa-cast-card .ov b{display:block;font-size:13px;font-weight:700;letter-spacing:.4px}
+    .toa-cast-card .ov span{display:block;font-size:12px;color:rgba(255,255,255,.6);margin-top:2px}
+    .toa-cast-cta{text-align:center;margin:26px 0 6px}
+    .toa-cast-cta a{display:inline-block;padding:14px 30px;background:#c8ff00;color:#000;border-radius:8px;font-weight:700;font-size:14px;letter-spacing:.04em;text-decoration:none;transition:opacity .2s}
+    .toa-cast-cta a:hover{opacity:.85}
+    @media(max-width:900px){.toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:12px}}
+    @media(max-width:520px){.toa-cast-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
+    </style>
+    <script>
+    (function(){
+      if (document.getElementById('toa-cast-talent')) return; // anti doppia iniezione
+      var hero = document.querySelector('.toa-landing-hero');
+      if (!hero) return;
+
+      var PROV = <?php echo json_encode($provincia, JSON_UNESCAPED_UNICODE); ?>;
+      var API  = '/actions/api-talent-database.php?action=search';
+      var FOTO = '/actions/foto-talent-public.php?id=';
+      var SHOW = 12, FETCH = 30;
+
+      // i18n: testi localizzati via get_locale() (fallback prefisso lingua, poi it_IT)
+      var I18N = {
+        'it_IT':{title:'ALCUNI PROFILI DISPONIBILI A',sub:'Selezione aggiornata ogni giorno · <strong>20.000+ profili nel database</strong>',note:'Questi sono solo alcuni profili. Selezione personalizzata in 24h.',cta:'Richiedi una selezione personalizzata →'},
+        'fr_FR':{title:'QUELQUES PROFILS DISPONIBLES À',sub:'Sélection mise à jour chaque jour · <strong>20 000+ profils dans la base</strong>',note:'Ce ne sont que quelques profils. Sélection personnalisée en 24h.',cta:'Demander une sélection personnalisée →'},
+        'es_ES':{title:'ALGUNOS PERFILES DISPONIBLES EN',sub:'Selección actualizada cada día · <strong>20.000+ perfiles en la base</strong>',note:'Estos son solo algunos perfiles. Selección personalizada en 24h.',cta:'Solicitar una selección personalizada →'},
+        'en_US':{title:'SOME PROFILES AVAILABLE IN',sub:'Selection updated daily · <strong>20,000+ profiles in database</strong>',note:'These are just some profiles. Personalised selection in 24h.',cta:'Request a personalised selection →'}
+      };
+      var lang = <?php echo json_encode(get_locale()); ?>;
+      var byShort = {it:'it_IT',fr:'fr_FR',es:'es_ES',en:'en_US'};
+      var TX = I18N[lang] || I18N[byShort[(lang||'').slice(0,2)]] || I18N['it_IT'];
+
+      function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+      function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+      // --- A) STRISCIA LOGHI (replica esatta brand-ticker /form-b2b/) ---
+      var b1=[{t:'JUVENTUS',c:'b-juventus'},{t:'FERRARI',c:'b-ferrari'},{t:'BMW',c:'b-bmw'},{t:'SAMSUNG',c:'b-samsung'},{t:'RED BULL',c:'b-redbull'},{t:'MERCEDES-BENZ',c:'b-mercedes'},{t:'VOGUE SPOSA',c:'b-vogue'},{t:'KAPPA',c:'b-kappa'},{t:'SKY',c:'b-sky'},{t:'MASERATI',c:'b-maserati'},{t:'FIAT',c:'b-fiat'},{t:'VODAFONE',c:'b-vodafone'},{t:'AUDI',c:'b-audi'},{t:'JEEP',c:'b-jeep'},{t:'MICHELIN',c:'b-michelin'},{t:'KINDER',c:'b-kinder'},{t:"L'ORÉAL",c:'b-loreal'},{t:'GQ ITALIA',c:'b-gq'},{t:'ALFA ROMEO',c:'b-alfaromeo'},{t:'EATALY',c:'b-eataly'},{t:'K-WAY',c:'b-kway'},{t:'FORMULA 1',c:'b-formula1'},{t:'MOTOGP',c:'b-motogp'},{t:'LUXOTTICA',c:'b-luxottica'},{t:'SANREMO',c:'b-sanremo'},{t:'MISS UNIVERSE',c:'b-missuniverse'},{t:'EDISON',c:'b-edison'},{t:'QC TERME',c:'b-qcterme'},{t:'POLICE',c:'b-police'}];
+      var b2=[{t:'FC INTERNAZIONALE',c:'b-inter'},{t:'WOLT',c:'b-wolt'},{t:'AXA',c:'b-axa'},{t:'SERIE A',c:'b-seriea'},{t:'LOACKER',c:'b-loacker'},{t:'MEDIASET',c:'b-mediaset'},{t:'PARIS FASHION WEEK',c:'b-pfw'},{t:'SALONE DEL MOBILE',c:'b-salone'},{t:'LA RINASCENTE',c:'b-rinascente'},{t:'EXPO 2015',c:'b-expo'},{t:'FIERA MILANO',c:'b-fieramilano'},{t:'RIMINI FIERA',c:'b-rimini'},{t:'BOLOGNA FIERE',c:'b-bologna'},{t:'TEATRO REGIO',c:'b-teatro'},{t:'VIRGIN ACTIVE',c:'b-virgin'},{t:'WRANGLER',c:'b-wrangler'},{t:'FIORUCCI',c:'b-fiorucci'},{t:'TORINO FC',c:'b-torino'},{t:'ALGIDA',c:'b-algida'},{t:'MIZUNO',c:'b-mizuno'},{t:'KINGS LEAGUE',c:'b-kingsleague'},{t:'AIA',c:'b-aia'},{t:'REVLON',c:'b-revlon'},{t:'COIN',c:'b-coin'}];
+      function row(arr){return arr.concat(arr).map(function(b){return '<span class="'+b.c+'">'+b.t+'</span>';}).join('');}
+      var brandSec=document.createElement('section');
+      brandSec.className='brand-section';
+      brandSec.innerHTML='<div class="brand-label">Hanno scelto TOAgency</div><div class="ticker-row">'+row(b1)+'</div><div class="ticker-row reverse">'+row(b2)+'</div>';
+
+      // --- B) SEZIONE GRIGLIA (nascosta finche non ci sono risultati) ---
+      var sec=document.createElement('section');
+      sec.id='toa-cast-talent';
+      sec.style.display='none';
+      sec.innerHTML='<div class="toa-cast-hd"><h2>'+TX.title+' '+esc(PROV)+'</h2><p>'+TX.sub+'</p></div><div class="toa-cast-grid" id="toaCastGrid"></div><div class="toa-cast-cta"><a href="#toa-form-anchor">'+TX.cta+'</a><p style="font-size:11px;color:rgba(255,255,255,.4);margin:10px 0 0;text-align:center">'+TX.note+'</p></div>';
+
+      // inserisci subito dopo l'hero: loghi, poi griglia
+      hero.parentNode.insertBefore(brandSec, hero.nextSibling);
+      brandSec.parentNode.insertBefore(sec, brandSec.nextSibling);
+
+      // CTA smooth-scroll al form
+      sec.querySelector('.toa-cast-cta a').addEventListener('click',function(e){
+        var tgt=document.querySelector('#toa-form-anchor')||document.querySelector('#leadForm');
+        if(tgt){e.preventDefault();tgt.scrollIntoView({behavior:'smooth',block:'start'});}
+      });
+
+      // fetch talent (fallback: nascondi solo la griglia, i loghi restano)
+      fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({provincia:PROV,per_page:FETCH,page:1})})
+        .then(function(r){return r.json();})
+        .then(function(d){
+          if(!d||!d.ok||!d.results||!d.results.length){ sec.remove(); return; }
+          var list=shuffle(d.results.slice()).slice(0,SHOW);
+          document.getElementById('toaCastGrid').innerHTML=list.map(function(t){
+            var m=[]; if(t.eta)m.push(t.eta+' anni'); if(t.altezza)m.push(t.altezza+' cm'); if(t.citta)m.push(t.citta);
+            return '<div class="toa-cast-card"><img src="'+FOTO+encodeURIComponent(t.id)+'" alt="Profilo" loading="lazy" decoding="async" onerror="this.closest(\'.toa-cast-card\').remove()" onload="if(!this.naturalWidth||this.naturalWidth<10)this.closest(\'.toa-cast-card\').remove()"><div class="ov"><b>Profilo #'+esc(t.id)+'</b>'+(m.length?'<span>'+esc(m.join(' · '))+'</span>':'')+'</div></div>';
+          }).join('');
+          sec.style.display='';
+        })
+        .catch(function(){ try{sec.remove();}catch(e){} });
+    })();
+    </script>
+    <?php
+}, 999);
+// === END 2026-06-03 marco — LOGHI + GRIGLIA TALENT casting ===
