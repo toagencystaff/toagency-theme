@@ -8,8 +8,11 @@
 *.swp
 *.swo
 
-# Utility locali workflow (non versionati nel tema)
-_scripts/
+# Utility locali workflow — versiona gli script SENZA secret (health-check, backup-prod);
+# escludi solo quelli col secret reset_cache + i backup locali
+_scripts/deploy.sh
+_scripts/rollback.sh
+_scripts/backups/
 
 # Log
 *.log
