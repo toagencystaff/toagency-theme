@@ -886,6 +886,15 @@ add_action('wp_footer', function() {
         if (is_page($slug)) { $provincia = $prov; break; }
     }
     if ($provincia === null) return;
+
+    // FIX 2026-06-03 — pool province circostanti (Piemonte+VdA / Lazio). Conteggi verificati >0
+    // (Verbano-Cusio-Ossola = 0, escluso). La griglia unisce tutte queste province.
+    $prov_groups = array(
+        'Torino' => array('Torino','Cuneo','Asti','Alessandria','Novara','Vercelli','Biella','Verbania','Aosta'),
+        'Roma'   => array('Roma','Frosinone','Latina','Rieti','Viterbo'),
+    );
+    $prov_list = isset($prov_groups[$provincia]) ? $prov_groups[$provincia] : array($provincia);
+    $tdb_url   = home_url('/talent-database/') . '?provincia=' . rawurlencode($provincia);
     ?>
     <style>
     #toa-cast-talent{padding:8px 16px 4px;max-width:1080px;margin:0 auto}
@@ -900,8 +909,10 @@ add_action('wp_footer', function() {
     .toa-cast-card .ov b{display:block;font-size:13px;font-weight:700;letter-spacing:.4px}
     .toa-cast-card .ov span{display:block;font-size:12px;color:rgba(255,255,255,.6);margin-top:2px}
     .toa-cast-cta{text-align:center;margin:26px 0 6px}
-    .toa-cast-cta a{display:inline-block;padding:14px 30px;background:#c8ff00;color:#000;border-radius:8px;font-weight:700;font-size:14px;letter-spacing:.04em;text-decoration:none;transition:opacity .2s}
+    .toa-cast-cta a{display:inline-block;margin:6px 5px;padding:14px 30px;background:#c8ff00;color:#000;border:1px solid #c8ff00;border-radius:8px;font-weight:700;font-size:14px;letter-spacing:.04em;text-decoration:none;transition:opacity .2s,background .2s}
     .toa-cast-cta a:hover{opacity:.85}
+    .toa-cast-cta a.alt{background:transparent;color:#c8ff00}
+    .toa-cast-cta a.alt:hover{background:rgba(200,255,0,.12);opacity:1}
     @media(max-width:900px){.toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:12px}}
     @media(max-width:520px){.toa-cast-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
     </style>
@@ -915,13 +926,15 @@ add_action('wp_footer', function() {
       var API  = '/actions/api-talent-database.php?action=search';
       var FOTO = '/actions/foto-talent-public.php?id=';
       var SHOW = 12, FETCH = 30;
+      var PROVS = <?php echo json_encode($prov_list, JSON_UNESCAPED_UNICODE); ?>;
+      var TDB_URL = <?php echo json_encode($tdb_url); ?>;
 
       // i18n: testi localizzati via get_locale() (fallback prefisso lingua, poi it_IT)
       var I18N = {
-        'it_IT':{title:'ALCUNI PROFILI DISPONIBILI A',sub:'Selezione aggiornata ogni giorno · <strong>20.000+ profili nel database</strong>',note:'Questi sono solo alcuni profili. Selezione personalizzata in 24h.',cta:'Richiedi una selezione personalizzata →'},
-        'fr_FR':{title:'QUELQUES PROFILS DISPONIBLES À',sub:'Sélection mise à jour chaque jour · <strong>20 000+ profils dans la base</strong>',note:'Ce ne sont que quelques profils. Sélection personnalisée en 24h.',cta:'Demander une sélection personnalisée →'},
-        'es_ES':{title:'ALGUNOS PERFILES DISPONIBLES EN',sub:'Selección actualizada cada día · <strong>20.000+ perfiles en la base</strong>',note:'Estos son solo algunos perfiles. Selección personalizada en 24h.',cta:'Solicitar una selección personalizada →'},
-        'en_US':{title:'SOME PROFILES AVAILABLE IN',sub:'Selection updated daily · <strong>20,000+ profiles in database</strong>',note:'These are just some profiles. Personalised selection in 24h.',cta:'Request a personalised selection →'}
+        'it_IT':{title:'ALCUNI PROFILI DISPONIBILI A',sub:'Selezione aggiornata ogni giorno · <strong>20.000+ profili nel database</strong>',note:'Questi sono solo alcuni profili. Selezione personalizzata in 24h.',cta:'Richiedi una selezione personalizzata →',browse:'Guarda tutti i profili →'},
+        'fr_FR':{title:'QUELQUES PROFILS DISPONIBLES À',sub:'Sélection mise à jour chaque jour · <strong>20 000+ profils dans la base</strong>',note:'Ce ne sont que quelques profils. Sélection personnalisée en 24h.',cta:'Demander une sélection personnalisée →',browse:'Voir tous les profils →'},
+        'es_ES':{title:'ALGUNOS PERFILES DISPONIBLES EN',sub:'Selección actualizada cada día · <strong>20.000+ perfiles en la base</strong>',note:'Estos son solo algunos perfiles. Selección personalizada en 24h.',cta:'Solicitar una selección personalizada →',browse:'Ver todos los perfiles →'},
+        'en_US':{title:'SOME PROFILES AVAILABLE IN',sub:'Selection updated daily · <strong>20,000+ profiles in database</strong>',note:'These are just some profiles. Personalised selection in 24h.',cta:'Request a personalised selection →',browse:'Browse all profiles →'}
       };
       var lang = <?php echo json_encode(get_locale()); ?>;
       var byShort = {it:'it_IT',fr:'fr_FR',es:'es_ES',en:'en_US'};
@@ -942,7 +955,7 @@ add_action('wp_footer', function() {
       var sec=document.createElement('section');
       sec.id='toa-cast-talent';
       sec.style.display='none';
-      sec.innerHTML='<div class="toa-cast-hd"><h2>'+TX.title+' '+esc(PROV)+'</h2><p>'+TX.sub+'</p></div><div class="toa-cast-grid" id="toaCastGrid"></div><div class="toa-cast-cta"><a href="#toa-form-anchor">'+TX.cta+'</a><p style="font-size:11px;color:rgba(255,255,255,.4);margin:10px 0 0;text-align:center">'+TX.note+'</p></div>';
+      sec.innerHTML='<div class="toa-cast-hd"><h2>'+TX.title+' '+esc(PROV)+'</h2><p>'+TX.sub+'</p></div><div class="toa-cast-grid" id="toaCastGrid"></div><div class="toa-cast-cta"><a href="#toa-form-anchor">'+TX.cta+'</a><a href="'+TDB_URL+'" class="alt">'+TX.browse+'</a><p style="font-size:11px;color:rgba(255,255,255,.4);margin:10px 0 0;text-align:center">'+TX.note+'</p></div>';
 
       // inserisci subito dopo l'hero: loghi, poi griglia
       hero.parentNode.insertBefore(brandSec, hero.nextSibling);
@@ -954,19 +967,27 @@ add_action('wp_footer', function() {
         if(tgt){e.preventDefault();tgt.scrollIntoView({behavior:'smooth',block:'start'});}
       });
 
-      // fetch talent (fallback: nascondi solo la griglia, i loghi restano)
-      fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({provincia:PROV,per_page:FETCH,page:1})})
-        .then(function(r){return r.json();})
-        .then(function(d){
-          if(!d||!d.ok||!d.results||!d.results.length){ sec.remove(); return; }
-          var list=shuffle(d.results.slice()).slice(0,SHOW);
-          document.getElementById('toaCastGrid').innerHTML=list.map(function(t){
-            var m=[]; if(t.eta)m.push(t.eta+' anni'); if(t.altezza)m.push(t.altezza+' cm'); if(t.citta)m.push(t.citta);
-            return '<div class="toa-cast-card"><img src="'+FOTO+encodeURIComponent(t.id)+'" alt="Profilo" loading="lazy" decoding="async" onerror="this.closest(\'.toa-cast-card\').remove()" onload="if(!this.naturalWidth||this.naturalWidth<10)this.closest(\'.toa-cast-card\').remove()"><div class="ov"><b>Profilo #'+esc(t.id)+'</b>'+(m.length?'<span>'+esc(m.join(' · '))+'</span>':'')+'</div></div>';
-          }).join('');
-          sec.style.display='';
-        })
-        .catch(function(){ try{sec.remove();}catch(e){} });
+      // fetch talent: una fetch per ogni provincia del pool (PROVS), unione + dedup per id,
+      // poi shuffle e prendi SHOW. Fallback: nascondi solo la griglia, i loghi restano.
+      function fetchProv(p){
+        return fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({provincia:p,per_page:FETCH,page:1})})
+          .then(function(r){return r.json();})
+          .then(function(d){ return (d&&d.ok&&Array.isArray(d.results))?d.results:[]; })
+          .catch(function(){ return []; });
+      }
+      Promise.all(PROVS.map(fetchProv)).then(function(arrs){
+        var pool=[], seen={};
+        arrs.forEach(function(a){ a.forEach(function(t){ if(t&&t.id&&!seen[t.id]){ seen[t.id]=1; pool.push(t); } }); });
+        if(!pool.length){ sec.remove(); return; }
+        var list=shuffle(pool).slice(0,SHOW);
+        document.getElementById('toaCastGrid').innerHTML=list.map(function(t){
+          var m=[]; if(t.eta)m.push(t.eta+' anni'); if(t.altezza)m.push(t.altezza+' cm'); if(t.citta)m.push(t.citta);
+          // FIX: mostra solo il PRIMO nome (mai cognome, anche se per errore arrivasse)
+          var nm=(t.nome?String(t.nome).trim().split(/\s+/)[0]:'')||'Profilo';
+          return '<div class="toa-cast-card"><img src="'+FOTO+encodeURIComponent(t.id)+'" alt="'+esc(nm)+'" loading="lazy" decoding="async" onerror="this.closest(\'.toa-cast-card\').remove()" onload="if(!this.naturalWidth||this.naturalWidth<10)this.closest(\'.toa-cast-card\').remove()"><div class="ov"><b>'+esc(nm)+'</b>'+(m.length?'<span>'+esc(m.join(' · '))+'</span>':'')+'</div></div>';
+        }).join('');
+        sec.style.display='';
+      }).catch(function(){ try{sec.remove();}catch(e){} });
     })();
     </script>
     <?php
