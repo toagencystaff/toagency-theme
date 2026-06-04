@@ -1161,12 +1161,22 @@
                 errorMsg = tmsg(MSG.emailExists);
                 stepToGo = 1;
                 break;
+            case 'missing_social': /* TASK social-ux STEP 7 2026-06-04 marco */
+                stepToGo = 3;
+                break;
             default:
                 stepToGo = 4;
         }
 
         showInlineError('toaTalentFormError', '⚠️ ' + errorMsg);
         showStep(stepToGo);
+        /* TASK social-ux STEP 7 2026-06-04 marco — porta l'utente sul primo campo social */
+        if (stepToGo === 3) {
+            setTimeout(function() {
+                var ig = document.querySelector('[name="instagram"]');
+                if (ig) { ig.scrollIntoView({ behavior: 'smooth', block: 'center' }); ig.focus({ preventScroll: true }); }
+            }, 350);
+        }
     }
 
     /**
