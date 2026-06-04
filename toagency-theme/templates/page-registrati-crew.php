@@ -417,7 +417,7 @@ $theme_uri = get_stylesheet_directory_uri();
                 <div class="toa-crew-dropzone toa-crew-dropzone-small" id="toaCrewProfileDrop">
                     <div class="toa-crew-dropzone-icon">👤</div>
                     <div class="toa-crew-dropzone-text"><strong><?php echo _ht_crew(array('it'=>'Clicca','en'=>'Click','fr'=>'Clique','es'=>'Clic')); ?></strong> <?php echo _ht_crew(array('it'=>'per caricare','en'=>'to upload','fr'=>'pour charger','es'=>'para subir')); ?></div>
-                    <div class="toa-crew-dropzone-hint">JPG, PNG • <?php echo _ht_crew(array('it'=>'max 5MB','en'=>'max 5MB','fr'=>'max 5MB','es'=>'max 5MB')); ?></div>
+                    <div class="toa-crew-dropzone-hint">JPG, PNG • <?php /* TASK hardening-upload-crew 2026-06-04 marco */ echo _ht_crew(array('it'=>'Carica le tue foto: le ottimizziamo noi automaticamente','en'=>'Upload your photos: we optimize them automatically','fr'=>'Charge tes photos : on les optimise automatiquement','es'=>'Sube tus fotos: las optimizamos automáticamente')); ?></div>
                     <input type="file" id="toaCrewProfileInput" accept="image/*" style="display:none;">
                 </div>
                 <div class="toa-crew-profile-thumb" id="toaCrewProfileThumb"></div>
@@ -454,7 +454,7 @@ $theme_uri = get_stylesheet_directory_uri();
                 <div class="toa-crew-dropzone" id="toaCrewPhotosDrop">
                     <div class="toa-crew-dropzone-icon">⬆️</div>
                     <div class="toa-crew-dropzone-text"><strong><?php echo _ht_crew(array('it'=>'Clicca','en'=>'Click','fr'=>'Clique','es'=>'Clic')); ?></strong> <?php echo _ht_crew(array('it'=>'o trascina qui le foto','en'=>'or drag photos','fr'=>'ou glisse','es'=>'o arrastra')); ?></div>
-                    <div class="toa-crew-dropzone-hint">JPG, PNG • <?php echo _ht_crew(array('it'=>'max 5MB per file','en'=>'max 5MB','fr'=>'max 5MB','es'=>'max 5MB')); ?></div>
+                    <div class="toa-crew-dropzone-hint">JPG, PNG • <?php /* TASK hardening-upload-crew 2026-06-04 marco */ echo _ht_crew(array('it'=>'Carica le tue foto: le ottimizziamo noi automaticamente','en'=>'Upload your photos: we optimize them automatically','fr'=>'Charge tes photos : on les optimise automatiquement','es'=>'Sube tus fotos: las optimizamos automáticamente')); ?></div>
                     <input type="file" id="toaCrewPhotosInput" accept="image/*" multiple style="display:none;">
                 </div>
                 <div class="toa-crew-thumbs" id="toaCrewPhotosThumbs"></div>
@@ -564,7 +564,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.0" defer></script>
+<script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.0-20260604" defer></script><!-- TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
 
 <!-- ══════════════════════════════════════════════
      PREFILL — pre-compila campi se l'utente arriva da Student Program

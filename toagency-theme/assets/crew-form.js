@@ -20,7 +20,7 @@
 
     var MAX_PHOTOS = 15;
     var MAX_VIDEOS = 5;
-    var MAX_PHOTO_SIZE_MB = 5;
+    var MAX_PHOTO_SIZE_MB = 60; /* TASK hardening-upload-crew 2026-06-04 marco — era 5: le foto grandi passano e vengono compresse client-side */
     var MAX_VIDEO_SIZE_MB = 50;
 
     // Etichette P.IVA per paese
@@ -798,24 +798,55 @@
     var crewUuidAfterRegister = null;
     var crewTokenAfterRegister = null;
 
+    /* TASK hardening-upload-crew 2026-06-04 marco — compressione foto client (identica a talent-form-v40.js) */
+    function toaCompressImage(file, maxLong, quality){
+      maxLong = maxLong || 1280; quality = quality || 0.78;
+      return new Promise(function(resolve){
+        if (!file || !/^image\//i.test(file.type||'')) { resolve(file); return; }
+        var url = URL.createObjectURL(file), img = new Image();
+        img.onload = function(){
+          try {
+            var w=img.naturalWidth, h=img.naturalHeight;
+            if(!w||!h){ URL.revokeObjectURL(url); resolve(file); return; }
+            var scale = Math.min(1, maxLong/Math.max(w,h));
+            var nw=Math.round(w*scale), nh=Math.round(h*scale);
+            var c=document.createElement('canvas'); c.width=nw; c.height=nh;
+            c.getContext('2d').drawImage(img,0,0,nw,nh);
+            URL.revokeObjectURL(url);
+            c.toBlob(function(blob){
+              if(!blob){ resolve(file); return; }
+              if(scale===1 && blob.size>=file.size){ resolve(file); return; }
+              var name=(file.name||'foto').replace(/\.(heic|heif|png|webp|gif|jpe?g)$/i,'')+'.jpg';
+              resolve(new File([blob], name, {type:'image/jpeg', lastModified:Date.now()}));
+            }, 'image/jpeg', quality);
+          } catch(e){ URL.revokeObjectURL(url); resolve(file); }
+        };
+        img.onerror = function(){ URL.revokeObjectURL(url); resolve(file); }; // HEIC non decodificabile → originale, lo gestisce il server/cron
+        img.src = url;
+      });
+    }
+
     // Upload sequenziale: foto profilo → foto portfolio → video
     function uploadOneFile(crewId, token, file, tipo) {
-        var fd = new FormData();
-        fd.append('crew_id', crewId);
-        fd.append('token_profilo', token);
-        fd.append('tipo', tipo);
-        fd.append('file', file);
-        return fetch(UPLOAD_ENDPOINT, {
-            method: 'POST',
-            body: fd,
-            credentials: 'same-origin'
-        }).then(function(r) {
-            return r.text().then(function(t) {
-                try { return JSON.parse(t); }
-                catch (e) {
-                    console.error('[upload] non-JSON:', t.substring(0, 200));
-                    return { ok: false, error: 'invalid_response' };
-                }
+        /* TASK hardening-upload-crew 2026-06-04 marco — comprimi prima di spedire (video passano intatti), poi catena identica */
+        return toaCompressImage(file, 1280, 0.78).then(function(cfile) {
+            var fd = new FormData();
+            fd.append('crew_id', crewId);
+            fd.append('token_profilo', token);
+            fd.append('tipo', tipo);
+            fd.append('file', cfile);
+            return fetch(UPLOAD_ENDPOINT, {
+                method: 'POST',
+                body: fd,
+                credentials: 'same-origin'
+            }).then(function(r) {
+                return r.text().then(function(t) {
+                    try { return JSON.parse(t); }
+                    catch (e) {
+                        console.error('[upload] non-JSON:', t.substring(0, 200));
+                        return { ok: false, error: 'invalid_response' };
+                    }
+                });
             });
         });
     }
