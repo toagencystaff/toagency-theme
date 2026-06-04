@@ -322,7 +322,7 @@ toa_component('header');
     }
 
     @media (max-width: 600px) {
-        .toa-sl-hero__img { height: 320px; }
+        .toa-sl-hero__img { height: 460px; }
         .toa-sl-hero__meta { padding: 24px 20px 28px; }
         .toa-sl-hero--noimg { padding: 48px 20px 0; }
         .toa-sl-title { font-size: 28px; letter-spacing: -0.3px; }

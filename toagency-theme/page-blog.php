@@ -261,7 +261,7 @@ toa_component('header');
     }
 
     @media (max-width: 680px) {
-        .toa-bl-hero { padding: 60px 20px 48px; }
+        .toa-bl-hero { padding: 120px 20px 48px; }
         .toa-bl-hero__title { font-size: 44px; letter-spacing: -1.5px; }
         .toa-bl-hero__sub { font-size: 15px; }
         .toa-bl-wrap { padding: 36px 20px 60px; }
