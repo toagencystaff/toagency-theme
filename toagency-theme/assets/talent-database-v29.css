@@ -1646,14 +1646,14 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
 /* 2026-06-04 marco — codice univoco come pill monospace */
 .toa-tdb-card-code {
     font-family: monospace;
-    font-size: 13px;
+    font-size: 14px !important;
     background: rgba(255,255,255,0.18);
     color: rgba(255,255,255,0.90);
     padding: 1px 6px;
     border-radius: 4px;
     letter-spacing: 0.03em;
 }
-@media (max-width: 768px) { .toa-tdb-card-code { font-size: 12px; } }
+@media (max-width: 768px) { .toa-tdb-card-code { font-size: 13px !important; } }
 
 /* ════════════════════════════════════════════════════════════════
    FIX STICKY 2026-06-02 marco — la sidebar/chip scomparivano scrollando.
