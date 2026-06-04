@@ -638,7 +638,7 @@ $theme_uri = get_stylesheet_directory_uri();
                 <div class="toa-talent-dropzone toa-talent-dropzone-small" id="toaTalentProfileDrop">
                     <div class="toa-talent-dropzone-icon">👤</div>
                     <div class="toa-talent-dropzone-text"><?php echo _ht_talent(array('it'=>'Carica foto o scatta selfie','en'=>'Upload photo or take a selfie','es'=>'Sube una foto o hazte un selfie','fr'=>'Charge une photo ou prends un selfie')); ?></div>
-                    <div class="toa-talent-dropzone-hint">JPG, PNG • <?php echo _ht_talent(array('it'=>'max 15MB','en'=>'max 15MB','fr'=>'max 15MB','es'=>'max 15MB')); ?></div>
+                    <div class="toa-talent-dropzone-hint">JPG, PNG • <?php /* TASK hardening-upload STEP A 2026-06-04 */ echo _ht_talent(array('it'=>'Carica le tue foto: le ottimizziamo noi automaticamente','en'=>'Upload your photos: we optimize them automatically','fr'=>'Charge tes photos : on les optimise automatiquement','es'=>'Sube tus fotos: las optimizamos automáticamente')); ?></div>
                     <input type="file" id="toaTalentProfileInput" accept="image/*" style="display:none;">
                 </div>
                 <p class="toa-talent-foto-nono" style="text-align:center;margin:12px auto 0;max-width:380px;padding:8px 16px;background:rgba(220,38,38,0.12);border:1px solid rgba(220,38,38,0.4);border-radius:8px;font-size:0.84rem;line-height:1.5;color:#f87171;font-weight:700;letter-spacing:.2px;"><?php echo _ht_talent(array(
@@ -665,7 +665,7 @@ $theme_uri = get_stylesheet_directory_uri();
                 <div class="toa-talent-dropzone" id="toaTalentPhotosDrop">
                     <div class="toa-talent-dropzone-icon">⬆️</div>
                     <div class="toa-talent-dropzone-text"><strong><?php echo _ht_talent(array('it'=>'Clicca','en'=>'Click','fr'=>'Clique','es'=>'Clic')); ?></strong> <?php echo _ht_talent(array('it'=>'o trascina qui le foto','en'=>'or drag photos','fr'=>'ou glisse','es'=>'o arrastra')); ?></div>
-                    <div class="toa-talent-dropzone-hint">JPG, PNG • <?php echo _ht_talent(array('it'=>'max 15MB per file','en'=>'max 15MB','fr'=>'max 15MB','es'=>'max 15MB')); ?></div>
+                    <div class="toa-talent-dropzone-hint">JPG, PNG • <?php /* TASK hardening-upload STEP A 2026-06-04 */ echo _ht_talent(array('it'=>'Carica le tue foto: le ottimizziamo noi automaticamente','en'=>'Upload your photos: we optimize them automatically','fr'=>'Charge tes photos : on les optimise automatiquement','es'=>'Sube tus fotos: las optimizamos automáticamente')); ?></div>
                     <input type="file" id="toaTalentPhotosInput" accept="image/*" multiple style="display:none;">
                 </div>
                 <div class="toa-talent-thumbs" id="toaTalentPhotosThumbs"></div>
@@ -794,7 +794,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260601" defer></script>
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260604" defer></script><!-- TASK hardening-upload STEP A 2026-06-04: bump v per forzare reload JS su prod/CDN -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
