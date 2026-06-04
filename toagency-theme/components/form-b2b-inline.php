@@ -26,7 +26,8 @@ $hq_services = array(
 // Stringhe JS (multilingua)
 $hq_js = array(
   'sending' => array('it'=>'Invio...','en'=>'Sending...','fr'=>'Envoi...','es'=>'Enviando...'),
-  'submit'  => array('it'=>'Invia richiesta','en'=>'Send request','fr'=>'Envoyer la demande','es'=>'Enviar solicitud'),
+  'submit'  => array('it'=>'Invia la tua richiesta','en'=>'Send your request','fr'=>'Envoyez votre demande','es'=>'Envía tu solicitud'),
+  'microcopy' => array('it'=>'Ti ricontattiamo subito','en'=>'We\'ll get back to you right away','fr'=>'On vous recontacte tout de suite','es'=>'Te contactamos enseguida'),
   'privacy' => array('it'=>'Devi accettare la privacy policy per continuare.','en'=>'You must accept the privacy policy to continue.','fr'=>'Vous devez accepter la politique de confidentialité pour continuer.','es'=>'Debes aceptar la política de privacidad para continuar.'),
   'error'   => array('it'=>'Invio non riuscito. Vuoi scriverci su WhatsApp?','en'=>'Sending failed. Do you want to message us on WhatsApp?','fr'=>'Échec de l\'envoi. Voulez-vous nous écrire sur WhatsApp ?','es'=>'Error en el envío. ¿Quieres escribirnos por WhatsApp?'),
   'wa'      => array('it'=>'Ciao TOAgency, richiesta preventivo da: ','en'=>'Hi TOAgency, quote request from: ','fr'=>'Bonjour TOAgency, demande de devis de : ','es'=>'Hola TOAgency, solicitud de presupuesto de: '),
@@ -83,6 +84,7 @@ $hq_js = array(
           <span class="iq-spinner" id="hqSpinner"></span>
           <span id="hqSubmitText"><?php echo _ht($hq_js['submit']); ?></span>
         </button>
+        <p style="text-align:center;font-size:12px;color:rgba(255,255,255,.5);margin:10px 0 0"><?php echo _ht($hq_js['microcopy']); ?></p>
       </form>
     </div>
   </div>

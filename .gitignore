@@ -18,6 +18,8 @@ _scripts/backups/
 *.bak
 *.bak*
 *.bak_*
+**/_scripts/backups/
+*-blog-content-*.html
 
 # Log
 *.log

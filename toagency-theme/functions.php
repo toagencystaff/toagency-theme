@@ -934,10 +934,10 @@ add_action('wp_footer', function() {
 
       // i18n: testi localizzati via get_locale() (fallback prefisso lingua, poi it_IT)
       var I18N = {
-        'it_IT':{title:'ALCUNI PROFILI DISPONIBILI A',sub:'Selezione aggiornata ogni giorno · <strong>20.000+ profili nel database</strong>',note:'Questi sono solo alcuni profili. Selezione personalizzata in 24h.',cta:'Richiedi una selezione personalizzata →',browse:'Guarda tutti i profili →'},
-        'fr_FR':{title:'QUELQUES PROFILS DISPONIBLES À',sub:'Sélection mise à jour chaque jour · <strong>20 000+ profils dans la base</strong>',note:'Ce ne sont que quelques profils. Sélection personnalisée en 24h.',cta:'Demander une sélection personnalisée →',browse:'Voir tous les profils →'},
-        'es_ES':{title:'ALGUNOS PERFILES DISPONIBLES EN',sub:'Selección actualizada cada día · <strong>20.000+ perfiles en la base</strong>',note:'Estos son solo algunos perfiles. Selección personalizada en 24h.',cta:'Solicitar una selección personalizada →',browse:'Ver todos los perfiles →'},
-        'en_US':{title:'SOME PROFILES AVAILABLE IN',sub:'Selection updated daily · <strong>20,000+ profiles in database</strong>',note:'These are just some profiles. Personalised selection in 24h.',cta:'Request a personalised selection →',browse:'Browse all profiles →'}
+        'it_IT':{title:'ALCUNI PROFILI DISPONIBILI A',sub:'Selezione aggiornata ogni giorno · <strong>20.000+ profili</strong>',note:'Questi sono solo alcuni profili. Selezione personalizzata in 24h.',cta:'Richiedi una selezione personalizzata →',browse:'Guarda tutti i profili →'},
+        'fr_FR':{title:'QUELQUES PROFILS DISPONIBLES À',sub:'Sélection mise à jour chaque jour · <strong>20 000+ profils</strong>',note:'Ce ne sont que quelques profils. Sélection personnalisée en 24h.',cta:'Demander une sélection personnalisée →',browse:'Voir tous les profils →'},
+        'es_ES':{title:'ALGUNOS PERFILES DISPONIBLES EN',sub:'Selección actualizada cada día · <strong>20.000+ perfiles</strong>',note:'Estos son solo algunos perfiles. Selección personalizada en 24h.',cta:'Solicitar una selección personalizada →',browse:'Ver todos los perfiles →'},
+        'en_US':{title:'SOME PROFILES AVAILABLE IN',sub:'Selection updated daily · <strong>20,000+ profiles</strong>',note:'These are just some profiles. Personalised selection in 24h.',cta:'Request a personalised selection →',browse:'Browse all profiles →'}
       };
       var lang = <?php echo json_encode(get_locale()); ?>;
       var byShort = {it:'it_IT',fr:'fr_FR',es:'es_ES',en:'en_US'};
@@ -1055,17 +1055,17 @@ add_action('wp_footer', function() {
     toa_cro_loghi_block(toa_cro_loghi_label());
 
     $grid_i18n = array(
-      'it'=>array('title'=>'ALCUNI DEI NOSTRI MODELLI E MODELLE','sub'=>'Selezione aggiornata ogni giorno · <strong>20.000+ profili nel database</strong>','note'=>'Questi sono solo alcuni profili. Selezione personalizzata in 24h.','cta'=>'Richiedi una selezione personalizzata →','browse'=>'Guarda tutti i modelli →'),
-      'en'=>array('title'=>'SOME OF OUR MODELS','sub'=>'Selection updated daily · <strong>20,000+ profiles in database</strong>','note'=>'These are just some profiles. Personalised selection in 24h.','cta'=>'Request a personalised selection →','browse'=>'Browse all models →'),
-      'fr'=>array('title'=>'QUELQUES-UNS DE NOS MANNEQUINS','sub'=>'Sélection mise à jour chaque jour · <strong>20 000+ profils dans la base</strong>','note'=>'Ce ne sont que quelques profils. Sélection personnalisée en 24h.','cta'=>'Demander une sélection personnalisée →','browse'=>'Voir tous les mannequins →'),
-      'es'=>array('title'=>'ALGUNOS DE NUESTROS MODELOS','sub'=>'Selección actualizada cada día · <strong>20.000+ perfiles en la base</strong>','note'=>'Estos son solo algunos perfiles. Selección personalizada en 24h.','cta'=>'Solicitar una selección personalizada →','browse'=>'Ver todos los modelos →'),
+      'it'=>array('title'=>'ALCUNI DEI NOSTRI MODELLI E MODELLE','sub'=>'Selezione aggiornata ogni giorno · <strong>20.000+ profili</strong>','note'=>'Questi sono solo alcuni profili. Selezione personalizzata in 24h.','cta'=>'Richiedi una selezione personalizzata →','browse'=>'Guarda tutti i modelli →'),
+      'en'=>array('title'=>'SOME OF OUR MODELS','sub'=>'Selection updated daily · <strong>20,000+ profiles</strong>','note'=>'These are just some profiles. Personalised selection in 24h.','cta'=>'Request a personalised selection →','browse'=>'Browse all models →'),
+      'fr'=>array('title'=>'QUELQUES-UNS DE NOS MANNEQUINS','sub'=>'Sélection mise à jour chaque jour · <strong>20 000+ profils</strong>','note'=>'Ce ne sont que quelques profils. Sélection personnalisée en 24h.','cta'=>'Demander une sélection personnalisée →','browse'=>'Voir tous les mannequins →'),
+      'es'=>array('title'=>'ALGUNOS DE NUESTROS MODELOS','sub'=>'Selección actualizada cada día · <strong>20.000+ perfiles</strong>','note'=>'Estos son solo algunos perfiles. Selección personalizada en 24h.','cta'=>'Solicitar una selección personalizada →','browse'=>'Ver todos los modelos →'),
     );
     $tdb_url = home_url('/talent-database/'); // 2026-06-04 marco — "guarda tutti i modelli" (nazionale)
     $form_i18n = array(
-      'it'=>array('eyebrow'=>'Inizia ora','heading'=>'Chiedi un preventivo gratuito','sub'=>'Risposta entro 24 ore lavorative','company'=>'Azienda','contact'=>'Nome e cognome','email'=>'Email','phone'=>'Telefono','service'=>'Servizio','select'=>'Seleziona...','message'=>'Messaggio','msgph'=>'Raccontaci brevemente il tuo progetto...','consent'=>'Accetto il trattamento dei dati secondo la','privacy'=>'Privacy Policy','submit'=>'Invia richiesta','sending'=>'Invio...','alert'=>'Devi accettare la privacy policy per continuare.','error'=>'Invio non riuscito. Vuoi scriverci su WhatsApp?','wa'=>'Ciao TOAgency, richiesta preventivo da: '),
-      'en'=>array('eyebrow'=>'Start now','heading'=>'Request a free quote','sub'=>'Response within 24 working hours','company'=>'Company','contact'=>'Full name','email'=>'Email','phone'=>'Phone','service'=>'Service','select'=>'Select...','message'=>'Message','msgph'=>'Tell us briefly about your project...','consent'=>'I accept the processing of my data according to the','privacy'=>'Privacy Policy','submit'=>'Send request','sending'=>'Sending...','alert'=>'You must accept the privacy policy to continue.','error'=>'Sending failed. Do you want to message us on WhatsApp?','wa'=>'Hi TOAgency, quote request from: '),
-      'fr'=>array('eyebrow'=>'Commencez maintenant','heading'=>'Demandez un devis gratuit','sub'=>'Réponse sous 24 heures ouvrées','company'=>'Entreprise','contact'=>'Nom et prénom','email'=>'Email','phone'=>'Téléphone','service'=>'Service','select'=>'Sélectionnez...','message'=>'Message','msgph'=>'Décrivez brièvement votre projet...','consent'=>"J'accepte le traitement de mes données selon la",'privacy'=>'Politique de confidentialité','submit'=>'Envoyer la demande','sending'=>'Envoi...','alert'=>'Vous devez accepter la politique de confidentialité pour continuer.','error'=>"Échec de l'envoi. Voulez-vous nous écrire sur WhatsApp ?",'wa'=>'Bonjour TOAgency, demande de devis de : '),
-      'es'=>array('eyebrow'=>'Empieza ahora','heading'=>'Solicita un presupuesto gratuito','sub'=>'Respuesta en 24 horas laborables','company'=>'Empresa','contact'=>'Nombre y apellidos','email'=>'Email','phone'=>'Teléfono','service'=>'Servicio','select'=>'Selecciona...','message'=>'Mensaje','msgph'=>'Cuéntanos brevemente tu proyecto...','consent'=>'Acepto el tratamiento de mis datos según la','privacy'=>'Política de privacidad','submit'=>'Enviar solicitud','sending'=>'Enviando...','alert'=>'Debes aceptar la política de privacidad para continuar.','error'=>'Error en el envío. ¿Quieres escribirnos por WhatsApp?','wa'=>'Hola TOAgency, solicitud de presupuesto de: '),
+      'it'=>array('eyebrow'=>'Inizia ora','heading'=>'Chiedi un preventivo gratuito','sub'=>'Risposta entro 24 ore lavorative','company'=>'Azienda','contact'=>'Nome e cognome','email'=>'Email','phone'=>'Telefono','service'=>'Servizio','select'=>'Seleziona...','message'=>'Messaggio','msgph'=>'Raccontaci brevemente il tuo progetto...','consent'=>'Accetto il trattamento dei dati secondo la','privacy'=>'Privacy Policy','submit'=>'Invia la tua richiesta','microcopy'=>'Ti ricontattiamo subito','sending'=>'Invio...','alert'=>'Devi accettare la privacy policy per continuare.','error'=>'Invio non riuscito. Vuoi scriverci su WhatsApp?','wa'=>'Ciao TOAgency, richiesta preventivo da: '),
+      'en'=>array('eyebrow'=>'Start now','heading'=>'Request a free quote','sub'=>'Response within 24 working hours','company'=>'Company','contact'=>'Full name','email'=>'Email','phone'=>'Phone','service'=>'Service','select'=>'Select...','message'=>'Message','msgph'=>'Tell us briefly about your project...','consent'=>'I accept the processing of my data according to the','privacy'=>'Privacy Policy','submit'=>'Send your request','microcopy'=>'We\'ll get back to you right away','sending'=>'Sending...','alert'=>'You must accept the privacy policy to continue.','error'=>'Sending failed. Do you want to message us on WhatsApp?','wa'=>'Hi TOAgency, quote request from: '),
+      'fr'=>array('eyebrow'=>'Commencez maintenant','heading'=>'Demandez un devis gratuit','sub'=>'Réponse sous 24 heures ouvrées','company'=>'Entreprise','contact'=>'Nom et prénom','email'=>'Email','phone'=>'Téléphone','service'=>'Service','select'=>'Sélectionnez...','message'=>'Message','msgph'=>'Décrivez brièvement votre projet...','consent'=>"J'accepte le traitement de mes données selon la",'privacy'=>'Politique de confidentialité','submit'=>'Envoyez votre demande','microcopy'=>'On vous recontacte tout de suite','sending'=>'Envoi...','alert'=>'Vous devez accepter la politique de confidentialité pour continuer.','error'=>"Échec de l'envoi. Voulez-vous nous écrire sur WhatsApp ?",'wa'=>'Bonjour TOAgency, demande de devis de : '),
+      'es'=>array('eyebrow'=>'Empieza ahora','heading'=>'Solicita un presupuesto gratuito','sub'=>'Respuesta en 24 horas laborables','company'=>'Empresa','contact'=>'Nombre y apellidos','email'=>'Email','phone'=>'Teléfono','service'=>'Servicio','select'=>'Selecciona...','message'=>'Mensaje','msgph'=>'Cuéntanos brevemente tu proyecto...','consent'=>'Acepto el tratamiento de mis datos según la','privacy'=>'Política de privacidad','submit'=>'Envía tu solicitud','microcopy'=>'Te contactamos enseguida','sending'=>'Enviando...','alert'=>'Debes aceptar la política de privacidad para continuar.','error'=>'Error en el envío. ¿Quieres escribirnos por WhatsApp?','wa'=>'Hola TOAgency, solicitud de presupuesto de: '),
     );
     $svc = array(
       'shooting'=>array('it'=>'Shooting / Servizio foto','en'=>'Photo shoot','fr'=>'Shooting photo','es'=>'Sesión de fotos'),
@@ -1164,6 +1164,7 @@ add_action('wp_footer', function() {
             '<div class="iq-field"><label class="iq-label" for="tm_message">'+esc(ft.message)+'</label><textarea id="tm_message" name="message" class="iq-input" placeholder="'+esc(ft.msgph)+'"></textarea></div>'+
             '<label class="inline-quote-consent" for="tm_consent"><input type="checkbox" id="tm_consent" required> <span>'+esc(ft.consent)+' <a href="https://www.iubenda.com/privacy-policy/58462877" target="_blank" rel="noopener">'+esc(ft.privacy)+'</a></span></label>'+
             '<button type="submit" class="btn-hero btn-hero-primary iq-submit" id="tmSubmit"><span class="iq-spinner" id="tmSpinner" style="display:none"></span><span id="tmSubmitText">'+esc(ft.submit)+'</span></button>'+
+          '<p style="text-align:center;font-size:12px;color:rgba(255,255,255,.5);margin:10px 0 0">'+esc(ft.microcopy)+'</p>'+
           '</form></div></div>';
         if (hiw) { hiw.parentNode.insertBefore(fsec, hiw.nextSibling); }
         else { document.body.appendChild(fsec); }
@@ -1190,3 +1191,17 @@ add_action('wp_footer', function() {
     <?php
 }, 999);
 // === END 2026-06-03 marco — LOGHI + GRIGLIA MODELLI + FORM models ===
+
+// === BEGIN 2026-06-04 marco — FIX overlap widget fixed bottom-right ===
+// I 3 elementi fixed in basso a destra si calpestano (mobile soprattutto):
+//  PREVENTIVO (.sticky-cta-mobile, 16px) · WhatsApp (.toa-whatsapp-btn, mobile 88px) · Amelia FAB
+//  (#toa-fab-wrap, iniettato da crm_toagency/amelia-loader-v2.js a bottom:24px right:24px z:10010).
+// WhatsApp+PREVENTIVO erano gia impilati: alzo SOLO Amelia sopra WhatsApp (no overlap). !important per
+// vincere lo <style> inline del loader. Globale (i widget sono su tutte le pagine).
+add_action('wp_head', function() {
+    echo '<style id="toa-fix-fab-overlap">'
+       . '#toa-fab-wrap,#toa-widget{bottom:88px !important;right:20px !important;}'
+       . '@media(max-width:768px){#toa-fab-wrap,#toa-widget{bottom:160px !important;right:16px !important;}}'
+       . '</style>' . "\n";
+}, 9999);
+// === END 2026-06-04 marco — FIX overlap widget ===
