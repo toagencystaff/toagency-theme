@@ -407,8 +407,9 @@
     gap: 14px;
 }
 @media (max-width: 1199px) { .toa-tdb-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; } }
-@media (max-width: 767px)  { .toa-tdb-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
-@media (max-width: 380px)  { .toa-tdb-grid { grid-template-columns: 1fr; } }
+@media (max-width: 768px)  { .toa-tdb-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
+/* 2026-06-04 marco — mai 1 sola colonna su mobile: anche sotto i 480px restano 2 colonne */
+@media (max-width: 480px)  { .toa-tdb-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; } }
 
 /* Empty / Load more */
 .toa-tdb-grid-empty {
@@ -1686,3 +1687,6 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
     opacity: 0.4;
     cursor: not-allowed;
 }
+
+/* 2026-06-04 marco — card meno alte su mobile (4/5 invece di 3/4) per due colonne comode */
+@media (max-width: 768px) { .toa-tdb-card { aspect-ratio: 4 / 5; } }
