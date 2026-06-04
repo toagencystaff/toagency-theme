@@ -1662,3 +1662,11 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
         padding: 8px 0;
     }
 }
+
+/* ── 2026-06-04 marco — FIX sidebar scroll orizzontale + chip categoria disabilitate ── */
+.toa-tdb-sidebar { overflow-x: hidden; }
+.toa-tdb-cat-chip--disabled {
+    pointer-events: none;
+    opacity: 0.4;
+    cursor: not-allowed;
+}

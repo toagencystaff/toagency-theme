@@ -174,13 +174,13 @@ $hub_sections = array(
     array(
         'icon'   => '👶',
         'ruolo'  => 'comparsa',
-        'title'  => array('it'=>'Kids & Giovani','en'=>'Kids & Young','fr'=>'Enfants & Jeunes','es'=>'Niños & Jóvenes'),
+        'title'  => array('it'=>'Bambini / ragazzi','en'=>'Kids & Young','fr'=>'Enfants & Jeunes','es'=>'Niños & Jóvenes'),
         'desc'   => array('it'=>'Bambini, ragazzi e giovani adulti per spot, campagne e contenuti digitali.','en'=>'Children, teens and young adults for commercials, campaigns and digital content.','fr'=>'Enfants, ados et jeunes adultes pour pubs, campagnes et contenus.','es'=>'Niños, adolescentes y jóvenes para spots, campañas y contenidos.'),
     ),
     array(
         'icon'   => '📱',
         'ruolo'  => 'creator',
-        'title'  => array('it'=>'Creator & Influencer','en'=>'Creator & Influencer','fr'=>'Créateurs & Influenceurs','es'=>'Creadores & Influencers'),
+        'title'  => array('it'=>'Creator e influencer','en'=>'Creator & Influencer','fr'=>'Créateurs & Influenceurs','es'=>'Creadores & Influencers'),
         'desc'   => array('it'=>'Content creator e influencer per campagne social, UGC e brand collaboration.','en'=>'Content creators and influencers for social campaigns, UGC and brand collaborations.','fr'=>'Créateurs de contenu et influenceurs pour campagnes sociales et collaborations.','es'=>'Creadores e influencers para campañas sociales, UGC y colaboraciones.'),
     ),
     // 2026-05-24 marco — card "Crew & Tecnici" rimossa per campagna lancio talent.
@@ -396,8 +396,8 @@ $hub_sections = array(
             <!-- 2026-06-02 marco — chip categoria sottili (sostituiscono l'hub grande); settano il filtro Categoria -->
             <div class="toa-tdb-cat-chips" id="tdbCatChips" role="tablist" aria-label="Categoria">
                 <button type="button" class="toa-tdb-cat-chip is-active" data-ruolo=""><?php echo esc_html($_t(array('it'=>'Tutti','en'=>'All','fr'=>'Tous','es'=>'Todos'))); ?></button>
-                <?php foreach ($hub_sections as $sec) : ?>
-                <button type="button" class="toa-tdb-cat-chip" data-ruolo="<?php echo esc_attr($sec['ruolo']); ?>">
+                <?php foreach ($hub_sections as $sec) : // 2026-06-04 marco — chip categoria disabilitate (solo "Tutti" attivo) ?>
+                <button type="button" class="toa-tdb-cat-chip toa-tdb-cat-chip--disabled" data-ruolo="<?php echo esc_attr($sec['ruolo']); ?>" aria-disabled="true" tabindex="-1" disabled>
                     <span class="toa-tdb-cat-chip-icon"><?php echo $sec['icon']; ?></span>
                     <span><?php echo esc_html($_t($sec['title'])); ?></span>
                 </button>
