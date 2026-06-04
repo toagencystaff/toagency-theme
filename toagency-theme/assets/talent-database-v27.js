@@ -349,7 +349,7 @@
         var tid = parseInt(t.talent_id, 10) || 0;
         var line = [];
         line.push('<strong>' + escapeHtml(t.nome || '—') + '</strong>');
-        if (tid)       line.push(String(tid)); // 2026-06-04 marco — codice senza '#'
+        if (tid)       line.push('<span class="toa-tdb-card-code">' + String(tid) + '</span>'); // 2026-06-04 marco — codice in pill monospace
         if (t.eta)     line.push(escapeHtml(t.eta + ' anni'));
         if (t.altezza) line.push(escapeHtml(t.altezza + ' cm'));
         if (t.provincia) line.push(escapeHtml(String(t.provincia).toUpperCase()));
