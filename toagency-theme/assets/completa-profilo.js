@@ -106,6 +106,20 @@
             if (cb) cb.checked = true;
         });
     }
+    // FIX 2026-06-04 marco — collassa i token gendered salvati sui valori chip unificati
+    function collapseRuoli(csv) {
+        if (!csv) return '';
+        var map = {
+            model_f: 'model', model_m: 'model', model: 'model',
+            actor_f: 'actor', actor_m: 'actor', actor: 'actor',
+            hostess: 'hostess_steward', steward: 'hostess_steward'
+        };
+        var out = String(csv).split(',').map(function (s) {
+            s = s.trim().toLowerCase();
+            return map[s] || s;
+        }).filter(Boolean);
+        return out.filter(function (v, i) { return out.indexOf(v) === i; }).join(','); // dedupe
+    }
 
     // ── LOAD ──
     fetch(cfg.apiLoad + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN), {
@@ -127,7 +141,8 @@
         setVal('f-instagram', t.instagram);
         setVal('f-tiktok', t.tiktok);
         setChips('etnia', t.etnia);
-        setChips('ruoli', t.ruoli);
+        // FIX 2026-06-04 marco — i ruoli salvati sono gendered (model_f/…): collassali sui chip unificati
+        setChips('ruoli', collapseRuoli(t.ruoli));
         setChips('lingue', t.lingue);
         var pat = document.getElementById('f-patente');
         if (pat && parseInt(t.patente, 10) === 1) pat.checked = true;

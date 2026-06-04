@@ -80,7 +80,16 @@ $CAPELLI_OPTS  = ['biondi'=>'Biondi','castani'=>'Castani','neri'=>'Neri','rossi'
 $LUNGH_OPTS    = ['corto'=>'Corto','medio'=>'Medio','lungo'=>'Lungo'];
 $OCCHI_OPTS    = ['azzurri'=>'Azzurri','verdi'=>'Verdi','marroni'=>'Marroni','neri'=>'Neri','grigi'=>'Grigi','altro'=>'Altro'];
 $ETNIA_OPTS    = ['caucasica'=>'Caucasica','africana'=>'Africana','asiatica'=>'Asiatica','sud_asiatica'=>'Sud-asiatica','latina'=>'Latina','araba'=>'Araba'];
-$RUOLI_OPTS    = ['model_f'=>'Modella','model_m'=>'Modello','actor_f'=>'Attrice','actor_m'=>'Attore','hostess'=>'Hostess','steward'=>'Steward','comparsa'=>'Comparsa','bambino'=>'Bambino/a','influencer'=>'Influencer / Creator','altro_immagine'=>'Altro'];
+// FIX 2026-06-04 marco — ruoli unificati (no coppie gendered): il sesso determina il token salvato lato server
+$RUOLI_OPTS    = [
+    'model'           => ['it'=>'Modello/a','en'=>'Model','fr'=>'Mannequin','es'=>'Modelo/a'],
+    'actor'           => ['it'=>'Attore/trice','en'=>'Actor/Actress','fr'=>'Acteur/trice','es'=>'Actor/Actriz'],
+    'hostess_steward' => ['it'=>'Hostess / Steward','en'=>'Hostess / Steward','fr'=>'Hôtesse / Steward','es'=>'Azafata / Azafato'],
+    'comparsa'        => ['it'=>'Comparsa','en'=>'Extra','fr'=>'Figurant','es'=>'Extra'],
+    'bambino'         => ['it'=>'Bambino/a','en'=>'Child','fr'=>'Enfant','es'=>'Niño/a'],
+    'influencer'      => ['it'=>'Influencer / Creator','en'=>'Influencer / Creator','fr'=>'Influenceur / Créateur','es'=>'Influencer / Creador'],
+    'altro_immagine'  => ['it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro'],
+];
 $LINGUE_OPTS   = ['italiano'=>'Italiano','inglese'=>'Inglese','francese'=>'Francese','spagnolo'=>'Spagnolo','tedesco'=>'Tedesco','portoghese'=>'Portoghese','russo'=>'Russo','cinese'=>'Cinese','arabo'=>'Arabo','altro'=>'Altro'];
 
 $theme_uri = get_stylesheet_directory_uri();
@@ -175,15 +184,10 @@ $token_get = $_GET['t']    ?? '';
                         </select>
                     </div>
                 </div>
-                <div class="cp-row">
-                    <div class="cp-field">
-                        <label class="cp-label"><?= esc_html($_t($T['field_scarpe'])) ?></label>
-                        <input type="number" id="f-scarpe" class="cp-input" min="20" max="55" inputmode="numeric" placeholder="40">
-                    </div>
-                    <div class="cp-field">
-                        <label class="cp-label"><?= esc_html($_t($T['field_peso'])) ?></label>
-                        <input type="number" id="f-peso" class="cp-input" min="30" max="250" inputmode="numeric" placeholder="65">
-                    </div>
+                <!-- FIX 2026-06-04 marco — Peso rimosso da questo step -->
+                <div class="cp-field">
+                    <label class="cp-label"><?= esc_html($_t($T['field_scarpe'])) ?></label>
+                    <input type="number" id="f-scarpe" class="cp-input" min="20" max="55" inputmode="numeric" placeholder="40">
                 </div>
                 <div class="cp-field">
                     <label class="cp-label"><?= esc_html($_t($T['field_sesso'])) ?></label>
@@ -197,21 +201,13 @@ $token_get = $_GET['t']    ?? '';
             <!-- Aspetto -->
             <div class="cp-section">
                 <div class="cp-section-title">💇 <?= esc_html($_t($T['section_aspetto'])) ?></div>
-                <div class="cp-row">
-                    <div class="cp-field">
-                        <label class="cp-label"><?= esc_html($_t($T['field_capelli'])) ?></label>
-                        <select id="f-capelli" class="cp-select">
-                            <option value=""><?= esc_html($_t($T['opt_select'])) ?></option>
-                            <?php foreach ($CAPELLI_OPTS as $k=>$v): ?><option value="<?= esc_attr($k) ?>"><?= esc_html($v) ?></option><?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="cp-field">
-                        <label class="cp-label"><?= esc_html($_t($T['field_lunghezza'])) ?></label>
-                        <select id="f-lunghezza" class="cp-select">
-                            <option value=""><?= esc_html($_t($T['opt_select'])) ?></option>
-                            <?php foreach ($LUNGH_OPTS as $k=>$v): ?><option value="<?= esc_attr($k) ?>"><?= esc_html($v) ?></option><?php endforeach; ?>
-                        </select>
-                    </div>
+                <!-- FIX 2026-06-04 marco — Lunghezza capelli rimossa da questo step -->
+                <div class="cp-field">
+                    <label class="cp-label"><?= esc_html($_t($T['field_capelli'])) ?></label>
+                    <select id="f-capelli" class="cp-select">
+                        <option value=""><?= esc_html($_t($T['opt_select'])) ?></option>
+                        <?php foreach ($CAPELLI_OPTS as $k=>$v): ?><option value="<?= esc_attr($k) ?>"><?= esc_html($v) ?></option><?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="cp-field">
                     <label class="cp-label"><?= esc_html($_t($T['field_occhi'])) ?></label>
@@ -237,7 +233,7 @@ $token_get = $_GET['t']    ?? '';
                     <label class="cp-label"><?= esc_html($_t($T['field_ruoli'])) ?></label>
                     <div class="cp-chips" id="f-ruoli" data-group="ruoli">
                         <?php foreach ($RUOLI_OPTS as $k=>$v): ?>
-                            <label class="cp-chip"><input type="checkbox" value="<?= esc_attr($k) ?>"><?= esc_html($v) ?></label>
+                            <label class="cp-chip"><input type="checkbox" value="<?= esc_attr($k) ?>"><?= esc_html($_t($v)) ?></label>
                         <?php endforeach; ?>
                     </div>
                 </div>
