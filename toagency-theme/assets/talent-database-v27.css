@@ -1647,11 +1647,11 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
 .toa-tdb-card-code {
     font-family: monospace;
     font-size: 11px;
-    background: rgba(0,0,0,0.07);
-    color: #555;
-    padding: 1px 5px;
+    background: rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.90);
+    padding: 1px 6px;
     border-radius: 4px;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.03em;
 }
 @media (max-width: 768px) { .toa-tdb-card-code { font-size: 10px; } }
 
