@@ -113,23 +113,7 @@ $t = array(
 );
 
 toa_component('header');
-
-$images = array(
-    array('src' => '/wp-content/uploads/2025/09/female-white-7-yo.jpg', 'alt' => 'Bambina modella caucasica 7 anni — casting baby model TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/male-caucasian-35-yo.jpg', 'alt' => 'Modello uomo caucasico 35 anni per shooting e campagne — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/female-italian-22-yo.jpg', 'alt' => 'Modella italiana 22 anni per fashion ed e-commerce — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/male-black-24-yo.jpg', 'alt' => 'Modello uomo black 24 anni per campagne pubblicitarie — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/female-redhair-24.jpg', 'alt' => 'Modella capelli rossi 24 anni per beauty e moda — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/female-white-70-yo.jpg', 'alt' => 'Modella senior caucasica 70 anni per campagne lifestyle — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/male-white-23-yo.jpg', 'alt' => 'Modello uomo caucasico 23 anni per fashion e advertising — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/male-asian-6-yo.jpg', 'alt' => 'Bambino modello asiatico 6 anni — casting baby model TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/female-magrebina-25-yo.jpg', 'alt' => 'Modella nordafricana 25 anni per moda e campagne — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/female-mulatta-22-yo.jpg', 'alt' => 'Modella mixed-race 22 anni per e-commerce e shooting — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/male-brasiliano-24-yo.jpg', 'alt' => 'Modello brasiliano 24 anni per campagne e sfilate — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/male-white-55-yo.jpg', 'alt' => 'Modello uomo maturo 55 anni per campagne corporate — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/female-caucasian-38-yo.jpg', 'alt' => 'Modella caucasica 38 anni per advertising e cataloghi — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/female-afro-6-yo.jpg', 'alt' => 'Bambina modella afro 6 anni — casting baby model TOAgency'),
-);
+// 2026-06-04 marco — $images rimosso con la gallery-talent statica (sostituita dalla griglia live iniettata)
 ?>
 
 <?php toa_component('page-hero', array(
@@ -138,20 +122,7 @@ $images = array(
     'subtitle'   => $_t($t['hero_subtitle']),
 )); ?>
 
-<?php toa_component('gallery-talent', array('images' => $images, 'columns' => 4)); ?>
-
-<!-- Split CTA -->
-<section class="split-cta">
-    <div class="container">
-        <h2 class="section-heading" style="text-align:center;margin:0 auto 16px"><?php echo $_t($t['cta_heading']); ?></h2>
-        <p class="cta-subtitle"><?php echo $_t($t['cta_subtitle']); ?></p>
-        <div class="cta-buttons-row">
-            <a href="<?php echo home_url('/form-b2b/'); ?>" class="btn-hero btn-hero-primary"><span><?php echo $_t($t['cta_cerco']); ?></span></a>
-            <a href="<?php echo home_url('/b-t-l/'); ?>" class="btn-hero btn-hero-secondary"><span><?php echo $_t($t['cta_sono']); ?></span></a>
-            <a href="https://toadatabase.it/it/talent/" target="_blank" class="btn-hero btn-hero-secondary"><span><?php echo $_t($t['cta_esplora']); ?></span></a>
-        </div>
-    </div>
-</section>
+<?php // 2026-06-04 marco — rimossi gallery-talent statica + split-cta (CRO: niente bivi/uscite, focus su griglia live + form iniettati) ?>
 
 <?php toa_component('how-it-works', array(
     'lang'   => $lang,

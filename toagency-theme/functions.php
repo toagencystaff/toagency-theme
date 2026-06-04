@@ -1055,11 +1055,12 @@ add_action('wp_footer', function() {
     toa_cro_loghi_block(toa_cro_loghi_label());
 
     $grid_i18n = array(
-      'it'=>array('title'=>'ALCUNI DEI NOSTRI MODELLI E MODELLE','sub'=>'Selezione aggiornata ogni giorno · <strong>20.000+ profili nel database</strong>','note'=>'Questi sono solo alcuni profili. Selezione personalizzata in 24h.','cta'=>'Richiedi una selezione personalizzata →'),
-      'en'=>array('title'=>'SOME OF OUR MODELS','sub'=>'Selection updated daily · <strong>20,000+ profiles in database</strong>','note'=>'These are just some profiles. Personalised selection in 24h.','cta'=>'Request a personalised selection →'),
-      'fr'=>array('title'=>'QUELQUES-UNS DE NOS MANNEQUINS','sub'=>'Sélection mise à jour chaque jour · <strong>20 000+ profils dans la base</strong>','note'=>'Ce ne sont que quelques profils. Sélection personnalisée en 24h.','cta'=>'Demander une sélection personnalisée →'),
-      'es'=>array('title'=>'ALGUNOS DE NUESTROS MODELOS','sub'=>'Selección actualizada cada día · <strong>20.000+ perfiles en la base</strong>','note'=>'Estos son solo algunos perfiles. Selección personalizada en 24h.','cta'=>'Solicitar una selección personalizada →'),
+      'it'=>array('title'=>'ALCUNI DEI NOSTRI MODELLI E MODELLE','sub'=>'Selezione aggiornata ogni giorno · <strong>20.000+ profili nel database</strong>','note'=>'Questi sono solo alcuni profili. Selezione personalizzata in 24h.','cta'=>'Richiedi una selezione personalizzata →','browse'=>'Guarda tutti i modelli →'),
+      'en'=>array('title'=>'SOME OF OUR MODELS','sub'=>'Selection updated daily · <strong>20,000+ profiles in database</strong>','note'=>'These are just some profiles. Personalised selection in 24h.','cta'=>'Request a personalised selection →','browse'=>'Browse all models →'),
+      'fr'=>array('title'=>'QUELQUES-UNS DE NOS MANNEQUINS','sub'=>'Sélection mise à jour chaque jour · <strong>20 000+ profils dans la base</strong>','note'=>'Ce ne sont que quelques profils. Sélection personnalisée en 24h.','cta'=>'Demander une sélection personnalisée →','browse'=>'Voir tous les mannequins →'),
+      'es'=>array('title'=>'ALGUNOS DE NUESTROS MODELOS','sub'=>'Selección actualizada cada día · <strong>20.000+ perfiles en la base</strong>','note'=>'Estos son solo algunos perfiles. Selección personalizada en 24h.','cta'=>'Solicitar una selección personalizada →','browse'=>'Ver todos los modelos →'),
     );
+    $tdb_url = home_url('/talent-database/'); // 2026-06-04 marco — "guarda tutti i modelli" (nazionale)
     $form_i18n = array(
       'it'=>array('eyebrow'=>'Inizia ora','heading'=>'Chiedi un preventivo gratuito','sub'=>'Risposta entro 24 ore lavorative','company'=>'Azienda','contact'=>'Nome e cognome','email'=>'Email','phone'=>'Telefono','service'=>'Servizio','select'=>'Seleziona...','message'=>'Messaggio','msgph'=>'Raccontaci brevemente il tuo progetto...','consent'=>'Accetto il trattamento dei dati secondo la','privacy'=>'Privacy Policy','submit'=>'Invia richiesta','sending'=>'Invio...','alert'=>'Devi accettare la privacy policy per continuare.','error'=>'Invio non riuscito. Vuoi scriverci su WhatsApp?','wa'=>'Ciao TOAgency, richiesta preventivo da: '),
       'en'=>array('eyebrow'=>'Start now','heading'=>'Request a free quote','sub'=>'Response within 24 working hours','company'=>'Company','contact'=>'Full name','email'=>'Email','phone'=>'Phone','service'=>'Service','select'=>'Select...','message'=>'Message','msgph'=>'Tell us briefly about your project...','consent'=>'I accept the processing of my data according to the','privacy'=>'Privacy Policy','submit'=>'Send request','sending'=>'Sending...','alert'=>'You must accept the privacy policy to continue.','error'=>'Sending failed. Do you want to message us on WhatsApp?','wa'=>'Hi TOAgency, quote request from: '),
@@ -1090,12 +1091,15 @@ add_action('wp_footer', function() {
     .toa-cast-card:hover img{transform:scale(1.05)}
     .toa-cast-card .ov{position:absolute;left:0;right:0;bottom:0;padding:14px 12px 11px;background:linear-gradient(transparent,rgba(0,0,0,.88));color:#fff}
     .toa-cast-card .ov b{display:block;font-size:13px;font-weight:700;letter-spacing:.4px}
+    .toa-cast-card .ov .code{display:block;font-size:11px;font-weight:600;color:#c8ff00;letter-spacing:.5px;margin-top:1px}
     .toa-cast-card .ov span{display:block;font-size:12px;color:rgba(255,255,255,.6);margin-top:2px}
     .toa-cast-cta{text-align:center;margin:26px 0 6px}
-    .toa-cast-cta a{display:inline-block;padding:14px 30px;background:#c8ff00;color:#000;border-radius:8px;font-weight:700;font-size:14px;letter-spacing:.04em;text-decoration:none;transition:opacity .2s}
+    .toa-cast-cta a{display:inline-block;margin:6px 5px;padding:14px 30px;background:#c8ff00;color:#000;border:1px solid #c8ff00;border-radius:8px;font-weight:700;font-size:14px;letter-spacing:.04em;text-decoration:none;transition:opacity .2s,background .2s}
     .toa-cast-cta a:hover{opacity:.85}
-    @media(max-width:900px){.toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:12px}}
-    @media(max-width:520px){.toa-cast-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
+    .toa-cast-cta a.alt{background:transparent;color:#c8ff00}
+    .toa-cast-cta a.alt:hover{background:rgba(200,255,0,.12);opacity:1}
+    @media(max-width:768px){.toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:12px}}
+    @media(max-width:480px){.toa-cast-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
     </style>
     <script>
     (function(){
@@ -1105,10 +1109,12 @@ add_action('wp_footer', function() {
       var SVC = <?php echo json_encode($svc, JSON_UNESCAPED_UNICODE); ?>;
       var GX = GI[L] || GI['it'];
       var ft = FT_ALL[L] || FT_ALL['it'];
-      var API='/actions/api-talent-database.php?action=search', FOTO='/actions/foto-talent-public.php?id=', SHOW=12, FETCH=30;
+      var API='/actions/api-talent-database.php?action=search', FOTO='/actions/foto-talent-public.php?id=', FETCH=30;
+      var TDB_URL = <?php echo json_encode($tdb_url); ?>;
+      // 2026-06-04 marco — SHOW responsive 6/9/12
+      var SHOW = window.matchMedia('(max-width:480px)').matches ? 6 : (window.matchMedia('(max-width:768px)').matches ? 9 : 12);
       var ENDPOINT='https://toagency.it/crm_toagency/actions/lead-from-website.php', TOKEN='toa_lead_2026_x7k9m2p4q8w1', THANKYOU=<?php echo json_encode(home_url('/tnx/')); ?>;
       function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-      function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 
       // --- B) GRIGLIA MODELLI (nazionale, ruolo=model) ---
       if (!document.getElementById('toa-models-talent')) {
@@ -1116,17 +1122,22 @@ add_action('wp_footer', function() {
         if (anchor) {
           var sec=document.createElement('section');
           sec.id='toa-models-talent'; sec.style.display='none';
-          sec.innerHTML='<div class="toa-cast-hd"><h2>'+GX.title+'</h2><p>'+GX.sub+'</p></div><div class="toa-cast-grid" id="toaModelsGrid"></div><div class="toa-cast-cta"><a href="#tm-form-anchor">'+GX.cta+'</a><p style="font-size:11px;color:rgba(255,255,255,.4);margin:10px 0 0;text-align:center">'+GX.note+'</p></div>';
+          sec.innerHTML='<div class="toa-cast-hd"><h2>'+GX.title+'</h2><p>'+GX.sub+'</p></div><div class="toa-cast-grid" id="toaModelsGrid"></div><div class="toa-cast-cta"><a href="#tm-form-anchor">'+GX.cta+'</a><a href="'+TDB_URL+'" class="alt">'+GX.browse+'</a><p style="font-size:11px;color:rgba(255,255,255,.4);margin:10px 0 0;text-align:center">'+GX.note+'</p></div>';
           anchor.parentNode.insertBefore(sec, anchor.nextSibling);
           sec.querySelector('.toa-cast-cta a').addEventListener('click',function(e){var tgt=document.querySelector('#tm-form-anchor');if(tgt){e.preventDefault();tgt.scrollIntoView({behavior:'smooth',block:'start'});}});
           fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ruolo:'model',per_page:FETCH,page:1})})
             .then(function(r){return r.json();})
             .then(function(d){
               if(!d||!d.ok||!d.results||!d.results.length){ sec.remove(); return; }
-              var list=shuffle(d.results.slice()).slice(0,SHOW);
+              var list=d.results.slice(0,SHOW); // 2026-06-04 marco — no shuffle (ordine API = valutazione estetica DESC)
               document.getElementById('toaModelsGrid').innerHTML=list.map(function(t){
                 var m=[]; if(t.eta)m.push(t.eta+' anni'); if(t.altezza)m.push(t.altezza+' cm'); if(t.citta)m.push(t.citta);
-                return '<div class="toa-cast-card"><img src="'+FOTO+encodeURIComponent(t.id)+'" alt="Profilo" loading="lazy" decoding="async" onerror="this.closest(\'.toa-cast-card\').remove()" onload="if(!this.naturalWidth||this.naturalWidth<10)this.closest(\'.toa-cast-card\').remove()"><div class="ov"><b>Profilo #'+esc(t.id)+'</b>'+(m.length?'<span>'+esc(m.join(' · '))+'</span>':'')+'</div></div>';
+                var nm=(t.nome?String(t.nome).trim().split(/\s+/)[0]:'')||'Profilo'; // solo PRIMO nome (mai cognome)
+                var code=t.talent_id?('#'+t.talent_id):''; // codice pubblico #NNNN sotto al nome
+                var rot=parseInt(t.foto_rotazione,10)||0;
+                var pos=(typeof t.foto_position==='string'&&/^\d{1,3}%\s+\d{1,3}%$/.test(t.foto_position.trim()))?t.foto_position.trim():'';
+                var ist=''; if(rot)ist+='transform:rotate('+rot+'deg) scale('+((rot===90||rot===270)?1.35:1)+');'; if(pos)ist+='object-position:'+pos+';';
+                return '<div class="toa-cast-card"><img src="'+FOTO+encodeURIComponent(t.id)+'" alt="'+esc(nm)+'"'+(ist?' style="'+ist+'"':'')+' loading="lazy" decoding="async" onerror="this.closest(\'.toa-cast-card\').remove()" onload="if(!this.naturalWidth||this.naturalWidth<10)this.closest(\'.toa-cast-card\').remove()"><div class="ov"><b>'+esc(nm)+'</b>'+(code?'<span class="code">'+esc(code)+'</span>':'')+(m.length?'<span>'+esc(m.join(' · '))+'</span>':'')+'</div></div>';
               }).join('');
               sec.style.display='';
             })
