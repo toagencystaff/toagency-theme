@@ -1731,3 +1731,13 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
     .toa-tdb-filters { flex: 1; overflow-y: auto; padding-bottom: 8px; }
     .toa-tdb-filters-actions { flex-shrink: 0; position: sticky; bottom: 0; }
 }
+
+/* 2026-06-04 marco — bottone X di chiusura del drawer (solo mobile) */
+.toa-tdb-sidebar-close {
+    position: absolute; top: 14px; right: 16px;
+    background: none; border: none; color: rgba(255,255,255,0.7);
+    font-size: 22px; cursor: pointer; z-index: 10; line-height: 1;
+    display: none;
+}
+.toa-tdb-sidebar-close:hover { color: #fff; }
+@media (max-width: 767px) { .toa-tdb-sidebar-close { display: block; } }

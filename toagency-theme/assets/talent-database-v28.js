@@ -1163,6 +1163,18 @@
             toggleSidebar(!$('#tdbSidebar').classList.contains('open'));
         });
 
+        // 2026-06-04 marco — bottone X di chiusura nel drawer mobile (usa la chiusura nativa: gestisce .open/aria/backdrop)
+        var _sb = $('#tdbSidebar');
+        if (_sb && !_sb.querySelector('.toa-tdb-sidebar-close')) {
+            var _x = document.createElement('button');
+            _x.type = 'button';
+            _x.className = 'toa-tdb-sidebar-close';
+            _x.setAttribute('aria-label', 'Chiudi filtri');
+            _x.textContent = '✕';
+            _x.addEventListener('click', function () { toggleSidebar(false); });
+            _sb.insertBefore(_x, _sb.firstChild);
+        }
+
         // 2026-06-02 marco — toggle sidebar DESKTOP: collassa la sidebar → griglia a 5 colonne. Stato persistito.
         var deskBtn = $('#tdbSidebarToggle');
         var wrap = $('#tdb-database');

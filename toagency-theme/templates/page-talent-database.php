@@ -126,7 +126,7 @@ $T = array(
 );
 ?>
 <!-- TOA-TALENT-DATABASE-V1 — PATCH 2026-05-22 marco hub sezioni categoria -->
-<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v34.css'); ?>">
+<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v35.css'); ?>">
 <script>
 window.toaThemeUri      = "<?php echo esc_js($theme_uri); ?>";
 window.toaTdbLang       = "<?php echo esc_js($__l); ?>";
@@ -536,6 +536,6 @@ $hub_sections = array(
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-database-v27.js'); ?>" defer></script>
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-database-v28.js'); ?>" defer></script>
 
 <?php toa_component('footer'); ?>
