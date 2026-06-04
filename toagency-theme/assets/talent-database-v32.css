@@ -1690,3 +1690,9 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
 
 /* 2026-06-04 marco — card meno alte su mobile (5/6, !important) per due colonne comode */
 @media (max-width: 768px) { .toa-tdb-card { aspect-ratio: 5 / 6 !important; } }
+
+/* 2026-06-04 marco — FIX layout > viewport su mobile: il grid item .toa-tdb-content ha min-width:auto
+   (= min-content) di default e può sfondare il track 1fr. min-width:0 lo forza a rispettare la colonna. */
+@media (max-width: 767px) {
+    .toa-tdb-content { min-width: 0; overflow-x: hidden; }
+}
