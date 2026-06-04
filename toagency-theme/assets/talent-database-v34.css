@@ -1718,3 +1718,16 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
     .toa-tdb-label { font-size: 13px; font-weight: 600; }
     .toa-tdb-select, .toa-tdb-input { font-size: 15px; padding: 10px 12px; }
 }
+
+/* 2026-06-04 marco — drawer flex column ad altezza fissa: i filtri scrollano, "Applica" resta pinned in fondo */
+@media (max-width: 767px) {
+    .toa-tdb-sidebar {
+        height: 100dvh;
+        max-height: 100dvh;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+    .toa-tdb-filters { flex: 1; overflow-y: auto; padding-bottom: 8px; }
+    .toa-tdb-filters-actions { flex-shrink: 0; position: sticky; bottom: 0; }
+}
