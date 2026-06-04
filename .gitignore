@@ -14,6 +14,11 @@ _scripts/deploy.sh
 _scripts/rollback.sh
 _scripts/backups/
 
+# Backup files (mai versionati nel tema)
+*.bak
+*.bak*
+*.bak_*
+
 # Log
 *.log
 php_errorlog

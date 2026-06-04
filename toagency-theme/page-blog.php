@@ -5,7 +5,6 @@
  * Aggiornato: 2026-05-21
  */
 
-require_once get_theme_file_path('templates/translations.php');
 toa_component('header');
 ?>
 
@@ -271,74 +270,71 @@ toa_component('header');
 
 <!-- HERO -->
 <section class="toa-bl-hero">
-    <h1 class="toa-bl-hero__title"><?php echo esc_html(toa_t('blog','hero_title')); ?></h1>
-    <p class="toa-bl-hero__sub"><?php echo esc_html(toa_t('blog','hero_sub')); ?></p>
+    <h1 class="toa-bl-hero__title">Blog</h1>
+    <p class="toa-bl-hero__sub">Backstage, articoli e video dal mondo TOAgency</p>
 </section>
 
-<!-- BLOG GRID -->
+<!-- BLOG WIP -->
 <div class="toa-bl-wrap">
-<?php
-$toa_paged = max(1, (int) get_query_var('paged'), (int) get_query_var('page'));
-$toa_blog_q = new WP_Query(array(
-    'post_type'      => 'post',
-    'post_status'    => 'publish',
-    'posts_per_page' => 9,
-    'paged'          => $toa_paged,
-    'orderby'        => 'date',
-    'order'          => 'DESC',
-    'ignore_sticky_posts' => true,
-));
-if ($toa_blog_q->have_posts()) : ?>
+
+    <!-- Badge top-left "Il nostro Blog" -->
+    <div class="toa-bl-wip-badge">Il nostro Blog</div>
+
+    <!-- Work in Progress -->
+    <p class="toa-bl-wip-title">Work in Progress</p>
+
+    <!-- 3 card placeholder -->
     <div class="toa-bl-grid">
-    <?php while ($toa_blog_q->have_posts()) : $toa_blog_q->the_post();
-        $toa_cats = get_the_category();
-        $toa_cat  = !empty($toa_cats) ? $toa_cats[0]->name : '';
-    ?>
-        <article class="toa-bl-card">
-            <a class="toa-bl-card__link" href="<?php the_permalink(); ?>">
+
+        <article class="toa-bl-card toa-bl-wip-card">
+            <div class="toa-bl-card__link">
                 <div class="toa-bl-card__img-wrap">
-                    <?php if (has_post_thumbnail()) :
-                        the_post_thumbnail('large', array('class' => 'toa-bl-card__img', 'loading' => 'lazy'));
-                    else : ?>
-                        <div class="toa-bl-card__img-placeholder"></div>
-                    <?php endif; ?>
+                    <div class="toa-bl-card__img-placeholder"></div>
                     <div class="toa-bl-card__img-overlay"></div>
                 </div>
                 <div class="toa-bl-card__body">
-                    <?php if ($toa_cat) : ?><span class="toa-bl-card__cat"><?php echo esc_html($toa_cat); ?></span><?php endif; ?>
-                    <h2 class="toa-bl-card__title"><?php the_title(); ?></h2>
-                    <p class="toa-bl-card__excerpt"><?php echo esc_html(wp_trim_words(get_the_excerpt(), 24, '…')); ?></p>
-                    <span class="toa-bl-card__read"><?php echo esc_html(toa_t('blog','read_more')); ?> &rarr;</span>
+                    <span class="toa-bl-card__cat">Categoria</span>
+                    <h2 class="toa-bl-card__title">Lorem ipsum dolor sit amet consectetur adipiscing</h2>
+                    <p class="toa-bl-card__excerpt">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
+                    <span class="toa-bl-card__read">Leggi &rarr;</span>
                 </div>
-            </a>
+            </div>
         </article>
-    <?php endwhile; ?>
-    </div>
-    <?php
-    if ($toa_blog_q->max_num_pages > 1) {
-        $toa_big = 999999999;
-        $toa_links = paginate_links(array(
-            'base'      => str_replace($toa_big, '%#%', esc_url(get_pagenum_link($toa_big))),
-            'format'    => '?paged=%#%',
-            'current'   => $toa_paged,
-            'total'     => $toa_blog_q->max_num_pages,
-            'type'      => 'array',
-            'prev_next' => false,
-        ));
-        if (!empty($toa_links)) {
-            echo '<div class="toa-bl-pagination">';
-            foreach ($toa_links as $toa_l) {
-                $toa_active = (strpos($toa_l, 'current') !== false) ? ' active' : '';
-                echo preg_replace('/class="[^"]*"/', 'class="toa-bl-page-btn'.$toa_active.'"', $toa_l);
-            }
-            echo '</div>';
-        }
-    }
-    wp_reset_postdata();
-    ?>
-<?php else : ?>
-    <p class="toa-bl-empty"><?php echo esc_html(toa_t('blog','empty')); ?></p>
-<?php endif; ?>
+
+        <article class="toa-bl-card toa-bl-wip-card">
+            <div class="toa-bl-card__link">
+                <div class="toa-bl-card__img-wrap">
+                    <div class="toa-bl-card__img-placeholder"></div>
+                    <div class="toa-bl-card__img-overlay"></div>
+                </div>
+                <div class="toa-bl-card__body">
+                    <span class="toa-bl-card__cat">Backstage</span>
+                    <h2 class="toa-bl-card__title">Ut enim ad minim veniam quis nostrud exercitation</h2>
+                    <p class="toa-bl-card__excerpt">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+                    <span class="toa-bl-card__read">Leggi &rarr;</span>
+                </div>
+            </div>
+        </article>
+
+        <article class="toa-bl-card toa-bl-wip-card">
+            <div class="toa-bl-card__link">
+                <div class="toa-bl-card__img-wrap">
+                    <div class="toa-bl-card__img-placeholder"></div>
+                    <div class="toa-bl-card__img-overlay"></div>
+                </div>
+                <div class="toa-bl-card__body">
+                    <span class="toa-bl-card__cat">Video</span>
+                    <h2 class="toa-bl-card__title">Duis aute irure dolor in reprehenderit voluptate</h2>
+                    <p class="toa-bl-card__excerpt">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                    <span class="toa-bl-card__read">Leggi &rarr;</span>
+                </div>
+            </div>
+        </article>
+
+    </div><!-- .toa-bl-grid -->
+
+    <p class="toa-bl-wip-note">Gli articoli saranno disponibili presto. Torna a trovarci!</p>
+
 </div><!-- .toa-bl-wrap -->
 
 <?php toa_component('footer'); ?>

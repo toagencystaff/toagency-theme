@@ -914,8 +914,8 @@ add_action('wp_footer', function() {
     .toa-cast-cta a:hover{opacity:.85}
     .toa-cast-cta a.alt{background:transparent;color:#c8ff00}
     .toa-cast-cta a.alt:hover{background:rgba(200,255,0,.12);opacity:1}
-    @media(max-width:900px){.toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:12px}}
-    @media(max-width:520px){.toa-cast-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
+    @media(max-width:768px){.toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:12px}}
+    @media(max-width:480px){.toa-cast-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
     </style>
     <script>
     (function(){
@@ -926,7 +926,9 @@ add_action('wp_footer', function() {
       var PROV = <?php echo json_encode($provincia, JSON_UNESCAPED_UNICODE); ?>;
       var API  = '/actions/api-talent-database.php?action=search';
       var FOTO = '/actions/foto-talent-public.php?id=';
-      var SHOW = 12, FETCH = 30;
+      var FETCH = 30;
+      // 2026-06-04 marco — SHOW responsive: 6 (mobile ≤480) / 9 (tablet ≤768) / 12 (desktop)
+      var SHOW = window.innerWidth <= 480 ? 6 : (window.innerWidth <= 768 ? 9 : 12);
       var PROVS = <?php echo json_encode($prov_list, JSON_UNESCAPED_UNICODE); ?>;
       var TDB_URL = <?php echo json_encode($tdb_url); ?>;
 
