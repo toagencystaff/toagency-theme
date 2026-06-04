@@ -156,13 +156,13 @@ $hub_sections = array(
     array(
         'icon'   => '🎭',
         'ruolo'  => 'actor',
-        'title'  => array('it'=>'Attori & Cinema','en'=>'Actors & Cinema','fr'=>'Acteurs & Cinéma','es'=>'Actores & Cine'),
+        'title'  => array('it'=>'Attori e comparse','en'=>'Actors & Cinema','fr'=>'Acteurs & Cinéma','es'=>'Actores & Cine'),
         'desc'   => array('it'=>'Attori, attrici e comparse per spot, film, serie TV e video.','en'=>'Actors, actresses and extras for commercials, films, series and videos.','fr'=>'Acteurs, actrices et figurants pour pubs, films, séries et vidéos.','es'=>'Actores, actrices y figurantes para spots, películas, series y vídeos.'),
     ),
     array(
         'icon'   => '👗',
         'ruolo'  => 'model',
-        'title'  => array('it'=>'Modelle & Modelli','en'=>'Models','fr'=>'Modèles','es'=>'Modelos'),
+        'title'  => array('it'=>'Modelli','en'=>'Models','fr'=>'Modèles','es'=>'Modelos'),
         'desc'   => array('it'=>'Modelli e modelle per sfilate, shooting fotografici, cataloghi e brand.','en'=>'Male and female models for fashion shows, photo shoots, catalogues and brands.','fr'=>'Mannequins pour défilés, shootings photo, catalogues et marques.','es'=>'Modelos para desfiles, shootings, catálogos y marcas.'),
     ),
     array(

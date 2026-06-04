@@ -88,7 +88,7 @@ $RUOLI_OPTS    = [
     'comparsa'        => ['it'=>'Comparsa','en'=>'Extra','fr'=>'Figurant','es'=>'Extra'],
     'bambino'         => ['it'=>'Bambino/a','en'=>'Child','fr'=>'Enfant','es'=>'Niño/a'],
     'influencer'      => ['it'=>'Influencer / Creator','en'=>'Influencer / Creator','fr'=>'Influenceur / Créateur','es'=>'Influencer / Creador'],
-    'altro_immagine'  => ['it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro'],
+    // FIX 2026-06-04 marco — "Altro" (altro_immagine) rimosso dai ruoli
 ];
 $LINGUE_OPTS   = ['italiano'=>'Italiano','inglese'=>'Inglese','francese'=>'Francese','spagnolo'=>'Spagnolo','tedesco'=>'Tedesco','portoghese'=>'Portoghese','russo'=>'Russo','cinese'=>'Cinese','arabo'=>'Arabo','altro'=>'Altro'];
 
