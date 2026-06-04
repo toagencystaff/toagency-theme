@@ -944,7 +944,7 @@
 
     /* TASK hardening-upload STEP A 2026-06-04 marco — compressione foto client */
     function toaCompressImage(file, maxLong, quality){
-      maxLong = maxLong || 1600; quality = quality || 0.82;
+      maxLong = maxLong || 1280; quality = quality || 0.78; /* TASK hardening-upload STEP A.2 2026-06-04 — 1280px q78 */
       return new Promise(function(resolve){
         if (!file || !/^image\//i.test(file.type||'')) { resolve(file); return; }
         var url = URL.createObjectURL(file), img = new Image();
@@ -973,7 +973,7 @@
     // Upload sequenziale: foto profilo → foto portfolio (no video per i talent)
     function uploadOneFile(talentId, token, file, tipo) {
         /* TASK hardening-upload STEP A 2026-06-04 marco — comprimi prima di spedire, poi catena identica */
-        return toaCompressImage(file, 1600, 0.82).then(function(cfile) {
+        return toaCompressImage(file, 1280, 0.78).then(function(cfile) { /* TASK hardening-upload STEP A.2 2026-06-04 — 1280px q78 */
             var fd = new FormData();
             fd.append('talent_id', talentId);
             fd.append('token_profilo', token);
