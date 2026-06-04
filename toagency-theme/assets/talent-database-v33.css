@@ -1696,3 +1696,25 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
 @media (max-width: 767px) {
     .toa-tdb-content { min-width: 0; overflow-x: hidden; }
 }
+
+/* 2026-06-04 marco — drawer filtri mobile: nascondi Categoria, Applica sticky, estetica campi */
+@media (max-width: 767px) {
+    /* FIX 1 — campo Categoria nascosto su mobile (chip categoria comunque disabilitate) */
+    #tdbFieldRuolo { display: none !important; }
+
+    /* FIX 2 — Applica sticky in fondo al drawer (bg scuro del drawer, NON bianco) */
+    .toa-tdb-filters-actions {
+        position: sticky;
+        bottom: 0;
+        background: #141416;
+        padding: 12px 0 4px;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        z-index: 1;
+    }
+
+    /* FIX 3 — estetica drawer: campi più spaziati e leggibili */
+    .toa-tdb-sidebar { padding: 16px; }
+    .toa-tdb-field { margin-bottom: 14px; }
+    .toa-tdb-label { font-size: 13px; font-weight: 600; }
+    .toa-tdb-select, .toa-tdb-input { font-size: 15px; padding: 10px 12px; }
+}

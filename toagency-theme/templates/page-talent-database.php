@@ -126,7 +126,7 @@ $T = array(
 );
 ?>
 <!-- TOA-TALENT-DATABASE-V1 — PATCH 2026-05-22 marco hub sezioni categoria -->
-<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v32.css'); ?>">
+<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v33.css'); ?>">
 <script>
 window.toaThemeUri      = "<?php echo esc_js($theme_uri); ?>";
 window.toaTdbLang       = "<?php echo esc_js($__l); ?>";
@@ -277,7 +277,7 @@ $hub_sections = array(
                 </div>
 
                 <!-- PATCH 2026-05-22 marco — filtro categoria/ruolo -->
-                <div class="toa-tdb-field">
+                <div class="toa-tdb-field" id="tdbFieldRuolo">
                     <label class="toa-tdb-label">
                         <?php echo esc_html($_t(array('it'=>'Categoria','en'=>'Category','fr'=>'Catégorie','es'=>'Categoría'))); ?>
                     </label>
