@@ -907,6 +907,7 @@ add_action('wp_footer', function() {
     .toa-cast-card:hover img{transform:scale(1.05)}
     .toa-cast-card .ov{position:absolute;left:0;right:0;bottom:0;padding:14px 12px 11px;background:linear-gradient(transparent,rgba(0,0,0,.88));color:#fff}
     .toa-cast-card .ov b{display:block;font-size:13px;font-weight:700;letter-spacing:.4px}
+    .toa-cast-card .ov .code{display:block;font-size:11px;font-weight:600;color:#c8ff00;letter-spacing:.5px;margin-top:1px}
     .toa-cast-card .ov span{display:block;font-size:12px;color:rgba(255,255,255,.6);margin-top:2px}
     .toa-cast-cta{text-align:center;margin:26px 0 6px}
     .toa-cast-cta a{display:inline-block;margin:6px 5px;padding:14px 30px;background:#c8ff00;color:#000;border:1px solid #c8ff00;border-radius:8px;font-weight:700;font-size:14px;letter-spacing:.04em;text-decoration:none;transition:opacity .2s,background .2s}
@@ -941,7 +942,6 @@ add_action('wp_footer', function() {
       var TX = I18N[lang] || I18N[byShort[(lang||'').slice(0,2)]] || I18N['it_IT'];
 
       function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-      function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 
       // --- A) STRISCIA LOGHI (replica esatta brand-ticker /form-b2b/) ---
       var b1=[{t:'JUVENTUS',c:'b-juventus'},{t:'FERRARI',c:'b-ferrari'},{t:'BMW',c:'b-bmw'},{t:'SAMSUNG',c:'b-samsung'},{t:'RED BULL',c:'b-redbull'},{t:'MERCEDES-BENZ',c:'b-mercedes'},{t:'VOGUE SPOSA',c:'b-vogue'},{t:'KAPPA',c:'b-kappa'},{t:'SKY',c:'b-sky'},{t:'MASERATI',c:'b-maserati'},{t:'FIAT',c:'b-fiat'},{t:'VODAFONE',c:'b-vodafone'},{t:'AUDI',c:'b-audi'},{t:'JEEP',c:'b-jeep'},{t:'MICHELIN',c:'b-michelin'},{t:'KINDER',c:'b-kinder'},{t:"L'ORÉAL",c:'b-loreal'},{t:'GQ ITALIA',c:'b-gq'},{t:'ALFA ROMEO',c:'b-alfaromeo'},{t:'EATALY',c:'b-eataly'},{t:'K-WAY',c:'b-kway'},{t:'FORMULA 1',c:'b-formula1'},{t:'MOTOGP',c:'b-motogp'},{t:'LUXOTTICA',c:'b-luxottica'},{t:'SANREMO',c:'b-sanremo'},{t:'MISS UNIVERSE',c:'b-missuniverse'},{t:'EDISON',c:'b-edison'},{t:'QC TERME',c:'b-qcterme'},{t:'POLICE',c:'b-police'}];
@@ -979,12 +979,16 @@ add_action('wp_footer', function() {
         var pool=[], seen={};
         arrs.forEach(function(a){ a.forEach(function(t){ if(t&&t.id&&!seen[t.id]){ seen[t.id]=1; pool.push(t); } }); });
         if(!pool.length){ sec.remove(); return; }
-        var list=shuffle(pool).slice(0,SHOW);
+        var list=pool.slice(0,SHOW); // 2026-06-04 marco — no shuffle: primi SHOW dal pool (ordine API = valutazione estetica DESC; provincia principale prima)
         document.getElementById('toaCastGrid').innerHTML=list.map(function(t){
           var m=[]; if(t.eta)m.push(t.eta+' anni'); if(t.altezza)m.push(t.altezza+' cm'); if(t.citta)m.push(t.citta);
-          // FIX: mostra solo il PRIMO nome (mai cognome, anche se per errore arrivasse)
-          var nm=(t.nome?String(t.nome).trim().split(/\s+/)[0]:'')||'Profilo';
-          return '<div class="toa-cast-card"><img src="'+FOTO+encodeURIComponent(t.id)+'" alt="'+esc(nm)+'" loading="lazy" decoding="async" onerror="this.closest(\'.toa-cast-card\').remove()" onload="if(!this.naturalWidth||this.naturalWidth<10)this.closest(\'.toa-cast-card\').remove()"><div class="ov"><b>'+esc(nm)+'</b>'+(m.length?'<span>'+esc(m.join(' · '))+'</span>':'')+'</div></div>';
+          var nm=(t.nome?String(t.nome).trim().split(/\s+/)[0]:'')||'Profilo'; // solo PRIMO nome (mai cognome)
+          var code=t.talent_id?('#'+t.talent_id):''; // codice pubblico #NNNN sotto al nome
+          // foto_rotazione/foto_position — stessa tecnica di talent-database (rotate + scale 1.35 su 90/270)
+          var rot=parseInt(t.foto_rotazione,10)||0;
+          var pos=(typeof t.foto_position==='string'&&/^\d{1,3}%\s+\d{1,3}%$/.test(t.foto_position.trim()))?t.foto_position.trim():'';
+          var ist=''; if(rot)ist+='transform:rotate('+rot+'deg) scale('+((rot===90||rot===270)?1.35:1)+');'; if(pos)ist+='object-position:'+pos+';';
+          return '<div class="toa-cast-card"><img src="'+FOTO+encodeURIComponent(t.id)+'" alt="'+esc(nm)+'"'+(ist?' style="'+ist+'"':'')+' loading="lazy" decoding="async" onerror="this.closest(\'.toa-cast-card\').remove()" onload="if(!this.naturalWidth||this.naturalWidth<10)this.closest(\'.toa-cast-card\').remove()"><div class="ov"><b>'+esc(nm)+'</b>'+(code?'<span class="code">'+esc(code)+'</span>':'')+(m.length?'<span>'+esc(m.join(' · '))+'</span>':'')+'</div></div>';
         }).join('');
         sec.style.display='';
       }).catch(function(){ try{sec.remove();}catch(e){} });

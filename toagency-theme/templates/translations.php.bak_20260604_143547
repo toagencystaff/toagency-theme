@@ -93,26 +93,6 @@ if (!function_exists('toa_get_translations')) {
             ),
 
             // ═══════════════════════════════════════
-            // BLOG ARCHIVE
-            // ═══════════════════════════════════════
-            'blog' => array(
-                'hero_title' => array('it'=>'Blog','en'=>'Blog','fr'=>'Blog','es'=>'Blog'),
-                'hero_sub'   => array(
-                    'it'=>'Backstage, articoli e video dal mondo TOAgency',
-                    'en'=>'Backstage, articles and videos from the world of TOAgency',
-                    'fr'=>"Coulisses, articles et vidéos de l'univers TOAgency",
-                    'es'=>'Backstage, artículos y vídeos del mundo de TOAgency',
-                ),
-                'read_more'  => array('it'=>'Leggi','en'=>'Read','fr'=>'Lire','es'=>'Leer'),
-                'empty'      => array(
-                    'it'=>'Gli articoli saranno disponibili presto. Torna a trovarci!',
-                    'en'=>'Articles will be available soon. Check back soon!',
-                    'fr'=>'Les articles seront bientôt disponibles. Revenez vite !',
-                    'es'=>'Los artículos estarán disponibles pronto. ¡Vuelve pronto!',
-                ),
-            ),
-
-            // ═══════════════════════════════════════
             // ABOUT PAGE
             // ═══════════════════════════════════════
             'about' => array(
