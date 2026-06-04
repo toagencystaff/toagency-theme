@@ -315,6 +315,13 @@
     </style>
 </head>
 <body>
+<!-- 2026-06-04 marco — evento conversione lead per GTM (container GTM-K75MWH8L).
+     /tnx/ si raggiunge solo dopo submit form OK. Wire del tag Google Ads (AW-624589019 + label)
+     su trigger Custom Event "lead_conversion" lato GTM. -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: 'lead_conversion' });
+</script>
 <div class="tnx-wrap">
 
     <!-- HEADER -->
