@@ -168,7 +168,7 @@ $hub_sections = array(
     array(
         'icon'   => '✈️',
         'ruolo'  => 'hostess',
-        'title'  => array('it'=>'Hostess & Steward','en'=>'Hostess & Steward','fr'=>'Hôtesses & Stewards','es'=>'Azafatas & Steward'),
+        'title'  => array('it'=>'Hostess e steward','en'=>'Hostess & Steward','fr'=>'Hôtesses & Stewards','es'=>'Azafatas & Steward'),
         'desc'   => array('it'=>'Hostess e steward per eventi, fiere, congressi e attività promozionali.','en'=>'Hostesses and stewards for events, trade fairs, congresses and promotions.','fr'=>'Hôtesses et stewards pour événements, salons et promotions.','es'=>'Azafatas y stewards para eventos, ferias, congresos y promociones.'),
     ),
     array(
