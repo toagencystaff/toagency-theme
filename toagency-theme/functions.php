@@ -901,6 +901,7 @@ add_action('wp_footer', function() {
     .toa-cast-hd{text-align:center;margin:0 0 22px}
     .toa-cast-hd h2{font-family:var(--font-display,Georgia,serif);font-size:clamp(20px,3vw,28px);font-weight:900;color:var(--white,#fff);margin:0 0 6px;text-transform:uppercase;letter-spacing:.5px}
     .toa-cast-hd p{font-size:12px;color:var(--gray-4,rgba(255,255,255,.45));margin:0;text-transform:uppercase;letter-spacing:1px}
+    .toa-cast-hd .desc{text-transform:none;font-size:13px;font-weight:400;color:rgba(255,255,255,.6);max-width:620px;margin:12px auto 0;line-height:1.5;letter-spacing:0}
     .toa-cast-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
     .toa-cast-card{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:3/4;background:#141414;border:1px solid rgba(255,255,255,.06)}
     .toa-cast-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s cubic-bezier(.2,.8,.3,1)}
@@ -915,7 +916,7 @@ add_action('wp_footer', function() {
     .toa-cast-cta a.alt{background:transparent;color:#c8ff00}
     .toa-cast-cta a.alt:hover{background:rgba(200,255,0,.12);opacity:1}
     @media(max-width:768px){.toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:12px}}
-    @media(max-width:480px){.toa-cast-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
+    @media(max-width:480px){.toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:8px}}
     </style>
     <script>
     (function(){
@@ -934,10 +935,10 @@ add_action('wp_footer', function() {
 
       // i18n: testi localizzati via get_locale() (fallback prefisso lingua, poi it_IT)
       var I18N = {
-        'it_IT':{title:'ALCUNI PROFILI DISPONIBILI A',sub:'Selezione aggiornata ogni giorno · <strong>20.000+ profili</strong>',note:'Questi sono solo alcuni profili. Selezione personalizzata in 24h.',cta:'Richiedi una selezione personalizzata →',browse:'Guarda tutti i profili →'},
-        'fr_FR':{title:'QUELQUES PROFILS DISPONIBLES À',sub:'Sélection mise à jour chaque jour · <strong>20 000+ profils</strong>',note:'Ce ne sont que quelques profils. Sélection personnalisée en 24h.',cta:'Demander une sélection personnalisée →',browse:'Voir tous les profils →'},
-        'es_ES':{title:'ALGUNOS PERFILES DISPONIBLES EN',sub:'Selección actualizada cada día · <strong>20.000+ perfiles</strong>',note:'Estos son solo algunos perfiles. Selección personalizada en 24h.',cta:'Solicitar una selección personalizada →',browse:'Ver todos los perfiles →'},
-        'en_US':{title:'SOME PROFILES AVAILABLE IN',sub:'Selection updated daily · <strong>20,000+ profiles</strong>',note:'These are just some profiles. Personalised selection in 24h.',cta:'Request a personalised selection →',browse:'Browse all profiles →'}
+        'it_IT':{title:'ALCUNI PROFILI DISPONIBILI A',sub:'Selezione aggiornata ogni giorno · <strong>20.000+ profili</strong>',note:'Questi sono solo alcuni profili. Selezione personalizzata in 24h.',cta:'Richiedi una selezione personalizzata →',browse:'Guarda tutti i profili →',desc:'Per aziende, brand e produzioni. Oltre 20.000 profili attivi in Italia. Da 6 a 80 anni, per ogni tipo di campagna. Disponibili entro 48 ore.'},
+        'fr_FR':{title:'QUELQUES PROFILS DISPONIBLES À',sub:'Sélection mise à jour chaque jour · <strong>20 000+ profils</strong>',note:'Ce ne sont que quelques profils. Sélection personnalisée en 24h.',cta:'Demander une sélection personnalisée →',browse:'Voir tous les profils →',desc:'Pour entreprises, marques et productions. Plus de 20 000 profils actifs en Italie. De 6 à 80 ans, pour tout type de campagne. Disponibles sous 48 heures.'},
+        'es_ES':{title:'ALGUNOS PERFILES DISPONIBLES EN',sub:'Selección actualizada cada día · <strong>20.000+ perfiles</strong>',note:'Estos son solo algunos perfiles. Selección personalizada en 24h.',cta:'Solicitar una selección personalizada →',browse:'Ver todos los perfiles →',desc:'Para empresas, marcas y producciones. Más de 20.000 perfiles activos en Italia. De 6 a 80 años, para todo tipo de campaña. Disponibles en 48 horas.'},
+        'en_US':{title:'SOME PROFILES AVAILABLE IN',sub:'Selection updated daily · <strong>20,000+ profiles</strong>',note:'These are just some profiles. Personalised selection in 24h.',cta:'Request a personalised selection →',browse:'Browse all profiles →',desc:'For companies, brands and productions. Over 20,000 active profiles in Italy. From 6 to 80 years old, for every type of campaign. Available within 48 hours.'}
       };
       var lang = <?php echo json_encode(get_locale()); ?>;
       var byShort = {it:'it_IT',fr:'fr_FR',es:'es_ES',en:'en_US'};
@@ -957,7 +958,7 @@ add_action('wp_footer', function() {
       var sec=document.createElement('section');
       sec.id='toa-cast-talent';
       sec.style.display='none';
-      sec.innerHTML='<div class="toa-cast-hd"><h2>'+TX.title+' '+esc(PROV)+'</h2><p>'+TX.sub+'</p></div><div class="toa-cast-grid" id="toaCastGrid"></div><div class="toa-cast-cta"><a href="#toa-form-anchor">'+TX.cta+'</a><a href="'+TDB_URL+'" class="alt">'+TX.browse+'</a><p style="font-size:11px;color:rgba(255,255,255,.4);margin:10px 0 0;text-align:center">'+TX.note+'</p></div>';
+      sec.innerHTML='<div class="toa-cast-hd"><h2>'+TX.title+' '+esc(PROV)+'</h2><p>'+TX.sub+'</p><p class="desc">'+TX.desc+'</p></div><div class="toa-cast-grid" id="toaCastGrid"></div><div class="toa-cast-cta"><a href="#toa-form-anchor">'+TX.cta+'</a><a href="'+TDB_URL+'" class="alt">'+TX.browse+'</a><p style="font-size:11px;color:rgba(255,255,255,.4);margin:10px 0 0;text-align:center">'+TX.note+'</p></div>';
 
       // inserisci subito dopo l'hero: loghi, poi griglia
       hero.parentNode.insertBefore(brandSec, hero.nextSibling);
@@ -1055,17 +1056,17 @@ add_action('wp_footer', function() {
     toa_cro_loghi_block(toa_cro_loghi_label());
 
     $grid_i18n = array(
-      'it'=>array('title'=>'ALCUNI DEI NOSTRI MODELLI E MODELLE','sub'=>'Selezione aggiornata ogni giorno · <strong>20.000+ profili</strong>','note'=>'Questi sono solo alcuni profili. Selezione personalizzata in 24h.','cta'=>'Richiedi una selezione personalizzata →','browse'=>'Guarda tutti i modelli →'),
-      'en'=>array('title'=>'SOME OF OUR MODELS','sub'=>'Selection updated daily · <strong>20,000+ profiles</strong>','note'=>'These are just some profiles. Personalised selection in 24h.','cta'=>'Request a personalised selection →','browse'=>'Browse all models →'),
-      'fr'=>array('title'=>'QUELQUES-UNS DE NOS MANNEQUINS','sub'=>'Sélection mise à jour chaque jour · <strong>20 000+ profils</strong>','note'=>'Ce ne sont que quelques profils. Sélection personnalisée en 24h.','cta'=>'Demander une sélection personnalisée →','browse'=>'Voir tous les mannequins →'),
-      'es'=>array('title'=>'ALGUNOS DE NUESTROS MODELOS','sub'=>'Selección actualizada cada día · <strong>20.000+ perfiles</strong>','note'=>'Estos son solo algunos perfiles. Selección personalizada en 24h.','cta'=>'Solicitar una selección personalizada →','browse'=>'Ver todos los modelos →'),
+      'it'=>array('title'=>'ALCUNI DEI NOSTRI MODELLI E MODELLE','sub'=>'Selezione aggiornata ogni giorno · <strong>20.000+ profili</strong>','note'=>'Questi sono solo alcuni profili. Selezione personalizzata in 24h.','cta'=>'Richiedi una selezione personalizzata →','browse'=>'Guarda tutti i modelli →','desc'=>'Per aziende, brand e produzioni. Oltre 20.000 profili attivi in Italia. Da 6 a 80 anni, per ogni tipo di campagna. Disponibili entro 48 ore.'),
+      'en'=>array('title'=>'SOME OF OUR MODELS','sub'=>'Selection updated daily · <strong>20,000+ profiles</strong>','note'=>'These are just some profiles. Personalised selection in 24h.','cta'=>'Request a personalised selection →','browse'=>'Browse all models →','desc'=>'For companies, brands and productions. Over 20,000 active profiles in Italy. From 6 to 80 years old, for every type of campaign. Available within 48 hours.'),
+      'fr'=>array('title'=>'QUELQUES-UNS DE NOS MANNEQUINS','sub'=>'Sélection mise à jour chaque jour · <strong>20 000+ profils</strong>','note'=>'Ce ne sont que quelques profils. Sélection personnalisée en 24h.','cta'=>'Demander une sélection personnalisée →','browse'=>'Voir tous les mannequins →','desc'=>'Pour entreprises, marques et productions. Plus de 20 000 profils actifs en Italie. De 6 à 80 ans, pour tout type de campagne. Disponibles sous 48 heures.'),
+      'es'=>array('title'=>'ALGUNOS DE NUESTROS MODELOS','sub'=>'Selección actualizada cada día · <strong>20.000+ perfiles</strong>','note'=>'Estos son solo algunos perfiles. Selección personalizada en 24h.','cta'=>'Solicitar una selección personalizada →','browse'=>'Ver todos los modelos →','desc'=>'Para empresas, marcas y producciones. Más de 20.000 perfiles activos en Italia. De 6 a 80 años, para todo tipo de campaña. Disponibles en 48 horas.'),
     );
     $tdb_url = home_url('/talent-database/'); // 2026-06-04 marco — "guarda tutti i modelli" (nazionale)
     $form_i18n = array(
-      'it'=>array('eyebrow'=>'Inizia ora','heading'=>'Chiedi un preventivo gratuito','sub'=>'Risposta entro 24 ore lavorative','company'=>'Azienda','contact'=>'Nome e cognome','email'=>'Email','phone'=>'Telefono','service'=>'Servizio','select'=>'Seleziona...','message'=>'Messaggio','msgph'=>'Raccontaci brevemente il tuo progetto...','consent'=>'Accetto il trattamento dei dati secondo la','privacy'=>'Privacy Policy','submit'=>'Invia la tua richiesta','microcopy'=>'Ti ricontattiamo subito','sending'=>'Invio...','alert'=>'Devi accettare la privacy policy per continuare.','error'=>'Invio non riuscito. Vuoi scriverci su WhatsApp?','wa'=>'Ciao TOAgency, richiesta preventivo da: '),
-      'en'=>array('eyebrow'=>'Start now','heading'=>'Request a free quote','sub'=>'Response within 24 working hours','company'=>'Company','contact'=>'Full name','email'=>'Email','phone'=>'Phone','service'=>'Service','select'=>'Select...','message'=>'Message','msgph'=>'Tell us briefly about your project...','consent'=>'I accept the processing of my data according to the','privacy'=>'Privacy Policy','submit'=>'Send your request','microcopy'=>'We\'ll get back to you right away','sending'=>'Sending...','alert'=>'You must accept the privacy policy to continue.','error'=>'Sending failed. Do you want to message us on WhatsApp?','wa'=>'Hi TOAgency, quote request from: '),
-      'fr'=>array('eyebrow'=>'Commencez maintenant','heading'=>'Demandez un devis gratuit','sub'=>'Réponse sous 24 heures ouvrées','company'=>'Entreprise','contact'=>'Nom et prénom','email'=>'Email','phone'=>'Téléphone','service'=>'Service','select'=>'Sélectionnez...','message'=>'Message','msgph'=>'Décrivez brièvement votre projet...','consent'=>"J'accepte le traitement de mes données selon la",'privacy'=>'Politique de confidentialité','submit'=>'Envoyez votre demande','microcopy'=>'On vous recontacte tout de suite','sending'=>'Envoi...','alert'=>'Vous devez accepter la politique de confidentialité pour continuer.','error'=>"Échec de l'envoi. Voulez-vous nous écrire sur WhatsApp ?",'wa'=>'Bonjour TOAgency, demande de devis de : '),
-      'es'=>array('eyebrow'=>'Empieza ahora','heading'=>'Solicita un presupuesto gratuito','sub'=>'Respuesta en 24 horas laborables','company'=>'Empresa','contact'=>'Nombre y apellidos','email'=>'Email','phone'=>'Teléfono','service'=>'Servicio','select'=>'Selecciona...','message'=>'Mensaje','msgph'=>'Cuéntanos brevemente tu proyecto...','consent'=>'Acepto el tratamiento de mis datos según la','privacy'=>'Política de privacidad','submit'=>'Envía tu solicitud','microcopy'=>'Te contactamos enseguida','sending'=>'Enviando...','alert'=>'Debes aceptar la política de privacidad para continuar.','error'=>'Error en el envío. ¿Quieres escribirnos por WhatsApp?','wa'=>'Hola TOAgency, solicitud de presupuesto de: '),
+      'it'=>array('eyebrow'=>'Inizia ora','heading'=>'Richiedi una selezione personalizzata','sub'=>'Risposta entro 24 ore lavorative','company'=>'Azienda','contact'=>'Nome e cognome','email'=>'Email','phone'=>'Telefono','service'=>'Servizio','select'=>'Seleziona...','message'=>'Messaggio','msgph'=>'Raccontaci brevemente il tuo progetto...','consent'=>'Accetto il trattamento dei dati secondo la','privacy'=>'Privacy Policy','submit'=>'Invia la tua richiesta','microcopy'=>'Ti ricontattiamo subito','sending'=>'Invio...','alert'=>'Devi accettare la privacy policy per continuare.','error'=>'Invio non riuscito. Vuoi scriverci su WhatsApp?','wa'=>'Ciao TOAgency, richiesta preventivo da: '),
+      'en'=>array('eyebrow'=>'Start now','heading'=>'Request a personalised selection','sub'=>'Response within 24 working hours','company'=>'Company','contact'=>'Full name','email'=>'Email','phone'=>'Phone','service'=>'Service','select'=>'Select...','message'=>'Message','msgph'=>'Tell us briefly about your project...','consent'=>'I accept the processing of my data according to the','privacy'=>'Privacy Policy','submit'=>'Send your request','microcopy'=>'We\'ll get back to you right away','sending'=>'Sending...','alert'=>'You must accept the privacy policy to continue.','error'=>'Sending failed. Do you want to message us on WhatsApp?','wa'=>'Hi TOAgency, quote request from: '),
+      'fr'=>array('eyebrow'=>'Commencez maintenant','heading'=>'Demandez une sélection personnalisée','sub'=>'Réponse sous 24 heures ouvrées','company'=>'Entreprise','contact'=>'Nom et prénom','email'=>'Email','phone'=>'Téléphone','service'=>'Service','select'=>'Sélectionnez...','message'=>'Message','msgph'=>'Décrivez brièvement votre projet...','consent'=>"J'accepte le traitement de mes données selon la",'privacy'=>'Politique de confidentialité','submit'=>'Envoyez votre demande','microcopy'=>'On vous recontacte tout de suite','sending'=>'Envoi...','alert'=>'Vous devez accepter la politique de confidentialité pour continuer.','error'=>"Échec de l'envoi. Voulez-vous nous écrire sur WhatsApp ?",'wa'=>'Bonjour TOAgency, demande de devis de : '),
+      'es'=>array('eyebrow'=>'Empieza ahora','heading'=>'Solicita una selección personalizada','sub'=>'Respuesta en 24 horas laborables','company'=>'Empresa','contact'=>'Nombre y apellidos','email'=>'Email','phone'=>'Teléfono','service'=>'Servicio','select'=>'Selecciona...','message'=>'Mensaje','msgph'=>'Cuéntanos brevemente tu proyecto...','consent'=>'Acepto el tratamiento de mis datos según la','privacy'=>'Política de privacidad','submit'=>'Envía tu solicitud','microcopy'=>'Te contactamos enseguida','sending'=>'Enviando...','alert'=>'Debes aceptar la política de privacidad para continuar.','error'=>'Error en el envío. ¿Quieres escribirnos por WhatsApp?','wa'=>'Hola TOAgency, solicitud de presupuesto de: '),
     );
     $svc = array(
       'shooting'=>array('it'=>'Shooting / Servizio foto','en'=>'Photo shoot','fr'=>'Shooting photo','es'=>'Sesión de fotos'),
@@ -1085,6 +1086,7 @@ add_action('wp_footer', function() {
     .toa-cast-hd{text-align:center;margin:0 0 22px}
     .toa-cast-hd h2{font-family:var(--font-display,Georgia,serif);font-size:clamp(20px,3vw,28px);font-weight:900;color:var(--white,#fff);margin:0 0 6px;text-transform:uppercase;letter-spacing:.5px}
     .toa-cast-hd p{font-size:12px;color:var(--gray-4,rgba(255,255,255,.45));margin:0;text-transform:uppercase;letter-spacing:1px}
+    .toa-cast-hd .desc{text-transform:none;font-size:13px;font-weight:400;color:rgba(255,255,255,.6);max-width:620px;margin:12px auto 0;line-height:1.5;letter-spacing:0}
     .toa-cast-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
     .toa-cast-card{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:3/4;background:#141414;border:1px solid rgba(255,255,255,.06)}
     .toa-cast-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s cubic-bezier(.2,.8,.3,1)}
@@ -1099,7 +1101,7 @@ add_action('wp_footer', function() {
     .toa-cast-cta a.alt{background:transparent;color:#c8ff00}
     .toa-cast-cta a.alt:hover{background:rgba(200,255,0,.12);opacity:1}
     @media(max-width:768px){.toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:12px}}
-    @media(max-width:480px){.toa-cast-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
+    @media(max-width:480px){.toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:8px}}
     </style>
     <script>
     (function(){
@@ -1122,7 +1124,7 @@ add_action('wp_footer', function() {
         if (anchor) {
           var sec=document.createElement('section');
           sec.id='toa-models-talent'; sec.style.display='none';
-          sec.innerHTML='<div class="toa-cast-hd"><h2>'+GX.title+'</h2><p>'+GX.sub+'</p></div><div class="toa-cast-grid" id="toaModelsGrid"></div><div class="toa-cast-cta"><a href="#tm-form-anchor">'+GX.cta+'</a><a href="'+TDB_URL+'" class="alt">'+GX.browse+'</a><p style="font-size:11px;color:rgba(255,255,255,.4);margin:10px 0 0;text-align:center">'+GX.note+'</p></div>';
+          sec.innerHTML='<div class="toa-cast-hd"><h2>'+GX.title+'</h2><p>'+GX.sub+'</p><p class="desc">'+GX.desc+'</p></div><div class="toa-cast-grid" id="toaModelsGrid"></div><div class="toa-cast-cta"><a href="#tm-form-anchor">'+GX.cta+'</a><a href="'+TDB_URL+'" class="alt">'+GX.browse+'</a><p style="font-size:11px;color:rgba(255,255,255,.4);margin:10px 0 0;text-align:center">'+GX.note+'</p></div>';
           anchor.parentNode.insertBefore(sec, anchor.nextSibling);
           sec.querySelector('.toa-cast-cta a').addEventListener('click',function(e){var tgt=document.querySelector('#tm-form-anchor');if(tgt){e.preventDefault();tgt.scrollIntoView({behavior:'smooth',block:'start'});}});
           fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ruolo:'model',per_page:FETCH,page:1})})
@@ -1166,7 +1168,10 @@ add_action('wp_footer', function() {
             '<button type="submit" class="btn-hero btn-hero-primary iq-submit" id="tmSubmit"><span class="iq-spinner" id="tmSpinner" style="display:none"></span><span id="tmSubmitText">'+esc(ft.submit)+'</span></button>'+
           '<p style="text-align:center;font-size:12px;color:rgba(255,255,255,.5);margin:10px 0 0">'+esc(ft.microcopy)+'</p>'+
           '</form></div></div>';
-        if (hiw) { hiw.parentNode.insertBefore(fsec, hiw.nextSibling); }
+        // 2026-06-04 marco — form subito dopo la griglia talent, PRIMA di how-it-works
+        var gridSec = document.getElementById('toa-models-talent');
+        if (gridSec) { gridSec.parentNode.insertBefore(fsec, gridSec.nextSibling); }
+        else if (hiw) { hiw.parentNode.insertBefore(fsec, hiw); }
         else { document.body.appendChild(fsec); }
 
         document.getElementById('tmForm').addEventListener('submit', async function(e){
