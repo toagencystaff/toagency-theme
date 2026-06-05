@@ -1697,42 +1697,8 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
     .toa-tdb-content { min-width: 0; overflow-x: hidden; }
 }
 
-/* 2026-06-04 marco — drawer filtri mobile: nascondi Categoria, Applica sticky, estetica campi */
-@media (max-width: 767px) {
-    /* FIX 1 — campo Categoria nascosto su mobile (chip categoria comunque disabilitate) */
-    #tdbFieldRuolo { display: none !important; }
-
-    /* FIX 2 — Applica sticky in fondo al drawer (bg scuro del drawer, NON bianco) */
-    .toa-tdb-filters-actions {
-        position: sticky;
-        bottom: 0;
-        background: #141416;
-        padding: 12px 0 4px;
-        border-top: 1px solid rgba(255,255,255,0.1);
-        z-index: 1;
-    }
-
-    /* FIX 3 — estetica drawer: campi più spaziati e leggibili */
-    .toa-tdb-sidebar { padding: 16px; }
-    .toa-tdb-field { margin-bottom: 14px; }
-    .toa-tdb-label { font-size: 13px; font-weight: 600; }
-    .toa-tdb-select, .toa-tdb-input { font-size: 15px; padding: 10px 12px; }
-}
-
-/* 2026-06-04 marco — drawer flex column ad altezza fissa: i filtri scrollano, "Applica" resta pinned in fondo */
-@media (max-width: 767px) {
-    .toa-tdb-sidebar {
-        height: 100dvh;
-        max-height: 100dvh;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-    }
-    .toa-tdb-filters { flex: 1; overflow-y: auto; padding-bottom: 8px; }
-    .toa-tdb-filters-actions { flex-shrink: 0; position: sticky; bottom: 0; }
-}
-
-/* 2026-06-04 marco — bottone X di chiusura del drawer (solo mobile) */
+/* 2026-06-05 marco — ROLLBACK drawer a stato v32: rimosse modifiche v33/v34/v35 (flex column, sticky Applica, hide Categoria, estetica).
+   Mantenuto SOLO lo stile del bottone X (la X resta iniettata dal JS v28). min-width:0 su .toa-tdb-content è già in v32. */
 .toa-tdb-sidebar-close {
     position: absolute; top: 14px; right: 16px;
     background: none; border: none; color: rgba(255,255,255,0.7);
