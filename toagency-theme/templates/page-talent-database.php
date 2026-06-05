@@ -283,12 +283,11 @@ $hub_sections = array(
                     </label>
                     <select name="ruolo" class="toa-tdb-select" id="tdbFilterRuolo">
                         <option value=""><?php echo esc_html($_t($T['filter_select_any'])); ?></option>
-                        <option value="actor">🎭 <?php echo esc_html($_t(array('it'=>'Attori & Cinema','en'=>'Actors & Cinema','fr'=>'Acteurs & Cinéma','es'=>'Actores & Cine'))); ?></option>
-                        <option value="model">👗 <?php echo esc_html($_t(array('it'=>'Modelle & Modelli','en'=>'Models','fr'=>'Modèles','es'=>'Modelos'))); ?></option>
-                        <option value="hostess">✈️ <?php echo esc_html($_t(array('it'=>'Hostess & Steward','en'=>'Hostess & Steward','fr'=>'Hôtesses & Stewards','es'=>'Azafatas & Steward'))); ?></option>
-                        <option value="comparsa">👶 <?php echo esc_html($_t(array('it'=>'Kids & Giovani','en'=>'Kids & Young','fr'=>'Enfants & Jeunes','es'=>'Niños & Jóvenes'))); ?></option>
-                        <option value="creator">📱 <?php echo esc_html($_t(array('it'=>'Creator & Influencer','en'=>'Creator & Influencer','fr'=>'Créateurs & Influenceurs','es'=>'Creadores & Influencers'))); ?></option>
-                        <option value="influencer">🌟 Influencer</option>
+                        <option value="actor"><?php echo esc_html($_t(array('it'=>'Attori e comparse','en'=>'Actors & Cinema','fr'=>'Acteurs & Cinéma','es'=>'Actores & Cine'))); ?></option>
+                        <option value="model"><?php echo esc_html($_t(array('it'=>'Modelli','en'=>'Models','fr'=>'Modèles','es'=>'Modelos'))); ?></option>
+                        <option value="hostess"><?php echo esc_html($_t(array('it'=>'Hostess e steward','en'=>'Hostess & Steward','fr'=>'Hôtesses & Stewards','es'=>'Azafatas & Steward'))); ?></option>
+                        <option value="comparsa"><?php echo esc_html($_t(array('it'=>'Bambini / ragazzi','en'=>'Kids & Young','fr'=>'Enfants & Jeunes','es'=>'Niños & Jóvenes'))); ?></option>
+                        <option value="creator"><?php echo esc_html($_t(array('it'=>'Creator e influencer','en'=>'Creator & Influencer','fr'=>'Créateurs & Influenceurs','es'=>'Creadores & Influencers'))); ?></option>
                     </select>
                 </div>
 
