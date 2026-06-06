@@ -1807,6 +1807,34 @@ html body  { overflow-x: clip !important; }   /* batte: body { overflow-x:hidden
 }
 #tdbSidebarToggle:hover { color: rgba(255,255,255,0.7); }
 
+/* ── 2026-06-06 marco — nav switcher Talent ↔ Crew (condiviso tra le due pagine) ── */
+.toa-db-switcher {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin: 10px 0 4px;
+}
+.toa-db-switcher__chip {
+    display: inline-flex; align-items: center;
+    padding: 6px 16px; border-radius: 999px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+    text-decoration: none; transition: border-color .15s, color .15s;
+    white-space: nowrap;
+}
+.toa-db-switcher__chip--active {
+    background: #c8ff00; color: #0a0a0a;
+    border: 2px solid #c8ff00;
+}
+.toa-db-switcher__chip--link {
+    background: transparent; color: rgba(255,255,255,0.5);
+    border: 1.5px solid rgba(255,255,255,0.18);
+}
+.toa-db-switcher__chip--link:hover {
+    border-color: rgba(200,255,0,0.45); color: #fff;
+}
+.toa-db-switcher__sep {
+    width: 3px; height: 3px; border-radius: 50%;
+    background: rgba(255,255,255,0.2); flex-shrink: 0;
+}
+
 /* 2026-06-04 marco — FIX layout > viewport su mobile: il grid item .toa-tdb-content ha min-width:auto
    (= min-content) di default e può sfondare il track 1fr. min-width:0 lo forza a rispettare la colonna. */
 @media (max-width: 767px) {

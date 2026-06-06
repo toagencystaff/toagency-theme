@@ -105,6 +105,13 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-hero-eyebrow { color:#c8ff00; font-size:13px; letter-spacing:2px; font-weight:600; margin-bottom:8px; }
 .crew-pub-hero-title { font-size:56px; font-weight:800; color:#fff; margin:0; letter-spacing:-1.5px; }
 .crew-pub-hero-subtitle { color:#9ca3af; margin-top:12px; max-width:640px; margin-left:auto; margin-right:auto; line-height:1.5; }
+/* 2026-06-06 marco — nav switcher Talent ↔ Crew */
+.toa-db-switcher { display:inline-flex; align-items:center; gap:8px; margin:10px 0 4px; }
+.toa-db-switcher__chip { display:inline-flex; align-items:center; padding:6px 16px; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; text-decoration:none; transition:border-color .15s, color .15s; white-space:nowrap; }
+.toa-db-switcher__chip--active { background:#c8ff00; color:#0a0a0a; border:2px solid #c8ff00; }
+.toa-db-switcher__chip--link { background:transparent; color:rgba(255,255,255,0.5); border:1.5px solid rgba(255,255,255,0.18); }
+.toa-db-switcher__chip--link:hover { border-color:rgba(200,255,0,0.45); color:#fff; }
+.toa-db-switcher__sep { width:3px; height:3px; border-radius:50%; background:rgba(255,255,255,0.2); flex-shrink:0; }
 
 .crew-pub-filters { display:flex; gap:12px; padding:24px; flex-wrap:wrap; align-items:center; border-bottom:1px solid #2a2a2e; }
 .crew-pub-filters select { background:#1a1a1e; border:1px solid #2a2a2e; color:#fff; padding:10px 14px; border-radius:6px; font-size:14px; min-width:200px; cursor:pointer; }
@@ -166,6 +173,16 @@ $theme_uri = get_stylesheet_directory_uri();
     <header class="crew-pub-hero">
         <div class="crew-pub-hero-eyebrow"><?= esc_html($_t($T['hero_eyebrow'])) ?></div>
         <h1 class="crew-pub-hero-title"><?= esc_html($_t($T['hero_title'])) ?></h1>
+        <!-- 2026-06-06 marco — nav switcher Talent ↔ Crew -->
+        <nav class="toa-db-switcher" aria-label="<?= esc_attr($_t(['it'=>'Sezione database','en'=>'Database section','fr'=>'Section base de données','es'=>'Sección base de datos'])) ?>">
+            <a class="toa-db-switcher__chip toa-db-switcher__chip--link" href="<?= esc_url(home_url('/talent-database/')) ?>">
+                <?= esc_html($_t(['it'=>'Talent Immagine','en'=>'Image Talent','fr'=>'Talent Image','es'=>'Talent Imagen'])) ?>
+            </a>
+            <span class="toa-db-switcher__sep" aria-hidden="true"></span>
+            <span class="toa-db-switcher__chip toa-db-switcher__chip--active" aria-current="page">
+                <?= esc_html($_t(['it'=>'Backstage Crew','en'=>'Backstage Crew','fr'=>'Backstage Crew','es'=>'Backstage Crew'])) ?>
+            </span>
+        </nav>
         <p class="crew-pub-hero-subtitle"><?= esc_html($_t($T['hero_subtitle'])) ?></p>
     </header>
 

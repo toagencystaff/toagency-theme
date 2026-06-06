@@ -256,6 +256,16 @@ $hub_sections = array(
     <!-- ═════ Hero compatto (redesign 2026-06-02) ═════ -->
     <header class="toa-tdb-hero toa-tdb-hero-compact">
         <h1 class="toa-tdb-hero-title"><?php echo esc_html($_t($hub_labels['title'])); ?></h1>
+        <!-- 2026-06-06 marco — nav switcher Talent ↔ Crew -->
+        <nav class="toa-db-switcher" aria-label="<?php echo esc_attr($_t(array('it'=>'Sezione database','en'=>'Database section','fr'=>'Section base de données','es'=>'Sección base de datos'))); ?>">
+            <span class="toa-db-switcher__chip toa-db-switcher__chip--active" aria-current="page">
+                <?php echo esc_html($_t(array('it'=>'Talent Immagine','en'=>'Image Talent','fr'=>'Talent Image','es'=>'Talent Imagen'))); ?>
+            </span>
+            <span class="toa-db-switcher__sep" aria-hidden="true"></span>
+            <a class="toa-db-switcher__chip toa-db-switcher__chip--link" href="<?php echo esc_url(home_url('/crew-database/')); ?>">
+                <?php echo esc_html($_t(array('it'=>'Backstage Crew','en'=>'Backstage Crew','fr'=>'Backstage Crew','es'=>'Backstage Crew'))); ?>
+            </a>
+        </nav>
         <p class="toa-tdb-hero-subtitle"><?php echo esc_html($_t($T['hero_subtitle'])); ?></p>
     </header>
 
