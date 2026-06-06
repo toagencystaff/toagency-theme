@@ -1767,6 +1767,46 @@ html body  { overflow-x: clip !important; }   /* batte: body { overflow-x:hidden
 /* 2026-06-04 marco — card meno alte su mobile (5/6, !important) per due colonne comode */
 @media (max-width: 768px) { .toa-tdb-card { aspect-ratio: 5 / 6 !important; } }
 
+/* ── 2026-06-06 marco — UX fix: macro link uppercase, sidebar close/open, count nel menubar ── */
+
+/* Fix: macro <a> non eredita text-transform:uppercase dai <button> del tema */
+.toa-tdb-macro--link { text-transform: uppercase; }
+
+/* Count nel menubar (destra) */
+.toa-tdb-menubar-right {
+    display: flex; align-items: center; gap: 10px; margin-left: auto;
+}
+.toa-tdb-menubar-right .toa-tdb-results-count {
+    font-size: 0.8rem; color: rgba(255,255,255,0.5); white-space: nowrap;
+}
+.toa-tdb-menubar-right .toa-tdb-results-count strong { color: #c8ff00; font-weight: 700; }
+
+/* Pulsante "⚙ Filtri" nel menubar — visibile SOLO quando sidebar è collassata */
+.toa-tdb-sidebar-open {
+    display: none;
+    align-items: center; gap: 5px;
+    padding: 5px 12px; border-radius: 999px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.65); font-size: 0.78rem; font-family: inherit;
+    cursor: pointer; white-space: nowrap;
+    transition: border-color .15s, color .15s;
+}
+.toa-tdb-sidebar-open:hover { border-color: rgba(200,255,0,0.5); color: #fff; }
+.tdb-sidebar-collapsed .toa-tdb-sidebar-open { display: inline-flex; }
+
+/* Close button "✕ Nascondi filtri" in cima alla sidebar */
+#tdbSidebarToggle {
+    display: flex; align-items: center; gap: 5px;
+    width: 100%; padding: 4px 0 10px;
+    margin-bottom: 10px;
+    background: none; border: none; border-bottom: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.38); font-size: 0.72rem; font-family: inherit; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    cursor: pointer; text-align: left;
+    transition: color .15s;
+}
+#tdbSidebarToggle:hover { color: rgba(255,255,255,0.7); }
+
 /* 2026-06-04 marco — FIX layout > viewport su mobile: il grid item .toa-tdb-content ha min-width:auto
    (= min-content) di default e può sfondare il track 1fr. min-width:0 lo forza a rispettare la colonna. */
 @media (max-width: 767px) {

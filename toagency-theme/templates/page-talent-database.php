@@ -269,6 +269,10 @@ $hub_sections = array(
 
         <!-- ═════ Sidebar filtri ═════ -->
         <aside class="toa-tdb-sidebar" id="tdbSidebar" aria-label="<?php echo esc_attr($_t($T['filters_open'])); ?>">
+            <!-- 2026-06-06 marco: close button in cima alla sidebar (risucchia la sidebar) -->
+            <button type="button" class="toa-tdb-sidebar-toggle" id="tdbSidebarToggle" aria-controls="tdbSidebar">
+                ✕ <?php echo esc_html($_t(array('it'=>'Nascondi filtri','en'=>'Hide filters','fr'=>'Masquer les filtres','es'=>'Ocultar filtros'))); ?>
+            </button>
             <form id="tdbFilters" class="toa-tdb-filters" autocomplete="off" novalidate>
 
                 <div class="toa-tdb-field">
@@ -412,20 +416,21 @@ $hub_sections = array(
 
                 <div class="toa-tdb-menubar">
                     <div class="toa-tdb-macros" role="tablist" aria-label="Categorie">
-                        <button type="button" class="toa-tdb-macro is-open" id="tdbMacro1" data-macro="1" aria-expanded="true" aria-controls="tdbCatChips"><?php echo esc_html($lbl_macro1); ?></button>
+                        <button type="button" class="toa-tdb-macro" id="tdbMacro1" data-macro="1" aria-expanded="false" aria-controls="tdbCatChips"><?php echo esc_html($lbl_macro1); ?></button>
                         <a class="toa-tdb-macro toa-tdb-macro--link" id="tdbMacro2" href="<?php echo $crew_url; ?>"><?php echo esc_html($lbl_macro2); ?></a>
                     </div>
-                    <!-- Toggle filtri (etichettato): da CHIUSO mostra "Mostra filtri", da APERTO "Nascondi filtri" -->
-                    <button type="button" class="toa-tdb-sidebar-toggle" id="tdbSidebarToggle" aria-controls="tdbSidebar" aria-expanded="false"
-                            data-label-show="<?php echo esc_attr($lbl_show); ?>" data-label-hide="<?php echo esc_attr($lbl_hide); ?>">
-                        <span class="toa-tdb-sidebar-toggle-icon" aria-hidden="true">☰</span>
-                        <span class="toa-tdb-sidebar-toggle-text"><?php echo esc_html($lbl_show); ?></span>
-                    </button>
+                    <!-- 2026-06-06 marco: count + open-button nel menubar (toggle spostato in cima alla sidebar) -->
+                    <div class="toa-tdb-menubar-right">
+                        <span class="toa-tdb-results-count" id="tdbResultsCount"><?php echo esc_html($_t($T['results_loading'])); ?></span>
+                        <button type="button" class="toa-tdb-sidebar-open" id="tdbSidebarOpen" aria-controls="tdbSidebar" aria-expanded="false">
+                            ⚙ <?php echo esc_html($_t(array('it'=>'Filtri','en'=>'Filters','fr'=>'Filtres','es'=>'Filtros'))); ?>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="toa-tdb-submenus">
                     <!-- Sottomenu 1 — Talent Immagine (default aperto) -->
-                    <div class="toa-tdb-cat-chips toa-tdb-submenu" id="tdbCatChips" role="tabpanel" aria-labelledby="tdbMacro1">
+                    <div class="toa-tdb-cat-chips toa-tdb-submenu" id="tdbCatChips" role="tabpanel" aria-labelledby="tdbMacro1" hidden>
                         <button type="button" class="toa-tdb-cat-chip is-active" data-ruolo=""><?php echo esc_html($lbl_tal); ?></button>
                         <?php foreach ($g1_locked as $label) : ?>
                         <button type="button" class="toa-tdb-cat-chip toa-tdb-cat-chip--locked" data-locked="1" data-cat="<?php echo esc_attr($label); ?>">
@@ -438,9 +443,7 @@ $hub_sections = array(
 
             </div>
 
-            <div class="toa-tdb-results-header">
-                <span class="toa-tdb-results-count" id="tdbResultsCount"><?php echo esc_html($_t($T['results_loading'])); ?></span>
-            </div>
+            <!-- 2026-06-06: toa-tdb-results-header rimosso — count spostato nel menubar (id=tdbResultsCount) -->
             <div class="toa-tdb-grid" id="tdbGrid" aria-live="polite"></div>
             <div class="toa-tdb-grid-empty" id="tdbGridEmpty" hidden>
                 <p><?php echo esc_html($_t($T['results_empty'])); ?></p>

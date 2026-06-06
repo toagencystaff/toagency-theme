@@ -1214,23 +1214,29 @@
         function isMobile() { return window.matchMedia('(max-width: 767px)').matches; }
         if (deskBtn && wrap) {
             var KEY = 'toaTdbSidebarCollapsed';
+            // FIX 2026-06-06: rimosse chiamate tdSetFilterToggle — close btn è statico nella sidebar, open btn nel menubar
             function applyCollapsed(collapsed) {
                 wrap.classList.toggle('tdb-sidebar-collapsed', collapsed);
-                if (!isMobile()) tdSetFilterToggle(!collapsed); // aperto = sidebar visibile
             }
+            // deskBtn = #tdbSidebarToggle (close btn IN CIMA alla sidebar) — chiude sempre
             deskBtn.addEventListener('click', function () {
-                if (isMobile()) {
-                    toggleSidebar(!$('#tdbSidebar').classList.contains('open'));
-                    return;
-                }
-                var collapsed = !wrap.classList.contains('tdb-sidebar-collapsed');
-                applyCollapsed(collapsed);
-                try { localStorage.setItem(KEY, collapsed ? '1' : '0'); } catch (e) {}
+                if (isMobile()) { toggleSidebar(false); return; }
+                applyCollapsed(true);
+                try { localStorage.setItem(KEY, '1'); } catch (e) {}
             });
+            // tdbSidebarOpen = pulsante "⚙ Filtri" nel menubar — apre sempre
+            var openBtn = $('#tdbSidebarOpen');
+            if (openBtn) {
+                openBtn.addEventListener('click', function () {
+                    if (isMobile()) { toggleSidebar(true); return; }
+                    applyCollapsed(false);
+                    try { localStorage.setItem(KEY, '0'); } catch (e) {}
+                });
+            }
             // Default: CHIUSA su desktop (salvo preferenza '0' salvata in precedenza).
             try { applyCollapsed(localStorage.getItem(KEY) !== '0'); } catch (e) { applyCollapsed(true); }
-            // Su mobile parte come "Mostra filtri" (drawer chiuso).
-            if (isMobile()) tdSetFilterToggle(false);
+            // Su mobile parte come drawer chiuso.
+            if (isMobile()) toggleSidebar(false);
         }
 
         // 2026-06-05 marco — ACCORDION macro: click su un macro apre/chiude il suo sottomenu (toggle indipendente).
