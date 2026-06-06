@@ -160,8 +160,21 @@
 
     // True se almeno uno dei modal principali è aperto (per gestire body.overflow).
     function anyOtherModalOpen() {
-        var m1 = $('#tdbTalentModal'), m2 = $('#tdbRequestModal'), m3 = $('#tdbSuccess');
-        return (m1 && !m1.hidden) || (m2 && !m2.hidden) || (m3 && !m3.hidden);
+        var m1 = $('#tdbTalentModal'), m2 = $('#tdbRequestModal'), m3 = $('#tdbSuccess'), m4 = $('#tdbLockedModal');
+        return (m1 && !m1.hidden) || (m2 && !m2.hidden) || (m3 && !m3.hidden) || (m4 && !m4.hidden);
+    }
+
+    // 2026-06-05 marco — modale "database in arrivo" per chip categoria bloccate (cliccabili).
+    function openLockedModal(cat) {
+        var m = $('#tdbLockedModal');
+        if (!m) return;
+        var t = $('#tdbLockedTitle');
+        if (t) t.textContent = '🔒 ' + (cat || '') + ' — database in arrivo';
+        m.hidden = false;
+    }
+    function closeLockedModal() {
+        var m = $('#tdbLockedModal');
+        if (m) m.hidden = true;
     }
 
     // ═════════════════════════════════════════════════════════════════
@@ -880,11 +893,27 @@
     // SIDEBAR DRAWER (mobile)
     // ═════════════════════════════════════════════════════════════════
 
+    // 2026-06-05 marco — aggiorna il pulsante Filtri ETICHETTATO (icona + testo + aria).
+    // open=true → "✕ Nascondi filtri"; open=false → "☰ Mostra filtri".
+    function tdSetFilterToggle(open) {
+        var db = $('#tdbSidebarToggle');
+        if (!db) return;
+        var icon = db.querySelector('.toa-tdb-sidebar-toggle-icon');
+        var text = db.querySelector('.toa-tdb-sidebar-toggle-text');
+        if (icon) icon.textContent = open ? '✕' : '☰';
+        if (text) text.textContent = open ? (db.getAttribute('data-label-hide') || 'Nascondi filtri')
+                                          : (db.getAttribute('data-label-show') || 'Mostra filtri');
+        db.setAttribute('aria-expanded', open ? 'true' : 'false');
+        db.classList.toggle('is-open', open);
+    }
+
     // Apre/chiude il drawer filtri su mobile + classe body per backdrop.
     function toggleSidebar(open) {
         $('#tdbSidebar').classList.toggle('open', open);
         document.body.classList.toggle('tdb-drawer-open', open);
         $('#tdbFiltersToggle').setAttribute('aria-expanded', open ? 'true' : 'false');
+        // su mobile il pulsante Filtri apre/chiude il drawer: sincronizza etichetta/aria.
+        if (window.matchMedia('(max-width: 767px)').matches) tdSetFilterToggle(open);
     }
 
     // ═════════════════════════════════════════════════════════════════
@@ -1132,10 +1161,11 @@
     function wireModalCloses() {
         document.body.addEventListener('click', function (e) {
             if (!e.target.dataset || e.target.dataset.tdbClose !== '1') return;
-            var m1 = $('#tdbTalentModal'), m2 = $('#tdbRequestModal'), m3 = $('#tdbSuccess');
+            var m1 = $('#tdbTalentModal'), m2 = $('#tdbRequestModal'), m3 = $('#tdbSuccess'), m4 = $('#tdbLockedModal');
             if (m1 && !m1.hidden && e.target.closest('#tdbTalentModal'))     tdCloseTalentModal();
             else if (m2 && !m2.hidden && e.target.closest('#tdbRequestModal')) closeRequestModal();
             else if (m3 && !m3.hidden && e.target.closest('#tdbSuccess'))      closeSuccess();
+            else if (m4 && !m4.hidden && e.target.closest('#tdbLockedModal'))  closeLockedModal();
         });
         document.addEventListener('keydown', function (e) {
             var t = $('#tdbTalentModal');
@@ -1145,7 +1175,9 @@
             }
             if (e.key !== 'Escape') return;
             var s = $('#tdbSuccess'), r = $('#tdbRequestModal');
+            var l = $('#tdbLockedModal');
             var sb = $('#tdbSidebar');
+            if (l && !l.hidden)  { closeLockedModal(); return; }
             if (s && !s.hidden)  { closeSuccess(); return; }
             if (r && !r.hidden)  { closeRequestModal(); return; }
             if (t && !t.hidden)  { tdCloseTalentModal(); return; }
@@ -1175,30 +1207,71 @@
             _sb.insertBefore(_x, _sb.firstChild);
         }
 
-        // 2026-06-02 marco — toggle sidebar DESKTOP: collassa la sidebar → griglia a 5 colonne. Stato persistito.
+        // 2026-06-05 marco — pulsante Filtri ETICHETTATO: desktop = collassa/espande sidebar
+        // (default CHIUSA → griglia 5 col); mobile = apre/chiude il drawer off-canvas. Stato desktop persistito.
         var deskBtn = $('#tdbSidebarToggle');
         var wrap = $('#tdb-database');
+        function isMobile() { return window.matchMedia('(max-width: 767px)').matches; }
         if (deskBtn && wrap) {
             var KEY = 'toaTdbSidebarCollapsed';
             function applyCollapsed(collapsed) {
                 wrap.classList.toggle('tdb-sidebar-collapsed', collapsed);
-                deskBtn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-                deskBtn.textContent = collapsed ? '✕' : '☰';
+                if (!isMobile()) tdSetFilterToggle(!collapsed); // aperto = sidebar visibile
             }
             deskBtn.addEventListener('click', function () {
+                if (isMobile()) {
+                    toggleSidebar(!$('#tdbSidebar').classList.contains('open'));
+                    return;
+                }
                 var collapsed = !wrap.classList.contains('tdb-sidebar-collapsed');
                 applyCollapsed(collapsed);
                 try { localStorage.setItem(KEY, collapsed ? '1' : '0'); } catch (e) {}
             });
-            try { if (localStorage.getItem(KEY) === '1') applyCollapsed(true); } catch (e) {}
+            // Default: CHIUSA su desktop (salvo preferenza '0' salvata in precedenza).
+            try { applyCollapsed(localStorage.getItem(KEY) !== '0'); } catch (e) { applyCollapsed(true); }
+            // Su mobile parte come "Mostra filtri" (drawer chiuso).
+            if (isMobile()) tdSetFilterToggle(false);
         }
 
-        // 2026-06-02 marco — chip categoria → imposta il filtro Categoria (#tdbFilterRuolo) + lancia la ricerca
+        // 2026-06-05 marco — ACCORDION macro: click su un macro apre/chiude il suo sottomenu (toggle indipendente).
+        // FIX 2026-06-05: i macro <a href> (es. tdbMacro2/Crew) sono link diretti — skip accordion, navigazione nativa.
+        var macros = $$('.toa-tdb-macro');
+        macros.forEach(function (m) {
+            if (m.tagName === 'A') return; // link diretto, niente accordion
+            m.addEventListener('click', function () {
+                var panel = document.getElementById(m.getAttribute('aria-controls'));
+                var open = m.getAttribute('aria-expanded') !== 'true';
+                m.setAttribute('aria-expanded', open ? 'true' : 'false');
+                m.classList.toggle('is-open', open);
+                if (panel) panel.hidden = !open;
+            });
+        });
+
+        // 2026-06-05 marco — chip categoria bloccate (cliccabili) → modale "database in arrivo".
+        // Delegato sull'intero wrapper. Il link "Crew" (<a>) non è bloccato → naviga a /crew-database/.
+        var catGroups = $('#tdbCatGroups');
+        if (catGroups) {
+            catGroups.addEventListener('click', function (e) {
+                // 2026-06-05 marco — FIX: il chip "Crew" è un <a href=/crew-database/>. Forziamo la
+                // navigazione esplicitamente, così nessun altro handler (presente o futuro) può bloccarla.
+                var crew = e.target.closest('.toa-tdb-cat-chip--crew');
+                if (crew) {
+                    var href = crew.getAttribute('href');
+                    if (href) { window.location.href = href; return; }
+                }
+                var locked = e.target.closest('.toa-tdb-cat-chip--locked');
+                if (!locked) return;
+                e.preventDefault();
+                openLockedModal(locked.getAttribute('data-cat') || '');
+            });
+        }
+
+        // chip "Talent" → ricerca senza filtro ruolo (mostra tutti). Ignora le bloccate (gestite sopra).
         var chips = $('#tdbCatChips');
         if (chips) {
             chips.addEventListener('click', function (e) {
                 var chip = e.target.closest('.toa-tdb-cat-chip');
-                if (!chip) return;
+                if (!chip || chip.classList.contains('toa-tdb-cat-chip--locked') || chip.classList.contains('toa-tdb-cat-chip--crew')) return;
                 $$('.toa-tdb-cat-chip', chips).forEach(function (c) { c.classList.toggle('is-active', c === chip); });
                 var sel = $('#tdbFilterRuolo');
                 if (sel) {

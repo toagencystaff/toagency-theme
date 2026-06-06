@@ -770,7 +770,8 @@ add_action('init', function() {
         '/therms-and-conditions'    => '/terms-and-conditions/',
         '/en/therms-and-conditions' => '/en/terms-and-conditions/',
         '/es/therms-and-conditions' => '/es/terms-and-conditions/',
-        '/crew-database'            => '/talent-database/',
+        // 2026-06-05 marco — crew-database RIABILITATO (chip "Crew" del redesign /talent-database/ punta qui).
+        // '/crew-database'            => '/talent-database/',
     ];
     if (isset($map[$req])) {
         wp_safe_redirect(home_url($map[$req]), 301);

@@ -126,7 +126,7 @@ $T = array(
 );
 ?>
 <!-- TOA-TALENT-DATABASE-V1 — PATCH 2026-05-22 marco hub sezioni categoria -->
-<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v35.css'); ?>">
+<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v40.css'); ?>">
 <script>
 window.toaThemeUri      = "<?php echo esc_js($theme_uri); ?>";
 window.toaTdbLang       = "<?php echo esc_js($__l); ?>";
@@ -392,19 +392,53 @@ $hub_sections = array(
         <!-- ═════ Content ═════ -->
         <div class="toa-tdb-content">
 
-            <!-- 2026-06-02 marco — chip categoria sottili (sostituiscono l'hub grande); settano il filtro Categoria -->
-            <div class="toa-tdb-cat-chips" id="tdbCatChips" role="tablist" aria-label="Categoria">
-                <button type="button" class="toa-tdb-cat-chip is-active" data-ruolo=""><?php echo esc_html($_t(array('it'=>'Tutti','en'=>'All','fr'=>'Tous','es'=>'Todos'))); ?></button>
-                <?php foreach ($hub_sections as $sec) : // 2026-06-04 marco — chip categoria disabilitate (solo "Tutti" attivo) ?>
-                <button type="button" class="toa-tdb-cat-chip toa-tdb-cat-chip--disabled" data-ruolo="<?php echo esc_attr($sec['ruolo']); ?>" aria-disabled="true" tabindex="-1" disabled>
-                    <span class="toa-tdb-cat-chip-icon"><?php echo $sec['icon']; ?></span>
-                    <span><?php echo esc_html($_t($sec['title'])); ?></span>
-                </button>
-                <?php endforeach; ?>
+            <!-- 2026-06-05 marco — REDESIGN menu: 2 macro compatti ad accordion, niente emoji.
+                 Macro1 "Talent Immagine" (default APERTO) → chip Talent (tutti) + sottocategorie bloccate.
+                 Macro2 "Backstage Crew" (default CHIUSO) → chip Crew (→/crew-database/) + bloccate.
+                 Bloccate = lucchetto (CSS), cliccabili → modale esistente. Pulsante Filtri dentro il blocco sticky. -->
+            <?php
+            // 2026-06-05 marco — sottocategorie "in arrivo" (bloccate ma cliccabili). Solo display, nessun filtro backend.
+            $g1_locked = array('Modello','Hostess/Steward','Attore','Comparsa','Influencer','UGC Creator');
+            $g2_locked = array('Fotografo','Videomaker','Content Creator','Truccatore','Hairstylist','Stylist','DJ','Assistente di produzione','Art Director');
+            $crew_url  = esc_url(home_url('/crew-database/'));
+            $lbl_macro1 = $_t(array('it'=>'Talent Immagine','en'=>'Image Talent','fr'=>'Talent Image','es'=>'Talent Imagen'));
+            $lbl_macro2 = $_t(array('it'=>'Backstage Crew','en'=>'Backstage Crew','fr'=>'Backstage Crew','es'=>'Backstage Crew'));
+            $lbl_tal   = $_t(array('it'=>'Talent','en'=>'Talent','fr'=>'Talent','es'=>'Talent'));
+            $lbl_crew  = $_t(array('it'=>'Crew','en'=>'Crew','fr'=>'Crew','es'=>'Crew'));
+            $lbl_show  = $_t(array('it'=>'Mostra filtri','en'=>'Show filters','fr'=>'Afficher les filtres','es'=>'Mostrar filtros'));
+            $lbl_hide  = $_t(array('it'=>'Nascondi filtri','en'=>'Hide filters','fr'=>'Masquer les filtres','es'=>'Ocultar filtros'));
+            ?>
+            <div class="toa-tdb-catgroups" id="tdbCatGroups">
+
+                <div class="toa-tdb-menubar">
+                    <div class="toa-tdb-macros" role="tablist" aria-label="Categorie">
+                        <button type="button" class="toa-tdb-macro is-open" id="tdbMacro1" data-macro="1" aria-expanded="true" aria-controls="tdbCatChips"><?php echo esc_html($lbl_macro1); ?></button>
+                        <a class="toa-tdb-macro toa-tdb-macro--link" id="tdbMacro2" href="<?php echo $crew_url; ?>"><?php echo esc_html($lbl_macro2); ?></a>
+                    </div>
+                    <!-- Toggle filtri (etichettato): da CHIUSO mostra "Mostra filtri", da APERTO "Nascondi filtri" -->
+                    <button type="button" class="toa-tdb-sidebar-toggle" id="tdbSidebarToggle" aria-controls="tdbSidebar" aria-expanded="false"
+                            data-label-show="<?php echo esc_attr($lbl_show); ?>" data-label-hide="<?php echo esc_attr($lbl_hide); ?>">
+                        <span class="toa-tdb-sidebar-toggle-icon" aria-hidden="true">☰</span>
+                        <span class="toa-tdb-sidebar-toggle-text"><?php echo esc_html($lbl_show); ?></span>
+                    </button>
+                </div>
+
+                <div class="toa-tdb-submenus">
+                    <!-- Sottomenu 1 — Talent Immagine (default aperto) -->
+                    <div class="toa-tdb-cat-chips toa-tdb-submenu" id="tdbCatChips" role="tabpanel" aria-labelledby="tdbMacro1">
+                        <button type="button" class="toa-tdb-cat-chip is-active" data-ruolo=""><?php echo esc_html($lbl_tal); ?></button>
+                        <?php foreach ($g1_locked as $label) : ?>
+                        <button type="button" class="toa-tdb-cat-chip toa-tdb-cat-chip--locked" data-locked="1" data-cat="<?php echo esc_attr($label); ?>">
+                            <span><?php echo esc_html($label); ?></span>
+                        </button>
+                        <?php endforeach; ?>
+                    </div>
+                    <!-- Sottomenu 2 — rimosso 2026-06-05 marco: macro2 è ora link diretto a /crew-database/ -->
+                </div>
+
             </div>
 
             <div class="toa-tdb-results-header">
-                <button type="button" class="toa-tdb-sidebar-toggle" id="tdbSidebarToggle" aria-controls="tdbSidebar" aria-expanded="true" title="Mostra/nascondi filtri">☰</button>
                 <span class="toa-tdb-results-count" id="tdbResultsCount"><?php echo esc_html($_t($T['results_loading'])); ?></span>
             </div>
             <div class="toa-tdb-grid" id="tdbGrid" aria-live="polite"></div>
@@ -442,6 +476,27 @@ $hub_sections = array(
                 <div class="toa-tdb-detail-table" id="tdbModalFields"></div>
                 <p class="toa-tdb-modal-anonymous"><?php echo esc_html($_t($T['modal_anonymous'])); ?></p>
                 <button type="button" class="toa-tdb-btn toa-tdb-btn-primary toa-tdb-detail-add-btn" id="tdbModalAdd"><?php echo esc_html($_t($T['btn_add'])); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═════ Modal categoria bloccata ("database in arrivo") — 2026-06-05 marco ═════ -->
+<div class="toa-tdb-modal" id="tdbLockedModal" role="dialog" aria-modal="true" aria-labelledby="tdbLockedTitle" hidden>
+    <div class="toa-tdb-modal-overlay" data-tdb-close="1"></div>
+    <div class="toa-tdb-modal-card toa-tdb-modal-card-narrow toa-tdb-locked-card">
+        <button type="button" class="toa-tdb-modal-close" aria-label="<?php echo esc_attr($_t($T['modal_close'])); ?>" data-tdb-close="1">✕</button>
+        <div class="toa-tdb-locked-body">
+            <h2 id="tdbLockedTitle">🔒 <?php echo esc_html($_t(array('it'=>'Database in arrivo','en'=>'Database coming soon','fr'=>'Base de données à venir','es'=>'Base de datos en camino'))); ?></h2>
+            <p><?php echo esc_html($_t(array(
+                'it'=>'Stiamo completando questo archivio. TOAgency può inviarti subito la lista dei professionisti per la tua zona, data e budget.',
+                'en'=>'We are completing this archive. TOAgency can send you right away the list of professionals for your area, date and budget.',
+                'fr'=>'Nous complétons cet archive. TOAgency peut vous envoyer immédiatement la liste des professionnels pour votre zone, date et budget.',
+                'es'=>'Estamos completando este archivo. TOAgency puede enviarte enseguida la lista de profesionales para tu zona, fecha y presupuesto.'
+            ))); ?></p>
+            <div class="toa-tdb-locked-actions">
+                <a href="https://wa.me/393517899225" target="_blank" rel="noopener" class="toa-tdb-btn toa-tdb-btn-primary">💬 <?php echo esc_html($_t(array('it'=>'Chiedi su WhatsApp','en'=>'Ask on WhatsApp','fr'=>'Demander sur WhatsApp','es'=>'Pregunta por WhatsApp'))); ?></a>
+                <a href="<?php echo esc_url(home_url('/form-b2b/')); ?>" class="toa-tdb-btn toa-tdb-btn-ghost"><?php echo esc_html($_t(array('it'=>'Richiedi preventivo','en'=>'Request a quote','fr'=>'Demander un devis','es'=>'Solicita presupuesto'))); ?></a>
             </div>
         </div>
     </div>
@@ -535,6 +590,6 @@ $hub_sections = array(
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-database-v28.js'); ?>" defer></script>
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-database-v32.js'); ?>" defer></script>
 
 <?php toa_component('footer'); ?>

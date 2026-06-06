@@ -1554,24 +1554,27 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
 }
 
 /* ── SIDEBAR COLLASSABILE 2026-05-24 marco ── */
+/* 2026-06-05 marco — pulsante Filtri ETICHETTATO (icona + testo): "☰ Mostra filtri" / "✕ Nascondi filtri" */
 .toa-tdb-sidebar-toggle {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
-    background: transparent;
-    border: 1px solid #2a2a2a;
-    border-radius: 6px;
-    color: #aaa;
-    font-size: 13px;
-    padding: 6px 12px;
+    gap: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 999px;
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: inherit;
+    padding: 8px 16px;
     cursor: pointer;
-    margin-bottom: 12px;
-    transition: color .2s, border-color .2s;
+    white-space: nowrap;
+    transition: color .2s, border-color .2s, background .2s;
 }
-.toa-tdb-sidebar-toggle:hover { color: #c8ff00; border-color: #c8ff00; }
-.tdb-toggle-icon { font-size: 18px; line-height: 1; transition: transform .25s; }
+.toa-tdb-sidebar-toggle:hover { color: #c8ff00; border-color: rgba(200,255,0,0.6); }
+.toa-tdb-sidebar-toggle.is-open { background: rgba(200,255,0,0.12); border-color: rgba(200,255,0,0.55); color: #c8ff00; }
+.toa-tdb-sidebar-toggle-icon { font-size: 1rem; line-height: 1; }
 .toa-tdb-sidebar.collapsed { width: 0 !important; min-width: 0 !important; padding: 0 !important; overflow: hidden; visibility: hidden; }
-.toa-tdb-sidebar-toggle.is-collapsed .tdb-toggle-icon { transform: rotate(180deg); }
 
 /* ════════════════════════════════════════════════════════════════
    REDESIGN 2026-06-02 marco — header compatto, chip categoria,
@@ -1609,12 +1612,72 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
 .toa-tdb-cat-chip.is-active { background: #c8ff00; border-color: #c8ff00; color: #0a0a0a; }
 .toa-tdb-cat-chip-icon { font-size: 0.95rem; line-height: 1; }
 
-/* ── Results header + toggle sidebar desktop ── */
+/* ── 2026-06-05 marco — MENU ACCORDION compatto (2 macro, niente emoji) ── */
+.toa-tdb-catgroups { display: flex; flex-direction: column; gap: 10px; margin: 0 0 16px; }
+.toa-tdb-menubar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.toa-tdb-macros { display: flex; gap: 8px; flex-wrap: wrap; }
+.toa-tdb-macro {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 16px; border-radius: 999px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.16);
+    color: #fff; font-size: 0.85rem; font-weight: 700; font-family: inherit;
+    cursor: pointer; white-space: nowrap; transition: background .15s, border-color .15s, color .15s;
+}
+.toa-tdb-macro::after {
+    content: ""; width: 7px; height: 7px; flex: 0 0 auto;
+    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+    transform: rotate(45deg) translateY(-2px); transition: transform .2s; opacity: .75;
+}
+.toa-tdb-macro:hover { border-color: rgba(200,255,0,0.5); }
+.toa-tdb-macro.is-open { background: #c8ff00; border-color: #c8ff00; color: #0a0a0a; }
+.toa-tdb-macro.is-open::after { transform: rotate(225deg) translateY(2px); }
+.toa-tdb-submenus { display: flex; flex-direction: column; gap: 8px; }
+.toa-tdb-submenu { margin: 0; }
+.toa-tdb-submenu[hidden] { display: none; }
+/* FIX 2026-06-05: macro link diretto (Backstage Crew → /crew-database/) */
+.toa-tdb-macro--link { text-decoration: none; }
+.toa-tdb-macro--link::after { transform: rotate(-45deg) translateY(2px); }
+.toa-tdb-macro--link:hover::after { transform: translateX(3px) rotate(-45deg) translateY(2px); }
+
+/* chip "Crew": link evidenziato → /crew-database/ */
+.toa-tdb-cat-chip--crew { text-decoration: none; border-color: rgba(200,255,0,0.45); color: #c8ff00; }
+.toa-tdb-cat-chip--crew:hover { background: #c8ff00; border-color: #c8ff00; color: #0a0a0a; }
+/* chip bloccate: grigie + lucchetto (CSS SVG, NO emoji), CLICCABILI (niente pointer-events:none) → modale */
+.toa-tdb-cat-chip--locked {
+    background: rgba(255,255,255,0.03);
+    border-color: rgba(255,255,255,0.10);
+    color: rgba(255,255,255,0.45);
+    cursor: pointer;
+}
+.toa-tdb-cat-chip--locked:hover {
+    border-color: rgba(255,255,255,0.30);
+    color: rgba(255,255,255,0.70);
+}
+.toa-tdb-cat-chip--locked::after {
+    content: ""; width: 11px; height: 11px; margin-left: 6px; flex: 0 0 auto;
+    background-color: currentColor; opacity: 0.7;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm3 8H9V6a3 3 0 0 1 6 0v3z'/%3E%3C/svg%3E") center / contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm3 8H9V6a3 3 0 0 1 6 0v3z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* Modale "database in arrivo" (riusa .toa-tdb-modal / -card-narrow) */
+.toa-tdb-locked-body { padding: 34px 28px 28px; text-align: center; }
+.toa-tdb-locked-body h2 { font-size: 1.15rem; margin: 0 0 12px; color: #fff; }
+.toa-tdb-locked-body p { font-size: 0.92rem; line-height: 1.5; color: rgba(255,255,255,0.72); margin: 0 0 22px; }
+.toa-tdb-locked-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.toa-tdb-locked-actions .toa-tdb-btn { text-decoration: none; }
+@media (max-width: 480px) {
+    .toa-tdb-locked-body { padding: 30px 18px 22px; }
+    .toa-tdb-locked-actions { flex-direction: column; }
+    .toa-tdb-locked-actions .toa-tdb-btn { width: 100%; }
+}
+
+/* ── Results header (solo conteggio) ── */
 .toa-tdb-results-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
-.toa-tdb-sidebar-toggle { margin-bottom: 0; flex-shrink: 0; font-size: 16px; line-height: 1; padding: 7px 11px; }
+.toa-tdb-sidebar-toggle { flex-shrink: 0; }
 @media (max-width: 767px) {
-    /* su mobile la sidebar è un drawer gestito da #tdbFiltersToggle: nascondo il toggle desktop */
-    .toa-tdb-sidebar-toggle { display: none; }
+    /* 2026-06-05 marco — pulsante Filtri etichettato anche su mobile (apre il drawer). Nascondo il vecchio "⚙ Filtri". */
+    .toa-tdb-filters-toggle { display: none !important; }
 }
 
 /* ── Sidebar collassabile (desktop) — guidata da .tdb-sidebar-collapsed sul wrap ── */
@@ -1657,31 +1720,44 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
 @media (max-width: 768px) { .toa-tdb-card-code { font-size: 13px !important; } }
 
 /* ════════════════════════════════════════════════════════════════
-   FIX STICKY 2026-06-02 marco — la sidebar/chip scomparivano scrollando.
-   Causa: main.css ha `body{overflow-x:hidden}` che rende il body uno
-   scroll-container e ROMPE position:sticky dei discendenti.
-   Fix scoped (questo CSS è caricato solo su /talent-database/):
-   overflow-x:clip NON crea scroll-container → lo sticky torna a funzionare,
-   e l'overflow orizzontale resta comunque tagliato (niente scrollbar).
+   FIX STICKY STRUTTURALE 2026-06-05 marco — DEFINITIVO.
+   Causa REALE: il plugin "Simple Custom CSS" (opzione DB sccss_settings,
+   condivisa prod/preview) inietta inline nel <head>:
+       html, body { overflow-x: hidden !important; }
+   `overflow-x:hidden` + asse Y `visible` → l'asse Y diventa `auto`, quindi
+   html/body diventano SCROLL-CONTAINER: lo scroll NON è sul documento
+   (window.scrollY resta 0) e position:sticky si ancora male → il menu
+   "scrolla via" (top:-NNN). I fix precedenti con `clip` SENZA !important
+   perdevano la cascade contro quell'`!important`.
+   FIX: riportiamo lo scroll sul DOCUMENTO usando `overflow-x:clip` (taglia
+   l'orizzontale ma NON crea scroll-container) e VINCIAMO la cascade con
+   SPECIFICITÀ MAGGIORE + !important (la specificità batte l'!important di
+   pari-specificità): `:root` (0,1,0) > `html` (0,0,1); `html body` (0,0,2)
+   > `body` (0,0,1). Così clip si applica davvero e lo sticky funziona.
+   NB: non posso editare sccss_settings perché è opzione DB condivisa con prod.
    ════════════════════════════════════════════════════════════════ */
-@media (min-width: 768px) {
-    html, body { overflow-x: clip; }
-}
+:root      { overflow-x: clip !important; }   /* batte: html { overflow-x:hidden !important } */
+html body  { overflow-x: clip !important; }   /* batte: body { overflow-x:hidden !important } */
 
-/* Chip categoria sticky in cima al contenuto durante lo scroll */
+/* Menu categorie (entrambi i gruppi) sticky in cima al contenuto durante lo scroll — desktop E mobile */
+.toa-tdb-catgroups {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    background: #08080a;
+    margin: 0 0 12px;
+    padding: 8px 0;
+}
 @media (min-width: 768px) {
-    .toa-tdb-cat-chips {
-        position: sticky;
-        top: 60px;
-        z-index: 60;
-        background: #08080a;
-        margin: 0 0 12px;
-        padding: 8px 0;
-    }
+    .toa-tdb-catgroups { top: 60px; }   /* sotto il menu fisso del sito */
 }
 
 /* ── 2026-06-04 marco — FIX sidebar scroll orizzontale + chip categoria disabilitate ── */
 .toa-tdb-sidebar { overflow-x: hidden; }
+
+/* 2026-06-05 marco — RIMUOVI doppione: nascondi il campo "Categoria" in sidebar su TUTTI i viewport.
+   La categoria ora vive solo nelle chip (gruppi). REVERSIBILE: rimuovere questa regola per ripristinare il select. */
+#tdbFieldRuolo { display: none !important; }
 .toa-tdb-cat-chip--disabled {
     pointer-events: none;
     opacity: 0.4;
@@ -1694,7 +1770,9 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
 /* 2026-06-04 marco — FIX layout > viewport su mobile: il grid item .toa-tdb-content ha min-width:auto
    (= min-content) di default e può sfondare il track 1fr. min-width:0 lo forza a rispettare la colonna. */
 @media (max-width: 767px) {
-    .toa-tdb-content { min-width: 0; overflow-x: hidden; }
+    /* 2026-06-05 marco — clip (non hidden): taglia l'orizzontale senza rendere .toa-tdb-content
+       uno scroll-container, altrimenti lo sticky del menu categorie (figlio) si rompe. */
+    .toa-tdb-content { min-width: 0; overflow-x: clip; }
 }
 
 /* 2026-06-04 marco — drawer filtri mobile: nascondi Categoria, Applica sticky, estetica campi */
