@@ -16,6 +16,8 @@
 toa_component('header');
 
 $__l = function_exists('toa_current_lang') ? toa_current_lang() : 'it';
+// VIA A 2026-06-12 marco — deep-link CRM token-gated: lingua candidato via ?lang (override WPML). is_string guard contro ?lang[]= (TypeError fatale su PHP 8)
+if (!empty($_GET['lang']) && is_string($_GET['lang'])) $__l = strtolower(substr($_GET['lang'], 0, 2));
 if (!in_array($__l, ['it','en','fr','es'], true)) $__l = 'it';
 $_t = function ($a) use ($__l) { return $a[$__l] ?? $a['it']; };
 
