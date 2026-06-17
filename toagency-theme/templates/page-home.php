@@ -36,7 +36,7 @@ if (!function_exists('_ht')) {
     </p>
     <div class="hero-actions">
       <a href="<?php echo home_url('/form-b2b/'); ?>" class="btn-hero btn-hero-primary"><span><?php echo _ht(array('it'=>'Sono un\'azienda — cerco talent','en'=>'I\'m a company — looking for talent','fr'=>'Je suis une entreprise — je cherche des talents','es'=>'Soy una empresa — busco talento')); ?></span></a>
-      <div class="btn-hero btn-hero-secondary" onclick="window.location.href='/b-t-l/'" style="cursor:pointer" role="link" tabindex="0" id="toa-talent-btn"><span><?php echo _ht(array('it'=>'Sono un talent — cerco lavori','en'=>'I\'m a talent — looking for jobs','fr'=>'Je suis un talent — je cherche du travail','es'=>'Soy un talento — busco trabajo')); ?></span></div>
+      <div class="btn-hero btn-hero-secondary" onclick="window.location.href='/collabora/'" style="cursor:pointer" role="link" tabindex="0" id="toa-talent-btn"><span><?php echo _ht(array('it'=>'Sono un talent — cerco lavori','en'=>'I\'m a talent — looking for jobs','fr'=>'Je suis un talent — je cherche du travail','es'=>'Soy un talento — busco trabajo')); ?></span></div>
       <a href="<?php echo home_url('/student-program/'); ?>" class="btn-hero btn-hero-secondary"><span><?php echo _ht(array('it'=>'Sono uno studente — Student Program','en'=>'I\'m a student — Student Program','fr'=>'Je suis étudiant — Student Program','es'=>'Soy estudiante — Student Program')); ?></span></a>
     </div>
   </div>

@@ -172,7 +172,7 @@ $b2b_js = array(
   <!-- Banner B2C -->
   <div style="text-align:center;padding:30px 20px;border:2px solid var(--gray-2);margin-top:30px;background:var(--gray-1)">
     <p style="font-size:1rem;font-weight:600;margin-bottom:12px"><?php echo toa_t('form_b2b', 'b2c_text'); ?></p>
-    <a href="<?php echo home_url('/b-t-l/'); ?>" class="btn-hero btn-hero-secondary" style="padding:12px 30px;font-size:0.85rem"><?php echo toa_t('form_b2b', 'b2c_btn'); ?></a>
+    <a href="<?php echo home_url('/collabora/'); ?>" class="btn-hero btn-hero-secondary" style="padding:12px 30px;font-size:0.85rem"><?php echo toa_t('form_b2b', 'b2c_btn'); ?></a>
   </div>
 </section>
 

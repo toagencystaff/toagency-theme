@@ -159,7 +159,7 @@ $images = array(
         <h2 class="section-heading" style="text-align:center;margin:0 auto 16px"><?php echo $_t($t['cta_heading']); ?></h2>
         <div class="cta-buttons-row">
             <a href="<?php echo home_url('/hostess-live-form/'); ?>" class="btn-hero btn-hero-primary"><span><?php echo $_t($t['cta_prev']); ?></span></a>
-            <a href="<?php echo home_url('/b-t-l/'); ?>" class="btn-hero btn-hero-secondary"><span><?php echo $_t($t['cta_lavora']); ?></span></a>
+            <a href="<?php echo home_url('/collabora/'); ?>" class="btn-hero btn-hero-secondary"><span><?php echo $_t($t['cta_lavora']); ?></span></a>
         </div>
     </div>
 </section>
