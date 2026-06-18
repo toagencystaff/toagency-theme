@@ -95,10 +95,11 @@ toa_component('header');
             </div>
         </div>
     </div>
-    <?php // FIX 2026-06-18 marco ?>
-    <div class="container" style="text-align:center;margin-top:8px">
-        <p class="feature-text" style="margin:0 0 10px"><?php echo $_t($t['edit_q']); ?></p>
-        <a href="https://toagency.it/crm_toagency/recupera-link.php?lang=<?php echo $lang; ?>" class="btn-hero btn-hero-secondary" style="padding:12px 20px;font-size:0.75rem"><?php echo $_t($t['edit_btn']); ?></a>
+    <div class="container" style="margin-top:30px"><!-- FIX 2026-06-18 marco -->
+        <div class="alert-box" style="text-align:center;background:#f0f0ff;border-left:4px solid #6c63ff">
+            <p style="font-size:1.1rem;font-weight:700;margin:0 0 14px;color:#1a1a1a"><?php echo $_t($t['edit_q']); ?></p>
+            <a href="https://toagency.it/crm_toagency/recupera-link.php?lang=<?php echo $lang; ?>" class="btn-hero btn-hero-primary" style="padding:16px 32px;font-size:0.95rem"><?php echo $_t($t['edit_btn']); ?></a>
+        </div>
     </div>
 </section>
 
