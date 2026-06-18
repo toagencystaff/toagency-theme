@@ -57,6 +57,9 @@ $t = array(
         'fr' => '/fr/inscription-crew/',
         'es' => '/es/registrate-como-crew/',
     ),
+
+    'edit_q' => array('it'=>'Hai già una scheda con noi?','en'=>'Already have a profile with us?','fr'=>'Tu as déjà une fiche chez nous ?','es'=>'¿Ya tienes una ficha con nosotros?'),
+    'edit_btn' => array('it'=>'Modifica la tua scheda','en'=>'Edit your profile','fr'=>'Modifie ta fiche','es'=>'Edita tu ficha'),
 );
 
 toa_component('header');
@@ -91,6 +94,11 @@ toa_component('header');
                 <a href="<?php echo $_t($t['cta_crew_url']); ?>" class="btn-hero btn-hero-primary" style="padding:12px 20px;font-size:0.75rem"><?php echo $_t($t['registrati']); ?></a>
             </div>
         </div>
+    </div>
+    <?php // FIX 2026-06-18 marco ?>
+    <div class="container" style="text-align:center;margin-top:8px">
+        <p class="feature-text" style="margin:0 0 10px"><?php echo $_t($t['edit_q']); ?></p>
+        <a href="https://toagency.it/crm_toagency/recupera-link.php?lang=<?php echo $lang; ?>" class="btn-hero btn-hero-secondary" style="padding:12px 20px;font-size:0.75rem"><?php echo $_t($t['edit_btn']); ?></a>
     </div>
 </section>
 
