@@ -57,6 +57,17 @@
         </ul>
       </div>
 
+      <!-- BEGIN FIX 2026-06-19 marco — colonna hostess-città -->
+      <div class="toa-fll-col">
+        <h4><?php echo _ht(['it'=>'Hostess per città','en'=>'Hostess by city','fr'=>'Hôtesses par ville','es'=>'Azafatas por ciudad']); ?></h4>
+        <ul>
+          <li><a href="<?php echo home_url('/agenzia-hostess-torino/'); ?>"><?php echo _ht(['it'=>'Hostess Torino','en'=>'Hostess in Turin','fr'=>'Hôtesses Turin','es'=>'Azafatas Turín']); ?></a></li>
+          <li><a href="<?php echo home_url('/agenzia-hostess-milano/'); ?>"><?php echo _ht(['it'=>'Hostess Milano','en'=>'Hostess in Milan','fr'=>'Hôtesses Milan','es'=>'Azafatas Milán']); ?></a></li>
+          <li><a href="<?php echo home_url('/agenzia-hostess-roma/'); ?>"><?php echo _ht(['it'=>'Hostess Roma','en'=>'Hostess in Rome','fr'=>'Hôtesses Rome','es'=>'Azafatas Roma']); ?></a></li>
+        </ul>
+      </div>
+      <!-- END FIX 2026-06-19 marco — colonna hostess-città -->
+
     </div>
   </div>
   <!-- END FIX 2026-05-31 marco — landing-links footer -->
