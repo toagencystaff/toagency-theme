@@ -5,16 +5,16 @@
  *
  * Landing dedicata alle campagne Google Ads. NOINDEX, niente header/menu, niente footer SEO.
  * Documento HTML autosufficiente: chiama wp_head()/wp_footer() (= tracking Ads/GTM/pixel + CSS tema)
- * ma NON include toa_component('header')/('footer') → zero nav, zero distrazioni.
+ * ma NON include toa_component('header')/('footer') → zero nav, zero distrazioni (= più conversioni + Quality Score).
  *
+ * Stile: NERO on-brand (come il sito), testi bianchi, accento lime, logo bianco. Form = card bianca (form-b2b-inline).
  * Quale landing: page meta `_toa_ads_key` (casting-torino | hostess-torino | casting-italia).
- * Lingua: ?lang=it|en|fr|es  →  fallback toa_current_lang()  →  'it'.
- * Form preventivo: riusa il componente form-b2b-inline (POST CRM → redirect /tnx/ = conversione Ads).
+ * Lingua: ?lang=it|en|fr|es  →  toa_current_lang()  →  'it'.
+ * Form preventivo: riusa form-b2b-inline (POST CRM → redirect /tnx/ = conversione Ads).
  *
- * FIX 2026-06-20 marco — nuova landing Ads (file nuovo, nessun file esistente toccato)
+ * FIX 2026-06-20 marco — landing Ads (v2: restyle nero + logo + CTA Chiama/WhatsApp/Email tracciate)
  */
 
-// _ht() fallback solo se il tema non l'avesse già (il tema la definisce in functions.php e legge global $__l)
 if (!function_exists('_ht')) {
     function _ht($strings) {
         global $__l;
@@ -29,8 +29,7 @@ if (!in_array($lang, ['it','en','fr','es'], true)) {
     $lang = function_exists('toa_current_lang') ? toa_current_lang() : 'it';
 }
 if (!in_array($lang, ['it','en','fr','es'], true)) $lang = 'it';
-// $__l pilota _ht() del tema (usata da form-b2b-inline) → form nella stessa lingua dell'hero
-$__l = $lang;
+$__l = $lang; // pilota _ht() del tema (usata da form-b2b-inline) → form nella stessa lingua dell'hero
 
 // --- Quale landing ---
 $post_id = get_queried_object_id();
@@ -42,6 +41,13 @@ $default_service = [
     'hostess-torino' => 'fiera-salone',
     'casting-italia' => 'pubblicita',
 ][$key] ?? 'pubblicita';
+
+// --- Contatti (da /contatti/) ---
+$TEL_RAW  = '+393517899225';
+$TEL_DISP = '+39 351 789 9225';
+$WA       = 'https://wa.me/393517899225';
+$EMAIL    = 'business@toagency.it';
+$LOGO     = 'https://toagency.it/wp-content/uploads/2025/09/LogoToanew.png'; // logo bianco header
 
 // =================== COPY (3 landing x 4 lingue) ===================
 $COPY = [
@@ -77,11 +83,15 @@ $COPY = [
   ],
 ];
 
+$eyebrow_l = ['it'=>'AGENZIA CASTING B2B · DAL 2009','en'=>'B2B CASTING AGENCY · SINCE 2009','fr'=>'AGENCE DE CASTING B2B · DEPUIS 2009','es'=>'AGENCIA DE CASTING B2B · DESDE 2009'];
+$call_l    = ['it'=>'Chiama','en'=>'Call','fr'=>'Appeler','es'=>'Llamar'];
+$email_l   = ['it'=>'Email','en'=>'Email','fr'=>'Email','es'=>'Email'];
+
 $c   = $COPY[$key] ?? $COPY['casting-italia'];
 $h1  = $c['h1'][$lang]  ?? $c['h1']['it'];
 $sub = $c['sub'][$lang] ?? $c['sub']['it'];
 $bullets = $c['bul'][$lang] ?? $c['bul']['it'];
-$cta_label = ['it'=>'Richiedi un preventivo gratuito','en'=>'Request a free quote','fr'=>'Demander un devis gratuit','es'=>'Solicitar presupuesto gratis'][$lang] ?? 'Richiedi un preventivo gratuito';
+$eyebrow = $eyebrow_l[$lang] ?? $eyebrow_l['it'];
 ?><!DOCTYPE html>
 <html lang="<?php echo esc_attr($lang); ?>">
 <head>
@@ -90,36 +100,40 @@ $cta_label = ['it'=>'Richiedi un preventivo gratuito','en'=>'Request a free quot
 <meta name="robots" content="noindex,nofollow,noarchive">
 <?php wp_head(); ?>
 <style>
-/* Landing Ads — layout no-chrome, scoped */
-body.toa-ads-lp{margin:0;background:#fff;color:#16181d;-webkit-font-smoothing:antialiased}
-.toa-ads-wrap{max-width:1080px;margin:0 auto;padding:28px 20px 48px}
-.toa-ads-brand{font-weight:800;letter-spacing:.5px;font-size:20px;margin:0 0 22px}
-.toa-ads-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:start}
-.toa-ads-h1{font-size:34px;line-height:1.15;font-weight:800;margin:0 0 14px}
-.toa-ads-sub{font-size:18px;line-height:1.5;color:#3a3f47;margin:0 0 22px}
-.toa-ads-bullets{list-style:none;margin:0;padding:0}
-.toa-ads-bullets li{position:relative;padding:9px 0 9px 30px;font-size:15.5px;border-bottom:1px solid #eee}
-.toa-ads-bullets li:before{content:"";position:absolute;left:2px;top:13px;width:16px;height:9px;border-left:3px solid #16a34a;border-bottom:3px solid #16a34a;transform:rotate(-45deg)}
-.toa-ads-cta-mobile{display:none}
-/* il form (form-b2b-inline) è già stilato dal CSS del tema; lo incolliamo nella colonna destra */
+/* Landing Ads — tema NERO on-brand, scoped */
+body.toa-ads-lp{margin:0;background:#0a0a0a;color:#fff;-webkit-font-smoothing:antialiased}
+.toa-ads-wrap{max-width:1160px;margin:0 auto;padding:26px 22px 56px}
+.toa-ads-logo{display:block;height:40px;width:auto;margin:0 0 30px}
+.toa-ads-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;min-height:62vh}
+.toa-ads-eyebrow{color:#c2f24e;font-size:12.5px;font-weight:700;letter-spacing:1.6px;margin:0 0 14px}
+.toa-ads-h1{font-size:38px;line-height:1.12;font-weight:800;margin:0 0 16px;color:#fff}
+.toa-ads-sub{font-size:18px;line-height:1.55;color:#cfcfcf;margin:0 0 24px}
+.toa-ads-bullets{list-style:none;margin:0 0 26px;padding:0}
+.toa-ads-bullets li{position:relative;padding:8px 0 8px 30px;font-size:15.5px;color:#f2f2f2;border-bottom:1px solid #1f1f1f}
+.toa-ads-bullets li:before{content:"";position:absolute;left:2px;top:12px;width:15px;height:8px;border-left:3px solid #c2f24e;border-bottom:3px solid #c2f24e;transform:rotate(-45deg)}
+.toa-ads-contact{display:flex;flex-wrap:wrap;gap:10px}
+.toa-ads-btn{display:inline-flex;align-items:center;gap:7px;padding:11px 18px;border-radius:9px;text-decoration:none;font-weight:700;font-size:14.5px;border:1.5px solid #3a3a3a;color:#fff}
+.toa-ads-btn--call{background:#c2f24e;color:#0a0a0a;border-color:#c2f24e}
+.toa-ads-btn:hover{border-color:#c2f24e}
+/* il form (form-b2b-inline) è già una card bianca stilata dal tema */
 .toa-ads-formcol .cta-section{padding:0!important;margin:0!important;background:transparent!important}
 .toa-ads-formcol .container{padding:0!important;max-width:none!important}
-@media(max-width:860px){
-  .toa-ads-grid{grid-template-columns:1fr;gap:26px}
-  .toa-ads-h1{font-size:27px}
-  .toa-ads-sub{font-size:16px;margin-bottom:16px}
-  .toa-ads-cta-mobile{display:inline-block;margin-top:6px;padding:13px 22px;background:#16181d;color:#fff;border-radius:8px;text-decoration:none;font-weight:700}
+@media(max-width:880px){
+  .toa-ads-grid{grid-template-columns:1fr;gap:28px;min-height:0}
+  .toa-ads-h1{font-size:28px}
+  .toa-ads-sub{font-size:16px;margin-bottom:18px}
 }
 </style>
 </head>
 <body class="toa-ads-lp">
 <div class="toa-ads-wrap">
 
-  <div class="toa-ads-brand">TOAgency</div>
+  <img class="toa-ads-logo" src="<?php echo esc_url($LOGO); ?>" alt="TOAgency" loading="eager">
 
   <div class="toa-ads-grid">
-    <!-- COLONNA SINISTRA: messaggio -->
+    <!-- COLONNA SINISTRA: messaggio + contatti -->
     <div class="toa-ads-msgcol">
+      <p class="toa-ads-eyebrow"><?php echo esc_html($eyebrow); ?></p>
       <h1 class="toa-ads-h1"><?php echo esc_html($h1); ?></h1>
       <p class="toa-ads-sub"><?php echo esc_html($sub); ?></p>
       <ul class="toa-ads-bullets">
@@ -127,10 +141,14 @@ body.toa-ads-lp{margin:0;background:#fff;color:#16181d;-webkit-font-smoothing:an
           <li><?php echo esc_html($b); ?></li>
         <?php endforeach; ?>
       </ul>
-      <a href="#preventivo" class="toa-ads-cta-mobile"><?php echo esc_html($cta_label); ?></a>
+      <div class="toa-ads-contact">
+        <a class="toa-ads-btn toa-ads-btn--call" href="tel:<?php echo esc_attr($TEL_RAW); ?>" onclick="toaLpTrack('call')">📞 <?php echo _ht($call_l); ?> <?php echo esc_html($TEL_DISP); ?></a>
+        <a class="toa-ads-btn" href="<?php echo esc_url($WA); ?>" target="_blank" rel="noopener" onclick="toaLpTrack('whatsapp')">WhatsApp</a>
+        <a class="toa-ads-btn" href="mailto:<?php echo esc_attr($EMAIL); ?>" onclick="toaLpTrack('email')"><?php echo _ht($email_l); ?></a>
+      </div>
     </div>
 
-    <!-- COLONNA DESTRA: form preventivo (above the fold) -->
+    <!-- COLONNA DESTRA: form preventivo -->
     <div class="toa-ads-formcol">
       <?php toa_component('form-b2b-inline'); ?>
     </div>
@@ -139,13 +157,15 @@ body.toa-ads-lp{margin:0;background:#fff;color:#16181d;-webkit-font-smoothing:an
 </div>
 
 <script>
+/* tracciamento click contatti (GTM/Ads possono creare conversioni da questi eventi) */
+window.dataLayer = window.dataLayer || [];
+function toaLpTrack(ch){
+  try { window.dataLayer.push({event:'lp_contact_click', lp_channel:ch, lp_key:<?php echo json_encode($key); ?>}); } catch(e){}
+}
 /* pre-seleziona il servizio in base alla landing */
 (function(){
   var sel = document.getElementById('hq_event_type');
-  if (sel) {
-    var v = <?php echo json_encode($default_service); ?>;
-    if (v) { try { sel.value = v; } catch(e){} }
-  }
+  if (sel) { var v = <?php echo json_encode($default_service); ?>; if (v) { try { sel.value = v; } catch(e){} } }
 })();
 </script>
 
