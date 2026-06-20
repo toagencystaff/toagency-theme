@@ -209,7 +209,14 @@ $hub_sections = array(
                 var payload = JSON.parse(opts.body);
                 var sel = document.getElementById('tdbFilterRuolo');
                 if (sel && sel.value) {
-                    payload.ruolo = sel.value;
+                    /* FIX 2026-06-20 marco — "Bambini / ragazzi" (value="kids") = filtro per ETA
+                       (solo minorenni, eta <= 17 da data di nascita), NON per ruolo. */
+                    if (sel.value === 'kids') {
+                        payload.eta_max = 17;
+                        delete payload.ruolo;
+                    } else {
+                        payload.ruolo = sel.value;
+                    }
                     opts = Object.assign({}, opts, { body: JSON.stringify(payload) });
                 }
             } catch (e) {}
@@ -310,7 +317,7 @@ $hub_sections = array(
                     <!-- Sottomenu 1 — Talent Immagine (default aperto) -->
                     <div class="toa-tdb-cat-chips toa-tdb-submenu" id="tdbCatChips" role="tabpanel" aria-labelledby="tdbMacro1" hidden>
                         <button type="button" class="toa-tdb-cat-chip is-active" data-ruolo=""><?php echo esc_html($lbl_tal); ?></button>
-                        <button type="button" class="toa-tdb-cat-chip" data-ruolo="comparsa"><?php echo esc_html($_t(array('it'=>'Bambini','en'=>'Kids','fr'=>'Enfants','es'=>'Niños'))); ?></button>
+                        <button type="button" class="toa-tdb-cat-chip" data-ruolo="kids"><?php echo esc_html($_t(array('it'=>'Bambini','en'=>'Kids','fr'=>'Enfants','es'=>'Niños'))); ?></button>
                         <?php foreach ($g1_locked as $label) : ?>
                         <button type="button" class="toa-tdb-cat-chip toa-tdb-cat-chip--locked" data-locked="1" data-cat="<?php echo esc_attr($label); ?>">
                             <span><?php echo esc_html($label); ?></span>
@@ -349,7 +356,7 @@ $hub_sections = array(
                         <option value="actor"><?php echo esc_html($_t(array('it'=>'Attori e comparse','en'=>'Actors & Cinema','fr'=>'Acteurs & Cinéma','es'=>'Actores & Cine'))); ?></option>
                         <option value="model"><?php echo esc_html($_t(array('it'=>'Modelli','en'=>'Models','fr'=>'Modèles','es'=>'Modelos'))); ?></option>
                         <option value="hostess"><?php echo esc_html($_t(array('it'=>'Hostess e steward','en'=>'Hostess & Steward','fr'=>'Hôtesses & Stewards','es'=>'Azafatas & Steward'))); ?></option>
-                        <option value="comparsa"><?php echo esc_html($_t(array('it'=>'Bambini / ragazzi','en'=>'Kids & Young','fr'=>'Enfants & Jeunes','es'=>'Niños & Jóvenes'))); ?></option>
+                        <option value="kids"><?php echo esc_html($_t(array('it'=>'Bambini / ragazzi','en'=>'Kids & Young','fr'=>'Enfants & Jeunes','es'=>'Niños & Jóvenes'))); ?></option>
                         <option value="creator"><?php echo esc_html($_t(array('it'=>'Creator e influencer','en'=>'Creator & Influencer','fr'=>'Créateurs & Influenceurs','es'=>'Creadores & Influencers'))); ?></option>
                     </select>
                 </div>
