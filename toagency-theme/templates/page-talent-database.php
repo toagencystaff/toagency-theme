@@ -231,7 +231,7 @@ $hub_sections = array(
         var sel = document.getElementById('tdbFilterRuolo');
         var ban = document.getElementById('tdbKidsBanner');
         if (!sel || !ban) return;
-        ban.hidden = (sel.value !== 'kids');
+        ban.style.display = (sel.value === 'kids') ? 'flex' : 'none';
     }
     function wire() {
         var sel = document.getElementById('tdbFilterRuolo');
@@ -480,7 +480,7 @@ $hub_sections = array(
 
             <!-- 2026-06-06: toa-tdb-results-header rimosso — count spostato nel menubar (id=tdbResultsCount) -->
             <!-- 2026-06-20 marco — banner tutela minori: visibile solo con filtro "Bambini / ragazzi" (value=kids). Toggle via JS sotto. -->
-            <div id="tdbKidsBanner" hidden style="margin:0 0 16px;padding:14px 16px;border:1px solid #e3c200;background:#fff8d6;border-radius:10px;color:#3a3300;font-size:14px;line-height:1.45;display:flex;flex-wrap:wrap;align-items:center;gap:12px;">
+            <div id="tdbKidsBanner" style="margin:0 0 16px;padding:14px 16px;border:1px solid #e3c200;background:#fff8d6;border-radius:10px;color:#3a3300;font-size:14px;line-height:1.45;display:none;flex-wrap:wrap;align-items:center;gap:12px;">
                 <span style="flex:1 1 280px;"><strong>🔒 <?php echo esc_html($_t(array('it'=>'A tutela dei minori non mostriamo le foto pubblicamente.','en'=>'To protect minors we do not show photos publicly.','fr'=>'Pour protéger les mineurs, nous n’affichons pas les photos publiquement.','es'=>'Para proteger a los menores no mostramos las fotos públicamente.'))); ?></strong> <?php echo esc_html($_t(array('it'=>'Contattaci e ti mostriamo i profili.','en'=>'Contact us and we will share the profiles.','fr'=>'Contactez-nous et nous vous montrerons les profils.','es'=>'Contáctanos y te mostramos los perfiles.'))); ?></span>
                 <a href="<?php echo esc_url(home_url('/form-b2b/')); ?>" style="flex:0 0 auto;background:#171717;color:#fff;text-decoration:none;padding:9px 16px;border-radius:8px;font-weight:700;white-space:nowrap;"><?php echo esc_html($_t(array('it'=>'Contattaci','en'=>'Contact us','fr'=>'Contactez-nous','es'=>'Contáctanos'))); ?></a>
             </div>
