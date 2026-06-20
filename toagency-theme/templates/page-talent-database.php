@@ -333,7 +333,8 @@ $hub_sections = array(
             </button>
             <form id="tdbFilters" class="toa-tdb-filters" autocomplete="off" novalidate>
 
-                <div class="toa-tdb-field">
+                <!-- FIX 2026-06-20 marco — #1: ricerca per nome spostata nel 2° livello (Più filtri) -->
+                <div class="toa-tdb-field flt-adv">
                     <label class="toa-tdb-label"><?php echo esc_html($_t($T['filter_search'])); ?></label>
                     <input type="search" name="q" class="toa-tdb-input" placeholder="—">
                 </div>
