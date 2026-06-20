@@ -443,8 +443,8 @@ $hub_sections = array(
 
                 <button type="button" class="toa-tdb-flt-more" id="tdbMoreFilters" aria-expanded="false"><?php echo esc_html($_t(array('it'=>'Più filtri (etnia, taglia, capelli…)','en'=>'More filters','fr'=>'Plus de filtres','es'=>'Más filtros'))); ?> <span class="toa-tdb-flt-more-ar">▾</span></button>
 
+                <!-- FIX 2026-06-20 marco — #2: rimosso "Applica" (filtri live on change/input). Resta solo Reset. -->
                 <div class="toa-tdb-filters-actions">
-                    <button type="submit" class="toa-tdb-btn toa-tdb-btn-primary"><?php echo esc_html($_t($T['filter_apply'])); ?></button>
                     <button type="button" class="toa-tdb-btn toa-tdb-btn-ghost" id="tdbFiltersReset"><?php echo esc_html($_t($T['filter_reset'])); ?></button>
                 </div>
             </form>
