@@ -126,7 +126,7 @@ $T = array(
 );
 ?>
 <!-- TOA-TALENT-DATABASE-V1 — PATCH 2026-05-22 marco hub sezioni categoria -->
-<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v63.css'); ?>">
+<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v64.css'); ?>">
 <script>
 window.toaThemeUri      = "<?php echo esc_js($theme_uri); ?>";
 window.toaTdbLang       = "<?php echo esc_js($__l); ?>";
@@ -375,34 +375,38 @@ $hub_sections = array(
                 <!-- 2026-06-17 marco — #7 provincia → filtro macro-aree (hub + drill-down), reso da JS -->
                 <div class="toa-tdb-field toa-tdb-geo" id="tdbGeoFilter" data-label="<?php echo esc_attr($_t($T['filter_province'])); ?>" data-anyhub="<?php echo esc_attr($_t(array('it'=>'Seleziona prima un Paese','en'=>'Select a country first','fr'=>'Choisis un pays','es'=>'Elige un país'))); ?>"></div>
 
+                <?php // FIX 2026-06-20 marco — #3: etnia/taglia/capelli/occhi → multi-select a tendina (.toa-tdb-ms). JS popola i menu. ?>
+                <?php $ms_any = esc_attr($_t($T['filter_select_any'])); ?>
                 <div class="toa-tdb-field flt-adv">
                     <label class="toa-tdb-label"><?php echo esc_html($_t($T['filter_ethnicity'])); ?></label>
-                    <select name="etnia" class="toa-tdb-select" id="tdbFilterEthnicity">
-                        <option value=""><?php echo esc_html($_t($T['filter_select_any'])); ?></option>
-                    </select>
+                    <div class="toa-tdb-ms" data-name="etnia" data-any="<?php echo $ms_any; ?>">
+                        <button type="button" class="toa-tdb-ms-toggle" aria-expanded="false"><span class="toa-tdb-ms-text"><?php echo esc_html($_t($T['filter_select_any'])); ?></span><span class="toa-tdb-ms-ar" aria-hidden="true">▾</span></button>
+                        <div class="toa-tdb-ms-menu" hidden></div>
+                    </div>
                 </div>
 
                 <div class="toa-tdb-field flt-adv">
                     <label class="toa-tdb-label"><?php echo esc_html($_t($T['filter_size'])); ?></label>
-                    <div class="toa-tdb-chip-group" data-name="taglia">
-                        <?php foreach (array('XS','S','M','L','XL','XXL') as $size): ?>
-                            <button type="button" class="toa-tdb-chip" data-value="<?php echo esc_attr($size); ?>"><?php echo esc_html($size); ?></button>
-                        <?php endforeach; ?>
+                    <div class="toa-tdb-ms" data-name="taglia" data-any="<?php echo $ms_any; ?>" data-static="XS,S,M,L,XL,XXL">
+                        <button type="button" class="toa-tdb-ms-toggle" aria-expanded="false"><span class="toa-tdb-ms-text"><?php echo esc_html($_t($T['filter_select_any'])); ?></span><span class="toa-tdb-ms-ar" aria-hidden="true">▾</span></button>
+                        <div class="toa-tdb-ms-menu" hidden></div>
                     </div>
                 </div>
 
                 <div class="toa-tdb-field flt-adv">
                     <label class="toa-tdb-label"><?php echo esc_html($_t($T['filter_hair'])); ?></label>
-                    <select name="capelli" class="toa-tdb-select" id="tdbFilterHair">
-                        <option value=""><?php echo esc_html($_t($T['filter_select_any'])); ?></option>
-                    </select>
+                    <div class="toa-tdb-ms" data-name="capelli" data-any="<?php echo $ms_any; ?>">
+                        <button type="button" class="toa-tdb-ms-toggle" aria-expanded="false"><span class="toa-tdb-ms-text"><?php echo esc_html($_t($T['filter_select_any'])); ?></span><span class="toa-tdb-ms-ar" aria-hidden="true">▾</span></button>
+                        <div class="toa-tdb-ms-menu" hidden></div>
+                    </div>
                 </div>
 
                 <div class="toa-tdb-field flt-adv">
                     <label class="toa-tdb-label"><?php echo esc_html($_t($T['filter_eyes'])); ?></label>
-                    <select name="occhi" class="toa-tdb-select" id="tdbFilterEyes">
-                        <option value=""><?php echo esc_html($_t($T['filter_select_any'])); ?></option>
-                    </select>
+                    <div class="toa-tdb-ms" data-name="occhi" data-any="<?php echo $ms_any; ?>">
+                        <button type="button" class="toa-tdb-ms-toggle" aria-expanded="false"><span class="toa-tdb-ms-text"><?php echo esc_html($_t($T['filter_select_any'])); ?></span><span class="toa-tdb-ms-ar" aria-hidden="true">▾</span></button>
+                        <div class="toa-tdb-ms-menu" hidden></div>
+                    </div>
                 </div>
 
                 <div class="toa-tdb-field">
@@ -603,6 +607,6 @@ $hub_sections = array(
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-database-v53.js'); ?>" defer></script>
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-database-v54.js'); ?>" defer></script>
 
 <?php toa_component('footer'); ?>

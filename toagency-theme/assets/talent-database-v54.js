@@ -112,6 +112,7 @@
         wireFiltersForm();
         wireToggleGroups();
         wireChipGroups();
+        wireMultiSelect();   // FIX 2026-06-20 marco — #3 multi-select dropdown
         wireGridDelegated();
         wireGalleryNav();
         wireGallerySwipe();
@@ -250,6 +251,86 @@
         return html;
     }
 
+    // ── FIX 2026-06-20 marco — #3: multi-select a tendina (etnia/taglia/capelli/occhi) ──
+    function msBox(name) { return $('.toa-tdb-ms[data-name="' + name + '"]'); }
+
+    // Popola il menu checkbox di un multi-select dai valori passati.
+    function buildMs(name, values) {
+        var box = msBox(name);
+        if (!box) return;
+        var menu = box.querySelector('.toa-tdb-ms-menu');
+        menu.innerHTML = (values || []).map(function (v) {
+            return '<label class="toa-tdb-ms-opt"><input type="checkbox" value="' + escapeHtml(v) +
+                   '"><span>' + escapeHtml(cap(v)) + '</span></label>';
+        }).join('');
+        msText(box);
+    }
+
+    // Aggiorna il testo del bottone: "Tutte" se nulla, altrimenti i valori scelti.
+    function msText(box) {
+        var checked = $$('.toa-tdb-ms-menu input:checked', box);
+        var txtEl = box.querySelector('.toa-tdb-ms-text');
+        if (!txtEl) return;
+        if (!checked.length) {
+            txtEl.textContent = box.dataset.any || '—';
+            box.classList.remove('has-sel');
+        } else {
+            txtEl.textContent = checked.map(function (c) { return cap(c.value); }).join(', ');
+            box.classList.add('has-sel');
+        }
+    }
+
+    function msOpen(box, open) {
+        var menu = box.querySelector('.toa-tdb-ms-menu');
+        var tog  = box.querySelector('.toa-tdb-ms-toggle');
+        box.classList.toggle('is-open', open);
+        if (menu) menu.hidden = !open;
+        if (tog) tog.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    // Spunta i checkbox di un multi-select dai valori passati (restore da URL).
+    function msSet(name, values) {
+        if (!values || !values.length) return;
+        var box = msBox(name);
+        if (!box) return;
+        var want = values.map(function (v) { return String(v).toLowerCase(); });
+        $$('.toa-tdb-ms-menu input', box).forEach(function (c) {
+            if (want.indexOf(String(c.value).toLowerCase()) !== -1) c.checked = true;
+        });
+        msText(box);
+    }
+
+    // Svuota tutte le selezioni multi-select (usato dal Reset).
+    function msClearAll() {
+        $$('.toa-tdb-ms').forEach(function (box) {
+            $$('.toa-tdb-ms-menu input:checked', box).forEach(function (c) { c.checked = false; });
+            msText(box);
+            msOpen(box, false);
+        });
+    }
+
+    function wireMultiSelect() {
+        $$('.toa-tdb-ms').forEach(function (box) {
+            var tog = box.querySelector('.toa-tdb-ms-toggle');
+            if (tog) tog.addEventListener('click', function (e) {
+                e.preventDefault();
+                var willOpen = !box.classList.contains('is-open');
+                $$('.toa-tdb-ms').forEach(function (b) { if (b !== box) msOpen(b, false); });
+                msOpen(box, willOpen);
+            });
+            box.addEventListener('change', function (e) {
+                if (!e.target.matches || !e.target.matches('input[type="checkbox"]')) return;
+                msText(box);
+                tdSearch(false);
+            });
+        });
+        // click fuori → chiudi tutti i menu aperti
+        document.addEventListener('click', function (e) {
+            if (e.target.closest && e.target.closest('.toa-tdb-ms')) return;
+            $$('.toa-tdb-ms').forEach(function (b) { msOpen(b, false); });
+        });
+    }
+
     // Popola i <select> dei filtri usando TD.filterOptions, poi applica URL state e popola province.
     function populateSelects() {
         var fo = TD.filterOptions || {};
@@ -264,9 +345,11 @@
         }
 
         if (fo.paesi)   $('#tdbFilterCountry').innerHTML   = buildOptions(fo.paesi, 'code', 'label', anyLabel);
-        if (fo.etnia)   $('#tdbFilterEthnicity').innerHTML = buildOptions(fo.etnia, null, null, anyLabel);
-        if (fo.capelli) $('#tdbFilterHair').innerHTML      = buildOptions(fo.capelli, null, null, anyLabel);
-        if (fo.occhi)   $('#tdbFilterEyes').innerHTML      = buildOptions(fo.occhi, null, null, anyLabel);
+        // FIX 2026-06-20 marco — #3: etnia/capelli/occhi/taglia → menu multi-select
+        if (fo.etnia)   buildMs('etnia', fo.etnia);
+        if (fo.capelli) buildMs('capelli', fo.capelli);
+        if (fo.occhi)   buildMs('occhi', fo.occhi);
+        buildMs('taglia', ['XS', 'S', 'M', 'L', 'XL', 'XXL']);
 
         applyUrlStateAfterOptions();
         populateProvinces();
@@ -393,13 +476,12 @@
         if (f.sesso.value)     out.sesso     = f.sesso.value;
         if (f.paese.value)     out.paese     = f.paese.value;
         if (TD.selectedProvinces && TD.selectedProvinces.length) out.province = TD.selectedProvinces.slice();
-        if (f.etnia.value)     out.etnia     = f.etnia.value;
-        if (f.capelli.value)   out.capelli   = f.capelli.value;
-        if (f.occhi.value)     out.occhi     = f.occhi.value;
-
-        var taglie = $$('.toa-tdb-chip-group[data-name="taglia"] .toa-tdb-chip.active')
-            .map(function (c) { return c.dataset.value; });
-        if (taglie.length) out.taglia = taglie;
+        // FIX 2026-06-20 marco — #3: multi-select etnia/taglia/capelli/occhi → array di valori spuntati
+        ['etnia', 'taglia', 'capelli', 'occhi'].forEach(function (name) {
+            var vals = $$('.toa-tdb-ms[data-name="' + name + '"] .toa-tdb-ms-menu input:checked')
+                .map(function (c) { return c.value; });
+            if (vals.length) out[name] = vals;
+        });
 
         ['eta_min', 'eta_max', 'altezza_min', 'altezza_max', 'scarpe_min', 'scarpe_max',
          'valutazione_min', 'valutazione_max'].forEach(function (k) {
@@ -1145,9 +1227,10 @@
         }
         setVal('q', params.get('q'));
         setVal('paese', params.get('paese'));
-        setVal('etnia', params.get('etnia'));
-        setVal('capelli', params.get('capelli'));
-        setVal('occhi', params.get('occhi'));
+        // FIX 2026-06-20 marco — #3: etnia/capelli/occhi multi → spunta i checkbox da URL
+        msSet('etnia',   params.getAll('etnia'));
+        msSet('capelli', params.getAll('capelli'));
+        msSet('occhi',   params.getAll('occhi'));
         ['eta_min', 'eta_max', 'altezza_min', 'altezza_max', 'scarpe_min', 'scarpe_max',
          'valutazione_min', 'valutazione_max'].forEach(function (n) {
             setVal(n, params.get(n));
@@ -1162,12 +1245,7 @@
                 grp.querySelector('input[type="hidden"]').value = sesso;
             }
         }
-        var taglie = params.getAll('taglia');
-        if (taglie.length) {
-            $$('.toa-tdb-chip-group[data-name="taglia"] .toa-tdb-chip').forEach(function (c) {
-                c.classList.toggle('active', taglie.indexOf(c.dataset.value) !== -1);
-            });
-        }
+        msSet('taglia', params.getAll('taglia'));   // FIX 2026-06-20 marco — #3
         var provincia = params.get('provincia');
         if (provincia) {
             // Le province sono popolate dopo populateProvinces(); deferiamo al microtask.
@@ -1218,6 +1296,7 @@
                 if (hidden) hidden.value = '';
             });
             $$('.toa-tdb-chip-group .toa-tdb-chip').forEach(function (c) { c.classList.remove('active'); });
+            msClearAll();   // FIX 2026-06-20 marco — #3 svuota i multi-select
             TD.selectedProvinces = []; TD.geoHub = null;
             populateProvinces();
             tdSearch(false);
