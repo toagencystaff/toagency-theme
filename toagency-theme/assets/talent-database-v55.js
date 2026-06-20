@@ -259,7 +259,10 @@
         var box = msBox(name);
         if (!box) return;
         var menu = box.querySelector('.toa-tdb-ms-menu');
-        menu.innerHTML = (values || []).map(function (v) {
+        menu.innerHTML = (values || []).filter(function (v) {
+            // FIX 2026-06-20 marco — "altro" NON è un'opzione filtro (resta solo nel Genere)
+            return String(v).trim().toLowerCase() !== 'altro';
+        }).map(function (v) {
             return '<label class="toa-tdb-ms-opt"><input type="checkbox" value="' + escapeHtml(v) +
                    '"><span>' + escapeHtml(cap(v)) + '</span></label>';
         }).join('');
@@ -310,6 +313,8 @@
     }
 
     function wireMultiSelect() {
+        // FIX 2026-06-20 marco — debounce: click rapidi su più caselle = 1 sola ricerca con lo stato finale
+        var msSearch = debounce(function () { tdSearch(false); }, 350);
         $$('.toa-tdb-ms').forEach(function (box) {
             var tog = box.querySelector('.toa-tdb-ms-toggle');
             if (tog) tog.addEventListener('click', function (e) {
@@ -320,8 +325,8 @@
             });
             box.addEventListener('change', function (e) {
                 if (!e.target.matches || !e.target.matches('input[type="checkbox"]')) return;
-                msText(box);
-                tdSearch(false);
+                msText(box);        // testo aggiornato subito
+                msSearch();         // ricerca debounced
             });
         });
         // click fuori → chiudi tutti i menu aperti
