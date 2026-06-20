@@ -209,7 +209,14 @@ $hub_sections = array(
                 var payload = JSON.parse(opts.body);
                 var sel = document.getElementById('tdbFilterRuolo');
                 if (sel && sel.value) {
-                    payload.ruolo = sel.value;
+                    /* 2026-06-20 marco — "Bambini / ragazzi" (value="kids") = filtro per ETA
+                       (solo minorenni, eta <= 17), NON per ruolo. Vedi <option> in #tdbFilterRuolo. */
+                    if (sel.value === 'kids') {
+                        payload.eta_max = 17;
+                        delete payload.ruolo;
+                    } else {
+                        payload.ruolo = sel.value;
+                    }
                     opts = Object.assign({}, opts, { body: JSON.stringify(payload) });
                 }
             } catch (e) {}
@@ -300,7 +307,7 @@ $hub_sections = array(
                         <option value="actor"><?php echo esc_html($_t(array('it'=>'Attori e comparse','en'=>'Actors & Cinema','fr'=>'Acteurs & Cinéma','es'=>'Actores & Cine'))); ?></option>
                         <option value="model"><?php echo esc_html($_t(array('it'=>'Modelli','en'=>'Models','fr'=>'Modèles','es'=>'Modelos'))); ?></option>
                         <option value="hostess"><?php echo esc_html($_t(array('it'=>'Hostess e steward','en'=>'Hostess & Steward','fr'=>'Hôtesses & Stewards','es'=>'Azafatas & Steward'))); ?></option>
-                        <option value="comparsa"><?php echo esc_html($_t(array('it'=>'Bambini / ragazzi','en'=>'Kids & Young','fr'=>'Enfants & Jeunes','es'=>'Niños & Jóvenes'))); ?></option>
+                        <option value="kids"><?php echo esc_html($_t(array('it'=>'Bambini / ragazzi','en'=>'Kids & Young','fr'=>'Enfants & Jeunes','es'=>'Niños & Jóvenes'))); ?></option>
                         <option value="creator"><?php echo esc_html($_t(array('it'=>'Creator e influencer','en'=>'Creator & Influencer','fr'=>'Créateurs & Influenceurs','es'=>'Creadores & Influencers'))); ?></option>
                     </select>
                 </div>
