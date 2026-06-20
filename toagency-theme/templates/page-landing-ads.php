@@ -100,28 +100,28 @@ $eyebrow = $eyebrow_l[$lang] ?? $eyebrow_l['it'];
 <meta name="robots" content="noindex,nofollow,noarchive">
 <?php wp_head(); ?>
 <style>
-/* Landing Ads — tema NERO on-brand, scoped */
-body.toa-ads-lp{margin:0;background:#0a0a0a;color:#fff;-webkit-font-smoothing:antialiased}
-.toa-ads-wrap{max-width:1160px;margin:0 auto;padding:26px 22px 56px}
-.toa-ads-logo{display:block;height:40px;width:auto;margin:0 0 30px}
-.toa-ads-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;min-height:62vh}
-.toa-ads-eyebrow{color:#c2f24e;font-size:12.5px;font-weight:700;letter-spacing:1.6px;margin:0 0 14px}
-.toa-ads-h1{font-size:38px;line-height:1.12;font-weight:800;margin:0 0 16px;color:#fff}
-.toa-ads-sub{font-size:18px;line-height:1.55;color:#cfcfcf;margin:0 0 24px}
-.toa-ads-bullets{list-style:none;margin:0 0 26px;padding:0}
-.toa-ads-bullets li{position:relative;padding:8px 0 8px 30px;font-size:15.5px;color:#f2f2f2;border-bottom:1px solid #1f1f1f}
-.toa-ads-bullets li:before{content:"";position:absolute;left:2px;top:12px;width:15px;height:8px;border-left:3px solid #c2f24e;border-bottom:3px solid #c2f24e;transform:rotate(-45deg)}
-.toa-ads-contact{display:flex;flex-wrap:wrap;gap:10px}
-.toa-ads-btn{display:inline-flex;align-items:center;gap:7px;padding:11px 18px;border-radius:9px;text-decoration:none;font-weight:700;font-size:14.5px;border:1.5px solid #3a3a3a;color:#fff}
-.toa-ads-btn--call{background:#c2f24e;color:#0a0a0a;border-color:#c2f24e}
-.toa-ads-btn:hover{border-color:#c2f24e}
-/* il form (form-b2b-inline) è già una card bianca stilata dal tema */
-.toa-ads-formcol .cta-section{padding:0!important;margin:0!important;background:transparent!important}
-.toa-ads-formcol .container{padding:0!important;max-width:none!important}
+/* Landing Ads — tema NERO on-brand, scoped. body.toa-ads-lp + !important per battere il CSS del tema. */
+body.toa-ads-lp{margin:0!important;background:#0a0a0a!important;color:#fff!important;-webkit-font-smoothing:antialiased}
+body.toa-ads-lp .toa-ads-wrap{max-width:1160px;margin:0 auto;padding:26px 22px 56px}
+body.toa-ads-lp .toa-ads-logo{display:block;height:38px;width:auto;margin:0 0 22px}
+body.toa-ads-lp .toa-ads-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:start;min-height:auto}
+body.toa-ads-lp .toa-ads-eyebrow{color:#c2f24e!important;font-size:12.5px;font-weight:700;letter-spacing:1.6px;margin:0 0 14px}
+body.toa-ads-lp .toa-ads-h1{font-size:38px;line-height:1.14;font-weight:800;margin:0 0 16px;color:#fff!important;-webkit-text-fill-color:#fff!important;background:none!important}
+body.toa-ads-lp .toa-ads-sub{font-size:18px;line-height:1.55;color:#d2d2d2!important;margin:0 0 24px}
+body.toa-ads-lp .toa-ads-bullets{list-style:none!important;margin:0 0 26px;padding:0}
+body.toa-ads-lp .toa-ads-bullets li{position:relative;padding:8px 0 8px 30px;font-size:15.5px;color:#ededed!important;border-bottom:1px solid #232323;list-style:none!important}
+body.toa-ads-lp .toa-ads-bullets li:before{content:"";position:absolute;left:2px;top:12px;width:15px;height:8px;border-left:3px solid #c2f24e;border-bottom:3px solid #c2f24e;transform:rotate(-45deg)}
+body.toa-ads-lp .toa-ads-contact{display:flex;flex-wrap:wrap;gap:10px}
+body.toa-ads-lp .toa-ads-btn{display:inline-flex;align-items:center;gap:7px;padding:11px 18px;border-radius:9px;text-decoration:none!important;font-weight:700;font-size:14.5px;border:1.5px solid #3a3a3a;color:#fff!important;background:transparent}
+body.toa-ads-lp .toa-ads-btn--call{background:#c2f24e!important;color:#0a0a0a!important;border-color:#c2f24e}
+body.toa-ads-lp .toa-ads-btn:hover{border-color:#c2f24e}
+/* il form (form-b2b-inline) è già una card stilata dal tema */
+body.toa-ads-lp .toa-ads-formcol .cta-section{padding:0!important;margin:0!important;background:transparent!important}
+body.toa-ads-lp .toa-ads-formcol .container{padding:0!important;max-width:none!important}
 @media(max-width:880px){
-  .toa-ads-grid{grid-template-columns:1fr;gap:28px;min-height:0}
-  .toa-ads-h1{font-size:28px}
-  .toa-ads-sub{font-size:16px;margin-bottom:18px}
+  body.toa-ads-lp .toa-ads-grid{grid-template-columns:1fr;gap:28px}
+  body.toa-ads-lp .toa-ads-h1{font-size:28px}
+  body.toa-ads-lp .toa-ads-sub{font-size:16px;margin-bottom:18px}
 }
 </style>
 </head>
