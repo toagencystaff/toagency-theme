@@ -225,6 +225,24 @@ $hub_sections = array(
     };
 })();
 
+/* FIX 2026-06-20 marco — banner tutela minori: mostra #tdbKidsBanner SOLO quando categoria = "kids" (discreto). */
+(function () {
+    function toggleKidsBanner() {
+        var sel = document.getElementById('tdbFilterRuolo');
+        var ban = document.getElementById('tdbKidsBanner');
+        if (!sel || !ban) return;
+        ban.style.display = (sel.value === 'kids') ? 'flex' : 'none';
+    }
+    function wire() {
+        var sel = document.getElementById('tdbFilterRuolo');
+        if (!sel) return;
+        sel.addEventListener('change', toggleKidsBanner);
+        toggleKidsBanner();
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);
+    else wire();
+})();
+
 /* PATCH 2026-05-22 marco — pre-applica filtro ruolo da URL (?ruolo=xxx) */
 (function () {
     var params = new URLSearchParams(window.location.search);
@@ -465,6 +483,11 @@ $hub_sections = array(
         <div class="toa-tdb-content">
 
             <!-- 2026-06-06: toa-tdb-results-header rimosso — count spostato nel menubar (id=tdbResultsCount) -->
+            <!-- FIX 2026-06-20 marco — banner tutela minori (discreto): visibile solo con categoria "Bambini" (value=kids). Toggle JS sopra. -->
+            <div id="tdbKidsBanner" style="display:none;margin:0 0 14px;padding:8px 12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);border-radius:8px;color:#bdbdbd;font-size:12.5px;line-height:1.45;align-items:center;gap:10px;flex-wrap:wrap;">
+                <span style="flex:1 1 240px;">🔒 <strong style="color:#e8e8e6;font-weight:600;"><?php echo esc_html($_t(array('it'=>'A tutela dei minori non mostriamo le foto pubblicamente.','en'=>'To protect minors we do not show photos publicly.','fr'=>'Pour protéger les mineurs, nous n’affichons pas les photos publiquement.','es'=>'Para proteger a los menores no mostramos las fotos públicamente.'))); ?></strong> <?php echo esc_html($_t(array('it'=>'Contattaci e ti mostriamo i profili.','en'=>'Contact us and we will share the profiles.','fr'=>'Contactez-nous et nous vous montrerons les profils.','es'=>'Contáctanos y te mostramos los perfiles.'))); ?></span>
+                <a href="<?php echo esc_url(home_url('/form-b2b/')); ?>" style="flex:0 0 auto;color:#c8ff00;text-decoration:none;font-weight:600;white-space:nowrap;"><?php echo esc_html($_t(array('it'=>'Contattaci','en'=>'Contact us','fr'=>'Contactez-nous','es'=>'Contáctanos'))); ?> →</a>
+            </div>
             <div class="toa-tdb-grid" id="tdbGrid" aria-live="polite"></div>
             <div class="toa-tdb-grid-empty" id="tdbGridEmpty" hidden>
                 <p><?php echo esc_html($_t($T['results_empty'])); ?></p>
