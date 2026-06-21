@@ -157,10 +157,17 @@
     }
 
     // FIX 2026-06-20 marco — unisce residenza/domicilio: "A / B" se diversi, altrimenti uno solo.
+    // Confronto tollerante: ignora accenti, non-lettere e lettere doppie → "Barcelona" == "Barcellona".
     function pairStr(a, b) {
         a = String(a == null ? '' : a).trim();
         b = String(b == null ? '' : b).trim();
-        if (a && b && a.toLowerCase() !== b.toLowerCase()) return a + ' / ' + b;
+        function nrm(s) {
+            return s.toLowerCase()
+                .normalize('NFD').replace(/[̀-ͯ]/g, '')  // via accenti
+                .replace(/[^a-z]/g, '')                            // solo lettere
+                .replace(/(.)\1+/g, '$1');                         // collassa lettere doppie
+        }
+        if (a && b && nrm(a) !== nrm(b)) return a + ' / ' + b;
         return a || b || '';
     }
 
