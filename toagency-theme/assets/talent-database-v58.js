@@ -156,6 +156,14 @@
         return s.charAt(0).toUpperCase() + s.slice(1);
     }
 
+    // FIX 2026-06-20 marco — unisce residenza/domicilio: "A / B" se diversi, altrimenti uno solo.
+    function pairStr(a, b) {
+        a = String(a == null ? '' : a).trim();
+        b = String(b == null ? '' : b).trim();
+        if (a && b && a.toLowerCase() !== b.toLowerCase()) return a + ' / ' + b;
+        return a || b || '';
+    }
+
     // Wrapper fetch -> JSON con errore se HTTP non-2xx.
     function fetchJson(url, opts) {
         return fetch(url, opts || {}).then(function (r) {
@@ -673,15 +681,16 @@
         var line = [];
         line.push('<strong>' + escapeHtml(t.nome || '—') + '</strong>');
         if (tid)       line.push('<span class="toa-tdb-card-code">' + String(tid) + '</span>'); // 2026-06-04 marco — codice in pill monospace
+        var loc = pairStr(t.provincia, t.provincia_dom).toUpperCase();   // FIX 2026-06-20 marco — residenza / domicilio
         if (t.eta)     line.push(escapeHtml(t.eta + ' anni'));
         if (t.altezza) line.push(escapeHtml(t.altezza + ' cm'));
-        if (t.provincia) line.push(escapeHtml(String(t.provincia).toUpperCase()));
+        if (loc) line.push(escapeHtml(loc));
         var lineHtml = line.join(' · ');
         var tdbNameRow = '<strong>' + escapeHtml(t.nome || '—') + '</strong>' + (tid ? '<span class="toa-tdb-card-code">' + String(tid) + '</span>' : '');
         var tdbInfo = [];
         if (t.eta)     tdbInfo.push(escapeHtml(t.eta + ' anni'));
         if (t.altezza) tdbInfo.push(escapeHtml(t.altezza + ' cm'));
-        if (t.provincia) tdbInfo.push(escapeHtml(String(t.provincia).toUpperCase()));
+        if (loc) tdbInfo.push(escapeHtml(loc));
         var tdbInfoHtml = tdbInfo.join(' · ');
 
         return '<article class="toa-tdb-card' + sel + '" data-id="' + id + '">' +
@@ -859,8 +868,8 @@
         addRow(i18n('modal_code'),  t.talent_id ? t.talent_id : null);   // Obj1 codice
         addRow(i18n('modal_gender'),  t.sesso);
         addRow(i18n('modal_country'), t.paese_label || t.paese);
-        addRow(i18n('modal_city'),    t.citta);
-        addRow(i18n('modal_province'), t.provincia);                              // Obj2 provincia
+        addRow(i18n('modal_city'),    pairStr(t.citta, t.citta_dom));            // FIX 2026-06-20 marco — comune res / dom
+        addRow(i18n('modal_province'), pairStr(t.provincia, t.provincia_dom));   // FIX 2026-06-20 marco — provincia res / dom
         addRow(i18n('modal_age'), t.eta != null && t.eta !== '' ? t.eta + ' ' + i18n('years') : null);
         addRow(i18n('modal_height'),  t.altezza ? t.altezza + ' cm' : null);
         addRow(i18n('modal_size'),    t.taglia);
