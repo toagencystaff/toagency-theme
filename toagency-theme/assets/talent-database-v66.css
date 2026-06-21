@@ -2109,26 +2109,43 @@ body.tdb-drawer-open::before{display:none !important;}
 .toa-tdb-wrap.tdb-filters-open .toa-tdb-filters .toa-tdb-ms.has-sel .toa-tdb-ms-toggle,
 .toa-tdb-wrap.tdb-filters-open .toa-tdb-filters .toa-tdb-ms.is-open .toa-tdb-ms-toggle { border-color: #c8ff00; }
 
-/* ═════ FIX 2026-06-20 marco — MOBILE pannello filtri: prima era trasparente + RESET sticky che galleggiava sopra la griglia.
-   Ora: card SOLIDA a una colonna, azioni in-flow (no sticky). ═════ */
+/* ═════ FIX 2026-06-20 marco — MOBILE (solo ≤767px): filtri = OVERLAY A TUTTO SCHERMO.
+   Aperti = vedo SOLO i filtri (scroll proprio); chiusi = vedo SOLO la griglia.
+   Risolve: pannello che si interrompe, non scrollabile, sovrapposto alle foto. ═════ */
 @media (max-width: 767px) {
+  /* l'intera sidebar diventa un pannello fisso a schermo pieno, sopra tutto */
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-sidebar {
+    position: fixed !important;
+    inset: 0 !important;
+    width: auto !important; max-width: none !important; min-width: 0 !important;
+    height: 100dvh !important; max-height: 100dvh !important;
+    margin: 0 !important;
+    background: #0b0b0d !important;        /* solido: copre la griglia */
+    z-index: 9500 !important;              /* sopra header sito + griglia */
+    overflow-y: auto !important;           /* scroll interno: vedo tutti i filtri */
+    -webkit-overflow-scrolling: touch !important;
+    padding: 14px 16px 96px !important;    /* spazio in fondo per scrollare oltre il Reset */
+    transform: none !important;
+  }
+  /* form a una colonna, niente "card dentro card" (lo sfondo è già il pannello) */
   .toa-tdb-wrap.tdb-filters-open .toa-tdb-filters {
     grid-template-columns: 1fr !important;
-    background: #121214 !important;
-    border: 1px solid rgba(255,255,255,.10) !important;
-    border-radius: 12px !important;
-    padding: 16px !important;
-    gap: 12px !important;
+    background: transparent !important; border: 0 !important; padding: 0 !important;
+    gap: 14px !important;
   }
-  /* azioni NON sticky su mobile: il RESET non deve sovrapporsi alle card */
+  /* barra "✕ Nascondi filtri": sticky in alto, sempre raggiungibile per chiudere */
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-sidebar-toggle {
+    display: inline-flex !important;
+    position: sticky !important; top: 0 !important; z-index: 2 !important;
+    margin: 0 0 12px auto !important;
+    background: #0b0b0d !important; padding: 8px 12px !important; border-radius: 9px !important;
+  }
+  /* azioni (Reset) in-flow in fondo, NON sticky/overlay */
   .toa-tdb-wrap.tdb-filters-open .toa-tdb-filters .toa-tdb-filters-actions {
-    position: static !important;
-    bottom: auto !important;
+    position: static !important; bottom: auto !important; z-index: auto !important;
     background: transparent !important;
-    border-top: 1px solid rgba(255,255,255,.09) !important;
-    padding: 14px 0 0 !important;
-    z-index: auto !important;
+    border-top: 1px solid rgba(255,255,255,.09) !important; padding: 16px 0 0 !important;
   }
-  /* tendine multi-select: a tutta larghezza nel pannello a 1 colonna */
+  /* tendine multi-select a tutta larghezza */
   .toa-tdb-wrap.tdb-filters-open .toa-tdb-ms { width: 100% !important; }
 }
