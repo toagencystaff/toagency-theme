@@ -2214,3 +2214,36 @@ body.tdb-drawer-open::before{display:none !important;}
 @media (max-width: 767px) {
   .toa-tdb-macros .toa-tdb-macro.toa-tdb-filters-btn { display: none !important; }
 }
+
+/* ═════ FIX 2026-06-20 marco — MOBILE compattazione finale filtri (design pulito/intuitivo).
+   Campi più compatti, range (Età/Altezza/Scarpe) NON a tutta larghezza, spaziatura coerente.
+   Resta 16px sui campi tap → niente zoom iOS. Solo ≤767px. ═════ */
+@media (max-width: 767px) {
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-filters { gap: 14px !important; }
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-field { margin: 0 !important; }
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-label {
+    font-size: 12px !important; letter-spacing: .03em !important; margin-bottom: 6px !important;
+  }
+  /* controlli base: altezza compatta 42px, 16px (no zoom) */
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-input,
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-select,
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-ms-toggle {
+    height: 42px !important; font-size: 16px !important; padding: 0 12px !important;
+  }
+  /* RANGE: due campi compatti e centrati, non occupano tutta la riga */
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-range {
+    display: flex !important; align-items: center !important;
+    justify-content: flex-start !important; gap: 10px !important;
+  }
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-range .toa-tdb-input,
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-range .toa-tdb-input-sm {
+    flex: 0 0 auto !important; width: 92px !important; max-width: 42% !important;
+    text-align: center !important;
+  }
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-range-sep { margin: 0 2px !important; color: #777 !important; }
+  /* Genere: 4 bottoni in riga compatti */
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-toggle-group { grid-template-columns: repeat(4, 1fr) !important; gap: 6px !important; }
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-toggle { height: 40px !important; font-size: 14px !important; }
+  /* tendine multi-select: stessa altezza compatta */
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-ms-toggle { height: 42px !important; }
+}
