@@ -2149,3 +2149,53 @@ body.tdb-drawer-open::before{display:none !important;}
   /* tendine multi-select a tutta larghezza */
   .toa-tdb-wrap.tdb-filters-open .toa-tdb-ms { width: 100% !important; }
 }
+
+/* ═════ FIX 2026-06-20 marco — MOBILE filtri "semplice e solido":
+   (1) niente zoom iOS (input ≥16px) + stop overflow laterale,
+   (2) FAB "Filtri" sempre visibile mentre scorri,
+   (3) barra "Vedi risultati" in fondo all'overlay. Solo ≤767px. ═════ */
+.toa-tdb-fab-filters { display: none; }
+.toa-tdb-mobile-apply { display: none; }
+
+@media (max-width: 767px) {
+  /* niente overflow orizzontale dentro l'overlay */
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-sidebar { overflow-x: hidden !important; }
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-filters,
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-field { max-width: 100% !important; min-width: 0 !important; }
+
+  /* input/select/tendine a 16px (iOS NON zooma) + box-sizing */
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-filters .toa-tdb-input,
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-filters .toa-tdb-input-sm,
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-filters .toa-tdb-select,
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-ms-toggle {
+    font-size: 16px !important;
+    height: 46px !important;
+    box-sizing: border-box !important;
+  }
+  /* range età/altezza/scarpe: i due campi stanno nella riga senza sforare */
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-filters .toa-tdb-range { gap: 8px !important; }
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-filters .toa-tdb-range .toa-tdb-input,
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-filters .toa-tdb-range .toa-tdb-input-sm {
+    width: 100% !important; min-width: 0 !important;
+  }
+  /* menu tendina: non sfora i lati */
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-ms-menu { left: 0 !important; right: 0 !important; max-width: 100% !important; }
+
+  /* barra "Vedi risultati": sticky in fondo all'overlay, full-width */
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-mobile-apply {
+    display: block;
+    position: sticky; bottom: 0; z-index: 3;
+    margin: 14px -16px -14px; padding: 12px 16px;
+    background: #0b0b0d; border-top: 1px solid rgba(255,255,255,.12);
+  }
+  .toa-tdb-mobile-apply-btn { width: 100% !important; height: 50px !important; font-size: 16px !important; border-radius: 11px !important; }
+
+  /* FAB "Filtri" — sempre visibile mentre scorri la griglia (in basso a sinistra, non tocca WhatsApp) */
+  .toa-tdb-fab-filters {
+    display: inline-flex; align-items: center; gap: 7px;
+    position: fixed; left: 16px; bottom: 18px; z-index: 9000;
+    background: #c8ff00; color: #0a0a0a; border: none; border-radius: 999px;
+    padding: 13px 20px; font-size: 15px; font-weight: 700; cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0,0,0,.45);
+  }
+}

@@ -126,7 +126,7 @@ $T = array(
 );
 ?>
 <!-- TOA-TALENT-DATABASE-V1 — PATCH 2026-05-22 marco hub sezioni categoria -->
-<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v66.css'); ?>">
+<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v67.css'); ?>">
 <script>
 window.toaThemeUri      = "<?php echo esc_js($theme_uri); ?>";
 window.toaTdbLang       = "<?php echo esc_js($__l); ?>";
@@ -477,6 +477,12 @@ $hub_sections = array(
                     <button type="button" class="toa-tdb-btn toa-tdb-btn-ghost" id="tdbFiltersReset"><?php echo esc_html($_t($T['filter_reset'])); ?></button>
                 </div>
             </form>
+            <!-- FIX 2026-06-20 marco — barra "Vedi risultati" (solo mobile, CSS): conferma e torna alla griglia. I filtri sono live. -->
+            <div class="toa-tdb-mobile-apply">
+                <button type="button" class="toa-tdb-btn toa-tdb-btn-primary toa-tdb-mobile-apply-btn" onclick="var b=document.getElementById('tdbFiltersBtn'); if(b){ b.click(); window.scrollTo(0,0); }">
+                    <?php echo esc_html($_t(array('it'=>'Vedi risultati','en'=>'See results','fr'=>'Voir les résultats','es'=>'Ver resultados'))); ?>
+                </button>
+            </div>
         </aside>
 
         <!-- ═════ Content ═════ -->
@@ -500,6 +506,11 @@ $hub_sections = array(
     </div>
 
 </section>
+
+<!-- FIX 2026-06-20 marco — FAB "Filtri" (solo mobile, CSS): sempre raggiungibile mentre scorri la griglia, riapre il pannello filtri. -->
+<button type="button" id="tdbFabFilters" class="toa-tdb-fab-filters" onclick="var b=document.getElementById('tdbFiltersBtn'); if(b) b.click();" aria-label="<?php echo esc_attr($_t($T['filters_open'])); ?>">
+    ⚙ <?php echo esc_html($_t($T['filters_open'])); ?>
+</button>
 
 <!-- ═════ Modal scheda talent ═════ -->
 <div class="toa-tdb-modal" id="tdbTalentModal" role="dialog" aria-modal="true" aria-labelledby="tdbModalName" hidden>
