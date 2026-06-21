@@ -2108,3 +2108,27 @@ body.tdb-drawer-open::before{display:none !important;}
 }
 .toa-tdb-wrap.tdb-filters-open .toa-tdb-filters .toa-tdb-ms.has-sel .toa-tdb-ms-toggle,
 .toa-tdb-wrap.tdb-filters-open .toa-tdb-filters .toa-tdb-ms.is-open .toa-tdb-ms-toggle { border-color: #c8ff00; }
+
+/* ═════ FIX 2026-06-20 marco — MOBILE pannello filtri: prima era trasparente + RESET sticky che galleggiava sopra la griglia.
+   Ora: card SOLIDA a una colonna, azioni in-flow (no sticky). ═════ */
+@media (max-width: 767px) {
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-filters {
+    grid-template-columns: 1fr !important;
+    background: #121214 !important;
+    border: 1px solid rgba(255,255,255,.10) !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    gap: 12px !important;
+  }
+  /* azioni NON sticky su mobile: il RESET non deve sovrapporsi alle card */
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-filters .toa-tdb-filters-actions {
+    position: static !important;
+    bottom: auto !important;
+    background: transparent !important;
+    border-top: 1px solid rgba(255,255,255,.09) !important;
+    padding: 14px 0 0 !important;
+    z-index: auto !important;
+  }
+  /* tendine multi-select: a tutta larghezza nel pannello a 1 colonna */
+  .toa-tdb-wrap.tdb-filters-open .toa-tdb-ms { width: 100% !important; }
+}
