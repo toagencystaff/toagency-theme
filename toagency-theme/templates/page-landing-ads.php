@@ -40,6 +40,8 @@ $default_service = [
     'casting-torino' => 'shooting',
     'hostess-torino' => 'fiera-salone',
     'casting-italia' => 'pubblicita',
+    'models-aziende' => 'shooting',
+    'hostess-eventi' => 'fiera-salone',
 ][$key] ?? 'pubblicita';
 
 // --- Contatti (da /contatti/) ---
@@ -81,17 +83,42 @@ $COPY = [
       'es'=>['Más de 20.000 perfiles en todas las regiones de Italia','Más de 15 años de experiencia con marcas, e-commerce y producciones','Un único contacto para castings en Milán, Roma, Turín y toda Italia','Gestión de proyectos en 4 idiomas'],
     ],
   ],
+  'models-aziende' => [
+    'h1'  => ['it'=>'Agenzia di casting e modelli per aziende e produzioni','en'=>'Casting and model agency for companies and productions','fr'=>'Agence de casting et mannequins pour entreprises et productions','es'=>'Agencia de casting y modelos para empresas y producciones'],
+    'sub' => ['it'=>'Modelli, attori e comparse selezionati per shooting, campagne, spot ed eventi. Preventivo gratuito in 24 ore.','en'=>'Selected models, actors and extras for shoots, campaigns, commercials and events. Free quote within 24 hours.','fr'=>'Mannequins, acteurs et figurants sélectionnés pour shootings, campagnes, spots et événements. Devis gratuit sous 24 heures.','es'=>'Modelos, actores y figurantes seleccionados para sesiones, campañas, spots y eventos. Presupuesto gratuito en 24 horas.'],
+    'bul' => [
+      'it'=>['20.000+ profili verificati nel database','15+ anni di esperienza, dal 2009','Operativi in tutta Italia','Casting gestiti in 4 lingue'],
+      'en'=>['20,000+ verified profiles in our database','15+ years of experience, since 2009','Active throughout Italy','Casting managed in 4 languages'],
+      'fr'=>['Plus de 20 000 profils vérifiés en base','Plus de 15 ans d\'expérience, depuis 2009','Actifs dans toute l\'Italie','Casting géré en 4 langues'],
+      'es'=>['Más de 20.000 perfiles verificados en la base de datos','Más de 15 años de experiencia, desde 2009','Operativos en toda Italia','Casting gestionado en 4 idiomas'],
+    ],
+    'serv' => ['it'=>'Modelli e modelle per campagne, e-commerce e sfilate; attori e comparse per spot, cinema e contenuti video; staff multilingue per produzioni internazionali. Contratti e compensi gestiti da noi.','en'=>'Models for campaigns, e-commerce and runway; actors and extras for commercials, film and video content; multilingual staff for international productions. Contracts and fees handled by us.','fr'=>'Mannequins pour campagnes, e-commerce et défilés ; acteurs et figurants pour spots, cinéma et contenus vidéo ; personnel multilingue pour productions internationales. Contrats et rémunérations gérés par nos soins.','es'=>'Modelos para campañas, e-commerce y desfiles; actores y figurantes para spots, cine y contenidos de vídeo; personal multilingüe para producciones internacionales. Contratos y honorarios gestionados por nosotros.'],
+  ],
+  'hostess-eventi' => [
+    'h1'  => ['it'=>'Agenzia hostess, steward e promoter per fiere ed eventi','en'=>'Hostess, steward and promoter agency for trade fairs and events','fr'=>'Agence d\'hôtesses, stewards et promoteurs pour salons et événements','es'=>'Agencia de azafatas, stewards y promotores para ferias y eventos'],
+    'sub' => ['it'=>'Personale selezionato per fiere, congressi ed eventi aziendali in tutta Italia. Team completi in 24 ore.','en'=>'Selected staff for trade fairs, congresses and corporate events throughout Italy. Full teams within 24 hours.','fr'=>'Personnel sélectionné pour salons, congrès et événements d\'entreprise dans toute l\'Italie. Équipes complètes sous 24 heures.','es'=>'Personal seleccionado para ferias, congresos y eventos corporativos en toda Italia. Equipos completos en 24 horas.'],
+    'bul' => [
+      'it'=>['20.000+ profili verificati nel database','15+ anni di esperienza, dal 2009','Hostess e staff multilingue','Operativi in tutta Italia'],
+      'en'=>['20,000+ verified profiles in our database','15+ years of experience, since 2009','Multilingual hostesses and staff','Active throughout Italy'],
+      'fr'=>['Plus de 20 000 profils vérifiés en base','Plus de 15 ans d\'expérience, depuis 2009','Hôtesses et personnel multilingue','Actifs dans toute l\'Italie'],
+      'es'=>['Más de 20.000 perfiles verificados en la base de datos','Más de 15 años de experiencia, desde 2009','Azafatas y personal multilingüe','Operativos en toda Italia'],
+    ],
+    'serv' => ['it'=>'Hostess e steward per fiere e stand; promoter per attività promozionali e GDO; staff per congressi ed eventi corporate. Gestione completa: contratti, compensi e coordinamento sul posto.','en'=>'Hostesses and stewards for trade fairs and stands; promoters for promotional activities and retail; staff for congresses and corporate events. Full management: contracts, fees and on-site coordination.','fr'=>'Hôtesses et stewards pour salons et stands ; promoteurs pour activités promotionnelles et grande distribution ; personnel pour congrès et événements corporate. Gestion complète : contrats, rémunérations et coordination sur place.','es'=>'Azafatas y stewards para ferias y stands; promotores para actividades promocionales y retail; personal para congresos y eventos corporativos. Gestión completa: contratos, honorarios y coordinación in situ.'],
+  ],
 ];
 
 $eyebrow_l = ['it'=>'AGENZIA CASTING B2B · DAL 2009','en'=>'B2B CASTING AGENCY · SINCE 2009','fr'=>'AGENCE DE CASTING B2B · DEPUIS 2009','es'=>'AGENCIA DE CASTING B2B · DESDE 2009'];
 $call_l    = ['it'=>'Chiama','en'=>'Call','fr'=>'Appeler','es'=>'Llamar'];
 $email_l   = ['it'=>'Email','en'=>'Email','fr'=>'Email','es'=>'Email'];
+$db_l      = ['it'=>'Visita il nostro database','en'=>'Browse our talent database','fr'=>'Voir notre base de talents','es'=>'Explora nuestra base de talentos'];
+$DB_URL    = ['it'=>'https://toadatabase.it/it/talent/','en'=>'https://toadatabase.it/en/talent/','fr'=>'https://toadatabase.it/fr/talent/','es'=>'https://toadatabase.it/es/talent/'][$lang] ?? 'https://toadatabase.it/it/talent/';
 
 $c   = $COPY[$key] ?? $COPY['casting-italia'];
 $h1  = $c['h1'][$lang]  ?? $c['h1']['it'];
 $sub = $c['sub'][$lang] ?? $c['sub']['it'];
 $bullets = $c['bul'][$lang] ?? $c['bul']['it'];
 $eyebrow = $eyebrow_l[$lang] ?? $eyebrow_l['it'];
+$serv = isset($c['serv']) ? ($c['serv'][$lang] ?? $c['serv']['it']) : '';
 ?><!DOCTYPE html>
 <html lang="<?php echo esc_attr($lang); ?>">
 <head>
@@ -111,10 +138,13 @@ body.toa-ads-lp .toa-ads-sub{font-size:18px;line-height:1.55;color:#d2d2d2!impor
 body.toa-ads-lp .toa-ads-bullets{list-style:none!important;margin:0 0 26px;padding:0}
 body.toa-ads-lp .toa-ads-bullets li{position:relative;padding:8px 0 8px 30px;font-size:15.5px;color:#ededed!important;border-bottom:1px solid #232323;list-style:none!important}
 body.toa-ads-lp .toa-ads-bullets li:before{content:"";position:absolute;left:2px;top:12px;width:15px;height:8px;border-left:3px solid #c2f24e;border-bottom:3px solid #c2f24e;transform:rotate(-45deg)}
+body.toa-ads-lp .toa-ads-serv{color:#a9a9a9!important;font-size:14px;line-height:1.55;margin:0 0 22px;max-width:560px}
 body.toa-ads-lp .toa-ads-contact{display:flex;flex-wrap:wrap;gap:10px}
 body.toa-ads-lp .toa-ads-btn{display:inline-flex;align-items:center;gap:7px;padding:11px 18px;border-radius:9px;text-decoration:none!important;font-weight:700;font-size:14.5px;border:1.5px solid #3a3a3a;color:#fff!important;background:transparent}
 body.toa-ads-lp .toa-ads-btn--call{background:#c2f24e!important;color:#0a0a0a!important;border-color:#c2f24e}
 body.toa-ads-lp .toa-ads-btn:hover{border-color:#c2f24e}
+body.toa-ads-lp .toa-ads-dblink{display:inline-block;margin-top:18px;color:#c2f24e!important;text-decoration:none!important;font-weight:600;font-size:14.5px;border-bottom:1px solid transparent}
+body.toa-ads-lp .toa-ads-dblink:hover{border-bottom-color:#c2f24e}
 /* il form (form-b2b-inline) è già una card stilata dal tema */
 body.toa-ads-lp .toa-ads-formcol .cta-section{padding:0!important;margin:0!important;background:transparent!important}
 body.toa-ads-lp .toa-ads-formcol .container{padding:0!important;max-width:none!important}
@@ -141,11 +171,13 @@ body.toa-ads-lp .toa-ads-formcol .container{padding:0!important;max-width:none!i
           <li><?php echo esc_html($b); ?></li>
         <?php endforeach; ?>
       </ul>
+      <?php if ($serv): ?><p class="toa-ads-serv"><?php echo esc_html($serv); ?></p><?php endif; ?>
       <div class="toa-ads-contact">
         <a class="toa-ads-btn toa-ads-btn--call" href="tel:<?php echo esc_attr($TEL_RAW); ?>" onclick="toaLpTrack('call')">📞 <?php echo _ht($call_l); ?> <?php echo esc_html($TEL_DISP); ?></a>
         <a class="toa-ads-btn" href="<?php echo esc_url($WA); ?>" target="_blank" rel="noopener" onclick="toaLpTrack('whatsapp')">WhatsApp</a>
         <a class="toa-ads-btn" href="mailto:<?php echo esc_attr($EMAIL); ?>" onclick="toaLpTrack('email')"><?php echo _ht($email_l); ?></a>
       </div>
+      <a class="toa-ads-dblink" href="<?php echo esc_url($DB_URL); ?>" target="_blank" rel="noopener" onclick="toaLpTrack('database')"><?php echo _ht($db_l); ?> &rarr;</a>
     </div>
 
     <!-- COLONNA DESTRA: form preventivo -->
