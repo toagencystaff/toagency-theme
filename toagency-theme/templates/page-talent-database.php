@@ -126,7 +126,7 @@ $T = array(
 );
 ?>
 <!-- TOA-TALENT-DATABASE-V1 — PATCH 2026-05-22 marco hub sezioni categoria -->
-<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v70.css'); ?>">
+<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v71.css'); ?>">
 <script>
 window.toaThemeUri      = "<?php echo esc_js($theme_uri); ?>";
 window.toaTdbLang       = "<?php echo esc_js($__l); ?>";
@@ -494,6 +494,8 @@ $hub_sections = array(
                 <span style="flex:1 1 240px;">🔒 <strong style="color:#e8e8e6;font-weight:600;"><?php echo esc_html($_t(array('it'=>'A tutela dei minori non mostriamo le foto pubblicamente.','en'=>'To protect minors we do not show photos publicly.','fr'=>'Pour protéger les mineurs, nous n’affichons pas les photos publiquement.','es'=>'Para proteger a los menores no mostramos las fotos públicamente.'))); ?></strong> <?php echo esc_html($_t(array('it'=>'Contattaci e ti mostriamo i profili.','en'=>'Contact us and we will share the profiles.','fr'=>'Contactez-nous et nous vous montrerons les profils.','es'=>'Contáctanos y te mostramos los perfiles.'))); ?></span>
                 <a href="<?php echo esc_url(home_url('/form-b2b/')); ?>" style="flex:0 0 auto;color:#c8ff00;text-decoration:none;font-weight:600;white-space:nowrap;"><?php echo esc_html($_t(array('it'=>'Contattaci','en'=>'Contact us','fr'=>'Contactez-nous','es'=>'Contáctanos'))); ?> →</a>
             </div>
+            <!-- FIX 2026-06-20 marco — barra "filtri attivi": chip removibili, sempre visibile sopra la griglia. Popolata da JS (renderActiveFilters). -->
+            <div id="tdbActiveFilters" class="toa-tdb-active" hidden></div>
             <div class="toa-tdb-grid" id="tdbGrid" aria-live="polite"></div>
             <div class="toa-tdb-grid-empty" id="tdbGridEmpty" hidden>
                 <p><?php echo esc_html($_t($T['results_empty'])); ?></p>
@@ -648,6 +650,6 @@ $hub_sections = array(
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-database-v55.js'); ?>" defer></script>
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-database-v56.js'); ?>" defer></script>
 
 <?php toa_component('footer'); ?>

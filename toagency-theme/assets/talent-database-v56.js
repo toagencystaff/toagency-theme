@@ -501,6 +501,90 @@
         return out;
     }
 
+    // ── FIX 2026-06-20 marco — barra "filtri attivi": chip removibili sopra la griglia ──
+    var AF_LBL = ({
+        it:{nome:'Nome',genere:'Genere',eta:'Età',alt:'Altezza',sca:'Scarpe',zone:'zone',all:'Cancella tutti'},
+        en:{nome:'Name',genere:'Gender',eta:'Age',alt:'Height',sca:'Shoes',zone:'areas',all:'Clear all'},
+        fr:{nome:'Nom',genere:'Genre',eta:'Âge',alt:'Taille',sca:'Pointure',zone:'zones',all:'Tout effacer'},
+        es:{nome:'Nombre',genere:'Género',eta:'Edad',alt:'Altura',sca:'Calzado',zone:'zonas',all:'Borrar todo'}
+    })[LANG] || {nome:'Nome',genere:'Genere',eta:'Età',alt:'Altezza',sca:'Scarpe',zone:'zone',all:'Cancella tutti'};
+
+    function afRange(chips, key, label) {
+        var f = $('#tdbFilters');
+        var mn = f[key+'_min'] ? f[key+'_min'].value : '';
+        var mx = f[key+'_max'] ? f[key+'_max'].value : '';
+        if (mn === '' && mx === '') return;
+        chips.push({ k: key, label: label + ': ' + (mn||'…') + '–' + (mx||'…') });
+    }
+
+    // Costruisce le chip dei filtri attualmente attivi e gestisce la rimozione del singolo filtro.
+    function renderActiveFilters() {
+        var host = $('#tdbActiveFilters');
+        if (!host) return;
+        var f = $('#tdbFilters');
+        var chips = [];
+        if (f.q && f.q.value.trim()) chips.push({ k:'q', label: AF_LBL.nome+': '+f.q.value.trim() });
+        var rsel = $('#tdbFilterRuolo');
+        if (rsel && rsel.value) chips.push({ k:'ruolo', label: rsel.options[rsel.selectedIndex].textContent.trim() });
+        var sg = $('.toa-tdb-toggle-group[data-name="sesso"]');
+        if (sg) { var sa = sg.querySelector('.toa-tdb-toggle.active'); if (sa && sa.dataset.value) chips.push({ k:'sesso', label: AF_LBL.genere+': '+sa.textContent.trim() }); }
+        var csel = $('#tdbFilterCountry');
+        if (csel && csel.value) chips.push({ k:'paese', label: csel.options[csel.selectedIndex].textContent.trim() });
+        if (TD.selectedProvinces && TD.selectedProvinces.length) chips.push({ k:'province', label: TD.selectedProvinces.length+' '+AF_LBL.zone });
+        ['etnia','taglia','capelli','occhi'].forEach(function (name) {
+            $$('.toa-tdb-ms[data-name="'+name+'"] .toa-tdb-ms-menu input:checked').forEach(function (c) {
+                chips.push({ k:'ms', name:name, val:c.value, label: cap(c.value) });
+            });
+        });
+        afRange(chips, 'eta', AF_LBL.eta);
+        afRange(chips, 'altezza', AF_LBL.alt);
+        afRange(chips, 'scarpe', AF_LBL.sca);
+
+        if (!chips.length) { host.hidden = true; host.innerHTML = ''; return; }
+        host.hidden = false;
+        host.innerHTML = chips.map(function (c) {
+            return '<button type="button" class="toa-tdb-active-chip" data-k="'+c.k+'"'+
+                (c.name?' data-name="'+escapeHtml(c.name)+'"':'')+
+                (c.val?' data-val="'+escapeHtml(c.val)+'"':'')+
+                '>'+escapeHtml(c.label)+' <span aria-hidden="true">✕</span></button>';
+        }).join('') + '<button type="button" class="toa-tdb-active-clear" data-k="__all">'+escapeHtml(AF_LBL.all)+'</button>';
+
+        if (!host._wired) {
+            host._wired = true;
+            host.addEventListener('click', function (e) {
+                var b = e.target.closest('.toa-tdb-active-chip, .toa-tdb-active-clear');
+                if (!b) return;
+                var k = b.dataset.k;
+                var ff = $('#tdbFilters');
+                if (k === '__all') { $('#tdbFiltersReset').click(); return; }
+                if (k === 'q') { if (ff.q) ff.q.value = ''; }
+                else if (k === 'ruolo') {
+                    var rs = $('#tdbFilterRuolo');
+                    if (rs) { rs.value = ''; rs.dispatchEvent(new Event('change', { bubbles:true })); }
+                    $$('.toa-tdb-cat-chip').forEach(function (c) { c.classList.toggle('is-active', (c.getAttribute('data-ruolo')||'') === ''); });
+                }
+                else if (k === 'sesso') {
+                    var g = $('.toa-tdb-toggle-group[data-name="sesso"]');
+                    if (g) { $$('.toa-tdb-toggle', g).forEach(function (x) { x.classList.toggle('active', x.dataset.value === ''); }); var h = g.querySelector('input[type="hidden"]'); if (h) h.value = ''; }
+                }
+                else if (k === 'paese') {
+                    var cs = $('#tdbFilterCountry');
+                    if (cs) { cs.value = ''; cs.dispatchEvent(new Event('change', { bubbles:true })); return; }
+                }
+                else if (k === 'province') { TD.selectedProvinces = []; TD.geoHub = null; populateProvinces(); }
+                else if (k === 'ms') {
+                    var box = $('.toa-tdb-ms[data-name="'+b.dataset.name+'"]');
+                    if (box) { $$('.toa-tdb-ms-menu input', box).forEach(function (i) { if (i.value === b.dataset.val) i.checked = false; }); msText(box); }
+                }
+                else if (k === 'eta' || k === 'altezza' || k === 'scarpe') {
+                    if (ff[k+'_min']) ff[k+'_min'].value = '';
+                    if (ff[k+'_max']) ff[k+'_max'].value = '';
+                }
+                tdSearch(false);
+            });
+        }
+    }
+
     // ═════════════════════════════════════════════════════════════════
     // SEARCH / RENDER
     // ═════════════════════════════════════════════════════════════════
@@ -512,6 +596,7 @@
 
         var filters = readFilters();
         TD.filters = filters;
+        renderActiveFilters();   // FIX 2026-06-20 marco — aggiorna le chip "filtri attivi"
         if (!append) TD.page = 1;
 
         var body = {};

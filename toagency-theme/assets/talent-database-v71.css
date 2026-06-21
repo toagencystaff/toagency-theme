@@ -2247,3 +2247,25 @@ body.tdb-drawer-open::before{display:none !important;}
   /* tendine multi-select: stessa altezza compatta */
   .toa-tdb-wrap.tdb-filters-open .toa-tdb-ms-toggle { height: 42px !important; }
 }
+
+/* ═════ FIX 2026-06-20 marco — barra "filtri attivi" (chip removibili sopra la griglia). Desktop + mobile. ═════ */
+.toa-tdb-active { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+.toa-tdb-active[hidden] { display: none; }
+.toa-tdb-active-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(200,255,0,.12); border: 1px solid rgba(200,255,0,.45); color: #c8ff00;
+  border-radius: 999px; padding: 6px 13px; font-size: 13px; font-weight: 600; cursor: pointer;
+  line-height: 1.2;
+}
+.toa-tdb-active-chip:hover { background: rgba(200,255,0,.22); }
+.toa-tdb-active-chip span { font-size: 11px; opacity: .85; }
+.toa-tdb-active-clear {
+  display: inline-flex; align-items: center;
+  background: transparent; border: 1px solid rgba(255,255,255,.25); color: #cfcfcf;
+  border-radius: 999px; padding: 6px 13px; font-size: 13px; cursor: pointer;
+}
+.toa-tdb-active-clear:hover { border-color: #c8ff00; color: #fff; }
+@media (max-width: 767px) {
+  .toa-tdb-active { gap: 7px; margin: 0 0 12px; }
+  .toa-tdb-active-chip, .toa-tdb-active-clear { font-size: 13px; padding: 7px 13px; }
+}
