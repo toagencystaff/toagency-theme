@@ -1306,3 +1306,8 @@ img { max-width: 100%; height: auto; display: block; }
   .inline-quote-card .iq-grid { grid-template-columns: 1fr; }
 }
 /* === END FASE2/P3 2026-05-29 marco — FORM PREVENTIVO INLINE === */
+
+/* FIX 2026-06-21 marco: header fisso (88px) copriva il titolo sui template full-page Talent DB / Crew DB.
+   Offset mirato ai 2 hero rotti (le pagine con hero a tutta altezza non ne hanno bisogno). */
+body .toa-tdb-wrap { padding-top: 110px !important; }
+body .crew-pub-hero { padding-top: 110px !important; }
