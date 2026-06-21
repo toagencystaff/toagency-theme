@@ -1984,7 +1984,8 @@ body.tdb-drawer-open::before{display:none !important;}
 .toa-tdb-geo-chk input{ width:15px; height:15px; accent-color:#c8ff00; flex:0 0 auto; }
 .toa-tdb-geo-chk small{ color:rgba(255,255,255,.4); font-size:11px; }
 .toa-tdb-geo-sel{ font-size:12px; color:rgba(255,255,255,.65); margin-top:8px; display:flex; align-items:center; gap:6px; }
-.toa-tdb-geo-clear{ background:transparent; border:1px solid rgba(255,255,255,.3); color:#fff; border-radius:999px; width:20px; height:20px; line-height:18px; text-align:center; cursor:pointer; padding:0; font-size:12px; }
+/* FIX 2026-06-20 marco — ✕ azzera zone: centrato e compatto (prima usciva dal cerchio per via di line-height) */
+.toa-tdb-geo-clear{ flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; min-width:22px; line-height:1; padding:0; font-size:12px; background:transparent; border:1px solid rgba(255,255,255,.3); color:#fff; border-radius:999px; cursor:pointer; }
 
 /* #7b geo affina (togli/aggiungi) 2026-06-17 marco */
 .toa-tdb-geo-affina{ margin-top:8px; }
@@ -2121,10 +2122,11 @@ body.tdb-drawer-open::before{display:none !important;}
     height: 100dvh !important; max-height: 100dvh !important;
     margin: 0 !important;
     background: #0b0b0d !important;        /* solido: copre la griglia */
-    z-index: 9500 !important;              /* sopra header sito + griglia */
+    z-index: 100000 !important;            /* sopra l'header fisso del sito (come il modal scheda) */
     overflow-y: auto !important;           /* scroll interno: vedo tutti i filtri */
     -webkit-overflow-scrolling: touch !important;
-    padding: 14px 16px 96px !important;    /* spazio in fondo per scrollare oltre il Reset */
+    /* spazio per notch/barra in alto + scroll oltre il Reset in fondo */
+    padding: calc(env(safe-area-inset-top, 0px) + 14px) 16px 96px !important;
     transform: none !important;
   }
   /* form a una colonna, niente "card dentro card" (lo sfondo è già il pannello) */
@@ -2198,4 +2200,12 @@ body.tdb-drawer-open::before{display:none !important;}
     padding: 13px 20px; font-size: 15px; font-weight: 700; cursor: pointer;
     box-shadow: 0 8px 24px rgba(0,0,0,.45);
   }
+}
+
+/* FIX 2026-06-20 marco — menubar: "Talent Immagine" + "Backstage Crew" sulla STESSA riga, "Filtri" su una riga sua sotto (desktop + mobile) */
+.toa-tdb-macros { flex-wrap: wrap !important; }
+.toa-tdb-macros .toa-tdb-macro.toa-tdb-filters-btn {
+  order: 3 !important;
+  flex: 0 0 100% !important;
+  margin-top: 8px !important;
 }
