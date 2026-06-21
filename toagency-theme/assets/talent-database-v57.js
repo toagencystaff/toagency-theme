@@ -591,7 +591,8 @@
 
     // POST a ?action=search con i filtri correnti. append=true per "Carica altri".
     function tdSearch(append) {
-        if (TD.loading) return Promise.resolve();
+        // FIX 2026-06-20 marco — guardia "trailing": se chiamata mentre carica, rifà la ricerca a fine (no filtri persi)
+        if (TD.loading) { if (!append) TD.pending = true; return Promise.resolve(); }
         TD.loading = true;
 
         var filters = readFilters();
@@ -628,7 +629,10 @@
                 console.error('[tdb] search error', err);
                 $('#tdbResultsCount').textContent = '—';
             })
-            .then(function () { TD.loading = false; });
+            .then(function () {
+                TD.loading = false;
+                if (TD.pending) { TD.pending = false; tdSearch(false); }   // FIX 2026-06-20 marco — ricerca in coda
+            });
     }
 
     // Costruisce il markup HTML di una card talent (escape XSS sui campi dinamici).
