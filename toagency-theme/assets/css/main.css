@@ -4,7 +4,7 @@
 
 /* ── RESET & BASE ── */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;background:#08080a !important}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;background:#08080a !important;font-size:112.5%} /* FIX 2026-06-21 marco: base 16->18px leggibilita globale (rem scalano) */
 
 :root {
   --black: #08080a;
