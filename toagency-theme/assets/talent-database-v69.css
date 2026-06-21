@@ -2209,3 +2209,8 @@ body.tdb-drawer-open::before{display:none !important;}
   flex: 0 0 100% !important;
   margin-top: 8px !important;
 }
+
+/* FIX 2026-06-20 marco — MOBILE: niente doppio "Filtri". In alto nascondo il bottone della barra; resta solo il FAB in basso a sx (non tocca chatbot/Preventivo a destra). Il FAB attiva comunque #tdbFiltersBtn (anche se display:none il click JS funziona). */
+@media (max-width: 767px) {
+  .toa-tdb-macros .toa-tdb-macro.toa-tdb-filters-btn { display: none !important; }
+}
