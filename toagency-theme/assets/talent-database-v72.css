@@ -2269,3 +2269,15 @@ body.tdb-drawer-open::before{display:none !important;}
   .toa-tdb-active { gap: 7px; margin: 0 0 12px; }
   .toa-tdb-active-chip, .toa-tdb-active-clear { font-size: 13px; padding: 7px 13px; }
 }
+
+/* ═════ FIX 2026-06-20 marco — DESKTOP/TABLET (≥768px): top centrato ed elegante (no ammassamento a sx, no barra Filtri stirata). Mobile invariato. ═════ */
+@media (min-width: 768px) {
+  .toa-tdb-hero, .toa-tdb-hero-compact { text-align: center !important; }
+  .toa-tdb-hero-subtitle { max-width: 680px; margin-left: auto !important; margin-right: auto !important; }
+  /* menubar in colonna centrata: bottoni in fila al centro, conteggio sotto */
+  .toa-tdb-menubar { flex-direction: column !important; align-items: center !important; gap: 14px !important; }
+  .toa-tdb-macros { justify-content: center !important; }
+  .toa-tdb-menubar-right { width: 100% !important; display: flex !important; justify-content: center !important; }
+  /* Filtri: bottone normale in fila coi due (niente più barra a tutta larghezza) */
+  .toa-tdb-macros .toa-tdb-macro.toa-tdb-filters-btn { order: 3 !important; flex: 0 0 auto !important; margin-top: 0 !important; }
+}

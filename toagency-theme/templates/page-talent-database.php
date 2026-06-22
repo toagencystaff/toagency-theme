@@ -34,10 +34,10 @@ $T = array(
     'hero_eyebrow'   => array('it'=>'TOAGENCY/TALENT','en'=>'TOAGENCY/TALENT','fr'=>'TOAGENCY/TALENT','es'=>'TOAGENCY/TALENT'),
     'hero_title'     => array('it'=>'Talent.','en'=>'Talent.','fr'=>'Talent.','es'=>'Talent.'),
     'hero_subtitle'  => array(
-        'it'=>'Esplora i talent TOAgency. Filtra per età, look, fisicità e area geografica, poi crea la tua selezione.',
-        'en'=>'Explore TOAgency talents. Filter by age, look, physique and location, then build your selection.',
-        'fr'=>'Explore les talents TOAgency. Filtre par âge, look, physique et zone, puis crée ta sélection.',
-        'es'=>'Explora los talents TOAgency. Filtra por edad, look, físico y zona, y crea tu selección.',
+        'it'=>'Filtra i talent TOAgency per età, look, fisicità e area geografica, poi crea la tua selezione.',
+        'en'=>'Filter TOAgency talents by age, look, physique and location, then build your selection.',
+        'fr'=>'Filtre les talents TOAgency par âge, look, physique et zone, puis crée ta sélection.',
+        'es'=>'Filtra los talents TOAgency por edad, look, físico y zona, y crea tu selección.',
     ),
 
     'filters_open'   => array('it'=>'Filtri','en'=>'Filters','fr'=>'Filtres','es'=>'Filtros'),
@@ -126,7 +126,7 @@ $T = array(
 );
 ?>
 <!-- TOA-TALENT-DATABASE-V1 — PATCH 2026-05-22 marco hub sezioni categoria -->
-<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v71.css'); ?>">
+<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v72.css'); ?>">
 <script>
 window.toaThemeUri      = "<?php echo esc_js($theme_uri); ?>";
 window.toaTdbLang       = "<?php echo esc_js($__l); ?>";
