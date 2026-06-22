@@ -34,10 +34,10 @@ $T = array(
     'hero_eyebrow'   => array('it'=>'TOAGENCY/TALENT','en'=>'TOAGENCY/TALENT','fr'=>'TOAGENCY/TALENT','es'=>'TOAGENCY/TALENT'),
     'hero_title'     => array('it'=>'Talent.','en'=>'Talent.','fr'=>'Talent.','es'=>'Talent.'),
     'hero_subtitle'  => array(
-        'it'=>'Filtra i talent TOAgency per età, look, fisicità e area geografica, poi crea la tua selezione.',
-        'en'=>'Filter TOAgency talents by age, look, physique and location, then build your selection.',
-        'fr'=>'Filtre les talents TOAgency par âge, look, physique et zone, puis crée ta sélection.',
-        'es'=>'Filtra los talents TOAgency por edad, look, físico y zona, y crea tu selección.',
+        'it'=>'Filtra per età, look, fisicità e area geografica, poi crea la tua selezione.',
+        'en'=>'Filter by age, look, physique and location, then build your selection.',
+        'fr'=>'Filtre par âge, look, physique et zone, puis crée ta sélection.',
+        'es'=>'Filtra por edad, look, físico y zona, y crea tu selección.',
     ),
 
     'filters_open'   => array('it'=>'Filtri','en'=>'Filters','fr'=>'Filtres','es'=>'Filtros'),
