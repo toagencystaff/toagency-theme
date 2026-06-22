@@ -135,7 +135,7 @@ $images = array(
         <div class="cta-buttons-row">
             <a href="<?php echo home_url('/form-b2b/'); ?>" class="btn-hero btn-hero-primary"><span><?php echo $_t($t['cta_cerco']); ?></span></a>
             <a href="<?php echo home_url('/collabora/'); ?>" class="btn-hero btn-hero-secondary"><span><?php echo $_t($t['cta_sono']); ?></span></a>
-            <a href="https://toadatabase.it/it/talent/" target="_blank" class="btn-hero btn-hero-secondary"><span><?php echo $_t($t['cta_esplora']); ?></span></a>
+            <a href="https://toagency.it/talent-database/" target="_blank" class="btn-hero btn-hero-secondary"><span><?php echo $_t($t['cta_esplora']); ?></span></a>
         </div>
     </div>
 </section>

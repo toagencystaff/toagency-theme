@@ -8,5 +8,5 @@
   <a href="tel:+393517899225">Chiama</a>
   <a href="https://wa.me/393517899225" target="_blank">WhatsApp</a>
   <a href="mailto:business@toagency.it">Email</a>
-  <a href="https://toadatabase.it/it/talent/" target="_blank">Database</a>
+  <a href="https://toagency.it/talent-database/" target="_blank">Database</a>
 </div>

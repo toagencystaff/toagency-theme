@@ -75,7 +75,7 @@ toa_component('header');
             <h3 class="feature-title"><?php echo $_t($t['quick_links']); ?></h3>
             <p class="feature-text">
                 <a href="<?php echo home_url('/form-b2b/'); ?>" style="color:var(--accent)"><?php echo $_t($t['richiedi_prev']); ?></a><br>
-                <a href="https://toadatabase.it/it/talent/" target="_blank" style="color:var(--accent)"><?php echo $_t($t['esplora_talenti']); ?></a><br>
+                <a href="https://toagency.it/talent-database/" target="_blank" style="color:var(--accent)"><?php echo $_t($t['esplora_talenti']); ?></a><br>
                 <a href="<?php echo home_url('/collabora/'); ?>" style="color:var(--accent)"><?php echo $_t($t['lavora_con_noi']); ?></a>
             </p>
         </div>
