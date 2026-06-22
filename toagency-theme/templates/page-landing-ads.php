@@ -175,7 +175,6 @@ body.toa-ads-lp .toa-ads-formcol .container{padding:0!important;max-width:none!i
       <div class="toa-ads-contact">
         <a class="toa-ads-btn toa-ads-btn--call" href="tel:<?php echo esc_attr($TEL_RAW); ?>" onclick="toaLpTrack('call')">📞 <?php echo _ht($call_l); ?> <?php echo esc_html($TEL_DISP); ?></a>
         <a class="toa-ads-btn" href="<?php echo esc_url($WA); ?>" target="_blank" rel="noopener" onclick="toaLpTrack('whatsapp')">WhatsApp</a>
-        <a class="toa-ads-btn" href="mailto:<?php echo esc_attr($EMAIL); ?>" onclick="toaLpTrack('email')"><?php echo _ht($email_l); ?></a>
       </div>
       <a class="toa-ads-dblink" href="<?php echo esc_url($DB_URL); ?>" target="_blank" rel="noopener" onclick="toaLpTrack('database')"><?php echo _ht($db_l); ?> &rarr;</a>
     </div>
