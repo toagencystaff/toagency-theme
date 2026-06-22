@@ -111,7 +111,7 @@ $eyebrow_l = ['it'=>'AGENZIA CASTING B2B · DAL 2009','en'=>'B2B CASTING AGENCY 
 $call_l    = ['it'=>'Chiama','en'=>'Call','fr'=>'Appeler','es'=>'Llamar'];
 $email_l   = ['it'=>'Email','en'=>'Email','fr'=>'Email','es'=>'Email'];
 $db_l      = ['it'=>'Visita il nostro database','en'=>'Browse our talent database','fr'=>'Voir notre base de talents','es'=>'Explora nuestra base de talentos'];
-$DB_URL    = ['it'=>'https://toadatabase.it/it/talent/','en'=>'https://toadatabase.it/en/talent/','fr'=>'https://toadatabase.it/fr/talent/','es'=>'https://toadatabase.it/es/talent/'][$lang] ?? 'https://toadatabase.it/it/talent/';
+$DB_URL    = 'https://toagency.it/talent-database/'; // FIX 2026-06-20 marco — era toadatabase.it (sito vecchio)
 
 $c   = $COPY[$key] ?? $COPY['casting-italia'];
 $h1  = $c['h1'][$lang]  ?? $c['h1']['it'];
