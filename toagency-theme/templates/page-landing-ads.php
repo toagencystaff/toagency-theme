@@ -39,6 +39,8 @@ $key     = get_post_meta($post_id, '_toa_ads_key', true) ?: 'casting-italia';
 $default_service = [
     'casting-torino' => 'shooting',
     'hostess-torino' => 'fiera-salone',
+    'casting-roma'   => 'shooting',
+    'hostess-roma'   => 'fiera-salone',
     'casting-italia' => 'pubblicita',
     'models-aziende' => 'shooting',
     'hostess-eventi' => 'fiera-salone',
@@ -71,6 +73,26 @@ $COPY = [
       'en'=>['Hostesses and stewards for fairs, shows and events','20,000+ profiles in our database','15+ years of experience, based in Turin','Management in Italian, English, French and Spanish'],
       'fr'=>['Hôtesses et stewards pour salons et événements','Plus de 20 000 profils en base','Plus de 15 ans d\'expérience, basés à Turin','Gestion en italien, anglais, français et espagnol'],
       'es'=>['Azafatas y stewards para ferias, salones y eventos','Más de 20.000 perfiles en la base de datos','Más de 15 años de experiencia, sede en Turín','Gestión en italiano, inglés, francés y español'],
+    ],
+  ],
+  'casting-roma' => [ // FIX 2026-06-22 marco — landing Ads Roma
+    'h1'  => ['it'=>'Agenzia casting e modelli a Roma per aziende e produzioni','en'=>'Casting and model agency in Rome for companies and productions','fr'=>'Agence de casting et mannequins à Rome pour entreprises et productions','es'=>'Agencia de casting y modelos en Roma para empresas y producciones'],
+    'sub' => ['it'=>'Modelli, hostess, attori e comparse selezionati per shooting, campagne ed eventi. Preventivo gratuito in 24 ore.','en'=>'Selected models, hostesses, actors and extras for shoots, campaigns and events. Free quote within 24 hours.','fr'=>'Mannequins, hôtesses, acteurs et figurants sélectionnés pour shootings, campagnes et événements. Devis gratuit sous 24 heures.','es'=>'Modelos, azafatas, actores y figurantes seleccionados para sesiones, campañas y eventos. Presupuesto gratuito en 24 horas.'],
+    'bul' => [
+      'it'=>['20.000+ profili nel database','15+ anni di esperienza, dal 2009','Operativi a Roma e in tutto il Lazio','Casting gestiti in 4 lingue'],
+      'en'=>['20,000+ profiles in our database','15+ years of experience, since 2009','Active across Rome and the Lazio region','Casting managed in 4 languages'],
+      'fr'=>['Plus de 20 000 profils en base','Plus de 15 ans d\'expérience, depuis 2009','Actifs à Rome et dans tout le Latium','Casting géré en 4 langues'],
+      'es'=>['Más de 20.000 perfiles en la base de datos','Más de 15 años de experiencia, desde 2009','Operativos en Roma y en todo el Lacio','Casting gestionado en 4 idiomas'],
+    ],
+  ],
+  'hostess-roma' => [ // FIX 2026-06-22 marco — landing Ads Roma
+    'h1'  => ['it'=>'Agenzia hostess e steward a Roma per fiere, eventi e congressi','en'=>'Hostess and event staff agency in Rome for trade fairs, events and congresses','fr'=>'Agence d\'hôtesses et stewards à Rome pour salons, événements et congrès','es'=>'Agencia de azafatas y stewards en Roma para ferias, eventos y congresos'],
+    'sub' => ['it'=>'Personale qualificato e multilingue per fiere, congressi, stand e accoglienza. Preventivo gratuito in 24 ore.','en'=>'Qualified, multilingual hostesses and stewards for fairs, conferences, stands and reception. Free quote within 24 hours.','fr'=>'Personnel qualifié et multilingue pour salons, congrès, stands et accueil. Devis gratuit sous 24 heures.','es'=>'Personal cualificado y multilingüe para ferias, congresos, stands y recepción. Presupuesto gratuito en 24 horas.'],
+    'bul' => [
+      'it'=>['Hostess e steward per fiere, saloni ed eventi','20.000+ profili nel database','15+ anni di esperienza, dal 2009','Gestione in italiano, inglese, francese e spagnolo'],
+      'en'=>['Hostesses and stewards for fairs, shows and events','20,000+ profiles in our database','15+ years of experience, since 2009','Management in Italian, English, French and Spanish'],
+      'fr'=>['Hôtesses et stewards pour salons et événements','Plus de 20 000 profils en base','Plus de 15 ans d\'expérience, depuis 2009','Gestion en italien, anglais, français et espagnol'],
+      'es'=>['Azafatas y stewards para ferias, salones y eventos','Más de 20.000 perfiles en la base de datos','Más de 15 años de experiencia, desde 2009','Gestión en italiano, inglés, francés y español'],
     ],
   ],
   'casting-italia' => [
