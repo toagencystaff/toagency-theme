@@ -1400,24 +1400,27 @@ body .toa-tdb-modal .toa-tdb-detail-photo-col {
 .toa-tdb-card-info span { position: static; }
 .toa-tdb-card-info span::after { display: none; }
 .toa-tdb-card-add {
+    /* FIX 2026-06-23 marco — coerenza: cerchio lime + "+" nero come la barra CTA, sempre visibile */
     position: absolute;
     top: 10px;
     right: 10px;
     width: 32px;
     height: 32px;
-    background: rgba(0, 0, 0, 0.6);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: #c8ff00;
+    color: #0a0a0a;
+    border: 1px solid #c8ff00;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 700;
     font-family: inherit;
-    transition: all 200ms ease, opacity 200ms ease, transform 200ms ease;
-    opacity: 0;
-    transform: translateY(-4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+    transition: all 200ms ease, transform 200ms ease;
+    opacity: 1;
+    transform: none;
     pointer-events: auto;
     z-index: 2;
 }
