@@ -1132,7 +1132,10 @@
         var labelEl = $('#tdbCartLabel');
         if (countEl) countEl.textContent = count;
         if (labelEl) labelEl.textContent = count === 1 ? i18n('cart_singular') : i18n('cart_plural');
-        if (count > 0) {
+        // FIX 2026-06-23 marco — stato invito (vuoto) sempre visibile su DESKTOP; mobile resta nascosto a 0
+        cart.classList.toggle('has-selection', count > 0);
+        var isMobile = window.matchMedia('(max-width: 580px)').matches;
+        if (count > 0 || !isMobile) {
             cart.hidden = false;
             // Force reflow così la transition parte dal valore "off-screen".
             void cart.offsetWidth;
@@ -1140,7 +1143,7 @@
         } else {
             cart.classList.remove('show');
             setTimeout(function () {
-                if (TD.selectedIds.size === 0) cart.hidden = true;
+                if (TD.selectedIds.size === 0 && window.matchMedia('(max-width: 580px)').matches) cart.hidden = true;
             }, 500);
         }
     }

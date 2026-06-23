@@ -87,6 +87,8 @@ $T = array(
     'cart_plural'    => array('it'=>'talent selezionati','en'=>'talents selected','fr'=>'talents sélectionnés','es'=>'talents seleccionados'),
     'cart_request'   => array('it'=>'Richiedi info','en'=>'Request info','fr'=>'Demander info','es'=>'Solicitar info'),
     'cart_clear'     => array('it'=>'Svuota','en'=>'Clear','fr'=>'Vider','es'=>'Vaciar'),
+    'cart_invite'    => array('it'=>'Seleziona i talent che ti interessano','en'=>'Select the talent you like','fr'=>'Sélectionnez les talents qui vous intéressent','es'=>'Selecciona los talent que te interesan'),
+    'cart_reassure'  => array('it'=>'Risposta entro 24h · Nessun impegno','en'=>'Reply within 24h · No commitment','fr'=>'Réponse sous 24h · Sans engagement','es'=>'Respuesta en 24h · Sin compromiso'),
 
     'form_title'     => array('it'=>'Richiedi info sui talent selezionati','en'=>'Request info on selected talents','fr'=>'Demander des infos','es'=>'Solicitar info'),
     'form_intro'     => array(
@@ -126,7 +128,7 @@ $T = array(
 );
 ?>
 <!-- TOA-TALENT-DATABASE-V1 — PATCH 2026-05-22 marco hub sezioni categoria -->
-<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v72.css'); ?>">
+<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v73.css'); ?>">
 <script>
 window.toaThemeUri      = "<?php echo esc_js($theme_uri); ?>";
 window.toaTdbLang       = "<?php echo esc_js($__l); ?>";
@@ -564,12 +566,23 @@ $hub_sections = array(
 
 <!-- ═════ Carrello fluttuante ═════ -->
 <div class="toa-tdb-cart" id="tdbCart" hidden>
-    <div class="toa-tdb-cart-info">
-        <strong id="tdbCartCount">0</strong>
-        <span id="tdbCartLabel"><?php echo esc_html($_t($T['cart_plural'])); ?></span>
+    <!-- Stato vuoto: invito (solo desktop, vedi CSS) -->
+    <div class="toa-tdb-cart-invite" id="tdbCartInvite">
+        <span class="toa-tdb-cart-invite-ico" aria-hidden="true">+</span>
+        <span><?php echo esc_html($_t($T['cart_invite'])); ?></span>
     </div>
-    <button type="button" class="toa-tdb-cart-clear" id="tdbCartClear" aria-label="<?php echo esc_attr($_t($T['cart_clear'])); ?>"><?php echo esc_html($_t($T['cart_clear'])); ?></button>
-    <button type="button" class="toa-tdb-btn toa-tdb-btn-primary toa-tdb-btn-cart" id="tdbCartRequest"><?php echo esc_html($_t($T['cart_request'])); ?></button>
+    <!-- Stato attivo: contatore + CTA + rassicurazione -->
+    <div class="toa-tdb-cart-active">
+        <div class="toa-tdb-cart-info">
+            <strong id="tdbCartCount">0</strong>
+            <span id="tdbCartLabel"><?php echo esc_html($_t($T['cart_plural'])); ?></span>
+        </div>
+        <button type="button" class="toa-tdb-cart-clear" id="tdbCartClear" aria-label="<?php echo esc_attr($_t($T['cart_clear'])); ?>"><?php echo esc_html($_t($T['cart_clear'])); ?></button>
+        <div class="toa-tdb-cart-cta">
+            <button type="button" class="toa-tdb-btn toa-tdb-btn-primary toa-tdb-btn-cart" id="tdbCartRequest"><?php echo esc_html($_t($T['cart_request'])); ?></button>
+            <span class="toa-tdb-cart-reassure"><?php echo esc_html($_t($T['cart_reassure'])); ?></span>
+        </div>
+    </div>
 </div>
 
 <!-- ═════ Modal form richiesta info ═════ -->
@@ -650,6 +663,6 @@ $hub_sections = array(
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-database-v59.js'); ?>" defer></script>
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-database-v60.js'); ?>" defer></script>
 
 <?php toa_component('footer'); ?>
