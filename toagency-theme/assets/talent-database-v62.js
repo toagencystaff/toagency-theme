@@ -94,6 +94,41 @@
         }
     };
 
+    // FIX 2026-06-24 marco — mappa display VALORI dal DB (genere/etnia/capelli/occhi) it->en/fr/es.
+    // Il valore REALE non cambia (filtro/API restano sull'italiano): traduce solo il testo mostrato.
+    var VAL_I18N = {
+        // genere
+        'Femmina': { en:'Female', fr:'Femme', es:'Mujer' },
+        'Maschio': { en:'Male',   fr:'Homme', es:'Hombre' },
+        'Altro':   { en:'Other',  fr:'Autre', es:'Otro' },
+        // etnia
+        'Asiatico':        { en:'Asian',          fr:'Asiatique',        es:'Asiático' },
+        'Bianco Caucasico':{ en:'White Caucasian', fr:'Blanc caucasien',  es:'Blanco caucásico' },
+        'Ispanico':        { en:'Hispanic',        fr:'Hispanique',       es:'Hispano' },
+        'Magrebino':       { en:'Maghrebi',        fr:'Maghrébin',        es:'Magrebí' },
+        'Mediorientale':   { en:'Middle Eastern',  fr:'Moyen-oriental',   es:'Oriente Medio' },
+        'Nero Africano':   { en:'Black African',   fr:'Noir africain',    es:'Negro africano' },
+        'Sudasiatico':     { en:'South Asian',     fr:'Sud-asiatique',    es:'Sudasiático' },
+        'Mixed':           { en:'Mixed',           fr:'Métis',            es:'Mixto' },
+        // capelli
+        'Bianco':         { en:'White',       fr:'Blanc',         es:'Blanco' },
+        'Biondo Chiaro':  { en:'Light Blond', fr:'Blond clair',   es:'Rubio claro' },
+        'Biondo Scuro':   { en:'Dark Blond',  fr:'Blond foncé',   es:'Rubio oscuro' },
+        'Calvo':          { en:'Bald',        fr:'Chauve',        es:'Calvo' },
+        'Castano Chiaro': { en:'Light Brown', fr:'Châtain clair', es:'Castaño claro' },
+        'Castano Scuro':  { en:'Dark Brown',  fr:'Châtain foncé', es:'Castaño oscuro' },
+        'Grigio':         { en:'Grey',        fr:'Gris',          es:'Gris' },
+        'Nero':           { en:'Black',       fr:'Noir',          es:'Negro' },
+        'Rosso':          { en:'Red',         fr:'Roux',          es:'Pelirrojo' },
+        // occhi
+        'altro':   { en:'Other',  fr:'Autre',  es:'Otro' },
+        'Azzurri': { en:'Blue',   fr:'Bleus',  es:'Azules' },
+        'Grigi':   { en:'Grey',   fr:'Gris',   es:'Grises' },
+        'Marroni': { en:'Brown',  fr:'Marron', es:'Marrones' },
+        'Neri':    { en:'Black',  fr:'Noirs',  es:'Negros' },
+        'Verdi':   { en:'Green',  fr:'Verts',  es:'Verdes' }
+    };
+
     // Restituisce la stringa i18n per `key` nella lingua corrente, fallback IT.
     function i18n(key) {
         var m = I18N[key];
@@ -153,6 +188,8 @@
     // Capitalizza la prima lettera di una stringa.
     function cap(s) {
         if (!s) return '';
+        // FIX 2026-06-24 marco — traduce il valore mostrato (dropdown/chip/modal) se non IT; valore reale invariato
+        if (LANG !== 'it' && VAL_I18N[s] && VAL_I18N[s][LANG]) return VAL_I18N[s][LANG];
         return s.charAt(0).toUpperCase() + s.slice(1);
     }
 
@@ -689,13 +726,13 @@
         line.push('<strong>' + escapeHtml(t.nome || '—') + '</strong>');
         if (tid)       line.push('<span class="toa-tdb-card-code">' + String(tid) + '</span>'); // 2026-06-04 marco — codice in pill monospace
         var loc = pairStr(t.provincia, t.provincia_dom).toUpperCase();   // FIX 2026-06-20 marco — residenza / domicilio
-        if (t.eta)     line.push(escapeHtml(t.eta + ' anni'));
+        if (t.eta)     line.push(escapeHtml(t.eta + ' ' + i18n('years')));
         if (t.altezza) line.push(escapeHtml(t.altezza + ' cm'));
         if (loc) line.push(escapeHtml(loc));
         var lineHtml = line.join(' · ');
         var tdbNameRow = '<strong>' + escapeHtml(t.nome || '—') + '</strong>' + (tid ? '<span class="toa-tdb-card-code">' + String(tid) + '</span>' : '');
         var tdbInfo = [];
-        if (t.eta)     tdbInfo.push(escapeHtml(t.eta + ' anni'));
+        if (t.eta)     tdbInfo.push(escapeHtml(t.eta + ' ' + i18n('years')));
         if (t.altezza) tdbInfo.push(escapeHtml(t.altezza + ' cm'));
         if (loc) tdbInfo.push(escapeHtml(loc));
         var tdbInfoHtml = tdbInfo.join(' · ');
@@ -873,7 +910,7 @@
             );
         }
         addRow(i18n('modal_code'),  t.talent_id ? t.talent_id : null);   // Obj1 codice
-        addRow(i18n('modal_gender'),  t.sesso);
+        addRow(i18n('modal_gender'),  t.sesso ? cap(t.sesso) : null);
         addRow(i18n('modal_country'), t.paese_label || t.paese);
         addRow(i18n('modal_city'),    pairStr(t.citta, t.citta_dom));            // FIX 2026-06-20 marco — comune res / dom
         addRow(i18n('modal_province'), pairStr(t.provincia, t.provincia_dom));   // FIX 2026-06-20 marco — provincia res / dom
