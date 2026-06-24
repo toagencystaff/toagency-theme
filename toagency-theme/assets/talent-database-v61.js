@@ -904,7 +904,11 @@
         var btn = $('#tdbModalAdd');
         if (!btn) return;
         var sel = TD.selectedIds.has(TD.modalTalent.id);
-        btn.textContent = sel ? i18n('btn_remove') : i18n('btn_add');
+        // FIX 2026-06-24 marco — simbolo (+/✓) dentro cerchietto nero: richiama il bottone tondo sulle card
+        var raw = sel ? i18n('btn_remove') : i18n('btn_add');
+        var sym = raw.charAt(0);
+        var label = raw.slice(1).trim();
+        btn.innerHTML = '<span class="toa-tdb-modal-add-ico" aria-hidden="true">' + escapeHtml(sym) + '</span>' + escapeHtml(label);
         btn.classList.toggle('selected', sel);
     }
 

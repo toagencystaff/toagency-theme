@@ -739,6 +739,15 @@
     margin: 4px 0 0;
 }
 .toa-tdb-modal-add { margin-top: auto; }
+/* FIX 2026-06-24 marco — '+'/'✓' del bottone modal dentro cerchietto nero (eco del bottone tondo sulle card) */
+#tdbModalAdd { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.toa-tdb-modal-add-ico {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; flex: 0 0 22px;
+    border-radius: 50%;
+    background: #0a0a0a; color: #c8ff00;
+    font-weight: 700; font-size: 15px; line-height: 1;
+}
 
 /* ═════ Carrello fluttuante ═════ */
 .toa-tdb-cart {
