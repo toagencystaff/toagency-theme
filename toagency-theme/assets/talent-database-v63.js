@@ -195,6 +195,24 @@
 
     // FIX 2026-06-20 marco — unisce residenza/domicilio: "A / B" se diversi, altrimenti uno solo.
     // Confronto tollerante: ignora accenti, non-lettere e lettere doppie → "Barcelona" == "Barcellona".
+    // FIX 2026-06-24 marco — mappa display SOLO grandi città che cambiano in lingua (nomi propri).
+    // Le altre città/province restano invariate. Valore reale invariato (qui è solo display).
+    var CITY_I18N = {
+        'milano':  { en:'Milan',    fr:'Milan',    es:'Milán' },
+        'torino':  { en:'Turin',    fr:'Turin',    es:'Turín' },
+        'roma':    { en:'Rome',     fr:'Rome',     es:'Roma' },
+        'firenze': { en:'Florence', fr:'Florence', es:'Florencia' },
+        'venezia': { en:'Venice',   fr:'Venise',   es:'Venecia' },
+        'napoli':  { en:'Naples',   fr:'Naples',   es:'Nápoles' },
+        'genova':  { en:'Genoa',    fr:'Gênes',    es:'Génova' },
+        'padova':  { en:'Padua',    fr:'Padoue',   es:'Padua' }
+    };
+    function tCity(s) {
+        if (!s) return s;
+        if (LANG !== 'it') { var m = CITY_I18N[String(s).toLowerCase().trim()]; if (m && m[LANG]) return m[LANG]; }
+        return s;
+    }
+
     function pairStr(a, b) {
         a = String(a == null ? '' : a).trim();
         b = String(b == null ? '' : b).trim();
@@ -204,8 +222,9 @@
                 .replace(/[^a-z]/g, '')                            // solo lettere
                 .replace(/(.)\1+/g, '$1');                         // collassa lettere doppie
         }
-        if (a && b && nrm(a) !== nrm(b)) return a + ' / ' + b;
-        return a || b || '';
+        var da = tCity(a), db = tCity(b);
+        if (a && b && nrm(a) !== nrm(b)) return da + ' / ' + db;
+        return da || db || '';
     }
 
     // Wrapper fetch -> JSON con errore se HTTP non-2xx.
