@@ -939,7 +939,8 @@
         addRow(i18n('modal_hair'),    t.capelli ? cap(t.capelli) : null);
         addRow(i18n('modal_eyes'),    t.occhi ? cap(t.occhi) : null);
         addRow(i18n('modal_shoes'),   t.scarpe);
-        if (t.sesso === 'F') {
+        // FIX 2026-06-24 marco — il DB salva il genere come parola ("Femmina"), non "F": prima le misure non comparivano MAI.
+        if (t.sesso === 'Femmina' || t.sesso === 'F') {
             addRow(i18n('modal_chest'), t.misura_petto   ? t.misura_petto   + ' cm' : null);
             addRow(i18n('modal_waist'), t.misura_vita    ? t.misura_vita    + ' cm' : null);
             addRow(i18n('modal_hips'),  t.misura_fianchi ? t.misura_fianchi + ' cm' : null);

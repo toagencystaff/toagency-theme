@@ -663,6 +663,6 @@ $hub_sections = array(
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-database-v63.js'); ?>" defer></script>
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-database-v64.js'); ?>" defer></script>
 
 <?php toa_component('footer'); ?>
