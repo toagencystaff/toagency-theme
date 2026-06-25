@@ -153,6 +153,19 @@ $theme_uri = get_stylesheet_directory_uri();
         <!-- Errore form-level (network / server) — inline, sostituisce alert() -->
         <div class="toa-talent-error-msg toa-talent-form-error" id="toaTalentFormError" role="alert" style="text-align:center;margin:0 0 14px;"></div>
 
+        <!-- FIX 2026-06-25 marco — recupero profilo se email già registrata (riusa recupera-link.php) -->
+        <div id="toaTalentRecover" style="display:none;text-align:center;margin:0 0 16px;">
+            <a id="toaTalentRecoverLink" href="/crm_toagency/recupera-link.php" rel="noopener"
+               style="display:inline-block;background:#6c63ff;color:#fff;border-radius:8px;padding:.7rem 1.4rem;font-weight:700;text-decoration:none;font-size:.95rem;">
+                🔑 <?php echo _ht_talent(array(
+                    'it'=>'Recupera il tuo profilo',
+                    'en'=>'Recover your profile',
+                    'fr'=>'Récupère ta fiche',
+                    'es'=>'Recupera tu perfil',
+                )); ?>
+            </a>
+        </div>
+
         <!-- ═════ STEP 1 — Chi sei ═════ -->
         <div class="toa-talent-step active" data-step="1">
             <h3><?php echo _ht_talent(array('it'=>'Chi sei','en'=>'Who you are','fr'=>'Qui es-tu','es'=>'Quién eres')); ?></h3>
@@ -766,6 +779,17 @@ $theme_uri = get_stylesheet_directory_uri();
                 'es'=>'Nuestro equipo revisará el perfil y te contactará para oportunidades.',
             )); ?>
         </div>
+        <!-- FIX 2026-06-25 marco — CTA primaria step-2: completa il profilo (href popolato dal JS con uuid+token) -->
+        <a id="toaTalentCompleteCta" href="#" rel="noopener"
+           style="display:none;margin:1rem 0 .5rem;background:#6c63ff;color:#fff;border-radius:8px;padding:.85rem 1.2rem;font-weight:800;text-decoration:none;text-align:center;font-size:1rem;">
+            ✏️ <?php echo _ht_talent(array(
+                'it'=>'Completa il profilo: aggiungi più foto e info',
+                'en'=>'Complete your profile: add more photos & info',
+                'fr'=>'Complète ton profil : ajoute photos et infos',
+                'es'=>'Completa tu perfil: añade más fotos e info',
+            )); ?>
+        </a>
+
         <!-- Avviso upload parziale fallito (inline, sostituisce alert()) -->
         <div id="toaTalentUploadWarn" role="alert" style="display:none;margin:.6rem 0;padding:.6rem .9rem;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.4);border-radius:8px;color:#fbbf24;font-size:.85rem;line-height:1.4;"></div>
         <!-- FIX 2026-05-26 marco — WhatsApp post-registrazione multilingua -->
@@ -794,7 +818,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260604c" defer></script><!-- TASK social-ux STEP 7 2026-06-04: bump v per forzare reload JS su prod/CDN -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260625a" defer></script><!-- FIX 2026-06-25 marco: bump v — fix foto profilo obbligatoria (retry solo foto) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT

@@ -46,7 +46,9 @@
         fileTooBig:        { it:'File troppo grande', en:'File too large', es:'Archivo demasiado grande', fr:'Fichier trop grand' },
         uploadPartialFail: { it:'Profilo creato, ma il caricamento di alcuni file non è riuscito: potrai aggiungerli più tardi dalla tua area personale.', en:'Profile created, but some files failed to upload — you can add them later from your area.', es:'Perfil creado, pero algunos archivos no se subieron: podrás añadirlos más tarde desde tu área.', fr:'Profil créé, mais certains fichiers n\'ont pas pu être chargés : tu pourras les ajouter plus tard depuis ton espace.' },
         networkError:      { it:'Errore di connessione. Riprova fra qualche secondo.', en:'Connection error. Please try again in a few seconds.', es:'Error de conexión. Inténtalo de nuevo en unos segundos.', fr:'Erreur de connexion. Réessaie dans quelques secondes.' },
-        emailExists:       { it:'Questa email è già registrata. Se è la tua, contattaci.', en:'This email is already registered. If it is yours, contact us.', es:'Este email ya está registrado. Si es el tuyo, contáctanos.', fr:'Cet email est déjà enregistré. Si c\'est le tien, contacte-nous.' }
+        emailExists:       { it:'Questa email è già registrata. Recupera il tuo profilo qui sotto.', en:'This email is already registered. Recover your profile below.', es:'Este email ya está registrado. Recupera tu perfil abajo.', fr:'Cet email est déjà enregistré. Récupère ta fiche ci-dessous.' },
+        // FIX 2026-06-25 marco — foto profilo non caricata: si riprova SOLO la foto (il profilo esiste già)
+        photoUploadFail:   { it:'La foto profilo non è stata caricata. Premi di nuovo "Invia" per riprovare a caricarla.', en:'Your profile photo was not uploaded. Press "Submit" again to retry.', es:'La foto de perfil no se subió. Pulsa "Enviar" de nuevo para reintentar.', fr:'Ta photo de profil n\'a pas été chargée. Appuie de nouveau sur « Envoyer » pour réessayer.' }
     };
     var FLBL = {
         altezza: { it:'Altezza', en:'Height', es:'Altura', fr:'Taille' },
@@ -941,6 +943,28 @@
     var talentIdAfterRegister = null;
     var talentUuidAfterRegister = null;
     var talentTokenAfterRegister = null;
+    // FIX 2026-06-25 marco — se l'upload foto profilo fallisce, qui salviamo id+token
+    // così il prossimo "Invia" riprova SOLO l'upload (niente secondo profilo / niente email_exists).
+    var pendingUpload = null;
+
+    // FIX 2026-06-25 marco — esito upload: la foto profilo (sempre 1° elemento della coda) DEVE riuscire.
+    function afterUploadDone(results) {
+        var prof = (results && results.length) ? results[0] : null;
+        if (!prof || prof.ok !== true) { afterUploadFailed(); return; }
+        pendingUpload = null;
+        var portfolioFail = results.slice(1).some(function(r){ return !r || r.ok !== true; });
+        if (portfolioFail) {
+            var _w = document.getElementById('toaTalentUploadWarn');
+            if (_w) { _w.textContent = tmsg(MSG.uploadPartialFail); _w.style.display = 'block'; }
+        }
+        showSuccess();
+    }
+    function afterUploadFailed() {
+        // Profilo creato ma foto profilo NON caricata → niente "successo": si riprova solo la foto.
+        pendingUpload = { talentId: talentIdAfterRegister, token: talentTokenAfterRegister };
+        showStep(4);
+        showInlineError('toaTalentFormError', '⚠️ ' + tmsg(MSG.photoUploadFail));
+    }
 
     /* TASK hardening-upload STEP A 2026-06-04 marco — compressione foto client */
     function toaCompressImage(file, maxLong, quality){
@@ -1048,6 +1072,20 @@
         // Pulisci eventuale errore form-level (network/server) da un tentativo precedente
         var _fe = document.getElementById('toaTalentFormError');
         if (_fe) { _fe.classList.remove('show'); _fe.textContent = ''; }
+        hideRecover(); // FIX 2026-06-25 marco — nascondi bottone recupero da tentativo precedente
+
+        // FIX 2026-06-25 marco — RIPROVA SOLO FOTO: profilo già creato, ricarica solo i file (no re-register).
+        if (pendingUpload) {
+            if (!validateStep(4)) { showStep(4); return; }
+            var rBtn = document.getElementById('toaTalentSubmit');
+            if (rBtn) { rBtn.disabled = true; rBtn.textContent = 'Invio in corso...'; }
+            uploadAllFiles(pendingUpload.talentId, pendingUpload.token)
+                .then(afterUploadDone)
+                .catch(function(err) { console.error('[upload retry] error:', err); afterUploadFailed(); })
+                .finally(function() { if (rBtn) { rBtn.disabled = false; rBtn.textContent = 'Invia candidatura'; } });
+            return;
+        }
+
         for (var i = 1; i <= 4; i++) {
             if (!validateStep(i)) { showStep(i); return; }
         }
@@ -1103,13 +1141,10 @@
                 // NB: return → la .finally() attende il completamento upload
                 // prima di riabilitare il bottone (evita doppio invio durante upload).
                 return uploadAllFiles(res.talent_id, res.token_profilo)
-                    .then(function() { showSuccess(); })
+                    .then(afterUploadDone)   // FIX 2026-06-25 marco — successo SOLO se la foto profilo è caricata
                     .catch(function(err) {
                         console.error('[upload] error:', err);
-                        // Profilo creato ma upload fallito → avviso inline nel modale di successo
-                        var _w = document.getElementById('toaTalentUploadWarn');
-                        if (_w) { _w.textContent = tmsg(MSG.uploadPartialFail); _w.style.display = 'block'; }
-                        showSuccess();
+                        afterUploadFailed(); // niente "successo": si riprova solo la foto
                     });
             } else {
                 handleRegisterError(res);
@@ -1158,8 +1193,10 @@
                 stepToGo = 3;
                 break;
             case 'email_exists':
+            case 'name_exists': // FIX 2026-06-25 marco — anche nome+cognome già presente
                 errorMsg = tmsg(MSG.emailExists);
                 stepToGo = 1;
+                showRecover(); // mostra bottone recupero profilo
                 break;
             case 'missing_social': /* TASK social-ux STEP 7 2026-06-04 marco */
                 stepToGo = 3;
@@ -1183,10 +1220,38 @@
      * Mostra il modale di successo (unico per tutti).
      */
     function showSuccess() {
+        // FIX 2026-06-25 marco — popola la CTA "Completa il profilo" (step 2) con uuid+token del profilo creato
+        var cta = document.getElementById('toaTalentCompleteCta');
+        if (cta) {
+            if (talentUuidAfterRegister && talentTokenAfterRegister) {
+                var lg = (document.documentElement.getAttribute('lang') || 'it').substring(0, 2);
+                cta.href = '/completa-profilo/?uuid=' + encodeURIComponent(talentUuidAfterRegister)
+                         + '&t=' + encodeURIComponent(talentTokenAfterRegister)
+                         + '&lang=' + encodeURIComponent(lg);
+                cta.style.display = 'block';
+            } else {
+                cta.style.display = 'none';
+            }
+        }
         if (successModal) {
             successModal.classList.add('show');
             document.body.style.overflow = 'hidden';
         }
+    }
+
+    // FIX 2026-06-25 marco — bottone "Recupera il tuo profilo" (email già registrata) → recupera-link.php
+    function showRecover() {
+        var box = document.getElementById('toaTalentRecover');
+        var link = document.getElementById('toaTalentRecoverLink');
+        if (link) {
+            var lg2 = (document.documentElement.getAttribute('lang') || 'it').substring(0, 2);
+            link.href = '/crm_toagency/recupera-link.php?lang=' + encodeURIComponent(lg2);
+        }
+        if (box) box.style.display = 'block';
+    }
+    function hideRecover() {
+        var box = document.getElementById('toaTalentRecover');
+        if (box) box.style.display = 'none';
     }
 
     function resetFormAfterSuccess(modal) {
