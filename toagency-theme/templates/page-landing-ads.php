@@ -135,6 +135,19 @@ $email_l   = ['it'=>'Email','en'=>'Email','fr'=>'Email','es'=>'Email'];
 $db_l      = ['it'=>'Visita il nostro database','en'=>'Browse our talent database','fr'=>'Voir notre base de talents','es'=>'Explora nuestra base de talentos'];
 $DB_URL    = 'https://toagency.it/talent-database/'; // FIX 2026-06-20 marco — era toadatabase.it (sito vecchio)
 
+// FIX 2026-06-24 marco — form protagonista + WhatsApp taggato (lead qualificabile)
+$formhead_l   = ['it'=>'Ricevi una selezione di profili e un preventivo gratuito in 24h','en'=>'Get a shortlist of profiles and a free quote within 24h','fr'=>'Recevez une sélection de profils et un devis gratuit sous 24h','es'=>'Recibe una selección de perfiles y un presupuesto gratuito en 24h'];
+$contacthint_l= ['it'=>'Preferisci sentirci subito?','en'=>'Prefer to talk now?','fr'=>'Vous préférez nous contacter tout de suite ?','es'=>'¿Prefieres contactarnos ya?'];
+// Messaggio WhatsApp precompilato per landing → l'utente arriva già contestualizzato (B2B vs talent)
+$wa_type  = (strpos($key, 'hostess') === 0) ? 'hostess' : 'models';
+$wa_label = [
+  'models'  => ['it'=>'Modelli per aziende','en'=>'Models for companies','fr'=>'Mannequins pour entreprises','es'=>'Modelos para empresas'],
+  'hostess' => ['it'=>'Hostess per eventi','en'=>'Hostess for events','fr'=>'Hôtesses pour événements','es'=>'Azafatas para eventos'],
+];
+$wa_tmpl  = ['it'=>'Ciao TOAgency, scrivo dalla pagina %s. Ho un progetto e sono interessato a ...','en'=>'Hi TOAgency, I\'m writing from the %s page. I have a project and I\'m interested in ...','fr'=>'Bonjour TOAgency, je vous écris depuis la page %s. J\'ai un projet et je suis intéressé par ...','es'=>'Hola TOAgency, escribo desde la página %s. Tengo un proyecto y estoy interesado en ...'];
+$wa_text  = sprintf($wa_tmpl[$lang] ?? $wa_tmpl['it'], $wa_label[$wa_type][$lang] ?? $wa_label[$wa_type]['it']);
+$WA_HREF  = $WA . '?text=' . rawurlencode($wa_text);
+
 $c   = $COPY[$key] ?? $COPY['casting-italia'];
 $h1  = $c['h1'][$lang]  ?? $c['h1']['it'];
 $sub = $c['sub'][$lang] ?? $c['sub']['it'];
@@ -163,8 +176,10 @@ body.toa-ads-lp .toa-ads-bullets li:before{content:"";position:absolute;left:2px
 body.toa-ads-lp .toa-ads-serv{color:#a9a9a9!important;font-size:14px;line-height:1.55;margin:0 0 22px;max-width:560px}
 body.toa-ads-lp .toa-ads-contact{display:flex;flex-wrap:wrap;gap:10px}
 body.toa-ads-lp .toa-ads-btn{display:inline-flex;align-items:center;gap:7px;padding:11px 18px;border-radius:9px;text-decoration:none!important;font-weight:700;font-size:14.5px;border:1.5px solid #3a3a3a;color:#fff!important;background:transparent}
-body.toa-ads-lp .toa-ads-btn--call{background:#c2f24e!important;color:#0a0a0a!important;border-color:#c2f24e}
+body.toa-ads-lp .toa-ads-btn--call{background:transparent!important;color:#fff!important;border-color:#3a3a3a} /* FIX 2026-06-24 marco — declassato da lime a outline: il form torna protagonista */
 body.toa-ads-lp .toa-ads-btn:hover{border-color:#c2f24e}
+body.toa-ads-lp .toa-ads-formhead{font-size:18px;line-height:1.35;font-weight:800;color:#fff!important;margin:0 0 14px;padding:0} /* FIX 2026-06-24 marco */
+body.toa-ads-lp .toa-ads-contacthint{font-size:13px;color:#9a9a9a!important;margin:18px 0 8px;font-weight:600}
 body.toa-ads-lp .toa-ads-dblink{display:inline-block;margin-top:18px;color:#c2f24e!important;text-decoration:none!important;font-weight:600;font-size:14.5px;border-bottom:1px solid transparent}
 body.toa-ads-lp .toa-ads-dblink:hover{border-bottom-color:#c2f24e}
 /* il form (form-b2b-inline) è già una card stilata dal tema */
@@ -194,15 +209,17 @@ body.toa-ads-lp .toa-ads-formcol .container{padding:0!important;max-width:none!i
         <?php endforeach; ?>
       </ul>
       <?php if ($serv): ?><p class="toa-ads-serv"><?php echo esc_html($serv); ?></p><?php endif; ?>
+      <p class="toa-ads-contacthint"><?php echo _ht($contacthint_l); ?></p>
       <div class="toa-ads-contact">
         <a class="toa-ads-btn toa-ads-btn--call" href="tel:<?php echo esc_attr($TEL_RAW); ?>" onclick="toaLpTrack('call')">📞 <?php echo _ht($call_l); ?> <?php echo esc_html($TEL_DISP); ?></a>
-        <a class="toa-ads-btn" href="<?php echo esc_url($WA); ?>" target="_blank" rel="noopener" onclick="toaLpTrack('whatsapp')">WhatsApp</a>
+        <a class="toa-ads-btn" href="<?php echo esc_url($WA_HREF); ?>" target="_blank" rel="noopener" onclick="toaLpTrack('whatsapp')">WhatsApp</a>
       </div>
       <a class="toa-ads-dblink" href="<?php echo esc_url($DB_URL); ?>" target="_blank" rel="noopener" onclick="toaLpTrack('database')"><?php echo _ht($db_l); ?> &rarr;</a>
     </div>
 
-    <!-- COLONNA DESTRA: form preventivo -->
+    <!-- COLONNA DESTRA: form preventivo (azione protagonista) -->
     <div class="toa-ads-formcol">
+      <p class="toa-ads-formhead"><?php echo _ht($formhead_l); ?></p>
       <?php toa_component('form-b2b-inline'); ?>
     </div>
   </div>
