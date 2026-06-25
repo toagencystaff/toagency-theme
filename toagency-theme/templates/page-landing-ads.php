@@ -148,6 +148,11 @@ $wa_tmpl  = ['it'=>'Ciao TOAgency, scrivo dalla pagina %s. Ho un progetto e sono
 $wa_text  = sprintf($wa_tmpl[$lang] ?? $wa_tmpl['it'], $wa_label[$wa_type][$lang] ?? $wa_label[$wa_type]['it']);
 $WA_HREF  = $WA . '?text=' . rawurlencode($wa_text);
 
+// FIX 2026-06-24 marco — filtro self-exit talent (no gate, form intatto)
+$b2bonly_l    = ['it'=>'Servizio per aziende, agenzie e produzioni — non per candidature.','en'=>'A service for companies, agencies and productions — not for job applications.','fr'=>'Un service pour entreprises, agences et productions — pas pour les candidatures.','es'=>'Un servicio para empresas, agencias y producciones — no para candidaturas.'];
+$talentexit_l = ['it'=>'Sei un talent in cerca di lavoro? Registrati qui','en'=>'Are you a talent looking for work? Register here','fr'=>'Vous êtes un talent à la recherche de travail ? Inscrivez-vous ici','es'=>'¿Eres un talento que busca trabajo? Regístrate aquí'];
+$REG_TALENT   = 'https://toagency.it/registrati-talent/';
+
 $c   = $COPY[$key] ?? $COPY['casting-italia'];
 $h1  = $c['h1'][$lang]  ?? $c['h1']['it'];
 $sub = $c['sub'][$lang] ?? $c['sub']['it'];
@@ -180,6 +185,10 @@ body.toa-ads-lp .toa-ads-btn--call{background:transparent!important;color:#fff!i
 body.toa-ads-lp .toa-ads-btn:hover{border-color:#c2f24e}
 body.toa-ads-lp .toa-ads-formhead{font-size:18px;line-height:1.35;font-weight:800;color:#fff!important;margin:0 0 14px;padding:0} /* FIX 2026-06-24 marco */
 body.toa-ads-lp .toa-ads-contacthint{font-size:13px;color:#9a9a9a!important;margin:18px 0 8px;font-weight:600}
+body.toa-ads-lp .toa-ads-b2bnotice{margin:0 0 14px;padding:11px 13px;border:1px solid #2a2a2a;border-left:3px solid #c2f24e;border-radius:8px;background:rgba(194,242,78,0.06)} /* FIX 2026-06-24 marco — avviso self-exit talent */
+body.toa-ads-lp .toa-ads-b2bnotice b{display:block;font-size:13.5px;line-height:1.4;color:#fff!important;font-weight:700}
+body.toa-ads-lp .toa-ads-b2bnotice a{display:inline-block;margin-top:6px;font-size:13px;color:#c2f24e!important;text-decoration:none!important;font-weight:600}
+body.toa-ads-lp .toa-ads-b2bnotice a:hover{text-decoration:underline!important}
 body.toa-ads-lp .toa-ads-dblink{display:inline-block;margin-top:18px;color:#c2f24e!important;text-decoration:none!important;font-weight:600;font-size:14.5px;border-bottom:1px solid transparent}
 body.toa-ads-lp .toa-ads-dblink:hover{border-bottom-color:#c2f24e}
 /* il form (form-b2b-inline) è già una card stilata dal tema */
@@ -220,6 +229,10 @@ body.toa-ads-lp .toa-ads-formcol .container{padding:0!important;max-width:none!i
     <!-- COLONNA DESTRA: form preventivo (azione protagonista) -->
     <div class="toa-ads-formcol">
       <p class="toa-ads-formhead"><?php echo _ht($formhead_l); ?></p>
+      <div class="toa-ads-b2bnotice">
+        <b><?php echo _ht($b2bonly_l); ?></b>
+        <a href="<?php echo esc_url($REG_TALENT); ?>"><?php echo _ht($talentexit_l); ?> &rarr;</a>
+      </div>
       <?php toa_component('form-b2b-inline'); ?>
     </div>
   </div>
