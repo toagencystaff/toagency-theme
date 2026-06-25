@@ -728,7 +728,7 @@
     function cardHtml(t, idx) {
         var id = parseInt(t.id, 10) || 0;
         var sel = TD.selectedIds.has(id) ? ' selected' : '';
-        var fotoSrc = FOTO_URL + '?id=' + encodeURIComponent(id);
+        var fotoSrc = FOTO_URL + '?id=' + encodeURIComponent(id) + '&w=400'; // FIX 2026-06-25 marco — miniatura card (~80% peso in meno); modal/galleria restano full
         // 2026-06-02 marco — BUG FIX foto bianche: le prime 12 card (above-the-fold) caricano la foto
         // SUBITO (src diretto, niente lazy) → nessuna dipendenza da lazySizes/observer per ciò che è già visibile.
         var eager = (parseInt(idx, 10) || 0) < 12;
