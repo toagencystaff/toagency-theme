@@ -109,6 +109,28 @@
                 if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
+            // FIX 2026-06-25 marco — uscendo dallo step 1: controlla SUBITO se l'email è già registrata
+            // (così non si compila tutto per poi essere respinti all'invio finale).
+            if (current === 1 && to > current) {
+                var goBtn = this;
+                var emailEl = form.querySelector('[name="email"]');
+                var emailVal = emailEl ? emailEl.value.trim() : '';
+                if (emailVal) {
+                    goBtn.disabled = true;
+                    checkEmailExists(emailVal).then(function(exists) {
+                        goBtn.disabled = false;
+                        if (exists) {
+                            showInlineError('toaTalentFormError', '⚠️ ' + tmsg(MSG.emailExists));
+                            showRecover();
+                            if (emailEl) emailEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        } else {
+                            hideRecover();
+                            showStep(to);
+                        }
+                    }).catch(function() { goBtn.disabled = false; showStep(to); }); // errore rete → non bloccare (l'invio finale resta da backstop)
+                    return;
+                }
+            }
             showStep(to);
         });
     });
@@ -940,6 +962,14 @@
     // ─── 12. Submit ──────────────────────────────────────────
     var REGISTER_ENDPOINT = '/crm_toagency/actions/registra-talent.php';
     var UPLOAD_ENDPOINT = '/crm_toagency/actions/upload-foto-talent.php';
+    // FIX 2026-06-25 marco — controllo leggero email già registrata (fine step 1)
+    var CHECK_EMAIL_ENDPOINT = '/crm_toagency/actions/check-email-talent.php';
+    function checkEmailExists(email) {
+        var fd = new FormData(); fd.append('email', email);
+        return fetch(CHECK_EMAIL_ENDPOINT, { method: 'POST', body: fd, credentials: 'same-origin' })
+            .then(function(r) { return r.json(); })
+            .then(function(j) { return !!(j && j.exists); });
+    }
     var talentIdAfterRegister = null;
     var talentUuidAfterRegister = null;
     var talentTokenAfterRegister = null;
