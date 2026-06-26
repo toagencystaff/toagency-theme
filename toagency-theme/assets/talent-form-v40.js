@@ -966,6 +966,14 @@
     var CHECK_EMAIL_ENDPOINT = '/crm_toagency/actions/check-email-talent.php';
     function checkEmailExists(email) {
         var fd = new FormData(); fd.append('email', email);
+        // FIX 2026-06-26 marco — manda anche nome+cognome+data_nascita (già compilati nello step 1):
+        // il check segnala doppione SOLO se coincidono tutti e 4 (gestisce genitore+figli stessa email).
+        var nEl = form.querySelector('[name="nome"]');
+        var cEl = form.querySelector('[name="cognome"]');
+        var dEl = form.querySelector('[name="data_nascita"]');
+        if (nEl && nEl.value.trim()) fd.append('nome', nEl.value.trim());
+        if (cEl && cEl.value.trim()) fd.append('cognome', cEl.value.trim());
+        if (dEl && dEl.value.trim()) fd.append('data_nascita', dEl.value.trim());
         return fetch(CHECK_EMAIL_ENDPOINT, { method: 'POST', body: fd, credentials: 'same-origin' })
             .then(function(r) { return r.json(); })
             .then(function(j) { return !!(j && j.exists); });
