@@ -23,10 +23,10 @@ $T = [
     'hero_eyebrow'   => ['it'=>'TOAGENCY/TALENT','en'=>'TOAGENCY/TALENT','fr'=>'TOAGENCY/TALENT','es'=>'TOAGENCY/TALENT'],
     'hero_title'     => ['it'=>'Aggiorna la tua scheda talent','en'=>'Update your talent profile','fr'=>'Mets à jour ta fiche talent','es'=>'Actualiza tu ficha talent'],
     'hero_subtitle'  => [
-        'it'=>'Le modifiche saranno revisionate dal nostro staff prima di andare live.',
-        'en'=>'Changes will be reviewed by our staff before going live.',
-        'fr'=>'Les modifications seront revues avant publication.',
-        'es'=>'Los cambios serán revisados antes de publicarse.',
+        'it'=>'I dati vanno online subito. Le foto vengono verificate dallo staff prima di essere pubblicate.',
+        'en'=>'Your details go live instantly. Photos are reviewed by our staff before publication.',
+        'fr'=>'Tes infos sont publiées immédiatement. Les photos sont vérifiées avant publication.',
+        'es'=>'Tus datos se publican al instante. Las fotos se revisan antes de publicarse.',
     ],
     'loading'        => ['it'=>'Caricamento…','en'=>'Loading…','fr'=>'Chargement…','es'=>'Cargando…'],
     'invalid_link'   => ['it'=>'Link non valido o scaduto.','en'=>'Invalid or expired link.','fr'=>'Lien invalide.','es'=>'Enlace inválido.'],
@@ -49,12 +49,16 @@ $T = [
     'btn_save'         => ['it'=>'Invia modifiche','en'=>'Submit changes','fr'=>'Envoyer','es'=>'Enviar'],
     'btn_saving'       => ['it'=>'Invio…','en'=>'Sending…','fr'=>'Envoi…','es'=>'Enviando…'],
     'success_msg'      => [
-        'it'=>'✓ Modifiche inviate. Lo staff le revisiona entro 24h.',
-        'en'=>'✓ Changes submitted. Staff will review within 24h.',
-        'fr'=>'✓ Modifications envoyées.',
-        'es'=>'✓ Cambios enviados.',
+        'it'=>'✓ Modifiche salvate e ora online.',
+        'en'=>'✓ Changes saved and now live.',
+        'fr'=>'✓ Modifications enregistrées et en ligne.',
+        'es'=>'✓ Cambios guardados y en línea.',
     ],
     'no_changes'   => ['it'=>'Nessuna modifica rilevata.','en'=>'No changes.','fr'=>'Aucune modification.','es'=>'Sin cambios.'],
+    // FIX 2026-06-27 marco — popup "dati ora online"
+    'live_title'   => ['it'=>'✅ Le tue modifiche sono ora online!','en'=>'✅ Your changes are now live!','fr'=>'✅ Tes modifications sont en ligne !','es'=>'✅ ¡Tus cambios están en línea!'],
+    'live_close'   => ['it'=>'Chiudi','en'=>'Close','fr'=>'Fermer','es'=>'Cerrar'],
+    'live_empty'   => ['it'=>'(vuoto)','en'=>'(empty)','fr'=>'(vide)','es'=>'(vacío)'],
     'error_prefix' => ['it'=>'Errore: ','en'=>'Error: ','fr'=>'Erreur: ','es'=>'Error: '],
     'opt_select'   => ['it'=>'—','en'=>'—','fr'=>'—','es'=>'—'],
 
@@ -225,6 +229,20 @@ $token_get = $_GET['t']    ?? '';
     .tse-album-tab { flex:1 1 calc(50% - 6px); }
     .tse-legal-text { max-height:140px; }
 }
+
+/* FIX 2026-06-27 marco — popup modifiche live */
+.tse-live-overlay { position:fixed; inset:0; background:rgba(0,0,0,.78); z-index:99999; display:flex; align-items:center; justify-content:center; padding:20px; }
+.tse-live-modal { background:#0f0f12; border:1px solid #c8ff00; border-radius:12px; padding:24px; max-width:420px; width:100%; max-height:80vh; overflow-y:auto; box-shadow:0 10px 50px rgba(0,0,0,.6); }
+.tse-live-title { color:#c8ff00; font-size:18px; font-weight:800; text-align:center; margin-bottom:18px; line-height:1.3; }
+.tse-live-list { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+.tse-live-row { background:#1a1a1e; border:1px solid #2a2a2e; border-radius:8px; padding:10px 12px; }
+.tse-live-lbl { display:block; font-size:11px; color:#9ca3af; text-transform:uppercase; letter-spacing:.5px; font-weight:700; margin-bottom:4px; }
+.tse-live-vals { font-size:14px; color:#fff; word-break:break-word; }
+.tse-live-old { color:#9ca3af; text-decoration:line-through; }
+.tse-live-arrow { color:#c8ff00; font-weight:700; }
+.tse-live-new { color:#c8ff00; font-weight:700; }
+.tse-live-btn { width:100%; background:#c8ff00; color:#0a0a0a; border:none; padding:13px; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; }
+.tse-live-btn:hover { opacity:.9; }
 </style>
 
 <section class="tse-wrap">
@@ -384,6 +402,9 @@ window.talentEditConfig = {
         successMsg:  <?= json_encode($_t($T['success_msg'])) ?>,
         noChanges:   <?= json_encode($_t($T['no_changes'])) ?>,
         errorPrefix: <?= json_encode($_t($T['error_prefix'])) ?>,
+        liveTitle:   <?= json_encode($_t($T['live_title'])) ?>,
+        liveClose:   <?= json_encode($_t($T['live_close'])) ?>,
+        liveEmpty:   <?= json_encode($_t($T['live_empty'])) ?>,
         uploading:   <?= json_encode($_t($T['btn_uploading'])) ?>,
         upload:      <?= json_encode($_t($T['btn_upload'])) ?>,
         noPhotos:    <?= json_encode($_t($T['no_photos'])) ?>,

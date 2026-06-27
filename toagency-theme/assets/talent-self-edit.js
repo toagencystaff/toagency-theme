@@ -43,12 +43,8 @@
             $('tse-name-display').innerHTML = 'Stai modificando il profilo di <strong>' +
                 escapeHtml(d.talent.nome || '—') + '</strong>';
 
-            if (d.has_pending) {
-                $('tse-pending').textContent = STR.pending || 'Modifiche in attesa di revisione.';
-                $('tse-pending').style.display = 'block';
-            } else {
-                $('tse-pending').style.display = 'none';
-            }
+            // FIX 2026-06-27 marco — dati live subito: niente più avviso "in attesa di revisione"
+            $('tse-pending').style.display = 'none';
 
             FIELDS.forEach(function (f) {
                 var el = $('f-' + f);
@@ -99,8 +95,9 @@
                 if (d.changes_count === 0) {
                     showResult('err', STR.noChanges || 'Nessuna modifica');
                 } else {
-                    showResult('ok', (STR.successMsg || 'Modifiche inviate') + ' (' + d.changes_count + ')');
-                    setTimeout(loadData, 1200);
+                    // FIX 2026-06-27 marco — dati live subito: popup con elenco modifiche
+                    showLivePopup(d.changes || []);
+                    setTimeout(loadData, 600);
                 }
             } else {
                 showResult('err', (STR.errorPrefix || 'Errore: ') + (d.message || d.error || 'unknown'));
@@ -286,6 +283,33 @@
 
     function showResult(type, text) {
         $('tse-result').innerHTML = '<div class="tse-result ' + type + '">' + escapeHtml(text) + '</div>';
+    }
+
+    // FIX 2026-06-27 marco — popup "modifiche ora online" con elenco vecchio → nuovo
+    function showLivePopup(changes) {
+        var emptyTxt = STR.liveEmpty || '(vuoto)';
+        var rows = (changes || []).map(function (c) {
+            var ov = (c.old === null || c.old === '') ? emptyTxt : c.old;
+            var nv = (c.new === null || c.new === '') ? emptyTxt : c.new;
+            return '<div class="tse-live-row">' +
+                       '<span class="tse-live-lbl">' + escapeHtml(c.label) + '</span>' +
+                       '<span class="tse-live-vals"><span class="tse-live-old">' + escapeHtml(ov) + '</span>' +
+                       ' <span class="tse-live-arrow">→</span> ' +
+                       '<span class="tse-live-new">' + escapeHtml(nv) + '</span></span>' +
+                   '</div>';
+        }).join('');
+        var ov = document.createElement('div');
+        ov.className = 'tse-live-overlay';
+        ov.innerHTML =
+            '<div class="tse-live-modal" role="dialog" aria-modal="true">' +
+                '<div class="tse-live-title">' + escapeHtml(STR.liveTitle || '✅ Le tue modifiche sono ora online!') + '</div>' +
+                '<div class="tse-live-list">' + rows + '</div>' +
+                '<button type="button" class="tse-live-btn">' + escapeHtml(STR.liveClose || 'Chiudi') + '</button>' +
+            '</div>';
+        document.body.appendChild(ov);
+        function close() { if (ov.parentNode) ov.parentNode.removeChild(ov); }
+        ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+        ov.querySelector('.tse-live-btn').addEventListener('click', close);
     }
 
     // FIX 2026-05-26 marco — evidenzia campi obbligatori mancanti
