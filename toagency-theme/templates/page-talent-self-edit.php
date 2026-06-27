@@ -80,8 +80,13 @@ $T = [
         'portfolio' => ['it'=>'Foto professionali da shooting/lavori già pubblicati.','en'=>'Professional photos from past shoots/published work.','fr'=>'Photos pro de shootings/travaux déjà publiés.','es'=>'Fotos profesionales de shootings/trabajos publicados.'],
         'eventi'    => ['it'=>'Foto da eventi pubblici, red carpet, premiazioni.','en'=>'Photos from public events, red carpet, awards.','fr'=>'Photos d\'événements publics, tapis rouge.','es'=>'Fotos de eventos públicos, alfombra roja.'],
     ],
-    'field_data_scatto' => ['it'=>'Data scatto polaroid','en'=>'Polaroid date','fr'=>'Date de la polaroid','es'=>'Fecha de la polaroid'],
-    'hint_data_scatto'  => ['it'=>'Obbligatoria. Max 5 anni fa, non futura. Verrà stampata sulla foto in modo permanente.','en'=>'Required. Max 5 years ago, not future. Will be printed on the photo permanently.','fr'=>'Obligatoire. Max 5 ans, pas dans le futur. Sera imprimée sur la photo de manière permanente.','es'=>'Obligatoria. Máx 5 años, no futura. Se imprimirá en la foto de forma permanente.'],
+    'field_data_scatto' => ['it'=>'Data scatto','en'=>'Shot date','fr'=>'Date de la prise','es'=>'Fecha de la toma'],
+    'hint_data_scatto'  => ['it'=>'Quando è stata SCATTATA la foto (non quando la carichi).','en'=>'When the photo was TAKEN (not when you upload it).','fr'=>'Quand la photo a été PRISE (pas la date de chargement).','es'=>'Cuándo fue TOMADA la foto (no cuándo la subes).'],
+    // FIX 2026-06-27 marco — data scatto su tutti gli album (obbligatoria polaroid, facoltativa altri)
+    'data_scatto_label_req'    => ['it'=>'Data scatto (obbligatoria)','en'=>'Shot date (required)','fr'=>'Date de la prise (obligatoire)','es'=>'Fecha de la toma (obligatoria)'],
+    'data_scatto_label_opt'    => ['it'=>'Data scatto (facoltativa)','en'=>'Shot date (optional)','fr'=>'Date de la prise (facultative)','es'=>'Fecha de la toma (opcional)'],
+    'data_scatto_hint_polaroid'=> ['it'=>'Quando è stata SCATTATA la foto (non quando la carichi). Max 5 anni fa, verrà stampata sulla foto.','en'=>'When the photo was TAKEN (not the upload date). Max 5 years ago, it will be printed on the photo.','fr'=>'Quand la photo a été PRISE (pas la date de chargement). Max 5 ans, elle sera imprimée sur la photo.','es'=>'Cuándo fue TOMADA la foto (no la fecha de subida). Máx 5 años, se imprimirá en la foto.'],
+    'data_scatto_hint_altri'   => ['it'=>'Quando è stata SCATTATA la foto (non quando la carichi). Facoltativa ma utile.','en'=>'When the photo was TAKEN (not the upload date). Optional but useful.','fr'=>'Quand la photo a été PRISE (pas la date de chargement). Facultative mais utile.','es'=>'Cuándo fue TOMADA la foto (no la fecha de subida). Opcional pero útil.'],
     'btn_upload'        => ['it'=>'Carica foto','en'=>'Upload photo','fr'=>'Charger photo','es'=>'Subir foto'],
     'btn_uploading'     => ['it'=>'Caricamento…','en'=>'Uploading…','fr'=>'Chargement…','es'=>'Subiendo…'],
     'choose_file'       => ['it'=>'Scegli file','en'=>'Choose file','fr'=>'Choisir fichier','es'=>'Elegir archivo'],
@@ -353,11 +358,10 @@ $token_get = $_GET['t']    ?? '';
 
             <div class="tse-upload-box">
                 <div class="tse-upload-field" id="tse-data-scatto-wrap">
-                    <label class="tse-label"><?= esc_html($_t($T['field_data_scatto'])) ?></label>
+                    <label class="tse-label" id="tse-data-scatto-label"><?= esc_html($_t($T['field_data_scatto'])) ?></label>
                     <input type="date" id="tse-data-scatto" class="tse-input"
-                           max="<?= esc_attr(date('Y-m-d')) ?>"
-                           min="<?= esc_attr(date('Y-m-d', strtotime('-5 years'))) ?>">
-                    <div style="font-size:11px; color:#6b7280; margin-top:4px;"><?= esc_html($_t($T['hint_data_scatto'])) ?></div>
+                           max="<?= esc_attr(date('Y-m-d')) ?>">
+                    <div id="tse-data-scatto-hint" style="font-size:11px; color:#6b7280; margin-top:4px;"><?= esc_html($_t($T['hint_data_scatto'])) ?></div>
                 </div>
 
                 <details class="tse-legal-disclaimer">
@@ -405,6 +409,10 @@ window.talentEditConfig = {
         liveTitle:   <?= json_encode($_t($T['live_title'])) ?>,
         liveClose:   <?= json_encode($_t($T['live_close'])) ?>,
         liveEmpty:   <?= json_encode($_t($T['live_empty'])) ?>,
+        dataScattoLabelReq:     <?= json_encode($_t($T['data_scatto_label_req'])) ?>,
+        dataScattoLabelOpt:     <?= json_encode($_t($T['data_scatto_label_opt'])) ?>,
+        dataScattoHintPolaroid: <?= json_encode($_t($T['data_scatto_hint_polaroid'])) ?>,
+        dataScattoHintAltri:    <?= json_encode($_t($T['data_scatto_hint_altri'])) ?>,
         uploading:   <?= json_encode($_t($T['btn_uploading'])) ?>,
         upload:      <?= json_encode($_t($T['btn_upload'])) ?>,
         noPhotos:    <?= json_encode($_t($T['no_photos'])) ?>,

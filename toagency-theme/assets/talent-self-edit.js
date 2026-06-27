@@ -146,8 +146,17 @@
         var v = (STR.verita && STR.verita[album]) || '';
         $('tse-verita-text').textContent = v;
 
-        // Data scatto: visibile solo per polaroid
-        $('tse-data-scatto-wrap').style.display = (album === 'polaroid') ? 'block' : 'none';
+        // FIX 2026-06-27 marco — data scatto su TUTTI gli album (obbligatoria polaroid, facoltativa le altre)
+        $('tse-data-scatto-wrap').style.display = 'block';
+        var _lbl = $('tse-data-scatto-label');
+        var _hint = $('tse-data-scatto-hint');
+        if (album === 'polaroid') {
+            if (_lbl)  _lbl.textContent  = (STR.dataScattoLabelReq  || 'Data scatto (obbligatoria)');
+            if (_hint) _hint.textContent = (STR.dataScattoHintPolaroid || 'Quando è stata SCATTATA la foto (non quando la carichi). Max 5 anni fa, verrà stampata sulla foto.');
+        } else {
+            if (_lbl)  _lbl.textContent  = (STR.dataScattoLabelOpt  || 'Data scatto (facoltativa)');
+            if (_hint) _hint.textContent = (STR.dataScattoHintAltri || 'Quando è stata SCATTATA la foto (non quando la carichi). Facoltativa ma utile.');
+        }
 
         // Grid
         var grid = $('tse-album-grid');
@@ -239,10 +248,10 @@
             status.className = 'tse-upload-status err';
             return;
         }
-        var dataScatto = '';
-        if (currentAlbum === 'polaroid') {
-            dataScatto = $('tse-data-scatto').value;
-            if (!dataScatto) { status.textContent = 'Data scatto obbligatoria per polaroid'; status.className = 'tse-upload-status err'; return; }
+        // FIX 2026-06-27 marco — data scatto letta per tutti gli album; obbligatoria solo polaroid
+        var dataScatto = $('tse-data-scatto').value;
+        if (currentAlbum === 'polaroid' && !dataScatto) {
+            status.textContent = 'Data scatto obbligatoria per polaroid'; status.className = 'tse-upload-status err'; return;
         }
 
         var fd = new FormData();
