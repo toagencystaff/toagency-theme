@@ -116,18 +116,29 @@
                 var emailEl = form.querySelector('[name="email"]');
                 var emailVal = emailEl ? emailEl.value.trim() : '';
                 if (emailVal) {
+                    // FIX 2026-06-28 marco — invia anche nome+cognome+dob per check doppione
+                    var nomeVal = (form.querySelector('[name="nome"]') || {}).value || '';
+                    var cogVal  = (form.querySelector('[name="cognome"]') || {}).value || '';
+                    var dobVal  = (form.querySelector('[name="data_nascita"]') || {}).value || '';
                     goBtn.disabled = true;
-                    checkEmailExists(emailVal).then(function(exists) {
+                    checkDupExists(emailVal, nomeVal, cogVal, dobVal).then(function(j) {
                         goBtn.disabled = false;
-                        if (exists) {
+                        if (j && j.name_dob_exists) {
+                            // Stesso nome+cognome+data: mostra box 4 opzioni
+                            showDupBox(j.existing_id, j.email_masked || '');
+                            hideRecover();
+                            if (emailEl) emailEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        } else if (j && j.exists) {
                             showInlineError('toaTalentFormError', '⚠️ ' + tmsg(MSG.emailExists));
+                            hideDupBox();
                             showRecover();
                             if (emailEl) emailEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         } else {
                             hideRecover();
+                            hideDupBox();
                             showStep(to);
                         }
-                    }).catch(function() { goBtn.disabled = false; showStep(to); }); // errore rete → non bloccare (l'invio finale resta da backstop)
+                    }).catch(function() { goBtn.disabled = false; showStep(to); }); // errore rete → non bloccare
                     return;
                 }
             }
@@ -964,19 +975,20 @@
     var UPLOAD_ENDPOINT = '/crm_toagency/actions/upload-foto-talent.php';
     // FIX 2026-06-25 marco — controllo leggero email già registrata (fine step 1)
     var CHECK_EMAIL_ENDPOINT = '/crm_toagency/actions/check-email-talent.php';
-    function checkEmailExists(email) {
-        var fd = new FormData(); fd.append('email', email);
-        // FIX 2026-06-26 marco — manda anche nome+cognome+data_nascita (già compilati nello step 1):
-        // il check segnala doppione SOLO se coincidono tutti e 4 (gestisce genitore+figli stessa email).
-        var nEl = form.querySelector('[name="nome"]');
-        var cEl = form.querySelector('[name="cognome"]');
-        var dEl = form.querySelector('[name="data_nascita"]');
-        if (nEl && nEl.value.trim()) fd.append('nome', nEl.value.trim());
-        if (cEl && cEl.value.trim()) fd.append('cognome', cEl.value.trim());
-        if (dEl && dEl.value.trim()) fd.append('data_nascita', dEl.value.trim());
+    // FIX 2026-06-28 marco — re-invia link self-edit all'email on-file
+    var RESEND_SELF_EDIT_EP  = '/crm_toagency/actions/resend-self-edit.php';
+    // FIX 2026-06-28 marco — check completo nome+cognome+dob (ritorna JSON, non solo bool)
+    function checkDupExists(email, nome, cognome, dob) {
+        var fd = new FormData();
+        fd.append('email', email);
+        if (nome)    fd.append('nome', nome);
+        if (cognome) fd.append('cognome', cognome);
+        if (dob)     fd.append('data_nascita', dob);
         return fetch(CHECK_EMAIL_ENDPOINT, { method: 'POST', body: fd, credentials: 'same-origin' })
-            .then(function(r) { return r.json(); })
-            .then(function(j) { return !!(j && j.exists); });
+            .then(function(r) { return r.json(); });
+    }
+    function checkEmailExists(email) { // alias retrocompat
+        return checkDupExists(email,'','','').then(function(j){return !!(j&&j.exists);});
     }
     var talentIdAfterRegister = null;
     var talentUuidAfterRegister = null;
@@ -1234,7 +1246,14 @@
             case 'name_exists': // FIX 2026-06-25 marco — anche nome+cognome già presente
                 errorMsg = tmsg(MSG.emailExists);
                 stepToGo = 1;
-                showRecover(); // mostra bottone recupero profilo
+                hideDupBox();
+                showRecover();
+                break;
+            case 'name_dob_exists': // FIX 2026-06-28 marco — stesso nome+cognome+dob, email diversa
+                errorMsg = '';
+                stepToGo = 1;
+                hideRecover();
+                showDupBox(res.existing_id, res.email_masked || '');
                 break;
             case 'missing_social': /* TASK social-ux STEP 7 2026-06-04 marco */
                 stepToGo = 3;
@@ -1243,7 +1262,7 @@
                 stepToGo = 4;
         }
 
-        showInlineError('toaTalentFormError', '⚠️ ' + errorMsg);
+        if (errorMsg) showInlineError('toaTalentFormError', '⚠️ ' + errorMsg);
         showStep(stepToGo);
         /* TASK social-ux STEP 7 2026-06-04 marco — porta l'utente sul primo campo social */
         if (stepToGo === 3) {
@@ -1292,6 +1311,66 @@
         if (box) box.style.display = 'none';
     }
 
+    // FIX 2026-06-28 marco — box doppione nome+cognome+dob (4 opzioni)
+    var _dupExistingId = 0;
+    function showDupBox(existingId, emailMasked) {
+        _dupExistingId = existingId || 0;
+        var box      = document.getElementById('toaTalentDupBox');
+        var viewLink = document.getElementById('toaDupViewLink');
+        var resendOk = document.getElementById('toaDupResendOk');
+        var resendBtn= document.getElementById('toaDupResendBtn');
+        if (viewLink && existingId) {
+            viewLink.href = '/talent-profile.php?id=' + existingId + '&pk=toa_prev_k26x';
+        }
+        if (resendOk)  { resendOk.style.display  = 'none'; }
+        if (resendBtn) { resendBtn.style.display  = 'block'; resendBtn.disabled = false; }
+        if (box) { box.style.display = 'block'; box.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    }
+    function hideDupBox() {
+        var box = document.getElementById('toaTalentDupBox');
+        if (box) box.style.display = 'none';
+        _dupExistingId = 0;
+    }
+    // Wiring bottoni dup box (eseguito una sola volta al caricamento)
+    (function() {
+        var resendBtn = document.getElementById('toaDupResendBtn');
+        var forceBtn  = document.getElementById('toaDupForceBtn');
+        var resendOk  = document.getElementById('toaDupResendOk');
+        if (resendBtn) {
+            resendBtn.addEventListener('click', function() {
+                if (!_dupExistingId) return;
+                resendBtn.disabled = true;
+                var lg = (document.documentElement.getAttribute('lang') || 'it').substring(0, 2);
+                var fd = new FormData();
+                fd.append('id', _dupExistingId);
+                fd.append('lang', lg);
+                fetch(RESEND_SELF_EDIT_EP, { method: 'POST', body: fd, credentials: 'same-origin' })
+                    .then(function(r) { return r.json(); })
+                    .then(function(j) {
+                        resendBtn.style.display = 'none';
+                        if (resendOk) {
+                            var em = (j && j.email_masked) ? j.email_masked : '***';
+                            resendOk.textContent = '📧 Link inviato a ' + em;
+                            resendOk.style.display = 'block';
+                        }
+                    })
+                    .catch(function() { resendBtn.disabled = false; });
+            });
+        }
+        if (forceBtn) {
+            forceBtn.addEventListener('click', function() {
+                var fc = document.getElementById('toaForceCreate');
+                if (fc) fc.value = '1';
+                hideDupBox();
+                hideRecover();
+                // Avanza allo step successivo (step 1 già validato)
+                var activeEl = form.querySelector('.toa-talent-step.active');
+                var cur = activeEl ? parseInt(activeEl.dataset.step) : 1;
+                showStep(cur + 1);
+            });
+        }
+    })();
+
     function resetFormAfterSuccess(modal) {
         modal.classList.remove('show');
         document.body.style.overflow = '';
@@ -1305,6 +1384,11 @@
         if (genitoreBox015) genitoreBox015.classList.remove('show');
         if (genitoreBox1617) genitoreBox1617.classList.remove('show');
         if (misureBox) misureBox.style.display = 'none';
+        // FIX 2026-06-28 marco — resetta dup box e force_create al chiudersi del modale successo
+        hideDupBox();
+        hideRecover();
+        var fc = document.getElementById('toaForceCreate');
+        if (fc) fc.value = '';
         showStep(1);
     }
 

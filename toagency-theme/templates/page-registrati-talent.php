@@ -143,6 +143,9 @@ $theme_uri = get_stylesheet_directory_uri();
 
     <form id="toaTalentForm" novalidate enctype="multipart/form-data">
 
+        <!-- FIX 2026-06-28 marco — force_create: "Sono un'altra persona" bypassa check doppione nome+cognome+dob -->
+        <input type="hidden" name="force_create" id="toaForceCreate" value="">
+
         <div class="toa-talent-progress">
             <div class="toa-talent-progress-step active" data-step="1"></div>
             <div class="toa-talent-progress-step" data-step="2"></div>
@@ -164,6 +167,52 @@ $theme_uri = get_stylesheet_directory_uri();
                     'es'=>'Recupera tu perfil',
                 )); ?>
             </a>
+        </div>
+
+        <!-- FIX 2026-06-28 marco — box doppione nome+cognome+dob (4 opzioni) -->
+        <div id="toaTalentDupBox" style="display:none;margin:0 0 20px;padding:18px 20px;background:#fff8e1;border:1.5px solid #f5c518;border-radius:12px;">
+            <p style="margin:0 0 14px;font-weight:700;font-size:.97rem;color:#7a5a00;">
+                ⚠️ <?php echo _ht_talent(array(
+                    'it'=>'Esiste già una scheda con questi dati.',
+                    'en'=>'A profile with this name and date already exists.',
+                    'fr'=>'Une fiche avec ces données existe déjà.',
+                    'es'=>'Ya existe una ficha con estos datos.',
+                )); ?>
+            </p>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+                <!-- 1. Guarda la scheda -->
+                <a id="toaDupViewLink" href="#" target="_blank" rel="noopener"
+                   style="display:block;padding:11px 16px;background:#fff;border:1.5px solid #d0d0d0;border-radius:8px;font-weight:600;font-size:.9rem;color:#1d1d27;text-decoration:none;">
+                    👁 <?php echo _ht_talent(array(
+                        'it'=>'Guarda la scheda',
+                        'en'=>'View the profile',
+                        'fr'=>'Voir la fiche',
+                        'es'=>'Ver la ficha',
+                    )); ?>
+                </a>
+                <!-- 2. È la mia, recuperala -->
+                <button type="button" id="toaDupResendBtn"
+                        style="display:block;width:100%;padding:11px 16px;background:#6c63ff;border:none;border-radius:8px;font-weight:700;font-size:.9rem;color:#fff;cursor:pointer;text-align:left;">
+                    ✅ <?php echo _ht_talent(array(
+                        'it'=>'È la mia, recuperala',
+                        'en'=>'It\'s mine, send me the link',
+                        'fr'=>'C\'est la mienne, envoie-moi le lien',
+                        'es'=>'Es la mía, envíame el enlace',
+                    )); ?>
+                </button>
+                <!-- Conferma invio link (nascosta, mostrata dal JS) -->
+                <p id="toaDupResendOk" style="display:none;margin:0;padding:10px 14px;background:#e8f5e9;border-radius:8px;font-size:.88rem;color:#2e7d32;font-weight:600;"></p>
+                <!-- 3. Sono un'altra persona -->
+                <button type="button" id="toaDupForceBtn"
+                        style="display:block;width:100%;padding:11px 16px;background:#fff;border:1.5px solid #d0d0d0;border-radius:8px;font-weight:600;font-size:.9rem;color:#555;cursor:pointer;text-align:left;">
+                    🙋 <?php echo _ht_talent(array(
+                        'it'=>'Sono un\'altra persona, procedi',
+                        'en'=>'I\'m a different person, continue',
+                        'fr'=>'Je suis une autre personne, continuer',
+                        'es'=>'Soy otra persona, continuar',
+                    )); ?>
+                </button>
+            </div>
         </div>
 
         <!-- ═════ STEP 1 — Chi sei ═════ -->
@@ -818,7 +867,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260626a" defer></script><!-- FIX 2026-06-26 marco: bump v — check step1 composito (email+nome+cognome+data_nascita) anti-blocco famiglie -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260628a" defer></script><!-- FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
