@@ -197,6 +197,15 @@ $token_get = $_GET['t']    ?? '';
 .tse-album-thumb.pending { border-color:#FFB300; }
 .tse-album-thumb.rejected { border-color:#EF4444; }
 .tse-album-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+/* FIX 2026-06-28 marco — bottoni elimina/sposta su thumbnail */
+.tse-thumb-actions { position:absolute; bottom:4px; right:4px; display:flex; gap:4px; z-index:2; opacity:0; transition:opacity .15s; }
+.tse-album-thumb:hover .tse-thumb-actions { opacity:1; }
+.tse-thumb-btn { background:rgba(0,0,0,.72); border:none; color:#fff; border-radius:5px; width:28px; height:28px; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; line-height:1; }
+.tse-thumb-btn:hover { background:rgba(0,0,0,.92); }
+.tse-thumb-del:hover { background:rgba(239,68,68,.85); }
+.tse-move-menu { display:none; position:absolute; bottom:34px; right:0; background:#1a1a1e; border:1px solid #3a3a42; border-radius:6px; overflow:hidden; min-width:100px; z-index:3; }
+.tse-move-menu button { display:block; width:100%; background:none; border:none; color:#d1d5db; font-size:12px; padding:7px 12px; text-align:left; cursor:pointer; }
+.tse-move-menu button:hover { background:#2a2a2e; color:#c8ff00; }
 /* badge OBSOLETO (S8.B copriva burn-in data scatto) — nascosto ovunque */
 .tse-album-thumb-badge { display:none !important; }
 .tse-album-count { text-align:center; font-size:12px; color:#9ca3af; margin:8px auto 4px; padding:6px 10px; background:rgba(255,179,0,.08); border:1px solid rgba(255,179,0,.25); border-radius:6px; display:inline-block; }

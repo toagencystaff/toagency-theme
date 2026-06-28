@@ -171,6 +171,9 @@
             resetUploadForm();
             return;
         }
+        // FIX 2026-06-28 marco — album labels per il menu sposta
+        var ALBUM_LABELS = { polaroid:'Polaroid', dettaglio:'Dettaglio', portfolio:'Portfolio', eventi:'Eventi' };
+
         grid.innerHTML = '';
         items.forEach(function (it) {
             var stateClass = '';
@@ -185,15 +188,68 @@
             var thumb = document.createElement('div');
             thumb.className = 'tse-album-thumb' + (stateClass ? ' ' + stateClass : '');
             thumb.title = title;
-            // FIX 2026-06-28 marco — lightbox interno invece di window.open (_blank)
+            // Lightbox al click sull'immagine
             (function (url) {
-                thumb.addEventListener('click', function () { talentShowLightbox(url); });
+                thumb.addEventListener('click', function (e) {
+                    if (!e.target.closest('.tse-thumb-actions')) talentShowLightbox(url);
+                });
             })(it.url);
             var img = document.createElement('img');
             img.src = it.url;
             img.alt = '';
             img.loading = 'lazy';
             thumb.appendChild(img);
+
+            // FIX 2026-06-28 marco — bottoni elimina + sposta album
+            (function (mediaId, albumTipo) {
+                var acts = document.createElement('div');
+                acts.className = 'tse-thumb-actions';
+
+                // Bottone elimina
+                var delBtn = document.createElement('button');
+                delBtn.type = 'button';
+                delBtn.className = 'tse-thumb-btn tse-thumb-del';
+                delBtn.title = 'Elimina foto';
+                delBtn.textContent = '🗑';
+                delBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    if (!confirm('Eliminare questa foto? L\'azione non è reversibile.')) return;
+                    talentMediaDelete(mediaId);
+                });
+                acts.appendChild(delBtn);
+
+                // Bottone sposta (dropdown album)
+                var moveBtn = document.createElement('button');
+                moveBtn.type = 'button';
+                moveBtn.className = 'tse-thumb-btn tse-thumb-move';
+                moveBtn.title = 'Sposta in un altro album';
+                moveBtn.textContent = '↔';
+                var moveMenu = document.createElement('div');
+                moveMenu.className = 'tse-move-menu';
+                ['polaroid','dettaglio','portfolio','eventi'].forEach(function (alb) {
+                    if (alb === albumTipo) return;
+                    var opt = document.createElement('button');
+                    opt.type = 'button';
+                    opt.textContent = ALBUM_LABELS[alb] || alb;
+                    opt.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        moveMenu.style.display = 'none';
+                        talentMediaMove(mediaId, alb);
+                    });
+                    moveMenu.appendChild(opt);
+                });
+                moveBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    var open = moveMenu.style.display === 'block';
+                    // chiudi tutti i menu aperti
+                    document.querySelectorAll('.tse-move-menu').forEach(function (m) { m.style.display = 'none'; });
+                    moveMenu.style.display = open ? 'none' : 'block';
+                });
+                acts.appendChild(moveBtn);
+                acts.appendChild(moveMenu);
+                thumb.appendChild(acts);
+            })(it.id, currentAlbum);
+
             grid.appendChild(thumb);
         });
 
@@ -351,6 +407,51 @@
             var el = $(id);
             if (el) el.classList.toggle('tse-missing', !hasSocial);
         });
+    }
+
+    // FIX 2026-06-28 marco — elimina foto dal self-edit
+    function talentMediaDelete(mediaId) {
+        fetch('/crm_toagency/actions/talent-media-delete.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ uuid: UUID, t: TOKEN, media_id: mediaId })
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+            if (d.ok) {
+                // Rimuovi dalla cache locale e ricarica la griglia
+                albumsData[currentAlbum] = (albumsData[currentAlbum] || []).filter(function (m) { return m.id !== mediaId; });
+                renderAlbum(currentAlbum);
+            } else {
+                alert('Errore durante l\'eliminazione: ' + (d.error || '?'));
+            }
+        })
+        .catch(function () { alert('Errore di rete, riprova.'); });
+    }
+
+    // FIX 2026-06-28 marco — sposta foto tra album
+    function talentMediaMove(mediaId, targetAlbum) {
+        fetch('/crm_toagency/actions/talent-media-move.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ uuid: UUID, t: TOKEN, media_id: mediaId, target_album: targetAlbum })
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+            if (d.ok) {
+                // Sposta dalla cache locale e aggiorna entrambi gli album
+                var item = (albumsData[currentAlbum] || []).find(function (m) { return m.id === mediaId; });
+                if (item) {
+                    albumsData[currentAlbum] = albumsData[currentAlbum].filter(function (m) { return m.id !== mediaId; });
+                    if (!albumsData[targetAlbum]) albumsData[targetAlbum] = [];
+                    albumsData[targetAlbum].push(item);
+                }
+                renderAlbum(currentAlbum);
+            } else {
+                alert('Errore durante lo spostamento: ' + (d.error || '?'));
+            }
+        })
+        .catch(function () { alert('Errore di rete, riprova.'); });
     }
 
     // FIX 2026-06-28 marco — lightbox anteprima foto (click su thumbnail)
