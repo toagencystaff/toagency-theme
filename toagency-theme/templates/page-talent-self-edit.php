@@ -336,6 +336,21 @@ $token_get = $_GET['t']    ?? '';
                 </div>
             </div>
 
+            <!-- FIX 2026-06-28 marco — sezione Indirizzo (comune + provincia) -->
+            <div class="tse-section">
+                <div class="tse-section-title">📍 <?= esc_html($_t(['it'=>'Indirizzo','en'=>'Location','fr'=>'Localisation','es'=>'Ubicación'])) ?></div>
+                <div class="tse-row">
+                    <div class="tse-field">
+                        <label class="tse-label"><?= esc_html($_t(['it'=>'Comune / Città','en'=>'City','fr'=>'Ville','es'=>'Ciudad'])) ?></label>
+                        <input type="text" id="f-comune_residenza" class="tse-input" placeholder="<?= esc_attr($_t(['it'=>'Es. Torino','en'=>'E.g. Turin','fr'=>'Ex. Turin','es'=>'Ej. Turín'])) ?>" maxlength="100" autocomplete="address-level2">
+                    </div>
+                    <div class="tse-field">
+                        <label class="tse-label"><?= esc_html($_t(['it'=>'Provincia','en'=>'Province / County','fr'=>'Province','es'=>'Provincia'])) ?></label>
+                        <input type="text" id="f-provincia_domicilio" class="tse-input" placeholder="<?= esc_attr($_t(['it'=>'Es. Torino','en'=>'E.g. Turin','fr'=>'Ex. Turin','es'=>'Ej. Turín'])) ?>" maxlength="100" autocomplete="address-level1">
+                    </div>
+                </div>
+            </div>
+
             <!-- Honeypot -->
             <div style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
                 <label>Non compilare<input type="text" id="f-honeypot" tabindex="-1" autocomplete="off"></label>

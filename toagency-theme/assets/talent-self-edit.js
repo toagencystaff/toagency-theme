@@ -16,7 +16,9 @@
     var TOKEN = cfg.token || '';
     var STR   = cfg.strings || {};
 
-    var FIELDS = ['telefono','instagram','tiktok','altezza','taglia','scarpe','capelli'];
+    // FIX 2026-06-28 marco — aggiunti comune + provincia
+    var FIELDS = ['telefono','instagram','tiktok','altezza','taglia','scarpe','capelli',
+                  'comune_residenza','provincia_domicilio'];
     var ALBUMS = ['polaroid','dettaglio','portfolio','eventi'];
     var currentAlbum = 'polaroid';
     var albumsData = { polaroid:[], dettaglio:[], portfolio:[], eventi:[] };
