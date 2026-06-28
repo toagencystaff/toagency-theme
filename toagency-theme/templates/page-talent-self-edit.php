@@ -134,15 +134,18 @@ $T = [
 ];
 
 // Enum coerenti con S4 (DB normalizzato) + form registrazione (S4 + page-registrati-talent.php)
+// FIX 2026-06-28 marco — valori canonici post-pulizia DB (con distinzione Chiaro/Scuro)
 $CAPELLI_OPTS = [
-    'biondi'=>['it'=>'Biondi','en'=>'Blonde','fr'=>'Blonds','es'=>'Rubios'],
-    'castani'=>['it'=>'Castani','en'=>'Brown','fr'=>'Châtains','es'=>'Castaños'],
-    'neri'=>['it'=>'Neri','en'=>'Black','fr'=>'Noirs','es'=>'Negros'],
-    'rossi'=>['it'=>'Rossi','en'=>'Red','fr'=>'Roux','es'=>'Pelirrojos'],
-    'grigi'=>['it'=>'Grigi','en'=>'Gray','fr'=>'Gris','es'=>'Grises'],
-    'bianchi'=>['it'=>'Bianchi','en'=>'White','fr'=>'Blancs','es'=>'Blancos'],
-    'calvo'=>['it'=>'Calvo','en'=>'Bald','fr'=>'Chauve','es'=>'Calvo'],
-    'altro'=>['it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro'],
+    'Biondo Chiaro'  => ['it'=>'Biondo chiaro',  'en'=>'Light blonde',  'fr'=>'Blond clair',   'es'=>'Rubio claro'],
+    'Biondo Scuro'   => ['it'=>'Biondo scuro',   'en'=>'Dark blonde',   'fr'=>'Blond foncé',   'es'=>'Rubio oscuro'],
+    'Castano Chiaro' => ['it'=>'Castano chiaro', 'en'=>'Light brown',   'fr'=>'Châtain clair', 'es'=>'Castaño claro'],
+    'Castano Scuro'  => ['it'=>'Castano scuro',  'en'=>'Dark brown',    'fr'=>'Châtain foncé', 'es'=>'Castaño oscuro'],
+    'Nero'           => ['it'=>'Nero',            'en'=>'Black',         'fr'=>'Noir',          'es'=>'Negro'],
+    'Rosso'          => ['it'=>'Rosso',           'en'=>'Red',           'fr'=>'Roux',          'es'=>'Pelirrojo'],
+    'Grigio'         => ['it'=>'Grigio',          'en'=>'Gray',          'fr'=>'Gris',          'es'=>'Gris'],
+    'Calvo'          => ['it'=>'Calvo',           'en'=>'Bald',          'fr'=>'Chauve',        'es'=>'Calvo'],
+    'Bianco'         => ['it'=>'Bianco',          'en'=>'White',         'fr'=>'Blanc',         'es'=>'Blanco'],
+    'Altro'          => ['it'=>'Altro',           'en'=>'Other',         'fr'=>'Autre',         'es'=>'Otro'],
 ];
 $TAGLIE_OPTS = ['XS','S','M','L','XL','XXL'];
 
@@ -389,6 +392,12 @@ $token_get = $_GET['t']    ?? '';
         </div>
     </div>
 </section>
+
+<!-- FIX 2026-06-28 marco — lightbox anteprima foto (click su thumbnail) -->
+<div id="tse-lb" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center;cursor:pointer;" onclick="this.style.display='none'">
+    <img id="tse-lb-img" src="" alt="" style="max-width:92vw;max-height:88vh;border-radius:6px;object-fit:contain;pointer-events:none;">
+    <span style="position:absolute;top:14px;right:18px;color:#fff;font-size:26px;line-height:1;font-weight:300;">✕</span>
+</div>
 
 <script>
 window.talentEditConfig = {

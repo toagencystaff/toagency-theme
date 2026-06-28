@@ -185,8 +185,9 @@
             var thumb = document.createElement('div');
             thumb.className = 'tse-album-thumb' + (stateClass ? ' ' + stateClass : '');
             thumb.title = title;
+            // FIX 2026-06-28 marco — lightbox interno invece di window.open (_blank)
             (function (url) {
-                thumb.addEventListener('click', function () { window.open(url, '_blank', 'noopener'); });
+                thumb.addEventListener('click', function () { talentShowLightbox(url); });
             })(it.url);
             var img = document.createElement('img');
             img.src = it.url;
@@ -351,6 +352,19 @@
             if (el) el.classList.toggle('tse-missing', !hasSocial);
         });
     }
+
+    // FIX 2026-06-28 marco — lightbox anteprima foto (click su thumbnail)
+    function talentShowLightbox(url) {
+        var lb = $('tse-lb');
+        var lbImg = $('tse-lb-img');
+        if (!lb || !lbImg) { window.open(url, '_blank', 'noopener'); return; }
+        lbImg.src = url;
+        lb.style.display = 'flex';
+    }
+    // Chiudi lightbox con ESC
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { var lb = $('tse-lb'); if (lb) lb.style.display = 'none'; }
+    });
 
     function escapeHtml(s) {
         return String(s).replace(/[&<>"']/g, function (c) {
