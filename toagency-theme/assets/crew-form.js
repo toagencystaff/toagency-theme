@@ -333,7 +333,7 @@
         if (trigger) trigger.textContent = 'Seleziona...';
 
         // FIX 2026-06-29 marco — paesi con dato pieno in geo_cities usano il typeahead (come IT)
-        var TYPEAHEAD_NATIONS = ['FR'];
+        var TYPEAHEAD_NATIONS = ['FR','ES','GB'];
         if (cityTypeahead) cityTypeahead.dataset.nation = nationCode;
 
         if (nationCode === 'IT') {
@@ -359,7 +359,7 @@
             if (provinceContainer) provinceContainer.style.display = 'none';
             if (cityTypeahead) cityTypeahead.style.display = '';
         }
-        else if (['ES','CH','GB'].indexOf(nationCode) > -1) {
+        else if (['CH'].indexOf(nationCode) > -1) {
             // Provincia nascosta
             if (provinceContainer) provinceContainer.style.display = 'none';
             // Mostra select città
