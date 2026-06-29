@@ -332,6 +332,10 @@
         var trigger = cityWrap.querySelector('.toa-crew-customselect-label');
         if (trigger) trigger.textContent = 'Seleziona...';
 
+        // FIX 2026-06-29 marco — paesi con dato pieno in geo_cities usano il typeahead (come IT)
+        var TYPEAHEAD_NATIONS = ['FR'];
+        if (cityTypeahead) cityTypeahead.dataset.nation = nationCode;
+
         if (nationCode === 'IT') {
             // Provincia visibile
             if (provinceContainer) provinceContainer.style.display = '';
@@ -350,7 +354,12 @@
             // Mostra typeahead comuni
             if (cityTypeahead) cityTypeahead.style.display = '';
         }
-        else if (['FR','ES','CH','GB'].indexOf(nationCode) > -1) {
+        else if (TYPEAHEAD_NATIONS.indexOf(nationCode) > -1) {
+            // Francia (e futuri paesi importati in geo_cities): typeahead come l'Italia, provincia nascosta
+            if (provinceContainer) provinceContainer.style.display = 'none';
+            if (cityTypeahead) cityTypeahead.style.display = '';
+        }
+        else if (['ES','CH','GB'].indexOf(nationCode) > -1) {
             // Provincia nascosta
             if (provinceContainer) provinceContainer.style.display = 'none';
             // Mostra select città
@@ -409,7 +418,7 @@
             var q = this.value.trim();
             if (q.length < 2) { hideSugg(); return; }
             t = setTimeout(function() {
-                fetch(GEO_ENDPOINT + '?type=cities&nation=IT&q=' + encodeURIComponent(q))
+                fetch(GEO_ENDPOINT + '?type=cities&nation=' + encodeURIComponent(typeaheadBox.dataset.nation || 'IT') + '&q=' + encodeURIComponent(q))
                     .then(function(r){return r.json();})
                     .then(showSugg)
                     .catch(function(){});
