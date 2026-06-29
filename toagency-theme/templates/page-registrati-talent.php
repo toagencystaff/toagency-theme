@@ -79,7 +79,7 @@ $TALENT_OCCHI = array(
     array('code'=>'marroni', 'label'=>array('it'=>'Marroni','en'=>'Brown','fr'=>'Marrons','es'=>'Marrones')),
     array('code'=>'neri',    'label'=>array('it'=>'Neri','en'=>'Black','fr'=>'Noirs','es'=>'Negros')),
     array('code'=>'grigi',   'label'=>array('it'=>'Grigi','en'=>'Gray','fr'=>'Gris','es'=>'Grises')),
-    array('code'=>'altro',   'label'=>array('it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro')),
+    // FIX 2026-06-29 marco — rimossa opzione "Altro" da colore occhi (Altro mai, eccetto sesso)
 );
 $TALENT_CAPELLI = array(
     array('code'=>'biondi',  'label'=>array('it'=>'Biondi','en'=>'Blonde','fr'=>'Blonds','es'=>'Rubios')),
