@@ -50,7 +50,7 @@ $TALENT_RUOLI_IMMAGINE = array(
     array('code'=>'creator',    'min_age'=>14, 'label'=>array('it'=>'Content Creator','en'=>'Content Creator','fr'=>'Créateur de contenu','es'=>'Creador de contenido')),
     array('code'=>'influencer', 'min_age'=>14, 'label'=>array('it'=>'Influencer','en'=>'Influencer','fr'=>'Influenceur','es'=>'Influencer')),
     array('code'=>'comparsa',   'min_age'=>14, 'label'=>array('it'=>'Comparsa','en'=>'Extra','fr'=>'Figurant','es'=>'Extra')),
-    array('code'=>'altro',      'min_age'=>14, 'label'=>array('it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro')),
+    // FIX 2026-06-29 marco — rimossa opzione "Altro" dai ruoli (ruoli solo lista canonica, eccetto sesso)
 );
 
 // ─────────────────────────────────────────────────────────────────────
