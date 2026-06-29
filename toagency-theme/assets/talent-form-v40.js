@@ -448,7 +448,7 @@
         if (trigger) trigger.textContent = 'Seleziona...';
 
         // FIX 2026-06-29 marco — paesi con dato pieno in geo_cities usano il typeahead (come IT)
-        var TYPEAHEAD_NATIONS = ['FR','ES','GB','DE','CH','BE','NL','AT','PT','IE','PL','US','AE','CA','AU'];
+        var TYPEAHEAD_NATIONS = ['FR','ES','GB','DE','CH','BE','NL','AT','PT','IE','PL','US','AE','CA','AU','SE','NO','DK','FI','GR','RO','CZ','HU','HR','RS','UA','BG','SK','SI','LU','TR','IL','SA','EG','ZA','MA','BR','MX','AR','CL','CO','RU','IN','CN','JP','KR','SG','HK','TH','NZ'];
         if (cityTypeahead) cityTypeahead.dataset.nation = nationCode;
 
         if (nationCode === 'IT') {
