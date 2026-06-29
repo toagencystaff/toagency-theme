@@ -381,8 +381,7 @@ $token_get = $_GET['t']    ?? '';
 
             <div id="tse-album-desc" class="tse-album-desc"></div>
 
-            <div id="tse-album-grid" class="tse-album-grid"></div>
-
+            <!-- FIX 2026-06-28 marco — upload-box sopra la griglia (era troppo lontano da scrollare) -->
             <div class="tse-upload-box">
                 <div class="tse-upload-field" id="tse-data-scatto-wrap">
                     <label class="tse-label" id="tse-data-scatto-label"><?= esc_html($_t($T['field_data_scatto'])) ?></label>
@@ -413,6 +412,8 @@ $token_get = $_GET['t']    ?? '';
                 </div>
                 <div id="tse-upload-status" class="tse-upload-status"></div>
             </div>
+
+            <div id="tse-album-grid" class="tse-album-grid" style="margin-top:18px;"></div>
         </div>
     </div>
 </section>
