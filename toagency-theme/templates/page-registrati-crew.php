@@ -525,6 +525,35 @@ $theme_uri = get_stylesheet_directory_uri();
                 </label>
             </div>
             <!-- ═════════ FINE CONSENSO PUBBLICAZIONE ═════════ -->
+            <!-- NOTIFICHE — opt-in WhatsApp/SMS (facoltativo, NON pre-spuntato) 2026-06-30 marco -->
+            <div class="toa-crew-field" style="background:rgba(37,211,102,0.05);border:1px solid rgba(37,211,102,0.25);border-radius:14px;padding:18px;margin-top:20px;">
+                <strong style="color:#25D366;display:block;margin-bottom:10px;">📲 <?php echo _ht_crew(array(
+                    'it'=>'Ricevi le proposte di lavoro adatte a te',
+                    'en'=>'Get the job offers that fit you',
+                    'fr'=>'Reçois les offres qui te correspondent',
+                    'es'=>'Recibe las propuestas que encajan contigo',
+                )); ?></strong>
+                <label class="toa-crew-checkbox" style="align-items:flex-start;">
+                    <input type="checkbox" name="wa_consent" value="1" style="margin-top:6px;">
+                    <span style="font-size:0.88rem;line-height:1.5;"><?php echo _ht_crew(array(
+                        'it'=>'Voglio ricevere le proposte urgenti su WhatsApp (il modo più veloce per non perderle).',
+                        'en'=>'I want urgent offers on WhatsApp (the fastest way not to miss them).',
+                        'fr'=>'Je veux recevoir les offres urgentes sur WhatsApp.',
+                        'es'=>'Quiero recibir las propuestas urgentes por WhatsApp.',
+                    )); ?></span>
+                </label>
+                <label class="toa-crew-checkbox" style="align-items:flex-start;margin-top:8px;">
+                    <input type="checkbox" name="sms_consent" value="1" style="margin-top:6px;">
+                    <span style="font-size:0.88rem;line-height:1.5;"><?php echo _ht_crew(array(
+                        'it'=>'Voglio ricevere le proposte anche via SMS.',
+                        'en'=>'I also want offers by SMS.',
+                        'fr'=>'Je veux aussi recevoir les offres par SMS.',
+                        'es'=>'También quiero recibir las propuestas por SMS.',
+                    )); ?></span>
+                </label>
+            </div>
+
+
 
             <div style="position:absolute; left:-9999px; opacity:0;" aria-hidden="true">
                 <label>Non compilare<input type="text" name="honeypot_url" tabindex="-1" autocomplete="off"></label>
