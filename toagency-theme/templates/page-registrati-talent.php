@@ -748,6 +748,35 @@ $theme_uri = get_stylesheet_directory_uri();
                 <div class="toa-talent-error-msg"></div>
             </div>
 
+            <!-- NOTIFICHE CASTING — opt-in WhatsApp/SMS (facoltativo, NON pre-spuntato) 2026-06-30 marco -->
+            <div class="toa-talent-field" style="background:rgba(37,211,102,0.05);border:1px solid rgba(37,211,102,0.25);border-radius:14px;padding:18px;margin-top:20px;">
+                <strong style="color:#25D366;display:block;margin-bottom:10px;">📲 <?php echo _ht_talent(array(
+                    'it'=>'Ricevi i casting adatti a te',
+                    'en'=>'Get the castings that fit you',
+                    'fr'=>'Reçois les castings faits pour toi',
+                    'es'=>'Recibe los castings ideales para ti',
+                )); ?></strong>
+                <label class="toa-talent-checkbox" style="align-items:flex-start;">
+                    <input type="checkbox" name="wa_consent" value="1" style="margin-top:6px;">
+                    <span style="font-size:0.88rem;line-height:1.5;"><?php echo _ht_talent(array(
+                        'it'=>'Voglio ricevere i casting urgenti su WhatsApp (il modo più veloce per non perderli).',
+                        'en'=>'I want to receive urgent castings on WhatsApp (the fastest way not to miss them).',
+                        'fr'=>'Je veux recevoir les castings urgents sur WhatsApp (le plus rapide pour ne pas les rater).',
+                        'es'=>'Quiero recibir los castings urgentes por WhatsApp (lo más rápido para no perderlos).',
+                    )); ?></span>
+                </label>
+                <label class="toa-talent-checkbox" style="align-items:flex-start;margin-top:8px;">
+                    <input type="checkbox" name="sms_consent" value="1" style="margin-top:6px;">
+                    <span style="font-size:0.88rem;line-height:1.5;"><?php echo _ht_talent(array(
+                        'it'=>'Voglio ricevere i casting anche via SMS.',
+                        'en'=>'I also want to receive castings by SMS.',
+                        'fr'=>'Je veux aussi recevoir les castings par SMS.',
+                        'es'=>'También quiero recibir los castings por SMS.',
+                    )); ?></span>
+                </label>
+            </div>
+
+
             <!-- ═════════ CONSENSO GDPR / PRIVACY (obbligatorio) ═════════ -->
             <div class="toa-talent-field">
                 <label class="toa-talent-checkbox">
