@@ -31,15 +31,23 @@
             (list || []).forEach(function (p) {
                 var o = document.createElement('option');
                 o.value = p.name;
+                o.dataset.code = (p.code || '').toUpperCase();
                 o.textContent = p.name + ' (' + p.code + ')';
                 sel.appendChild(o);
             });
             if (selected) {
-                sel.value = selected;
+                sel.value = selected;                        // match per nome pieno ("Torino")
                 if (sel.value !== selected) {
-                    var o2 = document.createElement('option');
-                    o2.value = selected; o2.textContent = selected;
-                    sel.appendChild(o2); sel.value = selected;
+                    // dati vecchi salvati come sigla ("TO") → matcho la sigla, così mostra "Torino (TO)"
+                    var up = selected.toUpperCase(), matched = false;
+                    Array.prototype.forEach.call(sel.options, function (op) {
+                        if (!matched && op.dataset.code === up) { sel.value = op.value; matched = true; }
+                    });
+                    if (!matched) {                          // valore ignoto → preservalo (no svuotamenti)
+                        var o2 = document.createElement('option');
+                        o2.value = selected; o2.textContent = selected;
+                        sel.appendChild(o2); sel.value = selected;
+                    }
                 }
             }
         }).catch(function () {});
