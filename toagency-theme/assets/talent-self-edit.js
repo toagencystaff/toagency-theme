@@ -26,6 +26,73 @@
 
     function $(id) { return document.getElementById(id); }
 
+    // FIX 2026-07-01 marco — comune self-edit: ricerca a suggerimenti da cerca-comune.php, SENZA testo libero.
+    // Visibile = f-comune_search (ricerca); valore salvato = hidden f-comune_residenza (solo se scelto dalla lista).
+    function initComuneTypeahead(saved, nation) {
+        var search = $('f-comune_search');
+        var hidden = $('f-comune_residenza');
+        var dd     = $('f-comune_dropdown');
+        if (!search || !hidden || !dd) return;
+        var apiBase = (window.talentEditConfig || {}).comuneApiUrl;
+        if (!apiBase) return;
+        var nat = (nation || 'IT').toUpperCase();
+        var lastValid = saved || '';        // il valore già salvato è considerato valido
+        hidden.value = saved || '';
+        search.value = saved || '';
+        search.dataset.valid = saved ? '1' : '';
+        var timer = null;
+
+        function closeDD() { dd.style.display = 'none'; dd.innerHTML = ''; }
+
+        function fetchSug(q) {
+            fetch(apiBase + '?type=cities&nation=' + encodeURIComponent(nat) + '&q=' + encodeURIComponent(q))
+                .then(function (r) { return r.json(); })
+                .then(function (list) {
+                    dd.innerHTML = '';
+                    if (!list || !list.length) { closeDD(); return; }
+                    list.slice(0, 20).forEach(function (item) {
+                        var row = document.createElement('div');
+                        row.textContent = item.display || item.name_local;
+                        row.style.cssText = 'padding:10px 12px;cursor:pointer;border-bottom:1px solid #222;color:#e5e7eb;font-size:14px;';
+                        row.addEventListener('mouseenter', function () { row.style.background = '#1f1f27'; });
+                        row.addEventListener('mouseleave', function () { row.style.background = ''; });
+                        row.addEventListener('mousedown', function (e) {
+                            e.preventDefault();               // evita il blur prima del click
+                            var val = item.name_local || item.display;
+                            hidden.value = val;
+                            search.value = val;
+                            search.dataset.valid = '1';
+                            lastValid = val;
+                            closeDD();
+                        });
+                        dd.appendChild(row);
+                    });
+                    dd.style.display = 'block';
+                })
+                .catch(function () { closeDD(); });
+        }
+
+        search.addEventListener('input', function () {
+            search.dataset.valid = '';     // finché non scegli dalla lista, non è valido
+            hidden.value = '';
+            var q = search.value.trim();
+            clearTimeout(timer);
+            if (q.length < 2) { closeDD(); return; }
+            timer = setTimeout(function () { fetchSug(q); }, 250);
+        });
+
+        search.addEventListener('blur', function () {
+            setTimeout(function () {        // lascia scattare prima l'eventuale scelta (mousedown)
+                closeDD();
+                if (search.dataset.valid !== '1') {   // niente scelta valida → ripristina l'ultimo valido (no testo libero)
+                    search.value = lastValid;
+                    hidden.value = lastValid;
+                    if (lastValid) search.dataset.valid = '1';
+                }
+            }, 180);
+        });
+    }
+
     // FIX 2026-07-01 marco — popola tendina provincia da province-italia.json (valore = nome canonico)
     function populateProvince(selected) {
         var sel = $('f-provincia_domicilio');
@@ -81,6 +148,9 @@
 
             // FIX 2026-07-01 marco — tendina provincia self-edit
             populateProvince(d.talent.provincia_domicilio || '');
+
+            // FIX 2026-07-01 marco — ricerca comune self-edit (no testo libero)
+            initComuneTypeahead(d.talent.comune_residenza || '', d.talent.paese_residenza || 'IT');
 
             // FIX 2026-05-26 marco — community IT + highlight campi mancanti
             paeseResidenza = d.talent.paese_residenza || '';

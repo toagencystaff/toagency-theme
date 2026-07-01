@@ -340,9 +340,12 @@ $token_get = $_GET['t']    ?? '';
             <div class="tse-section">
                 <div class="tse-section-title">📍 <?= esc_html($_t(['it'=>'Indirizzo','en'=>'Location','fr'=>'Localisation','es'=>'Ubicación'])) ?></div>
                 <div class="tse-row">
-                    <div class="tse-field">
+                    <!-- FIX 2026-07-01 marco — comune con ricerca a suggerimenti (no testo libero): scegli dalla lista -->
+                    <div class="tse-field" style="position:relative;">
                         <label class="tse-label"><?= esc_html($_t(['it'=>'Comune / Città','en'=>'City','fr'=>'Ville','es'=>'Ciudad'])) ?></label>
-                        <input type="text" id="f-comune_residenza" class="tse-input" placeholder="<?= esc_attr($_t(['it'=>'Es. Torino','en'=>'E.g. Turin','fr'=>'Ex. Turin','es'=>'Ej. Turín'])) ?>" maxlength="100" autocomplete="address-level2">
+                        <input type="text" id="f-comune_search" class="tse-input" placeholder="<?= esc_attr($_t(['it'=>'Scrivi e scegli dalla lista…','en'=>'Type and pick from the list…','fr'=>'Écrivez et choisissez…','es'=>'Escribe y elige…'])) ?>" maxlength="100" autocomplete="off">
+                        <input type="hidden" id="f-comune_residenza">
+                        <div id="f-comune_dropdown" class="tse-ac-dd" style="display:none;position:absolute;left:0;right:0;top:100%;z-index:60;background:#141418;border:1px solid #333;border-radius:8px;margin-top:4px;max-height:240px;overflow:auto;box-shadow:0 8px 24px rgba(0,0,0,.4);"></div>
                     </div>
                     <div class="tse-field">
                         <label class="tse-label"><?= esc_html($_t(['it'=>'Provincia','en'=>'Province / County','fr'=>'Province','es'=>'Provincia'])) ?></label>
@@ -434,6 +437,7 @@ window.talentEditConfig = {
     apiMediaList:'/crm_toagency/actions/talent-media-list.php',
     apiMediaUp:  '/crm_toagency/actions/talent-media-upload.php',
     provinceJsonUrl: <?= json_encode($theme_uri . '/assets/data/province-italia.json') ?>, /* FIX 2026-07-01 marco — tendina provincia self-edit */
+    comuneApiUrl: '/crm_toagency/actions/cerca-comune.php', /* FIX 2026-07-01 marco — ricerca comune self-edit */
     uuid:    <?= json_encode($uuid_get) ?>,
     token:   <?= json_encode($token_get) ?>,
     strings: {
