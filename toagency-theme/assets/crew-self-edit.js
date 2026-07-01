@@ -16,9 +16,96 @@
     var TOKEN = cfg.token || '';
     var STR   = cfg.strings || {};
 
-    var FIELDS = ['telefono','email','bio','instagram','tiktok','sito_web'];
+    // FIX 2026-07-01 marco — aggiunti comune + provincia (geo self-edit crew)
+    var FIELDS = ['telefono','email','bio','instagram','tiktok','sito_web','comune_residenza','provincia_domicilio'];
 
     function $(id) { return document.getElementById(id); }
+
+    // FIX 2026-07-01 marco — popola tendina provincia da province-italia.json (valore = nome pieno canonico)
+    function populateProvince(selected) {
+        var sel = $('f-provincia_domicilio');
+        if (!sel || sel.tagName !== 'SELECT') return;
+        var url = (window.crewEditConfig || {}).provinceJsonUrl;
+        if (!url) return;
+        fetch(url).then(function (r) { return r.json(); }).then(function (list) {
+            (list || []).forEach(function (p) {
+                var o = document.createElement('option');
+                o.value = p.name;
+                o.textContent = p.name + ' (' + p.code + ')';
+                sel.appendChild(o);
+            });
+            if (selected) {
+                sel.value = selected;
+                if (sel.value !== selected) {
+                    var o2 = document.createElement('option');
+                    o2.value = selected; o2.textContent = selected;
+                    sel.appendChild(o2); sel.value = selected;
+                }
+            }
+        }).catch(function () {});
+    }
+
+    // FIX 2026-07-01 marco — comune: ricerca a suggerimenti da cerca-comune.php, SENZA testo libero.
+    function initComuneTypeahead(saved, nation) {
+        var search = $('f-comune_search');
+        var hidden = $('f-comune_residenza');
+        var dd     = $('f-comune_dropdown');
+        if (!search || !hidden || !dd) return;
+        var apiBase = (window.crewEditConfig || {}).comuneApiUrl;
+        if (!apiBase) return;
+        var nat = (nation || 'IT').toUpperCase();
+        var lastValid = saved || '';
+        hidden.value = saved || '';
+        search.value = saved || '';
+        search.dataset.valid = saved ? '1' : '';
+        var timer = null;
+
+        function closeDD() { dd.style.display = 'none'; dd.innerHTML = ''; }
+
+        function fetchSug(q) {
+            fetch(apiBase + '?type=cities&nation=' + encodeURIComponent(nat) + '&q=' + encodeURIComponent(q))
+                .then(function (r) { return r.json(); })
+                .then(function (list) {
+                    dd.innerHTML = '';
+                    if (!list || !list.length) { closeDD(); return; }
+                    list.slice(0, 20).forEach(function (item) {
+                        var row = document.createElement('div');
+                        row.textContent = item.display || item.name_local;
+                        row.style.cssText = 'padding:10px 12px;cursor:pointer;border-bottom:1px solid #222;color:#e5e7eb;font-size:14px;';
+                        row.addEventListener('mouseenter', function () { row.style.background = '#1f1f27'; });
+                        row.addEventListener('mouseleave', function () { row.style.background = ''; });
+                        row.addEventListener('mousedown', function (e) {
+                            e.preventDefault();
+                            var val = item.name_local || item.display;
+                            hidden.value = val; search.value = val;
+                            search.dataset.valid = '1'; lastValid = val;
+                            closeDD();
+                        });
+                        dd.appendChild(row);
+                    });
+                    dd.style.display = 'block';
+                })
+                .catch(function () { closeDD(); });
+        }
+
+        search.addEventListener('input', function () {
+            search.dataset.valid = ''; hidden.value = '';
+            var q = search.value.trim();
+            clearTimeout(timer);
+            if (q.length < 2) { closeDD(); return; }
+            timer = setTimeout(function () { fetchSug(q); }, 250);
+        });
+
+        search.addEventListener('blur', function () {
+            setTimeout(function () {
+                closeDD();
+                if (search.dataset.valid !== '1') {
+                    search.value = lastValid; hidden.value = lastValid;
+                    if (lastValid) search.dataset.valid = '1';
+                }
+            }, 180);
+        });
+    }
 
     function showError(msg) {
         $('crew-edit-status').textContent = msg;
@@ -51,8 +138,13 @@
 
             // Popola form
             FIELDS.forEach(function (f) {
-                $('f-' + f).value = d.crew[f] || '';
+                var el = $('f-' + f);
+                if (el) el.value = d.crew[f] || '';
             });
+
+            // FIX 2026-07-01 marco — geo crew self-edit
+            populateProvince(d.crew.provincia_domicilio || '');
+            initComuneTypeahead(d.crew.comune_residenza || '', d.crew.paese_residenza || 'IT');
 
             // Foto profilo (S6.5) — preview = foto VISIBILE approvata
             if (d.foto_profilo_url) {

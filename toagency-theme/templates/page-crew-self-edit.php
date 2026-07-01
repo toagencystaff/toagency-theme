@@ -240,6 +240,20 @@ $token_get = $_GET['t']    ?? '';
                 <input type="url" id="f-sito_web" class="crew-edit-input" placeholder="https://..." maxlength="500">
             </div>
 
+            <!-- FIX 2026-07-01 marco — geo crew self-edit: comune (ricerca) + provincia (tendina), no testo libero -->
+            <div class="crew-edit-field" style="position:relative;">
+                <label class="crew-edit-label"><?= esc_html($_t(['it'=>'Comune / Città','en'=>'City','fr'=>'Ville','es'=>'Ciudad'])) ?></label>
+                <input type="text" id="f-comune_search" class="crew-edit-input" placeholder="<?= esc_attr($_t(['it'=>'Scrivi e scegli dalla lista…','en'=>'Type and pick from the list…','fr'=>'Écrivez et choisissez…','es'=>'Escribe y elige…'])) ?>" maxlength="100" autocomplete="off">
+                <input type="hidden" id="f-comune_residenza">
+                <div id="f-comune_dropdown" style="display:none;position:absolute;left:0;right:0;top:100%;z-index:60;background:#141418;border:1px solid #333;border-radius:8px;margin-top:4px;max-height:240px;overflow:auto;box-shadow:0 8px 24px rgba(0,0,0,.4);"></div>
+            </div>
+            <div class="crew-edit-field">
+                <label class="crew-edit-label"><?= esc_html($_t(['it'=>'Provincia','en'=>'Province / County','fr'=>'Province','es'=>'Provincia'])) ?></label>
+                <select id="f-provincia_domicilio" class="crew-edit-input">
+                    <option value=""><?= esc_html($_t(['it'=>'Seleziona provincia','en'=>'Select province','fr'=>'Choisir la province','es'=>'Seleccionar provincia'])) ?></option>
+                </select>
+            </div>
+
             <!-- Honeypot anti-spam -->
             <div style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
                 <label>Non compilare<input type="text" id="f-honeypot" tabindex="-1" autocomplete="off"></label>
@@ -259,6 +273,8 @@ window.crewEditConfig = {
     apiLoad:        '/crm_toagency/actions/crew-self-edit-load.php',
     apiSave:        '/crm_toagency/actions/crew-self-edit-save.php',
     apiUploadFoto:  '/crm_toagency/actions/crew-upload-foto-profilo.php',
+    provinceJsonUrl: <?= json_encode($theme_uri . '/assets/data/province-italia.json') ?>, /* FIX 2026-07-01 marco — tendina provincia crew */
+    comuneApiUrl:   '/crm_toagency/actions/cerca-comune.php', /* FIX 2026-07-01 marco — ricerca comune crew */
     pendingFotoTpl: <?= json_encode($_t($T['pending_foto'])) ?>,
     uuid:    <?= json_encode($uuid_get) ?>,
     token:   <?= json_encode($token_get) ?>,
@@ -273,6 +289,6 @@ window.crewEditConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=1.0" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260701geo" defer></script>
 
 <?php toa_component('footer'); ?>
