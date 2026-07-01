@@ -26,6 +26,32 @@
 
     function $(id) { return document.getElementById(id); }
 
+    // FIX 2026-07-01 marco — popola tendina provincia da province-italia.json (valore = nome canonico)
+    function populateProvince(selected) {
+        var sel = $('f-provincia_domicilio');
+        if (!sel || sel.tagName !== 'SELECT') return;
+        var url = (window.talentEditConfig || {}).provinceJsonUrl;
+        if (!url) return;
+        fetch(url).then(function (r) { return r.json(); }).then(function (list) {
+            (list || []).forEach(function (p) {
+                var o = document.createElement('option');
+                o.value = p.name;                       // canonico = nome pieno (es. "Torino")
+                o.textContent = p.name + ' (' + p.code + ')';
+                sel.appendChild(o);
+            });
+            if (selected) {
+                sel.value = selected;
+                if (sel.value !== selected) {           // valore vecchio non in lista: preservalo, niente svuotamenti
+                    var o2 = document.createElement('option');
+                    o2.value = selected;
+                    o2.textContent = selected;
+                    sel.appendChild(o2);
+                    sel.value = selected;
+                }
+            }
+        }).catch(function () {});
+    }
+
     function showError(msg) {
         $('tse-status').textContent = msg;
         $('tse-status').classList.add('error');
@@ -52,6 +78,9 @@
                 var el = $('f-' + f);
                 if (el) el.value = (d.talent[f] !== null && d.talent[f] !== undefined) ? d.talent[f] : '';
             });
+
+            // FIX 2026-07-01 marco — tendina provincia self-edit
+            populateProvince(d.talent.provincia_domicilio || '');
 
             // FIX 2026-05-26 marco — community IT + highlight campi mancanti
             paeseResidenza = d.talent.paese_residenza || '';

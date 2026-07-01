@@ -346,7 +346,10 @@ $token_get = $_GET['t']    ?? '';
                     </div>
                     <div class="tse-field">
                         <label class="tse-label"><?= esc_html($_t(['it'=>'Provincia','en'=>'Province / County','fr'=>'Province','es'=>'Provincia'])) ?></label>
-                        <input type="text" id="f-provincia_domicilio" class="tse-input" placeholder="<?= esc_attr($_t(['it'=>'Es. Torino','en'=>'E.g. Turin','fr'=>'Ex. Turin','es'=>'Ej. Turín'])) ?>" maxlength="100" autocomplete="address-level1">
+                        <!-- FIX 2026-07-01 marco — tendina provincia self-edit (no testo libero) -->
+                        <select id="f-provincia_domicilio" class="tse-select">
+                            <option value=""><?= esc_html($_t(['it'=>'Seleziona provincia','en'=>'Select province','fr'=>'Choisir la province','es'=>'Seleccionar provincia'])) ?></option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -430,6 +433,7 @@ window.talentEditConfig = {
     apiSave:     '/crm_toagency/actions/talent-self-edit-save.php',
     apiMediaList:'/crm_toagency/actions/talent-media-list.php',
     apiMediaUp:  '/crm_toagency/actions/talent-media-upload.php',
+    provinceJsonUrl: <?= json_encode($theme_uri . '/assets/data/province-italia.json') ?>, /* FIX 2026-07-01 marco — tendina provincia self-edit */
     uuid:    <?= json_encode($uuid_get) ?>,
     token:   <?= json_encode($token_get) ?>,
     strings: {
