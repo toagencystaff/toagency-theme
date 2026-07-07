@@ -166,6 +166,9 @@
 
         if (elStatus) elStatus.style.display = 'none';
         if (elForm) elForm.classList.add('visible');
+
+        // F4 2026-07-07 marco — carica la sezione foto multi-album
+        loadMedia();
     })
     .catch(function () { showStatusError(S.invalidLink || 'Errore di rete.'); });
 
@@ -238,4 +241,219 @@
             showResult('err', (S.errorPrefix || 'Errore: ') + 'network');
         });
     };
+
+    // ─── F4 2026-07-07 marco — sezione foto multi-album (portata da talent-self-edit.js) ───
+    // Upload immediato e indipendente dal salvataggio dati. Endpoint riusati token-based (uuid+t).
+    var ALBUMS = ['polaroid', 'dettaglio', 'portfolio', 'eventi'];
+    var currentAlbum = 'polaroid';
+    var albumsData = { polaroid: [], dettaglio: [], portfolio: [], eventi: [] };
+
+    function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+
+    function loadMedia() {
+        if (!cfg.apiMediaList) return;
+        fetch(cfg.apiMediaList + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN) + '&scope=self&_=' + Date.now(), {
+            method: 'GET', credentials: 'same-origin'
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+            if (!d || !d.ok) return;
+            ALBUMS.forEach(function (a) { albumsData[a] = (d.albums && d.albums[a]) || []; });
+            var sec = document.getElementById('cp-foto-section');
+            if (sec) sec.style.display = 'block';
+            renderAlbum(currentAlbum);
+        })
+        .catch(function () {});
+    }
+
+    function renderAlbum(album) {
+        currentAlbum = album;
+        var tabs = document.querySelectorAll('.cp-alb-tab');
+        for (var i = 0; i < tabs.length; i++) {
+            tabs[i].classList.toggle('active', tabs[i].getAttribute('data-album') === album);
+        }
+        var desc = document.getElementById('cp-alb-desc');
+        if (desc) desc.textContent = (S.albumDesc && S.albumDesc[album]) || '';
+        var vt = document.getElementById('cp-verita-text');
+        if (vt) vt.textContent = (S.verita && S.verita[album]) || '';
+
+        var lbl  = document.getElementById('cp-data-scatto-label');
+        var hint = document.getElementById('cp-data-scatto-hint');
+        if (album === 'polaroid') {
+            if (lbl)  lbl.textContent  = S.dataScattoLabelReq || 'Data scatto (obbligatoria)';
+            if (hint) hint.textContent = S.dataScattoHintPolaroid || '';
+        } else {
+            if (lbl)  lbl.textContent  = S.dataScattoLabelOpt || 'Data scatto (facoltativa)';
+            if (hint) hint.textContent = S.dataScattoHintAltri || '';
+        }
+
+        var grid = document.getElementById('cp-alb-grid');
+        if (!grid) return;
+        var items = albumsData[album] || [];
+        grid.innerHTML = '';
+
+        if (!items.length) {
+            grid.innerHTML = '<div class="cp-alb-empty">' + escapeHtml(S.noPhotos || 'Nessuna foto') + '</div>';
+            resetUploadForm();
+            return;
+        }
+
+        items.forEach(function (it) {
+            var stateClass = '';
+            var title = 'Click per ingrandire';
+            if (it.motivo_rifiuto) { stateClass = 'rejected'; title = 'Rifiutata — click per ingrandire'; }
+            else if (!it.approvato_staff) { stateClass = 'pending'; title = 'In attesa di approvazione — click per ingrandire'; }
+
+            var thumb = document.createElement('div');
+            thumb.className = 'cp-alb-thumb' + (stateClass ? ' ' + stateClass : '');
+            thumb.title = title;
+            (function (url) {
+                thumb.addEventListener('click', function (e) {
+                    if (!e.target.closest('.cp-thumb-actions')) showLightbox(url);
+                });
+            })(it.url);
+            var img = document.createElement('img');
+            img.src = it.url; img.alt = ''; img.loading = 'lazy';
+            thumb.appendChild(img);
+
+            (function (mediaId) {
+                var acts = document.createElement('div');
+                acts.className = 'cp-thumb-actions';
+                var delBtn = document.createElement('button');
+                delBtn.type = 'button';
+                delBtn.className = 'cp-thumb-btn cp-thumb-del';
+                delBtn.title = 'Elimina foto';
+                delBtn.textContent = '🗑';
+                delBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    if (!confirm('Eliminare questa foto? L\'azione non è reversibile.')) return;
+                    mediaDelete(mediaId);
+                });
+                acts.appendChild(delBtn);
+                thumb.appendChild(acts);
+            })(it.id);
+
+            grid.appendChild(thumb);
+        });
+
+        var pendingCount  = items.filter(function (i) { return !i.motivo_rifiuto && !i.approvato_staff; }).length;
+        var rejectedCount = items.filter(function (i) { return !!i.motivo_rifiuto; }).length;
+        if (pendingCount || rejectedCount) {
+            var parts = [];
+            if (pendingCount)  parts.push('🟡 ' + pendingCount + ' in attesa di approvazione');
+            if (rejectedCount) parts.push('❌ ' + rejectedCount + ' rifiutate');
+            var info = document.createElement('div');
+            info.className = 'cp-alb-count';
+            info.textContent = parts.join(' · ');
+            grid.appendChild(info);
+        }
+        resetUploadForm();
+    }
+
+    function resetUploadForm() {
+        var fi = document.getElementById('cp-file-input');  if (fi) fi.value = '';
+        var fn = document.getElementById('cp-up-fname');     if (fn) fn.textContent = '—';
+        var lo = document.getElementById('cp-legal-ok');     if (lo) lo.checked = false;
+        var vo = document.getElementById('cp-verita-ok');    if (vo) vo.checked = false;
+        var ds = document.getElementById('cp-data-scatto');  if (ds) ds.value = '';
+        var st = document.getElementById('cp-up-status');    if (st) { st.textContent = ''; st.className = 'cp-up-status'; }
+    }
+
+    window.completaProfiloAlbumSwitch = function (album) {
+        if (ALBUMS.indexOf(album) < 0) return;
+        renderAlbum(album);
+    };
+
+    window.completaProfiloFileChosen = function (input) {
+        var f = input.files && input.files[0];
+        var fn = document.getElementById('cp-up-fname');
+        if (fn) fn.textContent = f ? f.name : '—';
+        var st = document.getElementById('cp-up-status');
+        if (st) { st.textContent = ''; st.className = 'cp-up-status'; }
+    };
+
+    window.completaProfiloUploadGo = function () {
+        var btn       = document.getElementById('cp-up-go');
+        var status    = document.getElementById('cp-up-status');
+        var fileInput = document.getElementById('cp-file-input');
+        var file = fileInput && fileInput.files[0];
+        if (!file) { if (status) { status.textContent = 'Seleziona un file'; status.className = 'cp-up-status err'; } return; }
+
+        var legalOk  = document.getElementById('cp-legal-ok');
+        var veritaOk = document.getElementById('cp-verita-ok');
+        if (!legalOk || !legalOk.checked || !veritaOk || !veritaOk.checked) {
+            if (status) { status.textContent = 'Devi accettare disclaimer + veridicità'; status.className = 'cp-up-status err'; }
+            return;
+        }
+
+        var dsEl = document.getElementById('cp-data-scatto');
+        var dataScatto = dsEl ? dsEl.value : '';
+        if (currentAlbum === 'polaroid' && !dataScatto) {
+            if (status) { status.textContent = 'Data scatto obbligatoria per polaroid'; status.className = 'cp-up-status err'; }
+            return;
+        }
+
+        var fd = new FormData();
+        fd.append('uuid', UUID);
+        fd.append('t', TOKEN);
+        fd.append('album_tipo', currentAlbum);
+        fd.append('dichiarazione_legale', '1');
+        fd.append('veridicita', '1');
+        if (dataScatto) fd.append('data_scatto', dataScatto);
+        fd.append('foto', file);
+
+        if (btn) { btn.disabled = true; btn.textContent = S.uploading || 'Caricamento…'; }
+        if (status) { status.textContent = S.uploading || 'Caricamento…'; status.className = 'cp-up-status loading'; }
+
+        fetch(cfg.apiMediaUp, { method: 'POST', body: fd, credentials: 'same-origin' })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+            if (d && d.ok) {
+                if (status) { status.textContent = '✓ ' + (d.message || 'Foto caricata'); status.className = 'cp-up-status ok'; }
+                setTimeout(loadMedia, 600);
+            } else {
+                if (status) { status.textContent = (S.errorPrefix || 'Errore: ') + ((d && (d.message || d.error)) || 'upload'); status.className = 'cp-up-status err'; }
+            }
+        })
+        .catch(function () {
+            if (status) { status.textContent = (S.errorPrefix || 'Errore: ') + 'rete'; status.className = 'cp-up-status err'; }
+        })
+        .finally(function () {
+            if (btn) { btn.disabled = false; btn.textContent = S.upload || 'Carica foto'; }
+        });
+    };
+
+    function mediaDelete(mediaId) {
+        fetch(cfg.apiMediaDelete, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ uuid: UUID, t: TOKEN, media_id: mediaId }),
+            credentials: 'same-origin'
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+            if (d && d.ok) {
+                albumsData[currentAlbum] = (albumsData[currentAlbum] || []).filter(function (m) { return m.id !== mediaId; });
+                renderAlbum(currentAlbum);
+            } else {
+                alert('Errore durante l\'eliminazione: ' + ((d && d.error) || '?'));
+            }
+        })
+        .catch(function () { alert('Errore di rete, riprova.'); });
+    }
+
+    function showLightbox(url) {
+        var lb = document.getElementById('cp-lb');
+        var lbImg = document.getElementById('cp-lb-img');
+        if (!lb || !lbImg) { window.open(url, '_blank', 'noopener'); return; }
+        lbImg.src = url;
+        lb.style.display = 'flex';
+    }
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { var lb = document.getElementById('cp-lb'); if (lb) lb.style.display = 'none'; }
+    });
 })();
