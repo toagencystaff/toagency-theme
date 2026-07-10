@@ -214,12 +214,46 @@ var CRM_ENDPOINT = 'https://toagency.it/crm_toagency/actions/lead-from-website.p
 var CRM_TOKEN = 'toa_lead_2026_x7k9m2p4q8w1';
 var THANK_YOU_URL = '<?php echo esc_url(home_url("/tnx/")); ?>';
 
+// FIX 2026-07-07 marco — attribuzione fonte lead: cattura gclid/UTM da URL + cookie first-touch (90gg).
+// Click-id/UTM = last-touch (la visita attuale vince, così il gclid caricabile su Google è quello del click che ha convertito);
+// landing_page/referrer/first_touch_at = first-touch (salvati una volta sola).
+window.toaAttr = window.toaAttr || function() {
+  try {
+    var qs = new URLSearchParams(location.search);
+    var keys = ['gclid','gbraid','wbraid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'];
+    var now = {};
+    keys.forEach(function(k){ var val = qs.get(k); if (val) now[k] = val.slice(0,255); });
+    var ck = (document.cookie.split('; ').filter(function(c){ return c.indexOf('toa_ft=') === 0; })[0] || '');
+    var ft = null;
+    if (ck) { try { ft = JSON.parse(decodeURIComponent(ck.split('=')[1])); } catch(e) {} }
+    if (!ft) {
+      ft = Object.assign({}, now);
+      ft.landing_page = location.href.slice(0,500);
+      ft.referrer = (document.referrer || '').slice(0,500);
+      ft.first_touch_at = new Date().toISOString().slice(0,19).replace('T',' ');
+      var d = new Date(); d.setDate(d.getDate() + 90);
+      document.cookie = 'toa_ft=' + encodeURIComponent(JSON.stringify(ft)) + '; expires=' + d.toUTCString() + '; path=/; SameSite=Lax';
+    }
+    Object.keys(now).forEach(function(k){ ft[k] = now[k]; }); // last-touch override sui click-id/UTM
+    return ft;
+  } catch(e) { return {}; }
+};
+
+// FIX 2026-07-10 v2 marco/claude — cachea l'attribuzione UNA volta al caricamento pagina invece di
+// ricalcolarla (parsing cookie incluso) ad ogni tasto premuto nel form. gclid/UTM sono fissi
+// all'atterraggio quindi il valore non cambia durante la compilazione. Riusata in autoSave + submit.
+var toaAttrCache = (typeof window.toaAttr === 'function') ? window.toaAttr() : {};
+
 // Auto-save
+// FIX 2026-07-10 marco/claude — include gclid/UTM anche nel salvataggio automatico (autoSave),
+// cosi' se il lead viene recuperato via Beacon (utente abbandona pagina prima dell'invio, vedi sotto)
+// porta comunque con se' l'attribuzione, altrimenti sarebbe un lead orfano non tracciabile in Ads.
 function autoSave() {
   var data = {};
   document.querySelectorAll('#leadForm input:not([type=checkbox]), #leadForm select, #leadForm textarea').forEach(function(f) {
     if (f.id) data[f.id] = f.value;
   });
+  Object.assign(data, toaAttrCache);
   data._savedAt = new Date().toISOString();
   try { localStorage.setItem('toa_form_b2b', JSON.stringify(data)); } catch(e) {}
 }
@@ -300,6 +334,7 @@ document.getElementById('leadForm').addEventListener('submit', async function(e)
     duration: (document.getElementById('duration') || {}).value || '',
     details: (document.getElementById('details') || {}).value || ''
   };
+  Object.assign(payload, toaAttrCache); // FIX 2026-07-07 marco — fonte lead (gclid/UTM/first-touch), cache v2 10/07
 
   try { sessionStorage.setItem('toa_lead', JSON.stringify({ company: payload.company, contact: payload.contact })); } catch(e) {}
 
