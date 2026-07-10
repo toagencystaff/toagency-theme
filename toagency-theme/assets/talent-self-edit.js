@@ -289,6 +289,7 @@
             var thumb = document.createElement('div');
             thumb.className = 'tse-album-thumb' + (stateClass ? ' ' + stateClass : '');
             thumb.title = title;
+            thumb.setAttribute('data-id', it.id); // FIX 2026-07-10 marco — drag&drop riordino
             // Lightbox al click sull'immagine
             (function (url) {
                 thumb.addEventListener('click', function (e) {
@@ -353,6 +354,8 @@
 
             grid.appendChild(thumb);
         });
+
+        _tseInitSort(grid, album); // FIX 2026-07-10 marco — drag&drop riordino foto
 
         // Contatore pending/rejected sotto la griglia
         var pendingCount = items.filter(function (i) { return !i.motivo_rifiuto && !i.approvato_staff; }).length;
@@ -553,6 +556,50 @@
             }
         })
         .catch(function () { alert('Errore di rete, riprova.'); });
+    }
+
+    // FIX 2026-07-10 marco — drag&drop riordino foto (SortableJS lazy da CDN, salva su media-ordine-save.php)
+    var _tseSortInst = null;
+    var _tseSortLoading = false;
+    var API_MEDIA_ORDER = (API_MEDIA_LS || '/crm_toagency/actions/talent-media-list.php').replace('talent-media-list.php', 'media-ordine-save.php');
+    function _tseSaveOrder(album) {
+        var grid = $('tse-album-grid'); if (!grid) return;
+        var ids = Array.prototype.map.call(grid.querySelectorAll('.tse-album-thumb[data-id]'), function (el) {
+            return parseInt(el.getAttribute('data-id'), 10);
+        }).filter(function (n) { return n > 0; });
+        if (!ids.length) return;
+        // riallinea la cache locale al nuovo ordine (così un re-render non "torna indietro")
+        var byId = {}; (albumsData[album] || []).forEach(function (m) { byId[m.id] = m; });
+        albumsData[album] = ids.map(function (id) { return byId[id]; }).filter(Boolean);
+        var body = new URLSearchParams();
+        body.append('uuid', UUID); body.append('t', TOKEN);
+        body.append('tipo', 'talent'); body.append('ids', JSON.stringify(ids));
+        fetch(API_MEDIA_ORDER, { method: 'POST', body: body })
+            .then(function (r) { return r.json(); })
+            .then(function (d) { if (!d || !d.ok) console.warn('[tse] ordine non salvato', d); })
+            .catch(function () { /* silenzioso: l'ordine a schermo resta comunque */ });
+    }
+    function _tseInitSort(grid, album) {
+        if (!grid) return;
+        if (typeof Sortable === 'undefined') {
+            if (!_tseSortLoading) {
+                _tseSortLoading = true;
+                var s = document.createElement('script');
+                s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js';
+                s.onload = function () { _tseSortLoading = false; _tseInitSort($('tse-album-grid'), currentAlbum); };
+                s.onerror = function () { _tseSortLoading = false; /* niente drag: degrada, resta tutto usabile */ };
+                document.head.appendChild(s);
+            }
+            return;
+        }
+        if (_tseSortInst) { try { _tseSortInst.destroy(); } catch (e) {} _tseSortInst = null; }
+        _tseSortInst = Sortable.create(grid, {
+            animation: 150,
+            draggable: '.tse-album-thumb',
+            filter: '.tse-thumb-actions',     // i bottoni elimina/sposta non avviano il drag
+            delay: 150, delayOnTouchOnly: true, // su touch serve una pressione, così lo scroll resta libero
+            onEnd: function () { _tseSaveOrder(currentAlbum); }
+        });
     }
 
     // FIX 2026-06-28 marco — lightbox anteprima foto (click su thumbnail)
