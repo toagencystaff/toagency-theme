@@ -1401,6 +1401,13 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         })
             .then(function (res) {
                 if (res && res.ok) {
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({
+                        event: 'talent_db_request_success',
+                        talent_db_email: data.email,
+                        talent_db_phone: data.telefono,
+                        job_id: (res && (res.codice || res.job_id || res.id)) || undefined
+                    });
                     closeRequestModal();
                     openSuccess();
                     clearSelection();
