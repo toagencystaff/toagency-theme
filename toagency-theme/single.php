@@ -329,6 +329,30 @@ toa_component('header');
         .toa-sl-content-area { padding: 36px 16px 0; }
         .toa-sl-content { font-size: 16px; }
     }
+
+    /* FIX 2026-07-09 marco — CTA "Candidati ora": il bottone nel post ha background:#000 (invisibile su pagina nera).
+       Override → bottone lime grande, centrato. Colpisce SOLO i link a candidatura.php (= solo pagine casting). */
+    .toa-sl-content a[href*="candidatura.php"] {
+        display: block !important;
+        background: #C5FF00 !important;
+        color: #000 !important;
+        padding: 20px 32px !important;
+        border-radius: 12px !important;
+        font-weight: 900 !important;
+        font-size: 20px !important;
+        text-align: center !important;
+        text-decoration: none !important;
+        letter-spacing: 0.3px !important;
+        max-width: 440px !important;
+        margin: 10px auto 6px !important;
+        box-shadow: 0 8px 30px rgba(197,255,0,0.28) !important;
+        transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+    }
+    .toa-sl-content a[href*="candidatura.php"]:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 12px 40px rgba(197,255,0,0.45) !important;
+        opacity: 1 !important;
+    }
 </style>
 
 <!-- BARRA DI LETTURA -->
@@ -342,6 +366,9 @@ toa_component('header');
     $sl_cats   = get_the_category();
     $sl_cat    = ! empty( $sl_cats ) ? $sl_cats[0] : null;
     $has_thumb = has_post_thumbnail();
+    // FIX 2026-07-09 marco — rileva pagina casting (slug/nome contiene "casting")
+    $sl_is_casting = false;
+    foreach ( (array) $sl_cats as $__c ) { if ( stripos( $__c->slug, 'casting' ) !== false || stripos( $__c->name, 'casting' ) !== false ) { $sl_is_casting = true; break; } }
     ?>
 
     <!-- HERO -->
@@ -383,6 +410,8 @@ toa_component('header');
         <div class="toa-sl-share">
             <span class="toa-sl-share__label"><?php echo _ht(['it'=>'Condividi','en'=>'Share','fr'=>'Partager','es'=>'Compartir']); ?>:</span>
 
+            <?php // FIX 2026-07-09 marco — WhatsApp share NASCOSTO sui casting (porta la gente a scrivere invece di candidarsi) ?>
+            <?php if ( ! $sl_is_casting ) : ?>
             <a href="https://wa.me/?text=<?php echo rawurlencode( get_the_title() . ' — ' . get_permalink() ); ?>"
                target="_blank"
                rel="noopener"
@@ -393,6 +422,7 @@ toa_component('header');
                 </svg>
                 WhatsApp
             </a>
+            <?php endif; ?>
 
             <button class="toa-sl-share-btn toa-sl-share-btn--copy"
                     data-url="<?php echo esc_attr( get_permalink() ); ?>"
