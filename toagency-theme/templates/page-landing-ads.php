@@ -138,6 +138,8 @@ $DB_URL    = 'https://toagency.it/talent-database/'; // FIX 2026-06-20 marco —
 // FIX 2026-06-24 marco — form protagonista + WhatsApp taggato (lead qualificabile)
 $formhead_l   = ['it'=>'Ricevi una selezione di profili e un preventivo gratuito in 24h','en'=>'Get a shortlist of profiles and a free quote within 24h','fr'=>'Recevez une sélection de profils et un devis gratuit sous 24h','es'=>'Recibe una selección de perfiles y un presupuesto gratuito en 24h'];
 $contacthint_l= ['it'=>'Preferisci sentirci subito?','en'=>'Prefer to talk now?','fr'=>'Vous préférez nous contacter tout de suite ?','es'=>'¿Prefieres contactarnos ya?'];
+// FIX 2026-07-10 marco — WhatsApp card pari peso al form, con etichetta B2B integrata (evitare click di talent)
+$wabig_l      = ['it'=>'Preferisci scriverci subito?','en'=>'Prefer to message us right away?','fr'=>'Vous préférez nous écrire tout de suite ?','es'=>'¿Prefieres escribirnos ahora mismo?'];
 // Messaggio WhatsApp precompilato per landing → l'utente arriva già contestualizzato (B2B vs talent)
 $wa_type  = (strpos($key, 'hostess') === 0) ? 'hostess' : 'models';
 $wa_label = [
@@ -189,6 +191,12 @@ body.toa-ads-lp .toa-ads-b2bnotice{margin:0 0 14px;padding:11px 13px;border:1px 
 body.toa-ads-lp .toa-ads-b2bnotice b{display:block;font-size:13.5px;line-height:1.4;color:#fff!important;font-weight:700}
 body.toa-ads-lp .toa-ads-b2bnotice a{display:inline-block;margin-top:6px;font-size:13px;color:#c2f24e!important;text-decoration:none!important;font-weight:600}
 body.toa-ads-lp .toa-ads-b2bnotice a:hover{text-decoration:underline!important}
+/* FIX 2026-07-10 marco — WhatsApp card pari peso al form, etichetta B2B integrata */
+body.toa-ads-lp .toa-ads-wacard{margin:0 0 22px;padding:18px 20px;border:1.5px solid #2a2a2a;border-left:4px solid #c2f24e;border-radius:10px;background:rgba(194,242,78,0.06)}
+body.toa-ads-lp .toa-ads-wacard-head{font-size:16px;font-weight:800;color:#fff!important;margin:0 0 6px}
+body.toa-ads-lp .toa-ads-wacard-b2b{font-size:13px;color:#c2f24e!important;font-weight:700;margin:0 0 12px;line-height:1.4}
+body.toa-ads-lp .toa-ads-btn--wabig{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:9px;text-decoration:none!important;font-weight:800;font-size:15.5px;background:#c2f24e!important;color:#0a0a0a!important;border:none}
+body.toa-ads-lp .toa-ads-btn--wabig:hover{filter:brightness(1.08)}
 body.toa-ads-lp .toa-ads-dblink{display:inline-block;margin-top:18px;color:#c2f24e!important;text-decoration:none!important;font-weight:600;font-size:14.5px;border-bottom:1px solid transparent}
 body.toa-ads-lp .toa-ads-dblink:hover{border-bottom-color:#c2f24e}
 /* il form (form-b2b-inline) è già una card stilata dal tema */
@@ -218,6 +226,14 @@ body.toa-ads-lp .toa-ads-formcol .container{padding:0!important;max-width:none!i
         <?php endforeach; ?>
       </ul>
       <?php if ($serv): ?><p class="toa-ads-serv"><?php echo esc_html($serv); ?></p><?php endif; ?>
+
+      <!-- FIX 2026-07-10 marco — card WhatsApp pari peso al form, etichetta B2B integrata -->
+      <div class="toa-ads-wacard">
+        <p class="toa-ads-wacard-head"><?php echo _ht($wabig_l); ?></p>
+        <p class="toa-ads-wacard-b2b"><?php echo _ht($b2bonly_l); ?></p>
+        <a class="toa-ads-btn--wabig" href="<?php echo esc_url($WA_HREF); ?>" target="_blank" rel="noopener" onclick="toaLpTrack('whatsapp')">WhatsApp &rarr;</a>
+      </div>
+
       <p class="toa-ads-contacthint"><?php echo _ht($contacthint_l); ?></p>
       <div class="toa-ads-contact">
         <a class="toa-ads-btn toa-ads-btn--call" href="tel:<?php echo esc_attr($TEL_RAW); ?>" onclick="toaLpTrack('call')">📞 <?php echo _ht($call_l); ?> <?php echo esc_html($TEL_DISP); ?></a>
