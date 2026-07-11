@@ -8,7 +8,7 @@
  * i18n via _ht() (helper locale a page-home.php). IDs prefissati "hq" per non collidere con #leadForm di /form-b2b/.
  */
 $hq_heading = array('it'=>'Chiedi un preventivo gratuito','en'=>'Request a free quote','fr'=>'Demande un devis gratuit','es'=>'Solicita un presupuesto gratuito');
-$hq_sub     = array('it'=>'Ti ricontattiamo subito','en'=>'We\'ll get back to you right away','fr'=>'Nous vous recontactons tout de suite','es'=>'Te contactamos enseguida');
+$hq_sub     = array('it'=>'Risposta entro 24 ore lavorative','en'=>'Response within 24 working hours','fr'=>'Réponse sous 24 heures ouvrées','es'=>'Respuesta en 24 horas laborables');
 
 $hq_services = array(
   'shooting'               => array('it'=>'Shooting / Servizio foto','en'=>'Photo shoot','fr'=>'Shooting photo','es'=>'Sesión de fotos'),
@@ -84,6 +84,7 @@ $hq_js = array(
           <span class="iq-spinner" id="hqSpinner"></span>
           <span id="hqSubmitText"><?php echo _ht($hq_js['submit']); ?></span>
         </button>
+        <p style="text-align:center;font-size:12px;color:rgba(255,255,255,.5);margin:10px 0 0"><?php echo _ht($hq_js['microcopy']); ?></p>
       </form>
     </div>
   </div>
@@ -103,6 +104,32 @@ $hq_js = array(
     wa:      '<?php echo esc_js(_ht($hq_js['wa'])); ?>'
   };
   function v(id){ var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+  // FIX 2026-07-11 — cattura gclid/UTM (attribuzione fonte lead), stessa logica di /form-b2b/.
+  // La landing Ads (/lp/hostess-eventi/) usa QUESTO componente: senza cattura il gclid non
+  // arrivava al CRM -> fonte "Organico/Diretto". Legge URL + cookie first-touch (90gg).
+  window.toaAttr = window.toaAttr || function() {
+    try {
+      var qs = new URLSearchParams(location.search);
+      var keys = ['gclid','gbraid','wbraid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'];
+      var now = {};
+      keys.forEach(function(k){ var val = qs.get(k); if (val) now[k] = val.slice(0,255); });
+      var ck = (document.cookie.split('; ').filter(function(c){ return c.indexOf('toa_ft=') === 0; })[0] || '');
+      var ft = null;
+      if (ck) { try { ft = JSON.parse(decodeURIComponent(ck.split('=')[1])); } catch(e) {} }
+      if (!ft) {
+        ft = Object.assign({}, now);
+        ft.landing_page = location.href.slice(0,500);
+        ft.referrer = (document.referrer || '').slice(0,500);
+        ft.first_touch_at = new Date().toISOString().slice(0,19).replace('T',' ');
+        var d = new Date(); d.setDate(d.getDate() + 90);
+        document.cookie = 'toa_ft=' + encodeURIComponent(JSON.stringify(ft)) + '; expires=' + d.toUTCString() + '; path=/; SameSite=Lax';
+      }
+      Object.keys(now).forEach(function(k){ ft[k] = now[k]; }); // last-touch override click-id/UTM
+      return ft;
+    } catch(e) { return {}; }
+  };
+  var toaAttrCache = (typeof window.toaAttr === 'function') ? window.toaAttr() : {};
 
   async function sendToCRM(payload, retries){
     retries = retries || 3;
@@ -143,6 +170,7 @@ $hq_js = array(
       event_type: v('hq_event_type'),
       message: v('hq_message')
     };
+    Object.assign(payload, toaAttrCache); // FIX 2026-07-11 — gclid/UTM al CRM (fonte Ads)
 
     var result = await sendToCRM(payload, 3);
     if (result.success) {
