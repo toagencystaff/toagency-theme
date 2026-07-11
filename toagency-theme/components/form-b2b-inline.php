@@ -8,7 +8,7 @@
  * i18n via _ht() (helper locale a page-home.php). IDs prefissati "hq" per non collidere con #leadForm di /form-b2b/.
  */
 $hq_heading = array('it'=>'Chiedi un preventivo gratuito','en'=>'Request a free quote','fr'=>'Demande un devis gratuit','es'=>'Solicita un presupuesto gratuito');
-$hq_sub     = array('it'=>'Risposta entro 24 ore lavorative','en'=>'Response within 24 working hours','fr'=>'Réponse sous 24 heures ouvrées','es'=>'Respuesta en 24 horas laborables');
+$hq_sub     = array('it'=>'Ti ricontattiamo subito','en'=>'We\'ll get back to you right away','fr'=>'Nous vous recontactons tout de suite','es'=>'Te contactamos enseguida');
 
 $hq_services = array(
   'shooting'               => array('it'=>'Shooting / Servizio foto','en'=>'Photo shoot','fr'=>'Shooting photo','es'=>'Sesión de fotos'),
@@ -84,7 +84,6 @@ $hq_js = array(
           <span class="iq-spinner" id="hqSpinner"></span>
           <span id="hqSubmitText"><?php echo _ht($hq_js['submit']); ?></span>
         </button>
-        <p style="text-align:center;font-size:12px;color:rgba(255,255,255,.5);margin:10px 0 0"><?php echo _ht($hq_js['microcopy']); ?></p>
       </form>
     </div>
   </div>
