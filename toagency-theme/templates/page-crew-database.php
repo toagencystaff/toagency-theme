@@ -94,6 +94,11 @@ $T = [
         'fr'=>'Confidentialité : seul le prénom.',
         'es'=>'Privacidad: solo nombre.',
     ],
+    'view_profile'    => ['it'=>'Vedi profilo','en'=>'View profile','fr'=>'Voir le profil','es'=>'Ver perfil'],
+    'loading_profile' => ['it'=>'Carico…','en'=>'Loading…','fr'=>'Chargement…','es'=>'Cargando…'],
+    'error_profile'   => ['it'=>'Profilo non disponibile.','en'=>'Profile unavailable.','fr'=>'Profil indisponible.','es'=>'Perfil no disponible.'],
+    'album_general'   => ['it'=>'Generale','en'=>'General','fr'=>'Général','es'=>'General'],
+    'no_media'        => ['it'=>'Nessun contenuto ancora.','en'=>'No content yet.','fr'=>'Aucun contenu.','es'=>'Sin contenido.'],
 ];
 
 $theme_uri = get_stylesheet_directory_uri();
@@ -159,6 +164,23 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-modal .msg { padding:10px; border-radius:6px; margin-top:12px; font-size:14px; }
 .crew-pub-modal .msg.ok { background:rgba(200,255,0,.15); color:#c8ff00; }
 .crew-pub-modal .msg.err { background:rgba(239,68,68,.15); color:#ef4444; }
+
+/* ─── Scheda singola crew (?uuid=) — 2026-07-11 ─── */
+.crew-pub-view { margin-top:10px; width:100%; background:transparent; border:1px solid #c8ff00; color:#c8ff00; padding:8px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; transition:all .15s; }
+.crew-pub-view:hover { background:#c8ff00; color:#0a0a0a; }
+.crew-pf-overlay { position:fixed; inset:0; background:rgba(0,0,0,.92); z-index:300; display:none; overflow-y:auto; padding:24px 16px; }
+.crew-pf-overlay.show { display:block; }
+.crew-pf-card { background:#111; border:1px solid #2a2a2e; border-radius:12px; max-width:900px; margin:20px auto; padding:28px; position:relative; }
+.crew-pf-close { position:absolute; top:12px; right:14px; background:none; border:none; color:#9ca3af; font-size:30px; line-height:1; cursor:pointer; }
+.crew-pf-close:hover { color:#c8ff00; }
+.crew-pf-name { color:#fff; font-size:30px; font-weight:800; margin:0 40px 10px 0; }
+.crew-pf-roles { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+.crew-pf-album { margin-top:24px; }
+.crew-pf-album-title { color:#c8ff00; font-size:15px; font-weight:700; margin:0 0 6px; text-transform:uppercase; letter-spacing:.5px; }
+.crew-pf-bio { color:#9ca3af; font-size:14px; line-height:1.5; margin:0 0 12px; }
+.crew-pf-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(160px,1fr)); gap:10px; }
+.crew-pf-media { width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px; background:#0a0a0a; display:block; }
+.crew-pf-loading, .crew-pf-error, .crew-pf-empty { color:#9ca3af; text-align:center; padding:40px; }
 
 @media (max-width:640px) {
     .crew-pub-hero-title { font-size:38px; }
@@ -246,21 +268,35 @@ $theme_uri = get_stylesheet_directory_uri();
             <div id="lead-msg-result"></div>
         </div>
     </div>
+
+    <!-- Scheda singola crew (?uuid=) -->
+    <div class="crew-pf-overlay" id="crew-profile-overlay">
+        <div class="crew-pf-card">
+            <button type="button" class="crew-pf-close" aria-label="Chiudi" onclick="crewPubCloseProfile()">×</button>
+            <div id="crew-profile-body"></div>
+        </div>
+    </div>
 </section>
 
 <script>
 window.crewPubConfig = {
     apiSearch: '/crm_toagency/actions/crew-public-search.php',
     apiLead:   '/crm_toagency/actions/crew-lead.php',
+    apiProfile:'/crm_toagency/actions/crew-public-profile.php',
     lang: <?= json_encode($__l) ?>,
     strings: {
         empty:    <?= json_encode($_t($T['no_results'])) ?>,
         resultsLabel: <?= json_encode($_t($T['results_label'])) ?>,
         success:  <?= json_encode($_t($T['success_msg'])) ?>,
         errorPrefix: <?= json_encode($_t($T['error_msg'])) ?>,
+        viewProfile: <?= json_encode($_t($T['view_profile'])) ?>,
+        loadingProfile: <?= json_encode($_t($T['loading_profile'])) ?>,
+        errorProfile: <?= json_encode($_t($T['error_profile'])) ?>,
+        generalAlbum: <?= json_encode($_t($T['album_general'])) ?>,
+        noMedia: <?= json_encode($_t($T['no_media'])) ?>,
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.0" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.1" defer></script>
 
 <?php toa_component('footer'); ?>

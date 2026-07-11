@@ -1,5 +1,6 @@
 /**
- * crew-database-list.js — v1.0 (2026-05-19)
+ * crew-database-list.js — v1.1 (2026-07-11)
+ * v1.1: scheda singola crew (?uuid=) con portfolio per ruolo + generale + bio (endpoint crew-public-profile.php)
  * JS per /crew-database/ (catalogo pubblico crew).
  *
  * - Carica grid via POST a /crm_toagency/actions/crew-public-search.php
@@ -13,6 +14,7 @@
     var cfg = window.crewPubConfig || {};
     var API_SEARCH = cfg.apiSearch || '/crm_toagency/actions/crew-public-search.php';
     var API_LEAD   = cfg.apiLead   || '/crm_toagency/actions/crew-lead.php';
+    var API_PROFILE= cfg.apiProfile|| '/crm_toagency/actions/crew-public-profile.php';
     var STR        = cfg.strings   || {};
 
     var selectedUuids = new Set();
@@ -105,6 +107,13 @@
             if (c.paese) metaParts.push(c.paese);
             meta.textContent = metaParts.join(' · ');
             body.appendChild(meta);
+
+            var viewBtn = document.createElement('button');
+            viewBtn.type = 'button';
+            viewBtn.className = 'crew-pub-view';
+            viewBtn.textContent = STR.viewProfile || 'Vedi profilo';
+            viewBtn.addEventListener('click', function (e) { e.stopPropagation(); openProfile(c.uuid); });
+            body.appendChild(viewBtn);
 
             card.appendChild(body);
             card.addEventListener('click', function () { toggleSelect(c.uuid); });
@@ -223,10 +232,102 @@
         box.innerHTML = '<div class="msg ' + type + '">' + escapeHtml(text) + '</div>';
     }
 
+    // ─── Scheda singola crew (?uuid=) — 2026-07-11 ─────────────
+    var VIDEO_RE = /\.(mp4|mov|webm|m4v|ogg)(\?|$)/i;
+
+    function mediaTag(url) {
+        var safe = encodeURI(url);
+        if (VIDEO_RE.test(url)) {
+            return '<video class="crew-pf-media" src="' + safe + '" controls preload="metadata" playsinline></video>';
+        }
+        return '<img class="crew-pf-media" src="' + safe + '" alt="" loading="lazy">';
+    }
+
+    function openProfile(uuid, fromPop) {
+        if (!uuid) return;
+        var ov = $('#crew-profile-overlay');
+        var body = $('#crew-profile-body');
+        if (!ov || !body) return;
+        body.innerHTML = '<div class="crew-pf-loading">' + escapeHtml(STR.loadingProfile || 'Carico…') + '</div>';
+        ov.classList.add('show');
+        document.body.style.overflow = 'hidden';
+        if (!fromPop) {
+            var u = new URL(window.location.href);
+            u.searchParams.set('uuid', uuid);
+            window.history.pushState({ crewProfile: uuid }, '', u.toString());
+        }
+        fetch(API_PROFILE + '?uuid=' + encodeURIComponent(uuid), { credentials: 'same-origin' })
+            .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+            .then(function (d) { renderProfile(d); })
+            .catch(function (err) {
+                console.error('[crew-pub] profile error:', err);
+                body.innerHTML = '<div class="crew-pf-error">' + escapeHtml(STR.errorProfile || 'Profilo non disponibile.') + '</div>';
+            });
+    }
+
+    function renderProfile(d) {
+        var body = $('#crew-profile-body');
+        if (!body) return;
+        var labels = d.ruoli_label || {};
+        var albums = d.albums || {};
+        var bio = d.bio_ruoli || {};
+        var html = '<h2 class="crew-pf-name">' + escapeHtml(d.nome || '—') + '</h2>';
+        if (d.categorie && d.categorie.length) {
+            html += '<div class="crew-pf-roles">';
+            d.categorie.forEach(function (cat) { html += '<span class="crew-pub-cat-chip">' + escapeHtml(cat) + '</span>'; });
+            html += '</div>';
+        }
+        var keys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
+        if (albums.generale) keys.push('generale');
+        var any = false;
+        keys.forEach(function (k) {
+            var photos = albums[k] || [];
+            if (!photos.length) return;
+            any = true;
+            var title = (k === 'generale') ? (STR.generalAlbum || 'Generale') : (labels[k] || k);
+            html += '<div class="crew-pf-album"><h3 class="crew-pf-album-title">' + escapeHtml(title) + '</h3>';
+            if (k !== 'generale' && bio[k]) html += '<p class="crew-pf-bio">' + escapeHtml(bio[k]) + '</p>';
+            html += '<div class="crew-pf-grid">';
+            photos.forEach(function (url) { html += mediaTag(url); });
+            html += '</div></div>';
+        });
+        if (!any) html += '<div class="crew-pf-empty">' + escapeHtml(STR.noMedia || 'Nessun contenuto disponibile.') + '</div>';
+        body.innerHTML = html;
+        body.scrollTop = 0;
+    }
+
+    function hideProfile() {
+        var ov = $('#crew-profile-overlay');
+        if (ov) ov.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    window.crewPubCloseProfile = function () {
+        hideProfile();
+        var u = new URL(window.location.href);
+        if (u.searchParams.has('uuid')) {
+            u.searchParams.delete('uuid');
+            window.history.replaceState({}, '', u.pathname + (u.search ? u.search : ''));
+        }
+    };
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.id === 'crew-profile-overlay') window.crewPubCloseProfile();
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { var ov = $('#crew-profile-overlay'); if (ov && ov.classList.contains('show')) window.crewPubCloseProfile(); }
+    });
+    window.addEventListener('popstate', function () {
+        var uuid = new URLSearchParams(window.location.search).get('uuid');
+        if (uuid) openProfile(uuid, true); else hideProfile();
+    });
+
     // ─── Init ──────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function () {
         $('#filter-categoria').addEventListener('change', loadCrews);
         $('#filter-paese').addEventListener('change', loadCrews);
         loadCrews();
+        var initUuid = new URLSearchParams(window.location.search).get('uuid');
+        if (initUuid) openProfile(initUuid, true); // deep-link scheda
     });
 })();
