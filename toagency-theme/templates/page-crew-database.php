@@ -168,22 +168,30 @@ $theme_uri = get_stylesheet_directory_uri();
 /* ─── Scheda singola crew (?uuid=) — 2026-07-11 ─── */
 .crew-pub-view { margin-top:10px; width:100%; background:transparent; border:1px solid #c8ff00; color:#c8ff00; padding:8px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; transition:all .15s; }
 .crew-pub-view:hover { background:#c8ff00; color:#0a0a0a; }
-.crew-pf-overlay { position:fixed; inset:0; background:rgba(0,0,0,.92); z-index:300; display:none; overflow-y:auto; padding:24px 16px; }
+.crew-pf-overlay { position:fixed; inset:0; background:rgba(0,0,0,.9); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); z-index:300; display:none; overflow-y:auto; padding:32px 16px; }
 .crew-pf-overlay.show { display:block; }
-.crew-pf-card { background:#111; border:1px solid #2a2a2e; border-radius:12px; max-width:900px; margin:20px auto; padding:28px; position:relative; }
-.crew-pf-close { position:absolute; top:12px; right:14px; background:none; border:none; color:#9ca3af; font-size:30px; line-height:1; cursor:pointer; }
-.crew-pf-close:hover { color:#c8ff00; }
-.crew-pf-name { color:#fff; font-size:30px; font-weight:800; margin:0 40px 10px 0; }
-.crew-pf-roles { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
-.crew-pf-album { margin-top:24px; }
-.crew-pf-album-title { color:#c8ff00; font-size:15px; font-weight:700; margin:0 0 6px; text-transform:uppercase; letter-spacing:.5px; }
-.crew-pf-bio { color:#9ca3af; font-size:14px; line-height:1.5; margin:0 0 12px; }
-.crew-pf-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(160px,1fr)); gap:10px; }
-.crew-pf-media { width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px; background:#0a0a0a; display:block; }
-.crew-pf-code { color:#6b7280; font-weight:400; font-size:.6em; letter-spacing:.5px; }
-.crew-pf-vwrap { position:relative; display:block; }
-.crew-pf-play { position:absolute; top:8px; left:8px; background:rgba(0,0,0,.65); color:#fff; font-size:11px; line-height:1; padding:4px 7px; border-radius:4px; pointer-events:none; }
-.crew-pf-loading, .crew-pf-error, .crew-pf-empty { color:#9ca3af; text-align:center; padding:40px; }
+.crew-pf-card { background:linear-gradient(180deg,#161618,#0e0e10); border:1px solid #2a2a2e; border-radius:16px; max-width:960px; margin:16px auto; padding:32px 32px 40px; position:relative; box-shadow:0 24px 80px rgba(0,0,0,.6); }
+.crew-pf-close { position:absolute; top:14px; right:16px; width:36px; height:36px; background:#1a1a1e; border:1px solid #2a2a2e; border-radius:50%; color:#9ca3af; font-size:22px; line-height:1; cursor:pointer; transition:all .15s; }
+.crew-pf-close:hover { color:#0a0a0a; background:#c8ff00; border-color:#c8ff00; }
+.crew-pf-header { border-bottom:1px solid #2a2a2e; padding-bottom:20px; margin-bottom:8px; }
+.crew-pf-name { color:#fff; font-size:34px; font-weight:800; letter-spacing:-.5px; margin:0 44px 12px 0; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+.crew-pf-code { color:#6b7280; font-weight:500; font-size:15px; letter-spacing:.5px; font-family:monospace; }
+.crew-pf-roles { display:flex; flex-wrap:wrap; gap:8px; }
+.crew-pf-chip { background:#c8ff00; color:#0a0a0a; padding:5px 12px; border-radius:999px; font-size:12px; font-weight:700; }
+.crew-pf-album { margin-top:32px; }
+.crew-pf-album-head { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.crew-pf-album-title { color:#fff; font-size:16px; font-weight:700; margin:0; text-transform:uppercase; letter-spacing:.06em; padding-left:12px; border-left:3px solid #c8ff00; }
+.crew-pf-count { background:#1a1a1e; color:#9ca3af; font-size:12px; font-weight:600; padding:2px 9px; border-radius:999px; }
+.crew-pf-bio { color:#b8bcc4; font-size:14.5px; line-height:1.6; margin:0 0 14px; max-width:640px; }
+.crew-pf-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:12px; }
+.crew-pf-media { width:100%; aspect-ratio:1; object-fit:cover; border-radius:10px; background:#0a0a0a; display:block; transition:transform .2s; }
+.crew-pf-grid img.crew-pf-media:hover { transform:scale(1.02); outline:2px solid #c8ff00; outline-offset:-2px; }
+.crew-pf-vwrap { position:relative; display:block; border-radius:10px; overflow:hidden; }
+.crew-pf-vwrap:hover { outline:2px solid #c8ff00; outline-offset:-2px; }
+.crew-pf-play { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:52px; height:52px; border-radius:50%; border:none; background:rgba(200,255,0,.92); color:#0a0a0a; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; padding-left:3px; box-shadow:0 4px 16px rgba(0,0,0,.4); transition:transform .15s, background .15s; }
+.crew-pf-play:hover { background:#c8ff00; transform:translate(-50%,-50%) scale(1.08); }
+.crew-pf-loading, .crew-pf-error, .crew-pf-empty { color:#9ca3af; text-align:center; padding:48px; }
+@media (max-width:640px){ .crew-pf-card{ padding:22px 16px 32px; } .crew-pf-name{ font-size:26px; } .crew-pf-grid{ grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:8px; } }
 
 @media (max-width:640px) {
     .crew-pub-hero-title { font-size:38px; }
@@ -300,6 +308,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.2" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.3" defer></script>
 
 <?php toa_component('footer'); ?>

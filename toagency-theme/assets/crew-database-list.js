@@ -238,7 +238,7 @@
     function mediaTag(url) {
         var safe = encodeURI(url);
         if (VIDEO_RE.test(url)) {
-            return '<div class="crew-pf-vwrap"><video class="crew-pf-media" src="' + safe + '#t=0.1" preload="metadata" muted playsinline controls></video><span class="crew-pf-play">▶</span></div>';
+            return '<div class="crew-pf-vwrap"><video class="crew-pf-media" src="' + safe + '#t=0.1" preload="auto" muted playsinline controls></video><button type="button" class="crew-pf-play" aria-label="Play">▶</button></div>';
         }
         return '<img class="crew-pf-media" src="' + safe + '" alt="" loading="lazy">';
     }
@@ -271,30 +271,50 @@
         var labels = d.ruoli_label || {};
         var albums = d.albums || {};
         var bio = d.bio_ruoli || {};
-        var codice = d.codice ? ' <span class="crew-pf-code">· ' + escapeHtml(d.codice) + '</span>' : '';
-        var html = '<h2 class="crew-pf-name">' + escapeHtml(d.nome || '—') + codice + '</h2>';
+        var codice = d.codice ? '<span class="crew-pf-code">· ' + escapeHtml(d.codice) + '</span>' : '';
+        var html = '<div class="crew-pf-header"><h2 class="crew-pf-name">' + escapeHtml(d.nome || '—') + codice + '</h2>';
         if (d.categorie && d.categorie.length) {
             html += '<div class="crew-pf-roles">';
-            d.categorie.forEach(function (cat) { html += '<span class="crew-pub-cat-chip">' + escapeHtml(cat) + '</span>'; });
+            d.categorie.forEach(function (cat) { html += '<span class="crew-pf-chip">' + escapeHtml(cat) + '</span>'; });
             html += '</div>';
         }
+        html += '</div>';
         var keys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
         if (albums.generale) keys.push('generale');
         var any = false;
         keys.forEach(function (k) {
             var photos = albums[k] || [];
-            if (!photos.length) return;
+            var hasBio = (k !== 'generale' && bio[k]);
+            if (!photos.length && !hasBio) return;
             any = true;
             var title = (k === 'generale') ? (STR.generalAlbum || 'Generale') : (labels[k] || k);
-            html += '<div class="crew-pf-album"><h3 class="crew-pf-album-title">' + escapeHtml(title) + '</h3>';
-            if (k !== 'generale' && bio[k]) html += '<p class="crew-pf-bio">' + escapeHtml(bio[k]) + '</p>';
-            html += '<div class="crew-pf-grid">';
-            photos.forEach(function (url) { html += mediaTag(url); });
-            html += '</div></div>';
+            html += '<section class="crew-pf-album"><div class="crew-pf-album-head"><h3 class="crew-pf-album-title">' + escapeHtml(title) + '</h3><span class="crew-pf-count">' + photos.length + '</span></div>';
+            if (hasBio) html += '<p class="crew-pf-bio">' + escapeHtml(bio[k]) + '</p>';
+            if (photos.length) {
+                html += '<div class="crew-pf-grid">';
+                photos.forEach(function (url) { html += mediaTag(url); });
+                html += '</div>';
+            }
+            html += '</section>';
         });
         if (!any) html += '<div class="crew-pf-empty">' + escapeHtml(STR.noMedia || 'Nessun contenuto disponibile.') + '</div>';
         body.innerHTML = html;
         body.scrollTop = 0;
+        wireVideos(body);
+    }
+
+    function wireVideos(scope) {
+        scope.querySelectorAll('video.crew-pf-media').forEach(function (v) {
+            v.addEventListener('loadeddata', function () {
+                try { if (v.currentTime < 0.1) v.currentTime = 0.1; } catch (e) {}
+            }, { once: true });
+        });
+        scope.querySelectorAll('.crew-pf-play').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var v = btn.parentNode.querySelector('video');
+                if (v) { v.play(); btn.style.display = 'none'; }
+            });
+        });
     }
 
     function hideProfile() {
