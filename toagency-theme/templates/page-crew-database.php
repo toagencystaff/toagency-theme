@@ -174,6 +174,7 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-close { position:absolute; top:14px; right:16px; width:36px; height:36px; background:#1a1a1e; border:1px solid #2a2a2e; border-radius:50%; color:#9ca3af; font-size:22px; line-height:1; cursor:pointer; transition:all .15s; }
 .crew-pf-close:hover { color:#0a0a0a; background:#c8ff00; border-color:#c8ff00; }
 .crew-pf-header { border-bottom:1px solid #2a2a2e; padding-bottom:20px; margin-bottom:8px; }
+.crew-pf-intro { color:#d0d3d9; font-size:15px; line-height:1.65; margin:16px 0 4px; max-width:680px; white-space:pre-line; }
 .crew-pf-name { color:#fff; font-size:34px; font-weight:800; letter-spacing:-.5px; margin:0 44px 12px 0; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
 .crew-pf-code { color:#6b7280; font-weight:500; font-size:15px; letter-spacing:.5px; font-family:monospace; }
 .crew-pf-roles { display:flex; flex-wrap:wrap; gap:8px; }
@@ -311,6 +312,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.4" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.5" defer></script>
 
 <?php toa_component('footer'); ?>

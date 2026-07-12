@@ -279,6 +279,7 @@
             html += '</div>';
         }
         html += '</div>';
+        if (d.bio) html += '<p class="crew-pf-intro">' + escapeHtml(d.bio) + '</p>';
         var keys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
         if (albums.generale) keys.push('generale');
         var any = false;
