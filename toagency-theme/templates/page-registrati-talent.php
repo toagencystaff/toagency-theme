@@ -940,4 +940,76 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<!-- 2026-07-12 marco — pre-compilazione form da link Brevo (?t=TOKEN). Consuma CRM registra-prefill.php. Solo tema. -->
+<script>
+(function(){
+  'use strict';
+  var STR = {
+    intro:     <?php echo json_encode(_ht_talent(array('it'=>'Completa la tua scheda per candidarti — abbiamo già inserito i tuoi dati.','en'=>'Complete your profile to apply — we have pre-filled your details.','fr'=>'Complète ta fiche pour postuler — nous avons pré-rempli tes infos.','es'=>'Completa tu ficha para postularte — hemos rellenado tus datos.'))); ?>,
+    already:   <?php echo json_encode(_ht_talent(array('it'=>'Hai già un profilo. Accedi per aggiornarlo.','en'=>'You already have a profile. Log in to update it.','fr'=>'Tu as déjà un profil. Connecte-toi pour le mettre à jour.','es'=>'Ya tienes un perfil. Accede para actualizarlo.'))); ?>,
+    cittaHint: <?php echo json_encode(_ht_talent(array('it'=>'Hai indicato: %s — scegli la provincia dalla tendina.','en'=>'You entered: %s — pick your province below.','fr'=>'Tu as indiqué : %s — choisis ta région ci-dessous.','es'=>'Has indicado: %s — elige la provincia abajo.'))); ?>,
+    ruoliHint: <?php echo json_encode(_ht_talent(array('it'=>'Hai indicato: %s','en'=>'You entered: %s','fr'=>'Tu as indiqué : %s','es'=>'Has indicado: %s'))); ?>
+  };
+  var ENDPOINT = 'https://toagency.it/crm_toagency/registra-prefill.php';
+  var t = new URLSearchParams(location.search).get('t');
+  if (!t || !/^[A-Za-z0-9_-]{10,}$/.test(t)) return; // niente token valido -> form normale
+
+  function setVal(name, val){
+    if (val === null || val === undefined || val === '') return;
+    var el = document.querySelector('#toaTalentForm [name="'+name+'"]');
+    if (!el) return;
+    el.value = val;
+    el.dispatchEvent(new Event('input', {bubbles:true}));
+    el.dispatchEvent(new Event('change', {bubbles:true}));
+  }
+  function esc(s){ var d=document.createElement('div'); d.textContent=String(s); return d.innerHTML; }
+  function hintBefore(anchorId, html){
+    var a = document.getElementById(anchorId);
+    if (!a || !a.parentNode) return;
+    var p = document.createElement('div');
+    p.style.cssText = 'margin:0 0 8px;padding:8px 12px;background:rgba(200,255,0,.08);border-left:3px solid #c8ff00;border-radius:4px;font-size:13px;color:#c8d0c0;';
+    p.innerHTML = html;
+    a.parentNode.insertBefore(p, a);
+  }
+
+  fetch(ENDPOINT + '?t=' + encodeURIComponent(t), { credentials:'same-origin' })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (!d || !d.success) return; // token assente/scaduto -> form vuoto, nessun errore
+      if (d.gia_in_crm === 1 || d.gia_in_crm === '1' || d.gia_in_crm === true) {
+        var form = document.getElementById('toaTalentForm');
+        if (form && form.parentNode) {
+          var msg = document.createElement('div');
+          msg.style.cssText = 'text-align:center;padding:40px 20px;font-size:16px;color:#fff;';
+          msg.textContent = STR.already;
+          form.parentNode.insertBefore(msg, form);
+          form.style.display = 'none';
+        }
+        return;
+      }
+      var p = d.prefill || {};
+      setVal('nome', p.nome);
+      setVal('cognome', p.cognome);
+      setVal('email', p.email);
+      setVal('data_nascita', p.data_nascita);
+      setVal('altezza', p.altezza);
+      setVal('scarpe', p.scarpe);
+      setVal('instagram', p.instagram);
+      setVal('telefono', p.telefono);
+      var em = document.querySelector('#toaTalentForm [name="email"]');
+      if (em && p.email) { em.setAttribute('readonly','readonly'); em.style.opacity = '0.8'; }
+      var form2 = document.getElementById('toaTalentForm');
+      if (form2) {
+        var intro = document.createElement('div');
+        intro.style.cssText = 'text-align:center;margin:0 0 14px;font-size:14px;color:#c8ff00;font-weight:600;';
+        intro.textContent = STR.intro;
+        form2.insertBefore(intro, form2.firstChild);
+      }
+      if (p.citta) hintBefore('toaTalentProvinceWrap', STR.cittaHint.replace('%s', '<strong>'+esc(p.citta)+'</strong>'));
+      if (p.ruoli) hintBefore('toaTalentRuoliImmagine', STR.ruoliHint.replace('%s', '<strong>'+esc(p.ruoli)+'</strong>'));
+    })
+    .catch(function(){ /* errore rete -> form normale, nessun messaggio */ });
+})();
+</script>
+
 <?php toa_component('footer'); ?>
