@@ -34,6 +34,7 @@ $__l = $lang; // pilota _ht() del tema (usata da form-b2b-inline) → form nella
 // --- Quale landing ---
 $post_id = get_queried_object_id();
 $key     = get_post_meta($post_id, '_toa_ads_key', true) ?: 'casting-italia';
+if (isset($_GET['key'])) { $k = preg_replace('/[^a-z0-9-]/', '', (string) $_GET['key']); if ($k !== '') $key = $k; } // override preview/ads
 
 // --- Servizio pre-selezionato per landing ---
 $default_service = [
@@ -44,6 +45,7 @@ $default_service = [
     'casting-italia' => 'pubblicita',
     'models-aziende' => 'shooting',
     'hostess-eventi' => 'fiera-salone',
+    'attori-produzioni' => 'film',
 ][$key] ?? 'pubblicita';
 
 // --- Contatti (da /contatti/) ---
@@ -106,15 +108,15 @@ $COPY = [
     ],
   ],
   'models-aziende' => [
-    'h1'  => ['it'=>'Agenzia di casting e modelli per aziende e produzioni','en'=>'Casting and model agency for companies and productions','fr'=>'Agence de casting et mannequins pour entreprises et productions','es'=>'Agencia de casting y modelos para empresas y producciones'],
-    'sub' => ['it'=>'Modelli, attori e comparse selezionati per shooting, campagne, spot ed eventi. Preventivo gratuito in 24 ore.','en'=>'Selected models, actors and extras for shoots, campaigns, commercials and events. Free quote within 24 hours.','fr'=>'Mannequins, acteurs et figurants sélectionnés pour shootings, campagnes, spots et événements. Devis gratuit sous 24 heures.','es'=>'Modelos, actores y figurantes seleccionados para sesiones, campañas, spots y eventos. Presupuesto gratuito en 24 horas.'],
+    'h1'  => ['it'=>'Agenzia di modelle e modelli per aziende e produzioni','en'=>'Model agency for companies and productions','fr'=>'Agence de mannequins pour entreprises et productions','es'=>'Agencia de modelos para empresas y producciones'],
+    'sub' => ['it'=>'Modelle e modelli selezionati per shooting, campagne, spot ed eventi. Preventivo gratuito in 24 ore.','en'=>'Selected models for shoots, campaigns, commercials and events. Free quote within 24 hours.','fr'=>'Mannequins sélectionnés pour shootings, campagnes, spots et événements. Devis gratuit sous 24 heures.','es'=>'Modelos seleccionados para sesiones, campañas, spots y eventos. Presupuesto gratuito en 24 horas.'],
     'bul' => [
       'it'=>['20.000+ profili verificati nel database','15+ anni di esperienza, dal 2009','Operativi in tutta Italia','Casting gestiti in 4 lingue'],
       'en'=>['20,000+ verified profiles in our database','15+ years of experience, since 2009','Active throughout Italy','Casting managed in 4 languages'],
       'fr'=>['Plus de 20 000 profils vérifiés en base','Plus de 15 ans d\'expérience, depuis 2009','Actifs dans toute l\'Italie','Casting géré en 4 langues'],
       'es'=>['Más de 20.000 perfiles verificados en la base de datos','Más de 15 años de experiencia, desde 2009','Operativos en toda Italia','Casting gestionado en 4 idiomas'],
     ],
-    'serv' => ['it'=>'Modelli e modelle per campagne, e-commerce e sfilate; attori e comparse per spot, cinema e contenuti video; staff multilingue per produzioni internazionali. Contratti e compensi gestiti da noi.','en'=>'Models for campaigns, e-commerce and runway; actors and extras for commercials, film and video content; multilingual staff for international productions. Contracts and fees handled by us.','fr'=>'Mannequins pour campagnes, e-commerce et défilés ; acteurs et figurants pour spots, cinéma et contenus vidéo ; personnel multilingue pour productions internationales. Contrats et rémunérations gérés par nos soins.','es'=>'Modelos para campañas, e-commerce y desfiles; actores y figurantes para spots, cine y contenidos de vídeo; personal multilingüe para producciones internacionales. Contratos y honorarios gestionados por nosotros.'],
+    'serv' => ['it'=>'Modelle e modelli per campagne, e-commerce, sfilate ed eventi; casting mirato per fisico, età e caratteristiche; staff multilingue per produzioni internazionali. Contratti e compensi gestiti da noi.','en'=>'Models for campaigns, e-commerce, runway and events; targeted casting by look, age and features; multilingual staff for international productions. Contracts and fees handled by us.','fr'=>'Mannequins pour campagnes, e-commerce, défilés et événements ; casting ciblé par physique, âge et caractéristiques ; personnel multilingue pour productions internationales. Contrats et rémunérations gérés par nos soins.','es'=>'Modelos para campañas, e-commerce, desfiles y eventos; casting específico por físico, edad y características; personal multilingüe para producciones internacionales. Contratos y honorarios gestionados por nosotros.'],
   ],
   'hostess-eventi' => [
     'h1'  => ['it'=>'Agenzia hostess, steward e promoter per fiere ed eventi','en'=>'Hostess, steward and promoter agency for trade fairs and events','fr'=>'Agence d\'hôtesses, stewards et promoteurs pour salons et événements','es'=>'Agencia de azafatas, stewards y promotores para ferias y eventos'],
@@ -126,6 +128,17 @@ $COPY = [
       'es'=>['Más de 20.000 perfiles verificados en la base de datos','Más de 15 años de experiencia, desde 2009','Azafatas y personal multilingüe','Operativos en toda Italia'],
     ],
     'serv' => ['it'=>'Hostess e steward per fiere e stand; promoter per attività promozionali e GDO; staff per congressi ed eventi corporate. Gestione completa: contratti, compensi e coordinamento sul posto.','en'=>'Hostesses and stewards for trade fairs and stands; promoters for promotional activities and retail; staff for congresses and corporate events. Full management: contracts, fees and on-site coordination.','fr'=>'Hôtesses et stewards pour salons et stands ; promoteurs pour activités promotionnelles et grande distribution ; personnel pour congrès et événements corporate. Gestion complète : contrats, rémunérations et coordination sur place.','es'=>'Azafatas y stewards para ferias y stands; promotores para actividades promocionales y retail; personal para congresos y eventos corporativos. Gestión completa: contratos, honorarios y coordinación in situ.'],
+  ],
+  'attori-produzioni' => [
+    'h1'  => ['it'=>'Agenzia di attori e comparse per produzioni, spot e cinema','en'=>'Actors and extras agency for productions, commercials and film','fr'=>'Agence d\'acteurs et figurants pour productions, spots et cinéma','es'=>'Agencia de actores y figurantes para producciones, spots y cine'],
+    'sub' => ['it'=>'Attori, attrici e comparse selezionati per spot pubblicitari, cinema, serie TV e contenuti video. Preventivo gratuito in 24 ore.','en'=>'Selected actors, actresses and extras for commercials, film, TV series and video content. Free quote within 24 hours.','fr'=>'Acteurs, actrices et figurants sélectionnés pour spots publicitaires, cinéma, séries TV et contenus vidéo. Devis gratuit sous 24 heures.','es'=>'Actores, actrices y figurantes seleccionados para spots publicitarios, cine, series de TV y contenidos de vídeo. Presupuesto gratuito en 24 horas.'],
+    'bul' => [
+      'it'=>['20.000+ profili verificati nel database','15+ anni di esperienza, dal 2009','Attori, caratteristi e comparse per ogni ruolo','Operativi in tutta Italia'],
+      'en'=>['20,000+ verified profiles in our database','15+ years of experience, since 2009','Actors, character actors and extras for every role','Active throughout Italy'],
+      'fr'=>['Plus de 20 000 profils vérifiés en base','Plus de 15 ans d\'expérience, depuis 2009','Acteurs, seconds rôles et figurants pour chaque rôle','Actifs dans toute l\'Italie'],
+      'es'=>['Más de 20.000 perfiles verificados en la base de datos','Más de 15 años de experiencia, desde 2009','Actores, secundarios y figurantes para cada papel','Operativos en toda Italia'],
+    ],
+    'serv' => ['it'=>'Attori e attrici per spot, cinema, serie TV e web; comparse e figurazioni per produzioni di ogni dimensione; casting mirato per età, fisico e caratteristiche. Contratti e compensi gestiti da noi.','en'=>'Actors and actresses for commercials, film, TV series and web; extras and background for productions of any size; targeted casting by age, look and features. Contracts and fees handled by us.','fr'=>'Acteurs et actrices pour spots, cinéma, séries TV et web ; figurants pour productions de toute taille ; casting ciblé par âge, physique et caractéristiques. Contrats et rémunérations gérés par nos soins.','es'=>'Actores y actrices para spots, cine, series de TV y web; figurantes para producciones de cualquier tamaño; casting específico por edad, físico y características. Contratos y honorarios gestionados por nosotros.'],
   ],
 ];
 
@@ -141,10 +154,11 @@ $contacthint_l= ['it'=>'Preferisci sentirci subito?','en'=>'Prefer to talk now?'
 // FIX 2026-07-10 marco — WhatsApp card pari peso al form, con etichetta B2B integrata (evitare click di talent)
 $wabig_l      = ['it'=>'Preferisci scriverci subito?','en'=>'Prefer to message us right away?','fr'=>'Vous préférez nous écrire tout de suite ?','es'=>'¿Prefieres escribirnos ahora mismo?'];
 // Messaggio WhatsApp precompilato per landing → l'utente arriva già contestualizzato (B2B vs talent)
-$wa_type  = (strpos($key, 'hostess') === 0) ? 'hostess' : 'models';
+$wa_type  = (strpos($key, 'hostess') === 0) ? 'hostess' : ((strpos($key, 'attori') === 0) ? 'attori' : 'models');
 $wa_label = [
   'models'  => ['it'=>'Modelli per aziende','en'=>'Models for companies','fr'=>'Mannequins pour entreprises','es'=>'Modelos para empresas'],
   'hostess' => ['it'=>'Hostess per eventi','en'=>'Hostess for events','fr'=>'Hôtesses pour événements','es'=>'Azafatas para eventos'],
+  'attori'  => ['it'=>'Attori e comparse','en'=>'Actors and extras','fr'=>'Acteurs et figurants','es'=>'Actores y figurantes'],
 ];
 $wa_tmpl  = ['it'=>'Ciao TOAgency, scrivo dalla pagina %s. Ho un progetto e sono interessato a ...','en'=>'Hi TOAgency, I\'m writing from the %s page. I have a project and I\'m interested in ...','fr'=>'Bonjour TOAgency, je vous écris depuis la page %s. J\'ai un projet et je suis intéressé par ...','es'=>'Hola TOAgency, escribo desde la página %s. Tengo un proyecto y estoy interesado en ...'];
 $wa_text  = sprintf($wa_tmpl[$lang] ?? $wa_tmpl['it'], $wa_label[$wa_type][$lang] ?? $wa_label[$wa_type]['it']);
