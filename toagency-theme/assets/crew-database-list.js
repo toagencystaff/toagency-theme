@@ -238,7 +238,7 @@
     function mediaTag(url) {
         var safe = encodeURI(url);
         if (VIDEO_RE.test(url)) {
-            return '<div class="crew-pf-vwrap"><video class="crew-pf-media" src="' + safe + '#t=0.1" preload="auto" muted playsinline controls></video><button type="button" class="crew-pf-play" aria-label="Play">▶</button></div>';
+            return '<button type="button" class="crew-pf-vthumb" data-src="' + safe + '"><span class="crew-pf-play">▶</span><span class="crew-pf-vlabel">video</span></button>';
         }
         return '<img class="crew-pf-media" src="' + safe + '" alt="" loading="lazy">';
     }
@@ -304,15 +304,13 @@
     }
 
     function wireVideos(scope) {
-        scope.querySelectorAll('video.crew-pf-media').forEach(function (v) {
-            v.addEventListener('loadeddata', function () {
-                try { if (v.currentTime < 0.1) v.currentTime = 0.1; } catch (e) {}
-            }, { once: true });
-        });
-        scope.querySelectorAll('.crew-pf-play').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                var v = btn.parentNode.querySelector('video');
-                if (v) { v.play(); btn.style.display = 'none'; }
+        scope.querySelectorAll('.crew-pf-vthumb').forEach(function (b) {
+            b.addEventListener('click', function () {
+                var src = b.getAttribute('data-src');
+                var w = document.createElement('div');
+                w.className = 'crew-pf-vwrap';
+                w.innerHTML = '<video class="crew-pf-media" src="' + src + '" autoplay muted playsinline controls></video>';
+                if (b.parentNode) b.parentNode.replaceChild(w, b);
             });
         });
     }

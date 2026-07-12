@@ -188,8 +188,11 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-grid img.crew-pf-media:hover { transform:scale(1.02); outline:2px solid #c8ff00; outline-offset:-2px; }
 .crew-pf-vwrap { position:relative; display:block; border-radius:10px; overflow:hidden; }
 .crew-pf-vwrap:hover { outline:2px solid #c8ff00; outline-offset:-2px; }
-.crew-pf-play { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:52px; height:52px; border-radius:50%; border:none; background:rgba(200,255,0,.92); color:#0a0a0a; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; padding-left:3px; box-shadow:0 4px 16px rgba(0,0,0,.4); transition:transform .15s, background .15s; }
-.crew-pf-play:hover { background:#c8ff00; transform:translate(-50%,-50%) scale(1.08); }
+.crew-pf-vthumb { position:relative; width:100%; aspect-ratio:1; border:none; border-radius:10px; background:radial-gradient(circle at 50% 40%, #1a1a1e, #0a0a0a); cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; transition:outline .15s; }
+.crew-pf-vthumb:hover { outline:2px solid #c8ff00; outline-offset:-2px; }
+.crew-pf-vlabel { color:#9ca3af; font-size:11px; text-transform:uppercase; letter-spacing:.12em; font-weight:600; }
+.crew-pf-play { width:52px; height:52px; border-radius:50%; background:rgba(200,255,0,.95); color:#0a0a0a; font-size:20px; display:flex; align-items:center; justify-content:center; padding-left:3px; box-shadow:0 4px 16px rgba(0,0,0,.4); }
+.crew-pf-vthumb:hover .crew-pf-play { transform:scale(1.08); transition:transform .15s; }
 .crew-pf-loading, .crew-pf-error, .crew-pf-empty { color:#9ca3af; text-align:center; padding:48px; }
 @media (max-width:640px){ .crew-pf-card{ padding:22px 16px 32px; } .crew-pf-name{ font-size:26px; } .crew-pf-grid{ grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:8px; } }
 
@@ -308,6 +311,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.3" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.4" defer></script>
 
 <?php toa_component('footer'); ?>
