@@ -352,6 +352,92 @@ $theme_uri = get_stylesheet_directory_uri();
                 </div>
             </div>
 
+            <!-- MOVED 2026-07-12: foto profilo + disclaimer + GDPR spostati qui da Step 4 per lead-capture Step 1 -->
+            <!-- Foto profilo -->
+            <div class="toa-talent-upload-section">
+                <h5>👤 <?php echo _ht_talent(array('it'=>'Primo piano','en'=>'Close-up','fr'=>'Gros plan','es'=>'Primer plano')); ?> <span class="req">*</span></h5>
+                <p class="toa-talent-step-help"><?php echo _ht_talent(array(
+                    'it'=>'Una foto chiara del viso, frontale, su sfondo neutro e luce naturale, come nell\'esempio qui sotto. Sarà la tua immagine principale.',
+                    'en'=>'A clear, frontal photo of the face on a neutral background in natural light, like the example below. It will be your main image.',
+                    'fr'=>'Une photo claire du visage, de face, sur fond neutre et en lumière naturelle, comme dans l\'exemple ci-dessous. Ce sera votre image principale.',
+                    'es'=>'Una foto clara del rostro, frontal, con fondo neutro y luz natural, como en el ejemplo de abajo. Será tu imagen principal.',
+                )); ?></p>
+                <?php
+                $badge_ok = _ht_talent(array('it'=>'✅ Così sì','en'=>'✅ Yes like this','es'=>'✅ Así sí','fr'=>'✅ Oui comme ça'));
+                $badge_no = _ht_talent(array('it'=>'❌ Così no','en'=>'❌ Not like this','es'=>'❌ Así no','fr'=>'❌ Pas comme ça'));
+                ?>
+                <!-- FOTO GUIDA: slideshow ✅/❌ interleaved — 1s auto-rotate (13 slide), badge multilingua -->
+                <div class="toa-foto-gallery" id="toaFotoGallery">
+                  <div class="toa-fg-slide active"><img src="<?= $theme_uri ?>/assets/foto-esempio-profilo.jpg" alt="ok"><span class="toa-fg-badge ok"><?= $badge_ok ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-sfondo.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-2.jpg" alt="ok"><span class="toa-fg-badge ok"><?= $badge_ok ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-occhiali.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-3.jpg" alt="ok"><span class="toa-fg-badge ok"><?= $badge_ok ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-angolo.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-4.jpg" alt="ok"><span class="toa-fg-badge ok"><?= $badge_ok ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-trucco.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-5.jpg" alt="ok"><span class="toa-fg-badge ok"><?= $badge_ok ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-cappello.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-selfie-alto.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-lontana.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
+                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-spiaggia.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
+                </div>
+                <style>
+                .toa-foto-gallery{position:relative;width:160px;height:220px;margin:10px auto 16px;border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+                .toa-fg-slide{display:none;position:relative;width:100%;height:100%}
+                .toa-fg-slide.active{display:block}
+                .toa-fg-slide img{width:100%;height:100%;object-fit:cover;display:block}
+                .toa-fg-badge{position:absolute;bottom:0;left:0;right:0;text-align:center;padding:5px 0;font-size:13px;font-weight:700;letter-spacing:.3px}
+                .toa-fg-badge.ok{background:rgba(16,185,129,.88);color:#fff}
+                .toa-fg-badge.wrong{background:rgba(220,38,38,.88);color:#fff}
+                </style>
+                <script>
+                (function(){var s=document.querySelectorAll('#toaFotoGallery .toa-fg-slide'),i=0;if(!s.length)return;setInterval(function(){s[i].classList.remove('active');i=(i+1)%s.length;s[i].classList.add('active');},1000);})();
+                </script>
+                <div class="toa-talent-dropzone toa-talent-dropzone-small" id="toaTalentProfileDrop">
+                    <div class="toa-talent-dropzone-icon">👤</div>
+                    <div class="toa-talent-dropzone-text"><?php echo _ht_talent(array('it'=>'Carica foto o scatta selfie','en'=>'Upload photo or take a selfie','es'=>'Sube una foto o hazte un selfie','fr'=>'Charge une photo ou prends un selfie')); ?></div>
+                    <div class="toa-talent-dropzone-hint">JPG, PNG • <?php /* TASK hardening-upload STEP A 2026-06-04 */ echo _ht_talent(array('it'=>'Carica le tue foto: le ottimizziamo noi automaticamente','en'=>'Upload your photos: we optimize them automatically','fr'=>'Charge tes photos : on les optimise automatiquement','es'=>'Sube tus fotos: las optimizamos automáticamente')); ?></div>
+                    <input type="file" id="toaTalentProfileInput" accept="image/*" style="display:none;">
+                </div>
+                <p class="toa-talent-foto-nono" style="text-align:center;margin:12px auto 0;max-width:380px;padding:8px 16px;background:rgba(220,38,38,0.12);border:1px solid rgba(220,38,38,0.4);border-radius:8px;font-size:0.84rem;line-height:1.5;color:#f87171;font-weight:700;letter-spacing:.2px;"><?php echo _ht_talent(array(
+                    'it'=>'❌ NO testi · NO loghi · NO watermark · NO filtri · NO effetti',
+                    'en'=>'❌ NO text · NO logos · NO watermarks · NO filters · NO effects',
+                    'es'=>'❌ NO textos · NO logos · NO marcas de agua · NO filtros · NO efectos',
+                    'fr'=>'❌ PAS de texte · PAS de logo · PAS de filigrane · PAS de filtre · PAS d\'effet',
+                )); ?></p>
+                <div class="toa-talent-profile-thumb" id="toaTalentProfileThumb"></div>
+                <div class="toa-talent-error-msg" id="toaTalentProfileError"></div>
+            </div>
+
+            <!-- Conferma upload -->
+            <div class="toa-talent-field" style="margin-top: 26px;">
+                <label class="toa-talent-checkbox">
+                    <input type="checkbox" name="disclaimer_consent" value="1" required>
+                    <span><?php echo _ht_talent(array(
+                        'it'=>'Confermo che le foto caricate non contengono firme, watermark, contatti o riferimenti riconducibili al talent.',
+                        'en'=>'I confirm photos don\'t contain signatures or contacts.',
+                        'fr'=>'Je confirme l\'absence de signatures.',
+                        'es'=>'Confirmo que no hay firmas ni contactos.',
+                    )); ?></span>
+                </label>
+                <div class="toa-talent-error-msg"></div>
+            </div>
+
+            <!-- ═════════ CONSENSO GDPR / PRIVACY (obbligatorio) ═════════ -->
+            <div class="toa-talent-field">
+                <label class="toa-talent-checkbox">
+                    <input type="checkbox" name="gdpr_consent" value="1" required>
+                    <span><?php echo _ht_talent(array(
+                        'it'=>'Ho letto e accetto la privacy policy. Per i minori, il consenso è prestato dal genitore/tutore legale ai sensi dell\'art. 8 GDPR Reg. UE 2016/679. I dati personali e le immagini del minore saranno trattati esclusivamente per finalità di gestione del profilo talent e presentazione a clienti aziendali. È possibile richiedere la cancellazione completa dei dati e delle immagini in qualsiasi momento scrivendo a info@toagency.it (art. 17 GDPR — diritto all\'oblio). La rimozione avverrà entro 30 giorni dalla richiesta.',
+                        'en'=>'I accept the privacy policy. For minors, consent is given by the parent/guardian under GDPR Art. 8. Personal data and images will be used only for talent profile management and presentation to corporate clients. You may request complete deletion at any time by writing to info@toagency.it (GDPR Art. 17).',
+                        'fr'=>'J\'accepte la politique de confidentialité. Pour les mineurs, le consentement est donné par le parent (RGPD Art. 8). Suppression possible à tout moment via info@toagency.it (Art. 17 RGPD).',
+                        'es'=>'Acepto la política de privacidad. Para menores, el consentimiento lo da el padre/tutor (RGPD Art. 8). Eliminación completa posible en cualquier momento escribiendo a info@toagency.it (Art. 17 RGPD).',
+                    )); ?> <a href="/privacy-policy/" target="_blank">Privacy</a></span>
+                </label>
+                <div class="toa-talent-error-msg"></div>
+            </div>
+
             <div class="toa-talent-actions">
                 <span></span>
                 <button type="button" class="toa-talent-btn toa-talent-btn-primary" data-go="2"><?php echo _ht_talent(array('it'=>'Continua','en'=>'Continue','fr'=>'Continuer','es'=>'Continuar')); ?> →</button>
@@ -656,63 +742,6 @@ $theme_uri = get_stylesheet_directory_uri();
         <div class="toa-talent-step" data-step="4">
             <h3><?php echo _ht_talent(array('it'=>'Foto e portfolio','en'=>'Photo & portfolio','fr'=>'Photo et portfolio','es'=>'Foto y portfolio')); ?></h3>
 
-            <!-- Foto profilo -->
-            <div class="toa-talent-upload-section">
-                <h5>👤 <?php echo _ht_talent(array('it'=>'Primo piano','en'=>'Close-up','fr'=>'Gros plan','es'=>'Primer plano')); ?> <span class="req">*</span></h5>
-                <p class="toa-talent-step-help"><?php echo _ht_talent(array(
-                    'it'=>'Una foto chiara del viso, frontale, su sfondo neutro e luce naturale, come nell\'esempio qui sotto. Sarà la tua immagine principale.',
-                    'en'=>'A clear, frontal photo of the face on a neutral background in natural light, like the example below. It will be your main image.',
-                    'fr'=>'Une photo claire du visage, de face, sur fond neutre et en lumière naturelle, comme dans l\'exemple ci-dessous. Ce sera votre image principale.',
-                    'es'=>'Una foto clara del rostro, frontal, con fondo neutro y luz natural, como en el ejemplo de abajo. Será tu imagen principal.',
-                )); ?></p>
-                <?php
-                $badge_ok = _ht_talent(array('it'=>'✅ Così sì','en'=>'✅ Yes like this','es'=>'✅ Así sí','fr'=>'✅ Oui comme ça'));
-                $badge_no = _ht_talent(array('it'=>'❌ Così no','en'=>'❌ Not like this','es'=>'❌ Así no','fr'=>'❌ Pas comme ça'));
-                ?>
-                <!-- FOTO GUIDA: slideshow ✅/❌ interleaved — 1s auto-rotate (13 slide), badge multilingua -->
-                <div class="toa-foto-gallery" id="toaFotoGallery">
-                  <div class="toa-fg-slide active"><img src="<?= $theme_uri ?>/assets/foto-esempio-profilo.jpg" alt="ok"><span class="toa-fg-badge ok"><?= $badge_ok ?></span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-sfondo.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-2.jpg" alt="ok"><span class="toa-fg-badge ok"><?= $badge_ok ?></span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-occhiali.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-3.jpg" alt="ok"><span class="toa-fg-badge ok"><?= $badge_ok ?></span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-angolo.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-4.jpg" alt="ok"><span class="toa-fg-badge ok"><?= $badge_ok ?></span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-trucco.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/ok-5.jpg" alt="ok"><span class="toa-fg-badge ok"><?= $badge_ok ?></span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-cappello.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-selfie-alto.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-lontana.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
-                  <div class="toa-fg-slide"><img src="<?= $theme_uri ?>/assets/wrong-spiaggia.jpg" alt="no"><span class="toa-fg-badge wrong"><?= $badge_no ?></span></div>
-                </div>
-                <style>
-                .toa-foto-gallery{position:relative;width:160px;height:220px;margin:10px auto 16px;border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.25)}
-                .toa-fg-slide{display:none;position:relative;width:100%;height:100%}
-                .toa-fg-slide.active{display:block}
-                .toa-fg-slide img{width:100%;height:100%;object-fit:cover;display:block}
-                .toa-fg-badge{position:absolute;bottom:0;left:0;right:0;text-align:center;padding:5px 0;font-size:13px;font-weight:700;letter-spacing:.3px}
-                .toa-fg-badge.ok{background:rgba(16,185,129,.88);color:#fff}
-                .toa-fg-badge.wrong{background:rgba(220,38,38,.88);color:#fff}
-                </style>
-                <script>
-                (function(){var s=document.querySelectorAll('#toaFotoGallery .toa-fg-slide'),i=0;if(!s.length)return;setInterval(function(){s[i].classList.remove('active');i=(i+1)%s.length;s[i].classList.add('active');},1000);})();
-                </script>
-                <div class="toa-talent-dropzone toa-talent-dropzone-small" id="toaTalentProfileDrop">
-                    <div class="toa-talent-dropzone-icon">👤</div>
-                    <div class="toa-talent-dropzone-text"><?php echo _ht_talent(array('it'=>'Carica foto o scatta selfie','en'=>'Upload photo or take a selfie','es'=>'Sube una foto o hazte un selfie','fr'=>'Charge une photo ou prends un selfie')); ?></div>
-                    <div class="toa-talent-dropzone-hint">JPG, PNG • <?php /* TASK hardening-upload STEP A 2026-06-04 */ echo _ht_talent(array('it'=>'Carica le tue foto: le ottimizziamo noi automaticamente','en'=>'Upload your photos: we optimize them automatically','fr'=>'Charge tes photos : on les optimise automatiquement','es'=>'Sube tus fotos: las optimizamos automáticamente')); ?></div>
-                    <input type="file" id="toaTalentProfileInput" accept="image/*" style="display:none;">
-                </div>
-                <p class="toa-talent-foto-nono" style="text-align:center;margin:12px auto 0;max-width:380px;padding:8px 16px;background:rgba(220,38,38,0.12);border:1px solid rgba(220,38,38,0.4);border-radius:8px;font-size:0.84rem;line-height:1.5;color:#f87171;font-weight:700;letter-spacing:.2px;"><?php echo _ht_talent(array(
-                    'it'=>'❌ NO testi · NO loghi · NO watermark · NO filtri · NO effetti',
-                    'en'=>'❌ NO text · NO logos · NO watermarks · NO filters · NO effects',
-                    'es'=>'❌ NO textos · NO logos · NO marcas de agua · NO filtros · NO efectos',
-                    'fr'=>'❌ PAS de texte · PAS de logo · PAS de filigrane · PAS de filtre · PAS d\'effet',
-                )); ?></p>
-                <div class="toa-talent-profile-thumb" id="toaTalentProfileThumb"></div>
-                <div class="toa-talent-error-msg" id="toaTalentProfileError"></div>
-            </div>
-
             <!-- Foto portfolio -->
             <div class="toa-talent-upload-section">
                 <h5>📷 <?php echo _ht_talent(array('it'=>'Foto del portfolio (facoltative)','en'=>'Portfolio photos (optional)','fr'=>'Photos portfolio (facultatif)','es'=>'Fotos portfolio (opcional)')); ?></h5>
@@ -732,20 +761,6 @@ $theme_uri = get_stylesheet_directory_uri();
                 </div>
                 <div class="toa-talent-thumbs" id="toaTalentPhotosThumbs"></div>
                 <div class="toa-talent-error-msg" id="toaTalentPhotosError"></div>
-            </div>
-
-            <!-- Conferma upload -->
-            <div class="toa-talent-field" style="margin-top: 26px;">
-                <label class="toa-talent-checkbox">
-                    <input type="checkbox" name="disclaimer_consent" value="1" required>
-                    <span><?php echo _ht_talent(array(
-                        'it'=>'Confermo che le foto caricate non contengono firme, watermark, contatti o riferimenti riconducibili al talent.',
-                        'en'=>'I confirm photos don\'t contain signatures or contacts.',
-                        'fr'=>'Je confirme l\'absence de signatures.',
-                        'es'=>'Confirmo que no hay firmas ni contactos.',
-                    )); ?></span>
-                </label>
-                <div class="toa-talent-error-msg"></div>
             </div>
 
             <!-- NOTIFICHE CASTING — opt-in WhatsApp/SMS (facoltativo, NON pre-spuntato) 2026-06-30 marco -->
@@ -776,20 +791,6 @@ $theme_uri = get_stylesheet_directory_uri();
                 </label>
             </div>
 
-
-            <!-- ═════════ CONSENSO GDPR / PRIVACY (obbligatorio) ═════════ -->
-            <div class="toa-talent-field">
-                <label class="toa-talent-checkbox">
-                    <input type="checkbox" name="gdpr_consent" value="1" required>
-                    <span><?php echo _ht_talent(array(
-                        'it'=>'Ho letto e accetto la privacy policy. Per i minori, il consenso è prestato dal genitore/tutore legale ai sensi dell\'art. 8 GDPR Reg. UE 2016/679. I dati personali e le immagini del minore saranno trattati esclusivamente per finalità di gestione del profilo talent e presentazione a clienti aziendali. È possibile richiedere la cancellazione completa dei dati e delle immagini in qualsiasi momento scrivendo a info@toagency.it (art. 17 GDPR — diritto all\'oblio). La rimozione avverrà entro 30 giorni dalla richiesta.',
-                        'en'=>'I accept the privacy policy. For minors, consent is given by the parent/guardian under GDPR Art. 8. Personal data and images will be used only for talent profile management and presentation to corporate clients. You may request complete deletion at any time by writing to info@toagency.it (GDPR Art. 17).',
-                        'fr'=>'J\'accepte la politique de confidentialité. Pour les mineurs, le consentement est donné par le parent (RGPD Art. 8). Suppression possible à tout moment via info@toagency.it (Art. 17 RGPD).',
-                        'es'=>'Acepto la política de privacidad. Para menores, el consentimiento lo da el padre/tutor (RGPD Art. 8). Eliminación completa posible en cualquier momento escribiendo a info@toagency.it (Art. 17 RGPD).',
-                    )); ?> <a href="/privacy-policy/" target="_blank">Privacy</a></span>
-                </label>
-                <div class="toa-talent-error-msg"></div>
-            </div>
 
             <!-- ═════════ CONSENSO PUBBLICAZIONE IMMAGINI (legge 633/41 + GDPR) ═════════ -->
             <div class="toa-talent-field" style="background:rgba(200,255,0,0.04);border:1px solid rgba(200,255,0,0.2);border-radius:14px;padding:18px;margin-top:20px;">
@@ -896,7 +897,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260629e" defer></script><!-- FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260712s1" defer></script><!-- FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT

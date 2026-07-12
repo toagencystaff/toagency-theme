@@ -136,9 +136,9 @@
                         } else {
                             hideRecover();
                             hideDupBox();
-                            showStep(to);
+                            saveStep1Lead().then(function(){ uploadProfileEarly(); showStep(to); });
                         }
-                    }).catch(function() { goBtn.disabled = false; showStep(to); }); // errore rete → non bloccare
+                    }).catch(function() { goBtn.disabled = false; saveStep1Lead().then(function(){ uploadProfileEarly(); showStep(to); }); }); // errore rete → non bloccare
                     return;
                 }
             }
@@ -795,6 +795,30 @@
                     ok = false;
                 }
             }
+            if (!uploadState.photoProfile) {
+                var photoSec = scope.querySelector('.toa-talent-upload-section');
+                var photoErr = photoSec ? photoSec.querySelector('.toa-talent-error-msg') : null;
+                if (photoErr) { photoErr.textContent = tmsg(MSG.photoReq); photoErr.classList.add('show'); }
+                ok = false;
+            }
+            var disclaimer = scope.querySelector('[name="disclaimer_consent"]');
+            if (disclaimer && !disclaimer.checked) {
+                var b = disclaimer.closest('.toa-talent-field');
+                if (b) {
+                    var er = b.querySelector('.toa-talent-error-msg');
+                    if (er) { er.textContent = tmsg(MSG.rulesReq); er.classList.add('show'); }
+                }
+                ok = false;
+            }
+            var gdpr = scope.querySelector('[name="gdpr_consent"]');
+            if (gdpr && !gdpr.checked) {
+                var b2 = gdpr.closest('.toa-talent-field');
+                if (b2) {
+                    var er2 = b2.querySelector('.toa-talent-error-msg');
+                    if (er2) { er2.textContent = tmsg(MSG.gdprReq); er2.classList.add('show'); }
+                }
+                ok = false;
+            }
         }
 
         if (n === 2) {
@@ -950,30 +974,8 @@
         }
 
         if (n === 4) {
-            if (!uploadState.photoProfile) {
-                var photoSec = scope.querySelector('.toa-talent-upload-section');
-                var photoErr = photoSec ? photoSec.querySelector('.toa-talent-error-msg') : null;
-                if (photoErr) { photoErr.textContent = tmsg(MSG.photoReq); photoErr.classList.add('show'); }
-                ok = false;
-            }
-            var disclaimer = scope.querySelector('[name="disclaimer_consent"]');
-            if (disclaimer && !disclaimer.checked) {
-                var b = disclaimer.closest('.toa-talent-field');
-                if (b) {
-                    var er = b.querySelector('.toa-talent-error-msg');
-                    if (er) { er.textContent = tmsg(MSG.rulesReq); er.classList.add('show'); }
-                }
-                ok = false;
-            }
-            var gdpr = scope.querySelector('[name="gdpr_consent"]');
-            if (gdpr && !gdpr.checked) {
-                var b2 = gdpr.closest('.toa-talent-field');
-                if (b2) {
-                    var er2 = b2.querySelector('.toa-talent-error-msg');
-                    if (er2) { er2.textContent = tmsg(MSG.gdprReq); er2.classList.add('show'); }
-                }
-                ok = false;
-            }
+            // foto profilo + disclaimer + gdpr: validazione spostata nello Step 1 (lead-capture 2026-07-12)
+        
         }
 
         return ok;
@@ -999,6 +1001,66 @@
     function checkEmailExists(email) { // alias retrocompat
         return checkDupExists(email,'','','').then(function(j){return !!(j&&j.exists);});
     }
+    // 2026-07-12 marco — LEAD CAPTURE Step 1: salva il lead SUBITO a fine Step 1
+    var STEP1_ENDPOINT = '/crm_toagency/actions/registra-step1.php';
+    var step1Lead = { id: null, uuid: null, token: null, done: false, giaEsiste: false, inflight: false, photoUploaded: false, photoInflight: false };
+    function _s1cb(name){ var el = form.querySelector('[name="'+name+'"]'); return (el && el.checked) ? '1' : ''; }
+    function _s1v(name){ var el = form.querySelector('[name="'+name+'"]'); return el ? (el.value||'').trim() : ''; }
+    function saveStep1Lead(){
+        if (step1Lead.inflight) return Promise.resolve(step1Lead);
+        step1Lead.inflight = true;
+        var htmlLang = (document.documentElement.getAttribute('lang')||'it').substring(0,2);
+        var body = {
+            nome: _s1v('nome'), cognome: _s1v('cognome'), email: _s1v('email'),
+            telefono: _s1v('telefono'), data_nascita: _s1v('data_nascita'),
+            sesso: _s1v('sesso'), res_provincia: _s1v('res_provincia'),
+            tel_paese_code: _s1v('tel_paese_code') || 'IT', lang: htmlLang,
+            gdpr_consent: _s1cb('gdpr_consent') || '1',
+            pubblicazione_immagini_consent: _s1cb('pubblicazione_immagini_consent'),
+            disclaimer_consent: _s1cb('disclaimer_consent'),
+            wa_consent: _s1cb('wa_consent'), sms_consent: _s1cb('sms_consent'),
+            honeypot_url: _s1v('honeypot_url')
+        };
+        return fetch(STEP1_ENDPOINT, {
+            method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify(body), credentials:'same-origin'
+        }).then(function(r){ return r.json(); }).then(function(j){
+            step1Lead.inflight = false;
+            if (j && j.success) {
+                if (j.id)   step1Lead.id = j.id;
+                if (j.uuid) step1Lead.uuid = j.uuid;
+                if (j.token) step1Lead.token = j.token;   // 'gia_esiste' non ritorna token
+                step1Lead.giaEsiste = !!j.gia_esiste;
+                step1Lead.done = true;
+                console.log('[step1] lead salvato:', j);
+            } else {
+                console.warn('[step1] risposta senza success:', j);
+            }
+            return step1Lead;
+        }).catch(function(err){
+            step1Lead.inflight = false;
+            console.warn('[step1] POST fallito (non blocco la navigazione):', err);
+            return step1Lead;
+        });
+    }
+    // 2026-07-12 marco — upload foto profilo SUBITO dopo lo Step 1 (non bloccante; fallback allo Step finale)
+    function uploadProfileEarly(){
+        if (step1Lead.photoUploaded || step1Lead.photoInflight) return;
+        if (step1Lead.giaEsiste) return;                  // profilo completo gia' esistente
+        if (!step1Lead.id || !step1Lead.token) return;    // serve il token dello Step 1
+        if (!uploadState.photoProfile || !uploadState.photoProfile.file) return;
+        step1Lead.photoInflight = true;
+        uploadOneFile(step1Lead.id, step1Lead.token, uploadState.photoProfile.file, 'foto_profilo')
+            .then(function(res){
+                step1Lead.photoInflight = false;
+                if (res && res.ok === true) { step1Lead.photoUploaded = true; console.log('[step1] foto profilo caricata subito'); }
+                else { console.warn('[step1] upload foto anticipato non ok (riprovo allo Step finale):', res); }
+            })
+            .catch(function(err){
+                step1Lead.photoInflight = false;
+                console.warn('[step1] upload foto anticipato fallito (riprovo allo Step finale):', err);
+            });
+    }
     var talentIdAfterRegister = null;
     var talentUuidAfterRegister = null;
     var talentTokenAfterRegister = null;
@@ -1008,10 +1070,12 @@
 
     // FIX 2026-06-25 marco — esito upload: la foto profilo (sempre 1° elemento della coda) DEVE riuscire.
     function afterUploadDone(results) {
-        var prof = (results && results.length) ? results[0] : null;
-        if (!prof || prof.ok !== true) { afterUploadFailed(); return; }
+        // foto profilo: se caricata allo Step 1 non e' in coda -> gia' ok
+        var profOk = step1Lead.photoUploaded || (results && results.length && results[0] && results[0].ok === true);
+        if (!profOk) { afterUploadFailed(); return; }
         pendingUpload = null;
-        var portfolioFail = results.slice(1).some(function(r){ return !r || r.ok !== true; });
+        var portfolioResults = step1Lead.photoUploaded ? results : results.slice(1);
+        var portfolioFail = portfolioResults.some(function(r){ return !r || r.ok !== true; });
         if (portfolioFail) {
             var _w = document.getElementById('toaTalentUploadWarn');
             if (_w) { _w.textContent = tmsg(MSG.uploadPartialFail); _w.style.display = 'block'; }
@@ -1084,8 +1148,8 @@
         console.log('[uploadAll] photos count:', uploadState.photos.length, uploadState.photos);
 
         var queue = [];
-        // 1. Foto profilo
-        if (uploadState.photoProfile && uploadState.photoProfile.file) {
+        // 1. Foto profilo — salta se gia' caricata allo Step 1 (lead-capture 2026-07-12)
+        if (!step1Lead.photoUploaded && uploadState.photoProfile && uploadState.photoProfile.file) {
             queue.push({ file: uploadState.photoProfile.file, tipo: 'foto_profilo' });
         }
         // 2. Foto portfolio (no video per i talent)
@@ -1175,6 +1239,13 @@
         var htmlLang = document.documentElement.getAttribute('lang') || 'it';
         fd.append('lang', htmlLang.substring(0, 2));
 
+        // 2026-07-12 marco — LEAD CAPTURE: collega il submit alla bozza dello Step 1 (update idempotente)
+        if (step1Lead.id && step1Lead.token) {
+            fd.append('lead_id', step1Lead.id);
+            fd.append('lead_uuid', step1Lead.uuid || '');
+            fd.append('lead_token', step1Lead.token);
+        }
+
         fetch(REGISTER_ENDPOINT, {
             method: 'POST',
             body: fd,
@@ -1206,6 +1277,7 @@
                         afterUploadFailed(); // niente "successo": si riprova solo la foto
                     });
             } else {
+                if (res && res.error === 'lead_auth_failed') { step1Lead.id = null; step1Lead.uuid = null; step1Lead.token = null; }
                 handleRegisterError(res);
             }
         })
