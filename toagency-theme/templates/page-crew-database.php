@@ -180,6 +180,9 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-bio { color:#9ca3af; font-size:14px; line-height:1.5; margin:0 0 12px; }
 .crew-pf-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(160px,1fr)); gap:10px; }
 .crew-pf-media { width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px; background:#0a0a0a; display:block; }
+.crew-pf-code { color:#6b7280; font-weight:400; font-size:.6em; letter-spacing:.5px; }
+.crew-pf-vwrap { position:relative; display:block; }
+.crew-pf-play { position:absolute; top:8px; left:8px; background:rgba(0,0,0,.65); color:#fff; font-size:11px; line-height:1; padding:4px 7px; border-radius:4px; pointer-events:none; }
 .crew-pf-loading, .crew-pf-error, .crew-pf-empty { color:#9ca3af; text-align:center; padding:40px; }
 
 @media (max-width:640px) {
@@ -297,6 +300,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.1" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.2" defer></script>
 
 <?php toa_component('footer'); ?>

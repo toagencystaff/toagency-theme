@@ -238,7 +238,7 @@
     function mediaTag(url) {
         var safe = encodeURI(url);
         if (VIDEO_RE.test(url)) {
-            return '<video class="crew-pf-media" src="' + safe + '" controls preload="metadata" playsinline></video>';
+            return '<div class="crew-pf-vwrap"><video class="crew-pf-media" src="' + safe + '#t=0.1" preload="metadata" muted playsinline controls></video><span class="crew-pf-play">▶</span></div>';
         }
         return '<img class="crew-pf-media" src="' + safe + '" alt="" loading="lazy">';
     }
@@ -271,7 +271,8 @@
         var labels = d.ruoli_label || {};
         var albums = d.albums || {};
         var bio = d.bio_ruoli || {};
-        var html = '<h2 class="crew-pf-name">' + escapeHtml(d.nome || '—') + '</h2>';
+        var codice = d.codice ? ' <span class="crew-pf-code">· ' + escapeHtml(d.codice) + '</span>' : '';
+        var html = '<h2 class="crew-pf-name">' + escapeHtml(d.nome || '—') + codice + '</h2>';
         if (d.categorie && d.categorie.length) {
             html += '<div class="crew-pf-roles">';
             d.categorie.forEach(function (cat) { html += '<span class="crew-pub-cat-chip">' + escapeHtml(cat) + '</span>'; });
