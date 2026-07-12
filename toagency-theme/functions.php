@@ -112,6 +112,15 @@ function toa_component($name, $args = array()) {
  * Get current language (WPML compatible)
  */
 function toa_current_lang() {
+    // 2026-07-11 marco — override esplicito via ?lang= (whitelist) PRIMA di WPML.
+    // Serve per i link nelle email (es. /crew-self-edit/?uuid=&t=&lang=fr) su pagine-template
+    // custom che WPML non traduce (altrimenti rimbalzano al default IT).
+    if (isset($_GET['lang'])) {
+        $forced = strtolower(substr((string) $_GET['lang'], 0, 2));
+        if (in_array($forced, array('it','en','fr','es'), true)) {
+            return $forced;
+        }
+    }
     if (defined('ICL_LANGUAGE_CODE')) {
         return ICL_LANGUAGE_CODE;
     }

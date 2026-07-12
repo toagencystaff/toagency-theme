@@ -283,12 +283,12 @@
                 .then(function (r) { return r.json(); })
                 .then(function (res) {
                     if (res.ok) {
-                        status.textContent = '✓ ' + (res.message || 'Foto caricata, in attesa approvazione staff');
+                        status.textContent = '✓ ' + (res.message || (STR.fotoOk || 'Foto caricata, in attesa approvazione staff'));
                         status.className = 'crew-edit-foto-status ok';
                         // NON aggiorna preview visibile (la foto è pending). Re-load per mostrare pending notice.
                         setTimeout(loadData, 1200);
                     } else {
-                        status.textContent = '✗ ' + (res.message || res.error || 'Errore upload');
+                        status.textContent = '✗ ' + (res.message || res.error || (STR.fotoErr || 'Errore upload'));
                         status.className = 'crew-edit-foto-status err';
                     }
                 })

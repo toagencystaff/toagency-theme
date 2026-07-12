@@ -286,9 +286,11 @@ window.crewEditConfig = {
         successMsg:   <?= json_encode($_t($T['success_msg'])) ?>,
         noChanges:    <?= json_encode($_t($T['no_changes'])) ?>,
         errorPrefix:  <?= json_encode($_t($T['error_generic'])) ?>,
+        fotoOk:       <?= json_encode($_t(['it'=>'Foto caricata, in attesa di approvazione','en'=>'Photo uploaded, awaiting staff approval','fr'=>'Photo envoyée, en attente de validation','es'=>'Foto subida, pendiente de aprobación'])) ?>,
+        fotoErr:      <?= json_encode($_t(['it'=>'Errore nel caricamento della foto','en'=>'Photo upload error','fr'=>'Erreur lors de l’envoi de la photo','es'=>'Error al subir la foto'])) ?>,
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260701geo2" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260711i18n" defer></script>
 
 <?php toa_component('footer'); ?>
