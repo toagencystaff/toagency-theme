@@ -154,6 +154,7 @@ $WA_HREF  = $WA . '?text=' . rawurlencode($wa_text);
 $b2bonly_l    = ['it'=>'Servizio per aziende, agenzie e produzioni — non per candidature.','en'=>'A service for companies, agencies and productions — not for job applications.','fr'=>'Un service pour entreprises, agences et productions — pas pour les candidatures.','es'=>'Un servicio para empresas, agencias y producciones — no para candidaturas.'];
 $talentexit_l = ['it'=>'Sei un talent in cerca di lavoro? Registrati qui','en'=>'Are you a talent looking for work? Register here','fr'=>'Vous êtes un talent à la recherche de travail ? Inscrivez-vous ici','es'=>'¿Eres un talento que busca trabajo? Regístrate aquí'];
 $REG_TALENT   = 'https://toagency.it/registrati-talent/';
+$trust_l = ['it'=>'4,7/5 · 346 recensioni Google · dal 2009 · 20.000+ profili verificati','en'=>'4.7/5 · 346 Google reviews · since 2009 · 20,000+ verified profiles','fr'=>'4,7/5 · 346 avis Google · depuis 2009 · 20 000+ profils vérifiés','es'=>'4,7/5 · 346 reseñas Google · desde 2009 · 20.000+ perfiles verificados'];
 
 $c   = $COPY[$key] ?? $COPY['casting-italia'];
 $h1  = $c['h1'][$lang]  ?? $c['h1']['it'];
@@ -202,6 +203,11 @@ body.toa-ads-lp .toa-ads-dblink:hover{border-bottom-color:#c2f24e}
 /* il form (form-b2b-inline) è già una card stilata dal tema */
 body.toa-ads-lp .toa-ads-formcol .cta-section{padding:0!important;margin:0!important;background:transparent!important}
 body.toa-ads-lp .toa-ads-formcol .container{padding:0!important;max-width:none!important}
+body.toa-ads-lp .toa-ads-trust{display:inline-flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 18px;padding:9px 14px;border:1px solid #2a2a2a;border-radius:8px;background:rgba(194,242,78,0.06);color:#ededed!important;font-size:13.5px;font-weight:600;line-height:1.4}
+body.toa-ads-lp .toa-ads-trust .stars{color:#c2f24e!important;letter-spacing:1px}
+body.toa-ads-lp .toa-ads-footer{margin:44px 0 0;padding-top:18px;border-top:1px solid #232323;text-align:center}
+body.toa-ads-lp .toa-ads-footer a{color:#8a8a8a!important;text-decoration:none!important;font-size:13px;margin:0 10px}
+body.toa-ads-lp .toa-ads-footer a:hover{color:#c2f24e!important}
 @media(max-width:880px){
   body.toa-ads-lp .toa-ads-grid{grid-template-columns:1fr;gap:28px}
   body.toa-ads-lp .toa-ads-h1{font-size:28px}
@@ -219,6 +225,7 @@ body.toa-ads-lp .toa-ads-formcol .container{padding:0!important;max-width:none!i
     <div class="toa-ads-msgcol">
       <p class="toa-ads-eyebrow"><?php echo esc_html($eyebrow); ?></p>
       <h1 class="toa-ads-h1"><?php echo esc_html($h1); ?></h1>
+      <div class="toa-ads-trust"><span class="stars">★★★★★</span> <?php echo _ht($trust_l); ?></div>
       <p class="toa-ads-sub"><?php echo esc_html($sub); ?></p>
       <ul class="toa-ads-bullets">
         <?php foreach ($bullets as $b): ?>
@@ -239,7 +246,6 @@ body.toa-ads-lp .toa-ads-formcol .container{padding:0!important;max-width:none!i
         <a class="toa-ads-btn toa-ads-btn--call" href="tel:<?php echo esc_attr($TEL_RAW); ?>" onclick="toaLpTrack('call')">📞 <?php echo _ht($call_l); ?> <?php echo esc_html($TEL_DISP); ?></a>
         <a class="toa-ads-btn" href="<?php echo esc_url($WA_HREF); ?>" target="_blank" rel="noopener" onclick="toaLpTrack('whatsapp')">WhatsApp</a>
       </div>
-      <a class="toa-ads-dblink" href="<?php echo esc_url($DB_URL); ?>" target="_blank" rel="noopener" onclick="toaLpTrack('database')"><?php echo _ht($db_l); ?> &rarr;</a>
     </div>
 
     <!-- COLONNA DESTRA: form preventivo (azione protagonista) -->
@@ -252,6 +258,10 @@ body.toa-ads-lp .toa-ads-formcol .container{padding:0!important;max-width:none!i
       <?php toa_component('form-b2b-inline'); ?>
     </div>
   </div>
+
+  <footer class="toa-ads-footer">
+    <a href="<?php echo esc_url($DB_URL); ?>" target="_blank" rel="noopener" onclick="toaLpTrack('database')"><?php echo _ht($db_l); ?> &rarr;</a>
+  </footer>
 
 </div>
 
