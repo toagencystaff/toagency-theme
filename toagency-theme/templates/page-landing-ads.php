@@ -33,7 +33,8 @@ $__l = $lang; // pilota _ht() del tema (usata da form-b2b-inline) → form nella
 
 // --- Quale landing ---
 $post_id = get_queried_object_id();
-$key     = get_post_meta($post_id, '_toa_ads_key', true) ?: 'casting-italia';
+$key     = get_post_meta($post_id, '_toa_ads_key', true);
+if (!$key) { $key = get_post_field('post_name', $post_id) ?: 'casting-italia'; } // fallback: slug pagina = chiave (nessun meta da impostare a mano)
 if (isset($_GET['key'])) { $k = preg_replace('/[^a-z0-9-]/', '', (string) $_GET['key']); if ($k !== '') $key = $k; } // override preview/ads
 
 // --- Servizio pre-selezionato per landing ---
