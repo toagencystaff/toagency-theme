@@ -833,6 +833,17 @@
                     ok = false;
                 }
             }
+            // Città/comune (residenza) — spostata nello Step 1 il 13/07 (residenza tutta insieme)
+            var s1cityWrap = document.getElementById('toaTalentCityWrap');
+            if (s1cityWrap) {
+                var s1city = null;
+                s1cityWrap.querySelectorAll('input[name="res_city_name"]').forEach(function(inp) {
+                    var par = inp.closest('.city-typeahead, .city-select, .city-free');
+                    if (par && par.style.display !== 'none') s1city = inp;
+                });
+                if (!s1city) { ok = false; }
+                else if (!s1city.value.trim()) { showFieldError(s1city, tmsg(MSG.pickCity)); ok = false; }
+            }
         }
 
         if (n === 2) {
@@ -840,31 +851,7 @@
 
             // (nazione + provincia validate nello Step 1 — spostate 13/07)
 
-            // Città visibile - residenza
-            var cityWrap = document.getElementById('toaTalentCityWrap');
-            if (cityWrap) {
-                var visibleCityInput = null;
-                var debugCityList = [];
-                cityWrap.querySelectorAll('input[name="res_city_name"]').forEach(function(inp, idx) {
-                    var parent = inp.closest('.city-typeahead, .city-select, .city-free');
-                    var disp = parent ? parent.style.display : '?';
-                    debugCityList.push('  #' + idx + ' parent=' + (parent?parent.className.replace(/[^a-z\-]/g,''):'?') + ' display="' + disp + '" value="' + inp.value + '"');
-                    if (parent && parent.style.display !== 'none') {
-                        visibleCityInput = inp;
-                    }
-                });
-                if (!visibleCityInput) {
-                    ok = false;
-                    failReasons.push('residenza: nessun campo città visibile\n' + debugCityList.join('\n'));
-                } else if (!visibleCityInput.value.trim()) {
-                    showFieldError(visibleCityInput, tmsg(MSG.pickCity));
-                    ok = false;
-                    failReasons.push('residenza: città vuota (input visibile=' + (visibleCityInput.closest('.city-typeahead, .city-select, .city-free')||{}).className + ')');
-                }
-            } else {
-                ok = false;
-                failReasons.push('residenza: cityWrap non trovato');
-            }
+            // (città validata nello Step 1 — spostata 13/07)
 
             // Domicilio diverso
             var domCoincide = scope.querySelector('[name="dom_coincide"]');
