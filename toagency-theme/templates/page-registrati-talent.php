@@ -352,6 +352,29 @@ $theme_uri = get_stylesheet_directory_uri();
                 </div>
             </div>
 
+            <!-- DOVE VIVI (nazione + provincia) — spostate qui 13/07: il lead capture Step 1 richiede la provincia -->
+            <div class="toa-talent-field">
+                <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Nazione di residenza','en'=>'Country of residence','fr'=>'Pays de résidence','es'=>'País de residencia')); ?> <span class="req">*</span></label>
+                <div class="toa-talent-customselect searchable" id="toaTalentNation">
+                    <input type="hidden" name="res_nation" value="">
+                    <div class="toa-talent-customselect-trigger"><span class="toa-talent-customselect-label">—</span></div>
+                    <div class="toa-talent-customselect-search"><input type="text" placeholder="Cerca paese..."></div>
+                    <div class="toa-talent-customselect-options"></div>
+                </div>
+                <div class="toa-talent-error-msg"></div>
+            </div>
+
+            <div class="toa-talent-field" id="toaTalentProvinceWrap">
+                <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Provincia','en'=>'Province','fr'=>'Région','es'=>'Provincia')); ?> <span class="req">*</span></label>
+                <div class="toa-talent-customselect searchable" id="toaTalentProvince">
+                    <input type="hidden" name="res_provincia" value="">
+                    <div class="toa-talent-customselect-trigger"><span class="toa-talent-customselect-label"><?php echo _ht_talent(array('it'=>'Seleziona provincia...','en'=>'Select province...','fr'=>'Sélectionne...','es'=>'Selecciona...')); ?></span></div>
+                    <div class="toa-talent-customselect-search"><input type="text" placeholder="Cerca..."></div>
+                    <div class="toa-talent-customselect-options"></div>
+                </div>
+                <div class="toa-talent-error-msg"></div>
+            </div>
+
             <!-- MOVED 2026-07-12: foto profilo + disclaimer + GDPR spostati qui da Step 4 per lead-capture Step 1 -->
             <!-- Foto profilo -->
             <div class="toa-talent-upload-section">
@@ -449,55 +472,32 @@ $theme_uri = get_stylesheet_directory_uri();
             <h3><?php echo _ht_talent(array('it'=>'Dove vivi','en'=>'Where you live','fr'=>'Où tu vis','es'=>'Dónde vives')); ?></h3>
             <p class="toa-talent-step-help"><?php echo _ht_talent(array('it'=>'Indicaci la residenza. Se hai un domicilio diverso ti chiederemo anche quello.','en'=>'Tell us your residence.','fr'=>'Indique ta résidence.','es'=>'Indícanos tu residencia.')); ?></p>
 
-            <!-- RESIDENZA -->
-            <div class="toa-talent-field">
-                <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Nazione di residenza','en'=>'Country of residence','fr'=>'Pays de résidence','es'=>'País de residencia')); ?> <span class="req">*</span></label>
-                <div class="toa-talent-customselect searchable" id="toaTalentNation">
-                    <input type="hidden" name="res_nation" value="">
-                    <div class="toa-talent-customselect-trigger"><span class="toa-talent-customselect-label">—</span></div>
-                    <div class="toa-talent-customselect-search"><input type="text" placeholder="Cerca paese..."></div>
-                    <div class="toa-talent-customselect-options"></div>
+            <!-- RESIDENZA — città (nazione+provincia spostate allo Step 1 il 13/07) -->
+            <div class="toa-talent-field" id="toaTalentCityWrap">
+                <!-- Container 1: Typeahead per Italia (default) -->
+                <div class="city-typeahead">
+                    <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Città / Comune','en'=>'City','fr'=>'Ville','es'=>'Ciudad')); ?> <span class="req">*</span></label>
+                    <input type="text" name="res_city_name" class="toa-talent-input" autocomplete="off" placeholder="<?php echo _ht_talent(array('it'=>'Inizia a digitare...','en'=>'Type...','fr'=>'Tape...','es'=>'Empieza...')); ?>">
+                    <input type="hidden" name="res_city_code">
+                    <div class="toa-talent-error-msg"></div>
                 </div>
-                <div class="toa-talent-error-msg"></div>
-            </div>
-
-            <div class="toa-talent-field-row">
-                <div class="toa-talent-field" id="toaTalentProvinceWrap">
-                    <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Provincia','en'=>'Province','fr'=>'Région','es'=>'Provincia')); ?> <span class="req">*</span></label>
-                    <div class="toa-talent-customselect searchable" id="toaTalentProvince">
-                        <input type="hidden" name="res_provincia" value="">
-                        <div class="toa-talent-customselect-trigger"><span class="toa-talent-customselect-label"><?php echo _ht_talent(array('it'=>'Seleziona provincia...','en'=>'Select province...','fr'=>'Sélectionne...','es'=>'Selecciona...')); ?></span></div>
-                        <div class="toa-talent-customselect-search"><input type="text" placeholder="Cerca..."></div>
+                <!-- Container 2: Select per FR/ES/CH/GB -->
+                <div class="city-select" style="display:none;">
+                    <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Area / Città','en'=>'Area / City','fr'=>'Zone / Ville','es'=>'Área / Ciudad')); ?> <span class="req">*</span></label>
+                    <div class="toa-talent-customselect">
+                        <input type="hidden" name="res_city_code">
+                        <input type="hidden" name="res_city_name">
+                        <div class="toa-talent-customselect-trigger"><span class="toa-talent-customselect-label"><?php echo _ht_talent(array('it'=>'Seleziona...','en'=>'Select...','fr'=>'Sélectionne...','es'=>'Selecciona...')); ?></span></div>
                         <div class="toa-talent-customselect-options"></div>
                     </div>
                     <div class="toa-talent-error-msg"></div>
                 </div>
-                <div class="toa-talent-field" id="toaTalentCityWrap">
-                    <!-- Container 1: Typeahead per Italia (default) -->
-                    <div class="city-typeahead">
-                        <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Città / Comune','en'=>'City','fr'=>'Ville','es'=>'Ciudad')); ?> <span class="req">*</span></label>
-                        <input type="text" name="res_city_name" class="toa-talent-input" autocomplete="off" placeholder="<?php echo _ht_talent(array('it'=>'Inizia a digitare...','en'=>'Type...','fr'=>'Tape...','es'=>'Empieza...')); ?>">
-                        <input type="hidden" name="res_city_code">
-                        <div class="toa-talent-error-msg"></div>
-                    </div>
-                    <!-- Container 2: Select per FR/ES/CH/GB -->
-                    <div class="city-select" style="display:none;">
-                        <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Area / Città','en'=>'Area / City','fr'=>'Zone / Ville','es'=>'Área / Ciudad')); ?> <span class="req">*</span></label>
-                        <div class="toa-talent-customselect">
-                            <input type="hidden" name="res_city_code">
-                            <input type="hidden" name="res_city_name">
-                            <div class="toa-talent-customselect-trigger"><span class="toa-talent-customselect-label"><?php echo _ht_talent(array('it'=>'Seleziona...','en'=>'Select...','fr'=>'Sélectionne...','es'=>'Selecciona...')); ?></span></div>
-                            <div class="toa-talent-customselect-options"></div>
-                        </div>
-                        <div class="toa-talent-error-msg"></div>
-                    </div>
-                    <!-- Container 3: Free text per resto del mondo -->
-                    <div class="city-free" style="display:none;">
-                        <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Città','en'=>'City','fr'=>'Ville','es'=>'Ciudad')); ?> <span class="req">*</span></label>
-                        <input type="text" name="res_city_name" class="toa-talent-input" placeholder="Es. New York, Tokyo, ...">
-                        <input type="hidden" name="res_city_code">
-                        <div class="toa-talent-error-msg"></div>
-                    </div>
+                <!-- Container 3: Free text per resto del mondo -->
+                <div class="city-free" style="display:none;">
+                    <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Città','en'=>'City','fr'=>'Ville','es'=>'Ciudad')); ?> <span class="req">*</span></label>
+                    <input type="text" name="res_city_name" class="toa-talent-input" placeholder="Es. New York, Tokyo, ...">
+                    <input type="hidden" name="res_city_code">
+                    <div class="toa-talent-error-msg"></div>
                 </div>
             </div>
 
@@ -897,7 +897,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260712s1" defer></script><!-- FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260713prov" defer></script><!-- FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT

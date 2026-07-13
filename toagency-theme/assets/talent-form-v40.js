@@ -819,30 +819,26 @@
                 }
                 ok = false;
             }
+            // Residenza: nazione + provincia (spostate qui 13/07 — lead capture Step 1 richiede la provincia per IT)
+            var s1nation = scope.querySelector('[name="res_nation"]');
+            if (!s1nation || !s1nation.value) {
+                if (nationSelect) nationSelect.classList.add('error');
+                ok = false;
+            }
+            if (s1nation && s1nation.value === 'IT') {
+                var s1prov = scope.querySelector('[name="res_provincia"]');
+                if (!s1prov || !s1prov.value) {
+                    var s1provCs = document.getElementById('toaTalentProvince');
+                    if (s1provCs) s1provCs.classList.add('error');
+                    ok = false;
+                }
+            }
         }
 
         if (n === 2) {
             var failReasons = [];
 
-            // Nazione obbligatoria
-            var nationVal = scope.querySelector('[name="res_nation"]');
-            if (!nationVal || !nationVal.value) {
-                if (nationSelect) nationSelect.classList.add('error');
-                ok = false;
-                failReasons.push('residenza: nazione vuota');
-            }
-
-            var natCode = nationVal ? nationVal.value : '';
-
-            if (natCode === 'IT') {
-                var provVal = scope.querySelector('[name="res_provincia"]');
-                if (!provVal || !provVal.value) {
-                    var provCs = document.getElementById('toaTalentProvince');
-                    if (provCs) provCs.classList.add('error');
-                    ok = false;
-                    failReasons.push('residenza: provincia IT vuota (nat=' + natCode + ')');
-                }
-            }
+            // (nazione + provincia validate nello Step 1 — spostate 13/07)
 
             // Città visibile - residenza
             var cityWrap = document.getElementById('toaTalentCityWrap');
@@ -1013,7 +1009,7 @@
         var body = {
             nome: _s1v('nome'), cognome: _s1v('cognome'), email: _s1v('email'),
             telefono: _s1v('telefono'), data_nascita: _s1v('data_nascita'),
-            sesso: _s1v('sesso'), res_provincia: _s1v('res_provincia'),
+            sesso: _s1v('sesso'), res_nation: _s1v('res_nation'), res_provincia: _s1v('res_provincia'),
             tel_paese_code: _s1v('tel_paese_code') || 'IT', lang: htmlLang,
             gdpr_consent: _s1cb('gdpr_consent') || '1',
             pubblicazione_immagini_consent: _s1cb('pubblicazione_immagini_consent'),
