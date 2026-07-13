@@ -146,7 +146,7 @@ $theme_uri = get_stylesheet_directory_uri();
         <!-- FIX 2026-06-28 marco — force_create: "Sono un'altra persona" bypassa check doppione nome+cognome+dob -->
         <input type="hidden" name="force_create" id="toaForceCreate" value="">
 
-        <div class="toa-talent-progress">
+        <div class="toa-talent-progress" style="display:none;"><!-- 13/07: nascosta sullo Step 1 (form unico), compare dallo Step 2 -->
             <div class="toa-talent-progress-step active" data-step="1"></div>
             <div class="toa-talent-progress-step" data-step="2"></div>
             <div class="toa-talent-progress-step" data-step="3"></div>
@@ -897,7 +897,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260713res" defer></script><!-- FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260713bar" defer></script><!-- FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT

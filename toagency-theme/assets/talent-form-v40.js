@@ -96,6 +96,9 @@
         progressDots.forEach(function(d) {
             if (parseInt(d.dataset.step) <= n) d.classList.add('active');
         });
+        // 13/07 marco — Step 1 = form unico: barra step nascosta sullo Step 1, compare dallo Step 2
+        var _pbar = form.querySelector('.toa-talent-progress');
+        if (_pbar) _pbar.style.display = (n <= 1 ? 'none' : '');
         window.scrollTo({ top: form.offsetTop - 80, behavior: 'smooth' });
     }
     form.querySelectorAll('[data-go]').forEach(function(btn) {
