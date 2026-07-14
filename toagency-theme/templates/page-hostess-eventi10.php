@@ -40,7 +40,7 @@ $t = array(
     'how_tagline'=>array('it'=>'Preventivo gratuito &bull; Risposta rapida &bull; Garanzia 100%','en'=>'Free quote &bull; Fast response &bull; 100% guarantee','fr'=>'Devis gratuit &bull; R&eacute;ponse rapide &bull; Garantie 100%','es'=>'Presupuesto gratuito &bull; Respuesta r&aacute;pida &bull; Garant&iacute;a 100%'),
     'cov_eyebrow'=>array('it'=>'Dove operiamo','en'=>'Where we operate','fr'=>'O&ugrave; nous intervenons','es'=>'D&oacute;nde operamos'),
     'cov_heading'=>array('it'=>'In tutta Italia e in Europa','en'=>'Across Italy and Europe','fr'=>'Dans toute l\'Italie et en Europe','es'=>'En toda Italia y en Europa'),
-    'cov_sub'=>array('it'=>'Fiere, eventi, congressi e matrimoni in tutte le principali citt&agrave; italiane &mdash; e su richiesta in Francia, Spagna e UK.','en'=>'Trade fairs, events, conferences and weddings in every major Italian city &mdash; and on request in France, Spain and the UK.','fr'=>'Salons, &eacute;v&eacute;nements, congr&egrave;s et mariages dans toutes les grandes villes italiennes &mdash; et sur demande en France, Espagne et UK.','es'=>'Ferias, eventos, congresos y bodas en las principales ciudades italianas &mdash; y bajo petici&oacute;n en Francia, Espa&ntilde;a y UK.'),
+    'cov_sub'=>array('it'=>'Fiere, eventi, congressi e matrimoni in tutte le principali citt&agrave; italiane ed europee &mdash; Italia, Francia, Spagna, UK, Germania e tutta Europa.','en'=>'Trade fairs, events, conferences and weddings in every major Italian and European city &mdash; Italy, France, Spain, UK, Germany and all of Europe.','fr'=>'Salons, &eacute;v&eacute;nements, congr&egrave;s et mariages dans toutes les grandes villes italiennes et europ&eacute;ennes &mdash; Italie, France, Espagne, UK, Allemagne et toute l\'Europe.','es'=>'Ferias, eventos, congresos y bodas en las principales ciudades italianas y europeas &mdash; Italia, Francia, Espa&ntilde;a, UK, Alemania y toda Europa.'),
     'b2bonly'   => array('it'=>'Servizio per aziende, agenzie e produzioni — non per candidature.','en'=>'A service for companies, agencies and productions — not for job applications.','fr'=>'Un service pour entreprises, agences et productions — pas pour les candidatures.','es'=>'Un servicio para empresas, agencias y producciones — no para candidaturas.'),
     'talentexit'=> array('it'=>'Sei un talent in cerca di lavoro? Registrati qui','en'=>'Are you a talent looking for work? Register here','fr'=>'Vous &ecirc;tes un talent &agrave; la recherche de travail ? Inscrivez-vous ici','es'=>'&iquest;Eres un talento que busca trabajo? Reg&iacute;strate aqu&iacute;'),
 );
@@ -95,17 +95,17 @@ $groups = array(
 $SP = '/wp-content/themes/toagency-theme/assets/staff/';
 $staff = array(
   array('img'=>$SP.'hostess.jpg','name'=>'Giulia','role'=>array('it'=>'Hostess','en'=>'Hostess','fr'=>'H&ocirc;tesse','es'=>'Azafata')),
-  array('img'=>$SP.'steward.jpg','name'=>'Marco','role'=>array('it'=>'Steward','en'=>'Steward','fr'=>'Steward','es'=>'Steward')),
-  array('img'=>$SP.'bartender.jpg','name'=>'Luca','role'=>array('it'=>'Bartender','en'=>'Bartender','fr'=>'Barman','es'=>'Bartender')),
-  array('img'=>$SP.'cameriera.jpg','name'=>'Sofia','role'=>array('it'=>'Cameriera','en'=>'Waiter','fr'=>'Serveuse','es'=>'Camarera')),
-  array('img'=>$SP.'interprete.jpg','name'=>'Elena','role'=>array('it'=>'Interprete','en'=>'Interpreter','fr'=>'Interpr&egrave;te','es'=>'Int&eacute;rprete')),
+  array('img'=>$SP.'steward.jpg','name'=>'James','role'=>array('it'=>'Steward','en'=>'Steward','fr'=>'Steward','es'=>'Steward')),
+  array('img'=>$SP.'bartender.jpg','name'=>'Lukas','role'=>array('it'=>'Bartender','en'=>'Bartender','fr'=>'Barman','es'=>'Bartender')),
+  array('img'=>$SP.'cameriera.jpg','name'=>'Chloe','role'=>array('it'=>'Cameriera','en'=>'Waiter','fr'=>'Serveuse','es'=>'Camarera')),
+  array('img'=>$SP.'interprete.jpg','name'=>'Claire','role'=>array('it'=>'Interprete','en'=>'Interpreter','fr'=>'Interpr&egrave;te','es'=>'Int&eacute;rprete')),
   array('img'=>$SP.'security.jpg','name'=>'David','role'=>array('it'=>'Security','en'=>'Security','fr'=>'S&eacute;curit&eacute;','es'=>'Seguridad')),
-  array('img'=>$SP.'autista.jpg','name'=>'Alessandro','role'=>array('it'=>'Autista','en'=>'Driver','fr'=>'Chauffeur','es'=>'Conductor')),
-  array('img'=>$SP.'dj.jpg','name'=>'Simone','role'=>array('it'=>'DJ','en'=>'DJ','fr'=>'DJ','es'=>'DJ')),
-  array('img'=>$SP.'fotografa.jpg','name'=>'Sara','role'=>array('it'=>'Fotografa','en'=>'Photographer','fr'=>'Photographe','es'=>'Fot&oacute;grafa')),
-  array('img'=>$SP.'videomaker.jpg','name'=>'Matteo','role'=>array('it'=>'Videomaker','en'=>'Videomaker','fr'=>'Vid&eacute;aste','es'=>'Videomaker')),
-  array('img'=>$SP.'promoter.jpg','name'=>'Chiara','role'=>array('it'=>'Promoter','en'=>'Promoter','fr'=>'Promotrice','es'=>'Promotora')),
-  array('img'=>$SP.'runner.jpg','name'=>'Andrea','role'=>array('it'=>'Runner','en'=>'Runner','fr'=>'Runner','es'=>'Runner')),
+  array('img'=>$SP.'autista.jpg','name'=>'Paulo','role'=>array('it'=>'Autista','en'=>'Driver','fr'=>'Chauffeur','es'=>'Conductor')),
+  array('img'=>$SP.'dj.jpg','name'=>'Max','role'=>array('it'=>'DJ','en'=>'DJ','fr'=>'DJ','es'=>'DJ')),
+  array('img'=>$SP.'fotografa.jpg','name'=>'Mei','role'=>array('it'=>'Fotografa','en'=>'Photographer','fr'=>'Photographe','es'=>'Fot&oacute;grafa')),
+  array('img'=>$SP.'videomaker.jpg','name'=>'Diego','role'=>array('it'=>'Videomaker','en'=>'Videomaker','fr'=>'Vid&eacute;aste','es'=>'Videomaker')),
+  array('img'=>$SP.'promoter.jpg','name'=>'Ana','role'=>array('it'=>'Promoter','en'=>'Promoter','fr'=>'Promotrice','es'=>'Promotora')),
+  array('img'=>$SP.'runner.jpg','name'=>'Tom','role'=>array('it'=>'Runner','en'=>'Runner','fr'=>'Runner','es'=>'Runner')),
 );
 
 toa_component('header');
@@ -139,7 +139,7 @@ toa_component('header');
 .toa-staffband .toa-cast-card:hover img{transform:scale(1.05)}
 .toa-staffband .toa-cast-card .ov{position:absolute;left:0;right:0;bottom:0;padding:14px 12px 11px;background:linear-gradient(transparent,rgba(0,0,0,.88));color:#fff}
 .toa-staffband .toa-cast-card .ov b{display:block;font-size:13px;font-weight:700;letter-spacing:.4px}
-.toa-staffband .toa-cast-card .ov .code{display:block;font-size:11px;font-weight:600;color:#c8ff00;letter-spacing:.5px;margin-top:1px}
+.toa-staffband .toa-cast-card .ov .code{display:block;font-size:13px;font-weight:800;color:#c8ff00;letter-spacing:.6px;margin-top:3px;text-transform:uppercase}
 .toa-staffband .toa-cast-cta{text-align:center;margin:26px 0 6px}
 .toa-staffband .toa-cast-cta a{display:inline-block;margin:6px 5px;padding:14px 30px;background:#c8ff00;color:#000;border:1px solid #c8ff00;border-radius:8px;font-weight:700;font-size:14px;letter-spacing:.04em;text-decoration:none;transition:opacity .2s,background .2s}
 .toa-staffband .toa-cast-cta a:hover{opacity:.85}
@@ -214,7 +214,7 @@ toa_component('header');
     'lang'   => $lang,
     'steps'  => array(
         array('time' => "1'", 'label' => $_t($t['how_step1'])),
-        array('time' => 'SUBITO', 'label' => $_t($t['how_step2'])),
+        array('time' => $_t(array('it'=>'SUBITO','en'=>'NOW','fr'=>'DIRECT','es'=>'YA')), 'label' => $_t($t['how_step2'])),
         array('time' => "&#10003;", 'label' => $_t($t['how_step3'])),
         array('time' => 'H24', 'label' => $_t($t['how_step4'])),
     ),
@@ -230,12 +230,14 @@ toa_component('header');
         <p style="font-size:0.95rem;color:var(--gray-4);max-width:640px;margin:0 0 36px"><?php echo $_t($t['cov_sub']); ?></p>
     </div>
     <div class="coverage-grid container">
-        <div class="coverage-country"><h4>Milano</h4><p>Fiera Milano Rho, Salone del Mobile, Fashion Week</p></div>
-        <div class="coverage-country"><h4>Bologna</h4><p>Bologna Fiere, Cosmoprof, Motor Show</p></div>
-        <div class="coverage-country"><h4>Verona</h4><p>Veronafiere, Vinitaly, Marmomac</p></div>
-        <div class="coverage-country"><h4>Rimini</h4><p>Rimini Fiera, Sigep, TTG Travel</p></div>
-        <div class="coverage-country"><h4>Roma</h4><p>Fiera di Roma, Maker Faire, Romics</p></div>
-        <div class="coverage-country"><h4>Europa</h4><p>Francia, Spagna, UK su richiesta</p></div>
+        <div class="coverage-country"><h4>Milano</h4><p><?php echo $_t(array('it'=>'Fiera Rho, Salone del Mobile, Fashion Week','en'=>'Rho Fair, Salone del Mobile, Fashion Week','fr'=>'Foire de Rho, Salone del Mobile, Fashion Week','es'=>'Feria Rho, Salone del Mobile, Fashion Week')); ?></p></div>
+        <div class="coverage-country"><h4>Roma</h4><p><?php echo $_t(array('it'=>'Fiere, cinema ed eventi corporate','en'=>'Trade fairs, film and corporate events','fr'=>'Salons, cin&eacute;ma et &eacute;v&eacute;nements','es'=>'Ferias, cine y eventos corporativos')); ?></p></div>
+        <div class="coverage-country"><h4>Bologna</h4><p><?php echo $_t(array('it'=>'Bologna Fiere, Cosmoprof, congressi','en'=>'Bologna Fiere, Cosmoprof, congresses','fr'=>'Bologna Fiere, Cosmoprof, congr&egrave;s','es'=>'Bologna Fiere, Cosmoprof, congresos')); ?></p></div>
+        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Parigi','en'=>'Paris','fr'=>'Paris','es'=>'Par&iacute;s')); ?></h4><p><?php echo $_t(array('it'=>'Saloni, moda ed eventi','en'=>'Trade shows, fashion &amp; events','fr'=>'Salons, mode et &eacute;v&eacute;nements','es'=>'Ferias, moda y eventos')); ?></p></div>
+        <div class="coverage-country"><h4>Barcelona</h4><p><?php echo $_t(array('it'=>'Fiere, congressi ed eventi','en'=>'Fairs, congresses &amp; events','fr'=>'Salons, congr&egrave;s et &eacute;v&eacute;nements','es'=>'Ferias, congresos y eventos')); ?></p></div>
+        <div class="coverage-country"><h4>Madrid</h4><p><?php echo $_t(array('it'=>'IFEMA, fiere ed eventi corporate','en'=>'IFEMA, fairs and corporate events','fr'=>'IFEMA, salons et &eacute;v&eacute;nements','es'=>'IFEMA, ferias y eventos corporativos')); ?></p></div>
+        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Londra','en'=>'London','fr'=>'Londres','es'=>'Londres')); ?></h4><p><?php echo $_t(array('it'=>'Fiere, advertising ed eventi','en'=>'Trade fairs, advertising &amp; events','fr'=>'Salons, publicit&eacute; et &eacute;v&eacute;nements','es'=>'Ferias, publicidad y eventos')); ?></p></div>
+        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Berlino','en'=>'Berlin','fr'=>'Berlin','es'=>'Berl&iacute;n')); ?></h4><p><?php echo $_t(array('it'=>'Fiere ed eventi internazionali','en'=>'International fairs &amp; events','fr'=>'Salons et &eacute;v&eacute;nements internationaux','es'=>'Ferias y eventos internacionales')); ?></p></div>
     </div>
 </section>
 
