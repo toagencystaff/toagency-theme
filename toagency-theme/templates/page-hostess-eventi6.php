@@ -151,8 +151,11 @@ toa_component('header');
 .toa-staffband .toa-cast-note{text-align:center;font-size:11px;color:rgba(255,255,255,.4);margin:10px 0 0}
 @media(max-width:768px){.toa-staffband .toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:12px}}
 @media(max-width:480px){.toa-staffband .toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:8px}}
-/* Servizi: categorie */
-.toa-serv-cat{font-family:var(--font-display);font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:28px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--black)}
+/* Servizi: categorie + pillole compatte */
+.toa-serv-cat{font-family:var(--font-display);font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin:22px 0 10px;color:var(--accent)}
+.toa-serv-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+.toa-serv-chips a{display:inline-block;padding:9px 16px;border:1px solid rgba(150,150,150,.35);border-radius:22px;font-size:.85rem;font-weight:600;color:inherit;text-decoration:none;transition:border-color .2s,color .2s,background .2s}
+.toa-serv-chips a:hover{border-color:var(--accent);color:var(--accent);background:rgba(200,255,0,.06)}
 </style>
 <section class="toa-staffband">
     <div class="inner">
@@ -186,16 +189,15 @@ toa_component('header');
     <div class="container">
         <?php foreach ($groups as $g): ?>
         <div class="toa-serv-cat"><?php echo $_t($g['cat']); ?></div>
-        <div class="features-grid" style="padding:0">
+        <div class="toa-serv-chips">
             <?php foreach ($g['items'] as $it): ?>
-            <div class="feature-card">
-                <h3 class="feature-title"><?php echo $_t($it['t']); ?></h3>
-                <p class="feature-text"><?php echo $_t($it['d']); ?></p>
-                <a href="#preventivo" style="display:inline-block;margin-top:10px;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--accent);text-decoration:none"><?php echo $_t($t['cta_service']); ?> &rarr;</a>
-            </div>
+            <a href="#preventivo" title="<?php echo esc_attr($_t($it['d'])); ?>"><?php echo $_t($it['t']); ?></a>
             <?php endforeach; ?>
         </div>
         <?php endforeach; ?>
+        <div style="text-align:center;margin-top:30px">
+            <a href="#preventivo" class="btn-hero btn-hero-primary"><?php echo $_t($t['hero_cta']); ?></a>
+        </div>
     </div>
 </section>
 
