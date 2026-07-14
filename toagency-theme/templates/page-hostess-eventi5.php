@@ -1,21 +1,19 @@
 <?php
 /**
  * Template Name: Hostess & Steward
- * HUB servizi staff eventi (v2 14/07/2026): versione COMPATTA.
- * - rimosso brand-ticker duplicato (è già globale nel tema)
- * - rimosso indice ancore ridondante
- * - 11 servizi in UNA sola griglia compatta (1 riga per servizio)
- * Mantiene URL /hostess-steward/ e focus SEO "hostess". Riusa i componenti del tema.
+ * HUB servizi staff eventi (v6 14/07/2026): elenco servizi COMPLETO (ricerca mercato),
+ * coordinatori, CTA hero centrato, fascia staff stile Modelli. Multilingua IT/EN/FR/ES.
+ * TODO: pulsante "Scarica presentazione PDF" (da progettare) + swap foto reali eventi.
  */
 $lang = function_exists('toa_current_lang') ? toa_current_lang() : 'it';
 $_t = function($a) use ($lang) { return isset($a[$lang]) ? $a[$lang] : $a['it']; };
 
 $t = array(
     'hero_subtitle' => array(
-        'it' => 'Hostess, steward e staff completo per fiere, eventi e congressi.<br>Un unico partner per tutto l\'evento &mdash; preventivo gratuito, ti ricontattiamo subito.',
-        'en' => 'Hostesses, stewards and complete staff for trade fairs, events and conferences.<br>One partner for the whole event &mdash; free quote, we get back to you right away.',
-        'fr' => 'H&ocirc;tesses, stewards et personnel complet pour salons, &eacute;v&eacute;nements et congr&egrave;s.<br>Un seul partenaire pour tout l\'&eacute;v&eacute;nement &mdash; devis gratuit, r&eacute;ponse imm&eacute;diate.',
-        'es' => 'Azafatas, stewards y personal completo para ferias, eventos y congresos.<br>Un &uacute;nico partner para todo el evento &mdash; presupuesto gratuito, te contactamos enseguida.',
+        'it' => 'Hostess, steward e <strong>staff completo</strong> per fiere, eventi, congressi e matrimoni.<br>Un unico partner per tutto l\'evento &mdash; preventivo gratuito, ti ricontattiamo subito.',
+        'en' => 'Hostesses, stewards and <strong>complete staff</strong> for trade fairs, events, conferences and weddings.<br>One partner for the whole event &mdash; free quote, we get back to you right away.',
+        'fr' => 'H&ocirc;tesses, stewards et <strong>personnel complet</strong> pour salons, &eacute;v&eacute;nements, congr&egrave;s et mariages.<br>Un seul partenaire pour tout l\'&eacute;v&eacute;nement &mdash; devis gratuit, r&eacute;ponse imm&eacute;diate.',
+        'es' => 'Azafatas, stewards y <strong>personal completo</strong> para ferias, eventos, congresos y bodas.<br>Un &uacute;nico partner para todo el evento &mdash; presupuesto gratuito, te contactamos enseguida.',
     ),
     'hero_cta'   => array('it'=>'Richiedi un preventivo gratuito','en'=>'Request a free quote','fr'=>'Demandez un devis gratuit','es'=>'Solicita un presupuesto gratuito'),
     'trust_line' => array(
@@ -48,60 +46,71 @@ $t = array(
     'talentexit'=> array('it'=>'Sei un talent in cerca di lavoro? Registrati qui','en'=>'Are you a talent looking for work? Register here','fr'=>'Vous &ecirc;tes un talent &agrave; la recherche de travail ? Inscrivez-vous ici','es'=>'&iquest;Eres un talento que busca trabajo? Reg&iacute;strate aqu&iacute;'),
 );
 
-// ── 11 servizi in UNA griglia, testo breve (1 riga) ──
-$services = array(
-  array('id'=>'hostess','title'=>array('it'=>'Hostess & Promoter','en'=>'Hostesses & Promoters','fr'=>'H&ocirc;tesses & Promotrices','es'=>'Azafatas & Promotoras'),
-    'text'=>array('it'=>'Accoglienza, reception e promozione a fiere ed eventi. Multilingua.','en'=>'Reception and brand promotion at fairs and events. Multilingual.','fr'=>'Accueil et promotion de marque sur salons et &eacute;v&eacute;nements. Multilingues.','es'=>'Recepci&oacute;n y promoci&oacute;n de marca en ferias y eventos. Multiling&uuml;es.')),
-  array('id'=>'steward','title'=>array('it'=>'Steward & Accoglienza','en'=>'Stewards & Welcome','fr'=>'Stewards & Accueil','es'=>'Stewards & Acogida'),
-    'text'=>array('it'=>'Gestione accessi, guardaroba e supporto in sala.','en'=>'Access management, cloakroom and floor support.','fr'=>'Gestion des acc&egrave;s, vestiaire et support en salle.','es'=>'Gesti&oacute;n de accesos, guardarrop&iacute;a y apoyo en sala.')),
-  array('id'=>'interpreti','title'=>array('it'=>'Interpreti','en'=>'Interpreters','fr'=>'Interpr&egrave;tes','es'=>'Int&eacute;rpretes'),
-    'text'=>array('it'=>'Hostess multilingua per delegazioni e stand internazionali.','en'=>'Multilingual hostesses for delegations and international stands.','fr'=>'H&ocirc;tesses multilingues pour d&eacute;l&eacute;gations et stands internationaux.','es'=>'Azafatas multiling&uuml;es para delegaciones y stands internacionales.')),
-  array('id'=>'bartender','title'=>array('it'=>'Bartender','en'=>'Bartenders','fr'=>'Barmans','es'=>'Bartenders'),
-    'text'=>array('it'=>'Barman professionisti per open bar ed eventi aziendali.','en'=>'Professional bartenders for open bars and corporate events.','fr'=>'Barmans professionnels pour open bars et &eacute;v&eacute;nements.','es'=>'Bartenders profesionales para open bar y eventos.')),
-  array('id'=>'camerieri','title'=>array('it'=>'Camerieri','en'=>'Waiters','fr'=>'Serveurs','es'=>'Camareros'),
-    'text'=>array('it'=>'Sala e banqueting per catering, gala e ricevimenti.','en'=>'Floor and banqueting for catering, galas and receptions.','fr'=>'Salle et banquet pour traiteur, galas et r&eacute;ceptions.','es'=>'Sala y banqueting para catering, galas y recepciones.')),
-  array('id'=>'sicurezza','title'=>array('it'=>'Steward di sicurezza','en'=>'Security stewards','fr'=>'Stewards s&eacute;curit&eacute;','es'=>'Stewards de seguridad'),
-    'text'=>array('it'=>'Controllo accessi e gestione flussi in evento.','en'=>'Access control and crowd-flow management.','fr'=>'Contr&ocirc;le des acc&egrave;s et gestion des flux.','es'=>'Control de accesos y gesti&oacute;n de flujos.')),
-  array('id'=>'autisti','title'=>array('it'=>'Autisti & Logistica','en'=>'Drivers & Logistics','fr'=>'Chauffeurs & Logistique','es'=>'Conductores & Log&iacute;stica'),
-    'text'=>array('it'=>'Trasferimenti di ospiti, delegazioni e materiali.','en'=>'Transfers of guests, delegations and materials.','fr'=>'Transferts d\'invit&eacute;s, d&eacute;l&eacute;gations et mat&eacute;riel.','es'=>'Traslados de invitados, delegaciones y materiales.')),
-  array('id'=>'runner','title'=>array('it'=>'Runner','en'=>'Runners','fr'=>'Runners','es'=>'Runners'),
-    'text'=>array('it'=>'Supporto operativo e backstage in evento.','en'=>'Operational and backstage support during the event.','fr'=>'Support op&eacute;rationnel et backstage.','es'=>'Apoyo operativo y backstage.')),
-  array('id'=>'fotografi','title'=>array('it'=>'Fotografi','en'=>'Photographers','fr'=>'Photographes','es'=>'Fot&oacute;grafos'),
-    'text'=>array('it'=>'Reportage e coverage di stand, congressi e cerimonie.','en'=>'Reportage and coverage of stands, congresses and ceremonies.','fr'=>'Reportage et couverture de stands, congr&egrave;s et c&eacute;r&eacute;monies.','es'=>'Reportaje y cobertura de stands, congresos y ceremonias.')),
-  array('id'=>'videomaker','title'=>array('it'=>'Videomaker','en'=>'Videomakers','fr'=>'Vid&eacute;astes','es'=>'Videomakers'),
-    'text'=>array('it'=>'Riprese, aftermovie e contenuti social dell\'evento.','en'=>'Filming, aftermovies and social content.','fr'=>'Tournage, aftermovie et contenus sociaux.','es'=>'Grabaci&oacute;n, aftermovie y contenido social.')),
-  array('id'=>'tour-leader','title'=>array('it'=>'Tour Leader','en'=>'Tour Leaders','fr'=>'Tour Leaders','es'=>'Tour Leaders'),
-    'text'=>array('it'=>'Accompagnatori per gruppi, incentive e visite aziendali.','en'=>'Escorts for groups, incentives and corporate visits.','fr'=>'Accompagnateurs pour groupes, incentives et visites.','es'=>'Acompa&ntilde;antes para grupos, incentivos y visitas.')),
+// ── Servizi COMPLETI raggruppati (una riga per servizio) ──
+$groups = array(
+  array('cat'=>array('it'=>'Accoglienza & front-of-house','en'=>'Reception & front-of-house','fr'=>'Accueil','es'=>'Recepci&oacute;n'),'items'=>array(
+    array('t'=>array('it'=>'Hostess & Promoter','en'=>'Hostesses & Promoters','fr'=>'H&ocirc;tesses & Promotrices','es'=>'Azafatas & Promotoras'),'d'=>array('it'=>'Accoglienza, reception e promozione.','en'=>'Reception and brand promotion.','fr'=>'Accueil et promotion.','es'=>'Recepci&oacute;n y promoci&oacute;n.')),
+    array('t'=>array('it'=>'Steward','en'=>'Stewards','fr'=>'Stewards','es'=>'Stewards'),'d'=>array('it'=>'Gestione accessi e supporto in sala.','en'=>'Access management and floor support.','fr'=>'Gestion des acc&egrave;s et support.','es'=>'Gesti&oacute;n de accesos y apoyo.')),
+    array('t'=>array('it'=>'Standisti','en'=>'Booth staff','fr'=>'Standistes','es'=>'Personal de stand'),'d'=>array('it'=>'Personale dedicato allo stand fiera.','en'=>'Dedicated trade-fair booth staff.','fr'=>'Personnel d&eacute;di&eacute; au stand.','es'=>'Personal dedicado al stand.')),
+    array('t'=>array('it'=>'Interpreti','en'=>'Interpreters','fr'=>'Interpr&egrave;tes','es'=>'Int&eacute;rpretes'),'d'=>array('it'=>'Hostess multilingua per delegazioni.','en'=>'Multilingual hostesses for delegations.','fr'=>'H&ocirc;tesses multilingues.','es'=>'Azafatas multiling&uuml;es.')),
+  )),
+  array('cat'=>array('it'=>'Food & Beverage','en'=>'Food & Beverage','fr'=>'Food & Beverage','es'=>'Food & Beverage'),'items'=>array(
+    array('t'=>array('it'=>'Bartender','en'=>'Bartenders','fr'=>'Barmans','es'=>'Bartenders'),'d'=>array('it'=>'Barman per open bar ed eventi.','en'=>'Bartenders for open bars and events.','fr'=>'Barmans pour open bars.','es'=>'Bartenders para open bar.')),
+    array('t'=>array('it'=>'Camerieri','en'=>'Waiters','fr'=>'Serveurs','es'=>'Camareros'),'d'=>array('it'=>'Sala e banqueting per catering e gala.','en'=>'Floor and banqueting for catering.','fr'=>'Salle et banquet.','es'=>'Sala y banqueting.')),
+    array('t'=>array('it'=>'Sommelier','en'=>'Sommeliers','fr'=>'Sommeliers','es'=>'Sumilleres'),'d'=>array('it'=>'Servizio vini per cene ed eventi.','en'=>'Wine service for dinners and events.','fr'=>'Service des vins.','es'=>'Servicio de vinos.')),
+    array('t'=>array('it'=>'Baristi','en'=>'Baristas','fr'=>'Baristas','es'=>'Baristas'),'d'=>array('it'=>'Servizio caffetteria per eventi.','en'=>'Coffee service for events.','fr'=>'Service caf&eacute;.','es'=>'Servicio de cafeter&iacute;a.')),
+  )),
+  array('cat'=>array('it'=>'Musica & Intrattenimento','en'=>'Music & Entertainment','fr'=>'Musique & Animation','es'=>'M&uacute;sica & Entretenimiento'),'items'=>array(
+    array('t'=>array('it'=>'DJ','en'=>'DJ','fr'=>'DJ','es'=>'DJ'),'d'=>array('it'=>'DJ set per feste, matrimoni ed eventi.','en'=>'DJ sets for parties, weddings and events.','fr'=>'DJ pour f&ecirc;tes et mariages.','es'=>'DJ para fiestas y bodas.')),
+    array('t'=>array('it'=>'Musicisti live','en'=>'Live musicians','fr'=>'Musiciens live','es'=>'M&uacute;sicos en vivo'),'d'=>array('it'=>'Band, sax, violino, piano per matrimoni.','en'=>'Band, sax, violin, piano for weddings.','fr'=>'Groupe, sax, violon, piano.','es'=>'Banda, sax, viol&iacute;n, piano.')),
+    array('t'=>array('it'=>'Cantanti','en'=>'Singers','fr'=>'Chanteurs','es'=>'Cantantes'),'d'=>array('it'=>'Voci soliste per cerimonie ed eventi.','en'=>'Solo vocalists for ceremonies.','fr'=>'Voix solistes.','es'=>'Voces solistas.')),
+    array('t'=>array('it'=>'Ballerini & Performer','en'=>'Dancers & Performers','fr'=>'Danseurs & Performers','es'=>'Bailarines & Performers'),'d'=>array('it'=>'Spettacolo e show per il tuo evento.','en'=>'Shows and performances for your event.','fr'=>'Spectacles pour votre &eacute;v&eacute;nement.','es'=>'Espect&aacute;culos para tu evento.')),
+    array('t'=>array('it'=>'Animazione','en'=>'Entertainers','fr'=>'Animation','es'=>'Animaci&oacute;n'),'d'=>array('it'=>'Animatori per feste ed eventi.','en'=>'Entertainers for parties and events.','fr'=>'Animateurs pour f&ecirc;tes.','es'=>'Animadores para fiestas.')),
+    array('t'=>array('it'=>'Artisti','en'=>'Artists','fr'=>'Artistes','es'=>'Artistas'),'d'=>array('it'=>'Mago, giocolieri, trampolieri e show.','en'=>'Magician, jugglers, stilt-walkers.','fr'=>'Magicien, jongleurs, &eacute;chassiers.','es'=>'Mago, malabaristas, zancudos.')),
+  )),
+  array('cat'=>array('it'=>'Bambini','en'=>'Kids','fr'=>'Enfants','es'=>'Ni&ntilde;os'),'items'=>array(
+    array('t'=>array('it'=>'Truccabimbi','en'=>'Face painting','fr'=>'Maquillage enfants','es'=>'Pintacaritas'),'d'=>array('it'=>'Face painting per feste e famiglie.','en'=>'Face painting for parties and families.','fr'=>'Maquillage pour enfants.','es'=>'Pintacaritas para fiestas.')),
+    array('t'=>array('it'=>'Animatori bambini','en'=>'Kids entertainers','fr'=>'Animateurs enfants','es'=>'Animadores infantiles'),'d'=>array('it'=>'Giochi e intrattenimento per bambini.','en'=>'Games and fun for children.','fr'=>'Jeux et animation enfants.','es'=>'Juegos y animaci&oacute;n infantil.')),
+    array('t'=>array('it'=>'Baby parking','en'=>'Baby parking','fr'=>'Baby parking','es'=>'Baby parking'),'d'=>array('it'=>'Assistenza e sorveglianza bimbi in evento.','en'=>'Childcare and supervision at events.','fr'=>'Garde d\'enfants en &eacute;v&eacute;nement.','es'=>'Cuidado de ni&ntilde;os en eventos.')),
+  )),
+  array('cat'=>array('it'=>'Immagine & Beauty','en'=>'Image & Beauty','fr'=>'Image & Beaut&eacute;','es'=>'Imagen & Beauty'),'items'=>array(
+    array('t'=>array('it'=>'Make-up artist','en'=>'Make-up artists','fr'=>'Maquilleurs','es'=>'Maquilladores'),'d'=>array('it'=>'Truccatori per shooting ed eventi.','en'=>'Makeup artists for shoots and events.','fr'=>'Maquilleurs pour shootings.','es'=>'Maquilladores para eventos.')),
+    array('t'=>array('it'=>'Hairstylist','en'=>'Hairstylists','fr'=>'Coiffeurs','es'=>'Peluqueros'),'d'=>array('it'=>'Acconciature per eventi e produzioni.','en'=>'Hairstyling for events and productions.','fr'=>'Coiffure pour &eacute;v&eacute;nements.','es'=>'Peinados para eventos.')),
+    array('t'=>array('it'=>'Modelli & Modelle','en'=>'Models','fr'=>'Mannequins','es'=>'Modelos'),'d'=>array('it'=>'Immagine per campagne e attivazioni.','en'=>'Image for campaigns and activations.','fr'=>'Image pour campagnes.','es'=>'Imagen para campa&ntilde;as.')),
+  )),
+  array('cat'=>array('it'=>'Foto & Video','en'=>'Photo & Video','fr'=>'Photo & Vid&eacute;o','es'=>'Foto & V&iacute;deo'),'items'=>array(
+    array('t'=>array('it'=>'Fotografi','en'=>'Photographers','fr'=>'Photographes','es'=>'Fot&oacute;grafos'),'d'=>array('it'=>'Reportage e coverage dell\'evento.','en'=>'Reportage and event coverage.','fr'=>'Reportage &eacute;v&eacute;nement.','es'=>'Reportaje del evento.')),
+    array('t'=>array('it'=>'Videomaker','en'=>'Videomakers','fr'=>'Vid&eacute;astes','es'=>'Videomakers'),'d'=>array('it'=>'Riprese, aftermovie e social.','en'=>'Filming, aftermovies and social.','fr'=>'Tournage et aftermovie.','es'=>'Grabaci&oacute;n y aftermovie.')),
+  )),
+  array('cat'=>array('it'=>'Sicurezza & Logistica','en'=>'Security & Logistics','fr'=>'S&eacute;curit&eacute; & Logistique','es'=>'Seguridad & Log&iacute;stica'),'items'=>array(
+    array('t'=>array('it'=>'Security','en'=>'Security','fr'=>'S&eacute;curit&eacute;','es'=>'Seguridad'),'d'=>array('it'=>'Controllo accessi e gestione flussi.','en'=>'Access control and crowd management.','fr'=>'Contr&ocirc;le des acc&egrave;s.','es'=>'Control de accesos.')),
+    array('t'=>array('it'=>'Autisti / NCC','en'=>'Drivers / NCC','fr'=>'Chauffeurs','es'=>'Conductores'),'d'=>array('it'=>'Transfer di ospiti e delegazioni.','en'=>'Transfers of guests and delegations.','fr'=>'Transferts d\'invit&eacute;s.','es'=>'Traslados de invitados.')),
+    array('t'=>array('it'=>'Runner','en'=>'Runners','fr'=>'Runners','es'=>'Runners'),'d'=>array('it'=>'Supporto operativo e backstage.','en'=>'Operational and backstage support.','fr'=>'Support op&eacute;rationnel.','es'=>'Apoyo operativo.')),
+    array('t'=>array('it'=>'Parcheggiatori','en'=>'Valet parking','fr'=>'Voituriers','es'=>'Aparcacoches'),'d'=>array('it'=>'Servizio valet per ospiti.','en'=>'Valet service for guests.','fr'=>'Service voiturier.','es'=>'Servicio valet.')),
+  )),
+  array('cat'=>array('it'=>'Coordinamento','en'=>'Coordination','fr'=>'Coordination','es'=>'Coordinaci&oacute;n'),'items'=>array(
+    array('t'=>array('it'=>'Coordinatori','en'=>'Coordinators','fr'=>'Coordinateurs','es'=>'Coordinadores'),'d'=>array('it'=>'Referente che gestisce tutto lo staff on-site.','en'=>'A manager running all on-site staff.','fr'=>'R&eacute;f&eacute;rent sur site.','es'=>'Referente en el sitio.')),
+    array('t'=>array('it'=>'Tour leader','en'=>'Tour leaders','fr'=>'Tour leaders','es'=>'Tour leaders'),'d'=>array('it'=>'Accompagnatori per gruppi e incentive.','en'=>'Escorts for groups and incentives.','fr'=>'Accompagnateurs de groupes.','es'=>'Acompa&ntilde;antes de grupos.')),
+  )),
 );
 
-// Griglia staff di ESEMPIO (nomi/ruoli fittizi, illustrativi)
+// Griglia staff di ESEMPIO (nomi/ruoli fittizi, illustrativi) — foto reali in arrivo
 $staff = array(
   array('img'=>'/wp-content/uploads/2025/09/hostess-38-yo-caucasian.jpg','name'=>'Giulia','role'=>array('it'=>'Hostess','en'=>'Hostess','fr'=>'H&ocirc;tesse','es'=>'Azafata')),
   array('img'=>'/wp-content/uploads/2025/09/steward-35-yo-caucasian.jpg','name'=>'Marco','role'=>array('it'=>'Steward','en'=>'Steward','fr'=>'Steward','es'=>'Steward')),
   array('img'=>'/wp-content/uploads/2025/09/steward-31-yo-ispanic.jpg','name'=>'Luca','role'=>array('it'=>'Bartender','en'=>'Bartender','fr'=>'Barman','es'=>'Bartender')),
   array('img'=>'/wp-content/uploads/2025/09/hostess-32-yo-caucasian.jpg','name'=>'Sofia','role'=>array('it'=>'Cameriera','en'=>'Waiter','fr'=>'Serveuse','es'=>'Camarera')),
   array('img'=>'/wp-content/uploads/2025/09/hostess-29-yo-east-asian.jpg','name'=>'Elena','role'=>array('it'=>'Interprete','en'=>'Interpreter','fr'=>'Interpr&egrave;te','es'=>'Int&eacute;rprete')),
-  array('img'=>'/wp-content/uploads/2025/09/steward-40-yo-caucasian.jpg','name'=>'Davide','role'=>array('it'=>'Steward sicurezza','en'=>'Security steward','fr'=>'Steward s&eacute;curit&eacute;','es'=>'Steward seguridad')),
+  array('img'=>'/wp-content/uploads/2025/09/steward-40-yo-caucasian.jpg','name'=>'Davide','role'=>array('it'=>'Security','en'=>'Security','fr'=>'S&eacute;curit&eacute;','es'=>'Seguridad')),
   array('img'=>'/wp-content/uploads/2025/09/steward-50-yo-african.jpg','name'=>'Alessandro','role'=>array('it'=>'Autista','en'=>'Driver','fr'=>'Chauffeur','es'=>'Conductor')),
-  array('img'=>'/wp-content/uploads/2025/09/hostess-26-yo-caucasian.jpg','name'=>'Chiara','role'=>array('it'=>'Runner','en'=>'Runner','fr'=>'Runner','es'=>'Runner')),
-  array('img'=>'/wp-content/uploads/2025/09/steward-26-yo-east-asian-1.jpg','name'=>'Matteo','role'=>array('it'=>'Fotografo','en'=>'Photographer','fr'=>'Photographe','es'=>'Fot&oacute;grafo')),
-  array('img'=>'/wp-content/uploads/2025/09/sport-hostess-25-yo-caucasian.jpg','name'=>'Sara','role'=>array('it'=>'Videomaker','en'=>'Videomaker','fr'=>'Vid&eacute;aste','es'=>'Videomaker')),
-  array('img'=>'/wp-content/uploads/2025/09/steward-39-north-european.jpg','name'=>'Andrea','role'=>array('it'=>'Tour Leader','en'=>'Tour Leader','fr'=>'Tour Leader','es'=>'Tour Leader')),
   array('img'=>'/wp-content/uploads/2025/09/steward-28-yo-african.jpg','name'=>'Simone','role'=>array('it'=>'DJ','en'=>'DJ','fr'=>'DJ','es'=>'DJ')),
+  array('img'=>'/wp-content/uploads/2025/09/steward-26-yo-east-asian-1.jpg','name'=>'Matteo','role'=>array('it'=>'Fotografo','en'=>'Photographer','fr'=>'Photographe','es'=>'Fot&oacute;grafo')),
+  array('img'=>'/wp-content/uploads/2025/09/sport-hostess-25-yo-caucasian.jpg','name'=>'Sara','role'=>array('it'=>'Truccabimbi','en'=>'Face painter','fr'=>'Maquilleuse','es'=>'Pintacaritas')),
+  array('img'=>'/wp-content/uploads/2025/09/hostess-26-yo-caucasian.jpg','name'=>'Chiara','role'=>array('it'=>'Coordinatrice','en'=>'Coordinator','fr'=>'Coordinatrice','es'=>'Coordinadora')),
+  array('img'=>'/wp-content/uploads/2025/09/steward-39-north-european.jpg','name'=>'Andrea','role'=>array('it'=>'Tour Leader','en'=>'Tour Leader','fr'=>'Tour Leader','es'=>'Tour Leader')),
 );
 
 toa_component('header');
-
-$images = array(
-    array('src' => '/wp-content/uploads/2025/09/hostess-38-yo-caucasian.jpg', 'alt' => 'Hostess professionale per fiere ed eventi aziendali — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/steward-35-yo-caucasian.jpg', 'alt' => 'Steward per eventi e congressi aziendali — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/sport-hostess-23-yo-latina.jpg', 'alt' => 'Hostess per eventi sport e promozioni — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/hostess-29-yo-african.jpg', 'alt' => 'Hostess per congressi e fiere internazionali — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/steward-26-yo-east-asian-1.jpg', 'alt' => 'Steward per eventi e accoglienza — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/hostess-32-yo-caucasian.jpg', 'alt' => 'Hostess per fiere e attivazioni di brand — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/steward-50-yo-african.jpg', 'alt' => 'Steward senior per eventi e congressi — TOAgency'),
-    array('src' => '/wp-content/uploads/2025/09/hostess-26-yo-caucasian.jpg', 'alt' => 'Hostess per eventi aziendali e fiere — TOAgency'),
-);
 ?>
 
 <?php toa_component('page-hero', array(
@@ -110,13 +119,13 @@ $images = array(
     'subtitle'   => $_t($t['hero_subtitle']),
 )); ?>
 
-<!-- Hero CTA + trust line -->
-<div class="container" style="margin-top:-20px;margin-bottom:24px">
+<!-- Hero CTA CENTRATO + trust line -->
+<div class="container" style="margin-top:-8px;margin-bottom:28px;text-align:center">
     <a href="#preventivo" class="btn-hero btn-hero-primary" style="display:inline-flex;align-items:center;gap:8px">
         <span><?php echo $_t($t['hero_cta']); ?></span>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
-    <p style="font-size:0.85rem;color:var(--gray-4);margin-top:12px;font-weight:600"><?php echo $_t($t['trust_line']); ?></p>
+    <p style="font-size:0.85rem;color:var(--gray-4);margin-top:14px;font-weight:600"><?php echo $_t($t['trust_line']); ?></p>
 </div>
 
 <!-- Fascia staff di esempio — IDENTICA al blocco della pagina Modelli -->
@@ -142,13 +151,15 @@ $images = array(
 .toa-staffband .toa-cast-note{text-align:center;font-size:11px;color:rgba(255,255,255,.4);margin:10px 0 0}
 @media(max-width:768px){.toa-staffband .toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:12px}}
 @media(max-width:480px){.toa-staffband .toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:8px}}
+/* Servizi: categorie */
+.toa-serv-cat{font-family:var(--font-display);font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:28px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--black)}
 </style>
 <section class="toa-staffband">
     <div class="inner">
         <div class="toa-cast-hd">
             <h2><?php echo $_t(array('it'=>'Alcune delle figure che forniamo','en'=>'Some of the staff we provide','fr'=>'Quelques profils que nous fournissons','es'=>'Algunos de los perfiles que ofrecemos')); ?></h2>
             <p><?php echo $_t(array('it'=>'Staff selezionato &middot; 20.000+ profili','en'=>'Selected staff &middot; 20,000+ profiles','fr'=>'Personnel s&eacute;lectionn&eacute; &middot; 20 000+ profils','es'=>'Personal seleccionado &middot; 20.000+ perfiles')); ?></p>
-            <p class="desc"><?php echo $_t(array('it'=>'Hostess, steward, bartender, sicurezza, autisti e altro: costruiamo lo staff su misura per il tuo evento, con un referente dedicato.','en'=>'Hostesses, stewards, bartenders, security, drivers and more: we build the staff tailored to your event, with a dedicated manager.','fr'=>'H&ocirc;tesses, stewards, barmans, s&eacute;curit&eacute;, chauffeurs et plus : nous construisons le personnel sur mesure pour votre &eacute;v&eacute;nement.','es'=>'Azafatas, stewards, bartenders, seguridad, conductores y m&aacute;s: creamos el personal a medida para tu evento.')); ?></p>
+            <p class="desc"><?php echo $_t(array('it'=>'Hostess, steward, bartender, security, DJ e molto altro: costruiamo lo staff su misura per il tuo evento, con un referente dedicato.','en'=>'Hostesses, stewards, bartenders, security, DJs and more: we build the staff tailored to your event, with a dedicated manager.','fr'=>'H&ocirc;tesses, stewards, barmans, s&eacute;curit&eacute;, DJ et plus : nous construisons le personnel sur mesure.','es'=>'Azafatas, stewards, bartenders, seguridad, DJ y m&aacute;s: creamos el personal a medida.')); ?></p>
         </div>
         <div class="toa-cast-grid">
             <?php foreach ($staff as $p): ?>
@@ -162,22 +173,27 @@ $images = array(
             <a href="#preventivo"><?php echo $_t(array('it'=>'Richiedi un preventivo &rarr;','en'=>'Request a quote &rarr;','fr'=>'Demander un devis &rarr;','es'=>'Solicitar presupuesto &rarr;')); ?></a>
             <a href="https://wa.me/393517899225" class="alt" target="_blank" rel="noopener">WhatsApp</a>
         </div>
-        <p class="toa-cast-note"><?php echo $_t(array('it'=>'Profili illustrativi &mdash; lo staff reale viene selezionato per il tuo evento.','en'=>'Illustrative profiles &mdash; real staff is selected for your event.','fr'=>'Profils illustratifs &mdash; le personnel r&eacute;el est s&eacute;lectionn&eacute; pour votre &eacute;v&eacute;nement.','es'=>'Perfiles ilustrativos &mdash; el personal real se selecciona para tu evento.')); ?></p>
+        <p class="toa-cast-note"><?php echo $_t(array('it'=>'Profili illustrativi &mdash; lo staff reale viene selezionato per il tuo evento.','en'=>'Illustrative profiles &mdash; real staff is selected for your event.','fr'=>'Profils illustratifs &mdash; le personnel r&eacute;el est s&eacute;lectionn&eacute;.','es'=>'Perfiles ilustrativos &mdash; el personal real se selecciona para tu evento.')); ?></p>
     </div>
 </section>
 
-<!-- Servizi: una sola griglia compatta -->
+<!-- Servizi COMPLETI raggruppati -->
 <section class="why-section">
     <div class="container">
         <div class="section-eyebrow"><?php echo $_t($t['serv_eyebrow']); ?></div>
         <h2 class="section-heading"><?php echo $_t($t['serv_heading']); ?></h2>
     </div>
-    <div class="features-grid">
-        <?php foreach ($services as $s): ?>
-        <div class="feature-card" id="<?php echo esc_attr($s['id']); ?>">
-            <h3 class="feature-title"><?php echo $_t($s['title']); ?></h3>
-            <p class="feature-text"><?php echo $_t($s['text']); ?></p>
-            <a href="#preventivo" style="display:inline-block;margin-top:12px;font-size:0.78rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--accent);text-decoration:none"><?php echo $_t($t['cta_service']); ?> &rarr;</a>
+    <div class="container">
+        <?php foreach ($groups as $g): ?>
+        <div class="toa-serv-cat"><?php echo $_t($g['cat']); ?></div>
+        <div class="features-grid" style="padding:0">
+            <?php foreach ($g['items'] as $it): ?>
+            <div class="feature-card">
+                <h3 class="feature-title"><?php echo $_t($it['t']); ?></h3>
+                <p class="feature-text"><?php echo $_t($it['d']); ?></p>
+                <a href="#preventivo" style="display:inline-block;margin-top:10px;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--accent);text-decoration:none"><?php echo $_t($t['cta_service']); ?> &rarr;</a>
+            </div>
+            <?php endforeach; ?>
         </div>
         <?php endforeach; ?>
     </div>
