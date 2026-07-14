@@ -119,14 +119,20 @@ toa_component('header');
 
 <!-- Hero CTA CENTRATO + trust line -->
 <div class="container" style="margin-top:-8px;margin-bottom:28px;text-align:center">
-    <a href="#preventivo" class="btn-hero btn-hero-primary" style="display:inline-flex;align-items:center;gap:8px">
+    <a href="#preventivo" class="toa-hero-cta">
         <span><?php echo $_t($t['hero_cta']); ?></span>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
-    <p style="font-size:0.85rem;color:var(--gray-4);margin-top:14px;font-weight:600"><?php echo $_t($t['trust_line']); ?></p>
+    <p style="font-size:0.85rem;color:var(--gray-4);margin-top:16px;font-weight:600"><?php echo $_t($t['trust_line']); ?></p>
 </div>
 
 <style>
+/* Pulsante CTA hero — pill lime elegante */
+.toa-hero-cta{display:inline-flex;align-items:center;gap:10px;padding:18px 40px;background:var(--accent,#c8ff00);color:#0a0a0a;font-family:var(--font-display);font-size:1.05rem;font-weight:800;letter-spacing:.4px;text-transform:uppercase;border-radius:999px;box-shadow:0 8px 30px rgba(200,255,0,.35),0 2px 8px rgba(0,0,0,.15);transition:transform .25s ease,box-shadow .25s ease}
+.toa-hero-cta svg{transition:transform .25s ease}
+.toa-hero-cta:hover{transform:translateY(-3px);box-shadow:0 14px 42px rgba(200,255,0,.55),0 4px 12px rgba(0,0,0,.2)}
+.toa-hero-cta:hover svg{transform:translateX(4px)}
+@media(max-width:600px){.toa-hero-cta{padding:16px 30px;font-size:.95rem}}
 .toa-staffband{background:#0a0a0a;padding:48px 20px 40px}
 .toa-staffband .inner{max-width:1080px;margin:0 auto}
 .toa-staffband .toa-cast-hd{text-align:center;margin:0 0 22px}
@@ -230,14 +236,12 @@ toa_component('header');
         <p style="font-size:0.95rem;color:var(--gray-4);max-width:640px;margin:0 0 36px"><?php echo $_t($t['cov_sub']); ?></p>
     </div>
     <div class="coverage-grid container">
-        <div class="coverage-country"><h4>Milano</h4><p><?php echo $_t(array('it'=>'Fiera Rho, Salone del Mobile, Fashion Week','en'=>'Rho Fair, Salone del Mobile, Fashion Week','fr'=>'Foire de Rho, Salone del Mobile, Fashion Week','es'=>'Feria Rho, Salone del Mobile, Fashion Week')); ?></p></div>
-        <div class="coverage-country"><h4>Roma</h4><p><?php echo $_t(array('it'=>'Fiere, cinema ed eventi corporate','en'=>'Trade fairs, film and corporate events','fr'=>'Salons, cin&eacute;ma et &eacute;v&eacute;nements','es'=>'Ferias, cine y eventos corporativos')); ?></p></div>
-        <div class="coverage-country"><h4>Bologna</h4><p><?php echo $_t(array('it'=>'Bologna Fiere, Cosmoprof, congressi','en'=>'Bologna Fiere, Cosmoprof, congresses','fr'=>'Bologna Fiere, Cosmoprof, congr&egrave;s','es'=>'Bologna Fiere, Cosmoprof, congresos')); ?></p></div>
-        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Parigi','en'=>'Paris','fr'=>'Paris','es'=>'Par&iacute;s')); ?></h4><p><?php echo $_t(array('it'=>'Saloni, moda ed eventi','en'=>'Trade shows, fashion &amp; events','fr'=>'Salons, mode et &eacute;v&eacute;nements','es'=>'Ferias, moda y eventos')); ?></p></div>
-        <div class="coverage-country"><h4>Barcelona</h4><p><?php echo $_t(array('it'=>'Fiere, congressi ed eventi','en'=>'Fairs, congresses &amp; events','fr'=>'Salons, congr&egrave;s et &eacute;v&eacute;nements','es'=>'Ferias, congresos y eventos')); ?></p></div>
-        <div class="coverage-country"><h4>Madrid</h4><p><?php echo $_t(array('it'=>'IFEMA, fiere ed eventi corporate','en'=>'IFEMA, fairs and corporate events','fr'=>'IFEMA, salons et &eacute;v&eacute;nements','es'=>'IFEMA, ferias y eventos corporativos')); ?></p></div>
-        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Londra','en'=>'London','fr'=>'Londres','es'=>'Londres')); ?></h4><p><?php echo $_t(array('it'=>'Fiere, advertising ed eventi','en'=>'Trade fairs, advertising &amp; events','fr'=>'Salons, publicit&eacute; et &eacute;v&eacute;nements','es'=>'Ferias, publicidad y eventos')); ?></p></div>
-        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Berlino','en'=>'Berlin','fr'=>'Berlin','es'=>'Berl&iacute;n')); ?></h4><p><?php echo $_t(array('it'=>'Fiere ed eventi internazionali','en'=>'International fairs &amp; events','fr'=>'Salons et &eacute;v&eacute;nements internationaux','es'=>'Ferias y eventos internacionales')); ?></p></div>
+        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Italia','en'=>'Italy','fr'=>'Italie','es'=>'Italia')); ?></h4><p><?php echo $_t(array('it'=>'Milano, Roma, Bologna, Rimini, Firenze','en'=>'Milan, Rome, Bologna, Rimini, Florence','fr'=>'Milan, Rome, Bologne, Rimini, Florence','es'=>'Mil&aacute;n, Roma, Bolonia, R&iacute;mini, Florencia')); ?></p></div>
+        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Spagna','en'=>'Spain','fr'=>'Espagne','es'=>'Espa&ntilde;a')); ?></h4><p><?php echo $_t(array('it'=>'Madrid, Barcellona, Valencia, Ibiza','en'=>'Madrid, Barcelona, Valencia, Ibiza','fr'=>'Madrid, Barcelone, Valence, Ibiza','es'=>'Madrid, Barcelona, Valencia, Ibiza')); ?></p></div>
+        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Francia','en'=>'France','fr'=>'France','es'=>'Francia')); ?></h4><p><?php echo $_t(array('it'=>'Parigi, Cannes, Nizza, Lione','en'=>'Paris, Cannes, Nice, Lyon','fr'=>'Paris, Cannes, Nice, Lyon','es'=>'Par&iacute;s, Cannes, Niza, Lyon')); ?></p></div>
+        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Regno Unito','en'=>'United Kingdom','fr'=>'Royaume-Uni','es'=>'Reino Unido')); ?></h4><p><?php echo $_t(array('it'=>'Londra, Manchester, Birmingham','en'=>'London, Manchester, Birmingham','fr'=>'Londres, Manchester, Birmingham','es'=>'Londres, M&aacute;nchester, Birmingham')); ?></p></div>
+        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Germania &amp; Benelux','en'=>'Germany &amp; Benelux','fr'=>'Allemagne &amp; Benelux','es'=>'Alemania &amp; Benelux')); ?></h4><p><?php echo $_t(array('it'=>'Berlino, Monaco, Bruxelles, Amsterdam','en'=>'Berlin, Munich, Brussels, Amsterdam','fr'=>'Berlin, Munich, Bruxelles, Amsterdam','es'=>'Berl&iacute;n, M&uacute;nich, Bruselas, &Aacute;msterdam')); ?></p></div>
+        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Tutta Europa','en'=>'All of Europe','fr'=>'Toute l\'Europe','es'=>'Toda Europa')); ?></h4><p><?php echo $_t(array('it'=>'Altre citt&agrave; ed eventi su richiesta','en'=>'Other cities &amp; events on request','fr'=>'Autres villes et &eacute;v&eacute;nements sur demande','es'=>'Otras ciudades y eventos bajo petici&oacute;n')); ?></p></div>
     </div>
 </section>
 
