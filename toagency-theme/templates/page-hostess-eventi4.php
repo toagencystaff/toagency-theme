@@ -119,32 +119,51 @@ $images = array(
     <p style="font-size:0.85rem;color:var(--gray-4);margin-top:12px;font-weight:600"><?php echo $_t($t['trust_line']); ?></p>
 </div>
 
-<!-- Griglia staff di esempio — STESSE schede della pagina Modelli (.toa-cast-card) -->
+<!-- Fascia staff di esempio — IDENTICA al blocco della pagina Modelli -->
 <style>
-.toa-cast-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
-.toa-cast-card{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:3/4;background:#141414;border:1px solid rgba(255,255,255,.06)}
-.toa-cast-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s cubic-bezier(.2,.8,.3,1)}
-.toa-cast-card:hover img{transform:scale(1.05)}
-.toa-cast-card .ov{position:absolute;left:0;right:0;bottom:0;padding:14px 12px 11px;background:linear-gradient(transparent,rgba(0,0,0,.88));color:#fff}
-.toa-cast-card .ov b{display:block;font-size:13px;font-weight:700;letter-spacing:.4px}
-.toa-cast-card .ov span{display:block;font-size:12px;color:rgba(255,255,255,.6);margin-top:2px}
-@media(max-width:768px){.toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:12px}}
-@media(max-width:480px){.toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:8px}}
+.toa-staffband{background:#0a0a0a;padding:48px 20px 40px}
+.toa-staffband .inner{max-width:1080px;margin:0 auto}
+.toa-staffband .toa-cast-hd{text-align:center;margin:0 0 22px}
+.toa-staffband .toa-cast-hd h2{font-family:var(--font-display,Georgia,serif);font-size:clamp(20px,3vw,28px);font-weight:900;color:#fff;margin:0 0 6px;text-transform:uppercase;letter-spacing:.5px}
+.toa-staffband .toa-cast-hd p{font-size:12px;color:rgba(255,255,255,.45);margin:0;text-transform:uppercase;letter-spacing:1px}
+.toa-staffband .toa-cast-hd .desc{text-transform:none;font-size:13px;font-weight:400;color:rgba(255,255,255,.6);max-width:620px;margin:12px auto 0;line-height:1.5;letter-spacing:0}
+.toa-staffband .toa-cast-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.toa-staffband .toa-cast-card{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:3/4;background:#141414;border:1px solid rgba(255,255,255,.06)}
+.toa-staffband .toa-cast-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s cubic-bezier(.2,.8,.3,1)}
+.toa-staffband .toa-cast-card:hover img{transform:scale(1.05)}
+.toa-staffband .toa-cast-card .ov{position:absolute;left:0;right:0;bottom:0;padding:14px 12px 11px;background:linear-gradient(transparent,rgba(0,0,0,.88));color:#fff}
+.toa-staffband .toa-cast-card .ov b{display:block;font-size:13px;font-weight:700;letter-spacing:.4px}
+.toa-staffband .toa-cast-card .ov .code{display:block;font-size:11px;font-weight:600;color:#c8ff00;letter-spacing:.5px;margin-top:1px}
+.toa-staffband .toa-cast-cta{text-align:center;margin:26px 0 6px}
+.toa-staffband .toa-cast-cta a{display:inline-block;margin:6px 5px;padding:14px 30px;background:#c8ff00;color:#000;border:1px solid #c8ff00;border-radius:8px;font-weight:700;font-size:14px;letter-spacing:.04em;text-decoration:none;transition:opacity .2s,background .2s}
+.toa-staffband .toa-cast-cta a:hover{opacity:.85}
+.toa-staffband .toa-cast-cta a.alt{background:transparent;color:#c8ff00}
+.toa-staffband .toa-cast-cta a.alt:hover{background:rgba(200,255,0,.12);opacity:1}
+.toa-staffband .toa-cast-note{text-align:center;font-size:11px;color:rgba(255,255,255,.4);margin:10px 0 0}
+@media(max-width:768px){.toa-staffband .toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:12px}}
+@media(max-width:480px){.toa-staffband .toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:8px}}
 </style>
-<section class="why-section" style="padding-bottom:0">
-    <div class="container">
-        <div class="section-eyebrow"><?php echo $_t(array('it'=>'Il nostro staff','en'=>'Our staff','fr'=>'Notre &eacute;quipe','es'=>'Nuestro equipo')); ?></div>
-        <h2 class="section-heading" style="margin-bottom:22px"><?php echo $_t(array('it'=>'Alcune delle figure che forniamo','en'=>'Some of the profiles we provide','fr'=>'Quelques profils que nous fournissons','es'=>'Algunos de los perfiles que ofrecemos')); ?></h2>
-    </div>
-    <div class="toa-cast-grid container">
-        <?php foreach ($staff as $p): ?>
-        <div class="toa-cast-card">
-            <img src="<?php echo esc_attr($p['img']); ?>" alt="<?php echo esc_attr($p['name'].' — '.$_t($p['role'])); ?>" loading="lazy">
-            <div class="ov"><b><?php echo esc_html($p['name']); ?></b><span><?php echo $_t($p['role']); ?></span></div>
+<section class="toa-staffband">
+    <div class="inner">
+        <div class="toa-cast-hd">
+            <h2><?php echo $_t(array('it'=>'Alcune delle figure che forniamo','en'=>'Some of the staff we provide','fr'=>'Quelques profils que nous fournissons','es'=>'Algunos de los perfiles que ofrecemos')); ?></h2>
+            <p><?php echo $_t(array('it'=>'Staff selezionato &middot; 20.000+ profili','en'=>'Selected staff &middot; 20,000+ profiles','fr'=>'Personnel s&eacute;lectionn&eacute; &middot; 20 000+ profils','es'=>'Personal seleccionado &middot; 20.000+ perfiles')); ?></p>
+            <p class="desc"><?php echo $_t(array('it'=>'Hostess, steward, bartender, sicurezza, autisti e altro: costruiamo lo staff su misura per il tuo evento, con un referente dedicato.','en'=>'Hostesses, stewards, bartenders, security, drivers and more: we build the staff tailored to your event, with a dedicated manager.','fr'=>'H&ocirc;tesses, stewards, barmans, s&eacute;curit&eacute;, chauffeurs et plus : nous construisons le personnel sur mesure pour votre &eacute;v&eacute;nement.','es'=>'Azafatas, stewards, bartenders, seguridad, conductores y m&aacute;s: creamos el personal a medida para tu evento.')); ?></p>
         </div>
-        <?php endforeach; ?>
+        <div class="toa-cast-grid">
+            <?php foreach ($staff as $p): ?>
+            <div class="toa-cast-card">
+                <img src="<?php echo esc_attr($p['img']); ?>" alt="<?php echo esc_attr($p['name'].' — '.$_t($p['role'])); ?>" loading="lazy">
+                <div class="ov"><b><?php echo esc_html($p['name']); ?></b><span class="code"><?php echo $_t($p['role']); ?></span></div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="toa-cast-cta">
+            <a href="#preventivo"><?php echo $_t(array('it'=>'Richiedi un preventivo &rarr;','en'=>'Request a quote &rarr;','fr'=>'Demander un devis &rarr;','es'=>'Solicitar presupuesto &rarr;')); ?></a>
+            <a href="https://wa.me/393517899225" class="alt" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+        <p class="toa-cast-note"><?php echo $_t(array('it'=>'Profili illustrativi &mdash; lo staff reale viene selezionato per il tuo evento.','en'=>'Illustrative profiles &mdash; real staff is selected for your event.','fr'=>'Profils illustratifs &mdash; le personnel r&eacute;el est s&eacute;lectionn&eacute; pour votre &eacute;v&eacute;nement.','es'=>'Perfiles ilustrativos &mdash; el personal real se selecciona para tu evento.')); ?></p>
     </div>
-    <p class="container" style="font-size:11px;color:var(--gray-4);margin:14px auto 0;text-align:center"><?php echo $_t(array('it'=>'Profili illustrativi &mdash; lo staff reale viene selezionato per il tuo evento.','en'=>'Illustrative profiles &mdash; real staff is selected for your event.','fr'=>'Profils illustratifs &mdash; le personnel r&eacute;el est s&eacute;lectionn&eacute; pour votre &eacute;v&eacute;nement.','es'=>'Perfiles ilustrativos &mdash; el personal real se selecciona para tu evento.')); ?></p>
 </section>
 
 <!-- Servizi: una sola griglia compatta -->
