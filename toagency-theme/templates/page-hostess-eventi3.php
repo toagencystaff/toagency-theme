@@ -119,26 +119,33 @@ $images = array(
     <p style="font-size:0.85rem;color:var(--gray-4);margin-top:12px;font-weight:600"><?php echo $_t($t['trust_line']); ?></p>
 </div>
 
-<!-- Griglia staff di esempio (stile schede Modelli) -->
+<!-- Griglia staff di esempio — STESSE schede della pagina Modelli (.toa-cast-card) -->
 <style>
-.toa-staff-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px}
-.toa-staff-card{position:relative;aspect-ratio:3/4;overflow:hidden;background:#111;border:2px solid var(--black)}
-.toa-staff-card img{width:100%;height:100%;object-fit:cover;display:block}
-.toa-staff-card .ov{position:absolute;left:0;right:0;bottom:0;padding:10px 12px;background:linear-gradient(transparent,rgba(0,0,0,.85));color:#fff}
-.toa-staff-card .ov b{display:block;font-family:var(--font-display);font-size:.95rem;font-weight:800;line-height:1.1}
-.toa-staff-card .ov span{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;color:var(--accent);font-weight:700;margin-top:3px}
-@media(max-width:768px){.toa-staff-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:480px){.toa-staff-grid{grid-template-columns:repeat(2,1fr)}}
+.toa-cast-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.toa-cast-card{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:3/4;background:#141414;border:1px solid rgba(255,255,255,.06)}
+.toa-cast-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s cubic-bezier(.2,.8,.3,1)}
+.toa-cast-card:hover img{transform:scale(1.05)}
+.toa-cast-card .ov{position:absolute;left:0;right:0;bottom:0;padding:14px 12px 11px;background:linear-gradient(transparent,rgba(0,0,0,.88));color:#fff}
+.toa-cast-card .ov b{display:block;font-size:13px;font-weight:700;letter-spacing:.4px}
+.toa-cast-card .ov span{display:block;font-size:12px;color:rgba(255,255,255,.6);margin-top:2px}
+@media(max-width:768px){.toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:12px}}
+@media(max-width:480px){.toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:8px}}
 </style>
-<div class="toa-staff-grid container" style="margin-bottom:8px">
-    <?php foreach ($staff as $p): ?>
-    <div class="toa-staff-card">
-        <img src="<?php echo esc_attr($p['img']); ?>" alt="<?php echo esc_attr($p['name'].' — '.$_t($p['role'])); ?>" loading="lazy">
-        <div class="ov"><b><?php echo esc_html($p['name']); ?></b><span><?php echo $_t($p['role']); ?></span></div>
+<section class="why-section" style="padding-bottom:0">
+    <div class="container">
+        <div class="section-eyebrow"><?php echo $_t(array('it'=>'Il nostro staff','en'=>'Our staff','fr'=>'Notre &eacute;quipe','es'=>'Nuestro equipo')); ?></div>
+        <h2 class="section-heading" style="margin-bottom:22px"><?php echo $_t(array('it'=>'Alcune delle figure che forniamo','en'=>'Some of the profiles we provide','fr'=>'Quelques profils que nous fournissons','es'=>'Algunos de los perfiles que ofrecemos')); ?></h2>
     </div>
-    <?php endforeach; ?>
-</div>
-<p class="container" style="font-size:11px;color:var(--gray-4);margin:0 0 8px;text-align:center"><?php echo $_t(array('it'=>'Profili illustrativi &mdash; lo staff reale viene selezionato per il tuo evento.','en'=>'Illustrative profiles &mdash; real staff is selected for your event.','fr'=>'Profils illustratifs &mdash; le personnel r&eacute;el est s&eacute;lectionn&eacute; pour votre &eacute;v&eacute;nement.','es'=>'Perfiles ilustrativos &mdash; el personal real se selecciona para tu evento.')); ?></p>
+    <div class="toa-cast-grid container">
+        <?php foreach ($staff as $p): ?>
+        <div class="toa-cast-card">
+            <img src="<?php echo esc_attr($p['img']); ?>" alt="<?php echo esc_attr($p['name'].' — '.$_t($p['role'])); ?>" loading="lazy">
+            <div class="ov"><b><?php echo esc_html($p['name']); ?></b><span><?php echo $_t($p['role']); ?></span></div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+    <p class="container" style="font-size:11px;color:var(--gray-4);margin:14px auto 0;text-align:center"><?php echo $_t(array('it'=>'Profili illustrativi &mdash; lo staff reale viene selezionato per il tuo evento.','en'=>'Illustrative profiles &mdash; real staff is selected for your event.','fr'=>'Profils illustratifs &mdash; le personnel r&eacute;el est s&eacute;lectionn&eacute; pour votre &eacute;v&eacute;nement.','es'=>'Perfiles ilustrativos &mdash; el personal real se selecciona para tu evento.')); ?></p>
+</section>
 
 <!-- Servizi: una sola griglia compatta -->
 <section class="why-section">
