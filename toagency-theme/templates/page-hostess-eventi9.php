@@ -92,19 +92,20 @@ $groups = array(
   )),
 );
 
+$SP = '/wp-content/themes/toagency-theme/assets/staff/';
 $staff = array(
-  array('img'=>'/wp-content/uploads/2025/09/hostess-38-yo-caucasian.jpg','name'=>'Giulia','role'=>array('it'=>'Hostess','en'=>'Hostess','fr'=>'H&ocirc;tesse','es'=>'Azafata')),
-  array('img'=>'/wp-content/uploads/2025/09/steward-35-yo-caucasian.jpg','name'=>'Marco','role'=>array('it'=>'Steward','en'=>'Steward','fr'=>'Steward','es'=>'Steward')),
-  array('img'=>'/wp-content/uploads/2025/09/steward-31-yo-ispanic.jpg','name'=>'Luca','role'=>array('it'=>'Bartender','en'=>'Bartender','fr'=>'Barman','es'=>'Bartender')),
-  array('img'=>'/wp-content/uploads/2025/09/hostess-32-yo-caucasian.jpg','name'=>'Sofia','role'=>array('it'=>'Cameriera','en'=>'Waiter','fr'=>'Serveuse','es'=>'Camarera')),
-  array('img'=>'/wp-content/uploads/2025/09/hostess-29-yo-east-asian.jpg','name'=>'Elena','role'=>array('it'=>'Interprete','en'=>'Interpreter','fr'=>'Interpr&egrave;te','es'=>'Int&eacute;rprete')),
-  array('img'=>'/wp-content/uploads/2025/09/steward-40-yo-caucasian.jpg','name'=>'Davide','role'=>array('it'=>'Security','en'=>'Security','fr'=>'S&eacute;curit&eacute;','es'=>'Seguridad')),
-  array('img'=>'/wp-content/uploads/2025/09/steward-50-yo-african.jpg','name'=>'Alessandro','role'=>array('it'=>'Autista','en'=>'Driver','fr'=>'Chauffeur','es'=>'Conductor')),
-  array('img'=>'/wp-content/uploads/2025/09/steward-28-yo-african.jpg','name'=>'Simone','role'=>array('it'=>'DJ','en'=>'DJ','fr'=>'DJ','es'=>'DJ')),
-  array('img'=>'/wp-content/uploads/2025/09/steward-26-yo-east-asian-1.jpg','name'=>'Matteo','role'=>array('it'=>'Fotografo','en'=>'Photographer','fr'=>'Photographe','es'=>'Fot&oacute;grafo')),
-  array('img'=>'/wp-content/uploads/2025/09/sport-hostess-25-yo-caucasian.jpg','name'=>'Sara','role'=>array('it'=>'Truccabimbi','en'=>'Face painter','fr'=>'Maquilleuse','es'=>'Pintacaritas')),
-  array('img'=>'/wp-content/uploads/2025/09/hostess-26-yo-caucasian.jpg','name'=>'Chiara','role'=>array('it'=>'Coordinatrice','en'=>'Coordinator','fr'=>'Coordinatrice','es'=>'Coordinadora')),
-  array('img'=>'/wp-content/uploads/2025/09/steward-39-north-european.jpg','name'=>'Andrea','role'=>array('it'=>'Tour Leader','en'=>'Tour Leader','fr'=>'Tour Leader','es'=>'Tour Leader')),
+  array('img'=>$SP.'hostess.jpg','name'=>'Giulia','role'=>array('it'=>'Hostess','en'=>'Hostess','fr'=>'H&ocirc;tesse','es'=>'Azafata')),
+  array('img'=>$SP.'steward.jpg','name'=>'Marco','role'=>array('it'=>'Steward','en'=>'Steward','fr'=>'Steward','es'=>'Steward')),
+  array('img'=>$SP.'bartender.jpg','name'=>'Luca','role'=>array('it'=>'Bartender','en'=>'Bartender','fr'=>'Barman','es'=>'Bartender')),
+  array('img'=>$SP.'cameriera.jpg','name'=>'Sofia','role'=>array('it'=>'Cameriera','en'=>'Waiter','fr'=>'Serveuse','es'=>'Camarera')),
+  array('img'=>$SP.'interprete.jpg','name'=>'Elena','role'=>array('it'=>'Interprete','en'=>'Interpreter','fr'=>'Interpr&egrave;te','es'=>'Int&eacute;rprete')),
+  array('img'=>$SP.'security.jpg','name'=>'David','role'=>array('it'=>'Security','en'=>'Security','fr'=>'S&eacute;curit&eacute;','es'=>'Seguridad')),
+  array('img'=>$SP.'autista.jpg','name'=>'Alessandro','role'=>array('it'=>'Autista','en'=>'Driver','fr'=>'Chauffeur','es'=>'Conductor')),
+  array('img'=>$SP.'dj.jpg','name'=>'Simone','role'=>array('it'=>'DJ','en'=>'DJ','fr'=>'DJ','es'=>'DJ')),
+  array('img'=>$SP.'fotografa.jpg','name'=>'Sara','role'=>array('it'=>'Fotografa','en'=>'Photographer','fr'=>'Photographe','es'=>'Fot&oacute;grafa')),
+  array('img'=>$SP.'videomaker.jpg','name'=>'Matteo','role'=>array('it'=>'Videomaker','en'=>'Videomaker','fr'=>'Vid&eacute;aste','es'=>'Videomaker')),
+  array('img'=>$SP.'promoter.jpg','name'=>'Chiara','role'=>array('it'=>'Promoter','en'=>'Promoter','fr'=>'Promotrice','es'=>'Promotora')),
+  array('img'=>$SP.'runner.jpg','name'=>'Andrea','role'=>array('it'=>'Runner','en'=>'Runner','fr'=>'Runner','es'=>'Runner')),
 );
 
 toa_component('header');
