@@ -74,6 +74,22 @@ $services = array(
     'text'=>array('it'=>'Accompagnatori per gruppi, incentive e visite aziendali.','en'=>'Escorts for groups, incentives and corporate visits.','fr'=>'Accompagnateurs pour groupes, incentives et visites.','es'=>'Acompa&ntilde;antes para grupos, incentivos y visitas.')),
 );
 
+// Griglia staff di ESEMPIO (nomi/ruoli fittizi, illustrativi)
+$staff = array(
+  array('img'=>'/wp-content/uploads/2025/09/hostess-38-yo-caucasian.jpg','name'=>'Giulia','role'=>array('it'=>'Hostess','en'=>'Hostess','fr'=>'H&ocirc;tesse','es'=>'Azafata')),
+  array('img'=>'/wp-content/uploads/2025/09/steward-35-yo-caucasian.jpg','name'=>'Marco','role'=>array('it'=>'Steward','en'=>'Steward','fr'=>'Steward','es'=>'Steward')),
+  array('img'=>'/wp-content/uploads/2025/09/steward-31-yo-ispanic.jpg','name'=>'Luca','role'=>array('it'=>'Bartender','en'=>'Bartender','fr'=>'Barman','es'=>'Bartender')),
+  array('img'=>'/wp-content/uploads/2025/09/hostess-32-yo-caucasian.jpg','name'=>'Sofia','role'=>array('it'=>'Cameriera','en'=>'Waiter','fr'=>'Serveuse','es'=>'Camarera')),
+  array('img'=>'/wp-content/uploads/2025/09/hostess-29-yo-east-asian.jpg','name'=>'Elena','role'=>array('it'=>'Interprete','en'=>'Interpreter','fr'=>'Interpr&egrave;te','es'=>'Int&eacute;rprete')),
+  array('img'=>'/wp-content/uploads/2025/09/steward-40-yo-caucasian.jpg','name'=>'Davide','role'=>array('it'=>'Steward sicurezza','en'=>'Security steward','fr'=>'Steward s&eacute;curit&eacute;','es'=>'Steward seguridad')),
+  array('img'=>'/wp-content/uploads/2025/09/steward-50-yo-african.jpg','name'=>'Alessandro','role'=>array('it'=>'Autista','en'=>'Driver','fr'=>'Chauffeur','es'=>'Conductor')),
+  array('img'=>'/wp-content/uploads/2025/09/hostess-26-yo-caucasian.jpg','name'=>'Chiara','role'=>array('it'=>'Runner','en'=>'Runner','fr'=>'Runner','es'=>'Runner')),
+  array('img'=>'/wp-content/uploads/2025/09/steward-26-yo-east-asian-1.jpg','name'=>'Matteo','role'=>array('it'=>'Fotografo','en'=>'Photographer','fr'=>'Photographe','es'=>'Fot&oacute;grafo')),
+  array('img'=>'/wp-content/uploads/2025/09/sport-hostess-25-yo-caucasian.jpg','name'=>'Sara','role'=>array('it'=>'Videomaker','en'=>'Videomaker','fr'=>'Vid&eacute;aste','es'=>'Videomaker')),
+  array('img'=>'/wp-content/uploads/2025/09/steward-39-north-european.jpg','name'=>'Andrea','role'=>array('it'=>'Tour Leader','en'=>'Tour Leader','fr'=>'Tour Leader','es'=>'Tour Leader')),
+  array('img'=>'/wp-content/uploads/2025/09/steward-28-yo-african.jpg','name'=>'Simone','role'=>array('it'=>'DJ','en'=>'DJ','fr'=>'DJ','es'=>'DJ')),
+);
+
 toa_component('header');
 
 $images = array(
@@ -103,7 +119,26 @@ $images = array(
     <p style="font-size:0.85rem;color:var(--gray-4);margin-top:12px;font-weight:600"><?php echo $_t($t['trust_line']); ?></p>
 </div>
 
-<?php toa_component('gallery-talent', array('images' => $images, 'columns' => 4)); ?>
+<!-- Griglia staff di esempio (stile schede Modelli) -->
+<style>
+.toa-staff-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px}
+.toa-staff-card{position:relative;aspect-ratio:3/4;overflow:hidden;background:#111;border:2px solid var(--black)}
+.toa-staff-card img{width:100%;height:100%;object-fit:cover;display:block}
+.toa-staff-card .ov{position:absolute;left:0;right:0;bottom:0;padding:10px 12px;background:linear-gradient(transparent,rgba(0,0,0,.85));color:#fff}
+.toa-staff-card .ov b{display:block;font-family:var(--font-display);font-size:.95rem;font-weight:800;line-height:1.1}
+.toa-staff-card .ov span{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;color:var(--accent);font-weight:700;margin-top:3px}
+@media(max-width:768px){.toa-staff-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:480px){.toa-staff-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+<div class="toa-staff-grid container" style="margin-bottom:8px">
+    <?php foreach ($staff as $p): ?>
+    <div class="toa-staff-card">
+        <img src="<?php echo esc_attr($p['img']); ?>" alt="<?php echo esc_attr($p['name'].' — '.$_t($p['role'])); ?>" loading="lazy">
+        <div class="ov"><b><?php echo esc_html($p['name']); ?></b><span><?php echo $_t($p['role']); ?></span></div>
+    </div>
+    <?php endforeach; ?>
+</div>
+<p class="container" style="font-size:11px;color:var(--gray-4);margin:0 0 8px;text-align:center"><?php echo $_t(array('it'=>'Profili illustrativi &mdash; lo staff reale viene selezionato per il tuo evento.','en'=>'Illustrative profiles &mdash; real staff is selected for your event.','fr'=>'Profils illustratifs &mdash; le personnel r&eacute;el est s&eacute;lectionn&eacute; pour votre &eacute;v&eacute;nement.','es'=>'Perfiles ilustrativos &mdash; el personal real se selecciona para tu evento.')); ?></p>
 
 <!-- Servizi: una sola griglia compatta -->
 <section class="why-section">
