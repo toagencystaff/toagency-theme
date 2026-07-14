@@ -47,6 +47,7 @@ $default_service = [
     'models-aziende' => 'shooting',
     'hostess-eventi' => 'fiera-salone',
     'attori-produzioni' => 'film',
+    'casting-produzioni' => 'film',
 ][$key] ?? 'pubblicita';
 
 // --- Contatti (da /contatti/) ---
@@ -140,6 +141,17 @@ $COPY = [
       'es'=>['Más de 20.000 perfiles verificados en la base de datos','Más de 15 años de experiencia, desde 2009','Actores, secundarios y figurantes para cada papel','Operativos en toda Italia'],
     ],
     'serv' => ['it'=>'Attori e attrici per spot, cinema, serie TV e web; comparse e figurazioni per produzioni di ogni dimensione; casting mirato per età, fisico e caratteristiche. Contratti e compensi gestiti da noi.','en'=>'Actors and actresses for commercials, film, TV series and web; extras and background for productions of any size; targeted casting by age, look and features. Contracts and fees handled by us.','fr'=>'Acteurs et actrices pour spots, cinéma, séries TV et web ; figurants pour productions de toute taille ; casting ciblé par âge, physique et caractéristiques. Contrats et rémunérations gérés par nos soins.','es'=>'Actores y actrices para spots, cine, series de TV y web; figurantes para producciones de cualquier tamaño; casting específico por edad, físico y características. Contratos y honorarios gestionados por nosotros.'],
+  ],
+  'casting-produzioni' => [
+    'h1'  => ['it'=>'Casting per produzioni, spot e campagne pubblicitarie','en'=>'Casting for productions, commercials and advertising campaigns','fr'=>'Casting pour productions, spots et campagnes publicitaires','es'=>'Casting para producciones, spots y campañas publicitarias'],
+    'sub' => ['it'=>'Selezioniamo e gestiamo modelli, attori, comparse e figuranti per le tue produzioni: spot, cinema, serie TV, campagne ed e-commerce. Preventivo gratuito in 24 ore.','en'=>'We select and manage models, actors, extras and background talent for your productions: commercials, film, TV series, campaigns and e-commerce. Free quote within 24 hours.','fr'=>'Nous sélectionnons et gérons mannequins, acteurs, figurants et silhouettes pour vos productions : spots, cinéma, séries TV, campagnes et e-commerce. Devis gratuit sous 24 heures.','es'=>'Seleccionamos y gestionamos modelos, actores, figurantes y comparsas para tus producciones: spots, cine, series de TV, campañas y e-commerce. Presupuesto gratuito en 24 horas.'],
+    'bul' => [
+      'it'=>['20.000+ profili verificati nel database','15+ anni di esperienza, dal 2009','Casting mirato per ruolo, età, fisico e caratteristiche','Operativi in tutta Italia'],
+      'en'=>['20,000+ verified profiles in our database','15+ years of experience, since 2009','Targeted casting by role, age, look and features','Active throughout Italy'],
+      'fr'=>['Plus de 20 000 profils vérifiés en base','Plus de 15 ans, depuis 2009','Casting ciblé par rôle, âge, physique et caractéristiques','Actifs partout en Italie'],
+      'es'=>['Más de 20.000 perfiles verificados en la base de datos','Más de 15 años de experiencia, desde 2009','Casting específico por papel, edad, físico y características','Operativos en toda Italia'],
+    ],
+    'serv' => ['it'=>'Casting completo per produzioni: selezione profili, provini, gestione set e liberatorie. Modelli, attori, comparse e figuranti per spot, cinema, serie TV, campagne ed e-commerce. Contratti e compensi gestiti da noi.','en'=>'Full casting for productions: profile selection, auditions, on-set management and releases. Models, actors, extras and background talent for commercials, film, TV series, campaigns and e-commerce. Contracts and fees handled by us.','fr'=>'Casting complet pour productions : sélection de profils, essais, gestion du plateau et autorisations. Mannequins, acteurs, figurants et silhouettes pour spots, cinéma, séries TV, campagnes et e-commerce. Contrats et rémunérations gérés par nos soins.','es'=>'Casting completo para producciones: selección de perfiles, pruebas, gestión de set y autorizaciones. Modelos, actores, figurantes y comparsas para spots, cine, series de TV, campañas y e-commerce. Contratos y honorarios gestionados por nosotros.'],
   ],
 ];
 
