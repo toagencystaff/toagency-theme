@@ -75,7 +75,7 @@ add_action( 'wp_head', function () {
             'description' => 'Fornitura di hostess, steward e personale eventi per fiere, congressi, lanci di prodotto e attività di promoter in Italia ed Europa.',
             'url'         => home_url( '/hostess-steward/' ),
         ],
-        'page-actors.php' => [
+        'page-actors2.php' => [
             'name'        => 'Attori per spot pubblicitari e produzioni',
             'serviceType' => 'Commercial & Film Casting',
             'description' => 'Casting di attori professionisti per spot pubblicitari, video istituzionali, produzioni cinematografiche e teatrali.',
