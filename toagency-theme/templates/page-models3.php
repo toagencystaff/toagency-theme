@@ -205,6 +205,12 @@ toa_component('header');
 .cov-details p a:hover{color:var(--accent)}
 .coverage-note{margin:26px auto 0;font-size:.95rem;color:var(--gray-4)}
 .coverage-note strong{color:#fff}
+/* Mobile: comprimi la barra loghi (1 riga) per un primo schermo più diretto */
+@media(max-width:768px){
+  .toa-cro-loghi{padding-top:16px!important;padding-bottom:12px!important}
+  .toa-cro-loghi .brand-label{margin-bottom:10px!important}
+  .toa-cro-loghi .ticker-row.reverse{display:none!important}
+}
 </style>
 
 <?php toa_component('google-reviews'); ?>

@@ -63,7 +63,7 @@ add_action( 'wp_head', function () {
     $org = 'https://toagency.it/#organization';
 
     $map = [
-        'page-models2.php' => [
+        'page-models3.php' => [
             'name'        => 'Selezione e casting modelli',
             'serviceType' => 'Model & Talent Casting',
             'description' => 'Selezione professionale di modelli per campagne pubblicitarie, sfilate, eventi e produzioni video. Talent pool con oltre 20.000 profili verificati in Italia ed Europa.',
