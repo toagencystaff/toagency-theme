@@ -134,7 +134,17 @@ toa_component('header');
 .toa-hero-cta:hover svg{transform:translateX(4px)}
 @media(max-width:600px){.toa-hero-cta{padding:16px 30px;font-size:.95rem}}
 /* Coverage: coda "e in tutta..." + nota anti-limitazione */
-.coverage-country .cov-more{display:block;color:var(--gray-4);font-weight:400;font-size:.85rem;margin-top:2px}
+.coverage-country .cov-princ{color:#fff;font-weight:600;line-height:1.7}
+.coverage-country h4 a,.coverage-country .cov-princ a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(200,255,0,.35);transition:color .15s ease,border-color .15s ease}
+.coverage-country h4 a:hover,.coverage-country .cov-princ a:hover{color:var(--accent);border-color:var(--accent)}
+.cov-details{margin-top:10px}
+.cov-details summary{cursor:pointer;color:var(--accent);font-size:.8rem;font-weight:700;letter-spacing:.3px;list-style:none;display:inline-block}
+.cov-details summary::-webkit-details-marker{display:none}
+.cov-details summary::after{content:' \25be';margin-left:2px}
+.cov-details[open] summary::after{content:' \25b4'}
+.cov-details p{color:var(--gray-4);font-size:.85rem;margin-top:8px;font-weight:400;line-height:1.7}
+.cov-details p a{color:var(--gray-4);border-bottom:1px solid rgba(200,255,0,.25);text-decoration:none;transition:color .15s ease}
+.cov-details p a:hover{color:var(--accent)}
 .coverage-note{margin:26px auto 0;font-size:.95rem;color:var(--gray-4)}
 .coverage-note strong{color:#fff}
 .toa-staffband{background:#0a0a0a;padding:48px 20px 40px}
@@ -239,13 +249,82 @@ toa_component('header');
         <h2 class="section-heading" style="margin-bottom:12px"><?php echo $_t($t['cov_heading']); ?></h2>
         <p style="font-size:0.95rem;color:var(--gray-4);max-width:640px;margin:0 0 36px"><?php echo $_t($t['cov_sub']); ?></p>
     </div>
+<?php
+// helper coverage: città con eventuale link a landing page
+$covCity = function($n, $u=null) use ($_t){ $l=$_t($n); return $u ? '<a href="'.$u.'">'.$l.'</a>' : $l; };
+$covList = function($arr) use ($covCity){ $o=array(); foreach($arr as $c){ $o[]=$covCity($c[0], isset($c[1])?$c[1]:null); } return implode(', ', $o); };
+$covMore = array('it'=>'Vedi altre citt&agrave;','en'=>'See more cities','fr'=>'Voir plus de villes','es'=>'Ver m&aacute;s ciudades');
+?>
     <div class="coverage-grid container">
-        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Italia','en'=>'Italy','fr'=>'Italie','es'=>'Italia')); ?></h4><p><strong><?php echo $_t(array('it'=>'Milano, Roma, Bologna, Rimini, Firenze','en'=>'Milan, Rome, Bologna, Rimini, Florence','fr'=>'Milan, Rome, Bologne, Rimini, Florence','es'=>'Mil&aacute;n, Roma, Bolonia, R&iacute;mini, Florencia')); ?></strong> <span class="cov-more"><?php echo $_t(array('it'=>'e in tutta Italia','en'=>'and everywhere in Italy','fr'=>'et partout en Italie','es'=>'y en toda Italia')); ?></span></p></div>
-        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Spagna','en'=>'Spain','fr'=>'Espagne','es'=>'Espa&ntilde;a')); ?></h4><p><strong><?php echo $_t(array('it'=>'Madrid, Barcellona, Valencia, Ibiza','en'=>'Madrid, Barcelona, Valencia, Ibiza','fr'=>'Madrid, Barcelone, Valence, Ibiza','es'=>'Madrid, Barcelona, Valencia, Ibiza')); ?></strong> <span class="cov-more"><?php echo $_t(array('it'=>'e in tutta la Spagna','en'=>'and everywhere in Spain','fr'=>'et partout en Espagne','es'=>'y en toda Espa&ntilde;a')); ?></span></p></div>
-        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Francia','en'=>'France','fr'=>'France','es'=>'Francia')); ?></h4><p><strong><?php echo $_t(array('it'=>'Parigi, Cannes, Nizza, Lione','en'=>'Paris, Cannes, Nice, Lyon','fr'=>'Paris, Cannes, Nice, Lyon','es'=>'Par&iacute;s, Cannes, Niza, Lyon')); ?></strong> <span class="cov-more"><?php echo $_t(array('it'=>'e in tutta la Francia','en'=>'and everywhere in France','fr'=>'et partout en France','es'=>'y en toda Francia')); ?></span></p></div>
-        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Regno Unito','en'=>'United Kingdom','fr'=>'Royaume-Uni','es'=>'Reino Unido')); ?></h4><p><strong><?php echo $_t(array('it'=>'Londra, Manchester, Birmingham','en'=>'London, Manchester, Birmingham','fr'=>'Londres, Manchester, Birmingham','es'=>'Londres, M&aacute;nchester, Birmingham')); ?></strong> <span class="cov-more"><?php echo $_t(array('it'=>'e in tutto il Regno Unito','en'=>'and across the whole UK','fr'=>'et dans tout le Royaume-Uni','es'=>'y en todo el Reino Unido')); ?></span></p></div>
-        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Germania &amp; Benelux','en'=>'Germany &amp; Benelux','fr'=>'Allemagne &amp; Benelux','es'=>'Alemania &amp; Benelux')); ?></h4><p><strong><?php echo $_t(array('it'=>'Berlino, Monaco, Bruxelles, Amsterdam','en'=>'Berlin, Munich, Brussels, Amsterdam','fr'=>'Berlin, Munich, Bruxelles, Amsterdam','es'=>'Berl&iacute;n, M&uacute;nich, Bruselas, &Aacute;msterdam')); ?></strong> <span class="cov-more"><?php echo $_t(array('it'=>'e non solo','en'=>'and beyond','fr'=>'et au-del&agrave;','es'=>'y m&aacute;s all&aacute;')); ?></span></p></div>
-        <div class="coverage-country"><h4><?php echo $_t(array('it'=>'Tutta Europa','en'=>'All of Europe','fr'=>'Toute l\'Europe','es'=>'Toda Europa')); ?></h4><p><strong><?php echo $_t(array('it'=>'Altre citt&agrave; ed eventi su richiesta','en'=>'Other cities &amp; events on request','fr'=>'Autres villes et &eacute;v&eacute;nements sur demande','es'=>'Otras ciudades y eventos bajo petici&oacute;n')); ?></strong></p></div>
+        <div class="coverage-country">
+            <h4><a href="/hostess-fiere/"><?php echo $_t(array('it'=>'Italia','en'=>'Italy','fr'=>'Italie','es'=>'Italia')); ?></a></h4>
+            <p class="cov-princ"><?php echo $covList(array(
+                array(array('it'=>'Milano','en'=>'Milan','fr'=>'Milan','es'=>'Mil&aacute;n'),'/agenzia-hostess-milano/'),
+                array(array('it'=>'Roma','en'=>'Rome','fr'=>'Rome','es'=>'Roma'),'/agenzia-hostess-roma/'),
+                array(array('it'=>'Napoli','en'=>'Naples','fr'=>'Naples','es'=>'N&aacute;poles'),'/agenzia-hostess-napoli/'),
+                array(array('it'=>'Torino','en'=>'Turin','fr'=>'Turin','es'=>'Tur&iacute;n'),'/agenzia-hostess-torino/'),
+                array(array('it'=>'Bologna','en'=>'Bologna','fr'=>'Bologne','es'=>'Bolonia'),'/agenzia-hostess-bologna/'),
+                array(array('it'=>'Firenze','en'=>'Florence','fr'=>'Florence','es'=>'Florencia'),'/agenzia-hostess-firenze/'),
+                array(array('it'=>'Verona','en'=>'Verona','fr'=>'V&eacute;rone','es'=>'Verona'),'/agenzia-hostess-verona/'),
+                array(array('it'=>'Genova','en'=>'Genoa','fr'=>'G&ecirc;nes','es'=>'G&eacute;nova'),'/agenzia-hostess-genova/'),
+                array(array('it'=>'Rimini','en'=>'Rimini','fr'=>'Rimini','es'=>'R&iacute;mini'),'/agenzia-hostess-rimini/'),
+            )); ?></p>
+            <details class="cov-details"><summary><?php echo $_t($covMore); ?></summary><p><?php echo $covList(array(
+                array(array('it'=>'Parma','en'=>'Parma','fr'=>'Parme','es'=>'Parma'),'/agenzia-hostess-parma/'),
+                array(array('it'=>'Vicenza','en'=>'Vicenza','fr'=>'Vicence','es'=>'Vicenza'),'/agenzia-hostess-vicenza/'),
+            )); ?></p></details>
+        </div>
+        <div class="coverage-country">
+            <h4><a href="/hostess-spagna/"><?php echo $_t(array('it'=>'Spagna','en'=>'Spain','fr'=>'Espagne','es'=>'Espa&ntilde;a')); ?></a></h4>
+            <p class="cov-princ"><?php echo $covList(array(
+                array(array('it'=>'Madrid','en'=>'Madrid','fr'=>'Madrid','es'=>'Madrid')),
+                array(array('it'=>'Barcellona','en'=>'Barcelona','fr'=>'Barcelone','es'=>'Barcelona'),'/hostess-fiere-barcellona/'),
+                array(array('it'=>'Valencia','en'=>'Valencia','fr'=>'Valence','es'=>'Valencia')),
+                array(array('it'=>'Ibiza','en'=>'Ibiza','fr'=>'Ibiza','es'=>'Ibiza')),
+            )); ?></p>
+            <details class="cov-details"><summary><?php echo $_t($covMore); ?></summary><p><?php echo $covList(array(
+                array(array('it'=>'Marbella','en'=>'Marbella','fr'=>'Marbella','es'=>'Marbella'),'/hostess-marbella/'),
+            )); ?></p></details>
+        </div>
+        <div class="coverage-country">
+            <h4><a href="/hostess-francia/"><?php echo $_t(array('it'=>'Francia','en'=>'France','fr'=>'France','es'=>'Francia')); ?></a></h4>
+            <p class="cov-princ"><?php echo $covList(array(
+                array(array('it'=>'Parigi','en'=>'Paris','fr'=>'Paris','es'=>'Par&iacute;s')),
+                array(array('it'=>'Cannes','en'=>'Cannes','fr'=>'Cannes','es'=>'Cannes'),'/hostess-cannes-francia/'),
+                array(array('it'=>'Nizza','en'=>'Nice','fr'=>'Nice','es'=>'Niza')),
+                array(array('it'=>'Lione','en'=>'Lyon','fr'=>'Lyon','es'=>'Lyon')),
+                array(array('it'=>'Montecarlo','en'=>'Monte Carlo','fr'=>'Monte-Carlo','es'=>'Montecarlo'),'/hostess-montecarlo/'),
+            )); ?></p>
+            <details class="cov-details"><summary><?php echo $_t($covMore); ?></summary><p><?php echo $covList(array(
+                array(array('it'=>'Saint-Tropez','en'=>'Saint-Tropez','fr'=>'Saint-Tropez','es'=>'Saint-Tropez'),'/hostess-saint-tropez-francia/'),
+            )); ?></p></details>
+        </div>
+        <div class="coverage-country">
+            <h4><a href="/hostess-regno-unito/"><?php echo $_t(array('it'=>'Regno Unito','en'=>'United Kingdom','fr'=>'Royaume-Uni','es'=>'Reino Unido')); ?></a></h4>
+            <p class="cov-princ"><?php echo $covList(array(
+                array(array('it'=>'Londra','en'=>'London','fr'=>'Londres','es'=>'Londres')),
+                array(array('it'=>'Manchester','en'=>'Manchester','fr'=>'Manchester','es'=>'Manchester')),
+                array(array('it'=>'Birmingham','en'=>'Birmingham','fr'=>'Birmingham','es'=>'Birmingham')),
+            )); ?></p>
+        </div>
+        <div class="coverage-country">
+            <h4><?php echo $_t(array('it'=>'Germania &amp; Benelux','en'=>'Germany &amp; Benelux','fr'=>'Allemagne &amp; Benelux','es'=>'Alemania &amp; Benelux')); ?></h4>
+            <p class="cov-princ"><?php echo $covList(array(
+                array(array('it'=>'Berlino','en'=>'Berlin','fr'=>'Berlin','es'=>'Berl&iacute;n'),'/hostess-fiere-berlino/'),
+                array(array('it'=>'Monaco di Baviera','en'=>'Munich','fr'=>'Munich','es'=>'M&uacute;nich'),'/hostess-fiere-monaco-di-baviera/'),
+                array(array('it'=>'Bruxelles','en'=>'Brussels','fr'=>'Bruxelles','es'=>'Bruselas'),'/hostess-fiere-bruxelles/'),
+                array(array('it'=>'Amsterdam','en'=>'Amsterdam','fr'=>'Amsterdam','es'=>'&Aacute;msterdam')),
+            )); ?></p>
+            <details class="cov-details"><summary><?php echo $_t($covMore); ?></summary><p><?php echo $covList(array(
+                array(array('it'=>'Francoforte','en'=>'Frankfurt','fr'=>'Francfort','es'=>'Fr&aacute;ncfort'),'/hostess-fiere-francoforte/'),
+                array(array('it'=>'D&uuml;sseldorf','en'=>'D&uuml;sseldorf','fr'=>'D&uuml;sseldorf','es'=>'D&uuml;sseldorf'),'/hostess-fiere-dusseldorf/'),
+                array(array('it'=>'Ginevra','en'=>'Geneva','fr'=>'Gen&egrave;ve','es'=>'Ginebra'),'/hostess-fiere-ginevra/'),
+            )); ?></p></details>
+        </div>
+        <div class="coverage-country">
+            <h4><a href="/hostess-europa/"><?php echo $_t(array('it'=>'Tutta Europa','en'=>'All of Europe','fr'=>'Toute l\'Europe','es'=>'Toda Europa')); ?></a></h4>
+            <p class="cov-princ" style="font-weight:400;color:var(--gray-4)"><?php echo $_t(array('it'=>'Altre citt&agrave; ed eventi su richiesta','en'=>'Other cities &amp; events on request','fr'=>'Autres villes et &eacute;v&eacute;nements sur demande','es'=>'Otras ciudades y eventos bajo petici&oacute;n')); ?></p>
+        </div>
     </div>
     <p class="coverage-note container"><?php echo $_t(array('it'=>'Non vedi la tua citt&agrave;? La copriamo lo stesso &mdash; operiamo ovunque in Italia e in Europa.','en'=>'Don\'t see your city? We cover it anyway &mdash; we operate everywhere in Italy and Europe.','fr'=>'Votre ville n\'est pas list&eacute;e&nbsp;? Nous la couvrons tout de m&ecirc;me &mdash; nous intervenons partout en Italie et en Europe.','es'=>'&iquest;No ves tu ciudad? La cubrimos igualmente &mdash; operamos en toda Italia y Europa.')); ?></p>
 </section>
