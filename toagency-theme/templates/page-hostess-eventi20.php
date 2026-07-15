@@ -124,6 +124,7 @@ toa_component('header');
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
     <p style="font-size:0.85rem;color:var(--gray-4);margin-top:16px;font-weight:600"><?php echo $_t($t['trust_line']); ?></p>
+    <div><a href="/wp-content/themes/toagency-theme/assets/pdf/presentazione-<?php echo $lang; ?>.pdf" download class="toa-pdf-link">&darr; <?php echo $_t(array('it'=>'Scarica la presentazione (PDF)','en'=>'Download the presentation (PDF)','fr'=>'T&eacute;l&eacute;charger la pr&eacute;sentation (PDF)','es'=>'Descarga la presentaci&oacute;n (PDF)')); ?></a></div>
 </div>
 
 <style>
@@ -133,6 +134,8 @@ toa_component('header');
 .toa-hero-cta:hover{transform:translateY(-3px);box-shadow:0 14px 42px rgba(200,255,0,.55),0 4px 12px rgba(0,0,0,.2)}
 .toa-hero-cta:hover svg{transform:translateX(4px)}
 @media(max-width:600px){.toa-hero-cta{padding:16px 30px;font-size:.95rem}}
+.toa-pdf-link{display:inline-block;margin-top:12px;color:var(--gray-4);font-size:.82rem;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(200,255,0,.4);padding-bottom:1px}
+.toa-pdf-link:hover{color:var(--accent);border-color:var(--accent)}
 /* Wrap CTA hero: su desktop stretta alla barra loghi, su mobile staccata */
 .hero-cta-wrap{margin-top:-8px;margin-bottom:28px;text-align:center}
 @media(max-width:768px){.hero-cta-wrap{margin-top:18px;margin-bottom:20px}}

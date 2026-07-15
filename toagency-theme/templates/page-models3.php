@@ -125,6 +125,8 @@ toa_component('header');
     'subtitle'   => $_t($t['hero_subtitle']),
 )); ?>
 
+<div class="container" style="text-align:center;margin:-4px 0 26px"><a href="/wp-content/themes/toagency-theme/assets/pdf/presentazione-<?php echo $lang; ?>.pdf" download class="toa-pdf-link">&darr; <?php echo $_t(array('it'=>'Scarica la presentazione (PDF)','en'=>'Download the presentation (PDF)','fr'=>'T&eacute;l&eacute;charger la pr&eacute;sentation (PDF)','es'=>'Descarga la presentaci&oacute;n (PDF)')); ?></a></div>
+
 <?php // 2026-06-04 marco — rimossi gallery-talent statica + split-cta (CRO: niente bivi/uscite, focus su griglia live + form iniettati) ?>
 
 <?php toa_component('how-it-works', array(
@@ -205,6 +207,8 @@ toa_component('header');
 .cov-details p a:hover{color:var(--accent)}
 .coverage-note{margin:26px auto 0;font-size:.95rem;color:var(--gray-4)}
 .coverage-note strong{color:#fff}
+.toa-pdf-link{display:inline-block;color:var(--gray-4);font-size:.82rem;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(200,255,0,.4);padding-bottom:1px}
+.toa-pdf-link:hover{color:var(--accent);border-color:var(--accent)}
 /* Mobile: comprimi la barra loghi (1 riga) per un primo schermo più diretto */
 @media(max-width:768px){
   .toa-cro-loghi{padding-top:16px!important;padding-bottom:12px!important}

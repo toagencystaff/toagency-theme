@@ -90,6 +90,7 @@ toa_component('header');
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
     <p style="font-size:0.85rem;color:var(--gray-4);margin-top:14px;font-weight:600"><?php echo $_t($t['trust_line']); ?></p>
+    <div><a href="/wp-content/themes/toagency-theme/assets/pdf/presentazione-<?php echo $lang; ?>.pdf" download class="toa-pdf-link">&darr; <?php echo $_t(array('it'=>'Scarica la presentazione (PDF)','en'=>'Download the presentation (PDF)','fr'=>'T&eacute;l&eacute;charger la pr&eacute;sentation (PDF)','es'=>'Descarga la presentaci&oacute;n (PDF)')); ?></a></div>
 </div>
 
 <!-- Fascia cast di esempio — IDENTICA al blocco Modelli/Eventi -->
@@ -139,6 +140,8 @@ toa_component('header');
 .cov-details p a:hover{color:var(--accent)}
 .coverage-note{margin:26px auto 0;font-size:.95rem;color:var(--gray-4)}
 .coverage-note strong{color:#fff}
+.toa-pdf-link{display:inline-block;margin-top:12px;color:var(--gray-4);font-size:.82rem;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(200,255,0,.4);padding-bottom:1px}
+.toa-pdf-link:hover{color:var(--accent);border-color:var(--accent)}
 </style>
 <section class="toa-staffband">
     <div class="inner">
