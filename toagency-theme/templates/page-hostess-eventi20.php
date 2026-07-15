@@ -139,10 +139,10 @@ toa_component('header');
 .toa-gallery{background:#0a0a0a;padding:40px 20px 48px}
 .toa-gallery .inner{max-width:1080px;margin:0 auto}
 .toa-gallery .lab{text-align:center;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#777;margin-bottom:20px}
-.toa-gallery .grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
-.toa-gallery .grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;opacity:.7;transition:opacity .2s}
+.toa-gallery .grid{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.toa-gallery .grid img{width:calc(10% - 6px);aspect-ratio:1;object-fit:cover;border-radius:6px;opacity:.7;transition:opacity .2s}
 .toa-gallery .grid img:hover{opacity:1}
-@media(max-width:768px){.toa-gallery .grid{grid-template-columns:repeat(5,1fr);gap:5px}}
+@media(max-width:768px){.toa-gallery .grid{gap:5px}.toa-gallery .grid img{width:calc(20% - 5px)}}
 /* Wrap CTA hero: su desktop stretta alla barra loghi, su mobile staccata */
 .hero-cta-wrap{margin-top:-8px;margin-bottom:28px;text-align:center}
 @media(max-width:768px){.hero-cta-wrap{margin-top:18px;margin-bottom:20px}}
@@ -420,7 +420,7 @@ $covMore = array('it'=>'Vedi altre citt&agrave;','en'=>'See more cities','fr'=>'
 <section class="toa-gallery"><div class="inner">
     <div class="lab">Gallery</div>
     <div class="grid">
-        <?php for($gi=1;$gi<=38;$gi++): $gn=sprintf('g%02d',$gi); ?>
+        <?php for($gi=1;$gi<=37;$gi++): $gn=sprintf('g%02d',$gi); ?>
         <img src="/wp-content/themes/toagency-theme/assets/gallery/<?php echo $gn; ?>.jpg" alt="TOAgency event staff" loading="lazy">
         <?php endfor; ?>
     </div>
