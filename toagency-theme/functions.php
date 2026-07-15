@@ -54,8 +54,8 @@ function toagency_page_templates($templates) {
     $templates['templates/page-form-b2b.php']      = 'Form B2B';
     $templates['templates/page-hostess-live.php']   = 'Hostess Live Form';
     $templates['templates/page-models2.php']         = 'Models';
-    $templates['templates/page-hostess-eventi18.php']        = 'Hostess & Steward';
-    $templates['templates/page-actors2.php']         = 'Actors';
+    $templates['templates/page-hostess-eventi19.php']        = 'Hostess & Steward';
+    $templates['templates/page-actors3.php']         = 'Actors';
     $templates['templates/page-visuals.php']        = 'Visuals / Production';
     $templates['templates/page-services.php']       = 'Services B2B';
     $templates['templates/page-about.php']          = 'About';

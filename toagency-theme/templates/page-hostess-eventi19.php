@@ -118,7 +118,7 @@ toa_component('header');
 )); ?>
 
 <!-- Hero CTA CENTRATO + trust line -->
-<div class="container" style="margin-top:-8px;margin-bottom:28px;text-align:center">
+<div class="container hero-cta-wrap">
     <a href="#preventivo" class="toa-hero-cta">
         <span><?php echo $_t($t['hero_cta']); ?></span>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -133,6 +133,16 @@ toa_component('header');
 .toa-hero-cta:hover{transform:translateY(-3px);box-shadow:0 14px 42px rgba(200,255,0,.55),0 4px 12px rgba(0,0,0,.2)}
 .toa-hero-cta:hover svg{transform:translateX(4px)}
 @media(max-width:600px){.toa-hero-cta{padding:16px 30px;font-size:.95rem}}
+/* Wrap CTA hero: su desktop stretta alla barra loghi, su mobile staccata */
+.hero-cta-wrap{margin-top:-8px;margin-bottom:28px;text-align:center}
+@media(max-width:768px){.hero-cta-wrap{margin-top:20px;margin-bottom:22px}}
+/* Barra CTA fissa solo su mobile */
+.toa-mobile-cta{display:none}
+@media(max-width:768px){
+  .toa-mobile-cta{position:fixed;left:0;right:0;bottom:0;z-index:900;display:block;padding:10px 14px;padding-bottom:calc(10px + env(safe-area-inset-bottom));background:rgba(10,10,10,.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top:1px solid rgba(255,255,255,.08);transition:transform .3s ease}
+  .toa-mobile-cta.hide{transform:translateY(130%)}
+  .toa-mobile-cta a{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px 20px;background:var(--accent,#c8ff00);color:#0a0a0a;font-weight:700;font-size:.95rem;letter-spacing:.5px;text-transform:uppercase;border-radius:999px;text-decoration:none}
+}
 /* Coverage: coda "e in tutta..." + nota anti-limitazione */
 .coverage-country .cov-princ{color:#fff;font-weight:600;line-height:1.7}
 .coverage-country h4 a,.coverage-country .cov-princ a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(200,255,0,.35);transition:color .15s ease,border-color .15s ease}
@@ -389,5 +399,22 @@ $covMore = array('it'=>'Vedi altre citt&agrave;','en'=>'See more cities','fr'=>'
         <a href="<?php echo home_url('/registrati-talent/'); ?>" style="display:inline-block;font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:0.85rem;color:var(--accent);text-decoration:none"><?php echo $_t($t['talentexit']); ?> &rarr;</a>
     </div>
 </section>
+
+<!-- Barra CTA fissa mobile -->
+<div class="toa-mobile-cta" id="toaMobileCta">
+    <a href="#preventivo"><?php echo $_t($t['hero_cta']); ?>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+</div>
+<script>
+(function(){
+  var bar=document.getElementById('toaMobileCta');
+  var form=document.getElementById('preventivo');
+  if(!bar||!form||!('IntersectionObserver' in window))return;
+  new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ bar.classList.toggle('hide', e.isIntersecting); });
+  },{threshold:0}).observe(form);
+})();
+</script>
 
 <?php toa_component('footer'); ?>

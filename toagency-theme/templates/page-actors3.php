@@ -40,8 +40,8 @@ $t = array(
     'how_step4'=>array('it'=>'SUPPORTO CONTINUO','en'=>'ONGOING SUPPORT','fr'=>'SUPPORT CONTINU','es'=>'SOPORTE CONTINUO'),
     'how_tagline'=>array('it'=>'Self-tape in 24 ore &bull; Showreel professionali &bull; Contratti ENPALS','en'=>'Self-tapes in 24 hours &bull; Professional showreels &bull; ENPALS contracts','fr'=>'Self-tapes en 24 heures &bull; Showreels pro &bull; Contrats ENPALS','es'=>'Self-tapes en 24 horas &bull; Showreels pro &bull; Contratos ENPALS'),
     'cov_eyebrow'=>array('it'=>'Dove operiamo','en'=>'Where we operate','fr'=>'O&ugrave; nous intervenons','es'=>'D&oacute;nde operamos'),
-    'cov_heading'=>array('it'=>'Casting in tutta Italia e in Europa','en'=>'Casting across Italy and Europe','fr'=>'Casting dans toute l\'Italie et en Europe','es'=>'Casting en toda Italia y en Europa'),
-    'cov_sub'=>array('it'=>'Cinema, TV, pubblicit&agrave; e produzioni digitali &mdash; in tutte le principali citt&agrave; italiane e, su richiesta, in Francia, Spagna e UK.','en'=>'Film, TV, advertising and digital productions &mdash; in every major Italian city and, on request, in France, Spain and the UK.','fr'=>'Cin&eacute;ma, TV, publicit&eacute; et productions num&eacute;riques &mdash; dans toutes les grandes villes italiennes et sur demande en France, Espagne et UK.','es'=>'Cine, TV, publicidad y producciones digitales &mdash; en las principales ciudades italianas y, bajo petici&oacute;n, en Francia, Espa&ntilde;a y UK.'),
+    'cov_heading'=>array('it'=>'Casting in tutta Europa','en'=>'Casting across Europe','fr'=>'Casting partout en Europe','es'=>'Casting en toda Europa'),
+    'cov_sub'=>array('it'=>'Cinema, TV, pubblicit&agrave; e produzioni digitali nelle principali citt&agrave; europee &mdash; Italia, Spagna, Francia, UK, Germania e tutta Europa.','en'=>'Film, TV, advertising and digital productions in every major European city &mdash; Italy, Spain, France, UK, Germany and all of Europe.','fr'=>'Cin&eacute;ma, TV, publicit&eacute; et productions num&eacute;riques dans toutes les grandes villes europ&eacute;ennes &mdash; Italie, Espagne, France, UK, Allemagne et toute l\'Europe.','es'=>'Cine, TV, publicidad y producciones digitales en las principales ciudades europeas &mdash; Italia, Espa&ntilde;a, Francia, UK, Alemania y toda Europa.'),
     'cta_browse' => array('it'=>'Sfoglia il database attori','en'=>'Browse the actors database','fr'=>'Parcourir la base d\'acteurs','es'=>'Explorar la base de actores'),
     'reg_line' => array('it'=>'Sei un attore o una comparsa? Entra nel nostro database','en'=>'Are you an actor or extra? Join our database','fr'=>'Vous &ecirc;tes acteur ou figurant ? Rejoignez notre base','es'=>'&iquest;Eres actor o figurante? &Uacute;nete a nuestra base'),
 );
@@ -108,7 +108,7 @@ toa_component('header');
 .toa-staffband .toa-cast-card .ov b{display:block;font-size:13px;font-weight:700;letter-spacing:.4px}
 .toa-staffband .toa-cast-card .ov .code{display:block;font-size:11px;font-weight:600;color:#c8ff00;letter-spacing:.5px;margin-top:1px}
 .toa-staffband .toa-cast-cta{text-align:center;margin:26px 0 6px}
-.toa-staffband .toa-cast-cta a{display:inline-block;margin:6px 5px;padding:14px 30px;background:#c8ff00;color:#000;border:1px solid #c8ff00;border-radius:8px;font-weight:700;font-size:14px;letter-spacing:.04em;text-decoration:none;transition:opacity .2s,background .2s}
+.toa-staffband .toa-cast-cta a{display:inline-block;margin:6px 5px;padding:14px 32px;background:var(--accent,#c8ff00);color:#000;border:1px solid var(--accent,#c8ff00);border-radius:999px;font-weight:700;font-size:14px;letter-spacing:.04em;text-decoration:none;transition:opacity .2s,background .2s}
 .toa-staffband .toa-cast-cta a:hover{opacity:.85}
 .toa-staffband .toa-cast-cta a.alt{background:transparent;color:#c8ff00}
 .toa-staffband .toa-cast-cta a.alt:hover{background:rgba(200,255,0,.12);opacity:1}
@@ -117,8 +117,28 @@ toa_component('header');
 @media(max-width:480px){.toa-staffband .toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:8px}}
 .toa-serv-cat{font-family:var(--font-display);font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin:22px 0 10px;color:var(--accent)}
 .toa-serv-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
-.toa-serv-chips a{display:inline-block;padding:9px 16px;border:1px solid rgba(150,150,150,.35);border-radius:22px;font-size:.85rem;font-weight:600;color:inherit;text-decoration:none;transition:border-color .2s,color .2s,background .2s}
+.toa-serv-chips a{display:inline-block;padding:9px 18px;border:1px solid rgba(150,150,150,.35);border-radius:999px;font-size:.85rem;font-weight:600;color:inherit;text-decoration:none;transition:border-color .2s,color .2s,background .2s}
 .toa-serv-chips a:hover{border-color:var(--accent);color:var(--accent);background:rgba(200,255,0,.06)}
+/* Garanzie compatta */
+.features-grid .feature-card{padding:18px 26px!important}
+.features-grid .feature-number{font-size:1.55rem!important;line-height:1!important;margin-bottom:6px!important}
+.features-grid .feature-title{margin-bottom:4px!important}
+.features-grid .feature-text{margin:0!important}
+@media(max-width:600px){.features-grid .feature-card{padding:16px 20px!important}}
+/* Coverage */
+.coverage-country .cov-princ{color:#fff;font-weight:600;line-height:1.7}
+.coverage-country h4 a,.coverage-country .cov-princ a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(200,255,0,.35);transition:color .15s ease,border-color .15s ease}
+.coverage-country h4 a:hover,.coverage-country .cov-princ a:hover{color:var(--accent);border-color:var(--accent)}
+.cov-details{margin-top:10px}
+.cov-details summary{cursor:pointer;color:var(--accent);font-size:.8rem;font-weight:700;letter-spacing:.3px;list-style:none;display:inline-block}
+.cov-details summary::-webkit-details-marker{display:none}
+.cov-details summary::after{content:' \25be';margin-left:2px}
+.cov-details[open] summary::after{content:' \25b4'}
+.cov-details p{color:var(--gray-4);font-size:.85rem;margin-top:8px;font-weight:400;line-height:1.7}
+.cov-details p a{color:var(--gray-4);border-bottom:1px solid rgba(200,255,0,.25);text-decoration:none;transition:color .15s ease}
+.cov-details p a:hover{color:var(--accent)}
+.coverage-note{margin:26px auto 0;font-size:.95rem;color:var(--gray-4)}
+.coverage-note strong{color:#fff}
 </style>
 <section class="toa-staffband">
     <div class="inner">
@@ -191,14 +211,91 @@ toa_component('header');
         <h2 class="section-heading" style="margin-bottom:12px"><?php echo $_t($t['cov_heading']); ?></h2>
         <p style="font-size:0.95rem;color:var(--gray-4);max-width:640px;margin:0 0 36px"><?php echo $_t($t['cov_sub']); ?></p>
     </div>
+    <?php
+    $covCity = function($n, $u=null) use ($_t){ $l=$_t($n); return $u ? '<a href="'.$u.'">'.$l.'</a>' : $l; };
+    $covList = function($arr) use ($covCity){ $o=array(); foreach($arr as $c){ $o[]=$covCity($c[0], isset($c[1])?$c[1]:null); } return implode(', ', $o); };
+    $covMore = array('it'=>'Vedi altre citt&agrave;','en'=>'See more cities','fr'=>'Voir plus de villes','es'=>'Ver m&aacute;s ciudades');
+    ?>
     <div class="coverage-grid container">
-        <div class="coverage-country"><h4>Roma</h4><p>Cinecitt&agrave;, produzioni cinema e fiction</p></div>
-        <div class="coverage-country"><h4>Milano</h4><p>Spot pubblicitari, web, corporate</p></div>
-        <div class="coverage-country"><h4>Torino</h4><p>Film Commission, cinema e serie</p></div>
-        <div class="coverage-country"><h4>Napoli</h4><p>Fiction, cinema e teatro</p></div>
-        <div class="coverage-country"><h4>Bologna</h4><p>Pubblicit&agrave; e produzioni digitali</p></div>
-        <div class="coverage-country"><h4>Europa</h4><p>Francia, Spagna, UK su richiesta</p></div>
+        <div class="coverage-country">
+            <h4><a href="/casting-italia/"><?php echo $_t(array('it'=>'Italia','en'=>'Italy','fr'=>'Italie','es'=>'Italia')); ?></a></h4>
+            <p class="cov-princ"><?php echo $covList(array(
+                array(array('it'=>'Milano','en'=>'Milan','fr'=>'Milan','es'=>'Mil&aacute;n'),'/casting-milano/'),
+                array(array('it'=>'Roma','en'=>'Rome','fr'=>'Rome','es'=>'Roma'),'/casting-roma/'),
+                array(array('it'=>'Napoli','en'=>'Naples','fr'=>'Naples','es'=>'N&aacute;poles'),'/casting-napoli/'),
+                array(array('it'=>'Torino','en'=>'Turin','fr'=>'Turin','es'=>'Tur&iacute;n'),'/casting-torino/'),
+                array(array('it'=>'Bologna','en'=>'Bologna','fr'=>'Bologne','es'=>'Bolonia'),'/casting-bologna/'),
+                array(array('it'=>'Firenze','en'=>'Florence','fr'=>'Florence','es'=>'Florencia'),'/casting-firenze/'),
+                array(array('it'=>'Verona','en'=>'Verona','fr'=>'V&eacute;rone','es'=>'Verona'),'/casting-verona/'),
+                array(array('it'=>'Genova','en'=>'Genoa','fr'=>'G&ecirc;nes','es'=>'G&eacute;nova'),'/casting-genova/'),
+                array(array('it'=>'Rimini','en'=>'Rimini','fr'=>'Rimini','es'=>'R&iacute;mini')),
+            )); ?></p>
+            <details class="cov-details"><summary><?php echo $_t($covMore); ?></summary><p><?php echo $covList(array(
+                array(array('it'=>'Parma','fr'=>'Parme')),
+                array(array('it'=>'Ancona')),
+                array(array('it'=>'Perugia','fr'=>'P&eacute;rouse')),
+                array(array('it'=>'Vicenza','fr'=>'Vicence')),
+                array(array('it'=>'Venezia','en'=>'Venice','fr'=>'Venise','es'=>'Venecia')),
+                array(array('it'=>'Padova','en'=>'Padua','fr'=>'Padoue','es'=>'Padua')),
+                array(array('it'=>'Brescia')),array(array('it'=>'Bergamo')),
+                array(array('it'=>'Modena','fr'=>'Mod&egrave;ne','es'=>'M&oacute;dena')),
+                array(array('it'=>'Reggio Emilia')),array(array('it'=>'Trieste')),
+                array(array('it'=>'Pisa','fr'=>'Pise')),array(array('it'=>'Bari')),
+                array(array('it'=>'Palermo','fr'=>'Palerme')),array(array('it'=>'Catania','fr'=>'Catane')),
+                array(array('it'=>'Cagliari')),
+            )); ?></p></details>
+        </div>
+        <div class="coverage-country">
+            <h4><?php echo $_t(array('it'=>'Spagna','en'=>'Spain','fr'=>'Espagne','es'=>'Espa&ntilde;a')); ?></h4>
+            <p class="cov-princ"><?php echo $covList(array(
+                array(array('it'=>'Madrid')),array(array('it'=>'Barcellona','en'=>'Barcelona','fr'=>'Barcelone','es'=>'Barcelona')),
+                array(array('it'=>'Valencia','fr'=>'Valence')),array(array('it'=>'Ibiza')),
+            )); ?></p>
+            <details class="cov-details"><summary><?php echo $_t($covMore); ?></summary><p><?php echo $covList(array(
+                array(array('it'=>'Malaga','es'=>'M&aacute;laga')),
+                array(array('it'=>'Siviglia','en'=>'Seville','fr'=>'S&eacute;ville','es'=>'Sevilla')),
+                array(array('it'=>'Bilbao')),array(array('it'=>'Marbella')),
+            )); ?></p></details>
+        </div>
+        <div class="coverage-country">
+            <h4><?php echo $_t(array('it'=>'Francia','en'=>'France','fr'=>'France','es'=>'Francia')); ?></h4>
+            <p class="cov-princ"><?php echo $covList(array(
+                array(array('it'=>'Parigi','en'=>'Paris','fr'=>'Paris','es'=>'Par&iacute;s')),
+                array(array('it'=>'Cannes')),array(array('it'=>'Nizza','en'=>'Nice','fr'=>'Nice','es'=>'Niza')),
+                array(array('it'=>'Lione','en'=>'Lyon','fr'=>'Lyon','es'=>'Lyon')),
+            )); ?></p>
+            <details class="cov-details"><summary><?php echo $_t($covMore); ?></summary><p><?php echo $covList(array(
+                array(array('it'=>'Marsiglia','en'=>'Marseille','fr'=>'Marseille','es'=>'Marsella')),
+                array(array('it'=>'Bordeaux')),array(array('it'=>'Montecarlo','en'=>'Monte Carlo','fr'=>'Monte-Carlo','es'=>'Montecarlo')),
+            )); ?></p></details>
+        </div>
+        <div class="coverage-country">
+            <h4><?php echo $_t(array('it'=>'Regno Unito','en'=>'United Kingdom','fr'=>'Royaume-Uni','es'=>'Reino Unido')); ?></h4>
+            <p class="cov-princ"><?php echo $covList(array(
+                array(array('it'=>'Londra','en'=>'London','fr'=>'Londres','es'=>'Londres')),
+                array(array('it'=>'Manchester')),array(array('it'=>'Birmingham')),
+            )); ?></p>
+        </div>
+        <div class="coverage-country">
+            <h4><?php echo $_t(array('it'=>'Germania &amp; Benelux','en'=>'Germany &amp; Benelux','fr'=>'Allemagne &amp; Benelux','es'=>'Alemania &amp; Benelux')); ?></h4>
+            <p class="cov-princ"><?php echo $covList(array(
+                array(array('it'=>'Berlino','en'=>'Berlin','fr'=>'Berlin','es'=>'Berl&iacute;n')),
+                array(array('it'=>'Monaco di Baviera','en'=>'Munich','fr'=>'Munich','es'=>'M&uacute;nich')),
+                array(array('it'=>'Bruxelles','en'=>'Brussels','fr'=>'Bruxelles','es'=>'Bruselas')),
+                array(array('it'=>'Amsterdam')),
+            )); ?></p>
+            <details class="cov-details"><summary><?php echo $_t($covMore); ?></summary><p><?php echo $covList(array(
+                array(array('it'=>'Francoforte','en'=>'Frankfurt','fr'=>'Francfort','es'=>'Fr&aacute;ncfort')),
+                array(array('it'=>'Amburgo','en'=>'Hamburg','fr'=>'Hambourg','es'=>'Hamburgo')),
+                array(array('it'=>'Colonia','en'=>'Cologne','fr'=>'Cologne','es'=>'Colonia')),
+            )); ?></p></details>
+        </div>
+        <div class="coverage-country">
+            <h4><?php echo $_t(array('it'=>'Tutta Europa','en'=>'All of Europe','fr'=>'Toute l\'Europe','es'=>'Toda Europa')); ?></h4>
+            <p class="cov-princ" style="font-weight:400;color:var(--gray-4)"><?php echo $_t(array('it'=>'Altre citt&agrave; e produzioni su richiesta','en'=>'Other cities &amp; productions on request','fr'=>'Autres villes et productions sur demande','es'=>'Otras ciudades y producciones bajo petici&oacute;n')); ?></p>
+        </div>
     </div>
+    <p class="coverage-note container"><?php echo $_t(array('it'=>'Non vedi la tua citt&agrave;? La copriamo lo stesso &mdash; caster e produzioni ovunque in Italia e in Europa.','en'=>'Don\'t see your city? We cover it anyway &mdash; casting everywhere in Italy and Europe.','fr'=>'Votre ville n\'est pas list&eacute;e&nbsp;? Nous la couvrons tout de m&ecirc;me &mdash; casting partout en Italie et en Europe.','es'=>'&iquest;No ves tu ciudad? La cubrimos igualmente &mdash; casting en toda Italia y Europa.')); ?></p>
 </section>
 
 <!-- CTA casting finale -->
