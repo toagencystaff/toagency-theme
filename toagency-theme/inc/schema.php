@@ -69,7 +69,7 @@ add_action( 'wp_head', function () {
             'description' => 'Selezione professionale di modelli per campagne pubblicitarie, sfilate, eventi e produzioni video. Talent pool con oltre 20.000 profili verificati in Italia ed Europa.',
             'url'         => home_url( '/models/' ),
         ],
-        'page-hostess-eventi15.php' => [
+        'page-hostess-eventi16.php' => [
             'name'        => 'Hostess e steward per eventi',
             'serviceType' => 'Event Staffing',
             'description' => 'Fornitura di hostess, steward e personale eventi per fiere, congressi, lanci di prodotto e attività di promoter in Italia ed Europa.',

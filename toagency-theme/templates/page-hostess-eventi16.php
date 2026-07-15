@@ -147,6 +147,12 @@ toa_component('header');
 .cov-details p a:hover{color:var(--accent)}
 .coverage-note{margin:26px auto 0;font-size:.95rem;color:var(--gray-4)}
 .coverage-note strong{color:#fff}
+/* Garanzie: sezione più compatta */
+.features-grid .feature-card{padding:24px 28px!important}
+.features-grid .feature-number{font-size:1.9rem!important;line-height:1!important;margin-bottom:8px!important}
+.features-grid .feature-title{margin-bottom:5px!important}
+.features-grid .feature-text{margin:0!important}
+@media(max-width:600px){.features-grid .feature-card{padding:20px 22px!important}}
 .toa-staffband{background:#0a0a0a;padding:48px 20px 40px}
 .toa-staffband .inner{max-width:1080px;margin:0 auto}
 .toa-staffband .toa-cast-hd{text-align:center;margin:0 0 22px}
