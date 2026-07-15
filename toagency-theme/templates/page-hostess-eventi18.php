@@ -167,7 +167,7 @@ toa_component('header');
 .toa-staffband .toa-cast-card .ov b{display:block;font-size:13px;font-weight:700;letter-spacing:.4px}
 .toa-staffband .toa-cast-card .ov .code{display:block;font-size:13px;font-weight:800;color:#c8ff00;letter-spacing:.6px;margin-top:3px;text-transform:uppercase}
 .toa-staffband .toa-cast-cta{text-align:center;margin:26px 0 6px}
-.toa-staffband .toa-cast-cta a{display:inline-block;margin:6px 5px;padding:14px 30px;background:#c8ff00;color:#000;border:1px solid #c8ff00;border-radius:8px;font-weight:700;font-size:14px;letter-spacing:.04em;text-decoration:none;transition:opacity .2s,background .2s}
+.toa-staffband .toa-cast-cta a{display:inline-block;margin:6px 5px;padding:14px 32px;background:var(--accent,#c8ff00);color:#000;border:1px solid var(--accent,#c8ff00);border-radius:999px;font-weight:700;font-size:14px;letter-spacing:.04em;text-decoration:none;transition:opacity .2s,background .2s}
 .toa-staffband .toa-cast-cta a:hover{opacity:.85}
 .toa-staffband .toa-cast-cta a.alt{background:transparent;color:#c8ff00}
 .toa-staffband .toa-cast-cta a.alt:hover{background:rgba(200,255,0,.12);opacity:1}
@@ -176,7 +176,7 @@ toa_component('header');
 @media(max-width:480px){.toa-staffband .toa-cast-grid{grid-template-columns:repeat(3,1fr);gap:8px}}
 .toa-serv-cat{font-family:var(--font-display);font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin:22px 0 10px;color:var(--accent)}
 .toa-serv-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
-.toa-serv-chips a{display:inline-block;padding:9px 16px;border:1px solid rgba(150,150,150,.35);border-radius:22px;font-size:.85rem;font-weight:600;color:inherit;text-decoration:none;transition:border-color .2s,color .2s,background .2s}
+.toa-serv-chips a{display:inline-block;padding:9px 18px;border:1px solid rgba(150,150,150,.35);border-radius:999px;font-size:.85rem;font-weight:600;color:inherit;text-decoration:none;transition:border-color .2s,color .2s,background .2s}
 .toa-serv-chips a:hover{border-color:var(--accent);color:var(--accent);background:rgba(200,255,0,.06)}
 </style>
 
