@@ -53,7 +53,7 @@ function toagency_page_templates($templates) {
     $templates['templates/page-home.php']          = 'Homepage';
     $templates['templates/page-form-b2b.php']      = 'Form B2B';
     $templates['templates/page-hostess-live.php']   = 'Hostess Live Form';
-    $templates['templates/page-models.php']         = 'Models';
+    $templates['templates/page-models2.php']         = 'Models';
     $templates['templates/page-hostess-eventi18.php']        = 'Hostess & Steward';
     $templates['templates/page-actors2.php']         = 'Actors';
     $templates['templates/page-visuals.php']        = 'Visuals / Production';
