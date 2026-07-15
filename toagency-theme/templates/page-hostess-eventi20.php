@@ -135,7 +135,13 @@ toa_component('header');
 @media(max-width:600px){.toa-hero-cta{padding:16px 30px;font-size:.95rem}}
 /* Wrap CTA hero: su desktop stretta alla barra loghi, su mobile staccata */
 .hero-cta-wrap{margin-top:-8px;margin-bottom:28px;text-align:center}
-@media(max-width:768px){.hero-cta-wrap{margin-top:20px;margin-bottom:22px}}
+@media(max-width:768px){.hero-cta-wrap{margin-top:18px;margin-bottom:20px}}
+/* Mobile: primo schermo più focalizzato — comprimi la barra loghi (1 riga) e alza la CTA */
+@media(max-width:768px){
+  .toa-cro-loghi{padding-top:16px!important;padding-bottom:12px!important}
+  .toa-cro-loghi .brand-label{margin-bottom:10px!important}
+  .toa-cro-loghi .ticker-row.reverse{display:none!important}
+}
 /* Barra CTA fissa solo su mobile */
 .toa-mobile-cta{display:none}
 @media(max-width:768px){
