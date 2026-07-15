@@ -140,7 +140,7 @@ toa_component('header');
 .toa-gallery .inner{max-width:1080px;margin:0 auto}
 .toa-gallery .lab{text-align:center;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#777;margin-bottom:20px}
 .toa-gallery .grid{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
-.toa-gallery .grid img{width:calc(10% - 6px);aspect-ratio:1;object-fit:cover;border-radius:6px;opacity:.7;transition:opacity .2s}
+.toa-gallery .grid img{width:calc(10% - 6px);aspect-ratio:1;object-fit:cover;border-radius:6px;background:#161616;opacity:.7;transition:opacity .2s}
 .toa-gallery .grid img:hover{opacity:1}
 @media(max-width:768px){.toa-gallery .grid{gap:5px}.toa-gallery .grid img{width:calc(20% - 5px)}}
 /* Wrap CTA hero: su desktop stretta alla barra loghi, su mobile staccata */
