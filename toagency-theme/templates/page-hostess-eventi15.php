@@ -270,8 +270,22 @@ $covMore = array('it'=>'Vedi altre citt&agrave;','en'=>'See more cities','fr'=>'
                 array(array('it'=>'Rimini','en'=>'Rimini','fr'=>'Rimini','es'=>'R&iacute;mini'),'/agenzia-hostess-rimini/'),
             )); ?></p>
             <details class="cov-details"><summary><?php echo $_t($covMore); ?></summary><p><?php echo $covList(array(
-                array(array('it'=>'Parma','en'=>'Parma','fr'=>'Parme','es'=>'Parma'),'/agenzia-hostess-parma/'),
-                array(array('it'=>'Vicenza','en'=>'Vicenza','fr'=>'Vicence','es'=>'Vicenza'),'/agenzia-hostess-vicenza/'),
+                array(array('it'=>'Venezia','en'=>'Venice','fr'=>'Venise','es'=>'Venecia')),
+                array(array('it'=>'Padova','en'=>'Padua','fr'=>'Padoue','es'=>'Padua')),
+                array(array('it'=>'Brescia')),
+                array(array('it'=>'Bergamo')),
+                array(array('it'=>'Modena','fr'=>'Mod&egrave;ne','es'=>'M&oacute;dena')),
+                array(array('it'=>'Reggio Emilia')),
+                array(array('it'=>'Parma','fr'=>'Parme'),'/agenzia-hostess-parma/'),
+                array(array('it'=>'Vicenza','fr'=>'Vicence'),'/agenzia-hostess-vicenza/'),
+                array(array('it'=>'Trieste')),
+                array(array('it'=>'Perugia','fr'=>'P&eacute;rouse')),
+                array(array('it'=>'Ancona')),
+                array(array('it'=>'Pisa','fr'=>'Pise')),
+                array(array('it'=>'Bari')),
+                array(array('it'=>'Palermo','fr'=>'Palerme')),
+                array(array('it'=>'Catania','fr'=>'Catane')),
+                array(array('it'=>'Cagliari')),
             )); ?></p></details>
         </div>
         <div class="coverage-country">
@@ -283,7 +297,15 @@ $covMore = array('it'=>'Vedi altre citt&agrave;','en'=>'See more cities','fr'=>'
                 array(array('it'=>'Ibiza','en'=>'Ibiza','fr'=>'Ibiza','es'=>'Ibiza')),
             )); ?></p>
             <details class="cov-details"><summary><?php echo $_t($covMore); ?></summary><p><?php echo $covList(array(
-                array(array('it'=>'Marbella','en'=>'Marbella','fr'=>'Marbella','es'=>'Marbella'),'/hostess-marbella/'),
+                array(array('it'=>'Marbella'),'/hostess-marbella/'),
+                array(array('it'=>'Malaga','es'=>'M&aacute;laga')),
+                array(array('it'=>'Siviglia','en'=>'Seville','fr'=>'S&eacute;ville','es'=>'Sevilla')),
+                array(array('it'=>'Bilbao')),
+                array(array('it'=>'Saragozza','en'=>'Zaragoza','fr'=>'Saragosse','es'=>'Zaragoza')),
+                array(array('it'=>'Palma di Maiorca','en'=>'Palma de Mallorca','fr'=>'Palma de Majorque','es'=>'Palma de Mallorca')),
+                array(array('it'=>'Alicante')),
+                array(array('it'=>'Granada','fr'=>'Grenade')),
+                array(array('it'=>'San Sebasti&aacute;n','en'=>'San Sebastian')),
             )); ?></p></details>
         </div>
         <div class="coverage-country">
@@ -296,7 +318,15 @@ $covMore = array('it'=>'Vedi altre citt&agrave;','en'=>'See more cities','fr'=>'
                 array(array('it'=>'Montecarlo','en'=>'Monte Carlo','fr'=>'Monte-Carlo','es'=>'Montecarlo'),'/hostess-montecarlo/'),
             )); ?></p>
             <details class="cov-details"><summary><?php echo $_t($covMore); ?></summary><p><?php echo $covList(array(
-                array(array('it'=>'Saint-Tropez','en'=>'Saint-Tropez','fr'=>'Saint-Tropez','es'=>'Saint-Tropez'),'/hostess-saint-tropez-francia/'),
+                array(array('it'=>'Saint-Tropez'),'/hostess-saint-tropez-francia/'),
+                array(array('it'=>'Marsiglia','en'=>'Marseille','fr'=>'Marseille','es'=>'Marsella')),
+                array(array('it'=>'Bordeaux')),
+                array(array('it'=>'Tolosa','en'=>'Toulouse','fr'=>'Toulouse','es'=>'Toulouse')),
+                array(array('it'=>'Lille')),
+                array(array('it'=>'Nantes')),
+                array(array('it'=>'Strasburgo','en'=>'Strasbourg','fr'=>'Strasbourg','es'=>'Estrasburgo')),
+                array(array('it'=>'Antibes')),
+                array(array('it'=>'Deauville')),
             )); ?></p></details>
         </div>
         <div class="coverage-country">
@@ -306,6 +336,16 @@ $covMore = array('it'=>'Vedi altre citt&agrave;','en'=>'See more cities','fr'=>'
                 array(array('it'=>'Manchester','en'=>'Manchester','fr'=>'Manchester','es'=>'Manchester')),
                 array(array('it'=>'Birmingham','en'=>'Birmingham','fr'=>'Birmingham','es'=>'Birmingham')),
             )); ?></p>
+            <details class="cov-details"><summary><?php echo $_t($covMore); ?></summary><p><?php echo $covList(array(
+                array(array('it'=>'Liverpool')),
+                array(array('it'=>'Leeds')),
+                array(array('it'=>'Glasgow')),
+                array(array('it'=>'Edimburgo','en'=>'Edinburgh','fr'=>'&Eacute;dimbourg','es'=>'Edimburgo')),
+                array(array('it'=>'Bristol')),
+                array(array('it'=>'Cardiff')),
+                array(array('it'=>'Newcastle')),
+                array(array('it'=>'Sheffield')),
+            )); ?></p></details>
         </div>
         <div class="coverage-country">
             <h4><?php echo $_t(array('it'=>'Germania &amp; Benelux','en'=>'Germany &amp; Benelux','fr'=>'Allemagne &amp; Benelux','es'=>'Alemania &amp; Benelux')); ?></h4>
@@ -317,8 +357,14 @@ $covMore = array('it'=>'Vedi altre citt&agrave;','en'=>'See more cities','fr'=>'
             )); ?></p>
             <details class="cov-details"><summary><?php echo $_t($covMore); ?></summary><p><?php echo $covList(array(
                 array(array('it'=>'Francoforte','en'=>'Frankfurt','fr'=>'Francfort','es'=>'Fr&aacute;ncfort'),'/hostess-fiere-francoforte/'),
-                array(array('it'=>'D&uuml;sseldorf','en'=>'D&uuml;sseldorf','fr'=>'D&uuml;sseldorf','es'=>'D&uuml;sseldorf'),'/hostess-fiere-dusseldorf/'),
+                array(array('it'=>'D&uuml;sseldorf'),'/hostess-fiere-dusseldorf/'),
                 array(array('it'=>'Ginevra','en'=>'Geneva','fr'=>'Gen&egrave;ve','es'=>'Ginebra'),'/hostess-fiere-ginevra/'),
+                array(array('it'=>'Colonia','en'=>'Cologne','fr'=>'Cologne','es'=>'Colonia')),
+                array(array('it'=>'Amburgo','en'=>'Hamburg','fr'=>'Hambourg','es'=>'Hamburgo')),
+                array(array('it'=>'Stoccarda','en'=>'Stuttgart','fr'=>'Stuttgart','es'=>'Stuttgart')),
+                array(array('it'=>'Rotterdam')),
+                array(array('it'=>'Anversa','en'=>'Antwerp','fr'=>'Anvers','es'=>'Amberes')),
+                array(array('it'=>'Lussemburgo','en'=>'Luxembourg','fr'=>'Luxembourg','es'=>'Luxemburgo')),
             )); ?></p></details>
         </div>
         <div class="coverage-country">
