@@ -128,7 +128,7 @@ toa_component('header');
 
 <style>
 /* Pulsante CTA hero — pill lime elegante */
-.toa-hero-cta{display:inline-flex;align-items:center;gap:10px;padding:18px 40px;background:var(--accent,#c8ff00);color:#0a0a0a;font-family:var(--font-display);font-size:1.05rem;font-weight:800;letter-spacing:.4px;text-transform:uppercase;border-radius:999px;box-shadow:0 8px 30px rgba(200,255,0,.35),0 2px 8px rgba(0,0,0,.15);transition:transform .25s ease,box-shadow .25s ease}
+.toa-hero-cta{display:inline-flex;align-items:center;gap:10px;padding:16px 38px;background:var(--accent,#c8ff00);color:#0a0a0a;font-size:.95rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border-radius:999px;box-shadow:0 8px 30px rgba(200,255,0,.35),0 2px 8px rgba(0,0,0,.15);transition:transform .25s ease,box-shadow .25s ease}
 .toa-hero-cta svg{transition:transform .25s ease}
 .toa-hero-cta:hover{transform:translateY(-3px);box-shadow:0 14px 42px rgba(200,255,0,.55),0 4px 12px rgba(0,0,0,.2)}
 .toa-hero-cta:hover svg{transform:translateX(4px)}
@@ -148,11 +148,11 @@ toa_component('header');
 .coverage-note{margin:26px auto 0;font-size:.95rem;color:var(--gray-4)}
 .coverage-note strong{color:#fff}
 /* Garanzie: sezione più compatta */
-.features-grid .feature-card{padding:24px 28px!important}
-.features-grid .feature-number{font-size:1.9rem!important;line-height:1!important;margin-bottom:8px!important}
-.features-grid .feature-title{margin-bottom:5px!important}
+.features-grid .feature-card{padding:18px 26px!important}
+.features-grid .feature-number{font-size:1.55rem!important;line-height:1!important;margin-bottom:6px!important}
+.features-grid .feature-title{margin-bottom:4px!important}
 .features-grid .feature-text{margin:0!important}
-@media(max-width:600px){.features-grid .feature-card{padding:20px 22px!important}}
+@media(max-width:600px){.features-grid .feature-card{padding:16px 20px!important}}
 .toa-staffband{background:#0a0a0a;padding:48px 20px 40px}
 .toa-staffband .inner{max-width:1080px;margin:0 auto}
 .toa-staffband .toa-cast-hd{text-align:center;margin:0 0 22px}
