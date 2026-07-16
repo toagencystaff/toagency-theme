@@ -96,6 +96,9 @@ $T = [
     'tab_dettaglio'  => ['it'=>'Dettagli','en'=>'Details','fr'=>'Détails','es'=>'Detalles'],
     'tab_portfolio'  => ['it'=>'Portfolio','en'=>'Portfolio','fr'=>'Portfolio','es'=>'Portfolio'],
     'tab_eventi'     => ['it'=>'Eventi','en'=>'Events','fr'=>'Événements','es'=>'Eventos'],
+    'guida_ruolo_intro'    => ['it'=>'Album consigliati per il tuo profilo','en'=>'Recommended albums for your profile','fr'=>'Albums recommandés pour ton profil','es'=>'Álbumes recomendados para tu perfil'],
+    'guida_ruolo_polaroid' => ['it'=>'Le Polaroid sono obbligatorie per tutti.','en'=>'Polaroids are required for everyone.','fr'=>'Les Polaroids sont obligatoires pour tous.','es'=>'Las Polaroids son obligatorias para todos.'],
+    'compl_label'          => ['it'=>'Profilo completo','en'=>'Profile complete','fr'=>'Profil complété','es'=>'Perfil completo'],
     'album_desc' => [
         'polaroid'  => ['it'=>'Foto recenti senza trucco/filtri che mostrano il tuo aspetto reale (richiede data scatto).','en'=>'Recent photos without make-up/filters showing your actual look (date required).','fr'=>'Photos récentes sans maquillage/filtres (date requise).','es'=>'Fotos recientes sin maquillaje/filtros (fecha obligatoria).'],
         'dettaglio' => ['it'=>'Primi piani, mani, occhi, profilo, sorriso — utili per casting specifici.','en'=>'Close-ups, hands, eyes, profile, smile — useful for specific castings.','fr'=>'Gros plans, mains, yeux, profil — pour castings spécifiques.','es'=>'Primeros planos, manos, ojos, perfil — para castings específicos.'],
@@ -189,6 +192,12 @@ $token_get = $_GET['t']    ?? '';
 .tse-pending-notice { background:rgba(200,255,0,.10); border:1px solid #c8ff00; color:#c8ff00; padding:12px 16px; border-radius:8px; font-size:13px; margin-bottom:24px; }
 .tse-form { display:none; }
 .tse-form.visible { display:block; }
+.tse-completezza { margin:0 0 18px; padding:12px 14px; background:#0f0f12; border:1px solid #2a2a2e; border-radius:8px; }
+.tse-compl-row { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; }
+.tse-compl-label { font-size:12px; color:#9ca3af; font-weight:600; }
+.tse-compl-pct { font-size:15px; color:#c8ff00; font-weight:700; }
+.tse-compl-track { height:8px; background:#1a1a1e; border-radius:99px; overflow:hidden; }
+.tse-compl-fill { height:100%; background:#c8ff00; border-radius:99px; transition:width .4s ease; }
 .tse-name-display { background:#1a1a1e; border:1px solid #2a2a2e; padding:10px 13px; border-radius:6px; color:#9ca3af; font-size:13px; margin-bottom:18px; }
 .tse-name-display strong { color:#fff; }
 .tse-section { margin-bottom:18px; padding:16px; background:#0f0f12; border:1px solid #2a2a2e; border-radius:8px; }
@@ -303,6 +312,13 @@ $token_get = $_GET['t']    ?? '';
 
         <form id="tse-form" class="tse-form" autocomplete="on">
             <div class="tse-name-display" id="tse-name-display"></div>
+            <div id="tse-completezza" class="tse-completezza" style="display:none;">
+                <div class="tse-compl-row">
+                    <span class="tse-compl-label" id="tse-compl-label"><?= esc_html($_t($T['compl_label'])) ?></span>
+                    <span class="tse-compl-pct" id="tse-compl-pct">0%</span>
+                </div>
+                <div class="tse-compl-track"><div class="tse-compl-fill" id="tse-compl-fill" style="width:0%"></div></div>
+            </div>
 
             <div class="tse-section">
                 <div class="tse-section-title">📞 <?= esc_html($_t($T['section_contatti'])) ?></div>
@@ -475,6 +491,7 @@ $token_get = $_GET['t']    ?? '';
         <div id="tse-foto-section" class="tse-section" style="display:none; margin-top:20px;">
             <div class="tse-section-title">📸 <?= esc_html($_t($T['section_foto'])) ?></div>
             <p style="font-size:12px; color:#9ca3af; margin:0 0 14px; line-height:1.45;"><?= esc_html($_t($T['foto_subtitle'])) ?></p>
+            <div id="tse-ruolo-guida" class="tse-album-desc" style="display:none; border-left-color:#c8ff00;"></div>
 
             <div class="tse-album-tabs">
                 <button type="button" class="tse-album-tab active" data-album="polaroid" onclick="talentAlbumSwitch('polaroid')"><?= esc_html($_t($T['tab_polaroid'])) ?></button>
@@ -489,8 +506,8 @@ $token_get = $_GET['t']    ?? '';
             <div class="tse-upload-box">
                 <div class="tse-upload-field" id="tse-data-scatto-wrap">
                     <label class="tse-label" id="tse-data-scatto-label"><?= esc_html($_t($T['field_data_scatto'])) ?></label>
-                    <input type="date" id="tse-data-scatto" class="tse-input"
-                           max="<?= esc_attr(date('Y-m-d')) ?>">
+                    <input type="month" id="tse-data-scatto" class="tse-input"
+                           max="<?= esc_attr(date('Y-m')) ?>">
                     <div id="tse-data-scatto-hint" style="font-size:11px; color:#6b7280; margin-top:4px;"><?= esc_html($_t($T['hint_data_scatto'])) ?></div>
                 </div>
 
@@ -534,6 +551,7 @@ window.talentEditConfig = {
     apiSave:     '/crm_toagency/actions/talent-self-edit-save.php',
     apiMediaList:'/crm_toagency/actions/talent-media-list.php',
     apiMediaUp:  '/crm_toagency/actions/talent-media-upload.php',
+    apiStato:    '/crm_toagency/actions/talent-profilo-stato.php',
     provinceJsonUrl: <?= json_encode($theme_uri . '/assets/data/province-italia.json') ?>, /* FIX 2026-07-01 marco — tendina provincia self-edit */
     comuneApiUrl: '/crm_toagency/actions/cerca-comune.php', /* FIX 2026-07-01 marco — ricerca comune self-edit */
     uuid:    <?= json_encode($uuid_get) ?>,
@@ -558,6 +576,15 @@ window.talentEditConfig = {
         noPhotos:    <?= json_encode($_t($T['no_photos'])) ?>,
         pendingBadge: <?= json_encode($_t($T['pending_badge'])) ?>,
         rejectedBadge:<?= json_encode($_t($T['rejected_badge'])) ?>,
+        albumLabels: {
+            polaroid:  <?= json_encode($_t($T['tab_polaroid'])) ?>,
+            dettaglio: <?= json_encode($_t($T['tab_dettaglio'])) ?>,
+            portfolio: <?= json_encode($_t($T['tab_portfolio'])) ?>,
+            eventi:    <?= json_encode($_t($T['tab_eventi'])) ?>,
+        },
+        guidaRuoloIntro:     <?= json_encode($_t($T['guida_ruolo_intro'])) ?>,
+        guidaPolaroidObblig: <?= json_encode($_t($T['guida_ruolo_polaroid'])) ?>,
+        complLabel:          <?= json_encode($_t($T['compl_label'])) ?>,
         verita: {
             polaroid:  <?= json_encode($_t($T['verita_polaroid'])) ?>,
             dettaglio: <?= json_encode($_t($T['verita_dettaglio'])) ?>,

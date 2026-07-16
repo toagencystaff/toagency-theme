@@ -12,6 +12,7 @@
     var API_SAVE     = cfg.apiSave;
     var API_MEDIA_LS = cfg.apiMediaList;
     var API_MEDIA_UP = cfg.apiMediaUp;
+    var API_STATO    = cfg.apiStato;
     var UUID  = cfg.uuid  || '';
     var TOKEN = cfg.token || '';
     var STR   = cfg.strings || {};
@@ -25,6 +26,22 @@
     var paeseResidenza = '';
 
     function $(id) { return document.getElementById(id); }
+
+    // FIX 2026-07-16 marco — guida album consigliati per ruolo (talent.ruoli dal load)
+    var ROLE_ALBUMS = { model:['portfolio','dettaglio'], actor:['portfolio'], hostess:['eventi'] };
+    function renderRuoloGuida(ruoli) {
+        var box = $('tse-ruolo-guida');
+        if (!box) return;
+        if (!ruoli || !ruoli.length) { box.style.display = 'none'; return; }
+        var L = STR.albumLabels || {};
+        var want = ['polaroid'];
+        ruoli.forEach(function (r) {
+            (ROLE_ALBUMS[r] || []).forEach(function (a) { if (want.indexOf(a) < 0) want.push(a); });
+        });
+        var labels = want.map(function (a) { return L[a] || a; });
+        box.textContent = (STR.guidaRuoloIntro || 'Album consigliati') + ': ' + labels.join(', ') + '. ' + (STR.guidaPolaroidObblig || '');
+        box.style.display = 'block';
+    }
 
     // FIX 2026-07-01 marco — comune self-edit: ricerca a suggerimenti da cerca-comune.php, SENZA testo libero.
     // Visibile = f-comune_search (ricerca); valore salvato = hidden f-comune_residenza (solo se scelto dalla lista).
@@ -125,6 +142,22 @@
         $('tse-form').classList.remove('visible');
     }
 
+    // FIX 2026-07-16 marco — barra % completezza profilo (talent-profilo-stato.php)
+    function loadCompletezza() {
+        if (!API_STATO) return;
+        fetch(API_STATO + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN) + '&_=' + Date.now(), { credentials:'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+                if (!d || !d.success || !d.completezza) return;
+                var p = Math.max(0, Math.min(100, parseInt(d.completezza.percent, 10) || 0));
+                var box = $('tse-completezza'), fill = $('tse-compl-fill'), pct = $('tse-compl-pct');
+                if (fill) fill.style.width = p + '%';
+                if (pct)  pct.textContent = p + '%';
+                if (box)  box.style.display = 'block';
+            })
+            .catch(function () {});
+    }
+
     function loadData() {
         if (!UUID || !TOKEN) { showError(STR.invalidLink || 'Link non valido'); return; }
         fetch(API_LOAD + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN), {
@@ -175,6 +208,9 @@
                 if (cb) cb.style.display = 'block';
             }
             highlightMissingFields(d.talent);
+            // FIX 2026-07-16 marco — guida album per ruolo
+            renderRuoloGuida(d.talent.ruoli);
+            loadCompletezza();
 
             $('tse-status').style.display = 'none';
             $('tse-form').classList.add('visible');
@@ -225,6 +261,7 @@
                     // FIX 2026-06-27 marco — dati live subito: popup con elenco modifiche
                     showLivePopup(d.changes || []);
                     setTimeout(loadData, 600);
+                    setTimeout(loadCompletezza, 900);
                 }
             } else {
                 showResult('err', (STR.errorPrefix || 'Errore: ') + (d.message || d.error || 'unknown'));
@@ -447,7 +484,7 @@
         fd.append('album_tipo', currentAlbum);
         fd.append('dichiarazione_legale', '1');
         fd.append('veridicita', '1');
-        if (dataScatto) fd.append('data_scatto', dataScatto);
+        if (dataScatto) fd.append('data_scatto', /^[0-9]{4}-[0-9]{2}$/.test(dataScatto) ? dataScatto + '-01' : dataScatto);
         fd.append('foto', file);
 
         btn.disabled = true;
@@ -462,6 +499,7 @@
                 status.textContent = '✓ ' + (d.message || 'Foto caricata');
                 status.className = 'tse-upload-status ok';
                 setTimeout(loadMedia, 600);
+                setTimeout(loadCompletezza, 900);
             } else {
                 status.textContent = (STR.errorPrefix || 'Errore: ') + (d.message || d.error || 'upload');
                 status.className = 'tse-upload-status err';
