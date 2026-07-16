@@ -109,6 +109,8 @@ $T = [
     'mancano_foto_dettaglio'         => ['it'=>'Foto dettaglio','en'=>'Detail photos','fr'=>'Photos détail','es'=>'Fotos detalle'],
     'mancano_foto_eventi'            => ['it'=>'Foto eventi','en'=>'Event photos','fr'=>'Photos événements','es'=>'Fotos eventos'],
     'mancano_misure'                 => ['it'=>'Misure','en'=>'Measurements','fr'=>'Mensurations','es'=>'Medidas'],
+    'polscad_title' => ['it'=>'Polaroid da aggiornare','en'=>'Polaroids to update','fr'=>'Polaroids à mettre à jour','es'=>'Polaroids por actualizar'],
+    'polscad_sub'   => ['it'=>'Le tue polaroid sono troppo vecchie: caricane di recenti per restare visibile ai casting. Clicca qui ↓','en'=>'Your polaroids are too old: upload recent ones to stay visible to castings. Click here ↓','fr'=>'Tes polaroids sont trop anciennes : charges-en des récentes pour rester visible aux castings. Clique ici ↓','es'=>'Tus polaroids son demasiado antiguas: sube fotos recientes para seguir visible en los castings. Haz clic aquí ↓'],
     'album_desc' => [
         'polaroid'  => ['it'=>'Foto recenti senza trucco/filtri che mostrano il tuo aspetto reale (richiede data scatto).','en'=>'Recent photos without make-up/filters showing your actual look (date required).','fr'=>'Photos récentes sans maquillage/filtres (date requise).','es'=>'Fotos recientes sin maquillaje/filtros (fecha obligatoria).'],
         'dettaglio' => ['it'=>'Primi piani, mani, occhi, profilo, sorriso — utili per casting specifici.','en'=>'Close-ups, hands, eyes, profile, smile — useful for specific castings.','fr'=>'Gros plans, mains, yeux, profil — pour castings spécifiques.','es'=>'Primeros planos, manos, ojos, perfil — para castings específicos.'],
@@ -282,6 +284,9 @@ $token_get = $_GET['t']    ?? '';
 .tse-photo-alert{background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.4);border-radius:8px;padding:14px 16px;margin-bottom:20px;display:none;cursor:pointer;text-align:center;}
 .tse-photo-alert-title{color:#ef4444;font-weight:700;font-size:14px;margin-bottom:4px;}
 .tse-photo-alert-sub{color:#9ca3af;font-size:12px;}
+.tse-pol-scadute{background:rgba(255,179,0,.10);border:1px solid rgba(255,179,0,.45);border-radius:8px;padding:14px 16px;margin-bottom:20px;display:none;cursor:pointer;text-align:center;}
+.tse-pol-scadute-title{color:#ffb300;font-weight:700;font-size:14px;margin-bottom:4px;}
+.tse-pol-scadute-sub{color:#9ca3af;font-size:12px;}
 
 @media (max-width:520px) {
     .tse-hero-title { font-size:28px; }
@@ -322,6 +327,11 @@ $token_get = $_GET['t']    ?? '';
         <div id="tse-photo-alert" class="tse-photo-alert" onclick="document.getElementById('tse-foto-section').scrollIntoView({behavior:'smooth'})">
             <div class="tse-photo-alert-title">📸 Nessuna foto nel profilo!</div>
             <div class="tse-photo-alert-sub">Le foto sono essenziali — clicca qui per aggiungerle ↓</div>
+        </div>
+
+        <div id="tse-polaroid-scadute" class="tse-pol-scadute" onclick="document.getElementById('tse-foto-section').scrollIntoView({behavior:'smooth'})">
+            <div class="tse-pol-scadute-title">⏳ <?= esc_html($_t($T['polscad_title'])) ?></div>
+            <div class="tse-pol-scadute-sub"><?= esc_html($_t($T['polscad_sub'])) ?></div>
         </div>
 
         <form id="tse-form" class="tse-form" autocomplete="on">

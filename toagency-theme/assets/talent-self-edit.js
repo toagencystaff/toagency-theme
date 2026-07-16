@@ -154,6 +154,9 @@
                 if (fill) fill.style.width = p + '%';
                 if (pct)  pct.textContent = p + '%';
                 if (box)  box.style.display = 'block';
+                var pol = d.completezza.polaroid || {};
+                var pscad = $('tse-polaroid-scadute');
+                if (pscad) pscad.style.display = pol.scadute ? 'block' : 'none';
                 var mancano = (d.completezza.mancano) || [];
                 var mbox = $('tse-mancano');
                 if (mbox) {
