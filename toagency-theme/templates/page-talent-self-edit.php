@@ -99,6 +99,16 @@ $T = [
     'guida_ruolo_intro'    => ['it'=>'Album consigliati per il tuo profilo','en'=>'Recommended albums for your profile','fr'=>'Albums recommandés pour ton profil','es'=>'Álbumes recomendados para tu perfil'],
     'guida_ruolo_polaroid' => ['it'=>'Le Polaroid sono obbligatorie per tutti.','en'=>'Polaroids are required for everyone.','fr'=>'Les Polaroids sont obligatoires pour tous.','es'=>'Las Polaroids son obligatorias para todos.'],
     'compl_label'          => ['it'=>'Profilo completo','en'=>'Profile complete','fr'=>'Profil complété','es'=>'Perfil completo'],
+    'mancano_titolo'                 => ['it'=>'Da completare','en'=>'To complete','fr'=>'À compléter','es'=>'Por completar'],
+    'mancano_telefono'               => ['it'=>'Telefono','en'=>'Phone','fr'=>'Téléphone','es'=>'Teléfono'],
+    'mancano_data_nascita'           => ['it'=>'Data di nascita','en'=>'Date of birth','fr'=>'Date de naissance','es'=>'Fecha de nacimiento'],
+    'mancano_tratti'                 => ['it'=>'Tratti (occhi, capelli)','en'=>'Traits (eyes, hair)','fr'=>'Traits (yeux, cheveux)','es'=>'Rasgos (ojos, pelo)'],
+    'mancano_polaroid'               => ['it'=>'Foto polaroid','en'=>'Polaroid photos','fr'=>'Photos polaroid','es'=>'Fotos polaroid'],
+    'mancano_polaroid_da_aggiornare' => ['it'=>'Polaroid da aggiornare','en'=>'Polaroids to update','fr'=>'Polaroids à mettre à jour','es'=>'Polaroids por actualizar'],
+    'mancano_foto_portfolio'         => ['it'=>'Foto portfolio','en'=>'Portfolio photos','fr'=>'Photos portfolio','es'=>'Fotos portfolio'],
+    'mancano_foto_dettaglio'         => ['it'=>'Foto dettaglio','en'=>'Detail photos','fr'=>'Photos détail','es'=>'Fotos detalle'],
+    'mancano_foto_eventi'            => ['it'=>'Foto eventi','en'=>'Event photos','fr'=>'Photos événements','es'=>'Fotos eventos'],
+    'mancano_misure'                 => ['it'=>'Misure','en'=>'Measurements','fr'=>'Mensurations','es'=>'Medidas'],
     'album_desc' => [
         'polaroid'  => ['it'=>'Foto recenti senza trucco/filtri che mostrano il tuo aspetto reale (richiede data scatto).','en'=>'Recent photos without make-up/filters showing your actual look (date required).','fr'=>'Photos récentes sans maquillage/filtres (date requise).','es'=>'Fotos recientes sin maquillaje/filtros (fecha obligatoria).'],
         'dettaglio' => ['it'=>'Primi piani, mani, occhi, profilo, sorriso — utili per casting specifici.','en'=>'Close-ups, hands, eyes, profile, smile — useful for specific castings.','fr'=>'Gros plans, mains, yeux, profil — pour castings spécifiques.','es'=>'Primeros planos, manos, ojos, perfil — para castings específicos.'],
@@ -198,6 +208,10 @@ $token_get = $_GET['t']    ?? '';
 .tse-compl-pct { font-size:15px; color:#c8ff00; font-weight:700; }
 .tse-compl-track { height:8px; background:#1a1a1e; border-radius:99px; overflow:hidden; }
 .tse-compl-fill { height:100%; background:#c8ff00; border-radius:99px; transition:width .4s ease; }
+.tse-manca-wrap { margin-top:12px; }
+.tse-manca-title { font-size:11px; color:#9ca3af; text-transform:uppercase; letter-spacing:.5px; font-weight:700; margin-bottom:8px; }
+.tse-manca-chips { display:flex; flex-wrap:wrap; gap:6px; }
+.tse-manca-chip { display:inline-block; font-size:11px; color:#ffb300; background:rgba(255,179,0,.10); border:1px solid rgba(255,179,0,.30); border-radius:99px; padding:4px 10px; }
 .tse-name-display { background:#1a1a1e; border:1px solid #2a2a2e; padding:10px 13px; border-radius:6px; color:#9ca3af; font-size:13px; margin-bottom:18px; }
 .tse-name-display strong { color:#fff; }
 .tse-section { margin-bottom:18px; padding:16px; background:#0f0f12; border:1px solid #2a2a2e; border-radius:8px; }
@@ -318,6 +332,7 @@ $token_get = $_GET['t']    ?? '';
                     <span class="tse-compl-pct" id="tse-compl-pct">0%</span>
                 </div>
                 <div class="tse-compl-track"><div class="tse-compl-fill" id="tse-compl-fill" style="width:0%"></div></div>
+                <div id="tse-mancano" class="tse-manca-wrap" style="display:none;"></div>
             </div>
 
             <div class="tse-section">
@@ -585,6 +600,18 @@ window.talentEditConfig = {
         guidaRuoloIntro:     <?= json_encode($_t($T['guida_ruolo_intro'])) ?>,
         guidaPolaroidObblig: <?= json_encode($_t($T['guida_ruolo_polaroid'])) ?>,
         complLabel:          <?= json_encode($_t($T['compl_label'])) ?>,
+        mancanoTitolo:       <?= json_encode($_t($T['mancano_titolo'])) ?>,
+        mancanoLabels: {
+            telefono:               <?= json_encode($_t($T['mancano_telefono'])) ?>,
+            data_nascita:           <?= json_encode($_t($T['mancano_data_nascita'])) ?>,
+            tratti:                 <?= json_encode($_t($T['mancano_tratti'])) ?>,
+            polaroid:               <?= json_encode($_t($T['mancano_polaroid'])) ?>,
+            polaroid_da_aggiornare: <?= json_encode($_t($T['mancano_polaroid_da_aggiornare'])) ?>,
+            foto_portfolio:         <?= json_encode($_t($T['mancano_foto_portfolio'])) ?>,
+            foto_dettaglio:         <?= json_encode($_t($T['mancano_foto_dettaglio'])) ?>,
+            foto_eventi:            <?= json_encode($_t($T['mancano_foto_eventi'])) ?>,
+            misure:                 <?= json_encode($_t($T['mancano_misure'])) ?>,
+        },
         verita: {
             polaroid:  <?= json_encode($_t($T['verita_polaroid'])) ?>,
             dettaglio: <?= json_encode($_t($T['verita_dettaglio'])) ?>,

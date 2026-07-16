@@ -154,6 +154,18 @@
                 if (fill) fill.style.width = p + '%';
                 if (pct)  pct.textContent = p + '%';
                 if (box)  box.style.display = 'block';
+                var mancano = (d.completezza.mancano) || [];
+                var mbox = $('tse-mancano');
+                if (mbox) {
+                    if (mancano.length) {
+                        var ML = STR.mancanoLabels || {};
+                        var chips = mancano.map(function (k) { return '<span class="tse-manca-chip">' + escapeHtml(ML[k] || k) + '</span>'; }).join('');
+                        mbox.innerHTML = '<div class="tse-manca-title">' + escapeHtml(STR.mancanoTitolo || 'Da completare') + '</div><div class="tse-manca-chips">' + chips + '</div>';
+                        mbox.style.display = 'block';
+                    } else {
+                        mbox.style.display = 'none';
+                    }
+                }
             })
             .catch(function () {});
     }
