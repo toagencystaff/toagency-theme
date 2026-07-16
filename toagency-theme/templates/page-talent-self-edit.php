@@ -83,6 +83,12 @@ $T = [
     'live_empty'   => ['it'=>'(vuoto)','en'=>'(empty)','fr'=>'(vide)','es'=>'(vacío)'],
     'error_prefix' => ['it'=>'Errore: ','en'=>'Error: ','fr'=>'Erreur: ','es'=>'Error: '],
     'opt_select'   => ['it'=>'—','en'=>'—','fr'=>'—','es'=>'—'],
+    'section_profilo' => ['it'=>'Profilo professionale','en'=>'Professional profile','fr'=>'Profil professionnel','es'=>'Perfil profesional'],
+    'field_occhi'     => ['it'=>'Colore occhi *','en'=>'Eye color *','fr'=>'Couleur des yeux *','es'=>'Color de ojos *'],
+    'field_etnia'     => ['it'=>'Etnia * (max 2)','en'=>'Ethnicity * (max 2)','fr'=>'Ethnie * (max 2)','es'=>'Etnia * (máx 2)'],
+    'field_ruoli'     => ['it'=>'Ruoli * (uno o più)','en'=>'Roles * (one or more)','fr'=>'Rôles * (un ou plusieurs)','es'=>'Roles * (uno o más)'],
+    'field_lingue'    => ['it'=>'Lingue parlate','en'=>'Spoken languages','fr'=>'Langues parlées','es'=>'Idiomas'],
+    'field_patente'   => ['it'=>'Ho la patente di guida','en'=>'I have a driving license','fr'=>'J’ai le permis de conduire','es'=>'Tengo carné de conducir'],
 
     // ─── S8.A — Sezione album foto ───
     'section_foto'   => ['it'=>'Le tue foto','en'=>'Your photos','fr'=>'Tes photos','es'=>'Tus fotos'],
@@ -185,6 +191,43 @@ $CAPELLI_OPTS = [
     'Altro'          => ['it'=>'Altro',           'en'=>'Other',         'fr'=>'Autre',         'es'=>'Otro'],
 ];
 $TAGLIE_OPTS = ['XS','S','M','L','XL','XXL'];
+$OCCHI_OPTS = [
+    'azzurri' => ['it'=>'Azzurri','en'=>'Blue','fr'=>'Bleus','es'=>'Azules'],
+    'verdi'   => ['it'=>'Verdi','en'=>'Green','fr'=>'Verts','es'=>'Verdes'],
+    'marroni' => ['it'=>'Marroni','en'=>'Brown','fr'=>'Marron','es'=>'Marrones'],
+    'neri'    => ['it'=>'Neri','en'=>'Black','fr'=>'Noirs','es'=>'Negros'],
+    'grigi'   => ['it'=>'Grigi','en'=>'Gray','fr'=>'Gris','es'=>'Grises'],
+    'altro'   => ['it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro'],
+];
+$ETNIA_OPTS = [
+    'caucasica'    => ['it'=>'Caucasica','en'=>'Caucasian','fr'=>'Caucasienne','es'=>'Caucásica'],
+    'africana'     => ['it'=>'Africana','en'=>'African','fr'=>'Africaine','es'=>'Africana'],
+    'asiatica'     => ['it'=>'Asiatica','en'=>'Asian','fr'=>'Asiatique','es'=>'Asiática'],
+    'sud_asiatica' => ['it'=>'Sud-asiatica','en'=>'South Asian','fr'=>'Sud-asiatique','es'=>'Sur-asiática'],
+    'latina'       => ['it'=>'Latina','en'=>'Latina','fr'=>'Latina','es'=>'Latina'],
+    'araba'        => ['it'=>'Araba','en'=>'Arab','fr'=>'Arabe','es'=>'Árabe'],
+];
+$RUOLI_OPTS = [
+    'model'       => ['it'=>'Modello/a','en'=>'Model','fr'=>'Mannequin','es'=>'Modelo/a'],
+    'actor'       => ['it'=>'Attore/trice','en'=>'Actor/Actress','fr'=>'Acteur/trice','es'=>'Actor/Actriz'],
+    'hostess'     => ['it'=>'Hostess/Steward','en'=>'Hostess/Steward','fr'=>'Hôtesse/Steward','es'=>'Azafata/o'],
+    'comparsa'    => ['it'=>'Comparsa','en'=>'Extra','fr'=>'Figurant','es'=>'Extra'],
+    'bambino'     => ['it'=>'Bambino/a','en'=>'Child','fr'=>'Enfant','es'=>'Niño/a'],
+    'influencer'  => ['it'=>'Influencer/Creator','en'=>'Influencer/Creator','fr'=>'Influenceur/Créateur','es'=>'Influencer/Creador'],
+    'ugc_creator' => ['it'=>'UGC Creator','en'=>'UGC Creator','fr'=>'Créateur UGC','es'=>'Creador UGC'],
+];
+$LINGUE_OPTS = [
+    'italiano'   => ['it'=>'Italiano','en'=>'Italian','fr'=>'Italien','es'=>'Italiano'],
+    'inglese'    => ['it'=>'Inglese','en'=>'English','fr'=>'Anglais','es'=>'Inglés'],
+    'francese'   => ['it'=>'Francese','en'=>'French','fr'=>'Français','es'=>'Francés'],
+    'spagnolo'   => ['it'=>'Spagnolo','en'=>'Spanish','fr'=>'Espagnol','es'=>'Español'],
+    'tedesco'    => ['it'=>'Tedesco','en'=>'German','fr'=>'Allemand','es'=>'Alemán'],
+    'portoghese' => ['it'=>'Portoghese','en'=>'Portuguese','fr'=>'Portugais','es'=>'Portugués'],
+    'russo'      => ['it'=>'Russo','en'=>'Russian','fr'=>'Russe','es'=>'Ruso'],
+    'cinese'     => ['it'=>'Cinese','en'=>'Chinese','fr'=>'Chinois','es'=>'Chino'],
+    'arabo'      => ['it'=>'Arabo','en'=>'Arabic','fr'=>'Arabe','es'=>'Árabe'],
+    'altro'      => ['it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro'],
+];
 
 $theme_uri = get_stylesheet_directory_uri();
 $uuid_get  = $_GET['uuid'] ?? '';
@@ -214,6 +257,12 @@ $token_get = $_GET['t']    ?? '';
 .tse-manca-title { font-size:11px; color:#9ca3af; text-transform:uppercase; letter-spacing:.5px; font-weight:700; margin-bottom:8px; }
 .tse-manca-chips { display:flex; flex-wrap:wrap; gap:6px; }
 .tse-manca-chip { display:inline-block; font-size:11px; color:#ffb300; background:rgba(255,179,0,.10); border:1px solid rgba(255,179,0,.30); border-radius:99px; padding:4px 10px; }
+.tse-chips { display:flex; flex-wrap:wrap; gap:8px; }
+.tse-chip { display:inline-flex; align-items:center; gap:6px; font-size:13px; color:#e5e7eb; background:#1a1a1e; border:1px solid #2a2a2e; border-radius:99px; padding:7px 12px; cursor:pointer; user-select:none; }
+.tse-chip input { accent-color:#c8ff00; margin:0; }
+.tse-chip:hover { border-color:#c8ff00; }
+.tse-check-row { display:flex; align-items:center; gap:8px; font-size:13px; color:#e5e7eb; cursor:pointer; }
+.tse-check-row input { accent-color:#c8ff00; }
 .tse-name-display { background:#1a1a1e; border:1px solid #2a2a2e; padding:10px 13px; border-radius:6px; color:#9ca3af; font-size:13px; margin-bottom:18px; }
 .tse-name-display strong { color:#fff; }
 .tse-section { margin-bottom:18px; padding:16px; background:#0f0f12; border:1px solid #2a2a2e; border-radius:8px; }
@@ -472,6 +521,39 @@ $token_get = $_GET['t']    ?? '';
                             <option value="<?= esc_attr($code) ?>"><?= esc_html($_t($labels)) ?></option>
                         <?php endforeach; ?>
                     </select>
+                </div>
+                <div class="tse-field">
+                    <label class="tse-label"><?= esc_html($_t($T['field_occhi'])) ?></label>
+                    <select id="f-occhi" class="tse-select">
+                        <option value=""><?= esc_html($_t($T['opt_select'])) ?></option>
+                        <?php foreach ($OCCHI_OPTS as $k=>$v): ?><option value="<?= esc_attr($k) ?>"><?= esc_html($_t($v)) ?></option><?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="tse-field">
+                    <label class="tse-label"><?= esc_html($_t($T['field_etnia'])) ?></label>
+                    <div class="tse-chips" id="f-etnia" data-max="2" data-group="etnia">
+                        <?php foreach ($ETNIA_OPTS as $k=>$v): ?><label class="tse-chip"><input type="checkbox" value="<?= esc_attr($k) ?>"><?= esc_html($_t($v)) ?></label><?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2026-07-16 TEMA — Profilo professionale (consolidato da completa-profilo) -->
+            <div class="tse-section">
+                <div class="tse-section-title">🎬 <?= esc_html($_t($T['section_profilo'])) ?></div>
+                <div class="tse-field">
+                    <label class="tse-label"><?= esc_html($_t($T['field_ruoli'])) ?></label>
+                    <div class="tse-chips" id="f-ruoli" data-group="ruoli">
+                        <?php foreach ($RUOLI_OPTS as $k=>$v): ?><label class="tse-chip"><input type="checkbox" value="<?= esc_attr($k) ?>"><?= esc_html($_t($v)) ?></label><?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="tse-field">
+                    <label class="tse-label"><?= esc_html($_t($T['field_lingue'])) ?></label>
+                    <div class="tse-chips" id="f-lingue" data-group="lingue">
+                        <?php foreach ($LINGUE_OPTS as $k=>$v): ?><label class="tse-chip"><input type="checkbox" value="<?= esc_attr($k) ?>"><?= esc_html($_t($v)) ?></label><?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="tse-field">
+                    <label class="tse-check-row"><input type="checkbox" id="f-patente"> <?= esc_html($_t($T['field_patente'])) ?></label>
                 </div>
             </div>
 
