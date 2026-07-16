@@ -1349,7 +1349,7 @@
         if (cta) {
             if (talentUuidAfterRegister && talentTokenAfterRegister) {
                 var lg = (document.documentElement.getAttribute('lang') || 'it').substring(0, 2);
-                cta.href = '/completa-profilo/?uuid=' + encodeURIComponent(talentUuidAfterRegister)
+                cta.href = '/talent-self-edit/?uuid=' + encodeURIComponent(talentUuidAfterRegister)
                          + '&t=' + encodeURIComponent(talentTokenAfterRegister)
                          + '&lang=' + encodeURIComponent(lg);
                 cta.style.display = 'block';

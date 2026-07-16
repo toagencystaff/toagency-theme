@@ -13,6 +13,17 @@
  * salva LIVE via completa-profilo-save.php (attiva il profilo: stato_profilo='attivo').
  */
 
+// TEMA 2026-07-16 — /completa-profilo/ consolidato nel self-edit (una pagina sola): redirect preservando uuid/t/lang
+$__u  = (isset($_GET['uuid']) && is_string($_GET['uuid'])) ? preg_replace('/[^a-fA-F0-9\-]/','',$_GET['uuid']) : '';
+$__tk = (isset($_GET['t'])    && is_string($_GET['t']))    ? preg_replace('/[^a-fA-F0-9]/','',$_GET['t'])       : '';
+$__lg = (isset($_GET['lang']) && is_string($_GET['lang'])) ? strtolower(substr(preg_replace('/[^a-zA-Z]/','',$_GET['lang']),0,2)) : '';
+$__qs = [];
+if ($__u)  $__qs['uuid'] = $__u;
+if ($__tk) $__qs['t']    = $__tk;
+if ($__lg) $__qs['lang'] = $__lg;
+wp_safe_redirect( home_url('/talent-self-edit/') . (!empty($__qs) ? '?'.http_build_query($__qs) : ''), 302 );
+exit;
+
 toa_component('header');
 
 $__l = function_exists('toa_current_lang') ? toa_current_lang() : 'it';
