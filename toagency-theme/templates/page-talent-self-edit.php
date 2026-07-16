@@ -45,6 +45,28 @@ $T = [
     'field_altezza'    => ['it'=>'Altezza (cm)','en'=>'Height (cm)','fr'=>'Taille (cm)','es'=>'Altura (cm)'],
     'field_taglia'     => ['it'=>'Taglia abbigliamento','en'=>'Clothing size','fr'=>'Taille','es'=>'Talla'],
     'field_scarpe'     => ['it'=>'Numero scarpe','en'=>'Shoe size','fr'=>'Pointure','es'=>'Calzado'],
+    // --- MISURE COMPLETE (15/07 COLLABORA/CRM) ---
+    'm_altezza'        => ['it'=>'Altezza','en'=>'Height','fr'=>'Taille (hauteur)','es'=>'Altura'],
+    'm_spalle'         => ['it'=>'Spalle','en'=>'Shoulders','fr'=>'Épaules','es'=>'Hombros'],
+    'm_petto'          => ['it'=>'Petto','en'=>'Chest','fr'=>'Poitrine','es'=>'Pecho'],
+    'm_vita'           => ['it'=>'Vita','en'=>'Waist','fr'=>'Taille','es'=>'Cintura'],
+    'm_fianchi'        => ['it'=>'Fianchi','en'=>'Hips','fr'=>'Hanches','es'=>'Cadera'],
+    'm_cavallo_interno'=> ['it'=>'Cavallo interno','en'=>'Inseam','fr'=>'Entrejambe','es'=>'Entrepierna'],
+    'm_coscia'         => ['it'=>'Coscia','en'=>'Thigh','fr'=>'Cuisse','es'=>'Muslo'],
+    'm_cavallo_esterno'=> ['it'=>'Cavallo esterno','en'=>'Outseam','fr'=>'Longueur ext. de jambe','es'=>'Largo ext. de pierna'],
+    'm_polpaccio'      => ['it'=>'Polpaccio','en'=>'Calf','fr'=>'Mollet','es'=>'Pantorrilla'],
+    'm_manica'         => ['it'=>'Manica (da centro schiena)','en'=>'Sleeve (center back)','fr'=>'Manche (milieu du dos)','es'=>'Manga (centro espalda)'],
+    'm_bicipite'       => ['it'=>'Bicipite','en'=>'Bicep','fr'=>'Biceps','es'=>'Bíceps'],
+    'm_avambraccio'    => ['it'=>'Avambraccio','en'=>'Forearm','fr'=>'Avant-bras','es'=>'Antebrazo'],
+    'm_polso'          => ['it'=>'Polso','en'=>'Wrist','fr'=>'Poignet','es'=>'Muñeca'],
+    'm_collo'          => ['it'=>'Collo','en'=>'Neck','fr'=>'Cou','es'=>'Cuello'],
+    'm_scarpa'         => ['it'=>'Scarpa (EU)','en'=>'Shoe (EU)','fr'=>'Pointure (EU)','es'=>'Talla de zapato (EU)'],
+    'misure_intro'     => ['it'=>'Le tue misure (facoltative). Se le conosci inseriscile, altrimenti salta pure: puoi aggiungerle in qualsiasi momento tornando qui. Puoi prenderle con un metro da sarta, farti aiutare, o passare in una merceria.','en'=>'Your measurements (optional). Add them if you know them, otherwise skip: you can add them anytime by coming back here. Take them with a soft tape measure, ask for help, or drop by a haberdashery.','fr'=>'Tes mesures (facultatif). Ajoute-les si tu les connais, sinon passe : tu peux les ajouter à tout moment en revenant ici. Prends-les avec un mètre de couturière, fais-toi aider, ou passe en mercerie.','es'=>'Tus medidas (opcional). Añádelas si las conoces, si no, sáltalas: puedes añadirlas cuando quieras volviendo aquí. Tómalas con una cinta métrica de costura, pide ayuda o pásate por una mercería.'],
+    'misure_toggle'    => ['it'=>'So anche le altre misure','en'=>'I also know the other measurements','fr'=>'Je connais aussi les autres mesures','es'=>'También conozco las otras medidas'],
+    'misure_prese'     => ['it'=>'Misure prese il (mese/anno)','en'=>'Measurements taken on (month/year)','fr'=>'Mesures prises le (mois/année)','es'=>'Medidas tomadas el (mes/año)'],
+    'misure_legenda'   => ['it'=>'Dove si prende ogni misura','en'=>'Where each measurement is taken','fr'=>'Où prendre chaque mesure','es'=>'Dónde se toma cada medida'],
+    'misure_nota_dopo' => ['it'=>'Non le sai? Salva lo stesso e aggiungile quando vuoi tornando qui col tuo link.','en'=>'Not sure of them? Save anyway and add them anytime by coming back here with your link.','fr'=>'Tu ne les connais pas ? Enregistre quand même et ajoute-les quand tu veux en revenant ici avec ton lien.','es'=>'¿No las sabes? Guarda igualmente y añádelas cuando quieras volviendo aquí con tu enlace.'],
+    'conv_hint'        => ['it'=>'Salviamo sempre in cm (scarpa EU).','en'=>'We always store in cm (1 in = 2.54 cm). Shoe EU.','fr'=>'Toujours enregistré en cm. Pointure EU.','es'=>'Guardamos siempre en cm. Talla de zapato EU.'],
     'field_capelli'    => ['it'=>'Colore capelli','en'=>'Hair color','fr'=>'Cheveux','es'=>'Cabello'],
     'btn_save'         => ['it'=>'Invia modifiche','en'=>'Submit changes','fr'=>'Envoyer','es'=>'Enviar'],
     'btn_saving'       => ['it'=>'Invio…','en'=>'Sending…','fr'=>'Envoi…','es'=>'Enviando…'],
@@ -321,6 +343,82 @@ $token_get = $_GET['t']    ?? '';
                         <input type="number" id="f-scarpe" class="tse-input" min="20" max="55" placeholder="40">
                     </div>
                 </div>
+
+                <!-- ===== MISURE COMPLETE 15/07 (UI; persistenza dopo estensione CRM §3) ===== -->
+                <p class="tse-help" style="font-size:12px;color:#9ca3af;line-height:1.5;margin:2px 0 14px;"><?= esc_html($_t($T['misure_intro'])) ?></p>
+                <div class="tse-row">
+                    <div class="tse-field"><label class="tse-label"><?= esc_html($_t($T['m_petto'])) ?> (cm)</label><input type="number" step="0.5" class="tse-input tse-mis" data-mis="petto"></div>
+                    <div class="tse-field"><label class="tse-label"><?= esc_html($_t($T['m_vita'])) ?> (cm)</label><input type="number" step="0.5" class="tse-input tse-mis" data-mis="vita"></div>
+                </div>
+                <div class="tse-row">
+                    <div class="tse-field"><label class="tse-label"><?= esc_html($_t($T['m_fianchi'])) ?> (cm)</label><input type="number" step="0.5" class="tse-input tse-mis" data-mis="fianchi"></div>
+                    <div class="tse-field"></div>
+                </div>
+                <label style="display:flex;gap:8px;align-items:center;margin:10px 0;cursor:pointer;font-size:13px;color:#e5e7eb;">
+                    <input type="checkbox" id="f-mis-toggle"> <?= esc_html($_t($T['misure_toggle'])) ?>
+                </label>
+                <div id="tse-mis-extra" style="display:none;">
+                <div class="tse-row">
+                    <div class="tse-field"><label class="tse-label"><?= esc_html($_t($T['m_spalle'])) ?> (cm)</label><input type="number" step="0.5" class="tse-input tse-mis" data-mis="spalle"></div>
+                    <div class="tse-field"><label class="tse-label"><?= esc_html($_t($T['m_collo'])) ?> (cm)</label><input type="number" step="0.5" class="tse-input tse-mis" data-mis="collo"></div>
+                </div>
+                <div class="tse-row">
+                    <div class="tse-field"><label class="tse-label"><?= esc_html($_t($T['m_cavallo_interno'])) ?> (cm)</label><input type="number" step="0.5" class="tse-input tse-mis" data-mis="cavallo_interno"></div>
+                    <div class="tse-field"><label class="tse-label"><?= esc_html($_t($T['m_cavallo_esterno'])) ?> (cm)</label><input type="number" step="0.5" class="tse-input tse-mis" data-mis="cavallo_esterno"></div>
+                </div>
+                <div class="tse-row">
+                    <div class="tse-field"><label class="tse-label"><?= esc_html($_t($T['m_coscia'])) ?> (cm)</label><input type="number" step="0.5" class="tse-input tse-mis" data-mis="coscia"></div>
+                    <div class="tse-field"><label class="tse-label"><?= esc_html($_t($T['m_polpaccio'])) ?> (cm)</label><input type="number" step="0.5" class="tse-input tse-mis" data-mis="polpaccio"></div>
+                </div>
+                <div class="tse-row">
+                    <div class="tse-field"><label class="tse-label"><?= esc_html($_t($T['m_manica'])) ?> (cm)</label><input type="number" step="0.5" class="tse-input tse-mis" data-mis="manica"></div>
+                    <div class="tse-field"><label class="tse-label"><?= esc_html($_t($T['m_bicipite'])) ?> (cm)</label><input type="number" step="0.5" class="tse-input tse-mis" data-mis="bicipite"></div>
+                </div>
+                <div class="tse-row">
+                    <div class="tse-field"><label class="tse-label"><?= esc_html($_t($T['m_avambraccio'])) ?> (cm)</label><input type="number" step="0.5" class="tse-input tse-mis" data-mis="avambraccio"></div>
+                    <div class="tse-field"><label class="tse-label"><?= esc_html($_t($T['m_polso'])) ?> (cm)</label><input type="number" step="0.5" class="tse-input tse-mis" data-mis="polso"></div>
+                </div>
+                </div>
+                <div id="tse-mis-prese" style="display:none;margin-top:6px;">
+                    <label class="tse-label"><?= esc_html($_t($T['misure_prese'])) ?></label>
+                    <input type="month" id="f-misure-prese" class="tse-input">
+                </div>
+                <p style="font-size:11px;color:#6b7280;margin:8px 0 0;"><?= esc_html($_t($T['conv_hint'])) ?></p>
+                <details style="margin-top:12px;">
+                    <summary style="cursor:pointer;font-size:12px;color:#c8ff00;"><?= esc_html($_t($T['misure_legenda'])) ?></summary>
+                    <div style="display:flex;gap:12px;align-items:flex-start;margin-top:10px;flex-wrap:wrap;">
+                        <img src="<?= esc_url(get_theme_file_uri('assets/misure-figura.jpg')) ?>" alt="" style="max-width:180px;width:45%;min-width:130px;border-radius:8px;" onerror="this.style.display='none'">
+                        <ol style="margin:0;padding-left:20px;font-size:12px;color:#cbd5e1;line-height:1.7;flex:1;min-width:150px;">
+                        <li><?= esc_html($_t($T['m_altezza'])) ?></li>
+                        <li><?= esc_html($_t($T['m_spalle'])) ?></li>
+                        <li><?= esc_html($_t($T['m_petto'])) ?></li>
+                        <li><?= esc_html($_t($T['m_vita'])) ?></li>
+                        <li><?= esc_html($_t($T['m_fianchi'])) ?></li>
+                        <li><?= esc_html($_t($T['m_cavallo_interno'])) ?></li>
+                        <li><?= esc_html($_t($T['m_coscia'])) ?></li>
+                        <li><?= esc_html($_t($T['m_cavallo_esterno'])) ?></li>
+                        <li><?= esc_html($_t($T['m_polpaccio'])) ?></li>
+                        <li><?= esc_html($_t($T['m_manica'])) ?></li>
+                        <li><?= esc_html($_t($T['m_bicipite'])) ?></li>
+                        <li><?= esc_html($_t($T['m_avambraccio'])) ?></li>
+                        <li><?= esc_html($_t($T['m_polso'])) ?></li>
+                        <li><?= esc_html($_t($T['m_collo'])) ?></li>
+                        <li><?= esc_html($_t($T['m_scarpa'])) ?></li>
+                        </ol>
+                    </div>
+                </details>
+                <p style="font-size:12px;color:#9ca3af;margin:12px 0 0;line-height:1.5;"><?= esc_html($_t($T['misure_nota_dopo'])) ?></p>
+                <script>
+                (function(){
+                  function q(){ return document.querySelectorAll('.tse-mis, #f-altezza, #f-scarpe'); }
+                  function upd(){ var any=false; q().forEach(function(i){ if(i.value && (''+i.value).trim()!=='') any=true; }); var pr=document.getElementById('tse-mis-prese'); if(pr) pr.style.display = any ? '' : 'none'; }
+                  var tg=document.getElementById('f-mis-toggle');
+                  if(tg){ tg.addEventListener('change',function(){ var e=document.getElementById('tse-mis-extra'); if(e) e.style.display=tg.checked?'':'none'; }); }
+                  q().forEach(function(i){ i.addEventListener('input',upd); });
+                  upd();
+                })();
+                </script>
+
             </div>
 
             <div class="tse-section">
