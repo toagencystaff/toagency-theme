@@ -18,7 +18,7 @@
     var STR   = cfg.strings || {};
 
     // FIX 2026-06-28 marco — aggiunti comune + provincia
-    var FIELDS = ['telefono','instagram','tiktok','altezza','taglia','scarpe','capelli',
+    var FIELDS = ['telefono','instagram','tiktok','altezza','taglia','scarpe','capelli','occhi',
                   'comune_residenza','provincia_domicilio'];
     var ALBUMS = ['polaroid','dettaglio','portfolio','eventi'];
     var currentAlbum = 'polaroid';
@@ -173,6 +173,30 @@
             .catch(function () {});
     }
 
+    // FIX 2026-07-16 TEMA — chip multi-select (etnia/ruoli/lingue) + limite max
+    function setChips(groupId, values) {
+        var g = $(groupId); if (!g) return;
+        var vals = Array.isArray(values) ? values.map(String) : [];
+        g.querySelectorAll('input[type=checkbox]').forEach(function (cb) {
+            cb.checked = vals.indexOf(String(cb.value)) >= 0;
+        });
+    }
+    function getChips(groupId) {
+        var g = $(groupId); if (!g) return [];
+        var out = [];
+        g.querySelectorAll('input[type=checkbox]:checked').forEach(function (cb) { out.push(cb.value); });
+        return out;
+    }
+    function initChipMax(groupId) {
+        var g = $(groupId); if (!g) return;
+        var max = parseInt(g.getAttribute('data-max') || '0', 10);
+        if (!max) return;
+        g.addEventListener('change', function (e) {
+            var checked = g.querySelectorAll('input[type=checkbox]:checked');
+            if (checked.length > max && e.target && e.target.checked) { e.target.checked = false; }
+        });
+    }
+
     function loadData() {
         if (!UUID || !TOKEN) { showError(STR.invalidLink || 'Link non valido'); return; }
         fetch(API_LOAD + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN), {
@@ -225,6 +249,11 @@
             highlightMissingFields(d.talent);
             // FIX 2026-07-16 marco — guida album per ruolo
             renderRuoloGuida(d.talent.ruoli);
+            // FIX 2026-07-16 TEMA — precompila profilo professionale
+            setChips('f-etnia',  d.talent.etnia);
+            setChips('f-ruoli',  d.talent.ruoli);
+            setChips('f-lingue', d.talent.lingue);
+            var _pat = $('f-patente'); if (_pat) _pat.checked = (d.talent.patente == 1 || d.talent.patente === true);
             loadCompletezza();
 
             $('tse-status').style.display = 'none';
@@ -260,6 +289,10 @@
         payload.misure = _mis;
         var _preseEl = $('f-misure-prese');
         if (_preseEl && _preseEl.value) payload.misure_prese_il = _preseEl.value;
+        payload.etnia   = getChips('f-etnia');
+        payload.ruoli   = getChips('f-ruoli');
+        payload.lingue  = getChips('f-lingue');
+        payload.patente = ($('f-patente') && $('f-patente').checked) ? 1 : 0;
 
         fetch(API_SAVE, {
             method: 'POST',
@@ -701,5 +734,6 @@
     }
     function escapeAttr(s) { return escapeHtml(s); }
 
+    document.addEventListener('DOMContentLoaded', function () { initChipMax('f-etnia'); });
     document.addEventListener('DOMContentLoaded', loadData);
 })();
