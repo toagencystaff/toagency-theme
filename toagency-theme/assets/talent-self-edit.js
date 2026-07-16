@@ -146,6 +146,22 @@
                 if (el) el.value = (d.talent[f] !== null && d.talent[f] !== undefined) ? d.talent[f] : '';
             });
 
+            // Misure (sotto-step 2, 15/07) — popola da talent.misure + misure_prese_il
+            var _M = d.talent.misure || {};
+            var _anyExtra = false;
+            var _EXTRA = ['spalle','collo','cavallo_interno','cavallo_esterno','coscia','polpaccio','manica','bicipite','avambraccio','polso'];
+            document.querySelectorAll('.tse-mis').forEach(function (el) {
+                var k = el.getAttribute('data-mis');
+                if (k && _M[k] !== undefined && _M[k] !== null && _M[k] !== '') {
+                    el.value = _M[k];
+                    if (_EXTRA.indexOf(k) > -1) _anyExtra = true;
+                }
+            });
+            var _pr = $('f-misure-prese'); if (_pr) _pr.value = d.talent.misure_prese_il || '';
+            var _tg = $('f-mis-toggle');
+            if (_anyExtra && _tg && !_tg.checked) { _tg.checked = true; _tg.dispatchEvent(new Event('change')); }
+            document.querySelectorAll('.tse-mis, #f-altezza, #f-scarpe').forEach(function (el) { el.dispatchEvent(new Event('input')); });
+
             // FIX 2026-07-01 marco — tendina provincia self-edit
             populateProvince(d.talent.provincia_domicilio || '');
 
@@ -183,6 +199,16 @@
             var el = $('f-' + f);
             payload[f] = el ? el.value.trim() : '';
         });
+
+        // Misure (sotto-step 2, 15/07) — oggetto misure + data
+        var _mis = {};
+        document.querySelectorAll('.tse-mis').forEach(function (el) {
+            var k = el.getAttribute('data-mis'); var v = (el.value || '').trim();
+            if (k && v !== '') _mis[k] = v;
+        });
+        payload.misure = _mis;
+        var _preseEl = $('f-misure-prese');
+        if (_preseEl && _preseEl.value) payload.misure_prese_il = _preseEl.value;
 
         fetch(API_SAVE, {
             method: 'POST',
