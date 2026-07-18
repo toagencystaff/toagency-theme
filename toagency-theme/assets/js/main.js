@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // BRAND TICKER
   // ══════════════════════════════════════════
   var brandsRow1 = [
-    {t:'BURBERRY',c:'b-burberry'},{t:'La Romana',c:'b-laromana'},{t:'CRAZY PIZZA',c:'b-crazypizza'},{t:'IMPERIAL',c:'b-imperial'},{t:'PATAGONIA',c:'b-patagonia'},{t:'REAL MADRID',c:'b-realmadrid'},{t:'MANCHESTER UNITED',c:'b-manutd'},{t:'AS ROMA',c:'b-roma'},{t:'NOVOTEL',c:'b-novotel'},{t:'JUVENTUS',c:'b-juventus'},{t:'FERRARI',c:'b-ferrari'},{t:'BMW',c:'b-bmw'},
+    {t:'BURBERRY',c:'b-burberry'},{t:'La Romana <small>DAL 1947</small>',c:'b-laromana'},{t:'CRAZY PIZZA',c:'b-crazypizza'},{t:'IMPERIAL',c:'b-imperial'},{t:'PATAGONIA',c:'b-patagonia'},{t:'REAL MADRID',c:'b-realmadrid'},{t:'MANCHESTER UNITED',c:'b-manutd'},{t:'AS ROMA',c:'b-roma'},{t:'NOVOTEL',c:'b-novotel'},{t:'JUVENTUS',c:'b-juventus'},{t:'FERRARI',c:'b-ferrari'},{t:'BMW',c:'b-bmw'},
     {t:'SAMSUNG',c:'b-samsung'},{t:'RED BULL',c:'b-redbull'},{t:'MERCEDES-BENZ',c:'b-mercedes'},
     {t:'VOGUE SPOSA',c:'b-vogue'},{t:'KAPPA',c:'b-kappa'},{t:'SKY',c:'b-sky'},
     {t:'MASERATI',c:'b-maserati'},{t:'FIAT',c:'b-fiat'},{t:'VODAFONE',c:'b-vodafone'},
