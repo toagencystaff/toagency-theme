@@ -12,6 +12,25 @@ $t = array(
         'fr' => 'Services complets pour entreprises, agences, marques et productions.<br>Talents avec image : mannequins, h&ocirc;tesses, stewards, acteurs et cr&eacute;ateurs.',
         'es' => 'Servicios completos para empresas, agencias, marcas y producciones.<br>Talento con imagen: modelos, azafatas, promotores, actores y creadores.',
     ),
+    // === SEO intro B2B (aggiunta 2026-07-18, da ADSEO STEP 8) ===
+    'svc_intro_h2' => array(
+        'it' => 'Modelle, hostess e casting per aziende, campagne ed eventi',
+        'en' => 'Models, hostesses and casting for companies, campaigns and events',
+        'fr' => 'Mannequins, h&ocirc;tesses et casting pour entreprises, campagnes et &eacute;v&eacute;nements',
+        'es' => 'Modelos, azafatas y casting para empresas, campa&ntilde;as y eventos',
+    ),
+    'svc_intro_p1' => array(
+        'it' => 'TOAgency &egrave; l\'agenzia di casting e modelle dedicata alle aziende: selezioniamo modelle, modelli, hostess, steward e attori per campagne pubblicitarie, eventi e produzioni. Un unico partner per trovare i volti e il personale giusti, in Italia e nei principali mercati europei.',
+        'en' => 'TOAgency is the casting and modelling agency dedicated to companies: we select models, hostesses, stewards and actors for advertising campaigns, events and productions. A single partner to find the right faces and staff, in Italy and across the main European markets.',
+        'fr' => 'TOAgency est l\'agence de casting et de mannequins d&eacute;di&eacute;e aux entreprises : nous s&eacute;lectionnons mannequins, h&ocirc;tesses, stewards et acteurs pour campagnes publicitaires, &eacute;v&eacute;nements et productions. Un seul partenaire pour trouver les visages et le personnel adapt&eacute;s, en Italie et sur les principaux march&eacute;s europ&eacute;ens.',
+        'es' => 'TOAgency es la agencia de casting y modelos dedicada a las empresas: seleccionamos modelos, azafatas, promotores y actores para campa&ntilde;as publicitarias, eventos y producciones. Un &uacute;nico partner para encontrar los rostros y el personal adecuados, en Italia y en los principales mercados europeos.',
+    ),
+    'svc_intro_p2' => array(
+        'it' => 'Grazie a un database nazionale e internazionale di talent selezionati, gestiamo casting, logistica e contratti dalla richiesta al set: profili in linea con il brief e tempi certi, in Italia e nei principali mercati europei.',
+        'en' => 'Thanks to a national and international database of selected talent, we manage casting, logistics and contracts from the request to the set: profiles in line with the brief and reliable timelines, in Italy and across the main European markets.',
+        'fr' => 'Gr&acirc;ce &agrave; une base de donn&eacute;es nationale et internationale de talents s&eacute;lectionn&eacute;s, nous g&eacute;rons casting, logistique et contrats de la demande au plateau : des profils conformes au brief et des d&eacute;lais garantis, en Italie et sur les principaux march&eacute;s europ&eacute;ens.',
+        'es' => 'Gracias a una base de datos nacional e internacional de talento seleccionado, gestionamos casting, log&iacute;stica y contratos desde la solicitud hasta el set: perfiles acordes con el brief y plazos garantizados, en Italia y en los principales mercados europeos.',
+    ),
     'servizi_eyebrow' => array('it' => 'I nostri servizi', 'en' => 'Our services', 'fr' => 'Nos services', 'es' => 'Nuestros servicios'),
     'servizi_heading' => array('it' => 'Un unico partner per tutto', 'en' => 'One partner for everything', 'fr' => 'Un seul partenaire pour tout', 'es' => 'Un &uacute;nico partner para todo'),
     'serv1_title' => array('it' => 'Modelli e Hostess', 'en' => 'Models &amp; Hostesses', 'fr' => 'Mannequins &amp; H&ocirc;tesses', 'es' => 'Modelos y Azafatas'),
@@ -70,6 +89,15 @@ toa_component('header');
     'title'      => _t_raw(array('it'=>'Servizi.','en'=>'Services.','fr'=>'Services.','es'=>'Servicios.')),
     'subtitle'   => $_t($t['hero_subtitle']),
 )); ?>
+
+<!-- SEO intro B2B (2026-07-18) -->
+<section class="why-section services-intro">
+    <div class="container">
+        <h2 class="section-heading"><?php echo $_t($t['svc_intro_h2']); ?></h2>
+        <p><?php echo $_t($t['svc_intro_p1']); ?></p>
+        <p><?php echo $_t($t['svc_intro_p2']); ?></p>
+    </div>
+</section>
 
 <!-- Service Categories -->
 <section class="why-section">

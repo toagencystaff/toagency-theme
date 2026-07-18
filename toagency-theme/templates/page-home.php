@@ -21,9 +21,8 @@ if (!function_exists('_ht')) {
 <!-- ═══════════ HERO ═══════════ -->
 <section class="hero">
   <div class="hero-video">
-    <video autoplay loop muted playsinline>
-      <source src="/wp-content/uploads/2025/09/homepagenew.mov" type="video/quicktime">
-      <source src="/wp-content/uploads/2025/09/homepagenew.mov" type="video/mp4">
+    <video autoplay loop muted playsinline preload="auto">
+      <source src="<?php echo get_template_directory_uri(); ?>/assets/homepagenew.mp4" type="video/mp4">
     </video>
   </div>
   <div class="hero-content">
