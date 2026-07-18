@@ -57,6 +57,22 @@ a{color:inherit}
     background:rgba(197,255,0,.08);
 }
 </style>
+<?php
+// TOA SEO 2026-07 — hreflang: versioni-lingua della pagina corrente (dati WPML, solo traduzioni reali) + x-default
+if (function_exists('icl_get_languages')) {
+    $toa_alts = icl_get_languages('skip_missing=1&orderby=code');
+    if (!empty($toa_alts) && count($toa_alts) > 1) {
+        foreach ($toa_alts as $toa_l) {
+            if (!empty($toa_l['url']) && !empty($toa_l['language_code'])) {
+                echo '<link rel="alternate" hreflang="'.esc_attr($toa_l['language_code']).'" href="'.esc_url($toa_l['url']).'" />'."\n";
+            }
+        }
+        if (!empty($toa_alts['it']['url'])) {
+            echo '<link rel="alternate" hreflang="x-default" href="'.esc_url($toa_alts['it']['url']).'" />'."\n";
+        }
+    }
+}
+?>
 <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?> style="background:#08080a!important;color:#f5f5f3!important">
