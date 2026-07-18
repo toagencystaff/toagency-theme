@@ -31,7 +31,7 @@ add_action('after_setup_theme', 'toagency_setup');
 function toagency_assets() {
     $css_path = get_theme_file_path('assets/css/main.css');
     $ver = file_exists($css_path) ? filemtime($css_path) : '1.0.0';
-    wp_enqueue_style('toagency-fonts', 'https://fonts.googleapis.com/css2?family=Anton&family=EB+Garamond:ital,wght@0,400;0,600;1,500&family=Instrument+Sans:wght@400;500;600;700&family=Montserrat:ital,wght@0,300;0,600;0,700;0,800;0,900;1,800&family=Oswald:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400;1,600&display=swap', array(), null);
+    wp_enqueue_style('toagency-fonts', 'https://fonts.googleapis.com/css2?family=Anton&family=EB+Garamond:ital,wght@0,400;0,600;1,500&family=Instrument+Sans:wght@400;500;600;700&family=Montserrat:ital,wght@0,300;0,500;0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Oswald:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400;1,600&display=swap', array(), null);
     wp_enqueue_style('toagency-main', get_theme_file_uri('assets/css/main.css'), array(), $ver);
 
     $js_path = get_theme_file_path('assets/js/main.js');

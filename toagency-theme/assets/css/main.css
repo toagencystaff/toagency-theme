@@ -403,57 +403,57 @@ img { max-width: 100%; height: auto; display: block; }
 .ticker-row span:hover { opacity: 0.9 !important; }
 
 /* Brand-specific fonts */
-.b-juventus{font-size:1.3rem;font-weight:900;font-family:'Avant Garde','Century Gothic',sans-serif}
+.b-juventus{font-size:1.45rem;font-weight:900;font-family:'Montserrat',sans-serif;letter-spacing:-.5px;text-transform:uppercase}
 .b-ferrari{font-size:1.2rem;font-weight:700;font-family:'EB Garamond',Georgia,serif;letter-spacing:4px;text-transform:uppercase}
 .b-fiat{font-size:1.4rem;font-weight:800;font-family:'Helvetica Neue',Arial,sans-serif;font-style:italic}
 .b-vodafone{font-size:1rem;font-weight:600;font-family:'Helvetica Neue',Arial,sans-serif}
-.b-mediaset{font-size:1.1rem;font-weight:700;font-family:'Univers','Helvetica Neue',sans-serif;font-style:italic}
-.b-sky{font-size:1.3rem;font-weight:800;font-family:'Frutiger','Myriad Pro',sans-serif}
+.b-mediaset{font-size:1.2rem;font-weight:700;font-family:'Montserrat',sans-serif;font-style:italic;text-transform:uppercase}
+.b-sky{font-size:1.5rem;font-weight:800;font-family:'Montserrat',sans-serif;letter-spacing:1px;text-transform:uppercase}
 .b-samsung{font-size:1.1rem;font-weight:600;font-family:'Instrument Sans','Helvetica Neue',sans-serif}
-.b-redbull{font-size:1.2rem;font-weight:900;font-family:'Futura','Century Gothic',sans-serif;font-style:italic}
+.b-redbull{font-size:1.35rem;font-weight:900;font-family:'Montserrat',sans-serif;font-style:italic;text-transform:uppercase}
 .b-vogue{font-size:1.3rem;font-weight:600;font-family:'Playfair Display',Georgia,serif;letter-spacing:4px;text-transform:uppercase}
 .b-gq{font-size:1.5rem;font-weight:900;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:-1px}
 .b-kappa{font-size:1.4rem;font-weight:900;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:-.5px}
-.b-police{font-size:1.1rem;font-weight:800;font-family:'Eurostile','Microgramma',sans-serif;letter-spacing:2px}
+.b-police{font-size:1.15rem;font-weight:600;font-family:'Montserrat',sans-serif;letter-spacing:4px;text-transform:uppercase}
 .b-bmw{font-size:1.4rem;font-weight:700;font-family:'Helvetica',Arial,sans-serif}
 .b-mercedes{font-size:1.1rem;font-weight:400;font-family:'Times New Roman',Georgia,serif;letter-spacing:3px}
-.b-audi{font-size:1.3rem;font-weight:600;font-family:'Univers','Helvetica Neue',sans-serif}
+.b-audi{font-size:1.35rem;font-weight:600;font-family:'Montserrat',sans-serif;letter-spacing:2px;text-transform:uppercase}
 .b-jeep{font-size:1.4rem;font-weight:700;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1px}
 .b-maserati{font-size:1.2rem;font-weight:600;font-family:'EB Garamond',Georgia,serif;letter-spacing:4px;text-transform:uppercase}
-.b-loreal{font-size:1rem;font-weight:500;font-family:'Futura','Avant Garde',sans-serif;letter-spacing:2px}
-.b-eataly{font-size:1.1rem;font-weight:700;font-family:'Butler',Georgia,serif;letter-spacing:2px}
+.b-loreal{font-size:1.15rem;font-weight:300;font-family:'Montserrat',sans-serif;letter-spacing:4px;text-transform:uppercase}
+.b-eataly{font-size:1.25rem;font-weight:600;font-family:'EB Garamond',Georgia,serif;letter-spacing:3px;text-transform:uppercase}
 .b-michelin{font-size:1.2rem;font-weight:900;font-family:'Helvetica',Arial,sans-serif;font-style:italic}
 .b-kinder{font-size:1.1rem;font-weight:800;font-family:'Gothic','Arial Black',sans-serif}
 .b-kway{font-size:1.2rem;font-weight:700;font-family:'Gotham','Montserrat',sans-serif}
-.b-alfaromeo{font-size:1.1rem;font-weight:600;font-family:'Garamond',Georgia,serif}
+.b-alfaromeo{font-size:1.2rem;font-weight:600;font-family:'EB Garamond',Georgia,serif;letter-spacing:2px;text-transform:uppercase}
 .b-seriea{font-size:1.1rem;font-weight:700;font-family:'Gotham','Montserrat',sans-serif}
 .b-wolt{font-size:1.3rem;font-weight:700;font-family:'Helvetica Neue',Arial,sans-serif}
-.b-axa{font-size:1.3rem;font-weight:700;font-family:'Open Sans','Helvetica Neue',sans-serif}
-.b-loacker{font-size:1.1rem;font-weight:700;font-family:'Futura','Century Gothic',sans-serif}
+.b-axa{font-size:1.35rem;font-weight:700;font-family:'Montserrat',sans-serif;letter-spacing:1px;text-transform:uppercase}
+.b-loacker{font-size:1.3rem;font-weight:700;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:-.5px}
 .b-formula1{font-size:1.35rem;font-weight:700;font-family:'Oswald',sans-serif;font-style:italic;text-transform:uppercase;letter-spacing:1px}
 .b-motogp{font-size:1.35rem;font-weight:700;font-family:'Oswald',sans-serif;font-style:italic;text-transform:uppercase}
 .b-pfw{font-size:1.1rem;font-weight:600;font-family:'Gotham','Montserrat',sans-serif}
-.b-salone{font-size:1rem;font-weight:300;font-family:'Bodoni MT','Didot',serif;letter-spacing:2px}
+.b-salone{font-size:1.1rem;font-weight:600;font-family:'Playfair Display',Georgia,serif;letter-spacing:2px;text-transform:uppercase}
 .b-expo{font-size:1.1rem;font-weight:700;font-family:'Gotham Rounded','Montserrat',sans-serif}
-.b-luxottica{font-size:1.1rem;font-weight:600;font-family:'Avant Garde','Century Gothic',sans-serif;letter-spacing:2px}
+.b-luxottica{font-size:1.15rem;font-weight:500;font-family:'Montserrat',sans-serif;letter-spacing:3px;text-transform:uppercase}
 .b-rinascente{font-size:1.15rem;font-weight:600;font-family:'Playfair Display',Georgia,serif;letter-spacing:4px;text-transform:uppercase}
 .b-sanremo{font-size:1.1rem;font-weight:700;font-family:'Gotham','Montserrat',sans-serif}
 .b-missuniverse{font-size:1rem;font-weight:600;font-family:'Gotham','Montserrat',sans-serif;letter-spacing:1px}
 .b-fieramilano{font-size:1.1rem;font-weight:600;font-family:'Helvetica Neue',Arial,sans-serif}
 .b-rimini{font-size:1.1rem;font-weight:600;font-family:'Helvetica Neue',Arial,sans-serif}
 .b-bologna{font-size:1.1rem;font-weight:600;font-family:'Helvetica',Arial,sans-serif}
-.b-teatro{font-size:1rem;font-weight:400;font-family:'Didot','Bodoni MT',serif;letter-spacing:2px}
+.b-teatro{font-size:1.15rem;font-weight:500;font-family:'EB Garamond',Georgia,serif;font-style:italic;letter-spacing:2px;text-transform:uppercase}
 .b-virgin{font-size:1.1rem;font-weight:600;font-family:'Helvetica Neue',Arial,sans-serif}
 .b-wrangler{font-size:1.1rem;font-weight:700;font-family:'ITC Souvenir',Georgia,serif}
-.b-fiorucci{font-size:1.1rem;font-weight:300;font-family:'Didot','Bodoni MT',serif;letter-spacing:2px}
-.b-edison{font-size:1.1rem;font-weight:700;font-family:'Helvetica Rounded',Arial,sans-serif}
-.b-qcterme{font-size:1rem;font-weight:400;font-family:'Trajan Pro',Georgia,serif;letter-spacing:2px}
+.b-fiorucci{font-size:1.25rem;font-weight:600;font-family:'Playfair Display',Georgia,serif;font-style:italic;letter-spacing:1px}
+.b-edison{font-size:1.2rem;font-weight:600;font-family:'Montserrat',sans-serif;letter-spacing:1px;text-transform:uppercase}
+.b-qcterme{font-size:1.15rem;font-weight:400;font-family:'EB Garamond',Georgia,serif;letter-spacing:3px;text-transform:uppercase}
 .b-inter{font-size:1.1rem;font-weight:700;font-family:'Helvetica Neue',Arial,sans-serif}
 .b-torino{font-size:1.1rem;font-weight:700;font-family:'Times New Roman',Georgia,serif}
-.b-coin{font-size:1.3rem;font-weight:500;font-family:'Futura','Century Gothic',sans-serif}
-.b-revlon{font-size:1.1rem;font-weight:400;font-family:'Didot','Bodoni MT',serif;letter-spacing:1px}
+.b-coin{font-size:1.35rem;font-weight:500;font-family:'Montserrat',sans-serif;letter-spacing:3px;text-transform:uppercase}
+.b-revlon{font-size:1.2rem;font-weight:600;font-family:'Playfair Display',Georgia,serif;letter-spacing:2px;text-transform:uppercase}
 .b-algida{font-size:1.2rem;font-weight:800;font-family:'Helvetica',Arial,sans-serif}
-.b-mizuno{font-size:1.1rem;font-weight:700;font-family:'Futura','Century Gothic',sans-serif;letter-spacing:1px}
+.b-mizuno{font-size:1.25rem;font-weight:700;font-family:'Montserrat',sans-serif;font-style:italic;text-transform:uppercase}
 .b-cooltra{font-size:1.3rem;font-weight:700;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:-.5px}
 .b-novotel{font-size:1.2rem;font-weight:600;font-family:'Montserrat',sans-serif;letter-spacing:2px;text-transform:uppercase}
 .b-gritti{font-size:1.15rem;font-weight:400;font-family:'EB Garamond',Georgia,serif;letter-spacing:3px;text-transform:uppercase}
