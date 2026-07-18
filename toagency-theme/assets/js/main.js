@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // BRAND TICKER
   // ══════════════════════════════════════════
   var brandsRow1 = [
-    {t:'JUVENTUS',c:'b-juventus'},{t:'FERRARI',c:'b-ferrari'},{t:'BMW',c:'b-bmw'},
+    {t:'BURBERRY',c:'b-burberry'},{t:'La Romana',c:'b-laromana'},{t:'CRAZY PIZZA',c:'b-crazypizza'},{t:'IMPERIAL',c:'b-imperial'},{t:'PATAGONIA',c:'b-patagonia'},{t:'REAL MADRID',c:'b-realmadrid'},{t:'MANCHESTER UNITED',c:'b-manutd'},{t:'AS ROMA',c:'b-roma'},{t:'NOVOTEL',c:'b-novotel'},{t:'JUVENTUS',c:'b-juventus'},{t:'FERRARI',c:'b-ferrari'},{t:'BMW',c:'b-bmw'},
     {t:'SAMSUNG',c:'b-samsung'},{t:'RED BULL',c:'b-redbull'},{t:'MERCEDES-BENZ',c:'b-mercedes'},
     {t:'VOGUE SPOSA',c:'b-vogue'},{t:'KAPPA',c:'b-kappa'},{t:'SKY',c:'b-sky'},
     {t:'MASERATI',c:'b-maserati'},{t:'FIAT',c:'b-fiat'},{t:'VODAFONE',c:'b-vodafone'},
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
   ];
 
   var brandsRow2 = [
-    {t:'FC INTERNAZIONALE',c:'b-inter'},{t:'WOLT',c:'b-wolt'},{t:'AXA',c:'b-axa'},
+    {t:'CISALFA',c:'b-cisalfa'},{t:'JOMA',c:'b-joma'},{t:'ARENA',c:'b-arena'},{t:'FC BARCELONA',c:'b-barcelona'},{t:'VALENCIA CF',c:'b-valencia'},{t:'SSC NAPOLI',c:'b-napoli'},{t:'BORUSSIA DORTMUND',c:'b-dortmund'},{t:'COOLTRA',c:'b-cooltra'},{t:'GRITTI',c:'b-gritti'},{t:'FC INTERNAZIONALE',c:'b-inter'},{t:'WOLT',c:'b-wolt'},{t:'AXA',c:'b-axa'},
     {t:'SERIE A',c:'b-seriea'},{t:'LOACKER',c:'b-loacker'},{t:'MEDIASET',c:'b-mediaset'},
     {t:'PARIS FASHION WEEK',c:'b-pfw'},{t:'SALONE DEL MOBILE',c:'b-salone'},
     {t:'LA RINASCENTE',c:'b-rinascente'},{t:'EXPO 2015',c:'b-expo'},
