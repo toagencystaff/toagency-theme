@@ -78,25 +78,25 @@ $b2b_js = array(
           <option value="altro"><?php echo toa_t('form_b2b', 'opt_altro'); ?></option>
         </select>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-        <div class="form-group">
-          <label class="form-label" for="period"><?php echo toa_t('form_b2b', 'label_period'); ?></label>
-          <input type="text" id="period" name="period" placeholder="<?php echo esc_attr(toa_t('form_b2b', 'ph_period')); ?>" class="form-input">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="location"><?php echo toa_t('form_b2b', 'label_location'); ?></label>
-          <input type="text" id="location" name="location" placeholder="<?php echo esc_attr(toa_t('form_b2b', 'ph_location')); ?>" class="form-input">
-        </div>
-      </div>
-      <div class="form-group" style="margin-bottom:12px">
-        <label class="form-label" for="message"><?php echo toa_t('form_b2b', 'label_message'); ?></label>
-        <textarea id="message" name="message" placeholder="<?php echo esc_attr(toa_t('form_b2b', 'ph_message')); ?>" class="form-input" style="min-height:70px;height:auto;resize:vertical"></textarea>
-      </div>
 
       <!-- Dettagli espandibili -->
       <button type="button" id="detailsToggle" style="width:100%;padding:12px;background:var(--gray-1);border:1px solid var(--gray-2);color:var(--white);font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;text-align:center;margin:8px 0"><?php echo toa_t('form_b2b', 'details_toggle_open'); ?></button>
 
       <div id="detailsBody" style="display:none;padding:16px 0">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+          <div class="form-group">
+            <label class="form-label" for="period"><?php echo toa_t('form_b2b', 'label_period'); ?></label>
+            <input type="text" id="period" name="period" placeholder="<?php echo esc_attr(toa_t('form_b2b', 'ph_period')); ?>" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="location"><?php echo toa_t('form_b2b', 'label_location'); ?></label>
+            <input type="text" id="location" name="location" placeholder="<?php echo esc_attr(toa_t('form_b2b', 'ph_location')); ?>" class="form-input">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:12px">
+          <label class="form-label" for="message"><?php echo toa_t('form_b2b', 'label_message'); ?></label>
+          <textarea id="message" name="message" placeholder="<?php echo esc_attr(toa_t('form_b2b', 'ph_message')); ?>" class="form-input" style="min-height:70px;height:auto;resize:vertical"></textarea>
+        </div>
         <label class="form-label" style="margin-bottom:8px;display:block"><?php echo toa_t('form_b2b', 'details_profiles_label'); ?></label>
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">
           <?php
