@@ -33,6 +33,36 @@ $b2b_js = array(
   </div>
 </section>
 
+<!-- MURO FOTO STAFF (decorativo, scorrevole) — 2026-07-20 -->
+<?php
+$b2bw_uri  = get_theme_file_uri('assets/b2b-wall');
+$b2bw_rows = array(range(1, 9), range(10, 18));
+$b2bw_dir  = array('b2bw-a', 'b2bw-b');
+?>
+<section class="b2b-wall" aria-hidden="true">
+<?php foreach ($b2bw_rows as $ri => $ids): ?>
+  <div class="b2bw-marquee">
+    <div class="b2bw-track <?php echo $b2bw_dir[$ri]; ?>">
+      <?php for ($p = 0; $p < 2; $p++): foreach ($ids as $n): ?>
+        <img class="b2bw-tile" src="<?php echo esc_url($b2bw_uri . '/wall-' . sprintf('%02d', $n) . '.jpg'); ?>" alt="" loading="lazy" decoding="async">
+      <?php endforeach; endfor; ?>
+    </div>
+  </div>
+<?php endforeach; ?>
+</section>
+<style>
+.b2b-wall{display:flex;flex-direction:column;gap:12px;padding:26px 0 8px;overflow:hidden}
+.b2bw-marquee{display:flex;overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.b2bw-track{display:flex;flex:0 0 auto;gap:12px;padding-right:12px;will-change:transform}
+.b2bw-a{animation:b2bwL 30s linear infinite}
+.b2bw-b{animation:b2bwR 34s linear infinite}
+.b2bw-tile{width:156px;height:208px;object-fit:cover;object-position:top center;flex:0 0 auto;display:block;background:var(--gray-1)}
+@keyframes b2bwL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes b2bwR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+@media(max-width:640px){.b2bw-tile{width:120px;height:160px}}
+@media(prefers-reduced-motion:reduce){.b2bw-a,.b2bw-b{animation:none}}
+</style>
+
 <?php toa_component('brand-ticker'); ?>
 
 <!-- FORM -->
