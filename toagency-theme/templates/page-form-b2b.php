@@ -33,6 +33,22 @@ $b2b_js = array(
   </div>
 </section>
 
+<!-- STRIP B2C anti-bounce (2026-07-20): intercetta i talent in cima, riusa testi b2c_* -->
+<section class="b2c-strip">
+  <div class="container b2c-strip-inner">
+    <span class="b2c-strip-text"><?php echo toa_t('form_b2b', 'b2c_text'); ?></span>
+    <a href="<?php echo home_url('/collabora/'); ?>" class="b2c-strip-btn" onclick="if(window.toaTrackContact)toaTrackContact('b2c_signup','strip-top')"><?php echo toa_t('form_b2b', 'b2c_btn'); ?></a>
+  </div>
+</section>
+<style>
+.b2c-strip{border-top:1px solid var(--gray-2);border-bottom:1px solid var(--gray-2);background:var(--gray-1);padding:12px 0}
+.b2c-strip-inner{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;text-align:center}
+.b2c-strip-text{font-size:0.9rem;font-weight:600;opacity:0.85}
+.b2c-strip-btn{flex:0 0 auto;padding:9px 22px;font-size:0.72rem;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;border:1px solid var(--white);color:var(--white);text-decoration:none;transition:background 0.2s,color 0.2s;white-space:nowrap}
+.b2c-strip-btn:hover{background:var(--white);color:var(--black)}
+@media (max-width:600px){.b2c-strip-text{font-size:0.82rem}.b2c-strip-btn{width:100%}}
+</style>
+
 <!-- MURO FOTO STAFF (decorativo, scorrevole) — 2026-07-20 -->
 <?php
 $b2bw_uri  = get_theme_file_uri('assets/b2b-wall');
@@ -199,11 +215,6 @@ $b2bw_dir  = array('b2bw-a', 'b2bw-b');
     <?php toa_component('quick-contacts'); ?>
   </div>
 
-  <!-- Banner B2C -->
-  <div style="text-align:center;padding:30px 20px;border:2px solid var(--gray-2);margin-top:30px;background:var(--gray-1)">
-    <p style="font-size:1rem;font-weight:600;margin-bottom:12px"><?php echo toa_t('form_b2b', 'b2c_text'); ?></p>
-    <a href="<?php echo home_url('/collabora/'); ?>" class="btn-hero btn-hero-secondary" style="padding:12px 30px;font-size:0.85rem"><?php echo toa_t('form_b2b', 'b2c_btn'); ?></a>
-  </div>
 </section>
 
 <style>
