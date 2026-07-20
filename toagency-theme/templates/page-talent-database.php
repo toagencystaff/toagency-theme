@@ -227,6 +227,26 @@ $hub_sections = array(
     };
 })();
 
+/* PATCH 2026-07-20 TALENT-DB BYPASS — relay staff/exp per scheda talent nascosta (link firmato CRM, HMAC tid|exp, scad. 12h).
+   staff+exp letti UNA VOLTA dall'URL d'ingresso (pushState/replaceState li rimuovono dopo) e appesi alle sole
+   chiamate ?action=talent. Nessun token nel tema: puro inoltro del parametro firmato lato CRM. */
+(function () {
+    var _p     = new URLSearchParams(window.location.search);
+    var _staff = _p.get('staff');
+    var _exp   = _p.get('exp');
+    if (!_staff || !_exp) return;                 // nessun link firmato -> comportamento pubblico identico a prima
+    var _origFetch = window.fetch;
+    window.fetch = function (url, opts) {
+        if (typeof url === 'string' &&
+            url.indexOf('api-talent-database') !== -1 &&
+            url.indexOf('action=talent')      !== -1 &&
+            url.indexOf('&staff=')            === -1) {
+            url += '&staff=' + encodeURIComponent(_staff) + '&exp=' + encodeURIComponent(_exp);
+        }
+        return _origFetch.call(this, url, opts);
+    };
+})();
+
 /* FIX 2026-06-20 marco — banner tutela minori: mostra #tdbKidsBanner SOLO quando categoria = "kids" (discreto). */
 (function () {
     function toggleKidsBanner() {
