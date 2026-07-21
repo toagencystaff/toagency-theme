@@ -144,7 +144,7 @@ toa_component('header');
 .toa-gallery .grid img:hover{opacity:1}
 @media(max-width:768px){.toa-gallery .grid{gap:5px}.toa-gallery .grid img{width:calc(20% - 5px)}}
 /* Wrap CTA hero: su desktop stretta alla barra loghi, su mobile staccata */
-.hero-cta-wrap{margin-top:-8px;margin-bottom:28px;text-align:center}
+.hero-cta-wrap{margin-top:16px;margin-bottom:28px;text-align:center}
 @media(max-width:768px){.hero-cta-wrap{margin-top:18px;margin-bottom:20px}}
 /* Mobile: primo schermo più focalizzato — comprimi la barra loghi (1 riga) e alza la CTA */
 @media(max-width:768px){
