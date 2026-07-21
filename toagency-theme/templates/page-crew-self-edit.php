@@ -53,6 +53,13 @@ $T = [
     'no_changes'     => ['it'=>'Nessuna modifica rilevata.','en'=>'No changes detected.','fr'=>'Aucune modification.','es'=>'Sin cambios.'],
     'error_generic'  => ['it'=>'Errore: ','en'=>'Error: ','fr'=>'Erreur: ','es'=>'Error: '],
     'bio_hint'       => ['it'=>'Max 2000 caratteri.','en'=>'Max 2000 characters.','fr'=>'Max 2000.','es'=>'Máx 2000.'],
+    'field_livello'  => ['it'=>'Livello','en'=>'Level','fr'=>'Niveau','es'=>'Nivel'],
+    'field_anno'     => ['it'=>'Anno inizio attività','en'=>'Year you started','fr'=>'Année de début','es'=>'Año de inicio'],
+    'liv_studente'      => ['it'=>'Studente','en'=>'Student','fr'=>'Étudiant','es'=>'Estudiante'],
+    'liv_amatoriale'    => ['it'=>'Amatoriale','en'=>'Amateur','fr'=>'Amateur','es'=>'Aficionado'],
+    'liv_semipro'       => ['it'=>'Semi-pro','en'=>'Semi-pro','fr'=>'Semi-pro','es'=>'Semi-pro'],
+    'liv_professionista'=> ['it'=>'Professionista','en'=>'Professional','fr'=>'Professionnel','es'=>'Profesional'],
+    'bio_ph'         => ['it'=>'Racconta chi sei e i 2-3 lavori più importanti che hai fatto.','en'=>'Tell us who you are and your 2-3 most important jobs.','fr'=>'Dis-nous qui tu es et tes 2-3 missions les plus importantes.','es'=>'Cuéntanos quién eres y tus 2-3 trabajos más importantes.'],
 
     // S6.5-LEGAL — disclaimer foto
     'legal_summary'  => ['it'=>'📋 Leggi disclaimer legale','en'=>'📋 Read legal disclaimer','fr'=>'📋 Lire avis légal','es'=>'📋 Leer aviso legal'],
@@ -224,8 +231,21 @@ $token_get = $_GET['t']    ?? '';
             </div>
             <div class="crew-edit-field">
                 <label class="crew-edit-label"><?= esc_html($_t($T['field_bio'])) ?></label>
-                <textarea id="f-bio" class="crew-edit-textarea" rows="4" maxlength="2000"></textarea>
+                <textarea id="f-bio" class="crew-edit-textarea" rows="4" maxlength="2000" placeholder="<?= esc_attr($_t($T['bio_ph'])) ?>"></textarea>
                 <div class="crew-edit-hint"><?= esc_html($_t($T['bio_hint'])) ?></div>
+            </div>
+            <div class="crew-edit-field">
+                <label class="crew-edit-label"><?= esc_html($_t($T['field_livello'])) ?></label>
+                <select id="f-livello" class="crew-edit-input">
+                    <option value="studente"><?= esc_html($_t($T['liv_studente'])) ?></option>
+                    <option value="amatoriale"><?= esc_html($_t($T['liv_amatoriale'])) ?></option>
+                    <option value="semi-pro"><?= esc_html($_t($T['liv_semipro'])) ?></option>
+                    <option value="professionista"><?= esc_html($_t($T['liv_professionista'])) ?></option>
+                </select>
+            </div>
+            <div class="crew-edit-field">
+                <label class="crew-edit-label"><?= esc_html($_t($T['field_anno'])) ?></label>
+                <input type="number" id="f-anno_inizio_attivita" class="crew-edit-input" min="1950" max="<?= (int)date('Y') ?>" step="1" inputmode="numeric" placeholder="es. 2019">
             </div>
             <div class="crew-edit-field">
                 <label class="crew-edit-label"><?= esc_html($_t($T['field_instagram'])) ?></label>

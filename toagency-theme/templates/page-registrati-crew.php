@@ -400,6 +400,11 @@ $theme_uri = get_stylesheet_directory_uri();
                 <div class="toa-crew-field"></div>
             </div>
 
+            <div class="toa-crew-field">
+                <label class="toa-crew-label"><?php echo _ht_crew(array('it'=>'Bio / Presentazione','en'=>'Bio / About you','fr'=>'Bio / Présentation','es'=>'Bio / Presentación')); ?></label>
+                <textarea name="bio" class="toa-crew-input" rows="4" maxlength="2000" placeholder="<?php echo esc_attr(_ht_crew_raw(array('it'=>'Racconta chi sei e i 2-3 lavori più importanti che hai fatto.','en'=>'Tell us who you are and your 2-3 most important jobs.','fr'=>'Dis-nous qui tu es et tes 2-3 missions les plus importantes.','es'=>'Cuéntanos quién eres y tus 2-3 trabajos más importantes.'))); ?>"></textarea>
+            </div>
+
             <div class="toa-crew-actions">
                 <button type="button" class="toa-crew-btn toa-crew-btn-ghost" data-go="2">← <?php echo _ht_crew(array('it'=>'Indietro','en'=>'Back','fr'=>'Retour','es'=>'Atrás')); ?></button>
                 <button type="button" class="toa-crew-btn toa-crew-btn-primary" data-go="4"><?php echo _ht_crew(array('it'=>'Continua','en'=>'Continue','fr'=>'Continuer','es'=>'Continuar')); ?> →</button>

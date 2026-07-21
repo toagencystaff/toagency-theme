@@ -17,7 +17,7 @@
     var STR   = cfg.strings || {};
 
     // FIX 2026-07-01 marco — aggiunti comune + provincia (geo self-edit crew)
-    var FIELDS = ['telefono','email','bio','instagram','tiktok','sito_web','comune_residenza','provincia_domicilio'];
+    var FIELDS = ['telefono','email','bio','instagram','tiktok','sito_web','comune_residenza','provincia_domicilio','livello','anno_inizio_attivita'];
 
     function $(id) { return document.getElementById(id); }
 
