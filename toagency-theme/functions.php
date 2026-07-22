@@ -1220,3 +1220,21 @@ add_action('wp_head', function() {
        . '</style>' . "\n";
 }, 9999);
 // === END 2026-06-04 marco — FIX overlap widget ===
+
+// === FIX 2026-07-22 marco — LP Ads: dequeue asset inutili (velocità/QS) [chat TEMA VELOCITÀ LP] ===
+// Solo sul template page-landing-ads.php. TENGO: gtag/GTM (conversioni), jQuery, Complianz
+// (consenso GDPR), toagency-main, font (già display=swap), SG lazyload.
+add_action('wp_enqueue_scripts', function() {
+    if (!is_page_template('templates/page-landing-ads.php')) return;
+    // e2pdf: il form LP è form-b2b-inline (POST CRM), e2pdf non serve
+    wp_dequeue_style('css/e2pdf.frontend.global');
+    wp_dequeue_script('js/e2pdf.frontend');
+    // WPML: LP senza menu/switcher lingua a video
+    wp_dequeue_style('wpml-legacy-horizontal-list-0');
+    wp_dequeue_style('wpml-menu-item-0');
+    // Google Reviews: trust ★ è hardcoded, widget assente
+    wp_dequeue_style('toa-google-reviews');
+    // jquery-migrate: nessun codice legacy sulla LP
+    wp_dequeue_script('jquery-migrate');
+}, 100); // prio 100 = dopo che i plugin hanno accodato
+// === END 2026-07-22 marco — LP Ads dequeue ===
