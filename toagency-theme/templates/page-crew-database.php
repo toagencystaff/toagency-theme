@@ -195,7 +195,22 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-play { width:52px; height:52px; border-radius:50%; background:rgba(200,255,0,.95); color:#0a0a0a; font-size:20px; display:flex; align-items:center; justify-content:center; padding-left:3px; box-shadow:0 4px 16px rgba(0,0,0,.4); }
 .crew-pf-vthumb:hover .crew-pf-play { transform:scale(1.08); transition:transform .15s; }
 .crew-pf-loading, .crew-pf-error, .crew-pf-empty { color:#9ca3af; text-align:center; padding:48px; }
+.crew-pf-loc { color:#9ca3af; font-size:13px; margin-top:10px; letter-spacing:.02em; }
 @media (max-width:640px){ .crew-pf-card{ padding:22px 16px 32px; } .crew-pf-name{ font-size:26px; } .crew-pf-grid{ grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:8px; } }
+
+/* ─── Lightbox foto (2026-07-23) ─── */
+.crew-pf-clic { cursor:zoom-in; }
+.crew-lb { position:fixed; inset:0; background:rgba(0,0,0,.94); z-index:400; display:none; align-items:center; justify-content:center; }
+.crew-lb.show { display:flex; }
+.crew-lb-img { max-width:92vw; max-height:88vh; object-fit:contain; border-radius:8px; box-shadow:0 20px 80px rgba(0,0,0,.6); }
+.crew-lb-close { position:fixed; top:16px; right:20px; width:44px; height:44px; background:rgba(26,26,30,.9); border:1px solid #2a2a2e; border-radius:50%; color:#fff; font-size:26px; line-height:1; cursor:pointer; z-index:401; }
+.crew-lb-close:hover { background:#c8ff00; color:#0a0a0a; border-color:#c8ff00; }
+.crew-lb-nav { position:fixed; top:50%; transform:translateY(-50%); width:52px; height:64px; background:rgba(26,26,30,.7); border:1px solid #2a2a2e; color:#fff; font-size:34px; line-height:1; cursor:pointer; z-index:401; border-radius:8px; }
+.crew-lb-nav:hover { background:#c8ff00; color:#0a0a0a; border-color:#c8ff00; }
+.crew-lb-prev { left:16px; }
+.crew-lb-next { right:16px; }
+.crew-lb-counter { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); color:#9ca3af; font-size:13px; background:rgba(26,26,30,.8); padding:5px 12px; border-radius:999px; z-index:401; }
+@media (max-width:640px){ .crew-lb-nav{ width:40px; height:52px; font-size:26px; } .crew-lb-img{ max-width:96vw; max-height:82vh; } }
 
 @media (max-width:640px) {
     .crew-pub-hero-title { font-size:38px; }
@@ -291,6 +306,15 @@ $theme_uri = get_stylesheet_directory_uri();
             <div id="crew-profile-body"></div>
         </div>
     </div>
+
+    <!-- Lightbox foto grandi (2026-07-23) -->
+    <div class="crew-lb" id="crew-lightbox" aria-hidden="true">
+        <button type="button" class="crew-lb-close" id="crew-lb-close" aria-label="Chiudi">×</button>
+        <button type="button" class="crew-lb-nav crew-lb-prev" id="crew-lb-prev" aria-label="Precedente">‹</button>
+        <img class="crew-lb-img" id="crew-lb-img" src="" alt="">
+        <button type="button" class="crew-lb-nav crew-lb-next" id="crew-lb-next" aria-label="Successiva">›</button>
+        <div class="crew-lb-counter" id="crew-lb-counter"></div>
+    </div>
 </section>
 
 <script>
@@ -312,6 +336,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.5" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.6" defer></script>
 
 <?php toa_component('footer'); ?>

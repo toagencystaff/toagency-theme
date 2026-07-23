@@ -1,5 +1,6 @@
 /**
- * crew-database-list.js — v1.1 (2026-07-11)
+ * crew-database-list.js — v1.2 (2026-07-23)
+ * v1.2: foto profilo grandi in lightbox (‹ › + tastiera) via proxy &w=; miniature &w=600; provincia in scheda (privacy: no comune)
  * v1.1: scheda singola crew (?uuid=) con portfolio per ruolo + generale + bio (endpoint crew-public-profile.php)
  * JS per /crew-database/ (catalogo pubblico crew).
  *
@@ -235,12 +236,18 @@
     // ─── Scheda singola crew (?uuid=) — 2026-07-11 ─────────────
     var VIDEO_RE = /\.(mp4|mov|webm|m4v|ogg)(\?|$)/i;
 
-    function mediaTag(url) {
+    // 2026-07-23: lightbox — pfPhotos raccoglie gli URL foto full-size in ordine di render
+    var pfPhotos = [];
+
+    // Aggiunge &w=<w> agli URL proxy crew-photo-public.php (miniatura vs grande)
+    function withW(url, w) {
+        if (!/crew-photo-public\.php/i.test(url)) return url;
+        return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'w=' + w;
+    }
+
+    function videoTag(url) {
         var safe = encodeURI(url);
-        if (VIDEO_RE.test(url)) {
-            return '<button type="button" class="crew-pf-vthumb" data-src="' + safe + '"><span class="crew-pf-play">▶</span><span class="crew-pf-vlabel">video</span></button>';
-        }
-        return '<img class="crew-pf-media" src="' + safe + '" alt="" loading="lazy">';
+        return '<button type="button" class="crew-pf-vthumb" data-src="' + safe + '"><span class="crew-pf-play">▶</span><span class="crew-pf-vlabel">video</span></button>';
     }
 
     function openProfile(uuid, fromPop) {
@@ -268,6 +275,7 @@
     function renderProfile(d) {
         var body = $('#crew-profile-body');
         if (!body) return;
+        pfPhotos = [];
         var labels = d.ruoli_label || {};
         var albums = d.albums || {};
         var bio = d.bio_ruoli || {};
@@ -278,6 +286,10 @@
             d.categorie.forEach(function (cat) { html += '<span class="crew-pf-chip">' + escapeHtml(cat) + '</span>'; });
             html += '</div>';
         }
+        // Privacy: SOLO provincia (mai il comune di residenza/domicilio); paese solo se non IT
+        var loc = d.provincia ? String(d.provincia) : '';
+        if (d.paese && d.paese !== 'IT') loc = loc ? (loc + ' · ' + d.paese) : String(d.paese);
+        if (loc) html += '<div class="crew-pf-loc">📍 ' + escapeHtml(loc) + '</div>';
         html += '</div>';
         if (d.bio) html += '<p class="crew-pf-intro">' + escapeHtml(d.bio) + '</p>';
         var keys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
@@ -293,7 +305,12 @@
             if (hasBio) html += '<p class="crew-pf-bio">' + escapeHtml(bio[k]) + '</p>';
             if (photos.length) {
                 html += '<div class="crew-pf-grid">';
-                photos.forEach(function (url) { html += mediaTag(url); });
+                photos.forEach(function (url) {
+                    if (VIDEO_RE.test(url)) { html += videoTag(url); return; }
+                    var idx = pfPhotos.length;
+                    pfPhotos.push(withW(url, 1600));
+                    html += '<img class="crew-pf-media crew-pf-clic" src="' + encodeURI(withW(url, 600)) + '" alt="" loading="lazy" data-idx="' + idx + '">';
+                });
                 html += '</div>';
             }
             html += '</section>';
@@ -335,7 +352,39 @@
         if (e.target && e.target.id === 'crew-profile-overlay') window.crewPubCloseProfile();
     });
     document.addEventListener('keydown', function (e) {
+        var lb = $('#crew-lightbox');
+        if (lb && lb.classList.contains('show')) {
+            if (e.key === 'Escape') { lbClose(); return; }
+            if (e.key === 'ArrowRight') { lbNext(); return; }
+            if (e.key === 'ArrowLeft') { lbPrev(); return; }
+            return;
+        }
         if (e.key === 'Escape') { var ov = $('#crew-profile-overlay'); if (ov && ov.classList.contains('show')) window.crewPubCloseProfile(); }
+    });
+
+    // ─── Lightbox foto (2026-07-23) ────────────────────────────
+    var lbIdx = 0;
+    function lbShow() {
+        var lb = $('#crew-lightbox'), img = $('#crew-lb-img');
+        if (!lb || !img || !pfPhotos.length) return;
+        if (lbIdx < 0) lbIdx = pfPhotos.length - 1;
+        if (lbIdx >= pfPhotos.length) lbIdx = 0;
+        img.src = pfPhotos[lbIdx];
+        var c = $('#crew-lb-counter'); if (c) c.textContent = (lbIdx + 1) + ' / ' + pfPhotos.length;
+        lb.classList.add('show'); lb.setAttribute('aria-hidden', 'false');
+    }
+    function lbOpen(i) { lbIdx = i; lbShow(); }
+    function lbClose() { var lb = $('#crew-lightbox'); if (lb) { lb.classList.remove('show'); lb.setAttribute('aria-hidden', 'true'); var img = $('#crew-lb-img'); if (img) img.src = ''; } }
+    function lbNext() { lbIdx++; lbShow(); }
+    function lbPrev() { lbIdx--; lbShow(); }
+
+    // Click su miniatura foto → apri lightbox (event delegation)
+    document.addEventListener('click', function (e) {
+        var t = e.target;
+        if (t && t.classList && t.classList.contains('crew-pf-clic')) {
+            var i = parseInt(t.getAttribute('data-idx'), 10);
+            if (!isNaN(i)) lbOpen(i);
+        }
     });
     window.addEventListener('popstate', function () {
         var uuid = new URLSearchParams(window.location.search).get('uuid');
@@ -347,6 +396,15 @@
         $('#filter-categoria').addEventListener('change', loadCrews);
         $('#filter-paese').addEventListener('change', loadCrews);
         loadCrews();
+        // Wiring lightbox (elementi statici nel template)
+        var lbEl = $('#crew-lightbox');
+        if (lbEl) {
+            var p = $('#crew-lb-prev'), n = $('#crew-lb-next'), cl = $('#crew-lb-close');
+            if (p)  p.addEventListener('click', function (e) { e.stopPropagation(); lbPrev(); });
+            if (n)  n.addEventListener('click', function (e) { e.stopPropagation(); lbNext(); });
+            if (cl) cl.addEventListener('click', function (e) { e.stopPropagation(); lbClose(); });
+            lbEl.addEventListener('click', function (e) { if (e.target === lbEl) lbClose(); });
+        }
         var initUuid = new URLSearchParams(window.location.search).get('uuid');
         if (initUuid) openProfile(initUuid, true); // deep-link scheda
     });
