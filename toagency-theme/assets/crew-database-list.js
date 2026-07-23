@@ -1,5 +1,6 @@
 /**
- * crew-database-list.js — v1.4 (2026-07-23)
+ * crew-database-list.js — v1.5 (2026-07-23)
+ * v1.5: riga età + anzianità nella scheda (eta/attivita_dal/pro_dal dall'endpoint)
  * v1.4: provincia mostrata col nome esteso (TO → Torino) via mappa sigle IT
  * v1.3: chiusura lightbox su click foto/sfondo (+ × etichettato); CTA "Richiedi info" dentro la scheda (pre-seleziona il crew)
  * v1.2: foto profilo grandi in lightbox (‹ › + tastiera) via proxy &w=; miniature &w=600; provincia in scheda (privacy: no comune)
@@ -316,6 +317,21 @@
         var loc = d.provincia ? provName(String(d.provincia)) : '';
         if (d.paese && d.paese !== 'IT') loc = loc ? (loc + ' · ' + d.paese) : String(d.paese);
         if (loc) html += '<div class="crew-pf-loc">📍 ' + escapeHtml(loc) + '</div>';
+        // Età + anzianità (2026-07-23) — privacy: solo numeri dall'endpoint (mai data_nascita/P.IVA)
+        var yNow = new Date().getFullYear();
+        var senParts = [];
+        if (d.eta != null && d.eta > 0) {
+            senParts.push('🎂 ' + escapeHtml(String(d.eta)) + ' ' + escapeHtml(STR.ageSuffix || 'anni'));
+        }
+        if (d.attivita_dal != null) {
+            var nAtt = yNow - parseInt(d.attivita_dal, 10);
+            if (nAtt >= 1) senParts.push(escapeHtml(STR.sinceLabel || 'Nel settore da') + ' ' + nAtt + ' ' + escapeHtml(STR.yearsLabel || 'anni'));
+        }
+        if (d.pro_dal != null) {
+            var nPro = yNow - parseInt(d.pro_dal, 10);
+            if (nPro >= 1) senParts.push(escapeHtml(STR.proLabel || 'professionista da') + ' ' + nPro + ' ' + escapeHtml(STR.yearsLabel || 'anni'));
+        }
+        if (senParts.length) html += '<div class="crew-pf-seniority">' + senParts.join(' · ') + '</div>';
         html += '</div>';
         html += '<button type="button" class="crew-pf-cta" onclick="crewPfRequestInfo()">' + escapeHtml(STR.requestInfo || '📧 Richiedi info') + '</button>';
         if (d.bio) html += '<p class="crew-pf-intro">' + escapeHtml(d.bio) + '</p>';

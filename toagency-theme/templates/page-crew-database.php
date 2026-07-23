@@ -100,6 +100,11 @@ $T = [
     'album_general'   => ['it'=>'Generale','en'=>'General','fr'=>'Général','es'=>'General'],
     'no_media'        => ['it'=>'Nessun contenuto ancora.','en'=>'No content yet.','fr'=>'Aucun contenu.','es'=>'Sin contenido.'],
     'lb_close'        => ['it'=>'Chiudi','en'=>'Close','fr'=>'Fermer','es'=>'Cerrar'],
+    // Età + anzianità scheda (2026-07-23)
+    'age_suffix'      => ['it'=>'anni','en'=>'years old','fr'=>'ans','es'=>'años'],
+    'since_label'     => ['it'=>'Nel settore da','en'=>'In the field for','fr'=>'Dans le métier depuis','es'=>'En el sector desde hace'],
+    'years_label'     => ['it'=>'anni','en'=>'years','fr'=>'ans','es'=>'años'],
+    'pro_label'       => ['it'=>'professionista da','en'=>'professional for','fr'=>'professionnel depuis','es'=>'profesional desde hace'],
 ];
 
 $theme_uri = get_stylesheet_directory_uri();
@@ -197,6 +202,7 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-vthumb:hover .crew-pf-play { transform:scale(1.08); transition:transform .15s; }
 .crew-pf-loading, .crew-pf-error, .crew-pf-empty { color:#9ca3af; text-align:center; padding:48px; }
 .crew-pf-loc { color:#9ca3af; font-size:13px; margin-top:10px; letter-spacing:.02em; }
+.crew-pf-seniority { color:#d0d3d9; font-size:13.5px; margin-top:8px; letter-spacing:.02em; }
 .crew-pf-cta { display:inline-flex; align-items:center; gap:8px; margin-top:18px; background:#c8ff00; color:#0a0a0a; border:none; padding:12px 24px; border-radius:8px; font-size:14px; font-weight:800; cursor:pointer; }
 .crew-pf-cta:hover { filter:brightness(1.08); }
 @media (max-width:640px){ .crew-pf-card{ padding:22px 16px 32px; } .crew-pf-name{ font-size:26px; } .crew-pf-grid{ grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:8px; } }
@@ -337,9 +343,13 @@ window.crewPubConfig = {
         generalAlbum: <?= json_encode($_t($T['album_general'])) ?>,
         noMedia: <?= json_encode($_t($T['no_media'])) ?>,
         requestInfo: <?= json_encode($_t($T['request_info'])) ?>,
+        ageSuffix: <?= json_encode($_t($T['age_suffix'])) ?>,
+        sinceLabel: <?= json_encode($_t($T['since_label'])) ?>,
+        yearsLabel: <?= json_encode($_t($T['years_label'])) ?>,
+        proLabel: <?= json_encode($_t($T['pro_label'])) ?>,
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.8" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.9" defer></script>
 
 <?php toa_component('footer'); ?>
