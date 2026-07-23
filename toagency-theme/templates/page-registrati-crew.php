@@ -403,7 +403,9 @@ $theme_uri = get_stylesheet_directory_uri();
 
             <div class="toa-crew-field">
                 <label class="toa-crew-label"><?php echo _ht_crew(array('it'=>'Bio / Presentazione','en'=>'Bio / About you','fr'=>'Bio / Présentation','es'=>'Bio / Presentación')); ?></label>
-                <textarea name="bio" class="toa-crew-input" rows="4" maxlength="2000" placeholder="<?php echo esc_attr(_ht_crew_raw(array('it'=>'Racconta chi sei e i 2-3 lavori più importanti che hai fatto.','en'=>'Tell us who you are and your 2-3 most important jobs.','fr'=>'Dis-nous qui tu es et tes 2-3 missions les plus importantes.','es'=>'Cuéntanos quién eres y tus 2-3 trabajos más importantes.'))); ?>"></textarea>
+                <textarea name="bio" id="toaCrewBio" class="toa-crew-input" rows="4" maxlength="800" placeholder="<?php echo esc_attr(_ht_crew_raw(array('it'=>'Racconta chi sei e i 2-3 lavori più importanti che hai fatto.','en'=>'Tell us who you are and your 2-3 most important jobs.','fr'=>'Dis-nous qui tu es et tes 2-3 missions les plus importantes.','es'=>'Cuéntanos quién eres y tus 2-3 trabajos más importantes.'))); ?>"></textarea>
+                <div id="toaCrewBioCounter" style="font-size:12px;color:#9ca3af;margin-top:4px;">0 / 800</div>
+                <script>(function(){var t=document.getElementById('toaCrewBio'),c=document.getElementById('toaCrewBioCounter');if(!t||!c)return;function u(){var n=t.value.length;c.textContent=n+' / 800'+(n<150?' \u00b7 consigliati almeno 150':'');c.style.color=(n>0&&n<150)?'#f59e0b':'#9ca3af';}t.addEventListener('input',u);u();})();</script>
             </div>
 
             <div class="toa-crew-actions">

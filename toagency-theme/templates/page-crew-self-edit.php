@@ -231,8 +231,9 @@ $token_get = $_GET['t']    ?? '';
             </div>
             <div class="crew-edit-field">
                 <label class="crew-edit-label"><?= esc_html($_t($T['field_bio'])) ?></label>
-                <textarea id="f-bio" class="crew-edit-textarea" rows="4" maxlength="2000" placeholder="<?= esc_attr($_t($T['bio_ph'])) ?>"></textarea>
+                <textarea id="f-bio" class="crew-edit-textarea" rows="4" maxlength="800" placeholder="<?= esc_attr($_t($T['bio_ph'])) ?>"></textarea>
                 <div class="crew-edit-hint"><?= esc_html($_t($T['bio_hint'])) ?></div>
+                <div class="crew-edit-hint" id="f-bio-counter">0 / 800</div>
             </div>
             <div class="crew-edit-field">
                 <label class="crew-edit-label"><?= esc_html($_t($T['field_livello'])) ?></label>
@@ -326,6 +327,6 @@ window.crewEditConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260723eta" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260723eta2" defer></script>
 
 <?php toa_component('footer'); ?>

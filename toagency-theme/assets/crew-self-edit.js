@@ -1,5 +1,6 @@
 /**
- * crew-self-edit.js — v1.1 (2026-07-23)
+ * crew-self-edit.js — v1.2 (2026-07-23)
+ * v1.2: contatore bio (max 800, min consigliato 150)
  * v1.1: campi età/P.IVA (data_nascita, ha_partita_iva + anno_partita_iva condizionale)
  * JS per /crew-self-edit/?uuid=...&t=...
  *
@@ -128,6 +129,14 @@
         if (wrap) wrap.style.display = (chk && chk.checked) ? '' : 'none';
     }
 
+    function updateBioCounter() {
+        var ta = $('f-bio'), c = $('f-bio-counter');
+        if (!ta || !c) return;
+        var n = ta.value.length;
+        c.textContent = n + ' / 800' + (n < 150 ? ' · consigliati almeno 150' : '');
+        c.style.color = (n > 0 && n < 150) ? '#f59e0b' : '#9ca3af';
+    }
+
     function loadData() {
         if (!UUID || !TOKEN) { showError(STR.invalidLink || 'Link non valido'); return; }
         fetch(API_LOAD + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN), {
@@ -162,6 +171,8 @@
             if (dn && d.crew.data_nascita) dn.value = String(d.crew.data_nascita).substring(0, 10);
             var pivaChk = $('f-ha_partita_iva');
             if (pivaChk) { pivaChk.checked = (String(d.crew.ha_partita_iva) === '1'); togglePivaYear(); }
+
+            updateBioCounter();
 
             // FIX 2026-07-01 marco — geo crew self-edit
             populateProvince(d.crew.provincia_domicilio || '');
@@ -326,5 +337,7 @@
         setupFotoUpload();
         var pivaChk = $('f-ha_partita_iva');
         if (pivaChk) pivaChk.addEventListener('change', togglePivaYear);
+        var _bio = $('f-bio');
+        if (_bio) _bio.addEventListener('input', updateBioCounter);
     });
 })();
