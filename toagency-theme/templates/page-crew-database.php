@@ -207,18 +207,18 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-cta:hover { filter:brightness(1.08); }
 @media (max-width:640px){ .crew-pf-card{ padding:22px 16px 32px; } .crew-pf-name{ font-size:26px; } .crew-pf-grid{ grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:8px; } }
 
-/* ─── Lightbox foto (2026-07-23) ─── */
+/* ─── Lightbox foto (2026-07-23) ─── z-index sopra la admin bar WP (99999) così × e foto non restano coperti */
 .crew-pf-clic { cursor:zoom-in; }
-.crew-lb { position:fixed; inset:0; background:rgba(0,0,0,.94); z-index:400; display:none; align-items:center; justify-content:center; }
+.crew-lb { position:fixed; inset:0; background:rgba(0,0,0,.94); z-index:100000; display:none; align-items:center; justify-content:center; }
 .crew-lb.show { display:flex; }
 .crew-lb-img { max-width:92vw; max-height:88vh; object-fit:contain; border-radius:8px; box-shadow:0 20px 80px rgba(0,0,0,.6); cursor:zoom-out; }
-.crew-lb-close { position:fixed; top:16px; right:20px; display:inline-flex; align-items:center; gap:6px; height:44px; padding:0 18px; background:#c8ff00; border:none; border-radius:999px; color:#0a0a0a; font-size:15px; font-weight:700; line-height:1; cursor:pointer; z-index:401; box-shadow:0 4px 16px rgba(0,0,0,.4); }
+.crew-lb-close { position:fixed; top:16px; right:20px; display:inline-flex; align-items:center; gap:6px; height:44px; padding:0 18px; background:#c8ff00; border:none; border-radius:999px; color:#0a0a0a; font-size:15px; font-weight:700; line-height:1; cursor:pointer; z-index:100001; box-shadow:0 4px 16px rgba(0,0,0,.4); }
 .crew-lb-close:hover { filter:brightness(1.08); }
-.crew-lb-nav { position:fixed; top:50%; transform:translateY(-50%); width:52px; height:64px; background:rgba(26,26,30,.7); border:1px solid #2a2a2e; color:#fff; font-size:34px; line-height:1; cursor:pointer; z-index:401; border-radius:8px; }
+.crew-lb-nav { position:fixed; top:50%; transform:translateY(-50%); width:52px; height:64px; background:rgba(26,26,30,.7); border:1px solid #2a2a2e; color:#fff; font-size:34px; line-height:1; cursor:pointer; z-index:100001; border-radius:8px; }
 .crew-lb-nav:hover { background:#c8ff00; color:#0a0a0a; border-color:#c8ff00; }
 .crew-lb-prev { left:16px; }
 .crew-lb-next { right:16px; }
-.crew-lb-counter { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); color:#9ca3af; font-size:13px; background:rgba(26,26,30,.8); padding:5px 12px; border-radius:999px; z-index:401; }
+.crew-lb-counter { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); color:#9ca3af; font-size:13px; background:rgba(26,26,30,.8); padding:5px 12px; border-radius:999px; z-index:100001; }
 @media (max-width:640px){ .crew-lb-nav{ width:40px; height:52px; font-size:26px; } .crew-lb-img{ max-width:96vw; max-height:82vh; } }
 
 @media (max-width:640px) {
