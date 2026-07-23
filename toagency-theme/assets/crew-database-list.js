@@ -1,5 +1,6 @@
 /**
- * crew-database-list.js — v1.2 (2026-07-23)
+ * crew-database-list.js — v1.3 (2026-07-23)
+ * v1.3: chiusura lightbox su click foto/sfondo (+ × etichettato); CTA "Richiedi info" dentro la scheda (pre-seleziona il crew)
  * v1.2: foto profilo grandi in lightbox (‹ › + tastiera) via proxy &w=; miniature &w=600; provincia in scheda (privacy: no comune)
  * v1.1: scheda singola crew (?uuid=) con portfolio per ruolo + generale + bio (endpoint crew-public-profile.php)
  * JS per /crew-database/ (catalogo pubblico crew).
@@ -250,8 +251,11 @@
         return '<button type="button" class="crew-pf-vthumb" data-src="' + safe + '"><span class="crew-pf-play">▶</span><span class="crew-pf-vlabel">video</span></button>';
     }
 
+    var currentProfileUuid = null;
+
     function openProfile(uuid, fromPop) {
         if (!uuid) return;
+        currentProfileUuid = uuid;
         var ov = $('#crew-profile-overlay');
         var body = $('#crew-profile-body');
         if (!ov || !body) return;
@@ -291,6 +295,7 @@
         if (d.paese && d.paese !== 'IT') loc = loc ? (loc + ' · ' + d.paese) : String(d.paese);
         if (loc) html += '<div class="crew-pf-loc">📍 ' + escapeHtml(loc) + '</div>';
         html += '</div>';
+        html += '<button type="button" class="crew-pf-cta" onclick="crewPfRequestInfo()">' + escapeHtml(STR.requestInfo || '📧 Richiedi info') + '</button>';
         if (d.bio) html += '<p class="crew-pf-intro">' + escapeHtml(d.bio) + '</p>';
         var keys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
         if (albums.generale) keys.push('generale');
@@ -386,6 +391,12 @@
             if (!isNaN(i)) lbOpen(i);
         }
     });
+
+    // CTA nella scheda: seleziona questo crew e apri il modal "Richiedi info"
+    window.crewPfRequestInfo = function () {
+        if (currentProfileUuid) { selectedUuids.add(currentProfileUuid); updateActionBar(); }
+        window.crewPubOpenLeadModal();
+    };
     window.addEventListener('popstate', function () {
         var uuid = new URLSearchParams(window.location.search).get('uuid');
         if (uuid) openProfile(uuid, true); else hideProfile();
@@ -403,7 +414,7 @@
             if (p)  p.addEventListener('click', function (e) { e.stopPropagation(); lbPrev(); });
             if (n)  n.addEventListener('click', function (e) { e.stopPropagation(); lbNext(); });
             if (cl) cl.addEventListener('click', function (e) { e.stopPropagation(); lbClose(); });
-            lbEl.addEventListener('click', function (e) { if (e.target === lbEl) lbClose(); });
+            lbEl.addEventListener('click', function (e) { if (e.target === lbEl || e.target.id === 'crew-lb-img') lbClose(); });
         }
         var initUuid = new URLSearchParams(window.location.search).get('uuid');
         if (initUuid) openProfile(initUuid, true); // deep-link scheda

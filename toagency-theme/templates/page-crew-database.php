@@ -99,6 +99,7 @@ $T = [
     'error_profile'   => ['it'=>'Profilo non disponibile.','en'=>'Profile unavailable.','fr'=>'Profil indisponible.','es'=>'Perfil no disponible.'],
     'album_general'   => ['it'=>'Generale','en'=>'General','fr'=>'Général','es'=>'General'],
     'no_media'        => ['it'=>'Nessun contenuto ancora.','en'=>'No content yet.','fr'=>'Aucun contenu.','es'=>'Sin contenido.'],
+    'lb_close'        => ['it'=>'Chiudi','en'=>'Close','fr'=>'Fermer','es'=>'Cerrar'],
 ];
 
 $theme_uri = get_stylesheet_directory_uri();
@@ -144,7 +145,7 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-actionbar .btn-clear { background:transparent; border:1px solid #6b7280; color:#fff; padding:9px 16px; border-radius:6px; cursor:pointer; font-weight:500; }
 .crew-pub-actionbar .btn-req { background:#c8ff00; color:#0a0a0a; border:none; padding:10px 20px; border-radius:6px; cursor:pointer; font-weight:700; }
 
-.crew-pub-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:200; display:none; align-items:center; justify-content:center; padding:20px; }
+.crew-pub-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:500; display:none; align-items:center; justify-content:center; padding:20px; }
 .crew-pub-modal-overlay.show { display:flex; }
 .crew-pub-modal { background:#1a1a1e; border:1px solid #c8ff00; border-radius:12px; padding:28px; max-width:520px; width:100%; max-height:90vh; overflow-y:auto; }
 .crew-pub-modal h2 { color:#c8ff00; margin:0 0 8px; font-size:20px; }
@@ -196,15 +197,17 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-vthumb:hover .crew-pf-play { transform:scale(1.08); transition:transform .15s; }
 .crew-pf-loading, .crew-pf-error, .crew-pf-empty { color:#9ca3af; text-align:center; padding:48px; }
 .crew-pf-loc { color:#9ca3af; font-size:13px; margin-top:10px; letter-spacing:.02em; }
+.crew-pf-cta { display:inline-flex; align-items:center; gap:8px; margin-top:18px; background:#c8ff00; color:#0a0a0a; border:none; padding:12px 24px; border-radius:8px; font-size:14px; font-weight:800; cursor:pointer; }
+.crew-pf-cta:hover { filter:brightness(1.08); }
 @media (max-width:640px){ .crew-pf-card{ padding:22px 16px 32px; } .crew-pf-name{ font-size:26px; } .crew-pf-grid{ grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:8px; } }
 
 /* ─── Lightbox foto (2026-07-23) ─── */
 .crew-pf-clic { cursor:zoom-in; }
 .crew-lb { position:fixed; inset:0; background:rgba(0,0,0,.94); z-index:400; display:none; align-items:center; justify-content:center; }
 .crew-lb.show { display:flex; }
-.crew-lb-img { max-width:92vw; max-height:88vh; object-fit:contain; border-radius:8px; box-shadow:0 20px 80px rgba(0,0,0,.6); }
-.crew-lb-close { position:fixed; top:16px; right:20px; width:44px; height:44px; background:rgba(26,26,30,.9); border:1px solid #2a2a2e; border-radius:50%; color:#fff; font-size:26px; line-height:1; cursor:pointer; z-index:401; }
-.crew-lb-close:hover { background:#c8ff00; color:#0a0a0a; border-color:#c8ff00; }
+.crew-lb-img { max-width:92vw; max-height:88vh; object-fit:contain; border-radius:8px; box-shadow:0 20px 80px rgba(0,0,0,.6); cursor:zoom-out; }
+.crew-lb-close { position:fixed; top:16px; right:20px; display:inline-flex; align-items:center; gap:6px; height:44px; padding:0 18px; background:#c8ff00; border:none; border-radius:999px; color:#0a0a0a; font-size:15px; font-weight:700; line-height:1; cursor:pointer; z-index:401; box-shadow:0 4px 16px rgba(0,0,0,.4); }
+.crew-lb-close:hover { filter:brightness(1.08); }
 .crew-lb-nav { position:fixed; top:50%; transform:translateY(-50%); width:52px; height:64px; background:rgba(26,26,30,.7); border:1px solid #2a2a2e; color:#fff; font-size:34px; line-height:1; cursor:pointer; z-index:401; border-radius:8px; }
 .crew-lb-nav:hover { background:#c8ff00; color:#0a0a0a; border-color:#c8ff00; }
 .crew-lb-prev { left:16px; }
@@ -309,7 +312,7 @@ $theme_uri = get_stylesheet_directory_uri();
 
     <!-- Lightbox foto grandi (2026-07-23) -->
     <div class="crew-lb" id="crew-lightbox" aria-hidden="true">
-        <button type="button" class="crew-lb-close" id="crew-lb-close" aria-label="Chiudi">×</button>
+        <button type="button" class="crew-lb-close" id="crew-lb-close" aria-label="<?= esc_attr($_t($T['lb_close'])) ?>">✕ <?= esc_html($_t($T['lb_close'])) ?></button>
         <button type="button" class="crew-lb-nav crew-lb-prev" id="crew-lb-prev" aria-label="Precedente">‹</button>
         <img class="crew-lb-img" id="crew-lb-img" src="" alt="">
         <button type="button" class="crew-lb-nav crew-lb-next" id="crew-lb-next" aria-label="Successiva">›</button>
@@ -333,9 +336,10 @@ window.crewPubConfig = {
         errorProfile: <?= json_encode($_t($T['error_profile'])) ?>,
         generalAlbum: <?= json_encode($_t($T['album_general'])) ?>,
         noMedia: <?= json_encode($_t($T['no_media'])) ?>,
+        requestInfo: <?= json_encode($_t($T['request_info'])) ?>,
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.6" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=1.7" defer></script>
 
 <?php toa_component('footer'); ?>
