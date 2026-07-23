@@ -1,5 +1,6 @@
 /**
- * crew-self-edit.js — v1.0 (2026-05-19, S6)
+ * crew-self-edit.js — v1.1 (2026-07-23)
+ * v1.1: campi età/P.IVA (data_nascita, ha_partita_iva + anno_partita_iva condizionale)
  * JS per /crew-self-edit/?uuid=...&t=...
  *
  * - Load via GET a /crm_toagency/actions/crew-self-edit-load.php
@@ -17,7 +18,7 @@
     var STR   = cfg.strings || {};
 
     // FIX 2026-07-01 marco — aggiunti comune + provincia (geo self-edit crew)
-    var FIELDS = ['telefono','email','bio','instagram','tiktok','sito_web','comune_residenza','provincia_domicilio','livello','anno_inizio_attivita'];
+    var FIELDS = ['telefono','email','bio','instagram','tiktok','sito_web','comune_residenza','provincia_domicilio','livello','anno_inizio_attivita','data_nascita','anno_partita_iva'];
 
     function $(id) { return document.getElementById(id); }
 
@@ -121,6 +122,12 @@
         $('crew-edit-form').classList.remove('visible');
     }
 
+    function togglePivaYear() {
+        var chk = $('f-ha_partita_iva');
+        var wrap = $('f-anno_piva-wrap');
+        if (wrap) wrap.style.display = (chk && chk.checked) ? '' : 'none';
+    }
+
     function loadData() {
         if (!UUID || !TOKEN) { showError(STR.invalidLink || 'Link non valido'); return; }
         fetch(API_LOAD + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN), {
@@ -149,6 +156,12 @@
                 var el = $('f-' + f);
                 if (el) el.value = d.crew[f] || '';
             });
+
+            // Età + P.IVA (2026-07-23)
+            var dn = $('f-data_nascita');
+            if (dn && d.crew.data_nascita) dn.value = String(d.crew.data_nascita).substring(0, 10);
+            var pivaChk = $('f-ha_partita_iva');
+            if (pivaChk) { pivaChk.checked = (String(d.crew.ha_partita_iva) === '1'); togglePivaYear(); }
 
             // FIX 2026-07-01 marco — geo crew self-edit
             populateProvince(d.crew.provincia_domicilio || '');
@@ -196,6 +209,11 @@
         FIELDS.forEach(function (f) {
             payload[f] = $('f-' + f).value.trim();
         });
+
+        // P.IVA (2026-07-23)
+        var pivaChkS = $('f-ha_partita_iva');
+        payload.ha_partita_iva = (pivaChkS && pivaChkS.checked) ? 1 : 0;
+        if (!payload.ha_partita_iva) payload.anno_partita_iva = '';
 
         fetch(API_SAVE, {
             method: 'POST',
@@ -306,5 +324,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         loadData();
         setupFotoUpload();
+        var pivaChk = $('f-ha_partita_iva');
+        if (pivaChk) pivaChk.addEventListener('change', togglePivaYear);
     });
 })();

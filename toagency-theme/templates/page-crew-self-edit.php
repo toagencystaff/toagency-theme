@@ -247,6 +247,21 @@ $token_get = $_GET['t']    ?? '';
                 <label class="crew-edit-label"><?= esc_html($_t($T['field_anno'])) ?></label>
                 <input type="number" id="f-anno_inizio_attivita" class="crew-edit-input" min="1950" max="<?= (int)date('Y') ?>" step="1" inputmode="numeric" placeholder="es. 2019">
             </div>
+            <!-- 2026-07-23 — età + P.IVA (per scheda pubblica: età + "professionista da N anni") -->
+            <div class="crew-edit-field">
+                <label class="crew-edit-label"><?= esc_html($_t(['it'=>'Data di nascita','en'=>'Date of birth','fr'=>'Date de naissance','es'=>'Fecha de nacimiento'])) ?></label>
+                <input type="date" id="f-data_nascita" class="crew-edit-input" max="<?= esc_attr(date('Y-m-d')) ?>">
+            </div>
+            <div class="crew-edit-field">
+                <label class="crew-edit-label" style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                    <input type="checkbox" id="f-ha_partita_iva" style="width:auto;">
+                    <span><?= esc_html($_t(['it'=>'Ho la Partita IVA','en'=>'I have a VAT number','fr'=>'J’ai un numéro de TVA','es'=>'Tengo IVA'])) ?></span>
+                </label>
+            </div>
+            <div class="crew-edit-field" id="f-anno_piva-wrap" style="display:none;">
+                <label class="crew-edit-label"><?= esc_html($_t(['it'=>'Anno di apertura P.IVA','en'=>'Year VAT registered','fr'=>'Année d’ouverture TVA','es'=>'Año de alta de IVA'])) ?></label>
+                <input type="number" id="f-anno_partita_iva" class="crew-edit-input" min="1950" max="<?= (int)date('Y') ?>" step="1" inputmode="numeric" placeholder="es. 2021">
+            </div>
             <div class="crew-edit-field">
                 <label class="crew-edit-label"><?= esc_html($_t($T['field_instagram'])) ?></label>
                 <input type="text" id="f-instagram" class="crew-edit-input" placeholder="@username" maxlength="100">
@@ -311,6 +326,6 @@ window.crewEditConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260711i18n" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260723eta" defer></script>
 
 <?php toa_component('footer'); ?>
