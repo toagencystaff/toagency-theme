@@ -881,17 +881,21 @@ $theme_uri = get_stylesheet_directory_uri();
                 'es'=>'Escríbenos por WhatsApp para novedades',
             )); ?>
         </a>
-        <!-- FIX 2026-05-26 marco — community link post-registrazione (solo IT) -->
-        <div id="toa-community-block" style="display:none;margin:.6rem 0 .4rem;">
-            <a href="https://toagency.it/itacommunities-new.html" target="_blank" rel="noopener"
-               style="display:block;background:#4f46e5;color:#fff;border-radius:8px;padding:.6rem 1.2rem;font-weight:700;text-decoration:none;text-align:center;font-size:.9rem;">
-                📣 <?php echo _ht_talent(array(
-                    'it'=>'Unisciti alla community della tua città → casting in diretta ogni giorno',
-                    'en'=>'Join your city\'s community → live castings every day',
-                    'fr'=>'Rejoins la communauté de ta ville → castings en direct chaque jour',
-                    'es'=>'Únete a la comunidad de tu ciudad → castings en directo cada día',
-                )); ?>
-            </a>
+        <!-- FIX 2026-07-23 marco — CTA community rinforzate (WA regioni + IG + FB) -->
+        <div id="toa-community-block" style="display:none;margin:1rem 0 .4rem;padding:.9rem;border:1px solid rgba(79,70,229,.5);border-radius:10px;background:rgba(79,70,229,.08);">
+          <div style="font-weight:800;font-size:1rem;margin-bottom:.2rem;text-align:center;">
+            📣 <?php echo _ht_talent(array('it'=>'Entra ORA nei gruppi dove pubblichiamo i casting','en'=>'Join NOW the groups where we post castings','fr'=>'Rejoins MAINTENANT les groupes où nous publions les castings','es'=>'Únete YA a los grupos donde publicamos los castings')); ?>
+          </div>
+          <div style="font-size:.82rem;opacity:.8;text-align:center;margin-bottom:.6rem;">
+            <?php echo _ht_talent(array('it'=>'I casting li pubblichiamo qui ogni giorno, non solo via email.','en'=>'We post castings here every day, not only by email.','fr'=>'Nous publions les castings ici chaque jour, pas seulement par email.','es'=>'Publicamos los castings aquí cada día, no solo por email.')); ?>
+          </div>
+          <a href="https://toagency.it/itacommunities-new.html" target="_blank" rel="noopener" style="display:block;background:#25d366;color:#fff;border-radius:8px;padding:.7rem 1.2rem;font-weight:800;text-decoration:none;text-align:center;font-size:.95rem;margin-bottom:.5rem;">
+            💬 <?php echo _ht_talent(array('it'=>'Gruppi WhatsApp della tua regione','en'=>'WhatsApp groups for your region','fr'=>'Groupes WhatsApp de ta région','es'=>'Grupos de WhatsApp de tu región')); ?>
+          </a>
+          <div style="display:flex;gap:.5rem;">
+            <a href="https://www.instagram.com/toagency/" target="_blank" rel="noopener" style="flex:1;background:#111;color:#fff;border-radius:8px;padding:.6rem;font-weight:700;text-decoration:none;text-align:center;font-size:.9rem;">Instagram</a>
+            <a href="https://www.facebook.com/groups/hostessmodelscastingcalls" target="_blank" rel="noopener" style="flex:1;background:#111;color:#fff;border-radius:8px;padding:.6rem;font-weight:700;text-decoration:none;text-align:center;font-size:.9rem;">Facebook</a>
+          </div>
         </div>
         <button type="button" class="toa-talent-success-close" id="toaTalentSuccessClose"><?php echo _ht_talent(array('it'=>'Chiudi','en'=>'Close','fr'=>'Fermer','es'=>'Cerrar')); ?></button>
     </div>
