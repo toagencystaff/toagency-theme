@@ -1,5 +1,6 @@
 /**
  * TOAgency — Form registrazione crew
+ * v3.1 — 2026-07-23: anno_inizio_attivita (ex anni_esperienza) + anno_partita_iva (per eta/anzianita scheda)
  * v3.0 — 28 Aprile 2026
  * Path: /wp-content/themes/toagency-theme/assets/crew-form.js
  *
@@ -941,6 +942,11 @@
 
         // Prepara FormData con TUTTI i campi del form
         var fd = new FormData(form);
+        // 2026-07-23: compat + eta — ha_partita_iva (= ha_piva) e anni_esperienza derivato da anno_inizio_attivita
+        var _hp = form.querySelector('input[name="ha_piva"]');
+        if (_hp) fd.append('ha_partita_iva', _hp.value);
+        var _ai = form.querySelector('input[name="anno_inizio_attivita"]');
+        if (_ai && _ai.value) { var _ae = (new Date().getFullYear()) - parseInt(_ai.value, 10); if (_ae >= 0 && _ae <= 80) fd.append('anni_esperienza', _ae); }
         // Aggiungi lingua corrente (per contenuti email future)
         var htmlLang = document.documentElement.getAttribute('lang') || 'it';
         fd.append('lang', htmlLang.substring(0, 2));

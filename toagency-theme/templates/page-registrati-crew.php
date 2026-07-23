@@ -335,8 +335,8 @@ $theme_uri = get_stylesheet_directory_uri();
 
             <div class="toa-crew-field-row">
                 <div class="toa-crew-field">
-                    <label class="toa-crew-label"><?php echo _ht_crew(array('it'=>'Anni di esperienza','en'=>'Years of experience','fr'=>'Années d\'expérience','es'=>'Años de experiencia')); ?></label>
-                    <input type="number" name="anni_esperienza" class="toa-crew-input" min="0" max="60" placeholder="0">
+                    <label class="toa-crew-label"><?php echo _ht_crew(array('it'=>'Da che anno lavori?','en'=>'Working since (year)','fr'=>'Depuis quelle année ?','es'=>'¿Desde qué año trabajas?')); ?></label>
+                    <input type="number" name="anno_inizio_attivita" class="toa-crew-input" min="1950" max="<?php echo (int)date('Y'); ?>" placeholder="es. 2019">
                 </div>
                 <div class="toa-crew-field">
                     <label class="toa-crew-label"><?php echo _ht_crew(array('it'=>'Livello','en'=>'Level','fr'=>'Niveau','es'=>'Nivel')); ?></label>
@@ -364,6 +364,7 @@ $theme_uri = get_stylesheet_directory_uri();
                     </div>
                     <div class="toa-crew-conditional">
                         <input type="text" name="partita_iva" class="toa-crew-input" placeholder="Partita IVA" maxlength="20">
+                        <input type="number" name="anno_partita_iva" class="toa-crew-input" min="1950" max="<?php echo (int)date('Y'); ?>" placeholder="<?php echo _ht_crew(array('it'=>'Anno apertura P.IVA','en'=>'Year VAT opened','fr'=>'Année ouverture TVA','es'=>'Año alta IVA')); ?>" style="margin-top:8px;">
                     </div>
                 </div>
                 <div class="toa-crew-field">
@@ -598,7 +599,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.0-20260629e" defer></script><!-- TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
+<script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.1-20260723eta" defer></script><!-- TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
 
 <!-- ══════════════════════════════════════════════
      PREFILL — pre-compila campi se l'utente arriva da Student Program
