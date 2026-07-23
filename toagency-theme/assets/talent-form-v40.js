@@ -123,8 +123,9 @@
                     var nomeVal = (form.querySelector('[name="nome"]') || {}).value || '';
                     var cogVal  = (form.querySelector('[name="cognome"]') || {}).value || '';
                     var dobVal  = (form.querySelector('[name="data_nascita"]') || {}).value || '';
+                    var telVal  = (form.querySelector('[name="telefono"]') || {}).value || '';
                     goBtn.disabled = true;
-                    checkDupExists(emailVal, nomeVal, cogVal, dobVal).then(function(j) {
+                    checkDupExists(emailVal, nomeVal, cogVal, dobVal, telVal).then(function(j) {
                         goBtn.disabled = false;
                         if (j && j.name_dob_exists) {
                             // Stesso nome+cognome+data: mostra box 4 opzioni
@@ -975,12 +976,13 @@
     // FIX 2026-06-28 marco — re-invia link self-edit all'email on-file
     var RESEND_SELF_EDIT_EP  = '/crm_toagency/actions/resend-self-edit.php';
     // FIX 2026-06-28 marco — check completo nome+cognome+dob (ritorna JSON, non solo bool)
-    function checkDupExists(email, nome, cognome, dob) {
+    function checkDupExists(email, nome, cognome, dob, telefono) {
         var fd = new FormData();
         fd.append('email', email);
         if (nome)    fd.append('nome', nome);
         if (cognome) fd.append('cognome', cognome);
         if (dob)     fd.append('data_nascita', dob);
+        if (telefono) fd.append('telefono', telefono);
         return fetch(CHECK_EMAIL_ENDPOINT, { method: 'POST', body: fd, credentials: 'same-origin' })
             .then(function(r) { return r.json(); });
     }
