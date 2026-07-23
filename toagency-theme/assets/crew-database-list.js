@@ -1,5 +1,6 @@
 /**
- * crew-database-list.js — v1.5 (2026-07-23)
+ * crew-database-list.js — v1.6 (2026-07-23)
+ * v1.6: copertina hero (prima foto in cima alla scheda) con nome in overlay; fallback nome nell'header
  * v1.5: riga età + anzianità nella scheda (eta/attivita_dal/pro_dal dall'endpoint)
  * v1.4: provincia mostrata col nome esteso (TO → Torino) via mappa sigle IT
  * v1.3: chiusura lightbox su click foto/sfondo (+ × etichettato); CTA "Richiedi info" dentro la scheda (pre-seleziona il crew)
@@ -307,7 +308,21 @@
         var albums = d.albums || {};
         var bio = d.bio_ruoli || {};
         var codice = d.codice ? '<span class="crew-pf-code">· ' + escapeHtml(d.codice) + '</span>' : '';
-        var html = '<div class="crew-pf-header"><h2 class="crew-pf-name">' + escapeHtml(d.nome || '—') + codice + '</h2>';
+        // Copertina hero (2026-07-23): prima foto (= pfPhotos[0]) come cover in cima, nome in overlay; fallback nome nell'header
+        var coverPhoto = '';
+        var coverKeys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
+        if (albums.generale) coverKeys.push('generale');
+        for (var ck = 0; ck < coverKeys.length && !coverPhoto; ck++) {
+            var cps = albums[coverKeys[ck]] || [];
+            for (var cp = 0; cp < cps.length; cp++) { if (!VIDEO_RE.test(cps[cp])) { coverPhoto = cps[cp]; break; } }
+        }
+        var html = '';
+        if (coverPhoto) {
+            html += '<div class="crew-pf-hero"><img class="crew-pf-hero-img crew-pf-clic" src="' + encodeURI(withW(coverPhoto, 1200)) + '" alt="" data-idx="0">'
+                 +  '<div class="crew-pf-hero-overlay"><h2 class="crew-pf-hero-name">' + escapeHtml(d.nome || '—') + codice + '</h2></div></div>';
+        }
+        html += '<div class="crew-pf-header">';
+        if (!coverPhoto) html += '<h2 class="crew-pf-name">' + escapeHtml(d.nome || '—') + codice + '</h2>';
         if (d.categorie && d.categorie.length) {
             html += '<div class="crew-pf-roles">';
             d.categorie.forEach(function (cat) { html += '<span class="crew-pf-chip">' + escapeHtml(cat) + '</span>'; });
