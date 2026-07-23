@@ -889,7 +889,7 @@ $theme_uri = get_stylesheet_directory_uri();
           <div style="font-size:.82rem;opacity:.8;text-align:center;margin-bottom:.6rem;">
             <?php echo _ht_talent(array('it'=>'I casting li pubblichiamo qui ogni giorno, non solo via email.','en'=>'We post castings here every day, not only by email.','fr'=>'Nous publions les castings ici chaque jour, pas seulement par email.','es'=>'Publicamos los castings aquí cada día, no solo por email.')); ?>
           </div>
-          <a href="https://toagency.it/itacommunities-new.html" target="_blank" rel="noopener" style="display:block;background:#25d366;color:#fff;border-radius:8px;padding:.7rem 1.2rem;font-weight:800;text-decoration:none;text-align:center;font-size:.95rem;margin-bottom:.5rem;">
+          <a id="toa-community-wa-btn" href="https://toagency.it/crm_toagency/onboarding-community.php" target="_blank" rel="noopener" style="display:block;background:#25d366;color:#fff;border-radius:8px;padding:.7rem 1.2rem;font-weight:800;text-decoration:none;text-align:center;font-size:.95rem;margin-bottom:.5rem;">
             💬 <?php echo _ht_talent(array('it'=>'Gruppi WhatsApp della tua regione','en'=>'WhatsApp groups for your region','fr'=>'Groupes WhatsApp de ta région','es'=>'Grupos de WhatsApp de tu región')); ?>
           </a>
           <div style="display:flex;gap:.5rem;">
@@ -911,12 +911,23 @@ document.addEventListener('DOMContentLoaded', function() {
     var observer = new MutationObserver(function() {
         if (successModal.classList.contains('toa-talent-success--visible') ||
             successModal.style.display !== 'none' && successModal.style.display !== '') {
-            var paeseEl = document.querySelector('[name="paese_residenza"]') ||
-                          document.querySelector('[name="nation"]') ||
-                          document.querySelector('select[name*="paese"]');
-            var paese = paeseEl ? paeseEl.value : 'IT';
             var block = document.getElementById('toa-community-block');
-            if (block) block.style.display = (paese === 'IT' || paese === '' || !paese) ? 'block' : 'none';
+            if (block) {
+                block.style.display = 'block'; // FIX 2026-07-23 marco — mostra per tutte le nazioni (parita email; onboarding-community gestisce IT/ES/FR/INT)
+                var waBtn = document.getElementById('toa-community-wa-btn');
+                if (waBtn) {
+                    var natEl = document.querySelector('[name="res_nation"]');
+                    var iso = (natEl && natEl.value ? natEl.value : '').toUpperCase();
+                    if (['IT','ES','FR'].indexOf(iso) === -1) iso = 'INT';
+                    var lg = (document.documentElement.getAttribute('lang') || 'it').substring(0,2).toLowerCase();
+                    if (['it','en','fr','es'].indexOf(lg) === -1) lg = 'it';
+                    var nomeEl = document.querySelector('[name="nome"]');
+                    var nome = nomeEl ? (nomeEl.value || '').trim().substring(0,40) : '';
+                    var href = 'https://toagency.it/crm_toagency/onboarding-community.php?paese=' + iso + '&lang=' + lg;
+                    if (nome) href += '&nome=' + encodeURIComponent(nome);
+                    waBtn.href = href;
+                }
+            }
         }
     });
     observer.observe(successModal, { attributes: true, attributeFilter: ['class','style'] });
