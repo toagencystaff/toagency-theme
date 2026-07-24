@@ -236,6 +236,7 @@ $token_get = $_GET['t']    ?? '';
                     <input type="file" id="f-portfolio-video-input" accept="video/*" multiple style="display:none;">
                     <button type="button" id="f-portfolio-video-btn" class="crew-edit-foto-btn">🎬 <?= esc_html($_t(['it'=>'Aggiungi video','en'=>'Add videos','fr'=>'Ajouter des vidéos','es'=>'Añadir vídeos'])) ?></button>
                     <div class="crew-edit-foto-status" id="f-portfolio-video-status"></div>
+                    <div class="crew-edit-hint" style="margin-top:6px;">🎬 <?= esc_html($_t(['it'=>'Troppo pesante? Esportalo a 720p o mandalo su WhatsApp.','en'=>'Too big? Export at 720p or send it on WhatsApp.','fr'=>'Trop lourd ? Exporte en 720p ou envoie sur WhatsApp.','es'=>'¿Muy pesado? Expórtalo a 720p o mándalo por WhatsApp.'])) ?> <a href="https://wa.me/393518468516?text=<?= rawurlencode($_t(['it'=>'Ciao, vi invio il mio video per la mia scheda crew TOAgency','en'=>'Hi, I am sending my video for my TOAgency crew profile','fr'=>'Bonjour, je vous envoie ma vidéo pour ma fiche crew TOAgency','es'=>'Hola, os envío mi vídeo para mi ficha crew TOAgency'])) ?>" target="_blank" rel="noopener" style="color:#25D366;font-weight:700;text-decoration:none;white-space:nowrap;">📲 WhatsApp</a></div>
                 </div>
             </div>
 

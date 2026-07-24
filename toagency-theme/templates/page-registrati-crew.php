@@ -479,6 +479,7 @@ $theme_uri = get_stylesheet_directory_uri();
                     <input type="file" id="toaCrewVideosInput" accept="video/*" multiple style="display:none;">
                 </div>
                 <div class="toa-crew-thumbs" id="toaCrewVideosThumbs"></div>
+                <div class="toa-crew-dropzone-hint" style="margin-top:8px;">🎬 <?php echo _ht_crew(array('it'=>'Troppo pesante? Esportalo a 720p o mandalo su WhatsApp.','en'=>'Too big? Export at 720p or send it on WhatsApp.','fr'=>'Trop lourd ? Exporte en 720p ou envoie sur WhatsApp.','es'=>'¿Muy pesado? Expórtalo a 720p o mándalo por WhatsApp.')); ?> <a href="https://wa.me/393518468516?text=<?php echo rawurlencode(_ht_crew_raw(array('it'=>'Ciao, vi invio il mio video per la mia scheda crew TOAgency','en'=>'Hi, I am sending my video for my TOAgency crew profile','fr'=>'Bonjour, je vous envoie ma vidéo pour ma fiche crew TOAgency','es'=>'Hola, os envío mi vídeo para mi ficha crew TOAgency'))); ?>" target="_blank" rel="noopener" style="color:#25D366;font-weight:700;text-decoration:none;white-space:nowrap;">📲 WhatsApp</a></div>
             </div>
 
             <!-- Conferma upload -->
