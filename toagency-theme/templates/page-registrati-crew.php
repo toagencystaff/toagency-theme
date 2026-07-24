@@ -506,7 +506,7 @@ $theme_uri = get_stylesheet_directory_uri();
             <!-- ═════════ CONSENSO PUBBLICAZIONE IMMAGINI (legge 633/41 + GDPR) ═════════ -->
             <div class="toa-crew-field" style="background:rgba(200,255,0,0.04);border:1px solid rgba(200,255,0,0.2);border-radius:14px;padding:18px;margin-top:20px;">
                 <label class="toa-crew-checkbox" style="align-items:flex-start;">
-                    <input type="checkbox" name="pubblicazione_immagini_consent" value="1" id="toaCrewPubblicazione" style="margin-top:6px;">
+                    <input type="checkbox" name="pubblicazione_immagini_consent" value="1" id="toaCrewPubblicazione" required style="margin-top:6px;">
                     <span style="font-size:0.88rem;line-height:1.55;">
                         <strong style="color:#c8ff00;display:block;margin-bottom:6px;">📸 <?php echo _ht_crew(array(
                             'it'=>'Consenso alla pubblicazione delle immagini',
@@ -523,14 +523,15 @@ $theme_uri = get_stylesheet_directory_uri();
                         <br><br>
                         <em style="color:rgba(255,255,255,0.55);font-size:0.78rem;">
                             <?php echo _ht_crew(array(
-                                'it'=>'⚠ Consenso facoltativo. Senza questo consenso il profilo verrà comunque salvato ma non sarà visibile pubblicamente.',
-                                'en'=>'⚠ Optional consent. Without this, your profile will be saved but not publicly visible.',
-                                'fr'=>'⚠ Facultatif. Sans ce consentement, le profil ne sera pas visible publiquement.',
-                                'es'=>'⚠ Opcional. Sin este consentimiento, el perfil no será visible públicamente.',
+                                'it'=>'✅ Consenso OBBLIGATORIO: senza non comparirai ai clienti e il profilo non sarà pubblicato.',
+                                'en'=>'✅ Required consent: without it you will not appear to clients and your profile will not be published.',
+                                'fr'=>'✅ Consentement obligatoire : sans lui, tu n’apparaîtras pas aux clients.',
+                                'es'=>'✅ Consentimiento obligatorio: sin él no aparecerás ante los clientes.',
                             )); ?>
                         </em>
                     </span>
                 </label>
+                <div class="toa-crew-error-msg"></div>
             </div>
             <!-- ═════════ FINE CONSENSO PUBBLICAZIONE ═════════ -->
             <!-- NOTIFICHE — opt-in WhatsApp/SMS (facoltativo, NON pre-spuntato) 2026-06-30 marco -->
@@ -601,7 +602,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.2-20260723eta" defer></script><!-- TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
+<script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.3-20260723eta" defer></script><!-- TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
 
 <!-- ══════════════════════════════════════════════
      PREFILL — pre-compila campi se l'utente arriva da Student Program

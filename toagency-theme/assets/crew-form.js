@@ -796,6 +796,15 @@
                 }
                 ok = false;
             }
+            var pubbl = scope.querySelector('[name="pubblicazione_immagini_consent"]');
+            if (pubbl && !pubbl.checked) {
+                var b3 = pubbl.closest('.toa-crew-field');
+                if (b3) {
+                    var er3 = b3.querySelector('.toa-crew-error-msg');
+                    if (er3) { er3.textContent = 'Devi dare il consenso alla pubblicazione per comparire ai clienti'; er3.classList.add('show'); }
+                }
+                ok = false;
+            }
         }
 
         return ok;
