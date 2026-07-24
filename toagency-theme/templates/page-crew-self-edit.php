@@ -239,6 +239,14 @@ $token_get = $_GET['t']    ?? '';
                 </div>
             </div>
 
+            <!-- 2026-07-24 — toggle consenso pubblicazione (immediato) -->
+            <div class="crew-edit-field" style="background:rgba(200,255,0,0.05); border:1px solid rgba(200,255,0,0.25); border-radius:12px; padding:14px;">
+                <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+                    <input type="checkbox" id="f-consenso" style="width:auto; transform:scale(1.3);">
+                    <span style="font-weight:700; color:#c8ff00;"><?= esc_html($_t(['it'=>'Rendi pubblico il mio profilo','en'=>'Make my profile public','fr'=>'Rendre mon profil public','es'=>'Hacer público mi perfil'])) ?></span>
+                </label>
+                <div class="crew-edit-hint" id="f-consenso-status" style="margin-top:6px;"><?= esc_html($_t(['it'=>'Consenso alla pubblicazione di foto/video sui canali TOAgency: necessario per comparire ai clienti (poi lo staff valida il profilo).','en'=>'Consent to publish your photos/videos on TOAgency channels: required to appear to clients (staff then validates the profile).','fr'=>'Consentement à la publication : nécessaire pour apparaître aux clients (validation staff ensuite).','es'=>'Consentimiento de publicación: necesario para aparecer ante los clientes (luego el staff valida).'])) ?></div>
+            </div>
             <div class="crew-edit-field">
                 <label class="crew-edit-label"><?= esc_html($_t($T['field_telefono'])) ?></label>
                 <input type="tel" id="f-telefono" class="crew-edit-input" autocomplete="tel">
@@ -328,6 +336,7 @@ window.crewEditConfig = {
     apiSave:        '/crm_toagency/actions/crew-self-edit-save.php',
     apiUploadFoto:  '/crm_toagency/actions/crew-upload-foto-profilo.php',
     apiUploadPortfolio: '/crm_toagency/actions/crew-self-edit-upload-portfolio.php',
+    apiConsenso: '/crm_toagency/actions/crew-self-edit-consenso.php',
     provinceJsonUrl: <?= json_encode($theme_uri . '/assets/data/province-italia.json') ?>, /* FIX 2026-07-01 marco — tendina provincia crew */
     comuneApiUrl:   '/crm_toagency/actions/cerca-comune.php', /* FIX 2026-07-01 marco — ricerca comune crew */
     pendingFotoTpl: <?= json_encode($_t($T['pending_foto'])) ?>,
@@ -346,6 +355,6 @@ window.crewEditConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260723eta3" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260723eta4" defer></script>
 
 <?php toa_component('footer'); ?>

@@ -1,5 +1,6 @@
 /**
- * crew-self-edit.js — v1.3 (2026-07-23)
+ * crew-self-edit.js — v1.4 (2026-07-24)
+ * v1.4: toggle "rendi pubblico" (consenso immediato, crew-self-edit-consenso.php)
  * v1.3: upload galleria portfolio (foto+video) da self-edit, max 15 foto / 6 video, pending approvazione
  * v1.2: contatore bio (max 800, min consigliato 150)
  * v1.1: campi età/P.IVA (data_nascita, ha_partita_iva + anno_partita_iva condizionale)
@@ -16,6 +17,7 @@
     var API_SAVE = cfg.apiSave;
     var API_UPLOAD_FOTO = cfg.apiUploadFoto || '/crm_toagency/actions/crew-upload-foto-profilo.php';
     var API_UPLOAD_PORTFOLIO = cfg.apiUploadPortfolio || '/crm_toagency/actions/crew-self-edit-upload-portfolio.php';
+    var API_CONSENSO = cfg.apiConsenso || '/crm_toagency/actions/crew-self-edit-consenso.php';
     var MAX_FOTO = 15, MAX_VIDEO = 6;
     var portCounts = { foto: null, video: null };
     var UUID  = cfg.uuid  || '';
@@ -206,6 +208,33 @@
         updatePortfolioCounters();
     }
 
+    function setupConsenso() {
+        var chk = $('f-consenso'), st = $('f-consenso-status');
+        if (!chk) return;
+        chk.addEventListener('change', function () {
+            var val = chk.checked ? '1' : '0';
+            chk.disabled = true;
+            fetch(API_CONSENSO, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ uuid: UUID, t: TOKEN, consenso: val }),
+                credentials: 'same-origin'
+            })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+                if (res.ok) {
+                    chk.checked = (String(res.consenso) === '1');
+                    if (st) { st.textContent = res.message || (chk.checked ? 'Profilo reso pubblico (in attesa di validazione staff).' : 'Profilo non pubblico.'); st.style.color = chk.checked ? '#c8ff00' : '#9ca3af'; }
+                } else {
+                    chk.checked = !chk.checked;
+                    if (st) { st.textContent = '✗ ' + (res.message || res.error || 'Errore'); st.style.color = '#ef4444'; }
+                }
+            })
+            .catch(function () { chk.checked = !chk.checked; if (st) { st.textContent = '✗ Errore di rete'; st.style.color = '#ef4444'; } })
+            .finally(function () { chk.disabled = false; });
+        });
+    }
+
     function loadData() {
         if (!UUID || !TOKEN) { showError(STR.invalidLink || 'Link non valido'); return; }
         fetch(API_LOAD + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN), {
@@ -245,6 +274,9 @@
 
             if (d.counts) { portCounts.foto = d.counts.foto; portCounts.video = d.counts.video; }
             updatePortfolioCounters();
+
+            var cons = $('f-consenso');
+            if (cons) cons.checked = (String(d.consenso) === '1' || (d.crew && String(d.crew.consenso) === '1'));
 
             // FIX 2026-07-01 marco — geo crew self-edit
             populateProvince(d.crew.provincia_domicilio || '');
@@ -412,5 +444,6 @@
         var _bio = $('f-bio');
         if (_bio) _bio.addEventListener('input', updateBioCounter);
         setupPortfolioUpload();
+        setupConsenso();
     });
 })();
