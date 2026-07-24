@@ -471,7 +471,7 @@ $theme_uri = get_stylesheet_directory_uri();
             <!-- Video portfolio -->
             <div class="toa-crew-upload-section">
                 <h5>🎬 <?php echo _ht_crew(array('it'=>'Video del tuo lavoro','en'=>'Videos','fr'=>'Vidéos','es'=>'Vídeos')); ?></h5>
-                <div class="toa-crew-upload-counter" id="toaCrewVideosCounter"><strong>0</strong> / 5</div>
+                <div class="toa-crew-upload-counter" id="toaCrewVideosCounter"><strong>0</strong> / 6</div>
                 <div class="toa-crew-dropzone" id="toaCrewVideosDrop">
                     <div class="toa-crew-dropzone-icon">⬆️</div>
                     <div class="toa-crew-dropzone-text"><strong><?php echo _ht_crew(array('it'=>'Clicca','en'=>'Click','fr'=>'Clique','es'=>'Clic')); ?></strong> <?php echo _ht_crew(array('it'=>'o trascina qui i video','en'=>'or drag videos','fr'=>'ou glisse','es'=>'o arrastra')); ?></div>
@@ -601,7 +601,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.1-20260723eta" defer></script><!-- TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
+<script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.2-20260723eta" defer></script><!-- TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
 
 <!-- ══════════════════════════════════════════════
      PREFILL — pre-compila campi se l'utente arriva da Student Program

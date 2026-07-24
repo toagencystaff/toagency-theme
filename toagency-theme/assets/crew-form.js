@@ -20,7 +20,7 @@
     var THEME_URI = (window.toaThemeUri || '/wp-content/themes/toagency-theme');
 
     var MAX_PHOTOS = 15;
-    var MAX_VIDEOS = 5;
+    var MAX_VIDEOS = 6; /* 2026-07-23: allineato allo standard (era 5) */
     var MAX_PHOTO_SIZE_MB = 60; /* TASK hardening-upload-crew 2026-06-04 marco — era 5: le foto grandi passano e vengono compresse client-side */
     var MAX_VIDEO_SIZE_MB = 50;
 
