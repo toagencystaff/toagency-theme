@@ -100,6 +100,7 @@ $T = [
     'error_profile'   => ['it'=>'Profilo non disponibile.','en'=>'Profile unavailable.','fr'=>'Profil indisponible.','es'=>'Perfil no disponible.'],
     'album_general'   => ['it'=>'Generale','en'=>'General','fr'=>'Général','es'=>'General'],
     'no_media'        => ['it'=>'Nessun contenuto ancora.','en'=>'No content yet.','fr'=>'Aucun contenu.','es'=>'Sin contenido.'],
+    'bio_placeholder' => ['it'=>'Bio in aggiornamento.','en'=>'Bio coming soon.','fr'=>'Bio à venir.','es'=>'Bio en breve.'],
     'lb_close'        => ['it'=>'Chiudi','en'=>'Close','fr'=>'Fermer','es'=>'Cerrar'],
     // Età + anzianità scheda (2026-07-23)
     'age_suffix'      => ['it'=>'anni','en'=>'years old','fr'=>'ans','es'=>'años'],
@@ -354,6 +355,7 @@ window.crewPubConfig = {
         errorProfile: <?= json_encode($_t($T['error_profile'])) ?>,
         generalAlbum: <?= json_encode($_t($T['album_general'])) ?>,
         noMedia: <?= json_encode($_t($T['no_media'])) ?>,
+        bioPlaceholder: <?= json_encode($_t($T['bio_placeholder'])) ?>,
         requestInfo: <?= json_encode($_t($T['request_info'])) ?>,
         ageSuffix: <?= json_encode($_t($T['age_suffix'])) ?>,
         sinceLabel: <?= json_encode($_t($T['since_label'])) ?>,
@@ -362,6 +364,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=2.2" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=2.3" defer></script>
 
 <?php toa_component('footer'); ?>

@@ -1,5 +1,6 @@
 /**
- * crew-database-list.js — v1.8 (2026-07-23)
+ * crew-database-list.js — v1.9 (2026-07-24)
+ * v1.9: placeholder bio quando vuota
  * v1.8: tendina provincia visibile solo per Paese IT/Tutti (estero filtra per Paese)
  * v1.7: filtro provincia (tendina da province-italia.json) → param 'provincia' nel search
  * v1.6: copertina hero (prima foto in cima alla scheda) con nome in overlay; fallback nome nell'header
@@ -374,7 +375,7 @@
         if (senParts.length) html += '<div class="crew-pf-seniority">' + senParts.join(' · ') + '</div>';
         html += '</div>';
         html += '<button type="button" class="crew-pf-cta" onclick="crewPfRequestInfo()">' + escapeHtml(STR.requestInfo || '📧 Richiedi info') + '</button>';
-        if (d.bio) html += '<p class="crew-pf-intro">' + escapeHtml(d.bio) + '</p>';
+        html += '<p class="crew-pf-intro"' + (d.bio ? '' : ' style="opacity:.5;font-style:italic;"') + '>' + escapeHtml(d.bio || (STR.bioPlaceholder || 'Bio in aggiornamento.')) + '</p>';
         var keys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
         if (albums.generale) keys.push('generale');
         var any = false;
