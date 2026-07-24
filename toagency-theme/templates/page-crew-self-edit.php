@@ -221,6 +221,24 @@ $token_get = $_GET['t']    ?? '';
                 <div class="crew-edit-foto-status" id="f-foto-status"></div>
             </div>
 
+            <!-- 2026-07-23 — Galleria portfolio (foto + video) self-service -->
+            <div class="crew-edit-foto-field">
+                <label class="crew-edit-foto-label">🖼️ <?= esc_html($_t(['it'=>'Galleria (foto e video dei tuoi lavori)','en'=>'Gallery (your work photos & videos)','fr'=>'Galerie (photos et vidéos)','es'=>'Galería (fotos y vídeos)'])) ?></label>
+                <div class="crew-edit-foto-hint"><?= esc_html($_t(['it'=>'Spunta i due consensi legali qui sopra prima di caricare. Approvazione staff entro 24h.','en'=>'Tick the two legal consents above before uploading. Staff approval within 24h.','fr'=>'Coche les deux consentements ci-dessus avant de charger.','es'=>'Marca los dos consentimientos antes de subir.'])) ?></div>
+                <div style="margin-top:10px;">
+                    <div class="crew-edit-foto-hint" id="f-portfolio-foto-counter">📷 — / 15</div>
+                    <input type="file" id="f-portfolio-foto-input" accept="image/*" multiple style="display:none;">
+                    <button type="button" id="f-portfolio-foto-btn" class="crew-edit-foto-btn">📷 <?= esc_html($_t(['it'=>'Aggiungi foto','en'=>'Add photos','fr'=>'Ajouter des photos','es'=>'Añadir fotos'])) ?></button>
+                    <div class="crew-edit-foto-status" id="f-portfolio-foto-status"></div>
+                </div>
+                <div style="margin-top:14px;">
+                    <div class="crew-edit-foto-hint" id="f-portfolio-video-counter">🎬 — / 6</div>
+                    <input type="file" id="f-portfolio-video-input" accept="video/*" multiple style="display:none;">
+                    <button type="button" id="f-portfolio-video-btn" class="crew-edit-foto-btn">🎬 <?= esc_html($_t(['it'=>'Aggiungi video','en'=>'Add videos','fr'=>'Ajouter des vidéos','es'=>'Añadir vídeos'])) ?></button>
+                    <div class="crew-edit-foto-status" id="f-portfolio-video-status"></div>
+                </div>
+            </div>
+
             <div class="crew-edit-field">
                 <label class="crew-edit-label"><?= esc_html($_t($T['field_telefono'])) ?></label>
                 <input type="tel" id="f-telefono" class="crew-edit-input" autocomplete="tel">
@@ -309,6 +327,7 @@ window.crewEditConfig = {
     apiLoad:        '/crm_toagency/actions/crew-self-edit-load.php',
     apiSave:        '/crm_toagency/actions/crew-self-edit-save.php',
     apiUploadFoto:  '/crm_toagency/actions/crew-upload-foto-profilo.php',
+    apiUploadPortfolio: '/crm_toagency/actions/crew-self-edit-upload-portfolio.php',
     provinceJsonUrl: <?= json_encode($theme_uri . '/assets/data/province-italia.json') ?>, /* FIX 2026-07-01 marco — tendina provincia crew */
     comuneApiUrl:   '/crm_toagency/actions/cerca-comune.php', /* FIX 2026-07-01 marco — ricerca comune crew */
     pendingFotoTpl: <?= json_encode($_t($T['pending_foto'])) ?>,
@@ -327,6 +346,6 @@ window.crewEditConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260723eta2" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260723eta3" defer></script>
 
 <?php toa_component('footer'); ?>

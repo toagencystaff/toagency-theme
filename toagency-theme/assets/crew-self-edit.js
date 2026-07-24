@@ -1,5 +1,6 @@
 /**
- * crew-self-edit.js — v1.2 (2026-07-23)
+ * crew-self-edit.js — v1.3 (2026-07-23)
+ * v1.3: upload galleria portfolio (foto+video) da self-edit, max 15 foto / 6 video, pending approvazione
  * v1.2: contatore bio (max 800, min consigliato 150)
  * v1.1: campi età/P.IVA (data_nascita, ha_partita_iva + anno_partita_iva condizionale)
  * JS per /crew-self-edit/?uuid=...&t=...
@@ -14,6 +15,9 @@
     var API_LOAD = cfg.apiLoad;
     var API_SAVE = cfg.apiSave;
     var API_UPLOAD_FOTO = cfg.apiUploadFoto || '/crm_toagency/actions/crew-upload-foto-profilo.php';
+    var API_UPLOAD_PORTFOLIO = cfg.apiUploadPortfolio || '/crm_toagency/actions/crew-self-edit-upload-portfolio.php';
+    var MAX_FOTO = 15, MAX_VIDEO = 6;
+    var portCounts = { foto: null, video: null };
     var UUID  = cfg.uuid  || '';
     var TOKEN = cfg.token || '';
     var STR   = cfg.strings || {};
@@ -137,6 +141,71 @@
         c.style.color = (n > 0 && n < 150) ? '#f59e0b' : '#9ca3af';
     }
 
+    function updatePortfolioCounters() {
+        var fc = $('f-portfolio-foto-counter'), vc = $('f-portfolio-video-counter');
+        if (fc) fc.textContent = '📷 ' + (portCounts.foto == null ? '—' : portCounts.foto) + ' / ' + MAX_FOTO + ((portCounts.foto != null && portCounts.foto < 3) ? ' · consigliate almeno 3' : '');
+        if (vc) vc.textContent = '🎬 ' + (portCounts.video == null ? '—' : portCounts.video) + ' / ' + MAX_VIDEO;
+    }
+
+    function uploadPortfolioFiles(tipo, files, statusEl) {
+        var legal = $('f-legal'), verita = $('f-verita');
+        if (!legal || !verita || !legal.checked || !verita.checked) {
+            statusEl.textContent = '✗ Spunta prima i due consensi legali qui sopra';
+            statusEl.className = 'crew-edit-foto-status err';
+            return;
+        }
+        var max = (tipo === 'video') ? MAX_VIDEO : MAX_FOTO;
+        var cur = (tipo === 'video') ? portCounts.video : portCounts.foto;
+        var list = Array.prototype.slice.call(files), i = 0;
+        function next() {
+            if (i >= list.length) return;
+            if (cur != null && cur >= max) {
+                statusEl.textContent = '✗ Limite raggiunto (' + max + ')';
+                statusEl.className = 'crew-edit-foto-status err';
+                return;
+            }
+            var file = list[i++];
+            statusEl.textContent = '⏳ Caricamento ' + i + '/' + list.length + '…';
+            statusEl.className = 'crew-edit-foto-status loading';
+            var fd = new FormData();
+            fd.append('uuid', UUID); fd.append('t', TOKEN); fd.append('tipo', tipo);
+            fd.append('file', file);
+            fd.append('dichiarazione_legale', '1'); fd.append('veridicita', '1');
+            fetch(API_UPLOAD_PORTFOLIO, { method: 'POST', body: fd, credentials: 'same-origin' })
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
+                    if (res.ok) {
+                        if (res.counts) { portCounts.foto = res.counts.foto; portCounts.video = res.counts.video; }
+                        else { if (cur == null) cur = 0; cur++; if (tipo === 'video') portCounts.video = cur; else portCounts.foto = cur; }
+                        cur = (tipo === 'video') ? portCounts.video : portCounts.foto;
+                        updatePortfolioCounters();
+                        statusEl.textContent = '✓ ' + (res.message || 'Caricato, in attesa di approvazione');
+                        statusEl.className = 'crew-edit-foto-status ok';
+                        next();
+                    } else {
+                        statusEl.textContent = '✗ ' + (res.message || res.error || 'Errore upload');
+                        statusEl.className = 'crew-edit-foto-status err';
+                    }
+                })
+                .catch(function () { statusEl.textContent = '✗ Errore di rete'; statusEl.className = 'crew-edit-foto-status err'; });
+        }
+        next();
+    }
+
+    function setupPortfolioUpload() {
+        [['foto','f-portfolio-foto-btn','f-portfolio-foto-input','f-portfolio-foto-status'],
+         ['video','f-portfolio-video-btn','f-portfolio-video-input','f-portfolio-video-status']].forEach(function (r) {
+            var tipo = r[0], btn = $(r[1]), inp = $(r[2]), st = $(r[3]);
+            if (!btn || !inp || !st) return;
+            btn.addEventListener('click', function () { inp.click(); });
+            inp.addEventListener('change', function (e) {
+                if (e.target.files && e.target.files.length) uploadPortfolioFiles(tipo, e.target.files, st);
+                inp.value = '';
+            });
+        });
+        updatePortfolioCounters();
+    }
+
     function loadData() {
         if (!UUID || !TOKEN) { showError(STR.invalidLink || 'Link non valido'); return; }
         fetch(API_LOAD + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN), {
@@ -173,6 +242,9 @@
             if (pivaChk) { pivaChk.checked = (String(d.crew.ha_partita_iva) === '1'); togglePivaYear(); }
 
             updateBioCounter();
+
+            if (d.counts) { portCounts.foto = d.counts.foto; portCounts.video = d.counts.video; }
+            updatePortfolioCounters();
 
             // FIX 2026-07-01 marco — geo crew self-edit
             populateProvince(d.crew.provincia_domicilio || '');
@@ -339,5 +411,6 @@
         if (pivaChk) pivaChk.addEventListener('change', togglePivaYear);
         var _bio = $('f-bio');
         if (_bio) _bio.addEventListener('input', updateBioCounter);
+        setupPortfolioUpload();
     });
 })();
