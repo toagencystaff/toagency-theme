@@ -1,6 +1,7 @@
 /**
  * talent-self-edit.js — v2.0 (2026-05-19, S8.A)
  * v1.0 (S7): self-edit campi anagrafici talent_database.
+ * v2.1 (2026-07-24): video di presentazione facoltativo (talent-self-edit-video.php, 50MB, WhatsApp fallback)
  * v2.0 (S8.A): aggiunge upload 4 album media (polaroid/dettaglio/portfolio/eventi)
  *              con disclaimer legale + veridicità per-album.
  */
@@ -12,6 +13,8 @@
     var API_SAVE     = cfg.apiSave;
     var API_MEDIA_LS = cfg.apiMediaList;
     var API_MEDIA_UP = cfg.apiMediaUp;
+    var API_VIDEO = cfg.apiVideo || '/crm_toagency/actions/talent-self-edit-video.php';
+    var talentNome = '', talentCognome = '', videoFile = null;
     var API_STATO    = cfg.apiStato;
     var UUID  = cfg.uuid  || '';
     var TOKEN = cfg.token || '';
@@ -209,6 +212,7 @@
             $('tse-uuid-display').textContent = '#' + (d.uuid_short || UUID.substring(0,8));
             $('tse-name-display').innerHTML = 'Stai modificando il profilo di <strong>' +
                 escapeHtml(d.talent.nome || '—') + '</strong>';
+            talentNome = (d.talent.nome || ''); talentCognome = (d.talent.cognome || '');
 
             // FIX 2026-06-27 marco — dati live subito: niente più avviso "in attesa di revisione"
             $('tse-pending').style.display = 'none';
@@ -733,6 +737,53 @@
         });
     }
     function escapeAttr(s) { return escapeHtml(s); }
+
+    function tseWaVideoLink() {
+        var nome = (talentNome + ' ' + talentCognome).trim();
+        var msg = 'Ciao, sono ' + (nome || 'un talent') + ', vi invio il mio video di presentazione per la scheda TOAgency';
+        return 'https://wa.me/393518468516?text=' + encodeURIComponent(msg);
+    }
+    function tseVideoShowHeavy() {
+        var h = $('tse-video-heavy'); if (h) h.style.display = 'block';
+        var wa = $('tse-video-wa'); if (wa) wa.href = tseWaVideoLink();
+    }
+    window.talentVideoChosen = function (input) {
+        videoFile = (input.files && input.files[0]) ? input.files[0] : null;
+        var fn = $('tse-video-fname'); if (fn) fn.textContent = videoFile ? videoFile.name : '—';
+        var st = $('tse-video-status'); if (st) { st.textContent = ''; st.className = 'tse-upload-status'; }
+        var h = $('tse-video-heavy');
+        if (videoFile && videoFile.size > 50 * 1024 * 1024) tseVideoShowHeavy();
+        else if (h) h.style.display = 'none';
+    };
+    window.talentVideoGo = function () {
+        var st = $('tse-video-status'), legal = $('tse-video-legal');
+        if (!videoFile) { st.textContent = 'Scegli prima un video'; st.className = 'tse-upload-status err'; return; }
+        if (!legal || !legal.checked) { st.textContent = 'Spunta il consenso per caricare'; st.className = 'tse-upload-status err'; return; }
+        if (videoFile.size > 50 * 1024 * 1024) { st.textContent = 'Video oltre 50MB: esporta a 720p o usa WhatsApp'; st.className = 'tse-upload-status err'; tseVideoShowHeavy(); return; }
+        var btn = $('tse-video-go'); if (btn) btn.disabled = true;
+        st.textContent = 'Caricamento…'; st.className = 'tse-upload-status loading';
+        var fd = new FormData();
+        fd.append('uuid', UUID); fd.append('t', TOKEN); fd.append('video', videoFile);
+        fd.append('dichiarazione_legale', '1'); fd.append('context', 'self_edit');
+        fetch(API_VIDEO, { method: 'POST', body: fd, credentials: 'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+                if (res.ok) {
+                    st.textContent = '✓ ' + (res.message || 'Video caricato, in attesa di approvazione dello staff.');
+                    st.className = 'tse-upload-status ok';
+                    videoFile = null;
+                    var fn = $('tse-video-fname'); if (fn) fn.textContent = '—';
+                    var vi = $('tse-video-input'); if (vi) vi.value = '';
+                    var h = $('tse-video-heavy'); if (h) h.style.display = 'none';
+                } else {
+                    st.textContent = '✗ ' + (res.message || res.error || 'Errore upload');
+                    st.className = 'tse-upload-status err';
+                    if (res.error === 'too_big' || res.error === 'too_big_server') tseVideoShowHeavy();
+                }
+            })
+            .catch(function () { st.textContent = '✗ Errore di rete'; st.className = 'tse-upload-status err'; })
+            .finally(function () { var b = $('tse-video-go'); if (b) b.disabled = false; });
+    };
 
     document.addEventListener('DOMContentLoaded', function () { initChipMax('f-etnia'); });
     document.addEventListener('DOMContentLoaded', loadData);

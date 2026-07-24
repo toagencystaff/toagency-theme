@@ -642,6 +642,29 @@ $token_get = $_GET['t']    ?? '';
             </div>
 
             <div id="tse-album-grid" class="tse-album-grid" style="margin-top:18px;"></div>
+
+            <!-- 2026-07-24 marco — Video di presentazione (facoltativo, non bloccante) -->
+            <div id="tse-video-section" style="margin-top:24px; border-top:1px solid #2a2a2e; padding-top:18px;">
+                <div class="tse-section-title">🎥 <?= esc_html($_t(['it'=>'Video di presentazione (facoltativo)','en'=>'Intro video (optional)','fr'=>'Vidéo de présentation (facultatif)','es'=>'Vídeo de presentación (opcional)'])) ?></div>
+                <p style="font-size:12px; color:#9ca3af; margin:0 0 12px; line-height:1.45;"><?= esc_html($_t(['it'=>'Facoltativo: puoi completare senza video e tornare dopo. Bassa risoluzione va benissimo. MP4/MOV/WEBM, max 50MB.','en'=>'Optional: you can finish without a video and come back later. Low resolution is perfectly fine. MP4/MOV/WEBM, max 50MB.','fr'=>'Facultatif : tu peux finir sans vidéo et revenir plus tard. Basse résolution acceptée. MP4/MOV/WEBM, max 50 Mo.','es'=>'Opcional: puedes terminar sin vídeo y volver luego. Baja resolución está perfecta. MP4/MOV/WEBM, máx 50MB.'])) ?></p>
+                <div class="tse-upload-box">
+                    <label class="tse-legal-checkbox">
+                        <input type="checkbox" id="tse-video-legal">
+                        <span><?= esc_html($_t(['it'=>'Confermo di avere i diritti sul video e acconsento alla pubblicazione.','en'=>'I confirm I hold the rights to this video and consent to its publication.','fr'=>'Je confirme détenir les droits de la vidéo et consens à sa publication.','es'=>'Confirmo que tengo los derechos del vídeo y consiento su publicación.'])) ?></span>
+                    </label>
+                    <div class="tse-upload-row" style="margin-top:10px;">
+                        <input type="file" id="tse-video-input" accept="video/mp4,video/quicktime,video/webm" style="display:none;" onchange="talentVideoChosen(this)">
+                        <button type="button" class="tse-upload-btn-file" onclick="document.getElementById('tse-video-input').click()">🎥 <?= esc_html($_t(['it'=>'Scegli video','en'=>'Choose video','fr'=>'Choisir la vidéo','es'=>'Elegir vídeo'])) ?></button>
+                        <span id="tse-video-fname" class="tse-upload-fname">—</span>
+                        <button type="button" id="tse-video-go" class="tse-upload-btn-go" onclick="talentVideoGo()"><?= esc_html($_t(['it'=>'Carica video','en'=>'Upload video','fr'=>'Charger la vidéo','es'=>'Subir vídeo'])) ?></button>
+                    </div>
+                    <div id="tse-video-status" class="tse-upload-status"></div>
+                    <div id="tse-video-heavy" style="display:none; margin-top:12px; padding:12px; background:#0a0a0a; border:1px solid #2a2a2e; border-radius:8px;">
+                        <div style="font-size:12px; color:#cbd5e1; line-height:1.6;"><?= esc_html($_t(['it'=>'Video troppo pesante? Esportalo a 720p (bassa risoluzione va bene), oppure inviacelo su WhatsApp e lo carichiamo noi. Trucco: mandalo a te stesso su WhatsApp e riscarica la versione compressa, oppure usa una app gratuita di compressione.','en'=>'Video too big? Export it at 720p (low res is fine), or send it to us on WhatsApp and we upload it. Tip: send it to yourself on WhatsApp and re-download the compressed version, or use a free compression app.','fr'=>'Vidéo trop lourde ? Exporte-la en 720p, ou envoie-la-nous sur WhatsApp. Astuce : envoie-la-toi sur WhatsApp et re-télécharge la version compressée.','es'=>'¿Vídeo muy pesado? Expórtalo a 720p, o envíanoslo por WhatsApp. Truco: envíatelo por WhatsApp y descarga la versión comprimida.'])) ?></div>
+                        <a id="tse-video-wa" href="#" target="_blank" rel="noopener" style="display:inline-block; margin-top:10px; background:#25D366; color:#fff; padding:10px 18px; border-radius:8px; font-weight:700; font-size:13px; text-decoration:none;">📲 <?= esc_html($_t(['it'=>'Invia il video su WhatsApp','en'=>'Send the video on WhatsApp','fr'=>'Envoyer la vidéo sur WhatsApp','es'=>'Enviar el vídeo por WhatsApp'])) ?></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -658,6 +681,7 @@ window.talentEditConfig = {
     apiSave:     '/crm_toagency/actions/talent-self-edit-save.php',
     apiMediaList:'/crm_toagency/actions/talent-media-list.php',
     apiMediaUp:  '/crm_toagency/actions/talent-media-upload.php',
+    apiVideo:    '/crm_toagency/actions/talent-self-edit-video.php',
     apiStato:    '/crm_toagency/actions/talent-profilo-stato.php',
     provinceJsonUrl: <?= json_encode($theme_uri . '/assets/data/province-italia.json') ?>, /* FIX 2026-07-01 marco — tendina provincia self-edit */
     comuneApiUrl: '/crm_toagency/actions/cerca-comune.php', /* FIX 2026-07-01 marco — ricerca comune self-edit */
