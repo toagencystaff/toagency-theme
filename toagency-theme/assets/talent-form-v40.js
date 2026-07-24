@@ -1345,7 +1345,54 @@
     /**
      * Mostra il modale di successo (unico per tutti).
      */
+    function toaTalentWaVideo() {
+        var fn = document.querySelector('input[name="nome"]'), fc = document.querySelector('input[name="cognome"]');
+        var full = (((fn && fn.value) || '') + ' ' + ((fc && fc.value) || '')).trim() || 'un talent';
+        var msg = 'Ciao, sono ' + full + ', vi invio il mio video di presentazione per la scheda TOAgency';
+        return 'https://wa.me/393518468516?text=' + encodeURIComponent(msg);
+    }
+    var talentVideoFile = null;
+    function setupTalentVideo() {
+        var sec = document.getElementById('toaTalentVideo');
+        if (!sec || !talentUuidAfterRegister || !talentTokenAfterRegister) return;
+        sec.style.display = 'block';
+        var input = document.getElementById('toaTalentVideoInput'),
+            nameEl = document.getElementById('toaTalentVideoName'),
+            status = document.getElementById('toaTalentVideoStatus'),
+            heavy = document.getElementById('toaTalentVideoHeavy'),
+            chooseBtn = document.getElementById('toaTalentVideoChoose'),
+            goBtn = document.getElementById('toaTalentVideoGo');
+        function showHeavy() { if (heavy) heavy.style.display = 'block'; var wa = document.getElementById('toaTalentVideoWa'); if (wa) wa.href = toaTalentWaVideo(); }
+        if (chooseBtn) chooseBtn.onclick = function () { input.click(); };
+        if (input) input.onchange = function () {
+            talentVideoFile = (input.files && input.files[0]) ? input.files[0] : null;
+            if (nameEl) nameEl.textContent = talentVideoFile ? talentVideoFile.name : '—';
+            if (status) { status.textContent = ''; status.style.color = ''; }
+            if (talentVideoFile && talentVideoFile.size > 50 * 1024 * 1024) showHeavy();
+            else if (heavy) heavy.style.display = 'none';
+        };
+        if (goBtn) goBtn.onclick = function () {
+            var legal = document.getElementById('toaTalentVideoLegal');
+            if (!talentVideoFile) { status.textContent = 'Scegli prima un video'; status.style.color = '#ef4444'; return; }
+            if (!legal || !legal.checked) { status.textContent = 'Spunta il consenso per caricare'; status.style.color = '#ef4444'; return; }
+            if (talentVideoFile.size > 50 * 1024 * 1024) { status.textContent = 'Video oltre 50MB: esporta a 720p o usa WhatsApp'; status.style.color = '#ef4444'; showHeavy(); return; }
+            goBtn.disabled = true; status.textContent = 'Caricamento…'; status.style.color = '#c8ff00';
+            var fd = new FormData();
+            fd.append('uuid', talentUuidAfterRegister); fd.append('t', talentTokenAfterRegister);
+            fd.append('video', talentVideoFile); fd.append('dichiarazione_legale', '1'); fd.append('context', 'registrazione');
+            fetch('/crm_toagency/actions/talent-self-edit-video.php', { method: 'POST', body: fd, credentials: 'same-origin' })
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
+                    if (res.ok) { status.textContent = '✓ ' + (res.message || 'Video caricato, in attesa di approvazione.'); status.style.color = '#c8ff00'; talentVideoFile = null; if (nameEl) nameEl.textContent = '—'; if (input) input.value = ''; if (heavy) heavy.style.display = 'none'; }
+                    else { status.textContent = '✗ ' + (res.message || res.error || 'Errore'); status.style.color = '#ef4444'; if (res.error === 'too_big' || res.error === 'too_big_server') showHeavy(); }
+                })
+                .catch(function () { status.textContent = '✗ Errore di rete'; status.style.color = '#ef4444'; })
+                .finally(function () { goBtn.disabled = false; });
+        };
+    }
+
     function showSuccess() {
+        setupTalentVideo();
         // FIX 2026-06-25 marco — popola la CTA "Completa il profilo" (step 2) con uuid+token del profilo creato
         var cta = document.getElementById('toaTalentCompleteCta');
         if (cta) {

@@ -897,11 +897,31 @@ $theme_uri = get_stylesheet_directory_uri();
             <a href="https://www.facebook.com/groups/hostessmodelscastingcalls" target="_blank" rel="noopener" style="flex:1;background:#111;color:#fff;border-radius:8px;padding:.6rem;font-weight:700;text-decoration:none;text-align:center;font-size:.9rem;">Facebook</a>
           </div>
         </div>
+        <!-- 2026-07-24 marco — Video presentazione facoltativo (post-registrazione, mai bloccante) -->
+        <div id="toaTalentVideo" style="display:none; margin:1rem 0; padding:1rem; border:1px solid rgba(200,255,0,.35); border-radius:12px; background:rgba(200,255,0,.05); text-align:left;">
+            <div style="font-weight:800; font-size:1rem; margin-bottom:.35rem;">🎥 <?php echo _ht_talent(array('it'=>'Ultimo passo (facoltativo): un breve video di presentazione','en'=>'Last step (optional): a short intro video','fr'=>'Dernière étape (facultatif) : une courte vidéo','es'=>'Último paso (opcional): un breve vídeo')); ?></div>
+            <div style="font-size:.82rem; opacity:.85; line-height:1.5; margin-bottom:.6rem;"><?php echo _ht_talent(array('it'=>'La tua scheda è già completa e salvata. Se vuoi, aggiungi un video (bassa risoluzione va benissimo, max 50MB). Puoi anche chiudere e inviarlo dopo.','en'=>'Your profile is already complete and saved. If you like, add a video (low resolution is fine, max 50MB). You can also close and send it later.','fr'=>'Ton profil est déjà complet et enregistré. Si tu veux, ajoute une vidéo (max 50 Mo). Tu peux aussi fermer et envoyer plus tard.','es'=>'Tu perfil ya está completo y guardado. Si quieres, añade un vídeo (máx 50MB). También puedes cerrar y enviarlo luego.')); ?></div>
+            <label style="display:flex; align-items:flex-start; gap:.5rem; font-size:.8rem; margin-bottom:.6rem; cursor:pointer;">
+                <input type="checkbox" id="toaTalentVideoLegal" style="margin-top:.2rem;">
+                <span><?php echo _ht_talent(array('it'=>'Confermo di avere i diritti sul video e acconsento alla pubblicazione.','en'=>'I confirm I hold the rights to this video and consent to its publication.','fr'=>'Je confirme détenir les droits de la vidéo et consens à sa publication.','es'=>'Confirmo que tengo los derechos del vídeo y consiento su publicación.')); ?></span>
+            </label>
+            <input type="file" id="toaTalentVideoInput" accept="video/mp4,video/quicktime,video/webm" style="display:none;">
+            <div style="display:flex; gap:.5rem; flex-wrap:wrap; align-items:center;">
+                <button type="button" id="toaTalentVideoChoose" style="background:#1a1a1e;border:1px solid #2a2a2e;color:#fff;padding:.6rem 1rem;border-radius:8px;font-weight:600;font-size:.85rem;cursor:pointer;">🎥 <?php echo _ht_talent(array('it'=>'Scegli video','en'=>'Choose video','fr'=>'Choisir','es'=>'Elegir')); ?></button>
+                <span id="toaTalentVideoName" style="font-size:.8rem;opacity:.7;flex:1;min-width:0;word-break:break-all;">—</span>
+                <button type="button" id="toaTalentVideoGo" style="background:#c8ff00;color:#0a0a0a;border:none;padding:.65rem 1.1rem;border-radius:8px;font-weight:800;font-size:.85rem;cursor:pointer;"><?php echo _ht_talent(array('it'=>'Carica','en'=>'Upload','fr'=>'Charger','es'=>'Subir')); ?></button>
+            </div>
+            <div id="toaTalentVideoStatus" style="font-size:.8rem;margin-top:.5rem;min-height:16px;"></div>
+            <div id="toaTalentVideoHeavy" style="display:none;margin-top:.6rem;padding:.7rem;background:#0a0a0a;border:1px solid #2a2a2e;border-radius:8px;">
+                <div style="font-size:.78rem;line-height:1.5;color:#cbd5e1;"><?php echo _ht_talent(array('it'=>'Video troppo pesante? Esportalo a 720p, oppure inviacelo su WhatsApp e lo carichiamo noi. Trucco: mandalo a te stesso su WhatsApp e riscarica la versione compressa.','en'=>'Video too big? Export it at 720p, or send it on WhatsApp and we upload it. Tip: send it to yourself on WhatsApp and re-download the compressed version.','fr'=>'Vidéo trop lourde ? Exporte-la en 720p, ou envoie-la sur WhatsApp. Astuce : envoie-la-toi sur WhatsApp et re-télécharge la version compressée.','es'=>'¿Vídeo muy pesado? Expórtalo a 720p, o envíalo por WhatsApp. Truco: envíatelo por WhatsApp y descarga la versión comprimida.')); ?></div>
+                <a id="toaTalentVideoWa" href="#" target="_blank" rel="noopener" style="display:inline-block;margin-top:.5rem;background:#25d366;color:#fff;padding:.55rem 1rem;border-radius:8px;font-weight:700;font-size:.85rem;text-decoration:none;">📲 <?php echo _ht_talent(array('it'=>'Invia il video su WhatsApp','en'=>'Send the video on WhatsApp','fr'=>'Envoyer sur WhatsApp','es'=>'Enviar por WhatsApp')); ?></a>
+            </div>
+        </div>
         <button type="button" class="toa-talent-success-close" id="toaTalentSuccessClose"><?php echo _ht_talent(array('it'=>'Chiudi','en'=>'Close','fr'=>'Fermer','es'=>'Cerrar')); ?></button>
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260723tel" defer></script><!-- FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260724video" defer></script><!-- FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
