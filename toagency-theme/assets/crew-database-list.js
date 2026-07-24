@@ -1,5 +1,6 @@
 /**
- * crew-database-list.js — v1.6 (2026-07-23)
+ * crew-database-list.js — v1.7 (2026-07-23)
+ * v1.7: filtro provincia (tendina da province-italia.json) → param 'provincia' nel search
  * v1.6: copertina hero (prima foto in cima alla scheda) con nome in overlay; fallback nome nell'header
  * v1.5: riga età + anzianità nella scheda (eta/attivita_dal/pro_dal dall'endpoint)
  * v1.4: provincia mostrata col nome esteso (TO → Torino) via mappa sigle IT
@@ -48,10 +49,25 @@
 
     function $(sel) { return document.querySelector(sel); }
 
+    function populateProvinceFilter() {
+        var sel = document.querySelector('#filter-provincia');
+        if (!sel || !cfg.provinceJsonUrl) return;
+        fetch(cfg.provinceJsonUrl).then(function (r) { return r.json(); }).then(function (list) {
+            (list || []).forEach(function (p) {
+                var o = document.createElement('option');
+                o.value = p.name;
+                o.textContent = p.name + (p.code ? ' (' + p.code + ')' : '');
+                sel.appendChild(o);
+            });
+        }).catch(function () {});
+    }
+
     function loadCrews() {
+        var provEl = $('#filter-provincia');
         var body = {
             categoria: $('#filter-categoria').value,
-            paese:     $('#filter-paese').value
+            paese:     $('#filter-paese').value,
+            provincia: provEl ? provEl.value : ''
         };
         $('#results-count').textContent = '…';
         fetch(API_SEARCH, {
@@ -459,6 +475,9 @@
     document.addEventListener('DOMContentLoaded', function () {
         $('#filter-categoria').addEventListener('change', loadCrews);
         $('#filter-paese').addEventListener('change', loadCrews);
+        var provSel = $('#filter-provincia');
+        if (provSel) provSel.addEventListener('change', loadCrews);
+        populateProvinceFilter();
         loadCrews();
         // Wiring lightbox (elementi statici nel template)
         var lbEl = $('#crew-lightbox');

@@ -65,6 +65,7 @@ $T = [
     ],
     'filter_all_cat'  => ['it'=>'Tutte le categorie','en'=>'All categories','fr'=>'Toutes catégories','es'=>'Todas categorías'],
     'filter_all_paesi'=> ['it'=>'Tutti i paesi','en'=>'All countries','fr'=>'Tous pays','es'=>'Todos países'],
+    'filter_all_prov' => ['it'=>'Tutte le province','en'=>'All provinces','fr'=>'Toutes provinces','es'=>'Todas provincias'],
     'loading'         => ['it'=>'Carico crew…','en'=>'Loading crew…','fr'=>'Chargement…','es'=>'Cargando…'],
     'results_label'   => ['it'=>'crew trovati','en'=>'crew found','fr'=>'crew trouvés','es'=>'crew encontrados'],
     'no_results'      => ['it'=>'Nessun crew con questi filtri.','en'=>'No crew matching.','fr'=>'Aucun crew.','es'=>'Ningún crew.'],
@@ -267,6 +268,9 @@ $theme_uri = get_stylesheet_directory_uri();
                 <option value="<?= esc_attr($code) ?>"><?= esc_html($_t($label)) ?></option>
             <?php endforeach; ?>
         </select>
+        <select id="filter-provincia">
+            <option value=""><?= esc_html($_t($T['filter_all_prov'])) ?></option>
+        </select>
         <span class="crew-pub-results-count" id="results-count"><?= esc_html($_t($T['loading'])) ?></span>
     </div>
 
@@ -338,6 +342,7 @@ window.crewPubConfig = {
     apiSearch: '/crm_toagency/actions/crew-public-search.php',
     apiLead:   '/crm_toagency/actions/crew-lead.php',
     apiProfile:'/crm_toagency/actions/crew-public-profile.php',
+    provinceJsonUrl: <?= json_encode($theme_uri . '/assets/data/province-italia.json') ?>,
     lang: <?= json_encode($__l) ?>,
     strings: {
         empty:    <?= json_encode($_t($T['no_results'])) ?>,
@@ -357,6 +362,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=2.0" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=2.1" defer></script>
 
 <?php toa_component('footer'); ?>
