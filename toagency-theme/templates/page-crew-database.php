@@ -185,7 +185,7 @@ $theme_uri = get_stylesheet_directory_uri();
 /* Copertina hero (2026-07-23) */
 .crew-pf-card .crew-pf-close { z-index:5; }
 .crew-pf-hero { position:relative; width:calc(100% + 64px); margin:-32px -32px 20px; border-radius:16px 16px 0 0; overflow:hidden; background:#0a0a0a; }
-.crew-pf-hero-img { display:block; width:100%; height:clamp(220px,42vw,360px); object-fit:cover; cursor:zoom-in; }
+.crew-pf-hero-img { display:block; width:100%; height:clamp(220px,42vw,360px); object-fit:cover; object-position:center 30%; cursor:zoom-in; }
 .crew-pf-hero-overlay { position:absolute; left:0; right:0; bottom:0; padding:40px 32px 18px; background:linear-gradient(to top, rgba(10,10,10,.92), rgba(10,10,10,.55) 55%, transparent); pointer-events:none; }
 .crew-pf-hero-name { color:#fff; font-size:34px; font-weight:800; letter-spacing:-.5px; margin:0; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; text-shadow:0 2px 12px rgba(0,0,0,.6); }
 @media (max-width:640px){ .crew-pf-hero{ width:calc(100% + 32px); margin:-22px -16px 16px; } .crew-pf-hero-img{ height:clamp(180px,54vw,300px); } .crew-pf-hero-overlay{ padding:32px 16px 14px; } .crew-pf-hero-name{ font-size:26px; } }
