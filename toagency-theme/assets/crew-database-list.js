@@ -1,5 +1,6 @@
 /**
- * crew-database-list.js — v1.7 (2026-07-23)
+ * crew-database-list.js — v1.8 (2026-07-23)
+ * v1.8: tendina provincia visibile solo per Paese IT/Tutti (estero filtra per Paese)
  * v1.7: filtro provincia (tendina da province-italia.json) → param 'provincia' nel search
  * v1.6: copertina hero (prima foto in cima alla scheda) con nome in overlay; fallback nome nell'header
  * v1.5: riga età + anzianità nella scheda (eta/attivita_dal/pro_dal dall'endpoint)
@@ -48,6 +49,14 @@
     var lastResults = [];
 
     function $(sel) { return document.querySelector(sel); }
+
+    function syncProvinceVisibility() {
+        var paeseEl = document.querySelector('#filter-paese'), prov = document.querySelector('#filter-provincia');
+        if (!paeseEl || !prov) return;
+        var show = (paeseEl.value === '' || paeseEl.value === 'IT');
+        prov.style.display = show ? '' : 'none';
+        if (!show) prov.value = '';
+    }
 
     function populateProvinceFilter() {
         var sel = document.querySelector('#filter-provincia');
@@ -474,10 +483,11 @@
     // ─── Init ──────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function () {
         $('#filter-categoria').addEventListener('change', loadCrews);
-        $('#filter-paese').addEventListener('change', loadCrews);
+        $('#filter-paese').addEventListener('change', function () { syncProvinceVisibility(); loadCrews(); });
         var provSel = $('#filter-provincia');
         if (provSel) provSel.addEventListener('change', loadCrews);
         populateProvinceFilter();
+        syncProvinceVisibility();
         loadCrews();
         // Wiring lightbox (elementi statici nel template)
         var lbEl = $('#crew-lightbox');
