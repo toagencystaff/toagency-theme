@@ -137,10 +137,10 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-card.selected { border:2px solid #c8ff00; box-shadow:0 0 0 3px rgba(200,255,0,.18); }
 .crew-pub-photo { width:100%; aspect-ratio:1; background:#0a0a0a center/cover no-repeat; display:flex; align-items:center; justify-content:center; color:#3a3a3e; font-size:56px; flex-shrink:0; position:relative; }
 /* 2026-07-26 Fase 2 — bottoncino selezione "Richiedi info" (+/✓), la card intera ora apre il profilo al click */
-.crew-pub-add { position:absolute; top:10px; right:10px; width:32px; height:32px; padding:0; background:#c8ff00; color:#0a0a0a; border:1px solid #c8ff00; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.45); z-index:2; }
+.crew-pub-add { position:absolute; top:10px; right:10px; width:32px; height:32px; padding:0 !important; background:#c8ff00; color:#0a0a0a; border:1px solid #c8ff00; border-radius:50% !important; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.45); z-index:2; }
 .crew-pub-add:hover { background:#fff; }
 /* 2026-07-26 Fase 3 — frecce hover per scorrere le foto lavori (pattern talent, lazy: bottoni al hover, fetch al 1° click) */
-.crew-pub-nav { position:absolute; top:50%; transform:translateY(-50%); width:34px; height:34px; border-radius:50%; background:rgba(0,0,0,.55); color:#fff; border:1px solid rgba(255,255,255,.25); font-size:20px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:2; opacity:0; transition:opacity .15s,background .15s; padding:0; }
+.crew-pub-nav { position:absolute; top:50%; transform:translateY(-50%); width:34px; height:34px; border-radius:50% !important; background:rgba(0,0,0,.55); color:#fff; border:1px solid rgba(255,255,255,.25); font-size:20px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:2; opacity:0; transition:opacity .15s,background .15s; padding:0 !important; }
 .crew-pub-card:hover .crew-pub-nav { opacity:1; }
 .crew-pub-nav:hover { background:#c8ff00; color:#0a0a0a; border-color:#c8ff00; }
 .crew-pub-nav-prev { left:8px; }
@@ -193,7 +193,8 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-card { background:linear-gradient(180deg,#161618,#0e0e10); border:1px solid #2a2a2e; border-radius:16px; max-width:960px; margin:16px auto; padding:32px 32px 40px; position:relative; box-shadow:0 24px 80px rgba(0,0,0,.6); }
 /* 2026-07-26 — FIX visibilità: prima era grigio scuro su grigio scuro, si perdeva su foto nere.
    Ora stesso stile lime della X della lightbox (sempre leggibile su qualsiasi foto) + centratura flex vera. */
-.crew-pf-close { position:absolute; top:14px; right:16px; width:36px; height:36px; background:#c8ff00; border:none; border-radius:50%; color:#0a0a0a; font-size:22px; font-weight:700; line-height:1; cursor:pointer; transition:all .15s; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(0,0,0,.45); }
+/* !important su padding/border-radius: c'è un reset globale "button,.btn,input[type=submit]{border-radius:6px!important;padding:12px 28px!important}" che altrimenti rompe il cerchio */
+.crew-pf-close { position:absolute; top:14px; right:16px; width:36px; height:36px; background:#c8ff00; border:none; border-radius:50% !important; padding:0 !important; color:#0a0a0a; font-size:22px; font-weight:700; line-height:1; cursor:pointer; transition:all .15s; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(0,0,0,.45); }
 .crew-pf-close:hover { filter:brightness(1.08); transform:scale(1.05); }
 .crew-pf-header { border-bottom:1px solid #2a2a2e; padding-bottom:20px; margin-bottom:8px; }
 .crew-pf-intro { color:#d0d3d9; font-size:15px; line-height:1.65; margin:16px 0 4px; max-width:680px; white-space:pre-line; }
@@ -226,7 +227,7 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-loading, .crew-pf-error, .crew-pf-empty { color:#9ca3af; text-align:center; padding:48px; }
 .crew-pf-loc { color:#9ca3af; font-size:13px; margin-top:10px; letter-spacing:.02em; }
 .crew-pf-seniority { color:#d0d3d9; font-size:13.5px; margin-top:8px; letter-spacing:.02em; }
-.crew-pf-cta { display:inline-flex; align-items:center; gap:8px; margin-top:18px; background:#c8ff00; color:#0a0a0a; border:none; padding:12px 24px; border-radius:8px; font-size:14px; font-weight:800; cursor:pointer; }
+.crew-pf-cta { display:inline-flex; align-items:center; gap:8px; margin-top:18px; background:#c8ff00; color:#0a0a0a; border:none; padding:12px 24px !important; border-radius:8px !important; font-size:14px; font-weight:800; cursor:pointer; }
 .crew-pf-cta:hover { filter:brightness(1.08); }
 @media (max-width:640px){ .crew-pf-card{ padding:22px 16px 32px; } .crew-pf-name{ font-size:26px; } .crew-pf-grid{ grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:8px; } }
 
@@ -235,7 +236,7 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-lb { position:fixed; inset:0; background:rgba(0,0,0,.94); z-index:100000; display:none; align-items:center; justify-content:center; }
 .crew-lb.show { display:flex; }
 .crew-lb-img { max-width:92vw; max-height:88vh; object-fit:contain; border-radius:8px; box-shadow:0 20px 80px rgba(0,0,0,.6); cursor:zoom-out; }
-.crew-lb-close { position:fixed; top:16px; right:20px; display:inline-flex; align-items:center; gap:6px; height:44px; padding:0 18px; background:#c8ff00; border:none; border-radius:999px; color:#0a0a0a; font-size:15px; font-weight:700; line-height:1; cursor:pointer; z-index:100001; box-shadow:0 4px 16px rgba(0,0,0,.4); }
+.crew-lb-close { position:fixed; top:16px; right:20px; display:inline-flex; align-items:center; gap:6px; height:44px; padding:0 18px !important; background:#c8ff00; border:none; border-radius:999px !important; color:#0a0a0a; font-size:15px; font-weight:700; line-height:1; cursor:pointer; z-index:100001; box-shadow:0 4px 16px rgba(0,0,0,.4); }
 .crew-lb-close:hover { filter:brightness(1.08); }
 .crew-lb-nav { position:fixed; top:50%; transform:translateY(-50%); width:52px; height:64px; background:rgba(26,26,30,.7); border:1px solid #2a2a2e; color:#fff; font-size:34px; line-height:1; cursor:pointer; z-index:100001; border-radius:8px; }
 .crew-lb-nav:hover { background:#c8ff00; color:#0a0a0a; border-color:#c8ff00; }
