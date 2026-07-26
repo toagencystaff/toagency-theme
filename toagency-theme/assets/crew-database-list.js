@@ -192,6 +192,11 @@
             meta.textContent = metaParts.join(' · ');
             body.appendChild(meta);
 
+            // 2026-07-26 — conteggio lavori (proposta ChatGPT): vuoto finche' non arriva il fetch della cover random
+            var projCount = document.createElement('div');
+            projCount.className = 'crew-pub-projcount';
+            body.appendChild(projCount);
+
             card.appendChild(body);
             // 2026-07-26 Fase 2 — click ovunque sulla card apre il profilo (come talent); selezione spostata sul bottoncino +/✓
             card.addEventListener('click', function () { openProfile(c.uuid, false, c.foto_profilo_url); });
@@ -580,6 +585,11 @@
             .catch(function () { /* silenzioso: resta la foto profilo come fallback */ });
     }
     function applyRandomCover(card, photo, media) {
+        // 2026-07-26 — conteggio lavori, sempre (anche con 0 o 1 foto: se 0 il div resta vuoto)
+        var projCount = card.querySelector('.crew-pub-projcount');
+        if (projCount && media && media.length) {
+            projCount.textContent = media.length + ' ' + (STR.worksCount || 'lavori');
+        }
         if (!media || !media.length) return;
         var idx = Math.floor(Math.random() * media.length);
         photo.style.backgroundImage = 'url(' + encodeURI(media[idx]) + ')';

@@ -107,6 +107,8 @@ $T = [
     'since_label'     => ['it'=>'Nel settore da','en'=>'In the field for','fr'=>'Dans le métier depuis','es'=>'En el sector desde hace'],
     'years_label'     => ['it'=>'anni','en'=>'years','fr'=>'ans','es'=>'años'],
     'pro_label'       => ['it'=>'professionista da','en'=>'professional for','fr'=>'professionnel depuis','es'=>'profesional desde hace'],
+    // 2026-07-26 — conteggio lavori in griglia (proposta ChatGPT, calcolato lato client dagli album gia' caricati)
+    'works_count'     => ['it'=>'lavori','en'=>'works','fr'=>'travaux','es'=>'trabajos'],
 ];
 
 $theme_uri = get_stylesheet_directory_uri();
@@ -165,6 +167,8 @@ $theme_uri = get_stylesheet_directory_uri();
 /* 2026-07-26 — categorie come testo pulito ("Beauty • Hair") invece di pillole colorate, consiglio ChatGPT */
 .crew-pub-categories { color:#c8ff00; font-size:12.5px; font-weight:600; margin-top:9px; letter-spacing:.02em; }
 .crew-pub-meta { font-size:12px; color:#9ca3af; margin-top:8px; text-transform:capitalize; }
+/* 2026-07-26 — conteggio lavori (proposta ChatGPT), calcolato lato client, appare dopo il fetch della cover random */
+.crew-pub-projcount { font-size:11.5px; color:#6b7280; margin-top:4px; }
 .crew-pub-empty { text-align:center; padding:80px 20px; color:#6b7280; grid-column:1/-1; }
 
 .crew-pub-actionbar { position:fixed; bottom:0; left:0; right:0; background:#1a1a1e; border-top:1px solid #c8ff00; padding:14px 24px; display:none; align-items:center; justify-content:space-between; z-index:100; box-shadow:0 -4px 16px rgba(0,0,0,.4); }
@@ -404,9 +408,10 @@ window.crewPubConfig = {
         sinceLabel: <?= json_encode($_t($T['since_label'])) ?>,
         yearsLabel: <?= json_encode($_t($T['years_label'])) ?>,
         proLabel: <?= json_encode($_t($T['pro_label'])) ?>,
+        worksCount: <?= json_encode($_t($T['works_count'])) ?>,
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=3.2-avatarrow" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=3.3-projcount" defer></script>
 
 <?php toa_component('footer'); ?>
