@@ -228,6 +228,9 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-headinfo { flex:1; min-width:0; }
 .crew-pf-headinfo .crew-pf-name { margin-top:0; }
 .crew-pf-roles { display:flex; flex-wrap:wrap; gap:8px; }
+/* 2026-07-26 — specializzazioni per ruolo (album_temi), sotto i chip ruolo */
+.crew-pf-temi { color:#b8bcc4; font-size:13px; margin-top:6px; }
+.crew-pf-temi strong { color:#d0d3d9; }
 .crew-pf-chip { background:#c8ff00; color:#0a0a0a; padding:5px 12px; border-radius:999px; font-size:12px; font-weight:700; }
 .crew-pf-album { margin-top:32px; }
 .crew-pf-album-head { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
@@ -412,6 +415,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=3.3-projcount" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=3.4-temidisplay" defer></script>
 
 <?php toa_component('footer'); ?>

@@ -416,6 +416,17 @@
             d.categorie.forEach(function (cat) { html += '<span class="crew-pf-chip">' + escapeHtml(cat) + '</span>'; });
             html += '</div>';
         }
+        // 2026-07-26 — specializzazioni per ruolo (album_temi, CRM: endpoint crew-self-edit-temi.php).
+        // Profilo-level, non foto: es. Fotografo -> Wedding, Beauty. Vuoto finche' il crew non le imposta nel self-edit (non ancora costruito).
+        if (d.temi) {
+            Object.keys(d.temi).forEach(function (ruolo) {
+                var vals = d.temi[ruolo];
+                if (vals && vals.length) {
+                    var ruoloLabel = labels[ruolo] || ruolo;
+                    html += '<div class="crew-pf-temi"><strong>' + escapeHtml(ruoloLabel) + ':</strong> ' + escapeHtml(vals.join(', ')) + '</div>';
+                }
+            });
+        }
         // Privacy: SOLO provincia (mai il comune di residenza/domicilio); paese solo se non IT
         var loc = d.provincia ? provName(String(d.provincia)) : '';
         if (d.paese && d.paese !== 'IT') loc = loc ? (loc + ' · ' + d.paese) : String(d.paese);
