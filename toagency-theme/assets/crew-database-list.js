@@ -401,8 +401,10 @@
                  +  '<div class="crew-pf-hero-overlay"><h2 class="crew-pf-hero-name">' + escapeHtml(d.nome ? properCase(d.nome) : '—') + codice + '</h2></div></div>';
         }
         html += '<div class="crew-pf-header">';
-        // 2026-07-26 — avatar (persona) piu' grande dentro la scheda, richiesto da Marco
+        // 2026-07-26 — layout affiancato: avatar a sinistra, info a destra (richiesto da Marco per ottimizzare lo spazio)
+        html += '<div class="crew-pf-headrow">';
         if (avatarUrl) html += '<span class="crew-pf-avatar" style="background-image:url(' + escapeHtml(encodeURI(avatarUrl)) + ')"></span>';
+        html += '<div class="crew-pf-headinfo">';
         if (!coverPhoto) html += '<h2 class="crew-pf-name">' + escapeHtml(d.nome ? properCase(d.nome) : '—') + codice + '</h2>';
         if (d.categorie && d.categorie.length) {
             html += '<div class="crew-pf-roles">';
@@ -428,6 +430,8 @@
             if (nPro >= 1) senParts.push(escapeHtml(STR.proLabel || 'professionista da') + ' ' + nPro + ' ' + escapeHtml(STR.yearsLabel || 'anni'));
         }
         if (senParts.length) html += '<div class="crew-pf-seniority">' + senParts.join(' · ') + '</div>';
+        html += '</div>'; // .crew-pf-headinfo
+        html += '</div>'; // .crew-pf-headrow
         html += '</div>';
         html += '<button type="button" class="crew-pf-cta" onclick="crewPfRequestInfo()">' + escapeHtml(STR.requestInfo || '📧 Richiedi info') + '</button>';
         html += '<p class="crew-pf-intro"' + (d.bio ? '' : ' style="opacity:.5;font-style:italic;"') + '>' + escapeHtml(d.bio || (STR.bioPlaceholder || 'Bio in aggiornamento.')) + '</p>';

@@ -218,8 +218,11 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-hero-name { color:#fff; font-size:34px; font-weight:800; letter-spacing:-.5px; margin:0; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; text-shadow:0 2px 12px rgba(0,0,0,.6); }
 @media (max-width:640px){ .crew-pf-hero{ width:calc(100% + 32px); margin:-22px -16px 16px; } .crew-pf-hero-img{ height:clamp(180px,54vw,300px); } .crew-pf-hero-overlay{ padding:32px 16px 14px; } .crew-pf-hero-name{ font-size:26px; } }
 .crew-pf-code { color:#6b7280; font-weight:500; font-size:15px; letter-spacing:.5px; font-family:monospace; }
-/* 2026-07-26 — avatar (persona) piu' grande dentro la scheda, sopra nome/ruoli */
-.crew-pf-avatar { display:block; width:76px; height:76px; border-radius:50%; background:#2a2a2e center/cover no-repeat; border:3px solid #2a2a2e; margin-bottom:12px; }
+/* 2026-07-26 — layout affiancato: avatar a sinistra (un po' piu' grande), info a destra (ottimizza lo spazio, richiesta Marco) */
+.crew-pf-headrow { display:flex; align-items:flex-start; gap:18px; }
+.crew-pf-avatar { flex-shrink:0; width:92px; height:92px; border-radius:50%; background:#2a2a2e center/cover no-repeat; border:3px solid #2a2a2e; }
+.crew-pf-headinfo { flex:1; min-width:0; }
+.crew-pf-headinfo .crew-pf-name { margin-top:0; }
 .crew-pf-roles { display:flex; flex-wrap:wrap; gap:8px; }
 .crew-pf-chip { background:#c8ff00; color:#0a0a0a; padding:5px 12px; border-radius:999px; font-size:12px; font-weight:700; }
 .crew-pf-album { margin-top:32px; }
@@ -404,6 +407,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=3.1-avatarbig-cats" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=3.2-avatarrow" defer></script>
 
 <?php toa_component('footer'); ?>
