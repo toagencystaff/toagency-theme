@@ -158,12 +158,12 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-body { padding:14px; display:flex; flex-direction:column; flex:1; }
 .crew-pub-name-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 /* 2026-07-26 — avatar piccolo (la persona) accanto al nome, la foto grande della card ora e' il lavoro (cover random) */
-.crew-pub-avatar { width:30px; height:30px; border-radius:50%; background:#2a2a2e center/cover no-repeat; flex-shrink:0; border:1.5px solid #2a2a2e; }
+.crew-pub-avatar { width:44px; height:44px; border-radius:50%; background:#2a2a2e center/cover no-repeat; flex-shrink:0; border:2px solid #2a2a2e; }
 .crew-pub-name { font-size:15px; font-weight:600; color:#fff; }
 /* 2026-07-26 — codice pill (allineato al trattamento talent .toa-tdb-card-code): maiuscolo, senza #, visibile quanto il nome */
 .crew-pub-uuid { font-family:monospace; font-size:13px; font-weight:700; background:rgba(200,255,0,.22); color:#c8ff00; padding:2px 8px; border-radius:5px; letter-spacing:.04em; }
-.crew-pub-categories { display:flex; flex-wrap:wrap; gap:4px; margin-top:10px; }
-.crew-pub-cat-chip { background:#c8ff00; color:#0a0a0a; padding:3px 8px; border-radius:4px; font-size:11px; font-weight:600; }
+/* 2026-07-26 — categorie come testo pulito ("Beauty • Hair") invece di pillole colorate, consiglio ChatGPT */
+.crew-pub-categories { color:#c8ff00; font-size:12.5px; font-weight:600; margin-top:9px; letter-spacing:.02em; }
 .crew-pub-meta { font-size:12px; color:#9ca3af; margin-top:8px; text-transform:capitalize; }
 .crew-pub-empty { text-align:center; padding:80px 20px; color:#6b7280; grid-column:1/-1; }
 
@@ -218,6 +218,8 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-hero-name { color:#fff; font-size:34px; font-weight:800; letter-spacing:-.5px; margin:0; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; text-shadow:0 2px 12px rgba(0,0,0,.6); }
 @media (max-width:640px){ .crew-pf-hero{ width:calc(100% + 32px); margin:-22px -16px 16px; } .crew-pf-hero-img{ height:clamp(180px,54vw,300px); } .crew-pf-hero-overlay{ padding:32px 16px 14px; } .crew-pf-hero-name{ font-size:26px; } }
 .crew-pf-code { color:#6b7280; font-weight:500; font-size:15px; letter-spacing:.5px; font-family:monospace; }
+/* 2026-07-26 — avatar (persona) piu' grande dentro la scheda, sopra nome/ruoli */
+.crew-pf-avatar { display:block; width:76px; height:76px; border-radius:50%; background:#2a2a2e center/cover no-repeat; border:3px solid #2a2a2e; margin-bottom:12px; }
 .crew-pf-roles { display:flex; flex-wrap:wrap; gap:8px; }
 .crew-pf-chip { background:#c8ff00; color:#0a0a0a; padding:5px 12px; border-radius:999px; font-size:12px; font-weight:700; }
 .crew-pf-album { margin-top:32px; }
@@ -379,6 +381,10 @@ window.crewPubConfig = {
     apiProfile:'/crm_toagency/actions/crew-public-profile.php',
     provinceJsonUrl: <?= json_encode($theme_uri . '/assets/data/province-italia.json') ?>,
     lang: <?= json_encode($__l) ?>,
+    catLabels: <?= json_encode(array_combine(
+        array_column($CREW_CATEGORIES, 'code'),
+        array_map(function ($cat) use ($_t) { return $_t($cat['label']); }, $CREW_CATEGORIES)
+    )) ?>,
     strings: {
         empty:    <?= json_encode($_t($T['no_results'])) ?>,
         resultsLabel: <?= json_encode($_t($T['results_label'])) ?>,
@@ -398,6 +404,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=3.0-avatar" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=3.1-avatarbig-cats" defer></script>
 
 <?php toa_component('footer'); ?>

@@ -176,12 +176,9 @@
             if (c.categorie && c.categorie.length) {
                 var cats = document.createElement('div');
                 cats.className = 'crew-pub-categories';
-                c.categorie.slice(0, 3).forEach(function (cat) {
-                    var chip = document.createElement('span');
-                    chip.className = 'crew-pub-cat-chip';
-                    chip.textContent = cat;
-                    cats.appendChild(chip);
-                });
+                // 2026-07-26 — testo pulito "Beauty • Hair" con le etichette leggibili invece dei codici grezzi
+                var catLabels = cfg.catLabels || {};
+                cats.textContent = c.categorie.slice(0, 3).map(function (cat) { return catLabels[cat] || cat; }).join(' • ');
                 body.appendChild(cats);
             }
 
@@ -197,7 +194,7 @@
 
             card.appendChild(body);
             // 2026-07-26 Fase 2 — click ovunque sulla card apre il profilo (come talent); selezione spostata sul bottoncino +/✓
-            card.addEventListener('click', function () { openProfile(c.uuid); });
+            card.addEventListener('click', function () { openProfile(c.uuid, false, c.foto_profilo_url); });
             frag.appendChild(card);
         });
         grid.innerHTML = '';
@@ -341,7 +338,16 @@
 
     var currentProfileUuid = null;
 
-    function openProfile(uuid, fromPop) {
+    // 2026-07-26 — l'endpoint profilo non restituisce la foto avatar (solo il search/griglia ce l'ha),
+    // best-effort: cerca in lastResults (griglia gia' caricata) se non passata direttamente dal click sulla card
+    function findAvatarByUuid(uuid) {
+        for (var i = 0; i < lastResults.length; i++) {
+            if (lastResults[i].uuid === uuid) return lastResults[i].foto_profilo_url || '';
+        }
+        return '';
+    }
+
+    function openProfile(uuid, fromPop, avatarUrl) {
         if (!uuid) return;
         currentProfileUuid = uuid;
         var ov = $('#crew-profile-overlay');
@@ -355,16 +361,17 @@
             u.searchParams.set('uuid', uuid);
             window.history.pushState({ crewProfile: uuid }, '', u.toString());
         }
+        var avatar = avatarUrl || findAvatarByUuid(uuid);
         fetch(API_PROFILE + '?uuid=' + encodeURIComponent(uuid), { credentials: 'same-origin' })
             .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
-            .then(function (d) { renderProfile(d); })
+            .then(function (d) { renderProfile(d, avatar); })
             .catch(function (err) {
                 console.error('[crew-pub] profile error:', err);
                 body.innerHTML = '<div class="crew-pf-error">' + escapeHtml(STR.errorProfile || 'Profilo non disponibile.') + '</div>';
             });
     }
 
-    function renderProfile(d) {
+    function renderProfile(d, avatarUrl) {
         var body = $('#crew-profile-body');
         if (!body) return;
         pfPhotos = [];
@@ -394,6 +401,8 @@
                  +  '<div class="crew-pf-hero-overlay"><h2 class="crew-pf-hero-name">' + escapeHtml(d.nome ? properCase(d.nome) : '—') + codice + '</h2></div></div>';
         }
         html += '<div class="crew-pf-header">';
+        // 2026-07-26 — avatar (persona) piu' grande dentro la scheda, richiesto da Marco
+        if (avatarUrl) html += '<span class="crew-pf-avatar" style="background-image:url(' + escapeHtml(encodeURI(avatarUrl)) + ')"></span>';
         if (!coverPhoto) html += '<h2 class="crew-pf-name">' + escapeHtml(d.nome ? properCase(d.nome) : '—') + codice + '</h2>';
         if (d.categorie && d.categorie.length) {
             html += '<div class="crew-pf-roles">';
