@@ -135,8 +135,10 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-card { background:#1a1a1e; border:1px solid #2a2a2e; border-radius:10px; overflow:hidden; cursor:pointer; transition:all .2s; position:relative; display:flex; flex-direction:column; height:100%; }
 .crew-pub-card:hover { border-color:#c8ff00; transform:translateY(-2px); }
 .crew-pub-card.selected { border:2px solid #c8ff00; box-shadow:0 0 0 3px rgba(200,255,0,.18); }
-.crew-pub-card.selected::after { content:'✓'; position:absolute; top:8px; right:8px; background:#c8ff00; color:#0a0a0a; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; }
-.crew-pub-photo { width:100%; aspect-ratio:1; background:#0a0a0a center/cover no-repeat; display:flex; align-items:center; justify-content:center; color:#3a3a3e; font-size:56px; flex-shrink:0; }
+.crew-pub-photo { width:100%; aspect-ratio:1; background:#0a0a0a center/cover no-repeat; display:flex; align-items:center; justify-content:center; color:#3a3a3e; font-size:56px; flex-shrink:0; position:relative; }
+/* 2026-07-26 Fase 2 — bottoncino selezione "Richiedi info" (+/✓), la card intera ora apre il profilo al click */
+.crew-pub-add { position:absolute; top:10px; right:10px; width:32px; height:32px; padding:0; background:#c8ff00; color:#0a0a0a; border:1px solid #c8ff00; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.45); z-index:2; }
+.crew-pub-add:hover { background:#fff; }
 .crew-pub-body { padding:14px; display:flex; flex-direction:column; flex:1; }
 .crew-pub-name-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .crew-pub-name { font-size:15px; font-weight:600; color:#fff; }
@@ -176,9 +178,7 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-modal .msg.err { background:rgba(239,68,68,.15); color:#ef4444; }
 
 /* ─── Scheda singola crew (?uuid=) — 2026-07-11 ─── */
-/* 2026-07-26 — margin-top:auto lo spinge sempre in fondo alla card (flex column), fix disallineamento tra card con contenuto di altezza diversa */
-.crew-pub-view { margin-top:auto; width:100%; background:transparent; border:1px solid #c8ff00; color:#c8ff00; padding:8px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; transition:all .15s; }
-.crew-pub-view:hover { background:#c8ff00; color:#0a0a0a; }
+/* 2026-07-26 Fase 2 — .crew-pub-view rimosso: la card intera ora apre il profilo, bottone dedicato non serve più */
 .crew-pf-overlay { position:fixed; inset:0; background:rgba(0,0,0,.9); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); z-index:300; display:none; overflow-y:auto; padding:32px 16px; }
 .crew-pf-overlay.show { display:block; }
 .crew-pf-card { background:linear-gradient(180deg,#161618,#0e0e10); border:1px solid #2a2a2e; border-radius:16px; max-width:960px; margin:16px auto; padding:32px 32px 40px; position:relative; box-shadow:0 24px 80px rgba(0,0,0,.6); }
@@ -367,6 +367,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=2.5-gridfase1" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=2.6-gridfase2" defer></script>
 
 <?php toa_component('footer'); ?>

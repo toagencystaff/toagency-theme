@@ -126,6 +126,18 @@
             }
             card.appendChild(photo);
 
+            // 2026-07-26 Fase 2 — bottoncino selezione (+/✓) per "Richiedi info", separato dal click-card che ora apre il profilo
+            var addBtn = document.createElement('button');
+            addBtn.type = 'button';
+            addBtn.className = 'crew-pub-add';
+            addBtn.setAttribute('aria-label', STR.selectForLead || 'Seleziona per richiesta info');
+            addBtn.textContent = selectedUuids.has(c.uuid) ? '✓' : '+';
+            addBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                toggleSelect(c.uuid);
+            });
+            card.appendChild(addBtn);
+
             // Body
             var body = document.createElement('div');
             body.className = 'crew-pub-body';
@@ -166,15 +178,9 @@
             meta.textContent = metaParts.join(' · ');
             body.appendChild(meta);
 
-            var viewBtn = document.createElement('button');
-            viewBtn.type = 'button';
-            viewBtn.className = 'crew-pub-view';
-            viewBtn.textContent = STR.viewProfile || 'Vedi profilo';
-            viewBtn.addEventListener('click', function (e) { e.stopPropagation(); openProfile(c.uuid); });
-            body.appendChild(viewBtn);
-
             card.appendChild(body);
-            card.addEventListener('click', function () { toggleSelect(c.uuid); });
+            // 2026-07-26 Fase 2 — click ovunque sulla card apre il profilo (come talent); selezione spostata sul bottoncino +/✓
+            card.addEventListener('click', function () { openProfile(c.uuid); });
             frag.appendChild(card);
         });
         grid.innerHTML = '';
@@ -184,11 +190,18 @@
     function toggleSelect(uuid) {
         if (selectedUuids.has(uuid)) selectedUuids.delete(uuid);
         else selectedUuids.add(uuid);
-
-        var cards = document.querySelectorAll('.crew-pub-card[data-uuid="' + cssEscape(uuid) + '"]');
-        cards.forEach(function (c) { c.classList.toggle('selected', selectedUuids.has(uuid)); });
-
+        syncCardSelectedState(uuid);
         updateActionBar();
+    }
+
+    // 2026-07-26 Fase 2 — unico punto che sincronizza classe .selected + testo bottoncino +/✓ (come talent updateCardSelectedState)
+    function syncCardSelectedState(uuid) {
+        var sel = selectedUuids.has(uuid);
+        document.querySelectorAll('.crew-pub-card[data-uuid="' + cssEscape(uuid) + '"]').forEach(function (c) {
+            c.classList.toggle('selected', sel);
+            var btn = c.querySelector('.crew-pub-add');
+            if (btn) btn.textContent = sel ? '✓' : '+';
+        });
     }
 
     function updateActionBar() {
@@ -212,6 +225,8 @@
         selectedUuids.clear();
         document.querySelectorAll('.crew-pub-card.selected').forEach(function (c) {
             c.classList.remove('selected');
+            var btn = c.querySelector('.crew-pub-add');
+            if (btn) btn.textContent = '+';
         });
         updateActionBar();
     };
