@@ -129,7 +129,15 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-filters { display:flex; gap:12px; padding:24px; flex-wrap:wrap; align-items:center; border-bottom:1px solid #2a2a2e; }
 .crew-pub-filters select { background:#1a1a1e; border:1px solid #2a2a2e; color:#fff; padding:10px 14px; border-radius:6px; font-size:14px; min-width:200px; cursor:pointer; }
 .crew-pub-filters select:focus { outline:none; border-color:#c8ff00; }
+.crew-cat-select-hidden { display:none !important; }
 .crew-pub-results-count { color:#9ca3af; font-size:14px; margin-left:auto; }
+/* 2026-07-26 — chip categoria al posto della tendina (stile talent .toa-tdb-cat-chip).
+   !important su padding/border-radius: reset globale button{border-radius:6px!important;padding:12px 28px!important} altrimenti li squadra. */
+.crew-cat-chips { display:flex; flex-wrap:wrap; gap:8px; padding:20px 24px 0; }
+.crew-cat-chip { display:inline-flex; align-items:center; height:34px; padding:0 16px !important; border-radius:999px !important; background:transparent; border:1.5px solid rgba(255,255,255,.18); color:rgba(255,255,255,.7); font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap; transition:border-color .15s, color .15s, background .15s; }
+.crew-cat-chip:hover { border-color:rgba(200,255,0,.45); color:#fff; }
+.crew-cat-chip.is-active { background:#c8ff00; border-color:#c8ff00; color:#0a0a0a; }
+@media (max-width:640px) { .crew-cat-chips { flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; padding:16px 16px 0; } }
 
 .crew-pub-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:16px; padding:24px; padding-bottom:120px; align-items:stretch; }
 .crew-pub-card { background:#1a1a1e; border:1px solid #2a2a2e; border-radius:10px; overflow:hidden; cursor:pointer; transition:all .2s; position:relative; display:flex; flex-direction:column; height:100%; }
@@ -271,8 +279,16 @@ $theme_uri = get_stylesheet_directory_uri();
         <p class="crew-pub-hero-subtitle"><?= esc_html($_t($T['hero_subtitle'])) ?></p>
     </header>
 
+    <!-- 2026-07-26 — chip categoria (sostituisce la tendina, stile talent) -->
+    <div class="crew-cat-chips" id="crewCatChips" role="tablist" aria-label="<?= esc_attr($_t($T['filter_all_cat'])) ?>">
+        <button type="button" class="crew-cat-chip is-active" data-cat=""><?= esc_html($_t($T['filter_all_cat'])) ?></button>
+        <?php foreach ($CREW_CATEGORIES as $cat): ?>
+            <button type="button" class="crew-cat-chip" data-cat="<?= esc_attr($cat['code']) ?>"><?= esc_html($_t($cat['label'])) ?></button>
+        <?php endforeach; ?>
+    </div>
+
     <div class="crew-pub-filters">
-        <select id="filter-categoria">
+        <select id="filter-categoria" class="crew-cat-select-hidden" aria-hidden="true" tabindex="-1">
             <option value=""><?= esc_html($_t($T['filter_all_cat'])) ?></option>
             <?php foreach ($CREW_CATEGORIES as $cat): ?>
                 <option value="<?= esc_attr($cat['code']) ?>"><?= esc_html($_t($cat['label'])) ?></option>

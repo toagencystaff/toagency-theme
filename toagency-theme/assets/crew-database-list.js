@@ -581,6 +581,20 @@
 
     // ─── Init ──────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function () {
+        // 2026-07-26 — chip categoria: sync sul <select> nascosto + riuso del listener 'change' esistente (nessuna logica di filtro duplicata)
+        var catChipsWrap = $('#crewCatChips');
+        if (catChipsWrap) {
+            catChipsWrap.addEventListener('click', function (e) {
+                var chip = e.target.closest('.crew-cat-chip');
+                if (!chip) return;
+                var chips = catChipsWrap.querySelectorAll('.crew-cat-chip');
+                for (var i = 0; i < chips.length; i++) chips[i].classList.remove('is-active');
+                chip.classList.add('is-active');
+                var sel = $('#filter-categoria');
+                sel.value = chip.dataset.cat || '';
+                sel.dispatchEvent(new Event('change'));
+            });
+        }
         $('#filter-categoria').addEventListener('change', loadCrews);
         $('#filter-paese').addEventListener('change', function () { syncProvinceVisibility(); loadCrews(); });
         var provSel = $('#filter-provincia');
