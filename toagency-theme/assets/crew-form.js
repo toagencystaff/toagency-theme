@@ -82,6 +82,10 @@
     // 2026-07-26 — Tema portfolio (album_ruolo): se il crew ha scelto 2+ categorie in step 3,
     // mostra un selettore per taggare le foto/video con la categoria giusta (album_ruolo=codice ruolo,
     // confermato dal CRM: valida contro le categorie già dichiarate, non i "temi" granulari di crew-temi.php).
+    // Diff CREW_CATEGORIES (tema, 19 codici) vs lib/ruoli.php $RUOLI_CREW (CRM, ~24 codici) confermato 26/07:
+    // "parrucchiere" e "fashion_journalist" NON esistono lato CRM → album_ruolo con questi codici cade
+    // silenziosamente in Generale (nessun errore, ma scelta inutile per l'utente) → li escludiamo dal selettore.
+    var TEMA_CODICI_NON_VALIDATI_CRM = ['parrucchiere', 'fashion_journalist'];
     function categoriaLabel(input) {
         var chip = input.closest('.toa-crew-category-chip');
         if (!chip) return input.value;
@@ -102,7 +106,10 @@
         var hidden = document.getElementById('toaCrewTemaValue');
         var trigger = field ? field.querySelector('.toa-crew-customselect-label') : null;
         if (!field || !optionsBox || !hidden) return;
-        var checked = form.querySelectorAll('input[name="categorie[]"]:checked');
+        var checkedAll = form.querySelectorAll('input[name="categorie[]"]:checked');
+        var checked = Array.prototype.filter.call(checkedAll, function (input) {
+            return TEMA_CODICI_NON_VALIDATI_CRM.indexOf(input.value) === -1;
+        });
         if (checked.length < 2) {
             field.style.display = 'none';
             hidden.value = checked.length === 1 ? checked[0].value : '';
