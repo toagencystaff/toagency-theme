@@ -130,15 +130,21 @@
             var body = document.createElement('div');
             body.className = 'crew-pub-body';
 
-            var name = document.createElement('div');
+            // 2026-07-26 — riga nome+codice affiancati (come talent): codice MAIUSCOLO, senza #, pill visibile
+            var nameRow = document.createElement('div');
+            nameRow.className = 'crew-pub-name-row';
+            var name = document.createElement('span');
             name.className = 'crew-pub-name';
             name.textContent = c.nome || '—';
-            body.appendChild(name);
-
-            var uuid = document.createElement('div');
-            uuid.className = 'crew-pub-uuid';
-            uuid.textContent = '#' + (c.uuid_short || (c.uuid ? c.uuid.substring(0, 8) : ''));
-            body.appendChild(uuid);
+            nameRow.appendChild(name);
+            var codiceRaw = c.uuid_short || (c.uuid ? c.uuid.substring(0, 8) : '');
+            if (codiceRaw) {
+                var uuid = document.createElement('span');
+                uuid.className = 'crew-pub-uuid';
+                uuid.textContent = codiceRaw.toUpperCase();
+                nameRow.appendChild(uuid);
+            }
+            body.appendChild(nameRow);
 
             if (c.categorie && c.categorie.length) {
                 var cats = document.createElement('div');
