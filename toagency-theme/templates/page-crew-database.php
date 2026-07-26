@@ -191,8 +191,10 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-overlay { position:fixed; inset:0; background:rgba(0,0,0,.9); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); z-index:10001; display:none; overflow-y:auto; padding:32px 16px; }
 .crew-pf-overlay.show { display:block; }
 .crew-pf-card { background:linear-gradient(180deg,#161618,#0e0e10); border:1px solid #2a2a2e; border-radius:16px; max-width:960px; margin:16px auto; padding:32px 32px 40px; position:relative; box-shadow:0 24px 80px rgba(0,0,0,.6); }
-.crew-pf-close { position:absolute; top:14px; right:16px; width:36px; height:36px; background:#1a1a1e; border:1px solid #2a2a2e; border-radius:50%; color:#9ca3af; font-size:22px; line-height:1; cursor:pointer; transition:all .15s; }
-.crew-pf-close:hover { color:#0a0a0a; background:#c8ff00; border-color:#c8ff00; }
+/* 2026-07-26 — FIX visibilità: prima era grigio scuro su grigio scuro, si perdeva su foto nere.
+   Ora stesso stile lime della X della lightbox (sempre leggibile su qualsiasi foto) + centratura flex vera. */
+.crew-pf-close { position:absolute; top:14px; right:16px; width:36px; height:36px; background:#c8ff00; border:none; border-radius:50%; color:#0a0a0a; font-size:22px; font-weight:700; line-height:1; cursor:pointer; transition:all .15s; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(0,0,0,.45); }
+.crew-pf-close:hover { filter:brightness(1.08); transform:scale(1.05); }
 .crew-pf-header { border-bottom:1px solid #2a2a2e; padding-bottom:20px; margin-bottom:8px; }
 .crew-pf-intro { color:#d0d3d9; font-size:15px; line-height:1.65; margin:16px 0 4px; max-width:680px; white-space:pre-line; }
 .crew-pf-name { color:#fff; font-size:34px; font-weight:800; letter-spacing:-.5px; margin:0 44px 12px 0; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
