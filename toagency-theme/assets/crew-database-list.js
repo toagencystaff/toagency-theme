@@ -47,6 +47,12 @@
         return PROV[c] || code;
     }
 
+    // 2026-07-26 — richiesta Marco: nomi sempre "Prima lettera maiuscola poi minuscolo" a display (il dato in DB puo' arrivare in qualsiasi case)
+    function properCase(s) {
+        if (!s) return s;
+        return String(s).toLowerCase().replace(/(^|[\s'-])([a-zà-ÿ])/g, function (m, sep, ch) { return sep + ch.toUpperCase(); });
+    }
+
     var selectedUuids = new Set();
     var lastResults = [];
 
@@ -148,7 +154,7 @@
             nameRow.className = 'crew-pub-name-row';
             var name = document.createElement('span');
             name.className = 'crew-pub-name';
-            name.textContent = c.nome || '—';
+            name.textContent = c.nome ? properCase(c.nome) : '—';
             nameRow.appendChild(name);
             var codiceRaw = c.uuid_short || (c.uuid ? c.uuid.substring(0, 8) : '');
             if (codiceRaw) {
@@ -375,10 +381,10 @@
         if (coverPhoto) {
             var focalStyle = coverFocal ? ' style="object-position:' + escapeHtml(coverFocal) + '"' : '';
             html += '<div class="crew-pf-hero"><img class="crew-pf-hero-img crew-pf-clic" src="' + encodeURI(withW(coverPhoto, 1200)) + '" alt=""' + focalStyle + ' data-idx="0">'
-                 +  '<div class="crew-pf-hero-overlay"><h2 class="crew-pf-hero-name">' + escapeHtml(d.nome || '—') + codice + '</h2></div></div>';
+                 +  '<div class="crew-pf-hero-overlay"><h2 class="crew-pf-hero-name">' + escapeHtml(d.nome ? properCase(d.nome) : '—') + codice + '</h2></div></div>';
         }
         html += '<div class="crew-pf-header">';
-        if (!coverPhoto) html += '<h2 class="crew-pf-name">' + escapeHtml(d.nome || '—') + codice + '</h2>';
+        if (!coverPhoto) html += '<h2 class="crew-pf-name">' + escapeHtml(d.nome ? properCase(d.nome) : '—') + codice + '</h2>';
         if (d.categorie && d.categorie.length) {
             html += '<div class="crew-pf-roles">';
             d.categorie.forEach(function (cat) { html += '<span class="crew-pf-chip">' + escapeHtml(cat) + '</span>'; });
