@@ -139,6 +139,13 @@ $theme_uri = get_stylesheet_directory_uri();
 /* 2026-07-26 Fase 2 — bottoncino selezione "Richiedi info" (+/✓), la card intera ora apre il profilo al click */
 .crew-pub-add { position:absolute; top:10px; right:10px; width:32px; height:32px; padding:0; background:#c8ff00; color:#0a0a0a; border:1px solid #c8ff00; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.45); z-index:2; }
 .crew-pub-add:hover { background:#fff; }
+/* 2026-07-26 Fase 3 — frecce hover per scorrere le foto lavori (pattern talent, lazy: bottoni al hover, fetch al 1° click) */
+.crew-pub-nav { position:absolute; top:50%; transform:translateY(-50%); width:34px; height:34px; border-radius:50%; background:rgba(0,0,0,.55); color:#fff; border:1px solid rgba(255,255,255,.25); font-size:20px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:2; opacity:0; transition:opacity .15s,background .15s; padding:0; }
+.crew-pub-card:hover .crew-pub-nav { opacity:1; }
+.crew-pub-nav:hover { background:#c8ff00; color:#0a0a0a; border-color:#c8ff00; }
+.crew-pub-nav-prev { left:8px; }
+.crew-pub-nav-next { right:8px; }
+@media (max-width:768px) { .crew-pub-nav { opacity:1; width:28px; height:28px; font-size:16px; } }
 .crew-pub-body { padding:14px; display:flex; flex-direction:column; flex:1; }
 .crew-pub-name-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .crew-pub-name { font-size:15px; font-weight:600; color:#fff; }
@@ -369,6 +376,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=2.6-gridfase2" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=2.7-gridfase3" defer></script>
 
 <?php toa_component('footer'); ?>

@@ -1,5 +1,6 @@
 /**
- * crew-database-list.js — v1.9 (2026-07-24)
+ * crew-database-list.js — v2.0 (2026-07-26)
+ * v2.0: Fase 3 — frecce hover sulla card per scorrere le foto lavori (pattern talent, lazy)
  * v1.9: placeholder bio quando vuota
  * v1.8: tendina provincia visibile solo per Paese IT/Tutti (estero filtra per Paese)
  * v1.7: filtro provincia (tendina da province-italia.json) → param 'provincia' nel search
@@ -509,6 +510,74 @@
         var uuid = new URLSearchParams(window.location.search).get('uuid');
         if (uuid) openProfile(uuid, true); else hideProfile();
     });
+
+    // ─── Fase 3 (2026-07-26) — frecce hover per scorrere le foto lavori sulla card ────
+    // Pattern identico a talent-database-v75.js: bottoni creati al pointerover (lazy DOM),
+    // foto scaricate solo al 1° click sulla freccia (lazy fetch, niente autoplay).
+    function ensureCardNav(card) {
+        if (!card || card.querySelector('.crew-pub-nav')) return;
+        var photo = card.querySelector('.crew-pub-photo');
+        if (!photo) return;
+        ['-1', '1'].forEach(function (dir) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'crew-pub-nav ' + (dir === '-1' ? 'crew-pub-nav-prev' : 'crew-pub-nav-next');
+            b.setAttribute('data-cardnav', dir);
+            b.setAttribute('aria-label', dir === '-1' ? 'Foto precedente' : 'Foto successiva');
+            b.textContent = dir === '-1' ? '‹' : '›';
+            photo.appendChild(b);
+        });
+    }
+    document.addEventListener('pointerover', function (e) {
+        var card = e.target.closest && e.target.closest('.crew-pub-card');
+        if (card) ensureCardNav(card);
+    }, true);
+
+    // Appiattisce gli album del profilo in una lista di URL foto (no video), stesso ordine di renderProfile
+    function cardMediaFromAlbums(d) {
+        var albums = d.albums || {};
+        var keys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
+        if (albums.generale) keys.push('generale');
+        var media = [];
+        keys.forEach(function (k) {
+            (albums[k] || []).forEach(function (url) { if (!VIDEO_RE.test(url)) media.push(withW(url, 600)); });
+        });
+        return media;
+    }
+
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest && e.target.closest('.crew-pub-nav');
+        if (!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+        var card = btn.closest('.crew-pub-card');
+        var photo = card && card.querySelector('.crew-pub-photo');
+        if (!card || !photo) return;
+        var dir = parseInt(btn.getAttribute('data-cardnav'), 10) || 1;
+        function cycle(media) {
+            if (!media || media.length <= 1) return;
+            var idx = parseInt(card.getAttribute('data-cnidx') || '0', 10);
+            idx = (idx + dir + media.length) % media.length;
+            card.setAttribute('data-cnidx', idx);
+            photo.style.backgroundImage = 'url(' + encodeURI(media[idx]) + ')';
+        }
+        if (card._cnMedia) { cycle(card._cnMedia); return; }
+        btn.disabled = true;
+        fetch(API_PROFILE + '?uuid=' + encodeURIComponent(card.dataset.uuid), { credentials: 'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+                var curMatch = /url\(["']?([^"')]+)["']?\)/.exec(photo.style.backgroundImage || '');
+                var cur = curMatch ? curMatch[1] : '';
+                var media = cardMediaFromAlbums(d);
+                card._cnMedia = media.length ? media : (cur ? [cur] : []);
+                card._cnMedia.forEach(function (u) { var im = new Image(); im.src = u; }); // precarico: scorrimento immediato dopo il 1° fetch
+                var st = card._cnMedia.indexOf(cur);
+                card.setAttribute('data-cnidx', st >= 0 ? st : 0);
+                btn.disabled = false;
+                cycle(card._cnMedia);
+            })
+            .catch(function () { btn.disabled = false; });
+    }, true);
 
     // ─── Init ──────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function () {
