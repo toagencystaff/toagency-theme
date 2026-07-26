@@ -181,6 +181,8 @@
             meta.className = 'crew-pub-meta';
             var metaParts = [];
             if (c.livello) metaParts.push(c.livello);
+            // 2026-07-26 — provincia in griglia (privacy: solo provincia, mai comune), ora presente nell'endpoint di ricerca
+            if (c.provincia) metaParts.push(provName(String(c.provincia)));
             if (c.paese) metaParts.push(c.paese);
             meta.textContent = metaParts.join(' · ');
             body.appendChild(meta);
