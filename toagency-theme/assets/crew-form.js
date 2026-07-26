@@ -75,7 +75,47 @@
         progressDots.forEach(function(d) {
             if (parseInt(d.dataset.step) <= n) d.classList.add('active');
         });
+        if (n === 4) updateTemaOptions();
         window.scrollTo({ top: form.offsetTop - 80, behavior: 'smooth' });
+    }
+
+    // 2026-07-26 — Tema portfolio (album_ruolo): se il crew ha scelto 2+ categorie in step 3,
+    // mostra un selettore per taggare le foto/video con la categoria giusta (album_ruolo=codice ruolo,
+    // confermato dal CRM: valida contro le categorie già dichiarate, non i "temi" granulari di crew-temi.php).
+    function categoriaLabel(input) {
+        var chip = input.closest('.toa-crew-category-chip');
+        if (!chip) return input.value;
+        var clone = chip.cloneNode(true);
+        var badge = clone.querySelector('.age-badge'); if (badge) badge.remove();
+        var chk = clone.querySelector('input'); if (chk) chk.remove();
+        return clone.textContent.trim();
+    }
+    // Etichetta "Generale" già renderizzata server-side (4 lingue via _ht_crew) nell'opzione statica iniziale:
+    // la leggiamo una volta sola invece di duplicarla hardcoded in JS.
+    var TEMA_GENERALE_LABEL = (function () {
+        var el = document.querySelector('#toaCrewTemaOptions .toa-crew-customselect-option');
+        return el ? el.textContent.trim() : 'Generale';
+    })();
+    function updateTemaOptions() {
+        var field = document.getElementById('toaCrewTemaField');
+        var optionsBox = document.getElementById('toaCrewTemaOptions');
+        var hidden = document.getElementById('toaCrewTemaValue');
+        var trigger = field ? field.querySelector('.toa-crew-customselect-label') : null;
+        if (!field || !optionsBox || !hidden) return;
+        var checked = form.querySelectorAll('input[name="categorie[]"]:checked');
+        if (checked.length < 2) {
+            field.style.display = 'none';
+            hidden.value = checked.length === 1 ? checked[0].value : '';
+            return;
+        }
+        var html = '<div class="toa-crew-customselect-option selected" data-value="">' + TEMA_GENERALE_LABEL + '</div>';
+        checked.forEach(function (input) {
+            html += '<div class="toa-crew-customselect-option" data-value="' + input.value + '">' + categoriaLabel(input) + '</div>';
+        });
+        optionsBox.innerHTML = html;
+        hidden.value = '';
+        if (trigger) trigger.textContent = TEMA_GENERALE_LABEL;
+        field.style.display = 'block';
     }
     form.querySelectorAll('[data-go]').forEach(function(btn) {
         btn.addEventListener('click', function() {
@@ -846,13 +886,15 @@
     }
 
     // Upload sequenziale: foto profilo → foto portfolio → video
-    function uploadOneFile(crewId, token, file, tipo) {
+    // 2026-07-26 — album_ruolo (confermato CRM): solo per tipo=foto/video, ignorato per foto_profilo.
+    function uploadOneFile(crewId, token, file, tipo, albumRuolo) {
         /* TASK hardening-upload-crew 2026-06-04 marco — comprimi prima di spedire (video passano intatti), poi catena identica */
         return toaCompressImage(file, 1280, 0.78).then(function(cfile) {
             var fd = new FormData();
             fd.append('crew_id', crewId);
             fd.append('token_profilo', token);
             fd.append('tipo', tipo);
+            if (albumRuolo && (tipo === 'foto' || tipo === 'video')) fd.append('album_ruolo', albumRuolo);
             fd.append('file', cfile);
             return fetch(UPLOAD_ENDPOINT, {
                 method: 'POST',
@@ -876,6 +918,11 @@
         console.log('[uploadAll] photos count:', uploadState.photos.length, uploadState.photos);
         console.log('[uploadAll] videos count:', uploadState.videos.length, uploadState.videos);
 
+        // 2026-07-26 — album_ruolo: valore corrente del selettore tema (categoria singola auto-settata,
+        // o quella scelta dall'utente se ne ha selezionate 2+); '' = Generale, va bene così a upload-portfolio-crew.php
+        var temaEl = document.getElementById('toaCrewTemaValue');
+        var albumRuolo = temaEl ? temaEl.value : '';
+
         var queue = [];
         // 1. Foto profilo
         if (uploadState.photoProfile && uploadState.photoProfile.file) {
@@ -883,11 +930,11 @@
         }
         // 2. Foto portfolio
         uploadState.photos.forEach(function(p) {
-            queue.push({ file: p.file, tipo: 'foto' });
+            queue.push({ file: p.file, tipo: 'foto', albumRuolo: albumRuolo });
         });
         // 3. Video
         uploadState.videos.forEach(function(v) {
-            queue.push({ file: v.file, tipo: 'video' });
+            queue.push({ file: v.file, tipo: 'video', albumRuolo: albumRuolo });
         });
 
         console.log('[uploadAll] queue length:', queue.length, queue);
@@ -910,7 +957,7 @@
         var results = [];
         queue.forEach(function(item) {
             promise = promise.then(function() {
-                return uploadOneFile(crewId, token, item.file, item.tipo).then(function(res) {
+                return uploadOneFile(crewId, token, item.file, item.tipo, item.albumRuolo).then(function(res) {
                     doneCount++;
                     if (submitBtn) {
                         submitBtn.textContent = 'Upload file ' + doneCount + '/' + totalCount + '...';

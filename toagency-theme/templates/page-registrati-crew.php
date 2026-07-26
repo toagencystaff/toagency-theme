@@ -455,6 +455,21 @@ $theme_uri = get_stylesheet_directory_uri();
                 )); ?></p>
             </div>
 
+            <!-- 2026-07-26 — Tema portfolio (album_ruolo): visibile solo se il crew ha scelto 2+ categorie in step 3 -->
+            <div class="toa-crew-field" id="toaCrewTemaField" style="display:none;">
+                <label class="toa-crew-label">🏷️ <?php echo _ht_crew(array('it'=>'A quale categoria appartengono queste foto/video?','en'=>'Which category do these photos/videos belong to?','fr'=>'À quelle catégorie appartiennent ces photos/vidéos ?','es'=>'¿A qué categoría pertenecen estas fotos/vídeos?')); ?></label>
+                <div class="toa-crew-customselect" id="toaCrewTemaSelect">
+                    <input type="hidden" id="toaCrewTemaValue" value="">
+                    <div class="toa-crew-customselect-trigger">
+                        <span class="toa-crew-customselect-label"><?php echo _ht_crew(array('it'=>'Generale','en'=>'General','fr'=>'Général','es'=>'General')); ?></span>
+                    </div>
+                    <div class="toa-crew-customselect-options" id="toaCrewTemaOptions">
+                        <div class="toa-crew-customselect-option selected" data-value=""><?php echo _ht_crew(array('it'=>'Generale','en'=>'General','fr'=>'Général','es'=>'General')); ?></div>
+                    </div>
+                </div>
+                <div class="toa-crew-step-help"><?php echo _ht_crew(array('it'=>'Hai scelto più categorie: se carichi foto/video di ambiti diversi, seleziona quella giusta prima di ogni caricamento.','en'=>'You picked several categories: if you upload photos/videos from different areas, pick the right one before each upload.','fr'=>'Tu as choisi plusieurs catégories : si tu charges des photos/vidéos de domaines différents, choisis la bonne avant chaque envoi.','es'=>'Elegiste varias categorías: si subes fotos/vídeos de áreas distintas, elige la correcta antes de cada subida.')); ?></div>
+            </div>
+
             <!-- Foto portfolio -->
             <div class="toa-crew-upload-section">
                 <h5>📷 <?php echo _ht_crew(array('it'=>'Foto del tuo lavoro','en'=>'Photos of your work','fr'=>'Photos de ton travail','es'=>'Fotos de tu trabajo')); ?></h5>
@@ -475,7 +490,7 @@ $theme_uri = get_stylesheet_directory_uri();
                 <div class="toa-crew-dropzone" id="toaCrewVideosDrop">
                     <div class="toa-crew-dropzone-icon">⬆️</div>
                     <div class="toa-crew-dropzone-text"><strong><?php echo _ht_crew(array('it'=>'Clicca','en'=>'Click','fr'=>'Clique','es'=>'Clic')); ?></strong> <?php echo _ht_crew(array('it'=>'o trascina qui i video','en'=>'or drag videos','fr'=>'ou glisse','es'=>'o arrastra')); ?></div>
-                    <div class="toa-crew-dropzone-hint">MP4, MOV • <?php echo _ht_crew(array('it'=>'max 50MB per file','en'=>'max 50MB','fr'=>'max 50MB','es'=>'max 50MB')); ?></div>
+                    <div class="toa-crew-dropzone-hint">MP4 • <?php echo _ht_crew(array('it'=>'max 50MB per file · i file .MOV vengono rifiutati, converti prima in MP4','en'=>'max 50MB · .MOV files are rejected, convert to MP4 first','fr'=>'max 50MB · les fichiers .MOV sont refusés, convertis en MP4','es'=>'max 50MB · los archivos .MOV se rechazan, conviértelos a MP4 antes')); ?></div>
                     <input type="file" id="toaCrewVideosInput" accept="video/*" multiple style="display:none;">
                 </div>
                 <div class="toa-crew-thumbs" id="toaCrewVideosThumbs"></div>
@@ -603,7 +618,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.3-20260723eta" defer></script><!-- TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
+<script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.4-20260726temi" defer></script><!-- TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
 
 <!-- ══════════════════════════════════════════════
      PREFILL — pre-compila campi se l'utente arriva da Student Program
