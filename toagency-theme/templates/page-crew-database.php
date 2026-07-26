@@ -157,6 +157,8 @@ $theme_uri = get_stylesheet_directory_uri();
 @media (max-width:768px) { .crew-pub-nav { opacity:1; width:28px; height:28px; font-size:16px; } }
 .crew-pub-body { padding:14px; display:flex; flex-direction:column; flex:1; }
 .crew-pub-name-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+/* 2026-07-26 — avatar piccolo (la persona) accanto al nome, la foto grande della card ora e' il lavoro (cover random) */
+.crew-pub-avatar { width:30px; height:30px; border-radius:50%; background:#2a2a2e center/cover no-repeat; flex-shrink:0; border:1.5px solid #2a2a2e; }
 .crew-pub-name { font-size:15px; font-weight:600; color:#fff; }
 /* 2026-07-26 — codice pill (allineato al trattamento talent .toa-tdb-card-code): maiuscolo, senza #, visibile quanto il nome */
 .crew-pub-uuid { font-family:monospace; font-size:13px; font-weight:700; background:rgba(200,255,0,.22); color:#c8ff00; padding:2px 8px; border-radius:5px; letter-spacing:.04em; }
@@ -396,6 +398,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=2.9-covers" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=3.0-avatar" defer></script>
 
 <?php toa_component('footer'); ?>

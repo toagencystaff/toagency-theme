@@ -155,6 +155,11 @@
             // 2026-07-26 — riga nome+codice affiancati (come talent): codice MAIUSCOLO, senza #, pill visibile
             var nameRow = document.createElement('div');
             nameRow.className = 'crew-pub-name-row';
+            // 2026-07-26 — avatar piccolo (la persona), la foto grande ora e' il lavoro
+            var avatar = document.createElement('span');
+            avatar.className = 'crew-pub-avatar';
+            if (c.foto_profilo_url) avatar.style.backgroundImage = 'url(' + encodeURI(c.foto_profilo_url) + ')';
+            nameRow.appendChild(avatar);
             var name = document.createElement('span');
             name.className = 'crew-pub-name';
             name.textContent = c.nome ? properCase(c.nome) : '—';
