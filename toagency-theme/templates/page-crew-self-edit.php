@@ -101,6 +101,14 @@ $T = [
         'fr'=>'⏳ Une photo est en attente d\'approbation (%s).',
         'es'=>'⏳ Foto pendiente de aprobación (%s).',
     ],
+    // 2026-07-26 — Specializzazioni per ruolo (album_temi)
+    'temi_label' => ['it'=>'Specializzazioni','en'=>'Specialties','fr'=>'Spécialités','es'=>'Especialidades'],
+    'temi_hint'  => [
+        'it'=>'Per ogni tuo ruolo, scegli le specializzazioni da mostrare sul tuo profilo pubblico.',
+        'en'=>'For each of your roles, choose the specialties to show on your public profile.',
+        'fr'=>'Pour chaque rôle, choisis les spécialités à afficher sur ton profil public.',
+        'es'=>'Para cada rol, elige las especialidades a mostrar en tu perfil público.',
+    ],
 ];
 
 $theme_uri = get_stylesheet_directory_uri();
@@ -172,6 +180,13 @@ $token_get = $_GET['t']    ?? '';
 .crew-edit-cover-focal-btn { flex:1; background:#1a1a1e; color:#d1d5db; border:1px solid #2a2a2e; border-radius:6px; padding:8px; font-size:12px; cursor:pointer; font-weight:600; }
 .crew-edit-cover-focal-btn.selected { background:#c8ff00; color:#0a0a0a; border-color:#c8ff00; }
 @media (max-width:520px) { .crew-edit-cover-grid { grid-template-columns:repeat(3,1fr); } }
+/* 2026-07-26 — Specializzazioni per ruolo (temi) */
+.crew-edit-temi-group { margin-top:14px; }
+.crew-edit-temi-role { font-size:12px; font-weight:700; color:#c8ff00; text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px; }
+.crew-edit-temi-chips { display:flex; flex-wrap:wrap; gap:8px; }
+.crew-edit-temi-chip { display:inline-flex; align-items:center; gap:6px; background:#1a1a1e; border:1px solid #2a2a2e; border-radius:999px; padding:7px 14px; font-size:12.5px; color:#d1d5db; cursor:pointer; }
+.crew-edit-temi-chip input { width:auto; margin:0; }
+.crew-edit-temi-chip.checked { background:rgba(200,255,0,.12); border-color:#c8ff00; color:#c8ff00; font-weight:600; }
 
 .crew-edit-actions { margin-top:28px; }
 .crew-edit-btn-save { width:100%; background:#c8ff00; color:#0a0a0a; border:none; padding:14px; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; transition:opacity .15s; }
@@ -263,6 +278,14 @@ $token_get = $_GET['t']    ?? '';
                     <button type="button" class="crew-edit-cover-focal-btn" data-focal="50% 100%"><?= esc_html($_t(['it'=>'Basso','en'=>'Bottom','fr'=>'Bas','es'=>'Abajo'])) ?></button>
                 </div>
                 <div class="crew-edit-foto-status" id="f-cover-status"></div>
+            </div>
+
+            <!-- 2026-07-26 — Specializzazioni per ruolo (album_temi), popolata via JS da crew-temi.php + ruoli del crew -->
+            <div class="crew-edit-foto-field" id="f-temi-field" style="display:none;">
+                <label class="crew-edit-foto-label">🏷️ <?= esc_html($_t($T['temi_label'])) ?></label>
+                <div class="crew-edit-foto-hint"><?= esc_html($_t($T['temi_hint'])) ?></div>
+                <div id="f-temi-groups"></div>
+                <div class="crew-edit-foto-status" id="f-temi-status"></div>
             </div>
 
             <!-- 2026-07-24 — toggle consenso pubblicazione (immediato) -->
@@ -364,6 +387,8 @@ window.crewEditConfig = {
     apiUploadPortfolio: '/crm_toagency/actions/crew-self-edit-upload-portfolio.php',
     apiConsenso: '/crm_toagency/actions/crew-self-edit-consenso.php',
     apiCover: '/crm_toagency/actions/crew-self-edit-cover.php', /* 2026-07-26 — cover picker */
+    apiTemiTaxonomy: '/crm_toagency/actions/crew-temi.php', /* 2026-07-26 — tassonomia temi per ruolo */
+    apiTemiSave: '/crm_toagency/actions/crew-self-edit-temi.php', /* 2026-07-26 — salvataggio temi */
     provinceJsonUrl: <?= json_encode($theme_uri . '/assets/data/province-italia.json') ?>, /* FIX 2026-07-01 marco — tendina provincia crew */
     comuneApiUrl:   '/crm_toagency/actions/cerca-comune.php', /* FIX 2026-07-01 marco — ricerca comune crew */
     pendingFotoTpl: <?= json_encode($_t($T['pending_foto'])) ?>,
@@ -379,9 +404,11 @@ window.crewEditConfig = {
         errorPrefix:  <?= json_encode($_t($T['error_generic'])) ?>,
         fotoOk:       <?= json_encode($_t(['it'=>'Foto caricata, in attesa di approvazione','en'=>'Photo uploaded, awaiting staff approval','fr'=>'Photo envoyée, en attente de validation','es'=>'Foto subida, pendiente de aprobación'])) ?>,
         fotoErr:      <?= json_encode($_t(['it'=>'Errore nel caricamento della foto','en'=>'Photo upload error','fr'=>'Erreur lors de l’envoi de la photo','es'=>'Error al subir la foto'])) ?>,
+        temiLabel:    <?= json_encode($_t($T['temi_label'])) ?>,
+        temiHint:     <?= json_encode($_t($T['temi_hint'])) ?>,
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260726cover1" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260726temi1" defer></script>
 
 <?php toa_component('footer'); ?>

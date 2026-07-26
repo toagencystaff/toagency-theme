@@ -19,6 +19,10 @@
     var API_UPLOAD_PORTFOLIO = cfg.apiUploadPortfolio || '/crm_toagency/actions/crew-self-edit-upload-portfolio.php';
     var API_CONSENSO = cfg.apiConsenso || '/crm_toagency/actions/crew-self-edit-consenso.php';
     var API_COVER = cfg.apiCover || '/crm_toagency/actions/crew-self-edit-cover.php';
+    // 2026-07-26 — Specializzazioni per ruolo (album_temi): tassonomia da crew-temi.php, salvataggio su crew-self-edit-temi.php
+    var API_TEMI_TAXONOMY = cfg.apiTemiTaxonomy || '/crm_toagency/actions/crew-temi.php';
+    var API_TEMI_SAVE = cfg.apiTemiSave || '/crm_toagency/actions/crew-self-edit-temi.php';
+    var temiState = {};
     var MAX_FOTO = 15, MAX_VIDEO = 6;
     var portCounts = { foto: null, video: null };
     var coverState = { photoId: null, focal: '' };
@@ -263,6 +267,74 @@
         }
     }
 
+    // 2026-07-26 — Specializzazioni per ruolo (album_temi). Profilo-level (non foto), separato da album_ruolo.
+    // NOTA: non duplichiamo qui la lista label ruoli (gia' presente altrove, es. page-registrati-crew.php) —
+    // codice ruolo "prettificato" (underscore->spazio, title case) e' sufficiente per un'etichetta di gruppo.
+    function prettyRoleCode(code) {
+        return String(code || '').replace(/_/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    }
+    function setupTemiPicker(roles, existingTemi) {
+        var field = $('f-temi-field'), groupsEl = $('f-temi-groups');
+        if (!field || !groupsEl) return;
+        if (!roles || !roles.length) { field.style.display = 'none'; return; }
+        temiState = {};
+        Object.keys(existingTemi || {}).forEach(function (r) { temiState[r] = (existingTemi[r] || []).slice(); });
+        fetch(API_TEMI_TAXONOMY, { credentials: 'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+                var ruoliTax = d.ruoli || {};
+                var html = '';
+                roles.forEach(function (ruolo) {
+                    var opts = ruoliTax[ruolo];
+                    if (!opts || !opts.length) return;
+                    html += '<div class="crew-edit-temi-group"><div class="crew-edit-temi-role">' + escapeHtml(prettyRoleCode(ruolo)) + '</div><div class="crew-edit-temi-chips">';
+                    opts.forEach(function (o) {
+                        var checked = (temiState[ruolo] || []).indexOf(o.codice) !== -1;
+                        html += '<label class="crew-edit-temi-chip' + (checked ? ' checked' : '') + '" data-ruolo="' + escapeHtml(ruolo) + '" data-codice="' + escapeHtml(o.codice) + '">'
+                             +  '<input type="checkbox"' + (checked ? ' checked' : '') + '> ' + escapeHtml(o.label) + '</label>';
+                    });
+                    html += '</div></div>';
+                });
+                if (!html) { field.style.display = 'none'; return; }
+                groupsEl.innerHTML = html;
+                field.style.display = 'block';
+                groupsEl.querySelectorAll('.crew-edit-temi-chip').forEach(function (chip) {
+                    chip.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        var ruolo = chip.getAttribute('data-ruolo'), codice = chip.getAttribute('data-codice');
+                        if (!temiState[ruolo]) temiState[ruolo] = [];
+                        var idx = temiState[ruolo].indexOf(codice);
+                        var input = chip.querySelector('input');
+                        if (idx === -1) { temiState[ruolo].push(codice); chip.classList.add('checked'); if (input) input.checked = true; }
+                        else { temiState[ruolo].splice(idx, 1); chip.classList.remove('checked'); if (input) input.checked = false; }
+                        saveTemi();
+                    });
+                });
+            })
+            .catch(function () { field.style.display = 'none'; });
+    }
+    function saveTemi() {
+        var st = $('f-temi-status');
+        if (st) { st.textContent = STR.saving || 'Salvataggio…'; st.className = 'crew-edit-foto-status loading'; }
+        var payload = {};
+        Object.keys(temiState).forEach(function (r) { if (temiState[r] && temiState[r].length) payload[r] = temiState[r]; });
+        fetch(API_TEMI_SAVE, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ uuid: UUID, t: TOKEN, temi: payload }),
+            credentials: 'same-origin'
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+            if (res.ok || res.success) {
+                if (st) { st.textContent = (STR.temiSaved || '✓ Specializzazioni aggiornate'); st.className = 'crew-edit-foto-status ok'; }
+            } else {
+                if (st) { st.textContent = '✗ ' + (res.message || res.error || 'Errore'); st.className = 'crew-edit-foto-status err'; }
+            }
+        })
+        .catch(function () { if (st) { st.textContent = '✗ Errore di rete'; st.className = 'crew-edit-foto-status err'; } });
+    }
+
     function setupConsenso() {
         var chk = $('f-consenso'), st = $('f-consenso-status');
         if (!chk) return;
@@ -332,6 +404,13 @@
 
             // 2026-07-26 — Copertina profilo (cover backend live)
             setupCoverPicker(d.galleria_foto, d.cover_photo_id, d.cover_focal);
+
+            // 2026-07-26 — Specializzazioni per ruolo (album_temi). NOTA: nome esatto del campo "ruoli del crew"
+            // e "prefill temi" nella risposta di crew-self-edit-load.php non ancora verificato con un link reale —
+            // provo piu' varianti plausibili in fallback, ma va confermato/testato prima di darlo per definitivo.
+            var crewRoles = d.categorie || (d.crew && d.crew.categorie) || [];
+            var existingTemi = d.album_temi || (d.crew && d.crew.album_temi) || {};
+            setupTemiPicker(crewRoles, existingTemi);
 
             var cons = $('f-consenso');
             if (cons) cons.checked = (String(d.consenso) === '1' || (d.crew && String(d.crew.consenso) === '1'));
