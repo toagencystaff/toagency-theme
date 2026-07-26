@@ -337,7 +337,10 @@
         // Copertina hero: 2026-07-26 usa cover_url/cover_focal (scelta dal crew in self-edit) se presente;
         // fallback 2026-07-23 = prima foto trovata + object-position CSS default (50% 30%)
         var coverPhoto = d.cover_url || '';
-        var coverFocal = d.cover_focal || '';
+        // FIX 2026-07-26: il focal va applicato SOLO se la cover è quella scelta esplicitamente (cover_url).
+        // Il CRM può restituire cover_focal="50% 50%" di default anche a cover_url=null: se lo applicassimo
+        // anche al fallback (prima foto trovata), sovrascriveremmo l'inquadratura CSS 50%/30% senza motivo.
+        var coverFocal = coverPhoto ? (d.cover_focal || '') : '';
         if (!coverPhoto) {
             var coverKeys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
             if (albums.generale) coverKeys.push('generale');
