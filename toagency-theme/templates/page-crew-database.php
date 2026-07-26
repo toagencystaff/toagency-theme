@@ -179,7 +179,9 @@ $theme_uri = get_stylesheet_directory_uri();
 
 /* ─── Scheda singola crew (?uuid=) — 2026-07-11 ─── */
 /* 2026-07-26 Fase 2 — .crew-pub-view rimosso: la card intera ora apre il profilo, bottone dedicato non serve più */
-.crew-pf-overlay { position:fixed; inset:0; background:rgba(0,0,0,.9); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); z-index:300; display:none; overflow-y:auto; padding:32px 16px; }
+/* 2026-07-26 — FIX bug segnalato: #mainNav è fixed con z-index:10000 e stava SOPRA il popup (z-index:300),
+   il pulsante chiudi era visibile ma i click "passavano" al menu sotto. Ora l'overlay sta sopra il nav. */
+.crew-pf-overlay { position:fixed; inset:0; background:rgba(0,0,0,.9); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); z-index:10001; display:none; overflow-y:auto; padding:32px 16px; }
 .crew-pf-overlay.show { display:block; }
 .crew-pf-card { background:linear-gradient(180deg,#161618,#0e0e10); border:1px solid #2a2a2e; border-radius:16px; max-width:960px; margin:16px auto; padding:32px 32px 40px; position:relative; box-shadow:0 24px 80px rgba(0,0,0,.6); }
 .crew-pf-close { position:absolute; top:14px; right:16px; width:36px; height:36px; background:#1a1a1e; border:1px solid #2a2a2e; border-radius:50%; color:#9ca3af; font-size:22px; line-height:1; cursor:pointer; transition:all .15s; }
