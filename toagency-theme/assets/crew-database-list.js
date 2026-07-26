@@ -55,6 +55,8 @@
 
     var selectedUuids = new Set();
     var lastResults = [];
+    // 2026-07-26 — cache "cover" provvisoria (uuid -> array media), evita refetch ad ogni cambio filtro
+    var __coverCache = {};
 
     function $(sel) { return document.querySelector(sel); }
 
@@ -132,6 +134,7 @@
                 photo.textContent = '👤';
             }
             card.appendChild(photo);
+            loadRandomCover(card, photo, c.uuid); // 2026-07-26 — cover provvisoria random, vedi nota sopra
 
             // 2026-07-26 Fase 2 — bottoncino selezione (+/✓) per "Richiedi info", separato dal click-card che ora apre il profilo
             var addBtn = document.createElement('button');
@@ -540,6 +543,31 @@
         var card = e.target.closest && e.target.closest('.crew-pub-card');
         if (card) ensureCardNav(card);
     }, true);
+
+    // 2026-07-26 — "cover" provvisoria in attesa del campo cover_url/cover_focal dal CRM (in coda):
+    // al posto del selfie di profilo, mostra una foto lavoro a caso appena disponibile. Fallback: resta la foto profilo.
+    // Riusa la stessa cache (card._cnMedia) delle frecce Fase 3, cosi' non rifetcha al hover.
+    function loadRandomCover(card, photo, uuid) {
+        if (__coverCache[uuid]) {
+            applyRandomCover(card, photo, __coverCache[uuid]);
+            return;
+        }
+        fetch(API_PROFILE + '?uuid=' + encodeURIComponent(uuid), { credentials: 'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+                var media = cardMediaFromAlbums(d);
+                __coverCache[uuid] = media;
+                applyRandomCover(card, photo, media);
+            })
+            .catch(function () { /* silenzioso: resta la foto profilo come fallback */ });
+    }
+    function applyRandomCover(card, photo, media) {
+        if (!media || !media.length) return;
+        var idx = Math.floor(Math.random() * media.length);
+        photo.style.backgroundImage = 'url(' + encodeURI(media[idx]) + ')';
+        card._cnMedia = media;
+        card.setAttribute('data-cnidx', idx);
+    }
 
     // Appiattisce gli album del profilo in una lista di URL foto (no video), stesso ordine di renderProfile
     function cardMediaFromAlbums(d) {
