@@ -334,17 +334,22 @@
         var albums = d.albums || {};
         var bio = d.bio_ruoli || {};
         var codice = d.codice ? '<span class="crew-pf-code">· ' + escapeHtml(d.codice) + '</span>' : '';
-        // Copertina hero (2026-07-23): prima foto (= pfPhotos[0]) come cover in cima, nome in overlay; fallback nome nell'header
-        var coverPhoto = '';
-        var coverKeys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
-        if (albums.generale) coverKeys.push('generale');
-        for (var ck = 0; ck < coverKeys.length && !coverPhoto; ck++) {
-            var cps = albums[coverKeys[ck]] || [];
-            for (var cp = 0; cp < cps.length; cp++) { if (!VIDEO_RE.test(cps[cp])) { coverPhoto = cps[cp]; break; } }
+        // Copertina hero: 2026-07-26 usa cover_url/cover_focal (scelta dal crew in self-edit) se presente;
+        // fallback 2026-07-23 = prima foto trovata + object-position CSS default (50% 30%)
+        var coverPhoto = d.cover_url || '';
+        var coverFocal = d.cover_focal || '';
+        if (!coverPhoto) {
+            var coverKeys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
+            if (albums.generale) coverKeys.push('generale');
+            for (var ck = 0; ck < coverKeys.length && !coverPhoto; ck++) {
+                var cps = albums[coverKeys[ck]] || [];
+                for (var cp = 0; cp < cps.length; cp++) { if (!VIDEO_RE.test(cps[cp])) { coverPhoto = cps[cp]; break; } }
+            }
         }
         var html = '';
         if (coverPhoto) {
-            html += '<div class="crew-pf-hero"><img class="crew-pf-hero-img crew-pf-clic" src="' + encodeURI(withW(coverPhoto, 1200)) + '" alt="" data-idx="0">'
+            var focalStyle = coverFocal ? ' style="object-position:' + escapeHtml(coverFocal) + '"' : '';
+            html += '<div class="crew-pf-hero"><img class="crew-pf-hero-img crew-pf-clic" src="' + encodeURI(withW(coverPhoto, 1200)) + '" alt=""' + focalStyle + ' data-idx="0">'
                  +  '<div class="crew-pf-hero-overlay"><h2 class="crew-pf-hero-name">' + escapeHtml(d.nome || '—') + codice + '</h2></div></div>';
         }
         html += '<div class="crew-pf-header">';

@@ -18,8 +18,10 @@
     var API_UPLOAD_FOTO = cfg.apiUploadFoto || '/crm_toagency/actions/crew-upload-foto-profilo.php';
     var API_UPLOAD_PORTFOLIO = cfg.apiUploadPortfolio || '/crm_toagency/actions/crew-self-edit-upload-portfolio.php';
     var API_CONSENSO = cfg.apiConsenso || '/crm_toagency/actions/crew-self-edit-consenso.php';
+    var API_COVER = cfg.apiCover || '/crm_toagency/actions/crew-self-edit-cover.php';
     var MAX_FOTO = 15, MAX_VIDEO = 6;
     var portCounts = { foto: null, video: null };
+    var coverState = { photoId: null, focal: '' };
     var UUID  = cfg.uuid  || '';
     var TOKEN = cfg.token || '';
     var STR   = cfg.strings || {};
@@ -208,6 +210,59 @@
         updatePortfolioCounters();
     }
 
+    // 2026-07-26 — Copertina profilo: picker foto + focal point (salvataggio immediato, come consenso)
+    function saveCover() {
+        var st = $('f-cover-status');
+        if (st) { st.textContent = STR.saving || 'Salvataggio…'; st.className = 'crew-edit-foto-status loading'; }
+        fetch(API_COVER, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ uuid: UUID, t: TOKEN, cover_photo_id: coverState.photoId, cover_focal: coverState.focal }),
+            credentials: 'same-origin'
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+            if (res.ok) {
+                if (st) { st.textContent = '✓ Copertina aggiornata'; st.className = 'crew-edit-foto-status ok'; }
+            } else {
+                if (st) { st.textContent = '✗ ' + (res.message || res.error || 'Errore'); st.className = 'crew-edit-foto-status err'; }
+            }
+        })
+        .catch(function () { if (st) { st.textContent = '✗ Errore di rete'; st.className = 'crew-edit-foto-status err'; } });
+    }
+
+    function setupCoverPicker(galleria, coverId, coverFocal) {
+        var field = $('f-cover-field'), grid = $('f-cover-grid'), focalWrap = $('f-cover-focal');
+        if (!field || !grid) return;
+        if (!galleria || !galleria.length) { field.style.display = 'none'; return; }
+        field.style.display = 'block';
+        coverState.photoId = coverId || null;
+        coverState.focal = coverFocal || '';
+        grid.innerHTML = galleria.map(function (p) {
+            var sel = (String(p.id) === String(coverId)) ? ' selected' : '';
+            return '<div class="crew-edit-cover-thumb' + sel + '" data-id="' + escapeHtml(String(p.id)) + '"><img src="' + escapeHtml(p.url) + '" loading="lazy" alt=""></div>';
+        }).join('');
+        grid.querySelectorAll('.crew-edit-cover-thumb').forEach(function (el) {
+            el.addEventListener('click', function () {
+                grid.querySelectorAll('.crew-edit-cover-thumb').forEach(function (t) { t.classList.remove('selected'); });
+                el.classList.add('selected');
+                coverState.photoId = el.getAttribute('data-id');
+                saveCover();
+            });
+        });
+        if (focalWrap) {
+            focalWrap.querySelectorAll('.crew-edit-cover-focal-btn').forEach(function (btn) {
+                if (btn.getAttribute('data-focal') === coverFocal) btn.classList.add('selected');
+                btn.addEventListener('click', function () {
+                    focalWrap.querySelectorAll('.crew-edit-cover-focal-btn').forEach(function (b) { b.classList.remove('selected'); });
+                    btn.classList.add('selected');
+                    coverState.focal = btn.getAttribute('data-focal');
+                    saveCover();
+                });
+            });
+        }
+    }
+
     function setupConsenso() {
         var chk = $('f-consenso'), st = $('f-consenso-status');
         if (!chk) return;
@@ -274,6 +329,9 @@
 
             if (d.counts) { portCounts.foto = d.counts.foto; portCounts.video = d.counts.video; }
             updatePortfolioCounters();
+
+            // 2026-07-26 — Copertina profilo (cover backend live)
+            setupCoverPicker(d.galleria_foto, d.cover_photo_id, d.cover_focal);
 
             var cons = $('f-consenso');
             if (cons) cons.checked = (String(d.consenso) === '1' || (d.crew && String(d.crew.consenso) === '1'));

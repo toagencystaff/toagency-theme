@@ -162,6 +162,17 @@ $token_get = $_GET['t']    ?? '';
     .crew-edit-foto-placeholder { font-size:48px; }
 }
 
+/* 2026-07-26 — Copertina profilo (cover picker) */
+.crew-edit-cover-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:10px; }
+.crew-edit-cover-thumb { position:relative; aspect-ratio:1; border-radius:6px; overflow:hidden; cursor:pointer; border:2px solid transparent; background:#0a0a0a; }
+.crew-edit-cover-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+.crew-edit-cover-thumb.selected { border-color:#c8ff00; }
+.crew-edit-cover-thumb.selected::after { content:"✓"; position:absolute; top:4px; right:4px; background:#c8ff00; color:#0a0a0a; width:18px; height:18px; border-radius:50%; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+.crew-edit-cover-focal { display:flex; gap:8px; margin-top:8px; }
+.crew-edit-cover-focal-btn { flex:1; background:#1a1a1e; color:#d1d5db; border:1px solid #2a2a2e; border-radius:6px; padding:8px; font-size:12px; cursor:pointer; font-weight:600; }
+.crew-edit-cover-focal-btn.selected { background:#c8ff00; color:#0a0a0a; border-color:#c8ff00; }
+@media (max-width:520px) { .crew-edit-cover-grid { grid-template-columns:repeat(3,1fr); } }
+
 .crew-edit-actions { margin-top:28px; }
 .crew-edit-btn-save { width:100%; background:#c8ff00; color:#0a0a0a; border:none; padding:14px; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; transition:opacity .15s; }
 .crew-edit-btn-save:hover { opacity:.9; }
@@ -238,6 +249,20 @@ $token_get = $_GET['t']    ?? '';
                     <div class="crew-edit-foto-status" id="f-portfolio-video-status"></div>
                     <div class="crew-edit-hint" style="margin-top:6px;">🎬 <?= esc_html($_t(['it'=>'Troppo pesante? Esportalo a 720p o mandalo su WhatsApp.','en'=>'Too big? Export at 720p or send it on WhatsApp.','fr'=>'Trop lourd ? Exporte en 720p ou envoie sur WhatsApp.','es'=>'¿Muy pesado? Expórtalo a 720p o mándalo por WhatsApp.'])) ?> <a href="https://wa.me/393518468516?text=<?= rawurlencode($_t(['it'=>'Ciao, vi invio il mio video per la mia scheda crew TOAgency','en'=>'Hi, I am sending my video for my TOAgency crew profile','fr'=>'Bonjour, je vous envoie ma vidéo pour ma fiche crew TOAgency','es'=>'Hola, os envío mi vídeo para mi ficha crew TOAgency'])) ?>" target="_blank" rel="noopener" style="color:#25D366;font-weight:700;text-decoration:none;white-space:nowrap;">📲 WhatsApp</a></div>
                 </div>
+            </div>
+
+            <!-- 2026-07-26 — Copertina profilo (cover + focal point), popolata via JS da galleria_foto -->
+            <div class="crew-edit-foto-field" id="f-cover-field" style="display:none;">
+                <label class="crew-edit-foto-label">🎯 <?= esc_html($_t(['it'=>'Copertina profilo','en'=>'Profile cover','fr'=>'Photo de couverture','es'=>'Foto de portada'])) ?></label>
+                <div class="crew-edit-foto-hint"><?= esc_html($_t(['it'=>'Scegli quale foto della galleria mostrare come copertina in alto nella tua scheda.','en'=>'Pick which gallery photo to show as the cover at the top of your profile.','fr'=>'Choisis la photo de couverture de ta fiche.','es'=>'Elige la foto de portada de tu ficha.'])) ?></div>
+                <div class="crew-edit-cover-grid" id="f-cover-grid"></div>
+                <div class="crew-edit-foto-hint" style="margin-top:12px;"><?= esc_html($_t(['it'=>'Inquadratura (se la foto taglia testa o piedi)','en'=>'Framing (if the photo crops head or feet)','fr'=>'Cadrage (si la photo coupe la tête ou les pieds)','es'=>'Encuadre (si la foto corta la cabeza o los pies)'])) ?></div>
+                <div class="crew-edit-cover-focal" id="f-cover-focal">
+                    <button type="button" class="crew-edit-cover-focal-btn" data-focal="50% 0%"><?= esc_html($_t(['it'=>'Alto','en'=>'Top','fr'=>'Haut','es'=>'Arriba'])) ?></button>
+                    <button type="button" class="crew-edit-cover-focal-btn" data-focal="50% 50%"><?= esc_html($_t(['it'=>'Centro','en'=>'Center','fr'=>'Centre','es'=>'Centro'])) ?></button>
+                    <button type="button" class="crew-edit-cover-focal-btn" data-focal="50% 100%"><?= esc_html($_t(['it'=>'Basso','en'=>'Bottom','fr'=>'Bas','es'=>'Abajo'])) ?></button>
+                </div>
+                <div class="crew-edit-foto-status" id="f-cover-status"></div>
             </div>
 
             <!-- 2026-07-24 — toggle consenso pubblicazione (immediato) -->
@@ -338,6 +363,7 @@ window.crewEditConfig = {
     apiUploadFoto:  '/crm_toagency/actions/crew-upload-foto-profilo.php',
     apiUploadPortfolio: '/crm_toagency/actions/crew-self-edit-upload-portfolio.php',
     apiConsenso: '/crm_toagency/actions/crew-self-edit-consenso.php',
+    apiCover: '/crm_toagency/actions/crew-self-edit-cover.php', /* 2026-07-26 — cover picker */
     provinceJsonUrl: <?= json_encode($theme_uri . '/assets/data/province-italia.json') ?>, /* FIX 2026-07-01 marco — tendina provincia crew */
     comuneApiUrl:   '/crm_toagency/actions/cerca-comune.php', /* FIX 2026-07-01 marco — ricerca comune crew */
     pendingFotoTpl: <?= json_encode($_t($T['pending_foto'])) ?>,
@@ -356,6 +382,6 @@ window.crewEditConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260723eta4" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260726cover1" defer></script>
 
 <?php toa_component('footer'); ?>
