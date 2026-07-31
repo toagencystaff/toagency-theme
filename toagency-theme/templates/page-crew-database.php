@@ -214,14 +214,16 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-header { border-bottom:1px solid #2a2a2e; padding-bottom:20px; margin-bottom:8px; }
 .crew-pf-intro { color:#d0d3d9; font-size:15px; line-height:1.65; margin:16px 0 4px; max-width:680px; white-space:pre-line; }
 .crew-pf-name { color:#fff; font-size:34px; font-weight:800; letter-spacing:-.5px; margin:0 44px 12px 0; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
-/* Copertina hero mosaico (2026-07-23, sostituita 2026-07-31 con mosaico su richiesta Marco/CRM) */
+/* Copertina hero slideshow (2026-07-23 singola foto -> 2026-07-31 mosaico -> stesso giorno, slideshow: le foto
+   restano cliccabili/grandi nella galleria sotto invece di essere "consumate" dall'hero, feedback Marco) */
 .crew-pf-card .crew-pf-close { z-index:5; }
 .crew-pf-hero { position:relative; width:calc(100% + 64px); margin:-32px -32px 20px; border-radius:16px 16px 0 0; overflow:hidden; background:#0a0a0a; }
-.crew-pf-hero-mosaic { display:grid; grid-template-columns:repeat(3,1fr); grid-auto-rows:clamp(100px,20vw,170px); gap:2px; }
-.crew-pf-hero-tile { display:block; width:100%; height:100%; object-fit:cover; }
-.crew-pf-hero-namecell { position:relative; display:flex; align-items:flex-end; padding:14px; background:linear-gradient(135deg, rgba(18,18,20,.97), rgba(18,18,20,.88)); }
-.crew-pf-hero-name { color:#fff; font-size:22px; font-weight:800; letter-spacing:-.5px; margin:0; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; text-shadow:0 2px 12px rgba(0,0,0,.6); }
-@media (max-width:640px){ .crew-pf-hero{ width:calc(100% + 32px); margin:-22px -16px 16px; } .crew-pf-hero-mosaic{ grid-auto-rows:clamp(76px,26vw,130px); } .crew-pf-hero-name{ font-size:17px; } }
+.crew-pf-hero-slideshow { position:relative; width:100%; height:clamp(220px,42vw,360px); }
+.crew-pf-hero-slide { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transform:scale(1.12); transition:opacity 1.4s ease, transform 4.6s ease; }
+.crew-pf-hero-slide.is-active { opacity:1; transform:scale(1); }
+.crew-pf-hero-overlay { position:absolute; left:0; right:0; bottom:0; padding:40px 32px 18px; background:linear-gradient(to top, rgba(10,10,10,.92), rgba(10,10,10,.55) 55%, transparent); pointer-events:none; }
+.crew-pf-hero-name { color:#fff; font-size:34px; font-weight:800; letter-spacing:-.5px; margin:0; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; text-shadow:0 2px 12px rgba(0,0,0,.6); }
+@media (max-width:640px){ .crew-pf-hero{ width:calc(100% + 32px); margin:-22px -16px 16px; } .crew-pf-hero-slideshow{ height:clamp(180px,54vw,300px); } .crew-pf-hero-overlay{ padding:32px 16px 14px; } .crew-pf-hero-name{ font-size:26px; } }
 .crew-pf-code { color:#6b7280; font-weight:500; font-size:15px; letter-spacing:.5px; font-family:monospace; }
 /* 2026-07-26 — layout affiancato: avatar a sinistra (un po' piu' grande), info a destra (ottimizza lo spazio, richiesta Marco) */
 .crew-pf-headrow { display:flex; align-items:flex-start; gap:18px; }
@@ -416,6 +418,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=3.6-heronodup" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=3.7-heroslideshow" defer></script>
 
 <?php toa_component('footer'); ?>

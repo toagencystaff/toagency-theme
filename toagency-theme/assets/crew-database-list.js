@@ -329,6 +329,8 @@
 
     // 2026-07-23: lightbox — pfPhotos raccoglie gli URL foto full-size in ordine di render
     var pfPhotos = [];
+    // 2026-07-31: interval dello slideshow hero, va fermato alla chiusura scheda (altrimenti resta a girare a vuoto)
+    var heroSlideTimer = null;
 
     // Aggiunge &w=<w> agli URL proxy crew-photo-public.php (miniatura vs grande)
     function withW(url, w) {
@@ -384,9 +386,10 @@
         var albums = d.albums || {};
         var bio = d.bio_ruoli || {};
         var codice = d.codice ? '<span class="crew-pf-code">· ' + escapeHtml(d.codice) + '</span>' : '';
-        // 2026-07-31 — Hero mosaico (richiesta Marco/CRM, rif. screenshot): fino a 5 foto del portfolio
-        // (cover_url scelta dal crew per prima, se presente) + 1 cella con nome/codice in overlay.
-        // Sostituisce la vecchia hero a foto singola.
+        // 2026-07-31 — Hero slideshow (richiesta Marco, sostituisce il mosaico statico: le foto restano
+        // grandi/cliccabili nella galleria sotto invece di essere "consumate" dall'hero). Fino a 5 foto
+        // del portfolio (cover_url scelta dal crew per prima, se presente), dissolvenza + zoom via CSS,
+        // ciclo gestito da un piccolo interval JS (vedi wireHeroSlideshow), leggero: solo opacity/transform.
         var heroPhotos = [];
         if (d.cover_url) heroPhotos.push(d.cover_url);
         var heroKeys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
@@ -398,10 +401,11 @@
         });
         var html = '';
         if (heroPhotos.length) {
-            var nameCell = '<div class="crew-pf-hero-namecell"><h2 class="crew-pf-hero-name">' + escapeHtml(d.nome ? properCase(d.nome) : '—') + codice + '</h2></div>';
-            var tiles = heroPhotos.map(function (p) { return '<img class="crew-pf-hero-tile" src="' + encodeURI(withW(p, 700)) + '" alt="">'; });
-            tiles.splice(Math.min(3, tiles.length), 0, nameCell);
-            html += '<div class="crew-pf-hero"><div class="crew-pf-hero-mosaic">' + tiles.join('') + '</div></div>';
+            var slides = heroPhotos.map(function (p, hi) {
+                return '<img class="crew-pf-hero-slide' + (hi === 0 ? ' is-active' : '') + '" src="' + encodeURI(withW(p, 1000)) + '" alt="">';
+            });
+            html += '<div class="crew-pf-hero"><div class="crew-pf-hero-slideshow">' + slides.join('') + '</div>'
+                 +  '<div class="crew-pf-hero-overlay"><h2 class="crew-pf-hero-name">' + escapeHtml(d.nome ? properCase(d.nome) : '—') + codice + '</h2></div></div>';
         }
         html += '<div class="crew-pf-header">';
         // 2026-07-26 — layout affiancato: avatar a sinistra, info a destra (richiesto da Marco per ottimizzare lo spazio)
@@ -453,9 +457,7 @@
         if (albums.generale) keys.push('generale');
         var any = false;
         keys.forEach(function (k) {
-            // 2026-07-31 — escludi dalla galleria sotto le foto gia' mostrate nel mosaico hero,
-            // altrimenti compaiono due volte sulla stessa scheda (feedback Marco)
-            var photos = (albums[k] || []).filter(function (url) { return heroPhotos.indexOf(url) === -1; });
+            var photos = albums[k] || [];
             var hasBio = (k !== 'generale' && bio[k]);
             if (!photos.length && !hasBio) return;
             any = true;
@@ -478,6 +480,21 @@
         body.innerHTML = html;
         body.scrollTop = 0;
         wireVideos(body);
+        wireHeroSlideshow(body);
+    }
+
+    // 2026-07-31 — ciclo dissolvenza tra le foto dell'hero (max 5, gia' in DOM). Solo opacity/transform
+    // (leggero), un solo timer alla volta: se una scheda si riapre il vecchio timer va fermato prima.
+    function wireHeroSlideshow(scope) {
+        if (heroSlideTimer) { clearInterval(heroSlideTimer); heroSlideTimer = null; }
+        var slides = scope.querySelectorAll('.crew-pf-hero-slide');
+        if (slides.length < 2) return;
+        var idx = 0;
+        heroSlideTimer = setInterval(function () {
+            slides[idx].classList.remove('is-active');
+            idx = (idx + 1) % slides.length;
+            slides[idx].classList.add('is-active');
+        }, 4000);
     }
 
     function wireVideos(scope) {
@@ -496,6 +513,7 @@
         var ov = $('#crew-profile-overlay');
         if (ov) ov.classList.remove('show');
         document.body.style.overflow = '';
+        if (heroSlideTimer) { clearInterval(heroSlideTimer); heroSlideTimer = null; }
     }
 
     window.crewPubCloseProfile = function () {
