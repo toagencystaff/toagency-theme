@@ -396,13 +396,19 @@
         if (albums.generale) heroKeys.push('generale');
         heroKeys.forEach(function (k) {
             (albums[k] || []).forEach(function (p) {
-                if (heroPhotos.length < 5 && !VIDEO_RE.test(p) && heroPhotos.indexOf(p) === -1) heroPhotos.push(p);
+                if (heroPhotos.length < 6 && !VIDEO_RE.test(p) && heroPhotos.indexOf(p) === -1) heroPhotos.push(p);
             });
         });
         var html = '';
         if (heroPhotos.length) {
-            var slides = heroPhotos.map(function (p, hi) {
-                return '<img class="crew-pf-hero-slide' + (hi === 0 ? ' is-active' : '') + '" src="' + encodeURI(withW(p, 1000)) + '" alt="">';
+            // 2026-07-31 — dittico: 2 foto affiancate per "slide" invece di 1 sola a piena larghezza.
+            // Con una foto verticale sola in un riquadro largo/basso il crop era assurdo (feedback Marco:
+            // "vedo una narice gigante"); a coppie ogni foto occupa meta' larghezza, molto piu' equilibrato.
+            var pairs = [];
+            for (var hp = 0; hp < heroPhotos.length; hp += 2) pairs.push(heroPhotos.slice(hp, hp + 2));
+            var slides = pairs.map(function (pair, hi) {
+                var imgs = pair.map(function (p) { return '<img src="' + encodeURI(withW(p, 800)) + '" alt="">'; }).join('');
+                return '<div class="crew-pf-hero-slide' + (hi === 0 ? ' is-active' : '') + '">' + imgs + '</div>';
             });
             html += '<div class="crew-pf-hero"><div class="crew-pf-hero-slideshow">' + slides.join('') + '</div>'
                  +  '<div class="crew-pf-hero-overlay"><h2 class="crew-pf-hero-name">' + escapeHtml(d.nome ? properCase(d.nome) : '—') + codice + '</h2></div></div>';

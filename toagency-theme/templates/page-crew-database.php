@@ -219,10 +219,11 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-card .crew-pf-close { z-index:5; }
 .crew-pf-hero { position:relative; width:calc(100% + 64px); margin:-32px -32px 20px; border-radius:16px 16px 0 0; overflow:hidden; background:#0a0a0a; }
 .crew-pf-hero-slideshow { position:relative; width:100%; height:clamp(220px,42vw,360px); }
-/* 2026-07-31 — contain invece di cover: le foto verticali (es. beauty closeup) con cover venivano
-   croppate a caso in un formato largo/basso (Marco: "vedo una narice gigante"). Con contain la foto
-   e' sempre intera; le verticali avranno bande laterali sullo sfondo scuro del contenitore, non un problema. */
-.crew-pf-hero-slide { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:0; transform:scale(1.12); transition:opacity 1.4s ease, transform 4.6s ease; }
+/* 2026-07-31 — dittico: ogni slide contiene 1-2 foto affiancate (flex) invece di 1 sola a piena
+   larghezza. Con una verticale sola in un riquadro largo/basso il cover croppava a caso (Marco:
+   "vedo una narice gigante"); a meta' larghezza ciascuna foto ha un riquadro molto piu' equilibrato. */
+.crew-pf-hero-slide { position:absolute; inset:0; width:100%; height:100%; display:flex; gap:2px; opacity:0; transform:scale(1.12); transition:opacity 1.4s ease, transform 4.6s ease; }
+.crew-pf-hero-slide img { flex:1 1 0; min-width:0; width:100%; height:100%; object-fit:cover; }
 .crew-pf-hero-slide.is-active { opacity:1; transform:scale(1); }
 .crew-pf-hero-overlay { position:absolute; left:0; right:0; bottom:0; padding:40px 32px 18px; background:linear-gradient(to top, rgba(10,10,10,.92), rgba(10,10,10,.55) 55%, transparent); pointer-events:none; }
 .crew-pf-hero-name { color:#fff; font-size:34px; font-weight:800; letter-spacing:-.5px; margin:0; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; text-shadow:0 2px 12px rgba(0,0,0,.6); }
@@ -421,6 +422,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=3.7-heroslideshow" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=3.8-herodittico" defer></script>
 
 <?php toa_component('footer'); ?>
