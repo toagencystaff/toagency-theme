@@ -453,7 +453,9 @@
         if (albums.generale) keys.push('generale');
         var any = false;
         keys.forEach(function (k) {
-            var photos = albums[k] || [];
+            // 2026-07-31 — escludi dalla galleria sotto le foto gia' mostrate nel mosaico hero,
+            // altrimenti compaiono due volte sulla stessa scheda (feedback Marco)
+            var photos = (albums[k] || []).filter(function (url) { return heroPhotos.indexOf(url) === -1; });
             var hasBio = (k !== 'generale' && bio[k]);
             if (!photos.length && !hasBio) return;
             any = true;
