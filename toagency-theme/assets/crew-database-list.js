@@ -384,33 +384,31 @@
         var albums = d.albums || {};
         var bio = d.bio_ruoli || {};
         var codice = d.codice ? '<span class="crew-pf-code">· ' + escapeHtml(d.codice) + '</span>' : '';
-        // Copertina hero: 2026-07-26 usa cover_url/cover_focal (scelta dal crew in self-edit) se presente;
-        // fallback 2026-07-23 = prima foto trovata + object-position CSS default (50% 30%)
-        var coverPhoto = d.cover_url || '';
-        // FIX 2026-07-26: il focal va applicato SOLO se la cover è quella scelta esplicitamente (cover_url).
-        // Il CRM può restituire cover_focal="50% 50%" di default anche a cover_url=null: se lo applicassimo
-        // anche al fallback (prima foto trovata), sovrascriveremmo l'inquadratura CSS 50%/30% senza motivo.
-        var coverFocal = coverPhoto ? (d.cover_focal || '') : '';
-        if (!coverPhoto) {
-            var coverKeys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
-            if (albums.generale) coverKeys.push('generale');
-            for (var ck = 0; ck < coverKeys.length && !coverPhoto; ck++) {
-                var cps = albums[coverKeys[ck]] || [];
-                for (var cp = 0; cp < cps.length; cp++) { if (!VIDEO_RE.test(cps[cp])) { coverPhoto = cps[cp]; break; } }
-            }
-        }
+        // 2026-07-31 — Hero mosaico (richiesta Marco/CRM, rif. screenshot): fino a 5 foto del portfolio
+        // (cover_url scelta dal crew per prima, se presente) + 1 cella con nome/codice in overlay.
+        // Sostituisce la vecchia hero a foto singola.
+        var heroPhotos = [];
+        if (d.cover_url) heroPhotos.push(d.cover_url);
+        var heroKeys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
+        if (albums.generale) heroKeys.push('generale');
+        heroKeys.forEach(function (k) {
+            (albums[k] || []).forEach(function (p) {
+                if (heroPhotos.length < 5 && !VIDEO_RE.test(p) && heroPhotos.indexOf(p) === -1) heroPhotos.push(p);
+            });
+        });
         var html = '';
-        if (coverPhoto) {
-            var focalStyle = coverFocal ? ' style="object-position:' + escapeHtml(coverFocal) + '"' : '';
-            html += '<div class="crew-pf-hero"><img class="crew-pf-hero-img crew-pf-clic" src="' + encodeURI(withW(coverPhoto, 1200)) + '" alt=""' + focalStyle + ' data-idx="0">'
-                 +  '<div class="crew-pf-hero-overlay"><h2 class="crew-pf-hero-name">' + escapeHtml(d.nome ? properCase(d.nome) : '—') + codice + '</h2></div></div>';
+        if (heroPhotos.length) {
+            var nameCell = '<div class="crew-pf-hero-namecell"><h2 class="crew-pf-hero-name">' + escapeHtml(d.nome ? properCase(d.nome) : '—') + codice + '</h2></div>';
+            var tiles = heroPhotos.map(function (p) { return '<img class="crew-pf-hero-tile" src="' + encodeURI(withW(p, 700)) + '" alt="">'; });
+            tiles.splice(Math.min(3, tiles.length), 0, nameCell);
+            html += '<div class="crew-pf-hero"><div class="crew-pf-hero-mosaic">' + tiles.join('') + '</div></div>';
         }
         html += '<div class="crew-pf-header">';
         // 2026-07-26 — layout affiancato: avatar a sinistra, info a destra (richiesto da Marco per ottimizzare lo spazio)
         html += '<div class="crew-pf-headrow">';
         if (avatarUrl) html += '<span class="crew-pf-avatar" style="background-image:url(' + escapeHtml(encodeURI(avatarUrl)) + ')"></span>';
         html += '<div class="crew-pf-headinfo">';
-        if (!coverPhoto) html += '<h2 class="crew-pf-name">' + escapeHtml(d.nome ? properCase(d.nome) : '—') + codice + '</h2>';
+        if (!heroPhotos.length) html += '<h2 class="crew-pf-name">' + escapeHtml(d.nome ? properCase(d.nome) : '—') + codice + '</h2>';
         if (d.categorie && d.categorie.length) {
             html += '<div class="crew-pf-roles">';
             d.categorie.forEach(function (cat) { html += '<span class="crew-pf-chip">' + escapeHtml(cat) + '</span>'; });
