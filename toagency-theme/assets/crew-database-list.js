@@ -89,7 +89,10 @@
             provincia: provEl ? provEl.value : ''
         };
         $('#results-count').textContent = '…';
-        fetch(API_SEARCH, {
+        // 2026-07-31 — return la promise: serve al deep-link (?uuid=) per aspettare che lastResults
+        // sia popolato PRIMA di aprire il profilo, altrimenti l'avatar (che sta solo nella griglia,
+        // non nell'endpoint profilo) risulta sempre vuoto in apertura diretta da link (bug pre-esistente).
+        return fetch(API_SEARCH, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body),
@@ -700,7 +703,7 @@
         if (provSel) provSel.addEventListener('change', loadCrews);
         populateProvinceFilter();
         syncProvinceVisibility();
-        loadCrews();
+        var initialLoad = loadCrews();
         // Wiring lightbox (elementi statici nel template)
         var lbEl = $('#crew-lightbox');
         if (lbEl) {
@@ -711,6 +714,9 @@
             lbEl.addEventListener('click', function (e) { if (e.target === lbEl || e.target.id === 'crew-lb-img') lbClose(); });
         }
         var initUuid = new URLSearchParams(window.location.search).get('uuid');
-        if (initUuid) openProfile(initUuid, true); // deep-link scheda
+        // 2026-07-31 — aspetta che la griglia sia caricata (lastResults) prima di aprire il deep-link,
+        // altrimenti l'avatar risulta vuoto (vedi commento su loadCrews)
+        if (initUuid && initialLoad && initialLoad.then) initialLoad.then(function () { openProfile(initUuid, true); });
+        else if (initUuid) openProfile(initUuid, true);
     });
 })();
