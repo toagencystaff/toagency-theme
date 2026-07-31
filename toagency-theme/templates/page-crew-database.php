@@ -160,7 +160,7 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-body { padding:14px; display:flex; flex-direction:column; flex:1; }
 .crew-pub-name-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 /* 2026-07-26 — avatar piccolo (la persona) accanto al nome, la foto grande della card ora e' il lavoro (cover random) */
-.crew-pub-avatar { width:44px; height:44px; border-radius:50%; background:#2a2a2e center/cover no-repeat; flex-shrink:0; border:2px solid #2a2a2e; }
+.crew-pub-avatar { width:88px; height:88px; border-radius:50%; background:#2a2a2e center/cover no-repeat; flex-shrink:0; border:2px solid #2a2a2e; }
 .crew-pub-name { font-size:15px; font-weight:600; color:#fff; }
 /* 2026-07-26 — codice pill (allineato al trattamento talent .toa-tdb-card-code): maiuscolo, senza #, visibile quanto il nome */
 .crew-pub-uuid { font-family:monospace; font-size:13px; font-weight:700; background:rgba(200,255,0,.22); color:#c8ff00; padding:2px 8px; border-radius:5px; letter-spacing:.04em; }
