@@ -425,6 +425,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=3.9-deeplinkavatar" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=4.0-lazycover" defer></script>
 
 <?php toa_component('footer'); ?>

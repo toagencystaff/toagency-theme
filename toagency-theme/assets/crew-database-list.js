@@ -57,6 +57,18 @@
     var lastResults = [];
     // 2026-07-26 — cache "cover" provvisoria (uuid -> array media), evita refetch ad ogni cambio filtro
     var __coverCache = {};
+    // 2026-07-31 — le richieste "cover random" partivano TUTTE insieme al render della griglia (~20+
+    // in parallelo), rallentando anche l'apertura di una scheda profilo in corso (feedback Marco).
+    // Con IntersectionObserver si caricano solo le card che stanno per entrare in vista.
+    var coverObserver = ('IntersectionObserver' in window) ? new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            coverObserver.unobserve(entry.target);
+            var card = entry.target;
+            var photo = card.querySelector('.crew-pub-photo');
+            if (photo) loadRandomCover(card, photo, card.dataset.uuid);
+        });
+    }, { rootMargin: '400px 0px' }) : null;
 
     function $(sel) { return document.querySelector(sel); }
 
@@ -137,7 +149,8 @@
                 photo.textContent = '👤';
             }
             card.appendChild(photo);
-            loadRandomCover(card, photo, c.uuid); // 2026-07-26 — cover provvisoria random, vedi nota sopra
+            // 2026-07-31 — solo quando la card e' vicina alla vista (vedi coverObserver sopra), non tutte insieme
+            if (coverObserver) coverObserver.observe(card); else loadRandomCover(card, photo, c.uuid);
 
             // 2026-07-26 Fase 2 — bottoncino selezione (+/✓) per "Richiedi info", separato dal click-card che ora apre il profilo
             var addBtn = document.createElement('button');
