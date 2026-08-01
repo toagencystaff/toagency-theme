@@ -166,7 +166,9 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-uuid { font-family:monospace; font-size:13px; font-weight:700; background:rgba(200,255,0,.22); color:#c8ff00; padding:2px 8px; border-radius:5px; letter-spacing:.04em; }
 /* 2026-07-26 — categorie come testo pulito ("Beauty • Hair") invece di pillole colorate, consiglio ChatGPT */
 .crew-pub-categories { color:#c8ff00; font-size:12.5px; font-weight:600; margin-top:9px; letter-spacing:.02em; }
-.crew-pub-meta { font-size:12px; color:#9ca3af; margin-top:8px; text-transform:capitalize; }
+/* 2026-07-31 — tolto text-transform:capitalize: ora la riga contiene anche "da X anni",
+   capitalize metteva maiuscola pure a "Da"/"Anni". Livello capitalizzato via JS invece. */
+.crew-pub-meta { font-size:12px; color:#9ca3af; margin-top:8px; }
 /* 2026-07-26 — conteggio lavori (proposta ChatGPT), calcolato lato client, appare dopo il fetch della cover random */
 .crew-pub-projcount { font-size:11.5px; color:#6b7280; margin-top:4px; }
 .crew-pub-empty { text-align:center; padding:80px 20px; color:#6b7280; grid-column:1/-1; }
@@ -427,6 +429,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=4.1-livelloeta" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=4.2-livellocase" defer></script>
 
 <?php toa_component('footer'); ?>

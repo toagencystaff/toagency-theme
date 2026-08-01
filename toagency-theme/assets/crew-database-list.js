@@ -205,7 +205,7 @@
             // anche in crew-public-search.php, prima disponibili solo nel profilo)
             if (c.livello) {
                 var annoRif = (c.pro_dal != null) ? c.pro_dal : c.attivita_dal;
-                var livelloTxt = c.livello;
+                var livelloTxt = c.livello.charAt(0).toUpperCase() + c.livello.slice(1);
                 if (annoRif != null) {
                     var nAnniGrid = new Date().getFullYear() - parseInt(annoRif, 10);
                     if (nAnniGrid >= 1) livelloTxt += ' da ' + nAnniGrid + ' anni';
