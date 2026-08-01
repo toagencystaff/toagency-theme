@@ -178,7 +178,10 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-actionbar .btn-clear { background:transparent; border:1px solid #6b7280; color:#fff; padding:9px 16px; border-radius:6px; cursor:pointer; font-weight:500; }
 .crew-pub-actionbar .btn-req { background:#c8ff00; color:#0a0a0a; border:none; padding:10px 20px; border-radius:6px; cursor:pointer; font-weight:700; }
 
-.crew-pub-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:500; display:none; align-items:center; justify-content:center; padding:20px; }
+/* 2026-07-31 — FIX bug segnalato (Marco: "richiedi info non funziona"): z-index 500 finiva SOTTO
+   .crew-pf-overlay (10001, la scheda profilo) quando il CTA viene cliccato da dentro il popup —
+   il modal si apriva ma restava invisibile dietro. Alzato sopra 10001. */
+.crew-pub-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:10010; display:none; align-items:center; justify-content:center; padding:20px; }
 .crew-pub-modal-overlay.show { display:flex; }
 .crew-pub-modal { background:#1a1a1e; border:1px solid #c8ff00; border-radius:12px; padding:28px; max-width:520px; width:100%; max-height:90vh; overflow-y:auto; }
 .crew-pub-modal h2 { color:#c8ff00; margin:0 0 8px; font-size:20px; }
