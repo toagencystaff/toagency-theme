@@ -201,7 +201,17 @@
             var meta = document.createElement('div');
             meta.className = 'crew-pub-meta';
             var metaParts = [];
-            if (c.livello) metaParts.push(c.livello);
+            // 2026-07-31 — "da X anni" accanto al livello (CRM ha aggiunto eta/attivita_dal/pro_dal
+            // anche in crew-public-search.php, prima disponibili solo nel profilo)
+            if (c.livello) {
+                var annoRif = (c.pro_dal != null) ? c.pro_dal : c.attivita_dal;
+                var livelloTxt = c.livello;
+                if (annoRif != null) {
+                    var nAnniGrid = new Date().getFullYear() - parseInt(annoRif, 10);
+                    if (nAnniGrid >= 1) livelloTxt += ' da ' + nAnniGrid + ' anni';
+                }
+                metaParts.push(livelloTxt);
+            }
             // 2026-07-26 — provincia in griglia (privacy: solo provincia, mai comune), ora presente nell'endpoint di ricerca
             if (c.provincia) metaParts.push(provName(String(c.provincia)));
             if (c.paese) metaParts.push(c.paese);
@@ -455,6 +465,12 @@
         var loc = d.provincia ? provName(String(d.provincia)) : '';
         if (d.paese && d.paese !== 'IT') loc = loc ? (loc + ' · ' + d.paese) : String(d.paese);
         if (loc) html += '<div class="crew-pf-loc">📍 ' + escapeHtml(loc) + '</div>';
+        // 2026-07-31 — livello (amatoriale/professionista), CRM ha aggiunto il campo a crew-public-profile.php
+        // (prima mancava, presente solo nella griglia — feedback Marco: "non vedo piu' il livello")
+        if (d.livello) {
+            var livelloCap = d.livello.charAt(0).toUpperCase() + d.livello.slice(1);
+            html += '<div class="crew-pf-livello">' + escapeHtml(livelloCap) + '</div>';
+        }
         // Età + anzianità (2026-07-23) — privacy: solo numeri dall'endpoint (mai data_nascita/P.IVA)
         var yNow = new Date().getFullYear();
         var senParts = [];

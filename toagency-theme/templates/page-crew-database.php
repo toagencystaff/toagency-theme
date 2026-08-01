@@ -259,6 +259,8 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-vthumb:hover .crew-pf-play { transform:scale(1.08); transition:transform .15s; }
 .crew-pf-loading, .crew-pf-error, .crew-pf-empty { color:#9ca3af; text-align:center; padding:48px; }
 .crew-pf-loc { color:#9ca3af; font-size:13px; margin-top:10px; letter-spacing:.02em; }
+/* 2026-07-31 — livello (amatoriale/professionista), feedback Marco "non vedo piu' il livello" */
+.crew-pf-livello { color:#c8ff00; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; margin-top:8px; }
 .crew-pf-seniority { color:#d0d3d9; font-size:13.5px; margin-top:8px; letter-spacing:.02em; }
 .crew-pf-cta { display:inline-flex; align-items:center; gap:8px; margin-top:18px; background:#c8ff00; color:#0a0a0a; border:none; padding:12px 24px !important; border-radius:8px !important; font-size:14px; font-weight:800; cursor:pointer; }
 .crew-pf-cta:hover { filter:brightness(1.08); }
@@ -425,6 +427,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=4.0-lazycover" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=4.1-livelloeta" defer></script>
 
 <?php toa_component('footer'); ?>
