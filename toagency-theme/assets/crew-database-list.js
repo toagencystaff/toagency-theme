@@ -120,6 +120,7 @@
             lastResults = d.results || [];
             renderGrid(lastResults);
             $('#results-count').textContent = lastResults.length + ' ' + (STR.resultsLabel || 'crew');
+            setTimeout(sweepMissingCovers, 3000); // 2026-08-01 — vedi sweepMissingCovers
         })
         .catch(function (err) {
             console.error('[crew-pub] load error:', err);
@@ -660,8 +661,22 @@
         if (!media || !media.length) return;
         var idx = Math.floor(Math.random() * media.length);
         photo.style.backgroundImage = 'url(' + encodeURI(media[idx]) + ')';
+        photo.textContent = ''; // 2026-08-01 — rimuove l'emoji 👤 di fallback se era rimasta visibile sopra la foto
         card._cnMedia = media;
         card.setAttribute('data-cnidx', idx);
+    }
+
+    // 2026-08-01 — rete di sicurezza (bug "immagini nere"/icona omino, segnalato da Marco): alcune card
+    // non ricevevano mai la cover random (IntersectionObserver che non scatta o race col render).
+    // Qualche secondo dopo il render, ricontrolla le card rimaste senza foto e ritenta.
+    function sweepMissingCovers() {
+        document.querySelectorAll('.crew-pub-card').forEach(function (card) {
+            var photo = card.querySelector('.crew-pub-photo');
+            if (!photo || card._cnMedia) return;
+            if (getComputedStyle(photo).backgroundImage !== 'none') return;
+            if (coverObserver) coverObserver.unobserve(card);
+            loadRandomCover(card, photo, card.dataset.uuid);
+        });
     }
 
     // Appiattisce gli album del profilo in una lista di URL foto (no video), stesso ordine di renderProfile
