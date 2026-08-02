@@ -396,7 +396,8 @@
             window.history.pushState({ crewProfile: uuid }, '', u.toString());
         }
         var avatar = avatarUrl || findAvatarByUuid(uuid);
-        fetch(API_PROFILE + '?uuid=' + encodeURIComponent(uuid), { credentials: 'same-origin' })
+        // 2026-08-01 — bio nella lingua corrente del sito (task #17), il CRM traduce/uniforma via AI in "bio"
+        fetch(API_PROFILE + '?uuid=' + encodeURIComponent(uuid) + '&lang=' + encodeURIComponent(cfg.lang || 'it'), { credentials: 'same-origin' })
             .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
             .then(function (d) { renderProfile(d, avatar); })
             .catch(function (err) {
