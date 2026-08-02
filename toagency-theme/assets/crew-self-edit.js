@@ -1,5 +1,6 @@
 /**
- * crew-self-edit.js — v1.4 (2026-07-24)
+ * crew-self-edit.js — v1.5 (2026-08-02)
+ * v1.5: livello/esperienza per ruolo (task #18, solo crew con 2+ ruoli), inviato come ruoli_dati nel save principale
  * v1.4: toggle "rendi pubblico" (consenso immediato, crew-self-edit-consenso.php)
  * v1.3: upload galleria portfolio (foto+video) da self-edit, max 15 foto / 6 video, pending approvazione
  * v1.2: contatore bio (max 800, min consigliato 150)
@@ -23,6 +24,9 @@
     var API_TEMI_TAXONOMY = cfg.apiTemiTaxonomy || '/crm_toagency/actions/crew-temi.php';
     var API_TEMI_SAVE = cfg.apiTemiSave || '/crm_toagency/actions/crew-self-edit-temi.php';
     var temiState = {};
+    // 2026-08-02 — Livello/esperienza per ruolo (task #18). null = crew con 1 ruolo solo,
+    // usa ancora i campi singoli f-livello/f-anno_inizio_attivita (nessun ruoli_dati inviato).
+    var ruoliState = null;
     var MAX_FOTO = 15, MAX_VIDEO = 6;
     var portCounts = { foto: null, video: null };
     var coverState = { photoId: null, focal: '' };
@@ -335,6 +339,47 @@
         .catch(function () { if (st) { st.textContent = '✗ Errore di rete'; st.className = 'crew-edit-foto-status err'; } });
     }
 
+    // 2026-08-02 — Livello/esperienza per ruolo (task #18). Contratto CRM (chat CRM CREW-RUOLI-AI):
+    // ruoli_dati = { "<codice_ruolo>": {livello, anni, bio} } (bio non editabile qui, solo staff).
+    // Se il crew ha 1 solo ruolo, restano i campi singoli f-livello/f-anno_inizio_attivita (nessuna UI in più).
+    function setupRuoliPicker(roles, ruoliDati) {
+        var singleWrap = $('f-livello-singolo-wrap');
+        var field = $('f-ruoli-field'), groupsEl = $('f-ruoli-groups');
+        if (!field || !groupsEl) return;
+        if (!roles || roles.length < 2) {
+            field.style.display = 'none';
+            if (singleWrap) singleWrap.style.display = '';
+            ruoliState = null;
+            return;
+        }
+        if (singleWrap) singleWrap.style.display = 'none';
+        ruoliState = {};
+        var opts = cfg.livelloOptions || [];
+        var html = '';
+        roles.forEach(function (ruolo) {
+            var rd = (ruoliDati && ruoliDati[ruolo]) || {};
+            ruoliState[ruolo] = { livello: rd.livello || 'semi-pro', anni: (rd.anni != null ? rd.anni : '') };
+            html += '<div class="crew-edit-ruoli-group"><div class="crew-edit-temi-role">' + escapeHtml(prettyRoleCode(ruolo)) + '</div>'
+                 +  '<div class="crew-edit-ruoli-row">'
+                 +  '<select class="crew-edit-input" data-ruolo="' + escapeHtml(ruolo) + '" data-kind="livello">'
+                 +  opts.map(function (o) {
+                        return '<option value="' + escapeHtml(o.value) + '"' + (o.value === ruoliState[ruolo].livello ? ' selected' : '') + '>' + escapeHtml(o.label) + '</option>';
+                    }).join('')
+                 +  '</select>'
+                 +  '<input type="number" class="crew-edit-input" data-ruolo="' + escapeHtml(ruolo) + '" data-kind="anni" min="0" max="80" step="1" value="' + escapeHtml(String(ruoliState[ruolo].anni)) + '" placeholder="' + escapeHtml(STR.ruoliAnniPh || 'Anni') + '">'
+                 +  '</div></div>';
+        });
+        groupsEl.innerHTML = html;
+        field.style.display = 'block';
+        groupsEl.querySelectorAll('select,input').forEach(function (el) {
+            el.addEventListener('change', function () {
+                var ruolo = el.getAttribute('data-ruolo'), kind = el.getAttribute('data-kind');
+                if (!ruoliState[ruolo]) ruoliState[ruolo] = {};
+                ruoliState[ruolo][kind] = (kind === 'anni') ? (el.value === '' ? null : parseInt(el.value, 10)) : el.value;
+            });
+        });
+    }
+
     function setupConsenso() {
         var chk = $('f-consenso'), st = $('f-consenso-status');
         if (!chk) return;
@@ -412,6 +457,9 @@
             var existingTemi = d.album_temi || (d.crew && d.crew.album_temi) || {};
             setupTemiPicker(crewRoles, existingTemi);
 
+            // 2026-08-02 — Livello/esperienza per ruolo (task #18), solo se il crew ha 2+ ruoli
+            setupRuoliPicker(crewRoles, d.ruoli_dati || (d.crew && d.crew.ruoli_dati) || {});
+
             var cons = $('f-consenso');
             if (cons) cons.checked = (String(d.consenso) === '1' || (d.crew && String(d.crew.consenso) === '1'));
 
@@ -466,6 +514,15 @@
         var pivaChkS = $('f-ha_partita_iva');
         payload.ha_partita_iva = (pivaChkS && pivaChkS.checked) ? 1 : 0;
         if (!payload.ha_partita_iva) payload.anno_partita_iva = '';
+
+        // 2026-08-02 — Livello/esperienza per ruolo (task #18): solo se attivo (2+ ruoli),
+        // altrimenti restano i campi singoli livello/anno_inizio_attivita gia' nei FIELDS sopra.
+        if (ruoliState) {
+            payload.ruoli_dati = {};
+            Object.keys(ruoliState).forEach(function (r) {
+                payload.ruoli_dati[r] = { livello: ruoliState[r].livello, anni: ruoliState[r].anni };
+            });
+        }
 
         fetch(API_SAVE, {
             method: 'POST',

@@ -109,6 +109,16 @@ $T = [
         'fr'=>'Pour chaque rôle, choisis les spécialités à afficher sur ton profil public.',
         'es'=>'Para cada rol, elige las especialidades a mostrar en tu perfil público.',
     ],
+
+    // 2026-08-02 — Livello/esperienza per ruolo (task #18, solo crew con 2+ ruoli)
+    'ruoli_label' => ['it'=>'Livello ed esperienza per ruolo','en'=>'Level & experience per role','fr'=>'Niveau et expérience par rôle','es'=>'Nivel y experiencia por rol'],
+    'ruoli_hint'  => [
+        'it'=>'Hai più ruoli: indica livello e anni di esperienza separatamente per ciascuno.',
+        'en'=>'You have multiple roles: set level and years of experience separately for each.',
+        'fr'=>'Tu as plusieurs rôles : indique niveau et années d\'expérience pour chacun.',
+        'es'=>'Tienes varios roles: indica nivel y años de experiencia por separado para cada uno.',
+    ],
+    'ruoli_anni_ph' => ['it'=>'Anni','en'=>'Years','fr'=>'Années','es'=>'Años'],
 ];
 
 $theme_uri = get_stylesheet_directory_uri();
@@ -187,6 +197,11 @@ $token_get = $_GET['t']    ?? '';
 .crew-edit-temi-chip { display:inline-flex; align-items:center; gap:6px; background:#1a1a1e; border:1px solid #2a2a2e; border-radius:999px; padding:7px 14px; font-size:12.5px; color:#d1d5db; cursor:pointer; }
 .crew-edit-temi-chip input { width:auto; margin:0; }
 .crew-edit-temi-chip.checked { background:rgba(200,255,0,.12); border-color:#c8ff00; color:#c8ff00; font-weight:600; }
+/* 2026-08-02 — Livello/esperienza per ruolo (task #18) */
+.crew-edit-ruoli-group { margin-bottom:14px; }
+.crew-edit-ruoli-row { display:flex; gap:8px; }
+.crew-edit-ruoli-row select { flex:2; }
+.crew-edit-ruoli-row input[type="number"] { flex:1; }
 
 .crew-edit-actions { margin-top:28px; }
 .crew-edit-btn-save { width:100%; background:#c8ff00; color:#0a0a0a; border:none; padding:14px; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; transition:opacity .15s; }
@@ -310,18 +325,26 @@ $token_get = $_GET['t']    ?? '';
                 <div class="crew-edit-hint"><?= esc_html($_t($T['bio_hint'])) ?></div>
                 <div class="crew-edit-hint" id="f-bio-counter">0 / 800</div>
             </div>
-            <div class="crew-edit-field">
-                <label class="crew-edit-label"><?= esc_html($_t($T['field_livello'])) ?></label>
-                <select id="f-livello" class="crew-edit-input">
-                    <option value="studente"><?= esc_html($_t($T['liv_studente'])) ?></option>
-                    <option value="amatoriale"><?= esc_html($_t($T['liv_amatoriale'])) ?></option>
-                    <option value="semi-pro"><?= esc_html($_t($T['liv_semipro'])) ?></option>
-                    <option value="professionista"><?= esc_html($_t($T['liv_professionista'])) ?></option>
-                </select>
+            <div id="f-livello-singolo-wrap">
+                <div class="crew-edit-field">
+                    <label class="crew-edit-label"><?= esc_html($_t($T['field_livello'])) ?></label>
+                    <select id="f-livello" class="crew-edit-input">
+                        <option value="studente"><?= esc_html($_t($T['liv_studente'])) ?></option>
+                        <option value="amatoriale"><?= esc_html($_t($T['liv_amatoriale'])) ?></option>
+                        <option value="semi-pro"><?= esc_html($_t($T['liv_semipro'])) ?></option>
+                        <option value="professionista"><?= esc_html($_t($T['liv_professionista'])) ?></option>
+                    </select>
+                </div>
+                <div class="crew-edit-field">
+                    <label class="crew-edit-label"><?= esc_html($_t($T['field_anno'])) ?></label>
+                    <input type="number" id="f-anno_inizio_attivita" class="crew-edit-input" min="1950" max="<?= (int)date('Y') ?>" step="1" inputmode="numeric" placeholder="es. 2019">
+                </div>
             </div>
-            <div class="crew-edit-field">
-                <label class="crew-edit-label"><?= esc_html($_t($T['field_anno'])) ?></label>
-                <input type="number" id="f-anno_inizio_attivita" class="crew-edit-input" min="1950" max="<?= (int)date('Y') ?>" step="1" inputmode="numeric" placeholder="es. 2019">
+            <!-- 2026-08-02 — Livello/esperienza per ruolo (task #18): sostituisce il blocco sopra se il crew ha 2+ ruoli -->
+            <div class="crew-edit-field" id="f-ruoli-field" style="display:none;">
+                <label class="crew-edit-label"><?= esc_html($_t($T['ruoli_label'])) ?></label>
+                <div class="crew-edit-hint" style="margin-bottom:10px;"><?= esc_html($_t($T['ruoli_hint'])) ?></div>
+                <div id="f-ruoli-groups"></div>
             </div>
             <!-- 2026-07-23 — età + P.IVA (per scheda pubblica: età + "professionista da N anni") -->
             <div class="crew-edit-field">
@@ -394,6 +417,12 @@ window.crewEditConfig = {
     pendingFotoTpl: <?= json_encode($_t($T['pending_foto'])) ?>,
     uuid:    <?= json_encode($uuid_get) ?>,
     token:   <?= json_encode($token_get) ?>,
+    livelloOptions: <?= json_encode([
+        ['value' => 'studente', 'label' => $_t($T['liv_studente'])],
+        ['value' => 'amatoriale', 'label' => $_t($T['liv_amatoriale'])],
+        ['value' => 'semi-pro', 'label' => $_t($T['liv_semipro'])],
+        ['value' => 'professionista', 'label' => $_t($T['liv_professionista'])],
+    ]) ?>,
     strings: {
         invalidLink:  <?= json_encode($_t($T['invalid_link'])) ?>,
         pending:      <?= json_encode($_t($T['pending_msg'])) ?>,
@@ -406,9 +435,10 @@ window.crewEditConfig = {
         fotoErr:      <?= json_encode($_t(['it'=>'Errore nel caricamento della foto','en'=>'Photo upload error','fr'=>'Erreur lors de l’envoi de la photo','es'=>'Error al subir la foto'])) ?>,
         temiLabel:    <?= json_encode($_t($T['temi_label'])) ?>,
         temiHint:     <?= json_encode($_t($T['temi_hint'])) ?>,
+        ruoliAnniPh:  <?= json_encode($_t($T['ruoli_anni_ph'])) ?>,
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260726temi1" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260802ruoli1" defer></script>
 
 <?php toa_component('footer'); ?>
