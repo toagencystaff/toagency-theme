@@ -263,6 +263,11 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-loc { color:#9ca3af; font-size:13px; margin-top:10px; letter-spacing:.02em; }
 /* 2026-07-31 — livello (amatoriale/professionista), feedback Marco "non vedo piu' il livello" */
 .crew-pf-livello { color:#c8ff00; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; margin-top:8px; }
+/* 2026-08-02 — livello/esperienza per ruolo (task #18) */
+.crew-pf-ruoli-livello { margin-top:8px; }
+.crew-pf-ruolo-livello { font-size:12.5px; margin-top:3px; color:#b8bcc4; }
+.crew-pf-ruolo-livello strong { color:#d0d3d9; }
+.crew-pf-ruolo-livello span { color:#c8ff00; font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
 .crew-pf-seniority { color:#d0d3d9; font-size:13.5px; margin-top:8px; letter-spacing:.02em; }
 .crew-pf-cta { display:inline-flex; align-items:center; gap:8px; margin-top:18px; background:#c8ff00; color:#0a0a0a; border:none; padding:12px 24px !important; border-radius:8px !important; font-size:14px; font-weight:800; cursor:pointer; }
 .crew-pf-cta:hover { filter:brightness(1.08); }
@@ -429,6 +434,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=4.4-biolang" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=4.5-ruolilivello" defer></script>
 
 <?php toa_component('footer'); ?>

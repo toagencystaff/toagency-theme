@@ -467,9 +467,23 @@
         var loc = d.provincia ? provName(String(d.provincia)) : '';
         if (d.paese && d.paese !== 'IT') loc = loc ? (loc + ' · ' + d.paese) : String(d.paese);
         if (loc) html += '<div class="crew-pf-loc">📍 ' + escapeHtml(loc) + '</div>';
-        // 2026-07-31 — livello (amatoriale/professionista), CRM ha aggiunto il campo a crew-public-profile.php
-        // (prima mancava, presente solo nella griglia — feedback Marco: "non vedo piu' il livello")
-        if (d.livello) {
+        // 2026-08-02 — livello/esperienza PER RUOLO (task #18): se il crew ha 2+ ruoli e almeno uno ha
+        // ruoli_dati compilato (self-edit), mostra una riga per ruolo invece del badge unico sotto.
+        // Feedback Marco su Valentina: "make up artist e hairstylist ma non so l'esperienza di ognuna".
+        var ruoliDati = d.ruoli_dati || {};
+        var ruoliConDati = Object.keys(ruoliDati).filter(function (r) { return ruoliDati[r] && ruoliDati[r].livello; });
+        if (d.categorie && d.categorie.length >= 2 && ruoliConDati.length) {
+            html += '<div class="crew-pf-ruoli-livello">';
+            ruoliConDati.forEach(function (ruolo) {
+                var rd = ruoliDati[ruolo];
+                var roleLabel = labels[ruolo] || ruolo;
+                var livTxt = rd.livello.charAt(0).toUpperCase() + rd.livello.slice(1);
+                if (rd.anni != null && rd.anni >= 1) livTxt += ' · ' + rd.anni + ' ' + (STR.yearsLabel || 'anni');
+                html += '<div class="crew-pf-ruolo-livello"><strong>' + escapeHtml(roleLabel) + ':</strong> <span>' + escapeHtml(livTxt) + '</span></div>';
+            });
+            html += '</div>';
+        } else if (d.livello) {
+            // 2026-07-31 — badge singolo (invariato): crew con 1 ruolo o senza ruoli_dati ancora compilato
             var livelloCap = d.livello.charAt(0).toUpperCase() + d.livello.slice(1);
             html += '<div class="crew-pf-livello">' + escapeHtml(livelloCap) + '</div>';
         }
