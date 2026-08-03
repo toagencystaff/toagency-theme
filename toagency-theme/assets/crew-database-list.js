@@ -622,7 +622,7 @@
         var lb = $('#crew-lightbox'), vid = $('#crew-lb-video'), img = $('#crew-lb-img');
         if (!lb || !vid || !src) return;
         if (img) { img.src = ''; img.style.display = 'none'; }
-        vid.style.display = '';
+        vid.style.display = 'block'; // la classe .crew-lb-video ha display:none di default, va sovrascritto
         vid.src = src;
         lb.classList.add('show', 'is-video'); lb.setAttribute('aria-hidden', 'false');
         vid.play().catch(function () {});
