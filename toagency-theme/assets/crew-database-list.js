@@ -354,7 +354,8 @@
     // ─── Scheda singola crew (?uuid=) — 2026-07-11 ─────────────
     var VIDEO_RE = /\.(mp4|mov|webm|m4v|ogg)(\?|$)/i;
 
-    // 2026-07-23: lightbox — pfPhotos raccoglie gli URL foto full-size in ordine di render
+    // 2026-07-23: lightbox — pfPhotos raccoglie foto+video in ordine di render, {type:'photo'|'video', src}
+    // 2026-08-03: unificato foto e video nello stesso elenco per navigazione con le frecce — feedback Marco
     var pfPhotos = [];
     // 2026-07-31: interval dello slideshow hero, va fermato alla chiusura scheda (altrimenti resta a girare a vuoto)
     var heroSlideTimer = null;
@@ -365,10 +366,11 @@
         return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'w=' + w;
     }
 
-    function videoTag(url) {
+    function videoTag(url, idx) {
         var safe = encodeURI(url);
         // 2026-08-03: anteprima reale (primo frame, preload=metadata) al posto del box nero — feedback Marco
-        return '<button type="button" class="crew-pf-vthumb" data-src="' + safe + '">' +
+        // 2026-08-03: data-idx per navigazione unificata foto+video nel lightbox (frecce) — feedback Marco
+        return '<button type="button" class="crew-pf-vthumb" data-src="' + safe + '" data-idx="' + idx + '">' +
             '<video class="crew-pf-vpreview" src="' + safe + '" preload="metadata" muted playsinline></video>' +
             '<span class="crew-pf-play">▶</span></button>';
     }
@@ -524,9 +526,13 @@
             if (photos.length) {
                 html += '<div class="crew-pf-grid">';
                 photos.forEach(function (url) {
-                    if (VIDEO_RE.test(url)) { html += videoTag(url); return; }
                     var idx = pfPhotos.length;
-                    pfPhotos.push(withW(url, 1600));
+                    if (VIDEO_RE.test(url)) {
+                        pfPhotos.push({ type: 'video', src: encodeURI(url) });
+                        html += videoTag(url, idx);
+                        return;
+                    }
+                    pfPhotos.push({ type: 'photo', src: withW(url, 1600) });
                     html += '<img class="crew-pf-media crew-pf-clic" src="' + encodeURI(withW(url, 600)) + '" alt="" loading="lazy" data-idx="' + idx + '">';
                 });
                 html += '</div>';
@@ -566,7 +572,9 @@
         });
         scope.querySelectorAll('.crew-pf-vthumb').forEach(function (b) {
             b.addEventListener('click', function () {
-                lbOpenVideo(b.getAttribute('data-src'));
+                // 2026-08-03: usa lbOpen(idx) come le foto, cosi' le frecce scorrono foto+video insieme
+                var i = parseInt(b.getAttribute('data-idx'), 10);
+                if (!isNaN(i)) lbOpen(i);
             });
         });
     }
@@ -594,7 +602,6 @@
         var lb = $('#crew-lightbox');
         if (lb && lb.classList.contains('show')) {
             if (e.key === 'Escape') { lbClose(); return; }
-            if (lb.classList.contains('is-video')) return; // video singolo, niente frecce prev/next
             if (e.key === 'ArrowRight') { lbNext(); return; }
             if (e.key === 'ArrowLeft') { lbPrev(); return; }
             return;
@@ -602,31 +609,32 @@
         if (e.key === 'Escape') { var ov = $('#crew-profile-overlay'); if (ov && ov.classList.contains('show')) window.crewPubCloseProfile(); }
     });
 
-    // ─── Lightbox foto (2026-07-23) ────────────────────────────
+    // ─── Lightbox foto+video (2026-07-23, unificato 2026-08-03) ────────────────────────────
     var lbIdx = 0;
+    // 2026-08-03: un solo elenco pfPhotos con {type, src} — le frecce scorrono foto e video insieme,
+    // mostra <img> o <video> a seconda dell'item — feedback Marco
     function lbShow() {
-        var lb = $('#crew-lightbox'), img = $('#crew-lb-img');
-        if (!lb || !img || !pfPhotos.length) return;
+        var lb = $('#crew-lightbox'), img = $('#crew-lb-img'), vid = $('#crew-lb-video');
+        if (!lb || !img || !vid || !pfPhotos.length) return;
         if (lbIdx < 0) lbIdx = pfPhotos.length - 1;
         if (lbIdx >= pfPhotos.length) lbIdx = 0;
-        lb.classList.remove('is-video');
-        var vid = $('#crew-lb-video'); if (vid) { vid.pause(); vid.style.display = 'none'; }
-        img.style.display = '';
-        img.src = pfPhotos[lbIdx];
+        var item = pfPhotos[lbIdx];
+        var isVideo = item.type === 'video';
+        lb.classList.toggle('is-video', isVideo);
+        if (isVideo) {
+            img.src = ''; img.style.display = 'none';
+            vid.style.display = 'block'; // la classe .crew-lb-video ha display:none di default, va sovrascritto
+            vid.src = item.src;
+            vid.play().catch(function () {});
+        } else {
+            vid.pause(); vid.removeAttribute('src'); vid.load(); vid.style.display = 'none';
+            img.style.display = '';
+            img.src = item.src;
+        }
         var c = $('#crew-lb-counter'); if (c) c.textContent = (lbIdx + 1) + ' / ' + pfPhotos.length;
         lb.classList.add('show'); lb.setAttribute('aria-hidden', 'false');
     }
     function lbOpen(i) { lbIdx = i; lbShow(); }
-    // 2026-08-03: apre lo stesso lightbox delle foto ma con il video (controls + autoplay), niente frecce/counter
-    function lbOpenVideo(src) {
-        var lb = $('#crew-lightbox'), vid = $('#crew-lb-video'), img = $('#crew-lb-img');
-        if (!lb || !vid || !src) return;
-        if (img) { img.src = ''; img.style.display = 'none'; }
-        vid.style.display = 'block'; // la classe .crew-lb-video ha display:none di default, va sovrascritto
-        vid.src = src;
-        lb.classList.add('show', 'is-video'); lb.setAttribute('aria-hidden', 'false');
-        vid.play().catch(function () {});
-    }
     function lbClose() {
         var lb = $('#crew-lightbox');
         if (lb) {

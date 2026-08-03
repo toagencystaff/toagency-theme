@@ -280,8 +280,8 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-lb.show { display:flex; }
 .crew-lb-img { max-width:92vw; max-height:88vh; object-fit:contain; border-radius:8px; box-shadow:0 20px 80px rgba(0,0,0,.6); cursor:zoom-out; }
 /* 2026-08-03 — video in grande nel lightbox (stesso box della foto), feedback Marco "manca ingrandire i video" */
+/* 2026-08-03 — frecce/counter restano visibili anche sui video: navigazione unificata foto+video, feedback Marco */
 .crew-lb-video { max-width:92vw; max-height:88vh; border-radius:8px; box-shadow:0 20px 80px rgba(0,0,0,.6); display:none; }
-.crew-lb.is-video .crew-lb-nav, .crew-lb.is-video .crew-lb-counter { display:none; }
 .crew-lb-close { position:fixed; top:16px; right:20px; display:inline-flex; align-items:center; gap:6px; height:44px; padding:0 18px !important; background:#c8ff00; border:none; border-radius:999px !important; color:#0a0a0a; font-size:15px; font-weight:700; line-height:1; cursor:pointer; z-index:100001; box-shadow:0 4px 16px rgba(0,0,0,.4); }
 .crew-lb-close:hover { filter:brightness(1.08); }
 .crew-lb-nav { position:fixed; top:50%; transform:translateY(-50%); width:52px; height:64px; background:rgba(26,26,30,.7); border:1px solid #2a2a2e; color:#fff; font-size:34px; line-height:1; cursor:pointer; z-index:100001; border-radius:8px; }
