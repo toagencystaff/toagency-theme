@@ -59,7 +59,7 @@ $b2bw_dir  = array('b2bw-a', 'b2bw-b');
 <?php foreach ($b2bw_rows as $ri => $ids): ?>
   <div class="b2bw-marquee">
     <div class="b2bw-track <?php echo $b2bw_dir[$ri]; ?>">
-      <?php for ($p = 0; $p < 2; $p++): foreach ($ids as $n): ?>
+      <?php for ($p = 0; $p < 3; $p++): foreach ($ids as $n): ?>
         <img class="b2bw-tile" src="<?php echo esc_url($b2bw_uri . '/wall-' . sprintf('%02d', $n) . '.jpg'); ?>" alt="" loading="<?php echo $p === 0 ? 'eager' : 'lazy'; ?>" decoding="async">
       <?php endforeach; endfor; ?>
     </div>
@@ -73,8 +73,8 @@ $b2bw_dir  = array('b2bw-a', 'b2bw-b');
 .b2bw-a{animation:b2bwL 30s linear infinite}
 .b2bw-b{animation:b2bwR 34s linear infinite}
 .b2bw-tile{width:156px;height:208px;object-fit:cover;object-position:top center;flex:0 0 auto;display:block;background:var(--gray-1)}
-@keyframes b2bwL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@keyframes b2bwR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+@keyframes b2bwL{from{transform:translateX(0)}to{transform:translateX(-33.3333%)}}
+@keyframes b2bwR{from{transform:translateX(-33.3333%)}to{transform:translateX(0)}}
 @media(max-width:640px){.b2bw-tile{width:120px;height:160px}}
 @media(prefers-reduced-motion:reduce){.b2bw-a,.b2bw-b{animation:none}}
 </style>
