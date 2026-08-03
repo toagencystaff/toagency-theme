@@ -557,6 +557,13 @@
     // 2026-08-03: click sul tile video → ingrandisce nel lightbox (come le foto), invece di
     // riprodurre dentro il tile piccolo — feedback Marco "manca la possibilita' di ingrandire"
     function wireVideos(scope) {
+        // preload="metadata" da solo non basta: il browser non disegna il primo frame finche'
+        // non c'e' un piccolo seek (verificato in test live) — altrimenti resta nero
+        scope.querySelectorAll('.crew-pf-vpreview').forEach(function (v) {
+            function seekFrame() { try { v.currentTime = 0.1; } catch (e) {} }
+            if (v.readyState >= 1) seekFrame();
+            else v.addEventListener('loadedmetadata', seekFrame, { once: true });
+        });
         scope.querySelectorAll('.crew-pf-vthumb').forEach(function (b) {
             b.addEventListener('click', function () {
                 lbOpenVideo(b.getAttribute('data-src'));
