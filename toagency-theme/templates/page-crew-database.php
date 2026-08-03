@@ -254,10 +254,11 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pf-grid img.crew-pf-media:hover { transform:scale(1.02); outline:2px solid #c8ff00; outline-offset:-2px; }
 .crew-pf-vwrap { position:relative; display:block; border-radius:10px; overflow:hidden; }
 .crew-pf-vwrap:hover { outline:2px solid #c8ff00; outline-offset:-2px; }
-.crew-pf-vthumb { position:relative; width:100%; aspect-ratio:1; border:none; border-radius:10px; background:radial-gradient(circle at 50% 40%, #1a1a1e, #0a0a0a); cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; transition:outline .15s; }
+.crew-pf-vthumb { position:relative; width:100%; aspect-ratio:1; border:none; border-radius:10px; overflow:hidden; background:radial-gradient(circle at 50% 40%, #1a1a1e, #0a0a0a); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:outline .15s; }
 .crew-pf-vthumb:hover { outline:2px solid #c8ff00; outline-offset:-2px; }
-.crew-pf-vlabel { color:#9ca3af; font-size:11px; text-transform:uppercase; letter-spacing:.12em; font-weight:600; }
-.crew-pf-play { width:52px; height:52px; border-radius:50%; background:rgba(200,255,0,.95); color:#0a0a0a; font-size:20px; display:flex; align-items:center; justify-content:center; padding-left:3px; box-shadow:0 4px 16px rgba(0,0,0,.4); }
+/* 2026-08-03 — anteprima reale (primo frame) al posto del box nero, feedback Marco */
+.crew-pf-vpreview { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.crew-pf-play { position:relative; width:52px; height:52px; border-radius:50%; background:rgba(200,255,0,.95); color:#0a0a0a; font-size:20px; display:flex; align-items:center; justify-content:center; padding-left:3px; box-shadow:0 4px 16px rgba(0,0,0,.4); }
 .crew-pf-vthumb:hover .crew-pf-play { transform:scale(1.08); transition:transform .15s; }
 .crew-pf-loading, .crew-pf-error, .crew-pf-empty { color:#9ca3af; text-align:center; padding:48px; }
 .crew-pf-loc { color:#9ca3af; font-size:13px; margin-top:10px; letter-spacing:.02em; }
@@ -278,6 +279,9 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-lb { position:fixed; inset:0; background:rgba(0,0,0,.94); z-index:100000; display:none; align-items:center; justify-content:center; }
 .crew-lb.show { display:flex; }
 .crew-lb-img { max-width:92vw; max-height:88vh; object-fit:contain; border-radius:8px; box-shadow:0 20px 80px rgba(0,0,0,.6); cursor:zoom-out; }
+/* 2026-08-03 — video in grande nel lightbox (stesso box della foto), feedback Marco "manca ingrandire i video" */
+.crew-lb-video { max-width:92vw; max-height:88vh; border-radius:8px; box-shadow:0 20px 80px rgba(0,0,0,.6); display:none; }
+.crew-lb.is-video .crew-lb-nav, .crew-lb.is-video .crew-lb-counter { display:none; }
 .crew-lb-close { position:fixed; top:16px; right:20px; display:inline-flex; align-items:center; gap:6px; height:44px; padding:0 18px !important; background:#c8ff00; border:none; border-radius:999px !important; color:#0a0a0a; font-size:15px; font-weight:700; line-height:1; cursor:pointer; z-index:100001; box-shadow:0 4px 16px rgba(0,0,0,.4); }
 .crew-lb-close:hover { filter:brightness(1.08); }
 .crew-lb-nav { position:fixed; top:50%; transform:translateY(-50%); width:52px; height:64px; background:rgba(26,26,30,.7); border:1px solid #2a2a2e; color:#fff; font-size:34px; line-height:1; cursor:pointer; z-index:100001; border-radius:8px; }
@@ -398,6 +402,7 @@ $theme_uri = get_stylesheet_directory_uri();
         <button type="button" class="crew-lb-close" id="crew-lb-close" aria-label="<?= esc_attr($_t($T['lb_close'])) ?>">✕ <?= esc_html($_t($T['lb_close'])) ?></button>
         <button type="button" class="crew-lb-nav crew-lb-prev" id="crew-lb-prev" aria-label="Precedente">‹</button>
         <img class="crew-lb-img" id="crew-lb-img" src="" alt="">
+        <video class="crew-lb-video" id="crew-lb-video" controls playsinline></video>
         <button type="button" class="crew-lb-nav crew-lb-next" id="crew-lb-next" aria-label="Successiva">›</button>
         <div class="crew-lb-counter" id="crew-lb-counter"></div>
     </div>

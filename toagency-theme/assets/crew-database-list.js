@@ -367,7 +367,10 @@
 
     function videoTag(url) {
         var safe = encodeURI(url);
-        return '<button type="button" class="crew-pf-vthumb" data-src="' + safe + '"><span class="crew-pf-play">▶</span><span class="crew-pf-vlabel">video</span></button>';
+        // 2026-08-03: anteprima reale (primo frame, preload=metadata) al posto del box nero — feedback Marco
+        return '<button type="button" class="crew-pf-vthumb" data-src="' + safe + '">' +
+            '<video class="crew-pf-vpreview" src="' + safe + '" preload="metadata" muted playsinline></video>' +
+            '<span class="crew-pf-play">▶</span></button>';
     }
 
     var currentProfileUuid = null;
@@ -551,14 +554,12 @@
         }, 4000);
     }
 
+    // 2026-08-03: click sul tile video → ingrandisce nel lightbox (come le foto), invece di
+    // riprodurre dentro il tile piccolo — feedback Marco "manca la possibilita' di ingrandire"
     function wireVideos(scope) {
         scope.querySelectorAll('.crew-pf-vthumb').forEach(function (b) {
             b.addEventListener('click', function () {
-                var src = b.getAttribute('data-src');
-                var w = document.createElement('div');
-                w.className = 'crew-pf-vwrap';
-                w.innerHTML = '<video class="crew-pf-media" src="' + src + '" autoplay muted playsinline controls></video>';
-                if (b.parentNode) b.parentNode.replaceChild(w, b);
+                lbOpenVideo(b.getAttribute('data-src'));
             });
         });
     }
@@ -586,6 +587,7 @@
         var lb = $('#crew-lightbox');
         if (lb && lb.classList.contains('show')) {
             if (e.key === 'Escape') { lbClose(); return; }
+            if (lb.classList.contains('is-video')) return; // video singolo, niente frecce prev/next
             if (e.key === 'ArrowRight') { lbNext(); return; }
             if (e.key === 'ArrowLeft') { lbPrev(); return; }
             return;
@@ -600,12 +602,32 @@
         if (!lb || !img || !pfPhotos.length) return;
         if (lbIdx < 0) lbIdx = pfPhotos.length - 1;
         if (lbIdx >= pfPhotos.length) lbIdx = 0;
+        lb.classList.remove('is-video');
+        var vid = $('#crew-lb-video'); if (vid) { vid.pause(); vid.style.display = 'none'; }
+        img.style.display = '';
         img.src = pfPhotos[lbIdx];
         var c = $('#crew-lb-counter'); if (c) c.textContent = (lbIdx + 1) + ' / ' + pfPhotos.length;
         lb.classList.add('show'); lb.setAttribute('aria-hidden', 'false');
     }
     function lbOpen(i) { lbIdx = i; lbShow(); }
-    function lbClose() { var lb = $('#crew-lightbox'); if (lb) { lb.classList.remove('show'); lb.setAttribute('aria-hidden', 'true'); var img = $('#crew-lb-img'); if (img) img.src = ''; } }
+    // 2026-08-03: apre lo stesso lightbox delle foto ma con il video (controls + autoplay), niente frecce/counter
+    function lbOpenVideo(src) {
+        var lb = $('#crew-lightbox'), vid = $('#crew-lb-video'), img = $('#crew-lb-img');
+        if (!lb || !vid || !src) return;
+        if (img) { img.src = ''; img.style.display = 'none'; }
+        vid.style.display = '';
+        vid.src = src;
+        lb.classList.add('show', 'is-video'); lb.setAttribute('aria-hidden', 'false');
+        vid.play().catch(function () {});
+    }
+    function lbClose() {
+        var lb = $('#crew-lightbox');
+        if (lb) {
+            lb.classList.remove('show', 'is-video'); lb.setAttribute('aria-hidden', 'true');
+            var img = $('#crew-lb-img'); if (img) { img.src = ''; img.style.display = ''; }
+            var vid = $('#crew-lb-video'); if (vid) { vid.pause(); vid.removeAttribute('src'); vid.load(); vid.style.display = 'none'; }
+        }
+    }
     function lbNext() { lbIdx++; lbShow(); }
     function lbPrev() { lbIdx--; lbShow(); }
 
