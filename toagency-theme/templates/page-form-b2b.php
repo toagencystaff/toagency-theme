@@ -60,7 +60,7 @@ $b2bw_dir  = array('b2bw-a', 'b2bw-b');
   <div class="b2bw-marquee">
     <div class="b2bw-track <?php echo $b2bw_dir[$ri]; ?>">
       <?php for ($p = 0; $p < 2; $p++): foreach ($ids as $n): ?>
-        <img class="b2bw-tile" src="<?php echo esc_url($b2bw_uri . '/wall-' . sprintf('%02d', $n) . '.jpg'); ?>" alt="" loading="lazy" decoding="async">
+        <img class="b2bw-tile" src="<?php echo esc_url($b2bw_uri . '/wall-' . sprintf('%02d', $n) . '.jpg'); ?>" alt="" loading="<?php echo $p === 0 ? 'eager' : 'lazy'; ?>" decoding="async">
       <?php endforeach; endfor; ?>
     </div>
   </div>
