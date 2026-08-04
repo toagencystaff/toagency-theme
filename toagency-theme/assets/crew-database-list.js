@@ -357,6 +357,10 @@
     // 2026-07-23: lightbox — pfPhotos raccoglie foto+video in ordine di render, {type:'photo'|'video', src}
     // 2026-08-03: unificato foto e video nello stesso elenco per navigazione con le frecce — feedback Marco
     var pfPhotos = [];
+    // 2026-08-04: mappa url_video -> url_poster_jpg (chiave `posters` di crew-public-profile.php).
+    // Il CRM genera un JPG ~20KB per ogni video: il tile mostra quello invece di scaricare
+    // pezzi del .mp4 (media 8MB, max 31MB) solo per avere un fotogramma.
+    var pfPosters = {};
     // 2026-07-31: interval dello slideshow hero, va fermato alla chiusura scheda (altrimenti resta a girare a vuoto)
     var heroSlideTimer = null;
 
@@ -368,6 +372,15 @@
 
     function videoTag(url, idx) {
         var safe = encodeURI(url);
+        var poster = pfPosters[url] || '';
+        if (poster) {
+            // 2026-08-04: con il poster JPG il video non va toccato finche' non si clicca:
+            // niente '#t=0.5' (serviva solo a strappare un frame dal video stesso) e
+            // preload="none". Il seek in wireVideos e' escluso sui tile con poster.
+            return '<button type="button" class="crew-pf-vthumb" data-src="' + safe + '" data-idx="' + idx + '">' +
+                '<video class="crew-pf-vpreview" src="' + safe + '" poster="' + encodeURI(poster) + '" preload="none" muted playsinline></video>' +
+                '<span class="crew-pf-play">▶</span></button>';
+        }
         // 2026-08-03: anteprima reale (primo frame, preload=metadata) al posto del box nero — feedback Marco
         // 2026-08-03: data-idx per navigazione unificata foto+video nel lightbox (frecce) — feedback Marco
         return '<button type="button" class="crew-pf-vthumb" data-src="' + safe + '" data-idx="' + idx + '">' +
@@ -421,6 +434,8 @@
         pfPhotos = [];
         var labels = d.ruoli_label || {};
         var albums = d.albums || {};
+        // 2026-08-04: se il CRM non manda `posters` resta {} e i tile tornano al vecchio comportamento
+        pfPosters = d.posters || {};
         var bio = d.bio_ruoli || {};
         var codice = d.codice ? '<span class="crew-pf-code">· ' + escapeHtml(d.codice) + '</span>' : '';
         // 2026-07-31 — Hero slideshow (richiesta Marco, sostituisce il mosaico statico: le foto restano
@@ -569,7 +584,9 @@
     function wireVideos(scope) {
         // preload="metadata" da solo non basta: il browser non disegna il primo frame finche'
         // non c'e' un piccolo seek (verificato in test live) — altrimenti resta nero
-        scope.querySelectorAll('.crew-pf-vpreview').forEach(function (v) {
+        // 2026-08-04: SOLO i tile senza poster — sul tile con poster il seek riaprirebbe il
+        // download del video, annullando il preload="none"
+        scope.querySelectorAll('.crew-pf-vpreview:not([poster])').forEach(function (v) {
             function seekFrame() { try { v.currentTime = 0.1; } catch (e) {} }
             if (v.readyState >= 1) seekFrame();
             else v.addEventListener('loadedmetadata', seekFrame, { once: true });
