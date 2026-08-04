@@ -55,7 +55,7 @@ $TEL_RAW  = '+393517899225';
 $TEL_DISP = '+39 351 789 9225';
 $WA       = 'https://wa.me/393517899225';
 $EMAIL    = 'business@toagency.it';
-$LOGO     = 'https://toagency.it/wp-content/uploads/2025/09/LogoToanew.png'; // logo bianco header
+$LOGO     = 'https://toagency.it/wp-content/uploads/2025/09/LogoToanew-150x150.png'; // logo bianco header — thumbnail WP 150x150 (2,2KB vs 41KB dell'originale, mostrato a 38px)
 
 // =================== COPY (3 landing x 4 lingue) ===================
 $COPY = [
