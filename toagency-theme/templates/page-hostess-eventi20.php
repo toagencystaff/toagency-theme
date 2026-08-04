@@ -206,6 +206,14 @@ toa_component('header');
 .toa-serv-chips a:hover{border-color:var(--accent);color:var(--accent);background:rgba(200,255,0,.06)}
 </style>
 
+<!-- Talent-exit anti-bounce: spostato subito dopo l'hero (era in fondo pagina) -->
+<section style="padding:26px 0;background:var(--black);color:#fff;text-align:center">
+    <div class="container">
+        <p style="font-size:0.95rem;margin-bottom:10px;opacity:.85"><?php echo $_t($t['b2bonly']); ?></p>
+        <a href="<?php echo home_url('/registrati-talent/'); ?>" style="display:inline-block;font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:0.85rem;color:var(--accent);text-decoration:none"><?php echo $_t($t['talentexit']); ?> &rarr;</a>
+    </div>
+</section>
+
 <section class="toa-staffband">
     <div class="inner">
         <div class="toa-cast-hd">
@@ -408,13 +416,6 @@ $covMore = array('it'=>'Vedi altre citt&agrave;','en'=>'See more cities','fr'=>'
 </section>
 
 <?php toa_component('form-eventi-inline', array('lang' => $lang)); ?>
-
-<section style="padding:40px 0;background:var(--black);color:#fff;text-align:center">
-    <div class="container">
-        <p style="font-size:0.95rem;margin-bottom:10px;opacity:.85"><?php echo $_t($t['b2bonly']); ?></p>
-        <a href="<?php echo home_url('/registrati-talent/'); ?>" style="display:inline-block;font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:0.85rem;color:var(--accent);text-decoration:none"><?php echo $_t($t['talentexit']); ?> &rarr;</a>
-    </div>
-</section>
 
 <!-- Gallery (foto eventi, discreta) -->
 <section class="toa-gallery"><div class="inner">
