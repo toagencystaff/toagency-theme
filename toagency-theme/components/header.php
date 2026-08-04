@@ -76,13 +76,29 @@ a{color:inherit}
     <!-- Language Switcher -->
     <?php if (function_exists('icl_get_languages')) :
         $langs = icl_get_languages('skip_missing=0&orderby=code');
+        // 2026-08-04 marco — le pagine-template custom (crew-database, crew-self-edit...) NON sono
+        // tradotte in WPML: /fr/<slug>/ fa 301 sull'italiano e lo switcher rimanda alla home lingua,
+        // perdendo lingua ed eventuale ?uuid=. Se WPML propone la home per una lingua ma NON siamo
+        // in home, restiamo sulla pagina corrente forzando ?lang= (meccanismo toa_current_lang, 11/07).
+        $toa_cur_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . wp_unslash($_SERVER['REQUEST_URI']);
         if (!empty($langs) && count($langs) > 1) : ?>
         <div class="nav-lang">
-            <?php foreach ($langs as $l) : ?>
-                <?php if ($l['active']) : ?>
+            <?php foreach ($langs as $l) :
+                $toa_lurl = $l['url'];
+                $toa_p    = untrailingslashit(strtok($toa_lurl, '?'));
+                $toa_home = array(
+                    untrailingslashit(strtok(apply_filters('wpml_permalink', home_url('/'), $l['language_code']), '?')),
+                    untrailingslashit(home_url('/' . $l['language_code'] . '/')),
+                    untrailingslashit(home_url('/')),
+                );
+                if (!is_front_page() && in_array($toa_p, $toa_home, true)) {
+                    $toa_lurl = add_query_arg('lang', $l['language_code'], $toa_cur_url);
+                }
+            ?>
+                <?php if ($l['language_code'] === $current_lang) : ?>
                     <span class="nav-lang-item active"><?php echo strtoupper($l['language_code']); ?></span>
                 <?php else : ?>
-                    <a href="<?php echo esc_url($l['url']); ?>" class="nav-lang-item"><?php echo strtoupper($l['language_code']); ?></a>
+                    <a href="<?php echo esc_url($toa_lurl); ?>" class="nav-lang-item"><?php echo strtoupper($l['language_code']); ?></a>
                 <?php endif; ?>
             <?php endforeach; ?>
         </div>
