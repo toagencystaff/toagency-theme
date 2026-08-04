@@ -371,7 +371,11 @@
         // 2026-08-03: anteprima reale (primo frame, preload=metadata) al posto del box nero — feedback Marco
         // 2026-08-03: data-idx per navigazione unificata foto+video nel lightbox (frecce) — feedback Marco
         return '<button type="button" class="crew-pf-vthumb" data-src="' + safe + '" data-idx="' + idx + '">' +
-            '<video class="crew-pf-vpreview" src="' + safe + '" preload="metadata" muted playsinline></video>' +
+            // 2026-08-04: '#t=0.5' — media fragment: il browser mostra il frame a mezzo secondo invece
+            // del primo, che su alcuni video e' nero (tile nero segnalato da Marco). Il proxy CRM
+            // supporta le range request (206 + accept-ranges verificato 04/08), quindi scarica solo
+            // il pezzetto necessario. Nel lightbox il video parte comunque da 0.
+            '<video class="crew-pf-vpreview" src="' + safe + '#t=0.5" preload="metadata" muted playsinline></video>' +
             '<span class="crew-pf-play">▶</span></button>';
     }
 
