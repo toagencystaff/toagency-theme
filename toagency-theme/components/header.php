@@ -91,7 +91,10 @@ a{color:inherit}
                     untrailingslashit(home_url('/' . $l['language_code'] . '/')),
                     untrailingslashit(home_url('/')),
                 );
-                if (!is_front_page() && in_array($toa_p, $toa_home, true)) {
+                // ...oppure il link punta alla pagina che stiamo gia guardando: in quel caso
+                // preserviamo la query corrente (es. ?uuid= della scheda crew) invece di perderla.
+                if (!is_front_page() && (in_array($toa_p, $toa_home, true)
+                    || $toa_p === untrailingslashit(strtok($toa_cur_url, '?')))) {
                     $toa_lurl = add_query_arg('lang', $l['language_code'], $toa_cur_url);
                 }
             ?>
