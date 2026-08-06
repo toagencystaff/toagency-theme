@@ -1,0 +1,175 @@
+<?php
+/**
+ * Template Name: Mia Agenda
+ * v1.0 — 2026-08-06 (STEP 2: struttura HTML+CSS, no JS)
+ *
+ * Pagina pubblica self-service per il calendario disponibilità generale del talent.
+ * URL: /mia-agenda/?uuid={uuid}&t={token_profilo}
+ * Consuma (in uno step successivo): actions/dispo-load.php + actions/dispo-save.php
+ * NON usare qui actions/dispo-conferma.php (quello resta solo nei link 1-tap dei promemoria).
+ */
+
+toa_component('header');
+
+$__l = function_exists('toa_current_lang') ? toa_current_lang() : 'it';
+if (!in_array($__l, ['it','en','fr','es'], true)) $__l = 'it';
+$_t = function ($a) use ($__l) { return $a[$__l] ?? $a['it']; };
+
+$T = [
+    'hero_eyebrow'   => ['it'=>'TOAGENCY/TALENT','en'=>'TOAGENCY/TALENT','fr'=>'TOAGENCY/TALENT','es'=>'TOAGENCY/TALENT'],
+    'hero_title'     => ['it'=>'La tua agenda disponibilità','en'=>'Your availability calendar','fr'=>'Ton agenda de disponibilités','es'=>'Tu agenda de disponibilidad'],
+    'hero_subtitle'  => [
+        'it'=>'Segna i giorni in cui sei disponibile o no. Puoi aggiornarla quando vuoi tornando su questo link.',
+        'en'=>'Mark the days you are available or not. You can update it anytime by coming back to this link.',
+        'fr'=>'Indique tes jours de disponibilité. Tu peux la mettre à jour à tout moment via ce lien.',
+        'es'=>'Marca los días en los que estás o no disponible. Puedes actualizarla cuando quieras con este enlace.',
+    ],
+    'loading'        => ['it'=>'Caricamento…','en'=>'Loading…','fr'=>'Chargement…','es'=>'Cargando…'],
+    'invalid_link'   => ['it'=>'Link non valido. Scrivici se il problema continua.','en'=>'Invalid link. Contact us if this keeps happening.','fr'=>'Lien invalide. Contacte-nous si le problème persiste.','es'=>'Enlace inválido. Escríbenos si el problema continúa.'],
+    'last_update'    => ['it'=>'Ultimo aggiornamento:','en'=>'Last update:','fr'=>'Dernière mise à jour :','es'=>'Última actualización:'],
+    'never_updated'  => ['it'=>'mai aggiornata','en'=>'never updated','fr'=>'jamais mise à jour','es'=>'nunca actualizada'],
+
+    'section_calendario' => ['it'=>'Calendario (prossimi 60 giorni)','en'=>'Calendar (next 60 days)','fr'=>'Calendrier (60 prochains jours)','es'=>'Calendario (próximos 60 días)'],
+    'legend_disponibile'    => ['it'=>'Disponibile','en'=>'Available','fr'=>'Disponible','es'=>'Disponible'],
+    'legend_non_disponibile'=> ['it'=>'Non disponibile','en'=>'Not available','fr'=>'Non disponible','es'=>'No disponible'],
+    'legend_parziale'       => ['it'=>'Mattina / Pomeriggio / Sera','en'=>'Morning / Afternoon / Evening','fr'=>'Matin / Après-midi / Soir','es'=>'Mañana / Tarde / Noche'],
+    'legend_non_so'         => ['it'=>'Non ancora segnato','en'=>'Not marked yet','fr'=>'Pas encore indiqué','es'=>'Aún sin marcar'],
+    'legend_bloccato'       => ['it'=>'Bloccato dallo staff (lavoro in corso)','en'=>'Locked by staff (job in progress)','fr'=>'Verrouillé par le staff','es'=>'Bloqueado por el staff'],
+
+    'btn_save'       => ['it'=>'Salva modifiche','en'=>'Save changes','fr'=>'Enregistrer','es'=>'Guardar cambios'],
+    'btn_saving'     => ['it'=>'Salvataggio…','en'=>'Saving…','fr'=>'Enregistrement…','es'=>'Guardando…'],
+
+    'section_basi'   => ['it'=>'Le tue basi temporanee','en'=>'Your temporary bases','fr'=>'Tes bases temporaires','es'=>'Tus bases temporales'],
+    'basi_subtitle'  => [
+        'it'=>'Se in certi periodi ti trovi in un\'altra città o zona, indicalo qui.',
+        'en'=>'If you\'ll be in a different city or area during certain periods, add it here.',
+        'fr'=>'Si tu es dans une autre ville à certaines périodes, indique-le ici.',
+        'es'=>'Si en ciertos periodos estás en otra ciudad o zona, indícalo aquí.',
+    ],
+    'basi_empty'     => ['it'=>'Nessuna base temporanea aggiunta.','en'=>'No temporary base added.','fr'=>'Aucune base temporaire ajoutée.','es'=>'Ninguna base temporal añadida.'],
+    'btn_add_base'   => ['it'=>'+ Aggiungi base','en'=>'+ Add base','fr'=>'+ Ajouter une base','es'=>'+ Añadir base'],
+];
+
+$theme_uri = get_stylesheet_directory_uri();
+$uuid_get  = $_GET['uuid'] ?? '';
+$token_get = $_GET['t']    ?? '';
+?>
+
+<style>
+.ma-wrap { background:#0a0a0a; color:#fff; min-height:100vh; font-family:'Inter',-apple-system,sans-serif; padding-bottom:100px; }
+.ma-hero { padding:48px 24px 24px; text-align:center; border-bottom:1px solid #2a2a2e; }
+.ma-hero-eyebrow { color:var(--accent,#c8ff00); font-size:12px; letter-spacing:2px; font-weight:600; margin-bottom:8px; }
+.ma-hero-title { font-size:32px; font-weight:800; color:#fff; margin:0; letter-spacing:-0.5px; }
+.ma-hero-subtitle { color:#9ca3af; margin-top:10px; max-width:520px; margin-left:auto; margin-right:auto; line-height:1.5; font-size:14px; }
+.ma-last-update { font-family:monospace; font-size:12px; color:#6b7280; margin-top:10px; }
+
+.ma-container { max-width:560px; margin:32px auto; padding:0 20px; }
+.ma-status { text-align:center; padding:60px 20px; color:#9ca3af; }
+.ma-status.error { color:#ef4444; }
+
+.ma-body { display:none; }
+.ma-body.visible { display:block; }
+
+.ma-section { margin-bottom:24px; }
+.ma-section-title { font-size:11px; color:var(--accent,#c8ff00); text-transform:uppercase; letter-spacing:.6px; font-weight:700; margin-bottom:10px; }
+.ma-section-subtitle { font-size:13px; color:#9ca3af; margin-bottom:14px; line-height:1.4; }
+
+/* Legenda stati */
+.ma-legend { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:16px; font-size:11px; color:#9ca3af; }
+.ma-legend-item { display:flex; align-items:center; gap:5px; }
+.ma-dot { width:9px; height:9px; border-radius:50%; display:inline-block; flex-shrink:0; }
+.ma-dot-disponibile { background:#22c55e; }
+.ma-dot-non_disponibile { background:#ef4444; }
+.ma-dot-parziale { background:#f59e0b; }
+.ma-dot-non_so { background:#3a3a42; border:1px solid #52525b; }
+.ma-dot-bloccato { background:#52525b; }
+
+/* Lista giorni (mobile-first: righe verticali, non griglia mese) */
+.ma-day-list { display:flex; flex-direction:column; gap:6px; }
+.ma-day-row { display:flex; align-items:center; justify-content:space-between; gap:10px; background:#0f0f12; border:1px solid #2a2a2e; border-radius:8px; padding:12px 14px; }
+.ma-day-date { font-size:13px; color:#e5e7eb; font-weight:600; }
+.ma-day-date small { display:block; font-size:11px; color:#6b7280; font-weight:400; margin-top:1px; text-transform:capitalize; }
+.ma-day-state { font-size:12px; color:#9ca3af; display:flex; align-items:center; gap:6px; }
+.ma-day-row.locked { opacity:.7; }
+.ma-day-row.locked .ma-day-state { color:#71717a; }
+
+.ma-actions { margin-top:20px; position:sticky; bottom:16px; }
+.ma-btn-save { width:100%; background:var(--accent,#c8ff00); color:#0a0a0a; border:none; padding:14px; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; box-shadow:0 4px 20px rgba(0,0,0,.4); }
+.ma-btn-save:disabled { opacity:.5; cursor:not-allowed; }
+
+/* Basi temporanee */
+.ma-basi-list { display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
+.ma-basi-empty { color:#6b7280; font-size:12px; font-style:italic; padding:10px 0; }
+.ma-basi-item { background:#0f0f12; border:1px solid #2a2a2e; border-radius:8px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.ma-basi-item-info { font-size:13px; color:#e5e7eb; }
+.ma-basi-item-dates { font-size:11px; color:#6b7280; margin-top:2px; }
+.ma-btn-del { background:none; border:none; color:#ef4444; font-size:12px; cursor:pointer; padding:4px 8px; }
+.ma-btn-add-base { width:100%; background:#1a1a1e; border:1px solid #2a2a2e; color:#fff; padding:12px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; }
+.ma-btn-add-base:hover { border-color:var(--accent,#c8ff00); }
+
+@media (max-width:480px) {
+    .ma-hero-title { font-size:26px; }
+    .ma-container { padding:0 16px; margin-top:20px; }
+    .ma-legend { gap:8px 12px; }
+    .ma-day-row { padding:10px 12px; }
+}
+</style>
+
+<section class="ma-wrap">
+    <header class="ma-hero">
+        <div class="ma-hero-eyebrow"><?= esc_html($_t($T['hero_eyebrow'])) ?></div>
+        <h1 class="ma-hero-title"><?= esc_html($_t($T['hero_title'])) ?></h1>
+        <p class="ma-hero-subtitle"><?= esc_html($_t($T['hero_subtitle'])) ?></p>
+        <div class="ma-last-update" id="ma-last-update"></div>
+    </header>
+
+    <div class="ma-container">
+        <div id="ma-status" class="ma-status"><?= esc_html($_t($T['loading'])) ?></div>
+
+        <div id="ma-body" class="ma-body">
+
+            <div class="ma-section">
+                <div class="ma-section-title">📅 <?= esc_html($_t($T['section_calendario'])) ?></div>
+
+                <div class="ma-legend">
+                    <span class="ma-legend-item"><span class="ma-dot ma-dot-disponibile"></span><?= esc_html($_t($T['legend_disponibile'])) ?></span>
+                    <span class="ma-legend-item"><span class="ma-dot ma-dot-non_disponibile"></span><?= esc_html($_t($T['legend_non_disponibile'])) ?></span>
+                    <span class="ma-legend-item"><span class="ma-dot ma-dot-parziale"></span><?= esc_html($_t($T['legend_parziale'])) ?></span>
+                    <span class="ma-legend-item"><span class="ma-dot ma-dot-non_so"></span><?= esc_html($_t($T['legend_non_so'])) ?></span>
+                    <span class="ma-legend-item"><span class="ma-dot ma-dot-bloccato"></span><?= esc_html($_t($T['legend_bloccato'])) ?></span>
+                </div>
+
+                <div id="ma-day-list" class="ma-day-list">
+                    <!-- STEP 3 (JS): righe giorni popolate da dispo-load.php -->
+                </div>
+
+                <div class="ma-actions">
+                    <button type="button" id="ma-btn-save" class="ma-btn-save"><?= esc_html($_t($T['btn_save'])) ?></button>
+                </div>
+            </div>
+
+            <div class="ma-section" id="ma-basi-section">
+                <div class="ma-section-title">📍 <?= esc_html($_t($T['section_basi'])) ?></div>
+                <p class="ma-section-subtitle"><?= esc_html($_t($T['basi_subtitle'])) ?></p>
+
+                <div id="ma-basi-list" class="ma-basi-list">
+                    <!-- STEP 3 (JS): righe basi popolate da dispo-load.php -->
+                </div>
+
+                <button type="button" id="ma-btn-add-base" class="ma-btn-add-base"><?= esc_html($_t($T['btn_add_base'])) ?></button>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+window.__MA_CONFIG = {
+    uuid: <?= json_encode($uuid_get) ?>,
+    token: <?= json_encode($token_get) ?>,
+    lang: <?= json_encode($__l) ?>
+};
+</script>
+<?php // STEP 3: qui verrà agganciato assets/mia-agenda.js (fetch dispo-load.php / dispo-save.php) ?>
+
+<?php toa_component('footer'); ?>
