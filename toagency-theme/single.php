@@ -392,7 +392,8 @@ toa_component('header');
             <?php endif; ?>
             <h1 class="toa-sl-title"><?php the_title(); ?></h1>
             <div class="toa-sl-meta">
-                <span><?php echo esc_html( get_the_author() ); ?></span>
+                <?php // FIX 2026-08-06 marco — byline casting: nome autore reale sostituito con "TOAgency" (brand, invariato nelle 4 lingue) ?>
+                <span><?php echo $sl_is_casting ? 'TOAgency' : esc_html( get_the_author() ); ?></span>
                 <span class="toa-sl-meta__sep">&middot;</span>
                 <span><?php echo esc_html( get_the_date('d F Y') ); ?></span>
             </div>
