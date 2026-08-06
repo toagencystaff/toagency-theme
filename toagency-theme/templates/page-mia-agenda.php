@@ -69,6 +69,26 @@ $T = [
         'fr'=>['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'],
         'es'=>['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
     ],
+
+    // STEP 4 — interazione, salvataggio, form basi
+    'btn_cancel'        => ['it'=>'Annulla','en'=>'Cancel','fr'=>'Annuler','es'=>'Cancelar'],
+    'basi_form_comune'  => ['it'=>'Comune','en'=>'City','fr'=>'Ville','es'=>'Ciudad'],
+    'basi_form_provincia'=> ['it'=>'Provincia (sigla)','en'=>'Province (code)','fr'=>'Province (code)','es'=>'Provincia (código)'],
+    'basi_form_paese'   => ['it'=>'Paese (sigla, es. IT)','en'=>'Country (code, e.g. IT)','fr'=>'Pays (code, ex. IT)','es'=>'País (código, ej. IT)'],
+    'basi_form_dal'     => ['it'=>'Dal','en'=>'From','fr'=>'Du','es'=>'Desde'],
+    'basi_form_al'      => ['it'=>'Al','en'=>'To','fr'=>'Au','es'=>'Hasta'],
+    'basi_form_nota'    => ['it'=>'Nota (facoltativa)','en'=>'Note (optional)','fr'=>'Note (facultative)','es'=>'Nota (opcional)'],
+    'basi_form_alloggio'=> ['it'=>'Alloggio disponibile in zona','en'=>'Accommodation available nearby','fr'=>'Hébergement disponible','es'=>'Alojamiento disponible cerca'],
+    'basi_form_save'    => ['it'=>'Salva base','en'=>'Save base','fr'=>'Enregistrer','es'=>'Guardar base'],
+    'basi_err_comune'   => ['it'=>'Inserisci il comune.','en'=>'Enter a city.','fr'=>'Indique une ville.','es'=>'Indica una ciudad.'],
+    'basi_err_date'     => ['it'=>'Controlla le date: dal ≤ al, massimo 90 giorni.','en'=>'Check the dates: from ≤ to, max 90 days.','fr'=>'Vérifie les dates : du ≤ au, max 90 jours.','es'=>'Revisa las fechas: desde ≤ hasta, máx 90 días.'],
+    'basi_confirm_delete'=> ['it'=>'Eliminare questa base?','en'=>'Delete this base?','fr'=>'Supprimer cette base ?','es'=>'¿Eliminar esta base?'],
+    'basi_del'          => ['it'=>'Elimina','en'=>'Delete','fr'=>'Supprimer','es'=>'Eliminar'],
+    'save_ok'           => ['it'=>'✓ Salvato','en'=>'✓ Saved','fr'=>'✓ Enregistré','es'=>'✓ Guardado'],
+    'save_err'          => ['it'=>'Errore nel salvataggio. Riprova.','en'=>'Save error. Please retry.','fr'=>'Erreur d\'enregistrement. Réessaie.','es'=>'Error al guardar. Inténtalo de nuevo.'],
+    'skip_prefix'       => ['it'=>'Non modificati (già gestiti dallo staff):','en'=>'Not changed (already handled by staff):','fr'=>'Non modifiés (déjà gérés par le staff) :','es'=>'Sin cambios (ya gestionados por el staff):'],
+    'skip_opzionato'    => ['it'=>'giorno opzionato per un lavoro','en'=>'day optioned for a job','fr'=>'jour optionné pour un travail','es'=>'día opcionado para un trabajo'],
+    'skip_confermato'   => ['it'=>'giorno confermato per un lavoro','en'=>'day confirmed for a job','fr'=>'jour confirmé pour un travail','es'=>'día confirmado para un trabajo'],
 ];
 
 $theme_uri = get_stylesheet_directory_uri();
@@ -113,10 +133,21 @@ $token_get = $_GET['t']    ?? '';
 .ma-day-state { font-size:12px; color:#9ca3af; display:flex; align-items:center; gap:6px; }
 .ma-day-row.locked { opacity:.7; }
 .ma-day-row.locked .ma-day-state { color:#71717a; }
+.ma-day-row:not(.locked) { cursor:pointer; }
+.ma-day-row.pending { border-color:var(--accent,#c8ff00); border-style:dashed; }
+
+/* Picker rapido stato giorno */
+.ma-day-picker { display:flex; flex-wrap:wrap; gap:6px; padding:8px 0 4px; }
+.ma-picker-btn { background:#1a1a1e; border:1px solid #2a2a2e; color:#e5e7eb; font-size:12px; padding:7px 12px; border-radius:99px; cursor:pointer; display:flex; align-items:center; gap:6px; }
+.ma-picker-btn:hover { border-color:var(--accent,#c8ff00); color:#fff; }
 
 .ma-actions { margin-top:20px; position:sticky; bottom:16px; }
 .ma-btn-save { width:100%; background:var(--accent,#c8ff00); color:#0a0a0a; border:none; padding:14px; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; box-shadow:0 4px 20px rgba(0,0,0,.4); }
 .ma-btn-save:disabled { opacity:.5; cursor:not-allowed; }
+.ma-save-msg { text-align:center; font-size:13px; margin-top:8px; min-height:16px; }
+.ma-save-msg.ok { color:var(--accent,#c8ff00); }
+.ma-save-msg.err { color:#ef4444; }
+.ma-skip-msg { background:rgba(255,179,0,.10); border:1px solid rgba(255,179,0,.4); color:#ffb300; font-size:12px; border-radius:8px; padding:10px 12px; margin-bottom:12px; line-height:1.5; }
 
 /* Basi temporanee */
 .ma-basi-list { display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
@@ -124,9 +155,24 @@ $token_get = $_GET['t']    ?? '';
 .ma-basi-item { background:#0f0f12; border:1px solid #2a2a2e; border-radius:8px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px; }
 .ma-basi-item-info { font-size:13px; color:#e5e7eb; }
 .ma-basi-item-dates { font-size:11px; color:#6b7280; margin-top:2px; }
-.ma-btn-del { background:none; border:none; color:#ef4444; font-size:12px; cursor:pointer; padding:4px 8px; }
+.ma-btn-del { background:none; border:none; color:#ef4444; font-size:12px; cursor:pointer; padding:4px 8px; flex-shrink:0; }
 .ma-btn-add-base { width:100%; background:#1a1a1e; border:1px solid #2a2a2e; color:#fff; padding:12px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; }
 .ma-btn-add-base:hover { border-color:var(--accent,#c8ff00); }
+
+/* Form aggiungi base (iniettato da JS) */
+.ma-basi-form { background:#0f0f12; border:1px solid #2a2a2e; border-radius:8px; padding:14px; margin-bottom:12px; }
+.ma-field { margin-bottom:12px; }
+.ma-label { display:block; font-size:11px; color:#9ca3af; margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px; font-weight:600; }
+.ma-input { width:100%; background:#1a1a1e; border:1px solid #2a2a2e; color:#fff; padding:10px 12px; border-radius:6px; font-size:14px; font-family:inherit; box-sizing:border-box; }
+.ma-input:focus { outline:none; border-color:var(--accent,#c8ff00); }
+.ma-row-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.ma-check-row { display:flex; align-items:center; gap:8px; font-size:13px; color:#e5e7eb; cursor:pointer; margin-bottom:12px; }
+.ma-check-row input { accent-color:var(--accent,#c8ff00); }
+.ma-form-err { color:#ef4444; font-size:12px; margin-bottom:10px; display:none; }
+.ma-form-actions { display:flex; gap:8px; }
+.ma-form-actions .ma-btn-save { flex:1; }
+.ma-btn-secondary { flex:1; background:transparent; border:1px solid #2a2a2e; color:#9ca3af; padding:12px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; }
+.ma-btn-secondary:hover { color:#fff; border-color:#52525b; }
 
 @media (max-width:480px) {
     .ma-hero-title { font-size:26px; }
@@ -164,8 +210,10 @@ $token_get = $_GET['t']    ?? '';
                     <!-- STEP 3 (JS): righe giorni popolate da dispo-load.php -->
                 </div>
 
+                <div id="ma-skip-msg" class="ma-skip-msg" style="display:none;"></div>
                 <div class="ma-actions">
-                    <button type="button" id="ma-btn-save" class="ma-btn-save"><?= esc_html($_t($T['btn_save'])) ?></button>
+                    <button type="button" id="ma-btn-save" class="ma-btn-save" disabled><?= esc_html($_t($T['btn_save'])) ?></button>
+                    <div id="ma-save-msg" class="ma-save-msg"></div>
                 </div>
             </div>
 
@@ -201,7 +249,29 @@ window.__MA_CONFIG = {
         basiAlloggio: <?= json_encode($_t($T['basi_alloggio'])) ?>,
         dayState:     <?= json_encode($_t($T['day_state'])) ?>,
         wdShort:      <?= json_encode($_t($T['wd_short'])) ?>,
-        moShort:      <?= json_encode($_t($T['mo_short'])) ?>
+        moShort:      <?= json_encode($_t($T['mo_short'])) ?>,
+        btnCancel:    <?= json_encode($_t($T['btn_cancel'])) ?>,
+        basiFormComune:   <?= json_encode($_t($T['basi_form_comune'])) ?>,
+        basiFormProvincia:<?= json_encode($_t($T['basi_form_provincia'])) ?>,
+        basiFormPaese:    <?= json_encode($_t($T['basi_form_paese'])) ?>,
+        basiFormDal:      <?= json_encode($_t($T['basi_form_dal'])) ?>,
+        basiFormAl:       <?= json_encode($_t($T['basi_form_al'])) ?>,
+        basiFormNota:     <?= json_encode($_t($T['basi_form_nota'])) ?>,
+        basiFormAlloggio: <?= json_encode($_t($T['basi_form_alloggio'])) ?>,
+        basiFormSave:     <?= json_encode($_t($T['basi_form_save'])) ?>,
+        basiErrComune:    <?= json_encode($_t($T['basi_err_comune'])) ?>,
+        basiErrDate:      <?= json_encode($_t($T['basi_err_date'])) ?>,
+        basiConfirmDelete:<?= json_encode($_t($T['basi_confirm_delete'])) ?>,
+        basiDel:          <?= json_encode($_t($T['basi_del'])) ?>,
+        saveOk:       <?= json_encode($_t($T['save_ok'])) ?>,
+        saveErr:      <?= json_encode($_t($T['save_err'])) ?>,
+        skipPrefix:   <?= json_encode($_t($T['skip_prefix'])) ?>,
+        skipReasons: {
+            bloccato_opzionato:  <?= json_encode($_t($T['skip_opzionato'])) ?>,
+            bloccato_confermato: <?= json_encode($_t($T['skip_confermato'])) ?>
+        },
+        btnSave:      <?= json_encode($_t($T['btn_save'])) ?>,
+        btnSaving:    <?= json_encode($_t($T['btn_saving'])) ?>
     }
 };
 </script>
