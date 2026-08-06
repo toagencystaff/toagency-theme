@@ -48,6 +48,27 @@ $T = [
     ],
     'basi_empty'     => ['it'=>'Nessuna base temporanea aggiunta.','en'=>'No temporary base added.','fr'=>'Aucune base temporaire ajoutée.','es'=>'Ninguna base temporal añadida.'],
     'btn_add_base'   => ['it'=>'+ Aggiungi base','en'=>'+ Add base','fr'=>'+ Ajouter une base','es'=>'+ Añadir base'],
+    'basi_period'    => ['it'=>'dal %s al %s','en'=>'from %s to %s','fr'=>'du %s au %s','es'=>'del %s al %s'],
+    'basi_alloggio'  => ['it'=>'Alloggio incluso','en'=>'Accommodation included','fr'=>'Hébergement inclus','es'=>'Alojamiento incluido'],
+    'error_generic'  => ['it'=>'Errore di connessione. Riprova tra poco.','en'=>'Connection error. Please try again.','fr'=>'Erreur de connexion. Réessaie plus tard.','es'=>'Error de conexión. Inténtalo de nuevo.'],
+
+    // Stati giorno (etichette riga calendario)
+    'day_state' => [
+        'it' => ['disponibile'=>'Disponibile','non_disponibile'=>'Non disponibile','mattina'=>'Mattina','pomeriggio'=>'Pomeriggio','sera'=>'Sera','opzionato'=>'Opzionato (staff)','confermato'=>'Confermato (staff)','non_so'=>'Non ancora segnato'],
+        'en' => ['disponibile'=>'Available','non_disponibile'=>'Not available','mattina'=>'Morning','pomeriggio'=>'Afternoon','sera'=>'Evening','opzionato'=>'Optioned (staff)','confermato'=>'Confirmed (staff)','non_so'=>'Not marked yet'],
+        'fr' => ['disponibile'=>'Disponible','non_disponibile'=>'Non disponible','mattina'=>'Matin','pomeriggio'=>'Après-midi','sera'=>'Soir','opzionato'=>'Optionné (staff)','confermato'=>'Confirmé (staff)','non_so'=>'Pas encore indiqué'],
+        'es' => ['disponibile'=>'Disponible','non_disponibile'=>'No disponible','mattina'=>'Mañana','pomeriggio'=>'Tarde','sera'=>'Noche','opzionato'=>'Opcionado (staff)','confermato'=>'Confirmado (staff)','non_so'=>'Aún sin marcar'],
+    ],
+    'wd_short' => [
+        'it'=>['Dom','Lun','Mar','Mer','Gio','Ven','Sab'], 'en'=>['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+        'fr'=>['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'], 'es'=>['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
+    ],
+    'mo_short' => [
+        'it'=>['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'],
+        'en'=>['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+        'fr'=>['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'],
+        'es'=>['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+    ],
 ];
 
 $theme_uri = get_stylesheet_directory_uri();
@@ -167,9 +188,27 @@ $token_get = $_GET['t']    ?? '';
 window.__MA_CONFIG = {
     uuid: <?= json_encode($uuid_get) ?>,
     token: <?= json_encode($token_get) ?>,
-    lang: <?= json_encode($__l) ?>
+    lang: <?= json_encode($__l) ?>,
+    apiLoad: '/crm_toagency/actions/dispo-load.php',
+    apiSave: '/crm_toagency/actions/dispo-save.php',
+    strings: {
+        invalidLink:  <?= json_encode($_t($T['invalid_link'])) ?>,
+        errorGeneric: <?= json_encode($_t($T['error_generic'])) ?>,
+        lastUpdate:   <?= json_encode($_t($T['last_update'])) ?>,
+        neverUpdated: <?= json_encode($_t($T['never_updated'])) ?>,
+        basiEmpty:    <?= json_encode($_t($T['basi_empty'])) ?>,
+        basiPeriod:   <?= json_encode($_t($T['basi_period'])) ?>,
+        basiAlloggio: <?= json_encode($_t($T['basi_alloggio'])) ?>,
+        dayState:     <?= json_encode($_t($T['day_state'])) ?>,
+        wdShort:      <?= json_encode($_t($T['wd_short'])) ?>,
+        moShort:      <?= json_encode($_t($T['mo_short'])) ?>
+    }
 };
 </script>
-<?php // STEP 3: qui verrà agganciato assets/mia-agenda.js (fetch dispo-load.php / dispo-save.php) ?>
+<?php
+$ma_js_path = get_stylesheet_directory() . '/assets/mia-agenda.js';
+$ma_js_ver  = file_exists($ma_js_path) ? filemtime($ma_js_path) : '1.0';
+?>
+<script src="<?= esc_url($theme_uri . '/assets/mia-agenda.js') ?>?v=<?= $ma_js_ver ?>" defer></script>
 
 <?php toa_component('footer'); ?>
