@@ -88,7 +88,9 @@ $T = [
     'field_etnia'     => ['it'=>'Etnia * (max 2)','en'=>'Ethnicity * (max 2)','fr'=>'Ethnie * (max 2)','es'=>'Etnia * (máx 2)'],
     'field_ruoli'     => ['it'=>'Ruoli * (uno o più)','en'=>'Roles * (one or more)','fr'=>'Rôles * (un ou plusieurs)','es'=>'Roles * (uno o más)'],
     'field_lingue'    => ['it'=>'Lingue parlate','en'=>'Spoken languages','fr'=>'Langues parlées','es'=>'Idiomas'],
+    'field_lingue_pub'=> ['it'=>'Mostra le mie lingue ai clienti','en'=>'Show my languages to clients','fr'=>'Afficher mes langues aux clients','es'=>'Mostrar mis idiomas a los clientes'],
     'field_patente'   => ['it'=>'Ho la patente di guida','en'=>'I have a driving license','fr'=>'J’ai le permis de conduire','es'=>'Tengo carné de conducir'],
+    'field_automunito'=> ['it'=>'Sono automunito/a','en'=>'I have my own vehicle','fr'=>'Je suis véhiculé(e)','es'=>'Tengo vehículo propio'],
 
     // ─── S8.A — Sezione album foto ───
     'section_foto'   => ['it'=>'Le tue foto','en'=>'Your photos','fr'=>'Tes photos','es'=>'Tus fotos'],
@@ -551,9 +553,13 @@ $token_get = $_GET['t']    ?? '';
                     <div class="tse-chips" id="f-lingue" data-group="lingue">
                         <?php foreach ($LINGUE_OPTS as $k=>$v): ?><label class="tse-chip"><input type="checkbox" value="<?= esc_attr($k) ?>"><?= esc_html($_t($v)) ?></label><?php endforeach; ?>
                     </div>
+                    <!-- 2026-08-04 TEMA — visibilità pubblica lingue (default ON) -->
+                    <label class="tse-check-row"><input type="checkbox" id="f-lingue-pubbliche" checked> <?= esc_html($_t($T['field_lingue_pub'])) ?></label>
                 </div>
                 <div class="tse-field">
                     <label class="tse-check-row"><input type="checkbox" id="f-patente"> <?= esc_html($_t($T['field_patente'])) ?></label>
+                    <!-- 2026-08-04 TEMA — automunito -->
+                    <label class="tse-check-row"><input type="checkbox" id="f-automunito"> <?= esc_html($_t($T['field_automunito'])) ?></label>
                 </div>
             </div>
 

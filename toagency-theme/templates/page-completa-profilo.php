@@ -66,6 +66,7 @@ $T = [
     'field_ruoli'     => ['it'=>'Ruoli * (uno o più)','en'=>'Roles * (one or more)','fr'=>'Rôles * (un ou plusieurs)','es'=>'Roles * (uno o más)'],
     'field_lingue'    => ['it'=>'Lingue parlate','en'=>'Spoken languages','fr'=>'Langues parlées','es'=>'Idiomas'],
     'field_patente'   => ['it'=>'Ho la patente di guida','en'=>'I have a driving license','fr'=>'J\'ai le permis de conduire','es'=>'Tengo carné de conducir'],
+    'field_automunito'=> ['it'=>'Sono automunito/a','en'=>'I have my own vehicle','fr'=>'Je suis véhiculé(e)','es'=>'Tengo vehículo propio'],
     'field_instagram' => ['it'=>'Instagram','en'=>'Instagram','fr'=>'Instagram','es'=>'Instagram'],
     'field_tiktok'    => ['it'=>'TikTok','en'=>'TikTok','fr'=>'TikTok','es'=>'TikTok'],
     'opt_select'      => ['it'=>'—','en'=>'—','fr'=>'—','es'=>'—'],
@@ -367,6 +368,8 @@ $token_get = $_GET['t']    ?? '';
                 </div>
                 <div class="cp-field">
                     <label class="cp-check-row"><input type="checkbox" id="f-patente"> <?= esc_html($_t($T['field_patente'])) ?></label>
+                    <!-- 2026-08-04 TEMA — automunito -->
+                    <label class="cp-check-row"><input type="checkbox" id="f-automunito"> <?= esc_html($_t($T['field_automunito'])) ?></label>
                 </div>
             </div>
 

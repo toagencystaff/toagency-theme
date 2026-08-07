@@ -257,7 +257,11 @@
             setChips('f-etnia',  d.talent.etnia);
             setChips('f-ruoli',  d.talent.ruoli);
             setChips('f-lingue', d.talent.lingue);
+            // 2026-08-04 TEMA — lingue_pubbliche: default ON, checkbox spunta a meno che sia esplicitamente 0/false
+            var _lp = $('f-lingue-pubbliche'); if (_lp) _lp.checked = !(d.talent.lingue_pubbliche == 0 || d.talent.lingue_pubbliche === false);
             var _pat = $('f-patente'); if (_pat) _pat.checked = (d.talent.patente == 1 || d.talent.patente === true);
+            // 2026-08-04 TEMA — automunito
+            var _auto = $('f-automunito'); if (_auto) _auto.checked = (d.talent.automunito == 1 || d.talent.automunito === true);
             loadCompletezza();
 
             $('tse-status').style.display = 'none';
@@ -296,7 +300,9 @@
         payload.etnia   = getChips('f-etnia');
         payload.ruoli   = getChips('f-ruoli');
         payload.lingue  = getChips('f-lingue');
+        payload.lingue_pubbliche = ($('f-lingue-pubbliche') && $('f-lingue-pubbliche').checked) ? 1 : 0;
         payload.patente = ($('f-patente') && $('f-patente').checked) ? 1 : 0;
+        payload.automunito = ($('f-automunito') && $('f-automunito').checked) ? 1 : 0;
 
         fetch(API_SAVE, {
             method: 'POST',

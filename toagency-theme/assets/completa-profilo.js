@@ -146,6 +146,9 @@
         setChips('lingue', t.lingue);
         var pat = document.getElementById('f-patente');
         if (pat && parseInt(t.patente, 10) === 1) pat.checked = true;
+        // 2026-08-04 TEMA — automunito
+        var auto = document.getElementById('f-automunito');
+        if (auto && parseInt(t.automunito, 10) === 1) auto.checked = true;
 
         var nameEl = document.getElementById('cp-name-display');
         if (nameEl) nameEl.innerHTML = 'Profilo di <strong>' + (t.nome || '') + ' ' + (t.cognome || '') + '</strong>';
@@ -212,6 +215,7 @@
             ruoli: checkedValues('ruoli'),
             lingue: checkedValues('lingue'),
             patente: (document.getElementById('f-patente') && document.getElementById('f-patente').checked) ? 1 : 0,
+            automunito: (document.getElementById('f-automunito') && document.getElementById('f-automunito').checked) ? 1 : 0,
             instagram: val('f-instagram'),
             tiktok: val('f-tiktok'),
             honeypot_url: val('f-honeypot')
