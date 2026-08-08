@@ -612,9 +612,10 @@ $token_get = $_GET['t']    ?? '';
             </div>
 
             <div id="tse-result"></div>
+            <!-- 2026-08-08 TEMA — non più solo Italia: link dinamico per paese/lingua via onboarding-community.php (stesso sistema già usato in page-registrati-talent.php) -->
             <div id="tse-community-block" style="display:none;margin-top:20px;padding:16px;background:#0f0f12;border:1px solid #25D366;border-radius:8px;text-align:center;">
-                <p style="color:#d1d5db;font-size:13px;margin:0 0 12px;">🇮🇹 Sei in Italia? Ricevi i casting della tua città prima degli altri!</p>
-                <a href="https://toagency.it/itacommunities-new.html" target="_blank" rel="noopener" style="display:inline-block;background:#25D366;color:#fff;padding:12px 24px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;">📲 Entra nel gruppo WhatsApp</a>
+                <p style="color:#d1d5db;font-size:13px;margin:0 0 12px;"><?= esc_html($_t(['it'=>'📣 Ricevi i casting della tua zona prima degli altri! Entra nel gruppo WhatsApp giusto per te.','en'=>'📣 Get castings for your area before anyone else! Join the right WhatsApp group for you.','fr'=>'📣 Reçois les castings de ta région avant les autres ! Rejoins le bon groupe WhatsApp.','es'=>'📣 ¡Recibe los castings de tu zona antes que nadie! Únete al grupo de WhatsApp adecuado.'])) ?></p>
+                <a id="tse-community-wa-btn" href="https://toagency.it/crm_toagency/onboarding-community.php" target="_blank" rel="noopener" style="display:inline-block;background:#25D366;color:#fff;padding:12px 24px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;">📲 <?= esc_html($_t(['it'=>'Entra nel gruppo WhatsApp','en'=>'Join the WhatsApp group','fr'=>'Rejoindre le groupe WhatsApp','es'=>'Unirse al grupo de WhatsApp'])) ?></a>
             </div>
         </form>
 
@@ -713,6 +714,7 @@ window.talentEditConfig = {
     comuneApiUrl: '/crm_toagency/actions/cerca-comune.php', /* FIX 2026-07-01 marco — ricerca comune self-edit */
     uuid:    <?= json_encode($uuid_get) ?>,
     token:   <?= json_encode($token_get) ?>,
+    lang:    <?= json_encode($__l) ?>, /* 2026-08-08 TEMA — lingua pagina, per link community corretto */
     strings: {
         invalidLink: <?= json_encode($_t($T['invalid_link'])) ?>,
         pending:     <?= json_encode($_t($T['pending_msg'])) ?>,

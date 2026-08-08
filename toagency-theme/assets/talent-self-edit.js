@@ -260,12 +260,23 @@
             // FIX 2026-07-01 marco — ricerca comune self-edit (no testo libero)
             initComuneTypeahead(d.talent.comune_residenza || '', d.talent.paese_residenza || 'IT');
 
-            // FIX 2026-05-26 marco — community IT + highlight campi mancanti
+            // FIX 2026-05-26 marco — community + highlight campi mancanti
+            // 2026-08-08 TEMA — non più solo Italia: link dinamico per paese/lingua (stesso pattern di page-registrati-talent.php)
             paeseResidenza = d.talent.paese_residenza || '';
-            if (paeseResidenza === 'IT') {
+            (function () {
                 var cb = $('tse-community-block');
-                if (cb) cb.style.display = 'block';
-            }
+                if (!cb) return;
+                cb.style.display = 'block';
+                var btn = $('tse-community-wa-btn');
+                if (!btn) return;
+                var iso = (paeseResidenza || '').toUpperCase();
+                if (['IT', 'ES', 'FR'].indexOf(iso) === -1) iso = 'INT';
+                var lg = (cfg.lang || 'it');
+                if (['it', 'en', 'fr', 'es'].indexOf(lg) === -1) lg = 'it';
+                var href = 'https://toagency.it/crm_toagency/onboarding-community.php?paese=' + iso + '&lang=' + lg;
+                if (talentNome) href += '&nome=' + encodeURIComponent(talentNome.trim().substring(0, 40));
+                btn.href = href;
+            })();
             highlightMissingFields(d.talent);
             // FIX 2026-07-16 marco — guida album per ruolo
             renderRuoloGuida(d.talent.ruoli);
