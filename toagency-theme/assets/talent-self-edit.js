@@ -46,9 +46,11 @@
             var code = row.getAttribute('data-lang');
             var liv = row.querySelector('.tse-ld-livello');
             var cert = row.querySelector('.tse-ld-cert');
+            var altroTxt = row.querySelector('.tse-ld-altro');
             lingueDettaglioData[code] = {
                 livello: liv ? liv.value : '',
-                certificazioni: cert ? cert.value.trim() : ''
+                certificazioni: cert ? cert.value.trim() : '',
+                altro_testo: altroTxt ? altroTxt.value.trim() : ''
             };
         });
         var checked = Array.prototype.slice.call(chipsBox.querySelectorAll('input[type=checkbox]:checked')).map(function (el) { return el.value; });
@@ -87,6 +89,18 @@
             cert.style.cssText = 'flex:1;min-width:150px;';
             cert.value = d.certificazioni || '';
             row.appendChild(cert);
+
+            // 2026-08-08 TEMA — "Altro": serve sapere QUALE lingua è (può essere più di una, testo libero).
+            // Appeso dentro la stessa riga (data-lang) cosi' il salvataggio a inizio funzione lo ritrova.
+            if (code === 'altro') {
+                var altroInput = document.createElement('input');
+                altroInput.type = 'text';
+                altroInput.className = 'tse-input tse-ld-altro';
+                altroInput.placeholder = STR.altroLinguaPlaceholder || 'Quali lingue? (es: Rumeno B2, Polacco A2)';
+                altroInput.style.cssText = 'flex:1 1 100%;margin-top:4px;';
+                altroInput.value = d.altro_testo || '';
+                row.appendChild(altroInput);
+            }
 
             box.appendChild(row);
         });
@@ -199,6 +213,39 @@
                 }
             }
         }).catch(function () {});
+    }
+
+    // 2026-08-08 TEMA — Paese di residenza, stessa fonte dati della registrazione (cerca-comune.php?type=nations)
+    function populateNazioni(selected) {
+        var sel = $('f-paese_residenza');
+        if (!sel) return;
+        var apiBase = (window.talentEditConfig || {}).comuneApiUrl;
+        if (!apiBase) return;
+        fetch(apiBase + '?type=nations').then(function (r) { return r.json(); }).then(function (list) {
+            (list || []).forEach(function (item) {
+                var o = document.createElement('option');
+                o.value = item.code;
+                o.textContent = item.display || item.name_local || item.code;
+                sel.appendChild(o);
+            });
+            sel.value = selected || 'IT';
+            if (!sel.value) sel.value = 'IT';           // codice salvato non in lista: default Italia, non blocca il resto
+            syncPaeseUI();
+        }).catch(function () {});
+    }
+
+    // 2026-08-08 TEMA — mostra comune+provincia (Italia) oppure città libera (resto del mondo) in base al Paese scelto
+    function syncPaeseUI() {
+        var sel = $('f-paese_residenza');
+        var rowIt = $('tse-row-it');
+        var rowEstero = $('tse-row-estero');
+        var esteroInput = $('f-comune_estero_visible');
+        var hidden = $('f-comune_residenza');
+        if (!sel) return;
+        var isIT = (sel.value || 'IT') === 'IT';
+        if (rowIt) rowIt.style.display = isIT ? '' : 'none';
+        if (rowEstero) rowEstero.style.display = isIT ? 'none' : '';
+        if (!isIT && esteroInput && hidden && !esteroInput.dataset.userEdited) esteroInput.value = hidden.value || '';
     }
 
     function showError(msg) {
@@ -318,8 +365,12 @@
             // FIX 2026-07-01 marco — tendina provincia self-edit
             populateProvince(d.talent.provincia_domicilio || '');
 
-            // FIX 2026-07-01 marco — ricerca comune self-edit (no testo libero)
-            initComuneTypeahead(d.talent.comune_residenza || '', d.talent.paese_residenza || 'IT');
+            // FIX 2026-07-01 marco — ricerca comune self-edit (no testo libero). Solo Italia: la riga è visibile
+            // solo quando il Paese scelto è IT (vedi syncPaeseUI), quindi qui la nazione è sempre 'IT'.
+            initComuneTypeahead(d.talent.comune_residenza || '', 'IT');
+
+            // 2026-08-08 TEMA — Paese di residenza (prima il paese, poi comune/città — come in registrazione)
+            populateNazioni(d.talent.paese_residenza || 'IT');
 
             // FIX 2026-05-26 marco — community + highlight campi mancanti
             // 2026-08-08 TEMA — non più solo Italia: link dinamico per paese/lingua (stesso pattern di page-registrati-talent.php)
@@ -405,7 +456,12 @@
                 var code = row.getAttribute('data-lang');
                 var liv = row.querySelector('.tse-ld-livello');
                 var cert = row.querySelector('.tse-ld-cert');
-                det[code] = { livello: liv ? liv.value : '', certificazioni: cert ? cert.value.trim() : '' };
+                var altroTxt = row.querySelector('.tse-ld-altro');
+                det[code] = {
+                    livello: liv ? liv.value : '',
+                    certificazioni: cert ? cert.value.trim() : '',
+                    altro_testo: altroTxt ? altroTxt.value.trim() : ''
+                };
             });
             payload.lingue_dettaglio = det;
         })();
@@ -905,6 +961,19 @@
     document.addEventListener('DOMContentLoaded', function () {
         var lb = $('f-lingue');
         if (lb) lb.addEventListener('change', renderLingueDettaglio);
+    });
+    // 2026-08-08 TEMA — Paese di residenza: cambia Italia/estero, e la città estero scrive nel campo nascosto reale
+    document.addEventListener('DOMContentLoaded', function () {
+        var paeseSel = $('f-paese_residenza');
+        if (paeseSel) paeseSel.addEventListener('change', syncPaeseUI);
+        var esteroInput = $('f-comune_estero_visible');
+        var hidden = $('f-comune_residenza');
+        if (esteroInput && hidden) {
+            esteroInput.addEventListener('input', function () {
+                esteroInput.dataset.userEdited = '1';
+                hidden.value = esteroInput.value.trim();
+            });
+        }
     });
     document.addEventListener('DOMContentLoaded', loadData);
 })();

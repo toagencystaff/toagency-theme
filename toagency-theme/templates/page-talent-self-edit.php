@@ -93,22 +93,35 @@ $T = [
     'livello_select'  => ['it'=>'Livello…','en'=>'Level…','fr'=>'Niveau…','es'=>'Nivel…'],
     'livello_nativo'  => ['it'=>'Madrelingua','en'=>'Native','fr'=>'Langue maternelle','es'=>'Nativo'],
     'cert_placeholder'=> ['it'=>'Certificazione (facoltativo)','en'=>'Certificate (optional)','fr'=>'Certification (facultatif)','es'=>'Certificación (opcional)'],
+    'altro_lingua_placeholder' => ['it'=>'Quali lingue? (es: Rumeno B2, Polacco A2)','en'=>'Which languages? (e.g. Romanian B2, Polish A2)','fr'=>'Quelles langues ? (ex : Roumain B2, Polonais A2)','es'=>'¿Qué idiomas? (ej: Rumano B2, Polaco A2)'],
+    // FIX 2026-08-08 marco — paese di residenza, come in registrazione (prima paese poi comune/città)
+    'field_paese_residenza' => ['it'=>'Paese di residenza','en'=>'Country of residence','fr'=>'Pays de résidence','es'=>'País de residencia'],
+    'opt_select_paese' => ['it'=>'Seleziona paese…','en'=>'Select country…','fr'=>'Choisir le pays…','es'=>'Selecciona país…'],
+    'field_citta_estero' => ['it'=>'Città','en'=>'City','fr'=>'Ville','es'=>'Ciudad'],
+    'citta_estero_placeholder' => ['it'=>'Es. New York, Tokyo, Londra…','en'=>'E.g. New York, Tokyo, London…','fr'=>'Ex. New York, Tokyo, Londres…','es'=>'Ej. Nueva York, Tokio, Londres…'],
     'field_patente'   => ['it'=>'Ho la patente di guida','en'=>'I have a driving license','fr'=>'J’ai le permis de conduire','es'=>'Tengo carné de conducir'],
     'field_automunito'=> ['it'=>'Sono automunito/a','en'=>'I have my own vehicle','fr'=>'Je suis véhiculé(e)','es'=>'Tengo vehículo propio'],
 
     // ─── S8.A — Sezione album foto ───
     'section_foto'   => ['it'=>'Le tue foto','en'=>'Your photos','fr'=>'Tes photos','es'=>'Tus fotos'],
     'foto_subtitle'  => [
-        'it'=>'Carica foto in 4 album diversi. Ogni foto è verificata dallo staff prima di essere pubblicata.',
-        'en'=>'Upload photos in 4 different albums. Each photo is reviewed by staff before publication.',
-        'fr'=>'Charge des photos dans 4 albums. Chaque photo est revue avant publication.',
-        'es'=>'Sube fotos en 4 álbumes. Cada foto se revisa antes de publicarse.',
+        'it'=>'Carica foto in 5 album diversi, ognuno con uno scopo diverso — leggi la spiegazione sopra alle foto per capire quale usare. Ogni foto è verificata dallo staff prima di essere pubblicata.',
+        'en'=>'Upload photos in 5 different albums, each with its own purpose — read the note above the photos to know which to use. Each photo is reviewed by staff before publication.',
+        'fr'=>'Charge des photos dans 5 albums différents, chacun avec un objectif précis — lis l\'explication au-dessus des photos pour savoir lequel utiliser. Chaque photo est revue avant publication.',
+        'es'=>'Sube fotos en 5 álbumes distintos, cada uno con un propósito — lee la explicación encima de las fotos para saber cuál usar. Cada foto se revisa antes de publicarse.',
+    ],
+    // FIX 2026-08-08 marco — niente loghi/watermark/firme fotografo: le foto non sarebbero utilizzabili
+    'no_watermark_warning' => [
+        'it'=>'⚠️ Niente loghi, watermark o firme di fotografi su foto e video: se ci sono non possiamo usarli (non possiamo ritagliarli o modificarli a piacere).',
+        'en'=>'⚠️ No logos, watermarks or photographer signatures on photos/videos: if present we cannot use them (we cannot crop or edit them as we like).',
+        'fr'=>'⚠️ Pas de logos, filigranes ou signatures de photographe sur les photos/vidéos : si présents, on ne peut pas les utiliser (on ne peut pas les recadrer ou les modifier à notre gré).',
+        'es'=>'⚠️ Nada de logos, marcas de agua o firmas de fotógrafo en fotos/vídeos: si están, no podemos usarlos (no podemos recortarlos o editarlos a nuestro gusto).',
     ],
     'tab_polaroid'   => ['it'=>'Polaroid','en'=>'Polaroid','fr'=>'Polaroid','es'=>'Polaroid'],
     'tab_dettaglio'  => ['it'=>'Dettagli','en'=>'Details','fr'=>'Détails','es'=>'Detalles'],
     'tab_portfolio'  => ['it'=>'Portfolio','en'=>'Portfolio','fr'=>'Portfolio','es'=>'Portfolio'],
     'tab_eventi'     => ['it'=>'Eventi','en'=>'Events','fr'=>'Événements','es'=>'Eventos'],
-    'tab_casual'     => ['it'=>'Casual','en'=>'Casual','fr'=>'Casual','es'=>'Casual'],
+    'tab_casual'     => ['it'=>'Altre foto','en'=>'Other photos','fr'=>'Autres photos','es'=>'Otras fotos'],
     'guida_ruolo_intro'    => ['it'=>'Album consigliati per il tuo profilo','en'=>'Recommended albums for your profile','fr'=>'Albums recommandés pour ton profil','es'=>'Álbumes recomendados para tu perfil'],
     'guida_ruolo_polaroid' => ['it'=>'Le Polaroid sono obbligatorie per tutti.','en'=>'Polaroids are required for everyone.','fr'=>'Les Polaroids sont obligatoires pour tous.','es'=>'Las Polaroids son obligatorias para todos.'],
     'compl_label'          => ['it'=>'Profilo completo','en'=>'Profile complete','fr'=>'Profil complété','es'=>'Perfil completo'],
@@ -237,7 +250,14 @@ $LINGUE_OPTS = [
     'altro'      => ['it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro'],
 ];
 
+// FIX 2026-08-08 marco — prefissi telefonici da tendina (stessa fonte dati della registrazione, niente testo libero)
 $theme_uri = get_stylesheet_directory_uri();
+$PREFISSI_OPTS = [];
+$prefissi_path = get_stylesheet_directory() . '/assets/data/phone-prefixes.json';
+if (file_exists($prefissi_path)) {
+    $prefissi_json = json_decode(file_get_contents($prefissi_path), true);
+    if (is_array($prefissi_json)) $PREFISSI_OPTS = $prefissi_json;
+}
 $uuid_get  = $_GET['uuid'] ?? '';
 $token_get = $_GET['t']    ?? '';
 ?>
@@ -407,8 +427,11 @@ $token_get = $_GET['t']    ?? '';
                 <div class="tse-field">
                     <label class="tse-label"><?= esc_html($_t($T['field_telefono'])) ?></label>
                     <div class="tse-row" style="gap:8px;">
-                        <input type="text" id="f-telefono-prefix" class="tse-input" value="+39" maxlength="4"
-                               inputmode="tel" autocomplete="tel-country-code" style="flex:0 0 64px; text-align:center;">
+                        <select id="f-telefono-prefix" class="tse-select" autocomplete="tel-country-code" style="flex:0 0 130px;">
+                            <?php foreach ($PREFISSI_OPTS as $p): ?>
+                                <option value="<?= esc_attr($p['prefix']) ?>" <?= ($p['code'] === 'IT') ? 'selected' : '' ?>><?= esc_html(($p['flag'] ?? '') . ' ' . $p['prefix'] . ' ' . $p['name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
                         <input type="tel" id="f-telefono" class="tse-input" autocomplete="tel" style="flex:1;">
                     </div>
                 </div>
@@ -590,11 +613,17 @@ $token_get = $_GET['t']    ?? '';
                 </script>
             </div>
 
-            <!-- FIX 2026-06-28 marco — sezione Indirizzo (comune + provincia) -->
+            <!-- FIX 2026-08-08 marco — sezione Indirizzo: prima il Paese (come in registrazione), poi comune/città in base al paese scelto -->
             <div class="tse-section">
                 <div class="tse-section-title">📍 <?= esc_html($_t(['it'=>'Indirizzo','en'=>'Location','fr'=>'Localisation','es'=>'Ubicación'])) ?></div>
-                <div class="tse-row">
-                    <!-- FIX 2026-07-01 marco — comune con ricerca a suggerimenti (no testo libero): scegli dalla lista -->
+                <div class="tse-field">
+                    <label class="tse-label"><?= esc_html($_t($T['field_paese_residenza'])) ?></label>
+                    <select id="f-paese_residenza" class="tse-select">
+                        <option value=""><?= esc_html($_t($T['opt_select_paese'])) ?></option>
+                    </select>
+                </div>
+                <div class="tse-row" id="tse-row-it">
+                    <!-- FIX 2026-07-01 marco — comune con ricerca a suggerimenti (no testo libero): scegli dalla lista. Visibile solo se Paese = Italia -->
                     <div class="tse-field" style="position:relative;">
                         <label class="tse-label"><?= esc_html($_t(['it'=>'Comune / Città','en'=>'City','fr'=>'Ville','es'=>'Ciudad'])) ?></label>
                         <input type="text" id="f-comune_search" class="tse-input" placeholder="<?= esc_attr($_t(['it'=>'Scrivi e scegli dalla lista…','en'=>'Type and pick from the list…','fr'=>'Écrivez et choisissez…','es'=>'Escribe y elige…'])) ?>" maxlength="100" autocomplete="off">
@@ -608,6 +637,11 @@ $token_get = $_GET['t']    ?? '';
                             <option value=""><?= esc_html($_t(['it'=>'Seleziona provincia','en'=>'Select province','fr'=>'Choisir la province','es'=>'Seleccionar provincia'])) ?></option>
                         </select>
                     </div>
+                </div>
+                <!-- Paese diverso da Italia: niente provincia, città in campo libero -->
+                <div class="tse-field" id="tse-row-estero" style="display:none;">
+                    <label class="tse-label"><?= esc_html($_t($T['field_citta_estero'])) ?></label>
+                    <input type="text" id="f-comune_estero_visible" class="tse-input" placeholder="<?= esc_attr($_t($T['citta_estero_placeholder'])) ?>" maxlength="100">
                 </div>
             </div>
 
@@ -633,7 +667,8 @@ $token_get = $_GET['t']    ?? '';
              Facoltativo per tutti, ma prioritario per attori/self-tape → più rilievo e più in alto. -->
         <div id="tse-video-section" class="tse-section" style="margin-top:20px;">
             <div class="tse-section-title">🎥 <?= esc_html($_t(['it'=>'Video di presentazione','en'=>'Intro video','fr'=>'Vidéo de présentation','es'=>'Vídeo de presentación'])) ?></div>
-            <p style="font-size:12px; color:#9ca3af; margin:0 0 12px; line-height:1.45;"><?= esc_html($_t(['it'=>'Facoltativo per tutti, ma molto utile per attori/attrici e casting che richiedono un self-tape. Basta anche un video girato con il telefono, bassa risoluzione ok · max 50MB.','en'=>'Optional for everyone, but very useful for actors and castings that require a self-tape. A simple phone video is fine, low res ok · max 50MB.','fr'=>'Facultatif pour tous, mais très utile pour les acteurs/actrices et les castings avec self-tape. Une simple vidéo au téléphone suffit, basse résolution ok · max 50 Mo.','es'=>'Opcional para todos, pero muy útil para actores/actrices y castings que piden self-tape. Basta un vídeo con el móvil, baja resolución ok · máx 50MB.'])) ?></p>
+            <p style="font-size:12px; color:#9ca3af; margin:0 0 8px; line-height:1.45;"><?= esc_html($_t(['it'=>'Facoltativo per tutti, ma molto utile per attori/attrici e casting che richiedono un self-tape. Basta anche un video girato con il telefono, bassa risoluzione ok · max 50MB.','en'=>'Optional for everyone, but very useful for actors and castings that require a self-tape. A simple phone video is fine, low res ok · max 50MB.','fr'=>'Facultatif pour tous, mais très utile pour les acteurs/actrices et les castings avec self-tape. Une simple vidéo au téléphone suffit, basse résolution ok · max 50 Mo.','es'=>'Opcional para todos, pero muy útil para actores/actrices y castings que piden self-tape. Basta un vídeo con el móvil, baja resolución ok · máx 50MB.'])) ?></p>
+            <p style="font-size:12px; color:#f5b942; margin:0 0 12px; line-height:1.45;"><?= esc_html($_t($T['no_watermark_warning'])) ?></p>
             <div class="tse-upload-box">
                 <label class="tse-legal-checkbox">
                     <input type="checkbox" id="tse-video-legal">
@@ -656,7 +691,8 @@ $token_get = $_GET['t']    ?? '';
         <!-- ─── S8.A — Sezione album foto ─── -->
         <div id="tse-foto-section" class="tse-section" style="display:none; margin-top:20px;">
             <div class="tse-section-title">📸 <?= esc_html($_t($T['section_foto'])) ?></div>
-            <p style="font-size:12px; color:#9ca3af; margin:0 0 14px; line-height:1.45;"><?= esc_html($_t($T['foto_subtitle'])) ?></p>
+            <p style="font-size:12px; color:#9ca3af; margin:0 0 8px; line-height:1.45;"><?= esc_html($_t($T['foto_subtitle'])) ?></p>
+            <p style="font-size:12px; color:#f5b942; margin:0 0 14px; line-height:1.45;"><?= esc_html($_t($T['no_watermark_warning'])) ?></p>
             <div id="tse-ruolo-guida" class="tse-album-desc" style="display:none; border-left-color:#c8ff00;"></div>
 
             <div class="tse-album-tabs">
@@ -757,6 +793,7 @@ window.talentEditConfig = {
         livelloSelect:   <?= json_encode($_t($T['livello_select'])) ?>,
         livelloNativo:   <?= json_encode($_t($T['livello_nativo'])) ?>,
         certPlaceholder: <?= json_encode($_t($T['cert_placeholder'])) ?>,
+        altroLinguaPlaceholder: <?= json_encode($_t($T['altro_lingua_placeholder'])) ?>,
         lingueLabels: {
             <?php foreach ($LINGUE_OPTS as $k=>$v): ?><?= json_encode($k) ?>: <?= json_encode($_t($v)) ?>,
             <?php endforeach; ?>
