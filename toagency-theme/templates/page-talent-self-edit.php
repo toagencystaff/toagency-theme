@@ -88,7 +88,11 @@ $T = [
     'field_etnia'     => ['it'=>'Etnia * (max 2)','en'=>'Ethnicity * (max 2)','fr'=>'Ethnie * (max 2)','es'=>'Etnia * (máx 2)'],
     'field_ruoli'     => ['it'=>'Ruoli * (uno o più)','en'=>'Roles * (one or more)','fr'=>'Rôles * (un ou plusieurs)','es'=>'Roles * (uno o más)'],
     'field_lingue'    => ['it'=>'Lingue parlate','en'=>'Spoken languages','fr'=>'Langues parlées','es'=>'Idiomas'],
-    'field_lingue_pub'=> ['it'=>'Mostra le mie lingue ai clienti','en'=>'Show my languages to clients','fr'=>'Afficher mes langues aux clients','es'=>'Mostrar mis idiomas a los clientes'],
+    // FIX 2026-08-08 marco — tolta "mostra ai clienti" (decide lo staff, non il talent); aggiunto livello+certificazioni per lingua
+    'lingue_dettaglio_hint' => ['it'=>'Per ogni lingua scelta, indica il livello e — se ce l\'hai — una certificazione.','en'=>'For each language you pick, add the level and — if you have one — a certificate.','fr'=>'Pour chaque langue choisie, indique le niveau et — si tu en as une — une certification.','es'=>'Para cada idioma elegido, indica el nivel y — si la tienes — una certificación.'],
+    'livello_select'  => ['it'=>'Livello…','en'=>'Level…','fr'=>'Niveau…','es'=>'Nivel…'],
+    'livello_nativo'  => ['it'=>'Madrelingua','en'=>'Native','fr'=>'Langue maternelle','es'=>'Nativo'],
+    'cert_placeholder'=> ['it'=>'Certificazione (facoltativo)','en'=>'Certificate (optional)','fr'=>'Certification (facultatif)','es'=>'Certificación (opcional)'],
     'field_patente'   => ['it'=>'Ho la patente di guida','en'=>'I have a driving license','fr'=>'J’ai le permis de conduire','es'=>'Tengo carné de conducir'],
     'field_automunito'=> ['it'=>'Sono automunito/a','en'=>'I have my own vehicle','fr'=>'Je suis véhiculé(e)','es'=>'Tengo vehículo propio'],
 
@@ -104,6 +108,7 @@ $T = [
     'tab_dettaglio'  => ['it'=>'Dettagli','en'=>'Details','fr'=>'Détails','es'=>'Detalles'],
     'tab_portfolio'  => ['it'=>'Portfolio','en'=>'Portfolio','fr'=>'Portfolio','es'=>'Portfolio'],
     'tab_eventi'     => ['it'=>'Eventi','en'=>'Events','fr'=>'Événements','es'=>'Eventos'],
+    'tab_casual'     => ['it'=>'Casual','en'=>'Casual','fr'=>'Casual','es'=>'Casual'],
     'guida_ruolo_intro'    => ['it'=>'Album consigliati per il tuo profilo','en'=>'Recommended albums for your profile','fr'=>'Albums recommandés pour ton profil','es'=>'Álbumes recomendados para tu perfil'],
     'guida_ruolo_polaroid' => ['it'=>'Le Polaroid sono obbligatorie per tutti.','en'=>'Polaroids are required for everyone.','fr'=>'Les Polaroids sont obligatoires pour tous.','es'=>'Las Polaroids son obligatorias para todos.'],
     'compl_label'          => ['it'=>'Profilo completo','en'=>'Profile complete','fr'=>'Profil complété','es'=>'Perfil completo'],
@@ -119,11 +124,13 @@ $T = [
     'mancano_misure'                 => ['it'=>'Misure','en'=>'Measurements','fr'=>'Mensurations','es'=>'Medidas'],
     'polscad_title' => ['it'=>'Polaroid da aggiornare','en'=>'Polaroids to update','fr'=>'Polaroids à mettre à jour','es'=>'Polaroids por actualizar'],
     'polscad_sub'   => ['it'=>'Le tue polaroid sono troppo vecchie: caricane di recenti per restare visibile ai casting. Clicca qui ↓','en'=>'Your polaroids are too old: upload recent ones to stay visible to castings. Click here ↓','fr'=>'Tes polaroids sont trop anciennes : charges-en des récentes pour rester visible aux castings. Clique ici ↓','es'=>'Tus polaroids son demasiado antiguas: sube fotos recientes para seguir visible en los castings. Haz clic aquí ↓'],
+    // FIX 2026-08-08 marco — descrizioni riscritte per spiegare anche A COSA SERVE l'album, non solo il contenuto
     'album_desc' => [
-        'polaroid'  => ['it'=>'Foto recenti senza trucco/filtri che mostrano il tuo aspetto reale (richiede data scatto).','en'=>'Recent photos without make-up/filters showing your actual look (date required).','fr'=>'Photos récentes sans maquillage/filtres (date requise).','es'=>'Fotos recientes sin maquillaje/filtros (fecha obligatoria).'],
-        'dettaglio' => ['it'=>'Primi piani, mani, occhi, profilo, sorriso — utili per casting specifici.','en'=>'Close-ups, hands, eyes, profile, smile — useful for specific castings.','fr'=>'Gros plans, mains, yeux, profil — pour castings spécifiques.','es'=>'Primeros planos, manos, ojos, perfil — para castings específicos.'],
-        'portfolio' => ['it'=>'Foto professionali da shooting/lavori già pubblicati.','en'=>'Professional photos from past shoots/published work.','fr'=>'Photos pro de shootings/travaux déjà publiés.','es'=>'Fotos profesionales de shootings/trabajos publicados.'],
-        'eventi'    => ['it'=>'Foto da eventi pubblici, red carpet, premiazioni.','en'=>'Photos from public events, red carpet, awards.','fr'=>'Photos d\'événements publics, tapis rouge.','es'=>'Fotos de eventos públicos, alfombra roja.'],
+        'polaroid'  => ['it'=>'Foto vere, senza trucco/filtri, che mostrano il tuo aspetto reale. Obbligatorie per tutti: sono le prime che guardano i clienti.','en'=>'Real photos, no make-up/filters, showing your actual look. Required for everyone — the first thing clients see.','fr'=>'Photos vraies, sans maquillage/filtres, qui montrent ton apparence réelle. Obligatoires pour tous : ce sont les premières que voient les clients.','es'=>'Fotos reales, sin maquillaje/filtros, que muestran tu aspecto real. Obligatorias para todos: son lo primero que ven los clientes.'],
+        'dettaglio' => ['it'=>'Primi piani di mani, occhi, sorriso, profilo — utili se ti proponi per lavori dove contano i dettagli (es. spot mani/gioielli, primi piani).','en'=>'Close-ups of hands, eyes, smile, profile — useful if you go for jobs where details matter (e.g. hand/jewelry ads, close-ups).','fr'=>'Gros plans mains, yeux, sourire, profil — utiles si tu vises des jobs où les détails comptent (ex. pub mains/bijoux, gros plans).','es'=>'Primeros planos de manos, ojos, sonrisa, perfil — útiles si buscas trabajos donde importan los detalles (ej. anuncios de manos/joyas, primeros planos).'],
+        'portfolio' => ['it'=>'Foto professionali di shooting o lavori già fatti — utili se punti a moda, cinema, spot, campagne pubblicitarie.','en'=>'Professional photos from shoots or past work — useful if you aim for fashion, film, ads, campaigns.','fr'=>'Photos professionnelles de shootings ou travaux déjà réalisés — utiles si tu vises la mode, le cinéma, la pub, les campagnes.','es'=>'Fotos profesionales de shootings o trabajos ya hechos — útiles si apuntas a moda, cine, spots, campañas.'],
+        'eventi'    => ['it'=>'Foto scattate a eventi, red carpet, fiere — utili se vuoi lavorare come hostess/steward o cerchi ingaggi in ambito eventi.','en'=>'Photos taken at events, red carpets, fairs — useful if you want to work as hostess/steward or look for event-based jobs.','fr'=>'Photos prises lors d\'événements, tapis rouge, salons — utiles si tu veux travailler comme hôtesse/steward ou chercher des missions événementielles.','es'=>'Fotos tomadas en eventos, alfombra roja, ferias — útiles si quieres trabajar como azafata/o o buscas trabajos en eventos.'],
+        'casual'    => ['it'=>'Foto semplici, anche da smartphone, senza posa (vacanza, vita di tutti i giorni) — non rientrano negli altri album ma aiutano i clienti a farsi un\'idea di te.','en'=>'Simple photos, even from your phone, no posing (holidays, everyday life) — don\'t fit the other albums but help clients get a feel for you.','fr'=>'Photos simples, même au téléphone, sans pose (vacances, vie quotidienne) — n\'entrent pas dans les autres albums mais aident les clients à te connaître.','es'=>'Fotos simples, incluso de móvil, sin posar (vacaciones, vida diaria) — no entran en los otros álbumes pero ayudan a los clientes a conocerte.'],
     ],
     'field_data_scatto' => ['it'=>'Data scatto','en'=>'Shot date','fr'=>'Date de la prise','es'=>'Fecha de la toma'],
     'hint_data_scatto'  => ['it'=>'Quando è stata SCATTATA la foto (non quando la carichi).','en'=>'When the photo was TAKEN (not when you upload it).','fr'=>'Quand la photo a été PRISE (pas la date de chargement).','es'=>'Cuándo fue TOMADA la foto (no cuándo la subes).'],
@@ -176,6 +183,7 @@ $T = [
     'verita_dettaglio' => ['it'=>'Confermo che il dettaglio mostrato (mani/occhi/profilo/sorriso ecc.) è mio e rappresenta il mio aspetto attuale','en'=>'I confirm the detail shown (hands/eyes/profile/smile etc.) is mine and represents my current appearance','fr'=>'Je confirme que le détail montré est le mien et représente mon apparence actuelle','es'=>'Confirmo que el detalle mostrado es mío y representa mi apariencia actual'],
     'verita_portfolio' => ['it'=>'Confermo di avere i diritti per usare questa foto di portfolio (autore o licenza) e che mi raffigura realisticamente','en'=>'I confirm I hold the rights to use this portfolio photo (author or license) and it depicts me realistically','fr'=>'Je confirme avoir les droits sur cette photo de portfolio et qu\'elle me représente fidèlement','es'=>'Confirmo tener los derechos sobre esta foto de portfolio y que me representa fielmente'],
     'verita_eventi'    => ['it'=>'Confermo che questa foto è stata scattata in un evento pubblico e ho il diritto di pubblicarla','en'=>'I confirm this photo was taken at a public event and I have the right to publish it','fr'=>'Je confirme que cette photo a été prise lors d\'un événement public et que j\'ai le droit de la publier','es'=>'Confirmo que esta foto fue tomada en un evento público y tengo derecho a publicarla'],
+    'verita_casual'    => ['it'=>'Confermo che questa foto è mia e rappresenta il mio aspetto attuale','en'=>'I confirm this photo is mine and represents my current appearance','fr'=>'Je confirme que cette photo est la mienne et représente mon apparence actuelle','es'=>'Confirmo que esta foto es mía y representa mi apariencia actual'],
 ];
 
 // Enum coerenti con S4 (DB normalizzato) + form registrazione (S4 + page-registrati-talent.php)
@@ -555,8 +563,9 @@ $token_get = $_GET['t']    ?? '';
                     <div class="tse-chips" id="f-lingue" data-group="lingue">
                         <?php foreach ($LINGUE_OPTS as $k=>$v): ?><label class="tse-chip"><input type="checkbox" value="<?= esc_attr($k) ?>"><?= esc_html($_t($v)) ?></label><?php endforeach; ?>
                     </div>
-                    <!-- 2026-08-04 TEMA — visibilità pubblica lingue (default ON) -->
-                    <label class="tse-check-row"><input type="checkbox" id="f-lingue-pubbliche" checked> <?= esc_html($_t($T['field_lingue_pub'])) ?></label>
+                    <!-- FIX 2026-08-08 marco — livello + certificazioni per lingua scelta (righe generate da JS) -->
+                    <p class="tse-help" style="font-size:11px;color:#6b7280;margin:8px 0 4px;"><?= esc_html($_t($T['lingue_dettaglio_hint'])) ?></p>
+                    <div id="tse-lingue-dettaglio"></div>
                 </div>
                 <div class="tse-field">
                     <label class="tse-check-row"><input type="checkbox" id="f-patente"> <?= esc_html($_t($T['field_patente'])) ?></label>
@@ -655,6 +664,7 @@ $token_get = $_GET['t']    ?? '';
                 <button type="button" class="tse-album-tab" data-album="dettaglio" onclick="talentAlbumSwitch('dettaglio')"><?= esc_html($_t($T['tab_dettaglio'])) ?></button>
                 <button type="button" class="tse-album-tab" data-album="portfolio" onclick="talentAlbumSwitch('portfolio')"><?= esc_html($_t($T['tab_portfolio'])) ?></button>
                 <button type="button" class="tse-album-tab" data-album="eventi" onclick="talentAlbumSwitch('eventi')"><?= esc_html($_t($T['tab_eventi'])) ?></button>
+                <button type="button" class="tse-album-tab" data-album="casual" onclick="talentAlbumSwitch('casual')"><?= esc_html($_t($T['tab_casual'])) ?></button>
             </div>
 
             <div id="tse-album-desc" class="tse-album-desc"></div>
@@ -740,9 +750,17 @@ window.talentEditConfig = {
             dettaglio: <?= json_encode($_t($T['tab_dettaglio'])) ?>,
             portfolio: <?= json_encode($_t($T['tab_portfolio'])) ?>,
             eventi:    <?= json_encode($_t($T['tab_eventi'])) ?>,
+            casual:    <?= json_encode($_t($T['tab_casual'])) ?>,
         },
         guidaRuoloIntro:     <?= json_encode($_t($T['guida_ruolo_intro'])) ?>,
         guidaPolaroidObblig: <?= json_encode($_t($T['guida_ruolo_polaroid'])) ?>,
+        livelloSelect:   <?= json_encode($_t($T['livello_select'])) ?>,
+        livelloNativo:   <?= json_encode($_t($T['livello_nativo'])) ?>,
+        certPlaceholder: <?= json_encode($_t($T['cert_placeholder'])) ?>,
+        lingueLabels: {
+            <?php foreach ($LINGUE_OPTS as $k=>$v): ?><?= json_encode($k) ?>: <?= json_encode($_t($v)) ?>,
+            <?php endforeach; ?>
+        },
         complLabel:          <?= json_encode($_t($T['compl_label'])) ?>,
         mancanoTitolo:       <?= json_encode($_t($T['mancano_titolo'])) ?>,
         mancanoLabels: {
@@ -761,12 +779,14 @@ window.talentEditConfig = {
             dettaglio: <?= json_encode($_t($T['verita_dettaglio'])) ?>,
             portfolio: <?= json_encode($_t($T['verita_portfolio'])) ?>,
             eventi:    <?= json_encode($_t($T['verita_eventi'])) ?>,
+            casual:    <?= json_encode($_t($T['verita_casual'])) ?>,
         },
         albumDesc: {
             polaroid:  <?= json_encode($_t($T['album_desc']['polaroid'])) ?>,
             dettaglio: <?= json_encode($_t($T['album_desc']['dettaglio'])) ?>,
             portfolio: <?= json_encode($_t($T['album_desc']['portfolio'])) ?>,
             eventi:    <?= json_encode($_t($T['album_desc']['eventi'])) ?>,
+            casual:    <?= json_encode($_t($T['album_desc']['casual'])) ?>,
         }
     }
 };

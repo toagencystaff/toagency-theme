@@ -24,12 +24,73 @@
     // 2026-08-08 TEMA — 'telefono' tolto da qui: gestito a parte (prefisso internazionale + numero)
     var FIELDS = ['instagram','tiktok','altezza','taglia','scarpe','capelli','occhi',
                   'comune_residenza','provincia_domicilio'];
-    var ALBUMS = ['polaroid','dettaglio','portfolio','eventi'];
+    // 2026-08-08 TEMA — nuovo album 'casual' (foto random tipo smartphone/vacanza, non rientrano negli altri)
+    var ALBUMS = ['polaroid','dettaglio','portfolio','eventi','casual'];
     var currentAlbum = 'polaroid';
-    var albumsData = { polaroid:[], dettaglio:[], portfolio:[], eventi:[] };
+    var albumsData = { polaroid:[], dettaglio:[], portfolio:[], eventi:[], casual:[] };
     var paeseResidenza = '';
+    // 2026-08-08 TEMA — livello + certificazioni per lingua (sostituisce "mostra ai clienti", ora decisa dallo staff)
+    var LINGUE_LIVELLI = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'nativo'];
+    var lingueDettaglioData = {};
 
     function $(id) { return document.getElementById(id); }
+
+    // 2026-08-08 TEMA — ridisegna le righe livello+certificazioni per le lingue attualmente selezionate,
+    // preservando i valori già inseriti anche se l'utente spunta/despunta altre lingue nel frattempo.
+    function renderLingueDettaglio() {
+        var box = $('tse-lingue-dettaglio');
+        var chipsBox = $('f-lingue');
+        if (!box || !chipsBox) return;
+        // salva i valori delle righe attuali prima di ridisegnare
+        box.querySelectorAll('[data-lang]').forEach(function (row) {
+            var code = row.getAttribute('data-lang');
+            var liv = row.querySelector('.tse-ld-livello');
+            var cert = row.querySelector('.tse-ld-cert');
+            lingueDettaglioData[code] = {
+                livello: liv ? liv.value : '',
+                certificazioni: cert ? cert.value.trim() : ''
+            };
+        });
+        var checked = Array.prototype.slice.call(chipsBox.querySelectorAll('input[type=checkbox]:checked')).map(function (el) { return el.value; });
+        var labels = STR.lingueLabels || {};
+        box.innerHTML = '';
+        checked.forEach(function (code) {
+            var d = lingueDettaglioData[code] || {};
+            var row = document.createElement('div');
+            row.setAttribute('data-lang', code);
+            row.style.cssText = 'display:flex;gap:8px;align-items:center;margin:6px 0;flex-wrap:wrap;';
+
+            var span = document.createElement('span');
+            span.style.cssText = 'min-width:82px;font-size:13px;color:#e5e7eb;';
+            span.textContent = labels[code] || code;
+            row.appendChild(span);
+
+            var sel = document.createElement('select');
+            sel.className = 'tse-select tse-ld-livello';
+            sel.style.cssText = 'max-width:150px;';
+            var optEmpty = document.createElement('option');
+            optEmpty.value = ''; optEmpty.textContent = STR.livelloSelect || '—';
+            sel.appendChild(optEmpty);
+            LINGUE_LIVELLI.forEach(function (lv) {
+                var o = document.createElement('option');
+                o.value = lv;
+                o.textContent = (lv === 'nativo') ? (STR.livelloNativo || 'Madrelingua') : lv;
+                if (d.livello === lv) o.selected = true;
+                sel.appendChild(o);
+            });
+            row.appendChild(sel);
+
+            var cert = document.createElement('input');
+            cert.type = 'text';
+            cert.className = 'tse-input tse-ld-cert';
+            cert.placeholder = STR.certPlaceholder || 'Certificazione (facoltativo)';
+            cert.style.cssText = 'flex:1;min-width:150px;';
+            cert.value = d.certificazioni || '';
+            row.appendChild(cert);
+
+            box.appendChild(row);
+        });
+    }
 
     // FIX 2026-07-16 marco — guida album consigliati per ruolo (talent.ruoli dal load)
     var ROLE_ALBUMS = { model:['portfolio','dettaglio'], actor:['portfolio'], hostess:['eventi'] };
@@ -284,8 +345,9 @@
             setChips('f-etnia',  d.talent.etnia);
             setChips('f-ruoli',  d.talent.ruoli);
             setChips('f-lingue', d.talent.lingue);
-            // 2026-08-04 TEMA — lingue_pubbliche: default ON, checkbox spunta a meno che sia esplicitamente 0/false
-            var _lp = $('f-lingue-pubbliche'); if (_lp) _lp.checked = !(d.talent.lingue_pubbliche == 0 || d.talent.lingue_pubbliche === false);
+            // 2026-08-08 TEMA — livello+certificazioni per lingua (sostituisce lingue_pubbliche, tolta dal form talent)
+            lingueDettaglioData = (d.talent.lingue_dettaglio && typeof d.talent.lingue_dettaglio === 'object') ? d.talent.lingue_dettaglio : {};
+            renderLingueDettaglio();
             var _pat = $('f-patente'); if (_pat) _pat.checked = (d.talent.patente == 1 || d.talent.patente === true);
             // 2026-08-04 TEMA — automunito
             var _auto = $('f-automunito'); if (_auto) _auto.checked = (d.talent.automunito == 1 || d.talent.automunito === true);
@@ -336,7 +398,17 @@
         payload.etnia   = getChips('f-etnia');
         payload.ruoli   = getChips('f-ruoli');
         payload.lingue  = getChips('f-lingue');
-        payload.lingue_pubbliche = ($('f-lingue-pubbliche') && $('f-lingue-pubbliche').checked) ? 1 : 0;
+        // 2026-08-08 TEMA — livello+certificazioni solo per le lingue attualmente selezionate
+        (function () {
+            var det = {};
+            document.querySelectorAll('#tse-lingue-dettaglio [data-lang]').forEach(function (row) {
+                var code = row.getAttribute('data-lang');
+                var liv = row.querySelector('.tse-ld-livello');
+                var cert = row.querySelector('.tse-ld-cert');
+                det[code] = { livello: liv ? liv.value : '', certificazioni: cert ? cert.value.trim() : '' };
+            });
+            payload.lingue_dettaglio = det;
+        })();
         payload.patente = ($('f-patente') && $('f-patente').checked) ? 1 : 0;
         payload.automunito = ($('f-automunito') && $('f-automunito').checked) ? 1 : 0;
 
@@ -430,7 +502,8 @@
             return;
         }
         // FIX 2026-06-28 marco — album labels per il menu sposta
-        var ALBUM_LABELS = { polaroid:'Polaroid', dettaglio:'Dettaglio', portfolio:'Portfolio', eventi:'Eventi' };
+        var ALBUM_LABELS = (STR.albumLabels && Object.keys(STR.albumLabels).length) ? STR.albumLabels :
+            { polaroid:'Polaroid', dettaglio:'Dettaglio', portfolio:'Portfolio', eventi:'Eventi', casual:'Casual' };
 
         grid.innerHTML = '';
         items.forEach(function (it) {
@@ -485,7 +558,7 @@
                 moveBtn.textContent = '↔';
                 var moveMenu = document.createElement('div');
                 moveMenu.className = 'tse-move-menu';
-                ['polaroid','dettaglio','portfolio','eventi'].forEach(function (alb) {
+                ALBUMS.forEach(function (alb) {
                     if (alb === albumTipo) return;
                     var opt = document.createElement('button');
                     opt.type = 'button';
@@ -828,5 +901,10 @@
     };
 
     document.addEventListener('DOMContentLoaded', function () { initChipMax('f-etnia'); });
+    // 2026-08-08 TEMA — ridisegna livello+certificazioni quando il talent spunta/despunta una lingua
+    document.addEventListener('DOMContentLoaded', function () {
+        var lb = $('f-lingue');
+        if (lb) lb.addEventListener('change', renderLingueDettaglio);
+    });
     document.addEventListener('DOMContentLoaded', loadData);
 })();
