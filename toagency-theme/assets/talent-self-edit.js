@@ -22,8 +22,9 @@
 
     // FIX 2026-06-28 marco — aggiunti comune + provincia
     // 2026-08-08 TEMA — 'telefono' tolto da qui: gestito a parte (prefisso internazionale + numero)
+    // 2026-08-08 TEMA — aggiunto 'paese_residenza': senza, la tendina Paese non veniva mai salvata (bug trovato in revisione)
     var FIELDS = ['instagram','tiktok','altezza','taglia','scarpe','capelli','occhi',
-                  'comune_residenza','provincia_domicilio'];
+                  'comune_residenza','provincia_domicilio','paese_residenza'];
     // 2026-08-08 TEMA — nuovo album 'casual' (foto random tipo smartphone/vacanza, non rientrano negli altri)
     var ALBUMS = ['polaroid','dettaglio','portfolio','eventi','casual'];
     var currentAlbum = 'polaroid';
