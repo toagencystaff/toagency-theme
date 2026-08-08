@@ -21,7 +21,8 @@
     var STR   = cfg.strings || {};
 
     // FIX 2026-06-28 marco — aggiunti comune + provincia
-    var FIELDS = ['telefono','instagram','tiktok','altezza','taglia','scarpe','capelli','occhi',
+    // 2026-08-08 TEMA — 'telefono' tolto da qui: gestito a parte (prefisso internazionale + numero)
+    var FIELDS = ['instagram','tiktok','altezza','taglia','scarpe','capelli','occhi',
                   'comune_residenza','provincia_domicilio'];
     var ALBUMS = ['polaroid','dettaglio','portfolio','eventi'];
     var currentAlbum = 'polaroid';
@@ -222,6 +223,21 @@
                 if (el) el.value = (d.talent[f] !== null && d.talent[f] !== undefined) ? d.talent[f] : '';
             });
 
+            // 2026-08-08 TEMA — telefono: separa prefisso internazionale dal numero salvato
+            (function () {
+                var raw = (d.talent.telefono || '').trim();
+                var pfxEl = $('f-telefono-prefix'), numEl = $('f-telefono');
+                if (!numEl) return;
+                var m = raw.match(/^(\+\d{1,3})[\s.-]*(.*)$/);
+                if (m) {
+                    if (pfxEl) pfxEl.value = m[1];
+                    numEl.value = m[2];
+                } else {
+                    if (pfxEl) pfxEl.value = '+39';
+                    numEl.value = raw;
+                }
+            })();
+
             // Misure (sotto-step 2, 15/07) — popola da talent.misure + misure_prese_il
             var _M = d.talent.misure || {};
             var _anyExtra = false;
@@ -262,6 +278,8 @@
             var _pat = $('f-patente'); if (_pat) _pat.checked = (d.talent.patente == 1 || d.talent.patente === true);
             // 2026-08-04 TEMA — automunito
             var _auto = $('f-automunito'); if (_auto) _auto.checked = (d.talent.automunito == 1 || d.talent.automunito === true);
+            // 2026-08-08 TEMA — riallinea visibilità automunito (dipende da patente) dopo il load
+            if (_pat) _pat.dispatchEvent(new Event('change'));
             loadCompletezza();
 
             $('tse-status').style.display = 'none';
@@ -287,6 +305,13 @@
             var el = $('f-' + f);
             payload[f] = el ? el.value.trim() : '';
         });
+
+        // 2026-08-08 TEMA — telefono: ricompone prefisso + numero in un'unica stringa (stesso campo DB di prima)
+        (function () {
+            var pfx = ($('f-telefono-prefix') && $('f-telefono-prefix').value.trim()) || '+39';
+            var num = ($('f-telefono') && $('f-telefono').value.trim()) || '';
+            payload.telefono = num ? (pfx + ' ' + num) : '';
+        })();
 
         // Misure (sotto-step 2, 15/07) — oggetto misure + data
         var _mis = {};

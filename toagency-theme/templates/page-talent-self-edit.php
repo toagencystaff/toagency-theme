@@ -190,7 +190,6 @@ $CAPELLI_OPTS = [
     'Grigio'         => ['it'=>'Grigio',          'en'=>'Gray',          'fr'=>'Gris',          'es'=>'Gris'],
     'Calvo'          => ['it'=>'Calvo',           'en'=>'Bald',          'fr'=>'Chauve',        'es'=>'Calvo'],
     'Bianco'         => ['it'=>'Bianco',          'en'=>'White',         'fr'=>'Blanc',         'es'=>'Blanco'],
-    'Altro'          => ['it'=>'Altro',           'en'=>'Other',         'fr'=>'Autre',         'es'=>'Otro'],
 ];
 $TAGLIE_OPTS = ['XS','S','M','L','XL','XXL'];
 $OCCHI_OPTS = [
@@ -199,7 +198,6 @@ $OCCHI_OPTS = [
     'marroni' => ['it'=>'Marroni','en'=>'Brown','fr'=>'Marron','es'=>'Marrones'],
     'neri'    => ['it'=>'Neri','en'=>'Black','fr'=>'Noirs','es'=>'Negros'],
     'grigi'   => ['it'=>'Grigi','en'=>'Gray','fr'=>'Gris','es'=>'Grises'],
-    'altro'   => ['it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro'],
 ];
 $ETNIA_OPTS = [
     'caucasica'    => ['it'=>'Caucasica','en'=>'Caucasian','fr'=>'Caucasienne','es'=>'Caucásica'],
@@ -400,7 +398,11 @@ $token_get = $_GET['t']    ?? '';
                 <div class="tse-section-title">📞 <?= esc_html($_t($T['section_contatti'])) ?></div>
                 <div class="tse-field">
                     <label class="tse-label"><?= esc_html($_t($T['field_telefono'])) ?></label>
-                    <input type="tel" id="f-telefono" class="tse-input" autocomplete="tel">
+                    <div class="tse-row" style="gap:8px;">
+                        <input type="text" id="f-telefono-prefix" class="tse-input" value="+39" maxlength="4"
+                               inputmode="tel" autocomplete="tel-country-code" style="flex:0 0 64px; text-align:center;">
+                        <input type="tel" id="f-telefono" class="tse-input" autocomplete="tel" style="flex:1;">
+                    </div>
                 </div>
                 <div class="tse-row">
                     <div class="tse-field">
@@ -558,9 +560,25 @@ $token_get = $_GET['t']    ?? '';
                 </div>
                 <div class="tse-field">
                     <label class="tse-check-row"><input type="checkbox" id="f-patente"> <?= esc_html($_t($T['field_patente'])) ?></label>
-                    <!-- 2026-08-04 TEMA — automunito -->
-                    <label class="tse-check-row"><input type="checkbox" id="f-automunito"> <?= esc_html($_t($T['field_automunito'])) ?></label>
+                    <!-- 2026-08-08 TEMA — automunito visibile SOLO se patente=sì -->
+                    <div id="tse-automunito-wrap" style="display:none;">
+                        <label class="tse-check-row"><input type="checkbox" id="f-automunito"> <?= esc_html($_t($T['field_automunito'])) ?></label>
+                    </div>
                 </div>
+                <script>
+                (function(){
+                    var pat = document.getElementById('f-patente');
+                    var wrap = document.getElementById('tse-automunito-wrap');
+                    var auto = document.getElementById('f-automunito');
+                    if (!pat || !wrap) return;
+                    function sync(){
+                        wrap.style.display = pat.checked ? '' : 'none';
+                        if (!pat.checked && auto) auto.checked = false;
+                    }
+                    pat.addEventListener('change', sync);
+                    sync();
+                })();
+                </script>
             </div>
 
             <!-- FIX 2026-06-28 marco — sezione Indirizzo (comune + provincia) -->
@@ -599,6 +617,31 @@ $token_get = $_GET['t']    ?? '';
                 <a href="https://toagency.it/itacommunities-new.html" target="_blank" rel="noopener" style="display:inline-block;background:#25D366;color:#fff;padding:12px 24px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;">📲 Entra nel gruppo WhatsApp</a>
             </div>
         </form>
+
+        <!-- 2026-08-08 TEMA — Video di presentazione spostato qui (prima era in fondo, dentro tse-foto-section
+             che parte display:none finché non caricano i media: risultato invisibile finché non arrivavano le foto).
+             Facoltativo per tutti, ma prioritario per attori/self-tape → più rilievo e più in alto. -->
+        <div id="tse-video-section" class="tse-section" style="margin-top:20px;">
+            <div class="tse-section-title">🎥 <?= esc_html($_t(['it'=>'Video di presentazione','en'=>'Intro video','fr'=>'Vidéo de présentation','es'=>'Vídeo de presentación'])) ?></div>
+            <p style="font-size:12px; color:#9ca3af; margin:0 0 12px; line-height:1.45;"><?= esc_html($_t(['it'=>'Facoltativo per tutti, ma molto utile per attori/attrici e casting che richiedono un self-tape. Basta anche un video girato con il telefono, bassa risoluzione ok · max 50MB.','en'=>'Optional for everyone, but very useful for actors and castings that require a self-tape. A simple phone video is fine, low res ok · max 50MB.','fr'=>'Facultatif pour tous, mais très utile pour les acteurs/actrices et les castings avec self-tape. Une simple vidéo au téléphone suffit, basse résolution ok · max 50 Mo.','es'=>'Opcional para todos, pero muy útil para actores/actrices y castings que piden self-tape. Basta un vídeo con el móvil, baja resolución ok · máx 50MB.'])) ?></p>
+            <div class="tse-upload-box">
+                <label class="tse-legal-checkbox">
+                    <input type="checkbox" id="tse-video-legal">
+                    <span><?= esc_html($_t(['it'=>'Ho i diritti e autorizzo la pubblicazione.','en'=>'I own the rights and allow publication.','fr'=>'Je détiens les droits et autorise la publication.','es'=>'Tengo los derechos y autorizo la publicación.'])) ?></span>
+                </label>
+                <div class="tse-upload-row" style="margin-top:10px;">
+                    <input type="file" id="tse-video-input" accept="video/mp4,video/quicktime,video/webm" style="display:none;" onchange="talentVideoChosen(this)">
+                    <button type="button" class="tse-upload-btn-file" onclick="document.getElementById('tse-video-input').click()">🎥 <?= esc_html($_t(['it'=>'Scegli video','en'=>'Choose video','fr'=>'Choisir la vidéo','es'=>'Elegir vídeo'])) ?></button>
+                    <span id="tse-video-fname" class="tse-upload-fname">—</span>
+                    <button type="button" id="tse-video-go" class="tse-upload-btn-go" onclick="talentVideoGo()"><?= esc_html($_t(['it'=>'Carica video','en'=>'Upload video','fr'=>'Charger la vidéo','es'=>'Subir vídeo'])) ?></button>
+                </div>
+                <div id="tse-video-status" class="tse-upload-status"></div>
+                <div id="tse-video-heavy" style="display:none; margin-top:12px; padding:12px; background:#0a0a0a; border:1px solid #2a2a2e; border-radius:8px;">
+                    <div style="font-size:12px; color:#cbd5e1; line-height:1.6;"><?= esc_html($_t(['it'=>'Troppo pesante? Esportalo a 720p o mandalo su WhatsApp, lo carichiamo noi.','en'=>'Too big? Export at 720p or send it on WhatsApp, we upload it.','fr'=>'Trop lourd ? Exporte en 720p ou envoie sur WhatsApp, on la charge.','es'=>'¿Muy pesado? Expórtalo a 720p o mándalo por WhatsApp, lo subimos.'])) ?></div>
+                    <a id="tse-video-wa" href="#" target="_blank" rel="noopener" style="display:inline-block; margin-top:10px; background:#25D366; color:#fff; padding:10px 18px; border-radius:8px; font-weight:700; font-size:13px; text-decoration:none;">📲 <?= esc_html($_t(['it'=>'Invia il video su WhatsApp','en'=>'Send the video on WhatsApp','fr'=>'Envoyer la vidéo sur WhatsApp','es'=>'Enviar el vídeo por WhatsApp'])) ?></a>
+                </div>
+            </div>
+        </div>
 
         <!-- ─── S8.A — Sezione album foto ─── -->
         <div id="tse-foto-section" class="tse-section" style="display:none; margin-top:20px;">
@@ -648,29 +691,6 @@ $token_get = $_GET['t']    ?? '';
             </div>
 
             <div id="tse-album-grid" class="tse-album-grid" style="margin-top:18px;"></div>
-
-            <!-- 2026-07-24 marco — Video di presentazione (facoltativo, non bloccante) -->
-            <div id="tse-video-section" style="margin-top:24px; border-top:1px solid #2a2a2e; padding-top:18px;">
-                <div class="tse-section-title">🎥 <?= esc_html($_t(['it'=>'Video di presentazione (facoltativo)','en'=>'Intro video (optional)','fr'=>'Vidéo de présentation (facultatif)','es'=>'Vídeo de presentación (opcional)'])) ?></div>
-                <p style="font-size:12px; color:#9ca3af; margin:0 0 12px; line-height:1.45;"><?= esc_html($_t(['it'=>'Facoltativo · bassa risoluzione ok · max 50MB','en'=>'Optional · low res ok · max 50MB','fr'=>'Facultatif · basse résolution ok · max 50 Mo','es'=>'Opcional · baja resolución ok · máx 50MB'])) ?></p>
-                <div class="tse-upload-box">
-                    <label class="tse-legal-checkbox">
-                        <input type="checkbox" id="tse-video-legal">
-                        <span><?= esc_html($_t(['it'=>'Ho i diritti e autorizzo la pubblicazione.','en'=>'I own the rights and allow publication.','fr'=>'Je détiens les droits et autorise la publication.','es'=>'Tengo los derechos y autorizo la publicación.'])) ?></span>
-                    </label>
-                    <div class="tse-upload-row" style="margin-top:10px;">
-                        <input type="file" id="tse-video-input" accept="video/mp4,video/quicktime,video/webm" style="display:none;" onchange="talentVideoChosen(this)">
-                        <button type="button" class="tse-upload-btn-file" onclick="document.getElementById('tse-video-input').click()">🎥 <?= esc_html($_t(['it'=>'Scegli video','en'=>'Choose video','fr'=>'Choisir la vidéo','es'=>'Elegir vídeo'])) ?></button>
-                        <span id="tse-video-fname" class="tse-upload-fname">—</span>
-                        <button type="button" id="tse-video-go" class="tse-upload-btn-go" onclick="talentVideoGo()"><?= esc_html($_t(['it'=>'Carica video','en'=>'Upload video','fr'=>'Charger la vidéo','es'=>'Subir vídeo'])) ?></button>
-                    </div>
-                    <div id="tse-video-status" class="tse-upload-status"></div>
-                    <div id="tse-video-heavy" style="display:none; margin-top:12px; padding:12px; background:#0a0a0a; border:1px solid #2a2a2e; border-radius:8px;">
-                        <div style="font-size:12px; color:#cbd5e1; line-height:1.6;"><?= esc_html($_t(['it'=>'Troppo pesante? Esportalo a 720p o mandalo su WhatsApp, lo carichiamo noi.','en'=>'Too big? Export at 720p or send it on WhatsApp, we upload it.','fr'=>'Trop lourd ? Exporte en 720p ou envoie sur WhatsApp, on la charge.','es'=>'¿Muy pesado? Expórtalo a 720p o mándalo por WhatsApp, lo subimos.'])) ?></div>
-                        <a id="tse-video-wa" href="#" target="_blank" rel="noopener" style="display:inline-block; margin-top:10px; background:#25D366; color:#fff; padding:10px 18px; border-radius:8px; font-weight:700; font-size:13px; text-decoration:none;">📲 <?= esc_html($_t(['it'=>'Invia il video su WhatsApp','en'=>'Send the video on WhatsApp','fr'=>'Envoyer la vidéo sur WhatsApp','es'=>'Enviar el vídeo por WhatsApp'])) ?></a>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </section>
