@@ -154,6 +154,8 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-photo { width:100%; aspect-ratio:4/5; background:#0a0a0a center/cover no-repeat; display:flex; align-items:center; justify-content:center; color:#3a3a3e; font-size:56px; flex-shrink:0; position:relative; }
 /* 2026-08-10 CREW-REDESIGN — layer crossfade cover: solo opacity (leggero, come lo slideshow hero della scheda) */
 .crew-pub-fade { position:absolute; inset:0; background:#0a0a0a center/cover no-repeat; opacity:0; pointer-events:none; z-index:1; }
+/* 2026-08-10 v2.2 — placeholder discreto per i crew senza foto portfolio (l'emoji a 56px era un omino gigante) */
+.crew-pub-ph { font-size:38px; filter:grayscale(1); opacity:.25; }
 /* 2026-07-26 Fase 2 — bottoncino selezione "Richiedi info" (+/✓), la card intera ora apre il profilo al click */
 .crew-pub-add { position:absolute; top:10px; right:10px; width:32px; height:32px; padding:0 !important; background:#c8ff00; color:#0a0a0a; border:1px solid #c8ff00; border-radius:50% !important; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.45); z-index:2; }
 .crew-pub-add:hover { background:#fff; }
