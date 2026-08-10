@@ -1,5 +1,8 @@
 /**
- * crew-database-list.js — v2.0 (2026-07-26)
+ * crew-database-list.js — v2.1 (2026-08-10)
+ * v2.1: CREW-REDESIGN — la cover della card è la foto SCELTA dal crew (cover_url, non più random)
+ *       + crossfade automatico lento tra le foto portfolio (pausa su hover, off con prefers-reduced-motion);
+ *       bottone "Portfolio →" sulla card; emoji fallback in <span> (photo.textContent='' cancellava i child)
  * v2.0: Fase 3 — frecce hover sulla card per scorrere le foto lavori (pattern talent, lazy)
  * v1.9: placeholder bio quando vuota
  * v1.8: tendina provincia visibile solo per Paese IT/Tutti (estero filtra per Paese)
@@ -147,11 +150,18 @@
             if (c.foto_profilo_url) {
                 photo.style.backgroundImage = 'url(' + encodeURI(c.foto_profilo_url) + ')';
             } else {
-                photo.textContent = '👤';
+                // 2026-08-10 — emoji in <span> dedicato: prima photo.textContent='' cancellava
+                // anche i child del div (frecce nav, layer fade); ora si toglie solo il placeholder
+                var phEmoji = document.createElement('span');
+                phEmoji.className = 'crew-pub-ph';
+                phEmoji.textContent = '👤';
+                photo.appendChild(phEmoji);
             }
             card.appendChild(photo);
             // 2026-07-31 — solo quando la card e' vicina alla vista (vedi coverObserver sopra), non tutte insieme
             if (coverObserver) coverObserver.observe(card); else loadRandomCover(card, photo, c.uuid);
+            // 2026-08-10 — traccia la visibilità per il crossfade automatico (autoTick cambia solo card in vista)
+            if (autoObserver) autoObserver.observe(card);
 
             // 2026-07-26 Fase 2 — bottoncino selezione (+/✓) per "Richiedi info", separato dal click-card che ora apre il profilo
             var addBtn = document.createElement('button');
@@ -223,6 +233,14 @@
             var projCount = document.createElement('div');
             projCount.className = 'crew-pub-projcount';
             body.appendChild(projCount);
+
+            // 2026-08-10 CREW-REDESIGN — bottone "Portfolio →" esplicito: il click-card resta attivo,
+            // il bottone rende visibile l'azione (il click risale al listener della card, nessun handler suo)
+            var pfBtn = document.createElement('button');
+            pfBtn.type = 'button';
+            pfBtn.className = 'crew-pub-portfolio';
+            pfBtn.textContent = (STR.portfolioBtn || 'Portfolio') + ' →';
+            body.appendChild(pfBtn);
 
             card.appendChild(body);
             // 2026-07-26 Fase 2 — click ovunque sulla card apre il profilo (come talent); selezione spostata sul bottoncino +/✓
@@ -708,35 +726,105 @@
         if (card) ensureCardNav(card);
     }, true);
 
-    // 2026-07-26 — "cover" provvisoria in attesa del campo cover_url/cover_focal dal CRM (in coda):
-    // al posto del selfie di profilo, mostra una foto lavoro a caso appena disponibile. Fallback: resta la foto profilo.
-    // Riusa la stessa cache (card._cnMedia) delle frecce Fase 3, cosi' non rifetcha al hover.
+    // 2026-07-26 — cover card (era foto casuale in attesa del campo cover_url dal CRM).
+    // 2026-08-10 CREW-REDESIGN: crew-public-profile.php restituisce GIÀ cover_url (scelta dal crew
+    // nel self-edit): va in testa alla lista e la card parte sempre da quella. Fallback invariato:
+    // prima foto portfolio → foto profilo. Riusa la stessa cache (card._cnMedia) delle frecce Fase 3.
     function loadRandomCover(card, photo, uuid) {
         if (__coverCache[uuid]) {
-            applyRandomCover(card, photo, __coverCache[uuid]);
+            applyCover(card, photo, __coverCache[uuid]);
             return;
         }
         fetch(API_PROFILE + '?uuid=' + encodeURIComponent(uuid), { credentials: 'same-origin' })
             .then(function (r) { return r.json(); })
             .then(function (d) {
-                var media = cardMediaFromAlbums(d);
-                __coverCache[uuid] = media;
-                applyRandomCover(card, photo, media);
+                __coverCache[uuid] = coverFirstMedia(d);
+                applyCover(card, photo, __coverCache[uuid]);
             })
             .catch(function () { /* silenzioso: resta la foto profilo come fallback */ });
     }
-    function applyRandomCover(card, photo, media) {
+    // Lista media con la cover scelta dal crew per prima (dedup se già presente negli album)
+    function coverFirstMedia(d) {
+        var media = cardMediaFromAlbums(d);
+        if (d && d.cover_url) {
+            var cov = withW(d.cover_url, 600);
+            var pos = media.indexOf(cov);
+            if (pos > 0) media.splice(pos, 1);
+            if (pos !== 0) media.unshift(cov);
+        }
+        return media;
+    }
+    function applyCover(card, photo, media) {
         // 2026-07-26 — conteggio lavori, sempre (anche con 0 o 1 foto: se 0 il div resta vuoto)
         var projCount = card.querySelector('.crew-pub-projcount');
         if (projCount && media && media.length) {
             projCount.textContent = media.length + ' ' + (STR.worksCount || 'lavori');
         }
         if (!media || !media.length) return;
-        var idx = Math.floor(Math.random() * media.length);
-        photo.style.backgroundImage = 'url(' + encodeURI(media[idx]) + ')';
-        photo.textContent = ''; // 2026-08-01 — rimuove l'emoji 👤 di fallback se era rimasta visibile sopra la foto
+        photo.style.backgroundImage = 'url(' + encodeURI(media[0]) + ')';
+        var phEmoji = photo.querySelector('.crew-pub-ph');
+        if (phEmoji) phEmoji.remove(); // solo il placeholder, non gli altri child (frecce, fade)
         card._cnMedia = media;
-        card.setAttribute('data-cnidx', idx);
+        card.setAttribute('data-cnidx', 0);
+        ensureAutoTimer();
+    }
+
+    // ─── 2026-08-10 CREW-REDESIGN — crossfade automatico sulla card ─────────────
+    // Un solo interval globale (1s) per tutte le card: ogni card ha la sua scadenza casuale
+    // (5–9s) così i cambi sono sfalsati, mai tutti insieme. Cambia solo se la card è in
+    // viewport (autoObserver) e non in hover (per non litigare con le frecce).
+    // prefers-reduced-motion → autoplay disattivato (restano cover scelta + frecce).
+    var AUTOPLAY = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    var AUTO_MIN = 5000, AUTO_MAX = 9000;
+    var autoTimer = null;
+    var autoObserver = ('IntersectionObserver' in window) ? new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { en.target._cnVisible = en.isIntersecting; });
+    }, { rootMargin: '100px 0px' }) : null;
+    function ensureAutoTimer() {
+        if (!AUTOPLAY || autoTimer) return;
+        autoTimer = setInterval(autoTick, 1000);
+    }
+    function autoTick() {
+        var now = Date.now();
+        document.querySelectorAll('.crew-pub-card').forEach(function (card) {
+            var media = card._cnMedia;
+            if (!media || media.length < 2) return;
+            if (card._cnVisible === false) return;
+            if (card._cnNext == null) { card._cnNext = now + 1500 + Math.random() * 5000; return; }
+            if (now < card._cnNext) return;
+            if (card.matches(':hover')) { card._cnNext = now + 3000; return; }
+            var photo = card.querySelector('.crew-pub-photo');
+            if (!photo) return;
+            var idx = (parseInt(card.getAttribute('data-cnidx') || '0', 10) + 1) % media.length;
+            card.setAttribute('data-cnidx', idx);
+            fadeToImage(photo, media[idx]);
+            card._cnNext = now + AUTO_MIN + Math.random() * (AUTO_MAX - AUTO_MIN);
+        });
+    }
+    // Dissolvenza: layer .crew-pub-fade sopra la foto — la nuova immagine fa fade-in solo DOPO
+    // essere stata decodificata (niente sfarfallio), poi diventa lo sfondo base e il layer si resetta.
+    function fadeToImage(photo, url) {
+        var fade = photo.querySelector('.crew-pub-fade');
+        if (!fade) {
+            fade = document.createElement('div');
+            fade.className = 'crew-pub-fade';
+            photo.appendChild(fade);
+        }
+        var im = new Image();
+        im.onload = function () {
+            fade.style.transition = 'none';
+            fade.style.opacity = '0';
+            fade.style.backgroundImage = 'url(' + encodeURI(url) + ')';
+            void fade.offsetWidth; // forza il reflow: la transition riparte pulita da 0
+            fade.style.transition = 'opacity 1.1s ease';
+            fade.style.opacity = '1';
+            setTimeout(function () {
+                photo.style.backgroundImage = 'url(' + encodeURI(url) + ')';
+                fade.style.transition = 'none';
+                fade.style.opacity = '0';
+            }, 1200);
+        };
+        im.src = url;
     }
 
     // 2026-08-01 — rete di sicurezza (bug "immagini nere"/icona omino, segnalato da Marco): alcune card
@@ -779,6 +867,7 @@
             idx = (idx + dir + media.length) % media.length;
             card.setAttribute('data-cnidx', idx);
             photo.style.backgroundImage = 'url(' + encodeURI(media[idx]) + ')';
+            card._cnNext = Date.now() + 6000; // 2026-08-10 — l'utente naviga a mano: rimanda il crossfade automatico
         }
         if (card._cnMedia) { cycle(card._cnMedia); return; }
         btn.disabled = true;
@@ -787,8 +876,9 @@
             .then(function (d) {
                 var curMatch = /url\(["']?([^"')]+)["']?\)/.exec(photo.style.backgroundImage || '');
                 var cur = curMatch ? curMatch[1] : '';
-                var media = cardMediaFromAlbums(d);
+                var media = coverFirstMedia(d); // 2026-08-10 — stesso ordine cover-first della cache
                 card._cnMedia = media.length ? media : (cur ? [cur] : []);
+                __coverCache[card.dataset.uuid] = card._cnMedia; // 2026-08-10 — allinea la cache al fetch delle frecce
                 card._cnMedia.forEach(function (u) { var im = new Image(); im.src = u; }); // precarico: scorrimento immediato dopo il 1° fetch
                 var st = card._cnMedia.indexOf(cur);
                 card.setAttribute('data-cnidx', st >= 0 ? st : 0);

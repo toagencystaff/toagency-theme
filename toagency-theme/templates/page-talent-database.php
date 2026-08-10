@@ -310,7 +310,8 @@ $hub_sections = array(
             </span>
             <span class="toa-db-switcher__sep" aria-hidden="true"></span>
             <a class="toa-db-switcher__chip toa-db-switcher__chip--link" href="<?php echo esc_url(home_url('/crew-database/')); ?>">
-                <?php echo esc_html($_t(array('it'=>'Backstage Crew','en'=>'Backstage Crew','fr'=>'Backstage Crew','es'=>'Backstage Crew'))); ?>
+                <?php /* 2026-08-10 CREW-REDESIGN — rename editoriale sezione crew (solo copy, URL intatto) */ ?>
+                <?php echo esc_html($_t(array('it'=>'Creative Network','en'=>'Creative Network','fr'=>'Creative Network','es'=>'Creative Network'))); ?>
             </a>
         </nav>
         <p class="toa-tdb-hero-subtitle"><?php echo esc_html($_t($T['hero_subtitle'])); ?></p>
@@ -332,7 +333,7 @@ $hub_sections = array(
             $g2_locked = array('Fotografo','Videomaker','Content Creator','Truccatore','Hairstylist','Stylist','DJ','Assistente di produzione','Art Director');
             $crew_url  = esc_url(home_url('/crew-database/'));
             $lbl_macro1 = $_t(array('it'=>'Talent Immagine','en'=>'Image Talent','fr'=>'Talent Image','es'=>'Talent Imagen'));
-            $lbl_macro2 = $_t(array('it'=>'Backstage Crew','en'=>'Backstage Crew','fr'=>'Backstage Crew','es'=>'Backstage Crew'));
+            $lbl_macro2 = $_t(array('it'=>'Creative Network','en'=>'Creative Network','fr'=>'Creative Network','es'=>'Creative Network')); /* 2026-08-10 CREW-REDESIGN */
             $lbl_tal   = $_t(array('it'=>'Talent','en'=>'Talent','fr'=>'Talent','es'=>'Talent'));
             $lbl_crew  = $_t(array('it'=>'Crew','en'=>'Crew','fr'=>'Crew','es'=>'Crew'));
             $lbl_show  = $_t(array('it'=>'Mostra filtri','en'=>'Show filters','fr'=>'Afficher les filtres','es'=>'Mostrar filtros'));

@@ -1,6 +1,8 @@
 <?php
 /**
  * Template Name: Crew Database
+ * v1.1 — 2026-08-10 (CREW-REDESIGN: sezione rinominata "Creative Network" — solo copy, URL/slug
+ *        /crew-database/ INTATTO perché indicizzato; CSS layer crossfade cover + bottone Portfolio)
  * v1.0 — 2026-05-19
  *
  * Path: /wp-content/themes/toagency-theme/templates/page-crew-database.php
@@ -55,20 +57,21 @@ $PAESI = [
 
 // String table
 $T = [
-    'hero_eyebrow'    => ['it'=>'TOAGENCY/CREW','en'=>'TOAGENCY/CREW','fr'=>'TOAGENCY/CREW','es'=>'TOAGENCY/CREW'],
-    'hero_title'      => ['it'=>'Crew.','en'=>'Crew.','fr'=>'Crew.','es'=>'Crew.'],
+    // 2026-08-10 CREW-REDESIGN — rename editoriale "Creative Network" (solo copy, URL intatto)
+    'hero_eyebrow'    => ['it'=>'TOAGENCY/CREATIVE NETWORK','en'=>'TOAGENCY/CREATIVE NETWORK','fr'=>'TOAGENCY/CREATIVE NETWORK','es'=>'TOAGENCY/CREATIVE NETWORK'],
+    'hero_title'      => ['it'=>'Creative Network.','en'=>'Creative Network.','fr'=>'Creative Network.','es'=>'Creative Network.'],
     'hero_subtitle'   => [
-        'it'=>'I professionisti backstage TOAgency: fotografi, MUA, stylist e tutti i pro dietro la fotocamera.',
-        'en'=>'Backstage professionals: photographers, makeup artists, stylists and every pro behind the camera.',
-        'fr'=>'Les pros du backstage : photographes, maquilleurs, stylistes et tous les pros derrière la caméra.',
-        'es'=>'Los pros del backstage: fotógrafos, maquilladores, estilistas.',
+        'it'=>'Il network creativo TOAgency: fotografi, MUA, stylist e tutti i pro dietro la fotocamera.',
+        'en'=>'The TOAgency creative network: photographers, makeup artists, stylists and every pro behind the camera.',
+        'fr'=>'Le réseau créatif TOAgency : photographes, maquilleurs, stylistes et tous les pros derrière la caméra.',
+        'es'=>'La red creativa TOAgency: fotógrafos, maquilladores, estilistas y todos los pros detrás de la cámara.',
     ],
     'filter_all_cat'  => ['it'=>'Tutte le categorie','en'=>'All categories','fr'=>'Toutes catégories','es'=>'Todas categorías'],
     'filter_all_paesi'=> ['it'=>'Tutti i paesi','en'=>'All countries','fr'=>'Tous pays','es'=>'Todos países'],
     'filter_all_prov' => ['it'=>'Tutte le province','en'=>'All provinces','fr'=>'Toutes provinces','es'=>'Todas provincias'],
-    'loading'         => ['it'=>'Carico crew…','en'=>'Loading crew…','fr'=>'Chargement…','es'=>'Cargando…'],
-    'results_label'   => ['it'=>'crew trovati','en'=>'crew found','fr'=>'crew trouvés','es'=>'crew encontrados'],
-    'no_results'      => ['it'=>'Nessun crew con questi filtri.','en'=>'No crew matching.','fr'=>'Aucun crew.','es'=>'Ningún crew.'],
+    'loading'         => ['it'=>'Carico professionisti…','en'=>'Loading professionals…','fr'=>'Chargement…','es'=>'Cargando…'],
+    'results_label'   => ['it'=>'professionisti trovati','en'=>'professionals found','fr'=>'professionnels trouvés','es'=>'profesionales encontrados'],
+    'no_results'      => ['it'=>'Nessun professionista con questi filtri.','en'=>'No professionals matching.','fr'=>'Aucun professionnel.','es'=>'Ningún profesional.'],
     'selected_count'  => ['it'=>'selezionati','en'=>'selected','fr'=>'sélectionnés','es'=>'seleccionados'],
     'request_info'    => ['it'=>'📧 Richiedi info','en'=>'📧 Request info','fr'=>'📧 Demander info','es'=>'📧 Solicitar info'],
     'clear_selection' => ['it'=>'Svuota','en'=>'Clear','fr'=>'Vider','es'=>'Vaciar'],
@@ -109,6 +112,8 @@ $T = [
     'pro_label'       => ['it'=>'professionista da','en'=>'professional for','fr'=>'professionnel depuis','es'=>'profesional desde hace'],
     // 2026-07-26 — conteggio lavori in griglia (proposta ChatGPT, calcolato lato client dagli album gia' caricati)
     'works_count'     => ['it'=>'lavori','en'=>'works','fr'=>'travaux','es'=>'trabajos'],
+    // 2026-08-10 CREW-REDESIGN — bottone esplicito sulla card ("Portfolio" è invariato nelle 4 lingue)
+    'portfolio_btn'   => ['it'=>'Portfolio','en'=>'Portfolio','fr'=>'Portfolio','es'=>'Portfolio'],
 ];
 
 $theme_uri = get_stylesheet_directory_uri();
@@ -147,6 +152,8 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-card.selected { border:2px solid #c8ff00; box-shadow:0 0 0 3px rgba(200,255,0,.18); }
 /* 2026-07-26 — richiesta Marco: verticale invece di quadrata, con lo scroll frecce le teste venivano tagliate troppo spesso in 1:1 */
 .crew-pub-photo { width:100%; aspect-ratio:4/5; background:#0a0a0a center/cover no-repeat; display:flex; align-items:center; justify-content:center; color:#3a3a3e; font-size:56px; flex-shrink:0; position:relative; }
+/* 2026-08-10 CREW-REDESIGN — layer crossfade cover: solo opacity (leggero, come lo slideshow hero della scheda) */
+.crew-pub-fade { position:absolute; inset:0; background:#0a0a0a center/cover no-repeat; opacity:0; pointer-events:none; z-index:1; }
 /* 2026-07-26 Fase 2 — bottoncino selezione "Richiedi info" (+/✓), la card intera ora apre il profilo al click */
 .crew-pub-add { position:absolute; top:10px; right:10px; width:32px; height:32px; padding:0 !important; background:#c8ff00; color:#0a0a0a; border:1px solid #c8ff00; border-radius:50% !important; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.45); z-index:2; }
 .crew-pub-add:hover { background:#fff; }
@@ -171,6 +178,11 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-meta { font-size:12px; color:#9ca3af; margin-top:8px; }
 /* 2026-07-26 — conteggio lavori (proposta ChatGPT), calcolato lato client, appare dopo il fetch della cover random */
 .crew-pub-projcount { font-size:11.5px; color:#6b7280; margin-top:4px; }
+/* 2026-08-10 CREW-REDESIGN — bottone "Portfolio →": margin-top:auto lo allinea in fondo su tutte le card
+   (il body è flex column). !important su padding/border-radius per il solito reset globale sui button. */
+.crew-pub-portfolio { margin-top:auto; padding:7px 14px !important; align-self:flex-start; background:transparent; border:1.5px solid rgba(255,255,255,.22); border-radius:999px !important; color:#fff; font-size:12.5px; font-weight:700; letter-spacing:.03em; cursor:pointer; transition:border-color .15s, color .15s; }
+.crew-pub-portfolio:hover { border-color:#c8ff00; color:#c8ff00; }
+.crew-pub-projcount:not(:empty), .crew-pub-meta { margin-bottom:10px; } /* respiro minimo sopra il bottone */
 .crew-pub-empty { text-align:center; padding:80px 20px; color:#6b7280; grid-column:1/-1; }
 
 .crew-pub-actionbar { position:fixed; bottom:0; left:0; right:0; background:#1a1a1e; border-top:1px solid #c8ff00; padding:14px 24px; display:none; align-items:center; justify-content:space-between; z-index:100; box-shadow:0 -4px 16px rgba(0,0,0,.4); }
@@ -311,7 +323,7 @@ $theme_uri = get_stylesheet_directory_uri();
             </a>
             <span class="toa-db-switcher__sep" aria-hidden="true"></span>
             <span class="toa-db-switcher__chip toa-db-switcher__chip--active" aria-current="page">
-                <?= esc_html($_t(['it'=>'Backstage Crew','en'=>'Backstage Crew','fr'=>'Backstage Crew','es'=>'Backstage Crew'])) ?>
+                <?= esc_html($_t(['it'=>'Creative Network','en'=>'Creative Network','fr'=>'Creative Network','es'=>'Creative Network'])) ?>
             </span>
         </nav>
         <p class="crew-pub-hero-subtitle"><?= esc_html($_t($T['hero_subtitle'])) ?></p>
@@ -436,9 +448,10 @@ window.crewPubConfig = {
         yearsLabel: <?= json_encode($_t($T['years_label'])) ?>,
         proLabel: <?= json_encode($_t($T['pro_label'])) ?>,
         worksCount: <?= json_encode($_t($T['works_count'])) ?>,
+        portfolioBtn: <?= json_encode($_t($T['portfolio_btn'])) ?>,
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=4.7-poster" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=4.8-covernet" defer></script>
 
 <?php toa_component('footer'); ?>
