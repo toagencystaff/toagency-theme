@@ -1,5 +1,7 @@
 /**
- * crew-database-list.js — v2.3 (2026-08-10)
+ * crew-database-list.js — v2.4 (2026-08-10)
+ * v2.4: card — i video ruotano col loro poster JPG (prima scartati: chi aveva solo video sembrava
+ *       vuoto, caso Simone); crew senza alcun media → card nascosta + contatore aggiornato
  * v2.3: rotazione raddoppiata (1.2–2.4s, fade .5s) — feedback Marco; ruota già TUTTO il portfolio
  * v2.2: feedback Marco — la foto PROFILO non compare mai nel riquadro grande (è già nell'avatar
  *       tondo): ruotano SOLO le foto portfolio, placeholder se il crew non ne ha; rotazione più
@@ -762,7 +764,7 @@
         if (projCount && media && media.length) {
             projCount.textContent = media.length + ' ' + (STR.worksCount || 'lavori');
         }
-        if (!media || !media.length) return;
+        if (!media || !media.length) { hideEmptyCard(card); return; } // v2.4 — niente media = card nascosta
         photo.style.backgroundImage = 'url(' + encodeURI(media[0]) + ')';
         var phEmoji = photo.querySelector('.crew-pub-ph');
         if (phEmoji) phEmoji.remove(); // solo il placeholder, non gli altri child (frecce, fade)
@@ -834,6 +836,7 @@
     // Qualche secondo dopo il render, ricontrolla le card rimaste senza foto e ritenta.
     function sweepMissingCovers() {
         document.querySelectorAll('.crew-pub-card').forEach(function (card) {
+            if (card.classList.contains('crew-pub-hidden')) return; // v2.4 — gia' valutata: vuota
             var photo = card.querySelector('.crew-pub-photo');
             if (!photo || card._cnMedia) return;
             if (getComputedStyle(photo).backgroundImage !== 'none') return;
@@ -842,16 +845,37 @@
         });
     }
 
-    // Appiattisce gli album del profilo in una lista di URL foto (no video), stesso ordine di renderProfile
+    // Appiattisce gli album del profilo in una lista di URL per la card, stesso ordine di renderProfile.
+    // v2.4 (feedback Marco su Simone, solo video): i VIDEO entrano in rotazione con il loro poster JPG
+    // (~20KB, chiave `posters` dell'endpoint) — prima venivano scartati e chi aveva solo video
+    // risultava "senza portfolio". Video senza poster: saltato (mai scaricare il .mp4 per un frame).
     function cardMediaFromAlbums(d) {
         var albums = d.albums || {};
+        var posters = (d && d.posters) || {};
         var keys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
         if (albums.generale) keys.push('generale');
         var media = [];
         keys.forEach(function (k) {
-            (albums[k] || []).forEach(function (url) { if (!VIDEO_RE.test(url)) media.push(withW(url, 600)); });
+            (albums[k] || []).forEach(function (url) {
+                if (VIDEO_RE.test(url)) {
+                    if (posters[url]) media.push(posters[url]);
+                } else {
+                    media.push(withW(url, 600));
+                }
+            });
         });
         return media;
+    }
+
+    // v2.4 (feedback Marco) — crew senza NESSUN media mostrabile (né foto né video con poster):
+    // card nascosta e contatore aggiornato. Solo dopo fetch RIUSCITO (mai su errore di rete).
+    function hideEmptyCard(card) {
+        if (!card || card.classList.contains('crew-pub-hidden')) return;
+        card.classList.add('crew-pub-hidden');
+        card.style.display = 'none';
+        var n = document.querySelectorAll('.crew-pub-card:not(.crew-pub-hidden)').length;
+        var rc = $('#results-count');
+        if (rc) rc.textContent = n + ' ' + (STR.resultsLabel || 'crew');
     }
 
     document.addEventListener('click', function (e) {
