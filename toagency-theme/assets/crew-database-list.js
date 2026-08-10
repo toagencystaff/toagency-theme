@@ -1,5 +1,6 @@
 /**
- * crew-database-list.js — v2.2 (2026-08-10)
+ * crew-database-list.js — v2.3 (2026-08-10)
+ * v2.3: rotazione raddoppiata (1.2–2.4s, fade .5s) — feedback Marco; ruota già TUTTO il portfolio
  * v2.2: feedback Marco — la foto PROFILO non compare mai nel riquadro grande (è già nell'avatar
  *       tondo): ruotano SOLO le foto portfolio, placeholder se il crew non ne ha; rotazione più
  *       veloce (2.5–4.5s, fade 0.7s)
@@ -776,7 +777,7 @@
     // viewport (autoObserver) e non in hover (per non litigare con le frecce).
     // prefers-reduced-motion → autoplay disattivato (restano cover scelta + frecce).
     var AUTOPLAY = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-    var AUTO_MIN = 2500, AUTO_MAX = 4500; // v2.2 — era 5000/9000, "troppo lente" (feedback Marco)
+    var AUTO_MIN = 1200, AUTO_MAX = 2400; // v2.3 — raddoppiata di nuovo (feedback Marco); v2.2 era 2500/4500
     var autoTimer = null;
     var autoObserver = ('IntersectionObserver' in window) ? new IntersectionObserver(function (entries) {
         entries.forEach(function (en) { en.target._cnVisible = en.isIntersecting; });
@@ -791,9 +792,9 @@
             var media = card._cnMedia;
             if (!media || media.length < 2) return;
             if (card._cnVisible === false) return;
-            if (card._cnNext == null) { card._cnNext = now + 600 + Math.random() * 2000; return; }
+            if (card._cnNext == null) { card._cnNext = now + 400 + Math.random() * 1200; return; }
             if (now < card._cnNext) return;
-            if (card.matches(':hover')) { card._cnNext = now + 2000; return; }
+            if (card.matches(':hover')) { card._cnNext = now + 1500; return; }
             var photo = card.querySelector('.crew-pub-photo');
             if (!photo) return;
             var idx = (parseInt(card.getAttribute('data-cnidx') || '0', 10) + 1) % media.length;
@@ -817,13 +818,13 @@
             fade.style.opacity = '0';
             fade.style.backgroundImage = 'url(' + encodeURI(url) + ')';
             void fade.offsetWidth; // forza il reflow: la transition riparte pulita da 0
-            fade.style.transition = 'opacity .7s ease'; // v2.2 — era 1.1s
+            fade.style.transition = 'opacity .5s ease'; // v2.3 — era .7s
             fade.style.opacity = '1';
             setTimeout(function () {
                 photo.style.backgroundImage = 'url(' + encodeURI(url) + ')';
                 fade.style.transition = 'none';
                 fade.style.opacity = '0';
-            }, 800);
+            }, 600);
         };
         im.src = url;
     }
