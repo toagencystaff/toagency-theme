@@ -1,5 +1,8 @@
 /**
- * crew-database-list.js — v2.1 (2026-08-10)
+ * crew-database-list.js — v2.2 (2026-08-10)
+ * v2.2: feedback Marco — la foto PROFILO non compare mai nel riquadro grande (è già nell'avatar
+ *       tondo): ruotano SOLO le foto portfolio, placeholder se il crew non ne ha; rotazione più
+ *       veloce (2.5–4.5s, fade 0.7s)
  * v2.1: CREW-REDESIGN — la cover della card è la foto SCELTA dal crew (cover_url, non più random)
  *       + crossfade automatico lento tra le foto portfolio (pausa su hover, off con prefers-reduced-motion);
  *       bottone "Portfolio →" sulla card; emoji fallback in <span> (photo.textContent='' cancellava i child)
@@ -147,16 +150,14 @@
             // Foto profilo
             var photo = document.createElement('div');
             photo.className = 'crew-pub-photo';
-            if (c.foto_profilo_url) {
-                photo.style.backgroundImage = 'url(' + encodeURI(c.foto_profilo_url) + ')';
-            } else {
-                // 2026-08-10 — emoji in <span> dedicato: prima photo.textContent='' cancellava
-                // anche i child del div (frecce nav, layer fade); ora si toglie solo il placeholder
-                var phEmoji = document.createElement('span');
-                phEmoji.className = 'crew-pub-ph';
-                phEmoji.textContent = '👤';
-                photo.appendChild(phEmoji);
-            }
+            // 2026-08-10 v2.2 (feedback Marco) — la foto PROFILO non va MAI nel riquadro grande:
+            // è già nell'avatar tondo sotto. Placeholder finché non arriva il portfolio; se il
+            // crew non ha foto lavori, resta il placeholder. (Emoji in <span> dedicato: prima
+            // photo.textContent='' cancellava anche i child del div — frecce nav, layer fade.)
+            var phEmoji = document.createElement('span');
+            phEmoji.className = 'crew-pub-ph';
+            phEmoji.textContent = '👤';
+            photo.appendChild(phEmoji);
             card.appendChild(photo);
             // 2026-07-31 — solo quando la card e' vicina alla vista (vedi coverObserver sopra), non tutte insieme
             if (coverObserver) coverObserver.observe(card); else loadRandomCover(card, photo, c.uuid);
@@ -775,7 +776,7 @@
     // viewport (autoObserver) e non in hover (per non litigare con le frecce).
     // prefers-reduced-motion → autoplay disattivato (restano cover scelta + frecce).
     var AUTOPLAY = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-    var AUTO_MIN = 5000, AUTO_MAX = 9000;
+    var AUTO_MIN = 2500, AUTO_MAX = 4500; // v2.2 — era 5000/9000, "troppo lente" (feedback Marco)
     var autoTimer = null;
     var autoObserver = ('IntersectionObserver' in window) ? new IntersectionObserver(function (entries) {
         entries.forEach(function (en) { en.target._cnVisible = en.isIntersecting; });
@@ -790,9 +791,9 @@
             var media = card._cnMedia;
             if (!media || media.length < 2) return;
             if (card._cnVisible === false) return;
-            if (card._cnNext == null) { card._cnNext = now + 1500 + Math.random() * 5000; return; }
+            if (card._cnNext == null) { card._cnNext = now + 600 + Math.random() * 2000; return; }
             if (now < card._cnNext) return;
-            if (card.matches(':hover')) { card._cnNext = now + 3000; return; }
+            if (card.matches(':hover')) { card._cnNext = now + 2000; return; }
             var photo = card.querySelector('.crew-pub-photo');
             if (!photo) return;
             var idx = (parseInt(card.getAttribute('data-cnidx') || '0', 10) + 1) % media.length;
@@ -816,13 +817,13 @@
             fade.style.opacity = '0';
             fade.style.backgroundImage = 'url(' + encodeURI(url) + ')';
             void fade.offsetWidth; // forza il reflow: la transition riparte pulita da 0
-            fade.style.transition = 'opacity 1.1s ease';
+            fade.style.transition = 'opacity .7s ease'; // v2.2 — era 1.1s
             fade.style.opacity = '1';
             setTimeout(function () {
                 photo.style.backgroundImage = 'url(' + encodeURI(url) + ')';
                 fade.style.transition = 'none';
                 fade.style.opacity = '0';
-            }, 1200);
+            }, 800);
         };
         im.src = url;
     }
@@ -867,7 +868,7 @@
             idx = (idx + dir + media.length) % media.length;
             card.setAttribute('data-cnidx', idx);
             photo.style.backgroundImage = 'url(' + encodeURI(media[idx]) + ')';
-            card._cnNext = Date.now() + 6000; // 2026-08-10 — l'utente naviga a mano: rimanda il crossfade automatico
+            card._cnNext = Date.now() + 4000; // 2026-08-10 — l'utente naviga a mano: rimanda il crossfade automatico
         }
         if (card._cnMedia) { cycle(card._cnMedia); return; }
         btn.disabled = true;
