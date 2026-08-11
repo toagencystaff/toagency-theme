@@ -1,5 +1,9 @@
 /**
- * crew-database-list.js — v2.11 (2026-08-11)
+ * crew-database-list.js — v2.12 (2026-08-11)
+ * v2.12: feedback Marco — badge ▶ sulle cover che sono poster di VIDEO (senza hover non si
+ *        capiva che fossero video): sincronizzato con cover iniziale, crossfade e frecce,
+ *        nascosto durante l'hover-play (CSS :has). + messaggio "nessun risultato per «X»"
+ *        quando la ricerca testuale non trova nulla (prima: messaggio generico).
  * v2.11: deep-link ricerca/filtri nell'URL (?q/&cat/&paese/&prov via replaceState, lang e uuid
  *        preservati; pattern talent-db v76) + eventi GTM dataLayer: crew_search (termine +
  *        n. risultati), crew_filter_cat, crew_vedi_tutti — per capire cosa cercano i visitatori.
@@ -123,6 +127,14 @@
     function updateShownCount() {
         var shown = document.querySelectorAll('#crew-grid .crew-pub-card').length;
         $('#results-count').textContent = shown + ' ' + (STR.resultsLabel || 'crew');
+    }
+    // 2026-08-11 v2.12 — griglia vuota: se c'e' una ricerca attiva, messaggio col termine cercato
+    // (escape PRIMA del replace: il termine utente finisce in <strong> gia' sanificato)
+    function emptyMsg() {
+        if (textQuery && STR.emptySearch) {
+            return escapeHtml(STR.emptySearch).replace('%s', '<strong>' + escapeHtml(textQuery) + '</strong>');
+        }
+        return escapeHtml(STR.empty || 'Nessun crew.');
     }
     // 2026-08-11 v2.9 — home editoriale: strisce "In evidenza" per le 3-4 categorie con piu' crew
     // (min 2 crew con media, 'altro' escluso perche' non editoriale), top 8 a striscia — l'ordine
@@ -931,6 +943,19 @@
         }
         return media;
     }
+    // 2026-08-11 v2.12 — badge ▶ se l'immagine mostrata è il poster di un video (feedback Marco:
+    // "difficile capire che sono video"). Lazy: creato solo quando serve; pointer-events:none.
+    function syncPlayBadge(photo, url) {
+        var b = photo.querySelector('.crew-pub-playbadge');
+        var isVideo = !!__videoByPoster[url];
+        if (isVideo && !b) {
+            b = document.createElement('span');
+            b.className = 'crew-pub-playbadge';
+            b.textContent = '▶';
+            photo.appendChild(b);
+        }
+        if (b) b.style.display = isVideo ? '' : 'none';
+    }
     function applyCover(card, photo, media) {
         // 2026-07-26 — conteggio lavori, sempre (anche con 0 o 1 foto: se 0 il div resta vuoto)
         var projCount = card.querySelector('.crew-pub-projcount');
@@ -943,6 +968,7 @@
         if (phEmoji) phEmoji.remove(); // solo il placeholder, non gli altri child (frecce, fade)
         card._cnMedia = media;
         card.setAttribute('data-cnidx', 0);
+        syncPlayBadge(photo, media[0]); // v2.12
         ensureAutoTimer();
     }
 
@@ -995,6 +1021,7 @@
             void fade.offsetWidth; // forza il reflow: la transition riparte pulita da 0
             fade.style.transition = 'opacity .5s ease'; // v2.3 — era .7s
             fade.style.opacity = '1';
+            syncPlayBadge(photo, url); // v2.12 — il badge segue l'immagine in arrivo
             setTimeout(function () {
                 photo.style.backgroundImage = 'url(' + encodeURI(url) + ')';
                 fade.style.transition = 'none';
@@ -1127,6 +1154,7 @@
             idx = (idx + dir + media.length) % media.length;
             card.setAttribute('data-cnidx', idx);
             photo.style.backgroundImage = 'url(' + encodeURI(media[idx]) + ')';
+            syncPlayBadge(photo, media[idx]); // v2.12
             card._cnNext = Date.now() + 4000; // 2026-08-10 — l'utente naviga a mano: rimanda il crossfade automatico
         }
         if (card._cnMedia) { cycle(card._cnMedia); return; }
