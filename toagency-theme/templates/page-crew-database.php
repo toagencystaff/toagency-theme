@@ -1,6 +1,8 @@
 <?php
 /**
  * Template Name: Crew Database
+ * v1.5 — 2026-08-11 (deep-link ricerca/filtri + eventi GTM in crew-database-list.js v2.11 — solo
+ *        bump ?v, nessun cambio markup)
  * v1.4 — 2026-08-11 (feedback Marco su preview: filtri sopra le strisce "In evidenza" — prima
  *        si vede CHE figure ci sono, poi le strisce; dedup profili in JS v2.10)
  * v1.3 — 2026-08-11 (CREATIVE-HOME Fase 2: strisce editoriali "In evidenza" per categoria sotto
@@ -498,6 +500,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=5.8-home" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=5.9-deeplink" defer></script>
 
 <?php toa_component('footer'); ?>

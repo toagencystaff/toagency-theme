@@ -1,5 +1,8 @@
 /**
- * crew-database-list.js — v2.10 (2026-08-11)
+ * crew-database-list.js — v2.11 (2026-08-11)
+ * v2.11: deep-link ricerca/filtri nell'URL (?q/&cat/&paese/&prov via replaceState, lang e uuid
+ *        preservati; pattern talent-db v76) + eventi GTM dataLayer: crew_search (termine +
+ *        n. risultati), crew_filter_cat, crew_vedi_tutti — per capire cosa cercano i visitatori.
  * v2.10: feedback Marco su preview — niente profili ripetuti tra le strisce "In evidenza":
  *        ogni crew compare in UNA sola striscia (resta nella categoria sua piu' numerosa);
  *        striscia che dopo il dedup scende sotto 2 card non si mostra.
@@ -84,6 +87,24 @@
     var lastResults = [];
     // 2026-08-11 v2.8 — ricerca testuale client-side: si applica a lastResults, zero chiamate extra
     var textQuery = '';
+    // 2026-08-11 v2.11 — provincia da deep-link: applicata DOPO che populateProvinceFilter ha
+    // riempito la tendina (le opzioni arrivano async da province-italia.json)
+    var __initProv = '';
+    // 2026-08-11 v2.11 — sync di ?q/&cat/&paese/&prov nell'URL: replaceState parte dai parametri
+    // correnti e tocca SOLO le 4 chiavi sue → lang (override lingua) e uuid (profilo) restano intatti
+    function syncUrl() {
+        var p = new URLSearchParams(window.location.search);
+        var provEl = $('#filter-provincia');
+        var setOrDel = function (k, v) { if (v) p.set(k, v); else p.delete(k); };
+        setOrDel('q', textQuery);
+        setOrDel('cat', $('#filter-categoria').value);
+        setOrDel('paese', $('#filter-paese').value);
+        setOrDel('prov', provEl ? provEl.value : '');
+        var s = p.toString();
+        history.replaceState(history.state, '', window.location.pathname + (s ? '?' + s : '') + window.location.hash);
+    }
+    // 2026-08-11 v2.11 — eventi verso GTM (dataLayer già presente sul sito, guard se assente)
+    function gtmPush(obj) { (window.dataLayer = window.dataLayer || []).push(obj); }
     function normTxt(s) {
         s = String(s || '').toLowerCase();
         try { s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); } catch (e) {}
@@ -215,6 +236,12 @@
                 o.textContent = p.name + (p.code ? ' (' + p.code + ')' : '');
                 sel.appendChild(o);
             });
+            // 2026-08-11 v2.11 — provincia da deep-link: ora che le opzioni ci sono, applica e ricarica
+            if (__initProv) {
+                sel.value = __initProv;
+                if (sel.value === __initProv) sel.dispatchEvent(new Event('change'));
+                __initProv = '';
+            }
         }).catch(function () {});
     }
 
@@ -226,6 +253,7 @@
             provincia: provEl ? provEl.value : ''
         };
         $('#results-count').textContent = '…';
+        syncUrl(); // v2.11 — filtri correnti riflessi nell'URL (condivisibile)
         // 2026-07-31 — return la promise: serve al deep-link (?uuid=) per aspettare che lastResults
         // sia popolato PRIMA di aprire il profilo, altrimenti l'avatar (che sta solo nella griglia,
         // non nell'endpoint profilo) risulta sempre vuoto in apertura diretta da link (bug pre-esistente).
@@ -1136,7 +1164,11 @@
                 sel.dispatchEvent(new Event('change'));
             });
         }
-        $('#filter-categoria').addEventListener('change', loadCrews);
+        $('#filter-categoria').addEventListener('change', function () {
+            // v2.11 — GTM: categoria scelta (chip o tendina; vuoto = "tutte", non tracciato)
+            if (this.value) gtmPush({ event: 'crew_filter_cat', category: this.value });
+            loadCrews();
+        });
         $('#filter-paese').addEventListener('change', function () { syncProvinceVisibility(); loadCrews(); });
         var provSel = $('#filter-provincia');
         if (provSel) provSel.addEventListener('change', loadCrews);
@@ -1152,6 +1184,9 @@
                     renderGrid(applyTextFilter(lastResults));
                     updateShownCount();
                     renderFeatured(lastResults); // v2.9 — nasconde/rimostra le strisce
+                    syncUrl(); // v2.11 — ricerca condivisibile via ?q=
+                    // v2.11 — GTM: cosa cercano i visitatori (solo query non vuote, post-debounce)
+                    if (textQuery) gtmPush({ event: 'crew_search', search_term: textQuery, results_count: document.querySelectorAll('#crew-grid .crew-pub-card').length });
                 }, 200);
             });
         }
@@ -1161,8 +1196,26 @@
             var btn = e.target.closest('.crew-feat-all');
             if (!btn) return;
             var chip = catChipsWrap && catChipsWrap.querySelector('.crew-cat-chip[data-cat="' + cssEscape(btn.dataset.cat) + '"]');
+            gtmPush({ event: 'crew_vedi_tutti', category: btn.dataset.cat }); // v2.11
             if (chip) { chip.click(); catChipsWrap.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
         });
+        // 2026-08-11 v2.11 — deep-link: applica ?q/&cat/&paese/&prov dall'URL PRIMA del primo load
+        // (prov si applica async in populateProvinceFilter; lang/uuid non si toccano)
+        var __qs = new URLSearchParams(window.location.search);
+        var qInit = __qs.get('q') || '';
+        if (qInit && searchEl) { searchEl.value = qInit; textQuery = qInit.trim(); }
+        var catInit = __qs.get('cat') || '';
+        if (catInit) {
+            var catSel = $('#filter-categoria');
+            catSel.value = catInit;
+            if (catSel.value === catInit && catChipsWrap) {
+                var chipsDL = catChipsWrap.querySelectorAll('.crew-cat-chip');
+                for (var ci = 0; ci < chipsDL.length; ci++) chipsDL[ci].classList.toggle('is-active', (chipsDL[ci].dataset.cat || '') === catInit);
+            }
+        }
+        var paeseInit = __qs.get('paese') || '';
+        if (paeseInit) { var paeseSel = $('#filter-paese'); paeseSel.value = paeseInit; if (paeseSel.value !== paeseInit) paeseSel.value = ''; }
+        __initProv = __qs.get('prov') || '';
         populateProvinceFilter();
         syncProvinceVisibility();
         var initialLoad = loadCrews();
