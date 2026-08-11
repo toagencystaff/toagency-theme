@@ -1,5 +1,7 @@
 /**
- * crew-database-list.js — v2.13 (2026-08-11)
+ * crew-database-list.js — v2.14 (2026-08-11)
+ * v2.14: feedback Marco — ricerca multi-parola in AND ("truccatrice milano" = categoria E
+ *        provincia insieme, in qualsiasi ordine).
  * v2.13: feedback Marco — la ricerca capisce i sinonimi di uso comune ("truccatrice" →
  *        Make-Up Artist, "capelli" → Hairstylist, "shooting" → Fotografo): dizionario
  *        CAT_KEYWORDS per categoria (IT+EN+FR+ES) aggiunto al testo cercabile della card.
@@ -143,12 +145,16 @@
     };
     function applyTextFilter(crews) {
         if (!textQuery) return crews;
-        var q = normTxt(textQuery);
+        // 2026-08-11 v2.14 — query multi-parola in AND (feedback Marco: "truccatrice milano"):
+        // ogni parola deve stare da qualche parte nel testo della card, in qualsiasi ordine
+        var toks = normTxt(textQuery).split(/\s+/).filter(Boolean);
+        if (!toks.length) return crews;
         var catLabels = cfg.catLabels || {};
         return crews.filter(function (c) {
             var hay = [c.nome, c.uuid_short, c.provincia, provName(c.provincia), c.paese]
                 .concat((c.categorie || []).map(function (cat) { return (catLabels[cat] || cat) + ' ' + (CAT_KEYWORDS[cat] || ''); }));
-            return normTxt(hay.join(' ')).indexOf(q) !== -1;
+            var hayN = normTxt(hay.join(' '));
+            return toks.every(function (t) { return hayN.indexOf(t) !== -1; });
         });
     }
     function updateShownCount() {
