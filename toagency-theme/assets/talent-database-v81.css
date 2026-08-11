@@ -2334,3 +2334,10 @@ body.tdb-drawer-open::before{display:none !important;}
 .toa-tdb-detail-minor .toa-tdb-card-minreq{margin-top:0;}
 /* FIX 2026-06-26 marco — CTA "Richiedi info" sopra il lucchetto nella colonna foto del modal */
 .toa-tdb-gallery-minreq{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);width:auto;margin:0;padding:11px 22px;z-index:5;box-shadow:0 2px 10px rgba(0,0,0,.4);}
+
+/* ── 2026-08-11 marco — HOSTESS EVENTI: chip lingue + badge automunito (card) + checkbox filtro ── */
+.toa-tdb-card-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.toa-tdb-card-lang,.toa-tdb-card-car{display:inline-block;padding:1px 6px;border:1px solid currentColor;border-radius:3px;font-size:10px;font-weight:700;letter-spacing:.04em;line-height:1.5;opacity:.85}
+.toa-tdb-card-car{border-color:transparent;padding-left:0;font-size:13px;line-height:1.2}
+.toa-tdb-check{display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;user-select:none}
+.toa-tdb-check input{width:16px;height:16px;accent-color:#c8ff00;cursor:pointer}

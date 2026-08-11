@@ -128,7 +128,7 @@ $T = array(
 );
 ?>
 <!-- TOA-TALENT-DATABASE-V1 — PATCH 2026-05-22 marco hub sezioni categoria -->
-<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v81.css'); ?>">
+<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v81.css?v=' . filemtime(get_stylesheet_directory() . '/assets/talent-database-v81.css')); ?>"><?php /* 2026-08-11 marco — cache-buster filemtime anche sul CSS */ ?>
 <script>
 window.toaThemeUri      = "<?php echo esc_js($theme_uri); ?>";
 window.toaTdbLang       = "<?php echo esc_js($__l); ?>";
@@ -400,6 +400,21 @@ $hub_sections = array(
                         <option value="kids"><?php echo esc_html($_t(array('it'=>'Bambini / ragazzi','en'=>'Kids & Young','fr'=>'Enfants & Jeunes','es'=>'Niños & Jóvenes'))); ?></option>
                         <option value="creator"><?php echo esc_html($_t(array('it'=>'Creator e influencer','en'=>'Creator & Influencer','fr'=>'Créateurs & Influenceurs','es'=>'Creadores & Influencers'))); ?></option>
                     </select>
+                </div>
+
+                <!-- 2026-08-11 marco — HOSTESS EVENTI: filtri lingua+automunito, visibili SOLO con Categoria=Hostess
+                     (toggleHostessFilters in talent-database-v76.js; l'API accetta questi filtri solo con ruolo=hostess) -->
+                <div id="tdbHostessFilters" hidden>
+                    <div class="toa-tdb-field">
+                        <label class="toa-tdb-label"><?php echo esc_html($_t(array('it'=>'Lingue parlate','en'=>'Spoken languages','fr'=>'Langues parlées','es'=>'Idiomas hablados'))); ?></label>
+                        <div class="toa-tdb-ms" data-name="lingua" data-any="<?php echo esc_attr($_t($T['filter_select_any'])); ?>">
+                            <button type="button" class="toa-tdb-ms-toggle" aria-expanded="false"><span class="toa-tdb-ms-text"><?php echo esc_html($_t($T['filter_select_any'])); ?></span><span class="toa-tdb-ms-ar" aria-hidden="true">▾</span></button>
+                            <div class="toa-tdb-ms-menu" hidden></div>
+                        </div>
+                    </div>
+                    <div class="toa-tdb-field">
+                        <label class="toa-tdb-check"><input type="checkbox" name="automunito" value="1"> 🚗 <?php echo esc_html($_t(array('it'=>'Solo automuniti','en'=>'Own car only','fr'=>'Véhiculé uniquement','es'=>'Solo con coche'))); ?></label>
+                    </div>
                 </div>
 
                 <div class="toa-tdb-field">
@@ -684,6 +699,8 @@ $hub_sections = array(
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-database-v75.js'); ?>" defer></script>
+<?php /* 2026-08-11 marco — v76 (HOSTESS EVENTI) + cache-buster filemtime: risolve la cache browser
+         sul file statico segnalata da TEMA FOTO TALENT-DB (prima l'include era senza ?v=) */ ?>
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-database-v76.js?v=' . filemtime(get_stylesheet_directory() . '/assets/talent-database-v76.js')); ?>" defer></script>
 
 <?php toa_component('footer'); ?>
