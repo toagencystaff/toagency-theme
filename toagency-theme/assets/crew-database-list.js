@@ -1,5 +1,8 @@
 /**
- * crew-database-list.js — v2.12 (2026-08-11)
+ * crew-database-list.js — v2.13 (2026-08-11)
+ * v2.13: feedback Marco — la ricerca capisce i sinonimi di uso comune ("truccatrice" →
+ *        Make-Up Artist, "capelli" → Hairstylist, "shooting" → Fotografo): dizionario
+ *        CAT_KEYWORDS per categoria (IT+EN+FR+ES) aggiunto al testo cercabile della card.
  * v2.12: feedback Marco — badge ▶ sulle cover che sono poster di VIDEO (senza hover non si
  *        capiva che fossero video): sincronizzato con cover iniziale, crossfade e frecce,
  *        nascosto durante l'hover-play (CSS :has). + messaggio "nessun risultato per «X»"
@@ -114,13 +117,37 @@
         try { s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); } catch (e) {}
         return s;
     }
+    // 2026-08-11 v2.13 — sinonimi di uso comune per categoria (feedback Marco: "truccatrice"
+    // deve trovare le Make-Up Artist). Parole cercabili, MAI mostrate: la regola 4-lingue dei
+    // testi visibili non si applica, ma i termini chiave ci sono in IT+EN+FR+ES. Le query corte
+    // matchano come sottostringa ("trucco" dentro "truccatrice"), quindi bastano le forme lunghe.
+    var CAT_KEYWORDS = {
+        fotografo:          'fotografa fotografia photographer photography shooting servizio fotografico photographe fotografa',
+        videomaker:         'video filmmaker videografo riprese regista drone vidéaste videografa',
+        makeup_artist:      'truccatrice truccatore trucco make up makeup mua estetista maquillage maquilleuse maquilleur maquillaje maquilladora',
+        hairstylist:        'parrucchiera parrucchiere acconciatura acconciature capelli hair styling coiffure coiffeuse coiffeur peinado peluquera peluquero',
+        parrucchiere:       'parrucchiera capelli taglio piega acconciatura acconciature barbiere coiffure coiffeur peluquera peluquero',
+        stylist:            'stilista styling moda outfit abbigliamento styliste estilista',
+        fashion_designer:   'stilista moda sartoria sarta sarto couture créateur diseñadora diseñador',
+        postproduzione:     'ritocco fotoritocco photoshop retouching retouche retoque editing foto',
+        video_editing:      'montaggio montatore montatrice editor video éditeur montaje',
+        social_media:       'social instagram tiktok facebook community manager smm redes sociales',
+        content_creator:    'creator contenuti influencer ugc créateur de contenu creador de contenido',
+        fashion_journalist: 'giornalista redattrice redattore journaliste periodista',
+        art_director:       'direttore artistico direttrice artistica direzione artistica creativo directeur artistique director de arte',
+        dj:                 'deejay musica console mixer musique música',
+        security:           'sicurezza vigilanza buttafuori sécurité seguridad',
+        tecnico_luci:       'luci illuminazione light lighting éclairage iluminación',
+        tecnico_suono:      'suono audio fonico sound sonorisation sonido',
+        runner:             'assistente backstage tuttofare'
+    };
     function applyTextFilter(crews) {
         if (!textQuery) return crews;
         var q = normTxt(textQuery);
         var catLabels = cfg.catLabels || {};
         return crews.filter(function (c) {
             var hay = [c.nome, c.uuid_short, c.provincia, provName(c.provincia), c.paese]
-                .concat((c.categorie || []).map(function (cat) { return catLabels[cat] || cat; }));
+                .concat((c.categorie || []).map(function (cat) { return (catLabels[cat] || cat) + ' ' + (CAT_KEYWORDS[cat] || ''); }));
             return normTxt(hay.join(' ')).indexOf(q) !== -1;
         });
     }

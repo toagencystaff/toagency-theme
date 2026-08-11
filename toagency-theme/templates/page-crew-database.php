@@ -1,6 +1,7 @@
 <?php
 /**
  * Template Name: Crew Database
+ * v1.7 — 2026-08-11 (ricerca con sinonimi comuni per categoria — JS v2.13, solo bump ?v)
  * v1.6 — 2026-08-11 (feedback Marco: badge ▶ sulle cover-video in card + messaggio "nessun
  *        risultato per «X»" della ricerca — JS v2.12)
  * v1.5 — 2026-08-11 (deep-link ricerca/filtri + eventi GTM in crew-database-list.js v2.11 — solo
@@ -510,6 +511,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.0-playbadge" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.1-alias" defer></script>
 
 <?php toa_component('footer'); ?>
