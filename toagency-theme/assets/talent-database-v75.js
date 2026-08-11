@@ -732,11 +732,49 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
             }).catch(function () { img.style.display = 'none'; c.classList.add('is-broken'); });
         } catch (e) {}
     };
-    // 2026-06-16 marco — placeholder "No photo" = SVG da 302px ESATTI -> recupera prima foto buona.
-    // FIX 2026-07-09 marco (era il v72 mai deployato): usare === 302 e NON <=300, altrimenti le foto
-    // verticali/piccole reali (larghezza <=300) venivano scambiate per placeholder e nascoste (caso Carol 81821).
+    // ─────────────────────────────────────────────────────────────────
+    // Riconoscimento del segnaposto "No photo" — AUTO-CALIBRANTE
+    // 2026-08-11 marco — STORIA: il CRM risponde SEMPRE HTTP 200; quando un talent non ha foto
+    // servibili manda un SVG segnaposto. Il tema lo riconosceva dalle dimensioni scritte a mano
+    // (302px). Il CRM ha cambiato il segnaposto (ora 113x150), il confronto non ha piu' corrisposto
+    // e il segnaposto grigio e' finito nelle card. E' gia' la seconda volta (v72: <=300 -> 302).
+    // SOLUZIONE STABILE: non scriviamo piu' nessuna dimensione nel codice. All'avvio chiediamo al
+    // CRM il segnaposto (l'endpoint con id=0 lo restituisce sempre), ne misuriamo le dimensioni e
+    // confrontiamo le card con QUELLE. Se domani il CRM lo cambia ancora, ci adeguiamo da soli.
+    // Rete di sicurezza se la sonda fallisce: le foto vere hanno sempre lato lungo 400 (w=400),
+    // quindi altezza < 200 = segnaposto. NB: si guarda l'ALTEZZA, mai la larghezza — era la
+    // larghezza a far sparire le foto verticali reali (caso Carol 81821, luglio 2026).
+    var PH = { w: 0, h: 0, ready: false, queue: [] };
+    function phReady() {
+        PH.ready = true;
+        var q = PH.queue; PH.queue = [];
+        q.forEach(function (img) { phCheck(img); });
+    }
+    function phInit() {
+        var probe = new Image();
+        probe.onload  = function () {
+            if (probe.naturalWidth && probe.naturalHeight) { PH.w = probe.naturalWidth; PH.h = probe.naturalHeight; }
+            phReady();
+        };
+        probe.onerror = phReady;
+        probe.src = FOTO_URL + '?id=0&w=400';
+    }
+    function phIsPlaceholder(img) {
+        if (!img || !img.naturalHeight) return false;
+        if (PH.w && PH.h) return img.naturalWidth === PH.w && img.naturalHeight === PH.h;
+        return img.naturalHeight < 200 || img.naturalWidth === 302;
+    }
+    function phCheck(img) {
+        if (!img || img.dataset.fbk) return;
+        if (phIsPlaceholder(img)) tdbCardImgErr(img);
+    }
+    phInit();
     window.tdbCardImgLoad = function (img) {
-        try { if (img.dataset.fbk) return; if (img.naturalWidth === 302) { tdbCardImgErr(img); } } catch (e) {}
+        try {
+            if (img.dataset.fbk) return;
+            if (!PH.ready) { PH.queue.push(img); return; }   // sonda non ancora pronta -> rivaluto dopo
+            phCheck(img);
+        } catch (e) {}
     };
     function cardHtml(t, idx) {
         var id = parseInt(t.id, 10) || 0;
@@ -1146,7 +1184,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
             var capturedIdx = idx;
             // FIX 2026-06-16 marco — salta foto rotta (es. profilo sorgente morta) e mostra la successiva
             imgEl.onload = function () {
-                if (imgEl.naturalWidth === 302 && TD.galleryMedia && TD.galleryMedia.length > 1) { // FIX 2026-07-09 marco: === 302 (solo placeholder), no <=300 (nascondeva foto reali piccole)
+                if (phIsPlaceholder(imgEl) && TD.galleryMedia && TD.galleryMedia.length > 1) { // FIX 2026-08-11 marco: riconoscimento auto-calibrante (era 302 scritto a mano)
                     TD.galleryMedia.splice(TD.galleryIdx, 1);
                     renderGallery(TD.galleryMedia);
                 }
