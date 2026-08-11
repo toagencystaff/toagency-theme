@@ -1,5 +1,7 @@
 /**
- * crew-database-list.js — v2.4 (2026-08-10)
+ * crew-database-list.js — v2.5 (2026-08-10)
+ * v2.5: sweepMissingCovers con coda (max 3 fetch concorrenti) — da v2.2 lo sweep copriva tutta
+ *       la griglia in un colpo (~25 fetch paralleli, rallentavano l'apertura delle schede)
  * v2.4: card — i video ruotano col loro poster JPG (prima scartati: chi aveva solo video sembrava
  *       vuoto, caso Simone); crew senza alcun media → card nascosta + contatore aggiornato
  * v2.3: rotazione raddoppiata (1.2–2.4s, fade .5s) — feedback Marco; ruota già TUTTO il portfolio
@@ -739,13 +741,14 @@
             applyCover(card, photo, __coverCache[uuid]);
             return;
         }
-        fetch(API_PROFILE + '?uuid=' + encodeURIComponent(uuid), { credentials: 'same-origin' })
+        // v2.5 — ritorna la promise: serve a sweepMissingCovers per limitare i fetch concorrenti
+        return fetch(API_PROFILE + '?uuid=' + encodeURIComponent(uuid), { credentials: 'same-origin' })
             .then(function (r) { return r.json(); })
             .then(function (d) {
                 __coverCache[uuid] = coverFirstMedia(d);
                 applyCover(card, photo, __coverCache[uuid]);
             })
-            .catch(function () { /* silenzioso: resta la foto profilo come fallback */ });
+            .catch(function () { /* silenzioso: resta il placeholder come fallback */ });
     }
     // Lista media con la cover scelta dal crew per prima (dedup se già presente negli album)
     function coverFirstMedia(d) {
@@ -835,14 +838,31 @@
     // non ricevevano mai la cover random (IntersectionObserver che non scatta o race col render).
     // Qualche secondo dopo il render, ricontrolla le card rimaste senza foto e ritenta.
     function sweepMissingCovers() {
+        var pending = [];
         document.querySelectorAll('.crew-pub-card').forEach(function (card) {
             if (card.classList.contains('crew-pub-hidden')) return; // v2.4 — gia' valutata: vuota
             var photo = card.querySelector('.crew-pub-photo');
             if (!photo || card._cnMedia) return;
             if (getComputedStyle(photo).backgroundImage !== 'none') return;
             if (coverObserver) coverObserver.unobserve(card);
-            loadRandomCover(card, photo, card.dataset.uuid);
+            pending.push(card);
         });
+        // v2.5 — max 3 fetch alla volta: da quando la card non parte piu' dallo sfondo avatar (v2.2)
+        // questa rete di sicurezza copriva TUTTA la griglia in un colpo (~25 fetch paralleli — lo
+        // stesso problema che l'IntersectionObserver del 31/07 doveva evitare). Coda con 3 slot.
+        var active = 0;
+        function pump() {
+            while (active < 3 && pending.length) {
+                (function (card) {
+                    var photo = card.querySelector('.crew-pub-photo');
+                    active++;
+                    var done = function () { active--; pump(); };
+                    var p = loadRandomCover(card, photo, card.dataset.uuid);
+                    if (p && p.then) p.then(done, done); else done();
+                })(pending.shift());
+            }
+        }
+        pump();
     }
 
     // Appiattisce gli album del profilo in una lista di URL per la card, stesso ordine di renderProfile.
