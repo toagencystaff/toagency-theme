@@ -871,13 +871,15 @@
         var media = card._cnMedia;
         if (!photo || !media || !media.length) return;
         var idx = parseInt(card.getAttribute('data-cnidx') || '0', 10);
-        var vurl = __videoByPoster[media[idx]];
+        var posterUrl = media[idx];
+        var vurl = __videoByPoster[posterUrl];
         // se l'immagine corrente non e' un poster video, usa il primo video del crew (se esiste)
-        for (var i = 0; i < media.length && !vurl; i++) vurl = __videoByPoster[media[i]];
+        for (var i = 0; i < media.length && !vurl; i++) { vurl = __videoByPoster[media[i]]; if (vurl) posterUrl = media[i]; }
         if (!vurl) return;
         var v = document.createElement('video');
         v.className = 'crew-pub-hovervid';
         v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'auto';
+        v.poster = encodeURI(posterUrl); // v2.7.1 — poster visibile durante il buffering (niente card nera)
         v.src = encodeURI(vurl);
         photo.appendChild(v);
         card._cnHoverVid = v;
