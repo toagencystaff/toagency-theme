@@ -301,7 +301,7 @@
     function renderGrid(crews) {
         var grid = $('#crew-grid');
         if (!crews.length) {
-            grid.innerHTML = '<div class="crew-pub-empty">' + escapeHtml(STR.empty || 'Nessun crew.') + '</div>';
+            grid.innerHTML = '<div class="crew-pub-empty">' + emptyMsg() + '</div>'; // v2.12
             return;
         }
         var frag = document.createDocumentFragment();
@@ -315,7 +315,7 @@
         grid.innerHTML = '';
         // v2.6 — tutti scartati dal filtro n_foto/n_video → stesso messaggio "nessun risultato"
         if (!rendered) {
-            grid.innerHTML = '<div class="crew-pub-empty">' + escapeHtml(STR.empty || 'Nessun crew.') + '</div>';
+            grid.innerHTML = '<div class="crew-pub-empty">' + emptyMsg() + '</div>'; // v2.12
             return;
         }
         grid.appendChild(frag);

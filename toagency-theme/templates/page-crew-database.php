@@ -1,6 +1,8 @@
 <?php
 /**
  * Template Name: Crew Database
+ * v1.6 — 2026-08-11 (feedback Marco: badge ▶ sulle cover-video in card + messaggio "nessun
+ *        risultato per «X»" della ricerca — JS v2.12)
  * v1.5 — 2026-08-11 (deep-link ricerca/filtri + eventi GTM in crew-database-list.js v2.11 — solo
  *        bump ?v, nessun cambio markup)
  * v1.4 — 2026-08-11 (feedback Marco su preview: filtri sopra le strisce "In evidenza" — prima
@@ -126,6 +128,8 @@ $T = [
     'search_ph'       => ['it'=>'Cerca nome, categoria o provincia…','en'=>'Search name, category or province…','fr'=>'Chercher nom, catégorie ou province…','es'=>'Buscar nombre, categoría o provincia…'],
     // 2026-08-11 CREATIVE-HOME Fase 2 — strisce editoriali "In evidenza" + titolo catalogo
     'featured_all'    => ['it'=>'Vedi tutti','en'=>'View all','fr'=>'Voir tout','es'=>'Ver todos'],
+    // 2026-08-11 v1.6 — griglia vuota con ricerca attiva: messaggio col termine (%s sostituito dal JS)
+    'no_results_search' => ['it'=>'Nessun risultato per «%s». Prova un\'altra parola o svuota la ricerca.','en'=>'No results for «%s». Try another word or clear the search.','fr'=>'Aucun résultat pour «%s». Essayez un autre mot ou videz la recherche.','es'=>'Sin resultados para «%s». Prueba otra palabra o vacía la búsqueda.'],
     'all_title'       => ['it'=>'Tutti i creativi','en'=>'All creatives','fr'=>'Tous les créatifs','es'=>'Todos los creativos'],
 ];
 
@@ -191,6 +195,11 @@ $theme_uri = get_stylesheet_directory_uri();
 /* 2026-08-10 v2.7 — video hover-to-play nella card: copre la cover, sotto le frecce (z2).
    v2.7.1: niente background nero — durante il buffering si vede il poster (attributo poster del video) */
 .crew-pub-hovervid { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1; }
+/* 2026-08-11 v1.6 — badge ▶ quando la cover mostrata è il poster di un video (feedback Marco:
+   senza hover non si capiva). pointer-events:none: i click passano alla card. Nascosto mentre
+   il video hover sta girando (:has — se il browser non lo supporta resta visibile, innocuo). */
+.crew-pub-playbadge { position:absolute; left:10px; bottom:10px; width:30px; height:30px; border-radius:50%; background:rgba(0,0,0,.6); border:1px solid rgba(255,255,255,.35); color:#fff; font-size:12px; display:flex; align-items:center; justify-content:center; padding-left:2px; z-index:2; pointer-events:none; }
+.crew-pub-card:has(.crew-pub-hovervid) .crew-pub-playbadge { display:none !important; }
 /* 2026-07-26 Fase 2 — bottoncino selezione "Richiedi info" (+/✓), la card intera ora apre il profilo al click */
 .crew-pub-add { position:absolute; top:10px; right:10px; width:32px; height:32px; padding:0 !important; background:#c8ff00; color:#0a0a0a; border:1px solid #c8ff00; border-radius:50% !important; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.45); z-index:2; }
 .crew-pub-add:hover { background:#fff; }
@@ -497,9 +506,10 @@ window.crewPubConfig = {
         worksCount: <?= json_encode($_t($T['works_count'])) ?>,
         portfolioBtn: <?= json_encode($_t($T['portfolio_btn'])) ?>,
         featuredAll: <?= json_encode($_t($T['featured_all'])) ?>,
+        emptySearch: <?= json_encode($_t($T['no_results_search'])) ?>,
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=5.9-deeplink" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.0-playbadge" defer></script>
 
 <?php toa_component('footer'); ?>
