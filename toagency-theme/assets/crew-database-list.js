@@ -1,5 +1,8 @@
 /**
- * crew-database-list.js — v2.14 (2026-08-11)
+ * crew-database-list.js — v2.15 (2026-08-11)
+ * v2.15: ricerca geografica leggera — regioni ("piemonte" trova TO/VC/CN..., con esonimi
+ *        piedmont/lombardy/tuscany...) + grandi città in EN/FR/ES (turin, milan, rome...).
+ *        NIENTE comuni (~7900, file pesante) e NIENTE fallback province vicine: task futuri.
  * v2.14: feedback Marco — ricerca multi-parola in AND ("truccatrice milano" = categoria E
  *        provincia insieme, in qualsiasi ordine).
  * v2.13: feedback Marco — la ricerca capisce i sinonimi di uso comune ("truccatrice" →
@@ -143,6 +146,39 @@
         tecnico_suono:      'suono audio fonico sound sonorisation sonido',
         runner:             'assistente backstage tuttofare'
     };
+    // 2026-08-11 v2.15 — geo leggera: regione (con esonimi EN/FR/ES) cercabile per ogni provincia
+    var REGIONE_PROVINCE = {
+        'piemonte piedmont piémont':                   'TO VC NO CN AT AL BI VB',
+        'valle d aosta aoste':                         'AO',
+        'lombardia lombardy lombardie':                'MI BG BS CO CR MN PV SO VA LC LO MB',
+        'trentino alto adige sudtirol':                'TN BZ',
+        'veneto venetie':                              'VE VR VI PD TV BL RO',
+        'friuli venezia giulia':                       'UD GO PN TS',
+        'liguria ligurie':                             'GE IM SP SV',
+        'emilia romagna emilie':                       'BO FE FC MO PR PC RA RE RN',
+        'toscana tuscany toscane':                     'FI AR GR LI LU MS PI PT PO SI',
+        'umbria ombrie':                               'PG TR',
+        'marche':                                      'AN AP FM MC PU',
+        'lazio latium':                                'RM VT RI LT FR',
+        'abruzzo abruzzes':                            'AQ CH PE TE',
+        'molise':                                      'CB IS',
+        'campania campanie':                           'NA AV BN CE SA',
+        'puglia apulia pouilles':                      'BA BT BR FG LE TA',
+        'basilicata basilicate':                       'PZ MT',
+        'calabria calabre':                            'CZ CS KR RC VV',
+        'sicilia sicily sicile':                       'PA CT ME AG CL EN RG SR TP',
+        'sardegna sardinia sardaigne cerdena':         'CA SS NU OR SU'
+    };
+    var PROV_REGION = {};
+    Object.keys(REGIONE_PROVINCE).forEach(function (r) {
+        REGIONE_PROVINCE[r].split(' ').forEach(function (s) { PROV_REGION[s] = r; });
+    });
+    // grandi città: esonimi EN/FR/ES/DE cercabili (il nome italiano c'e' gia' via provName)
+    var PROV_EXONYMS = {
+        TO: 'turin', MI: 'milan mailand', RM: 'rome', FI: 'florence florencia',
+        NA: 'naples napules', VE: 'venice venise venecia', GE: 'genoa genes genova',
+        PD: 'padua padoue', MN: 'mantua'
+    };
     function applyTextFilter(crews) {
         if (!textQuery) return crews;
         // 2026-08-11 v2.14 — query multi-parola in AND (feedback Marco: "truccatrice milano"):
@@ -151,7 +187,9 @@
         if (!toks.length) return crews;
         var catLabels = cfg.catLabels || {};
         return crews.filter(function (c) {
-            var hay = [c.nome, c.uuid_short, c.provincia, provName(c.provincia), c.paese]
+            var sigla = String(c.provincia || '').toUpperCase().trim();
+            var hay = [c.nome, c.uuid_short, c.provincia, provName(c.provincia), c.paese,
+                       PROV_REGION[sigla] || '', PROV_EXONYMS[sigla] || ''] // v2.15 — regione+esonimi
                 .concat((c.categorie || []).map(function (cat) { return (catLabels[cat] || cat) + ' ' + (CAT_KEYWORDS[cat] || ''); }));
             var hayN = normTxt(hay.join(' '));
             return toks.every(function (t) { return hayN.indexOf(t) !== -1; });
