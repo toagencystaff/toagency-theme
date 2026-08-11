@@ -318,7 +318,8 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
                     TD.selectedIds.add(item);
                 } else if (item && typeof item.id === 'number') {
                     TD.selectedIds.add(item.id);
-                    TD.selectedTalents.set(item.id, { id: item.id, nome: item.nome || '' });
+                    // 2026-08-11 marco — MINI-PANNELLO: is_minor null = selezione vecchia senza flag → niente foto (prudenza)
+                    TD.selectedTalents.set(item.id, { id: item.id, nome: item.nome || '', talent_id: item.talent_id || 0, is_minor: (item.is_minor === undefined ? null : item.is_minor) });
                 }
             });
         } catch (e) { /* ignore */ }
@@ -330,7 +331,8 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
             var out = [];
             TD.selectedIds.forEach(function (id) {
                 var t = TD.selectedTalents.get(id);
-                out.push(t ? { id: id, nome: t.nome || '' } : { id: id });
+                // 2026-08-11 marco — MINI-PANNELLO: persisto anche talent_id + is_minor
+                out.push(t ? { id: id, nome: t.nome || '', talent_id: t.talent_id || 0, is_minor: (t.is_minor === undefined ? null : t.is_minor) } : { id: id });
             });
             localStorage.setItem(STORAGE_KEY, JSON.stringify(out));
         } catch (e) { /* ignore */ }
@@ -1406,12 +1408,50 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
             TD.selectedIds.add(id);
             var t = TD.results.find(function (r) { return r.id === id; });
             if (!t && TD.modalTalent && TD.modalTalent.id === id) t = TD.modalTalent;
-            TD.selectedTalents.set(id, { id: id, nome: t ? (t.nome || '') : '' });
+            // 2026-08-11 marco — MINI-PANNELLO: salvo anche talent_id (codice) e is_minor (privacy foto)
+            TD.selectedTalents.set(id, { id: id, nome: t ? (t.nome || '') : '', talent_id: t ? (parseInt(t.talent_id, 10) || 0) : 0, is_minor: t ? (t.is_minor ? 1 : 0) : null });
         }
         saveSelectedToStorage();
         updateCardSelectedState(id);
         updateCart();
         if (TD.modalTalent && TD.modalTalent.id === id) updateModalAddBtn();
+    }
+
+    // ── 2026-08-11 marco — MINI-PANNELLO SELEZIONE: elenco foto+nome dei selezionati, apribile dal contatore ──
+    function renderCartPanel() {
+        var list = $('#tdbCartPanelList');
+        if (!list) return;
+        list.innerHTML = Array.from(TD.selectedIds).map(function (id) {
+            var t = TD.selectedTalents.get(id) || TD.results.find(function (r) { return r.id === id; }) || { id: id };
+            var name = t.nome || ('#' + id);
+            var code = t.talent_id ? tdCodeDisplay(t.talent_id) : '';
+            var initial = escapeHtml((String(name).charAt(0) || '?').toUpperCase());
+            var thumb;
+            if (t.is_minor) {
+                thumb = '<span class="toa-tdb-cartp-thumb toa-tdb-cartp-thumb--txt" title="' + escapeHtml(i18n('minor_label')) + '">🔒</span>';
+            } else if (t.is_minor === 0) {
+                thumb = '<img class="toa-tdb-cartp-thumb" src="' + escapeHtml(FOTO_URL + '?id=' + encodeURIComponent(id) + '&w=400') + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">';
+            } else {
+                // is_minor null = selezione salvata prima del pannello: per prudenza niente foto, solo iniziale
+                thumb = '<span class="toa-tdb-cartp-thumb toa-tdb-cartp-thumb--txt">' + initial + '</span>';
+            }
+            return '<div class="toa-tdb-cartp-row" data-id="' + id + '">' +
+                     '<a class="toa-tdb-cartp-open" href="?tid=' + id + '">' + thumb +
+                       '<span class="toa-tdb-cartp-name">' + escapeHtml(name) + (code ? ' <small>' + code + '</small>' : '') + '</span></a>' +
+                     '<button type="button" class="toa-tdb-cartp-rm" data-rm="' + id + '" aria-label="✕">✕</button>' +
+                   '</div>';
+        }).join('');
+    }
+
+    function toggleCartPanel(open) {
+        var p = $('#tdbCartPanel');
+        if (!p) return;
+        var willOpen = (open !== undefined) ? open : p.hidden;
+        if (willOpen && TD.selectedIds.size === 0) willOpen = false;
+        p.hidden = !willOpen;
+        var tg = $('#tdbCartToggle');
+        if (tg) tg.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        if (willOpen) renderCartPanel();
     }
 
     // Aggiorna count cart + label singolare/plurale + slide-in/out animato.
@@ -1425,6 +1465,9 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         if (labelEl) labelEl.textContent = count === 1 ? i18n('cart_singular') : i18n('cart_plural');
         // FIX 2026-06-23 marco — stato invito (vuoto) sempre visibile su DESKTOP; mobile resta nascosto a 0
         cart.classList.toggle('has-selection', count > 0);
+        // 2026-08-11 marco — MINI-PANNELLO: chiudi a selezione vuota, altrimenti tieni la lista allineata
+        if (count === 0) toggleCartPanel(false);
+        else { var pp = $('#tdbCartPanel'); if (pp && !pp.hidden) renderCartPanel(); }
         var isMobile = window.matchMedia('(max-width: 580px)').matches;
         if (count > 0 || !isMobile) {
             cart.hidden = false;
@@ -1831,6 +1874,20 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         var cl = $('#tdbCartClear'), rq = $('#tdbCartRequest');
         if (cl) cl.addEventListener('click', clearSelection);
         if (rq) rq.addEventListener('click', tdOpenRequestForm);
+        // 2026-08-11 marco — MINI-PANNELLO: toggle dal contatore + azioni righe (apri scheda / rimuovi)
+        var ct = $('#tdbCartToggle');
+        if (ct) ct.addEventListener('click', function () { toggleCartPanel(); });
+        var cp = $('#tdbCartPanel');
+        if (cp) cp.addEventListener('click', function (e) {
+            var rm = e.target.closest('[data-rm]');
+            if (rm) { tdToggleSelected(parseInt(rm.getAttribute('data-rm'), 10)); return; }
+            var op = e.target.closest('.toa-tdb-cartp-open');
+            if (op) {
+                e.preventDefault();
+                var row = op.closest('.toa-tdb-cartp-row');
+                if (row) tdOpenTalentModal(parseInt(row.getAttribute('data-id'), 10));
+            }
+        });
     }
 
     // Wiring submit del form richiesta + rimozione chip dal summary.

@@ -607,12 +607,19 @@ $hub_sections = array(
         <span class="toa-tdb-cart-invite-ico" aria-hidden="true">+</span>
         <span><?php echo esc_html($_t($T['cart_invite'])); ?></span>
     </div>
+    <!-- 2026-08-11 marco — MINI-PANNELLO SELEZIONE: lista foto+nome sopra la barra (render da JS) -->
+    <div class="toa-tdb-cart-panel" id="tdbCartPanel" hidden>
+        <div class="toa-tdb-cartp-head"><?php echo esc_html($_t($T['form_selection'])); ?></div>
+        <div class="toa-tdb-cartp-list" id="tdbCartPanelList"></div>
+    </div>
     <!-- Stato attivo: contatore + CTA + rassicurazione -->
     <div class="toa-tdb-cart-active">
-        <div class="toa-tdb-cart-info">
+        <!-- 2026-08-11 marco — contatore ora cliccabile: apre il mini-pannello -->
+        <button type="button" class="toa-tdb-cart-info toa-tdb-cart-toggle" id="tdbCartToggle" aria-expanded="false" aria-controls="tdbCartPanel">
             <strong id="tdbCartCount">0</strong>
             <span id="tdbCartLabel"><?php echo esc_html($_t($T['cart_plural'])); ?></span>
-        </div>
+            <span class="toa-tdb-cart-toggle-ar" aria-hidden="true">▴</span>
+        </button>
         <button type="button" class="toa-tdb-cart-clear" id="tdbCartClear" aria-label="<?php echo esc_attr($_t($T['cart_clear'])); ?>"><?php echo esc_html($_t($T['cart_clear'])); ?></button>
         <div class="toa-tdb-cart-cta">
             <button type="button" class="toa-tdb-btn toa-tdb-btn-primary toa-tdb-btn-cart" id="tdbCartRequest"><?php echo esc_html($_t($T['cart_request'])); ?></button>

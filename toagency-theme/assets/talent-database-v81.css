@@ -2341,3 +2341,19 @@ body.tdb-drawer-open::before{display:none !important;}
 .toa-tdb-card-car{border-color:transparent;padding-left:0;font-size:13px;line-height:1.2}
 .toa-tdb-check{display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;user-select:none}
 .toa-tdb-check input{width:16px;height:16px;accent-color:#c8ff00;cursor:pointer}
+
+/* ── 2026-08-11 marco — MINI-PANNELLO SELEZIONE (lista sopra la barra carrello) ── */
+.toa-tdb-cart-toggle{background:none;border:none;padding:0;cursor:pointer;font:inherit;color:inherit;display:flex;align-items:baseline;gap:6px}
+.toa-tdb-cart-toggle-ar{font-size:10px;opacity:.7;transition:transform .2s}
+.toa-tdb-cart-toggle[aria-expanded="true"] .toa-tdb-cart-toggle-ar{transform:rotate(180deg)}
+.toa-tdb-cart-panel{position:absolute;bottom:calc(100% + 10px);left:0;width:min(340px,calc(100vw - 32px));max-height:46vh;overflow:auto;background:#0a0a0a;border:1px solid #2c2c2c;border-radius:10px;padding:10px 12px;box-shadow:0 10px 34px rgba(0,0,0,.5)}
+.toa-tdb-cartp-head{color:rgba(255,255,255,.55);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.toa-tdb-cartp-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-top:1px solid #1d1d1d}
+#tdbCartPanelList .toa-tdb-cartp-row:first-child{border-top:none}
+.toa-tdb-cartp-open{display:flex;align-items:center;gap:10px;flex:1;min-width:0;color:#fff;text-decoration:none}
+.toa-tdb-cartp-thumb{width:36px;height:36px;border-radius:6px;object-fit:cover;flex:0 0 36px;background:#1c1c1c;display:flex;align-items:center;justify-content:center;color:#c8ff00;font-weight:700}
+.toa-tdb-cartp-thumb--txt{font-size:14px}
+.toa-tdb-cartp-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.85rem}
+.toa-tdb-cartp-name small{color:rgba(255,255,255,.5);margin-left:4px}
+.toa-tdb-cartp-rm{background:none;border:none;color:rgba(255,255,255,.55);cursor:pointer;font-size:14px;padding:4px}
+.toa-tdb-cartp-rm:hover{color:#fff}
