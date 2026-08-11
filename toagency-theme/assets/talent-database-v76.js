@@ -1107,8 +1107,14 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         addRow(i18n('modal_eyes'),    t.occhi ? cap(t.occhi) : null);
         addRow(i18n('modal_shoes'),   t.scarpe);
         // 2026-08-11 marco — HOSTESS EVENTI: lingue + automunito in scheda (solo se presenti, mai se null)
-        var dLangs = lingueInfo(t);   // 2026-08-11 marco — v76.2: "Inglese · fluente, Italiano · madrelingua"
-        if (dLangs.length) addRow(i18n('modal_langs'), dLangs.map(function (L) { return L.name + (L.liv ? ' · ' + L.liv : ''); }).join(', '));
+        // 2026-08-11 marco — v76.2.1: lingue schematiche, una per riga (nome + livello in grigio) — feedback Marco
+        var dLangs = lingueInfo(t);
+        if (dLangs.length) {
+            var dlHtml = dLangs.map(function (L) {
+                return '<span class="toa-tdb-detail-lang">' + escapeHtml(L.name) + (L.liv ? '<em>' + escapeHtml(L.liv) + '</em>' : '') + '</span>';
+            }).join('');
+            rows.push('<div class="toa-tdb-detail-row"><span class="toa-tdb-detail-key">' + escapeHtml(i18n('modal_langs')) + '</span><span class="toa-tdb-detail-val toa-tdb-detail-langs">' + dlHtml + '</span></div>');
+        }
         if (t.automunito == 1) addRow(i18n('modal_car'), i18n('yes_label'));
         // FIX 2026-06-24 marco — il DB salva il genere come parola ("Femmina"), non "F": prima le misure non comparivano MAI.
         if (t.sesso === 'Femmina' || t.sesso === 'F') {

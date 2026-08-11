@@ -2357,3 +2357,7 @@ body.tdb-drawer-open::before{display:none !important;}
 .toa-tdb-cartp-name small{color:rgba(255,255,255,.5);margin-left:4px}
 .toa-tdb-cartp-rm{background:none;border:none;color:rgba(255,255,255,.55);cursor:pointer;font-size:14px;padding:4px}
 .toa-tdb-cartp-rm:hover{color:#fff}
+
+/* ── 2026-08-11 marco — v76.2.1: lingue in scheda una per riga, livello in grigio ── */
+.toa-tdb-detail-langs{display:flex;flex-direction:column;gap:3px;text-align:right}
+.toa-tdb-detail-lang em{font-style:normal;color:rgba(255,255,255,.5);font-size:.85em;margin-left:8px}
