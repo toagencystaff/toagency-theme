@@ -1,5 +1,8 @@
 /**
- * crew-database-list.js — v2.6 (2026-08-10)
+ * crew-database-list.js — v2.7 (2026-08-10)
+ * v2.7: hover-to-play — su desktop (hover+pointer fine) passando il mouse su una card con video
+ *       parte il video muto in loop nel riquadro cover; all'uscita si ferma e si distrugge (zero
+ *       consumi finché non interagisci). Su mobile resta il poster. Futuro: clip ottimizzate CRM.
  * v2.6: usa n_foto/n_video dalla search (CRM CREW-VOTAZIONE): crew senza media scartati al RENDER
  *       (niente flash placeholder, contatore giusto da subito), "N lavori" immediato. L'ordinamento
  *       per voto staff e' tutto lato CRM (il voto NON arriva nel JSON e NON va mai mostrato).
@@ -71,6 +74,8 @@
     var lastResults = [];
     // 2026-07-26 — cache "cover" provvisoria (uuid -> array media), evita refetch ad ogni cambio filtro
     var __coverCache = {};
+    // 2026-08-10 v2.7 — mappa poster JPG -> URL video originale (per l'hover-to-play sulle card)
+    var __videoByPoster = {};
     // 2026-07-31 — le richieste "cover random" partivano TUTTE insieme al render della griglia (~20+
     // in parallelo), rallentando anche l'apertura di una scheda profilo in corso (feedback Marco).
     // Con IntersectionObserver si caricano solo le card che stanno per entrare in vista.
@@ -449,6 +454,7 @@
 
     function openProfile(uuid, fromPop, avatarUrl) {
         if (!uuid) return;
+        if (typeof stopAllHoverVideos === 'function') stopAllHoverVideos(); // v2.7 — mai video card sotto l'overlay
         currentProfileUuid = uuid;
         var ov = $('#crew-profile-overlay');
         var body = $('#crew-profile-body');
@@ -749,7 +755,7 @@
     }
     document.addEventListener('pointerover', function (e) {
         var card = e.target.closest && e.target.closest('.crew-pub-card');
-        if (card) ensureCardNav(card);
+        if (card) { ensureCardNav(card); startHoverVideo(card); } // v2.7 — hover: frecce + video
     }, true);
 
     // 2026-07-26 — cover card (era foto casuale in attesa del campo cover_url dal CRM).
@@ -854,6 +860,47 @@
         im.src = url;
     }
 
+    // ─── 2026-08-10 v2.7 — hover-to-play video sulla card (solo desktop) ─────────
+    // Zero consumi di default: il <video> viene creato SOLO al passaggio del mouse (preload
+    // avviene lì) e distrutto all'uscita. Su mobile/touch non parte mai (resta il poster;
+    // il movimento su mobile arriverà con le clip ottimizzate lato CRM, fase C).
+    var HOVER_OK = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    function startHoverVideo(card) {
+        if (!HOVER_OK || card._cnHoverVid) return;
+        var photo = card.querySelector('.crew-pub-photo');
+        var media = card._cnMedia;
+        if (!photo || !media || !media.length) return;
+        var idx = parseInt(card.getAttribute('data-cnidx') || '0', 10);
+        var vurl = __videoByPoster[media[idx]];
+        // se l'immagine corrente non e' un poster video, usa il primo video del crew (se esiste)
+        for (var i = 0; i < media.length && !vurl; i++) vurl = __videoByPoster[media[i]];
+        if (!vurl) return;
+        var v = document.createElement('video');
+        v.className = 'crew-pub-hovervid';
+        v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'auto';
+        v.src = encodeURI(vurl);
+        photo.appendChild(v);
+        card._cnHoverVid = v;
+        v.play().catch(function () {});
+    }
+    function stopHoverVideo(card) {
+        var v = card._cnHoverVid;
+        if (!v) return;
+        card._cnHoverVid = null;
+        try { v.pause(); } catch (e) {}
+        v.removeAttribute('src'); v.load(); // interrompe anche il download in corso
+        if (v.parentNode) v.parentNode.removeChild(v);
+    }
+    function stopAllHoverVideos() {
+        document.querySelectorAll('.crew-pub-card').forEach(stopHoverVideo);
+    }
+    document.addEventListener('pointerout', function (e) {
+        var card = e.target.closest && e.target.closest('.crew-pub-card');
+        if (!card || !card._cnHoverVid) return;
+        if (e.relatedTarget && card.contains(e.relatedTarget)) return; // ancora dentro la card
+        stopHoverVideo(card);
+    }, true);
+
     // 2026-08-01 — rete di sicurezza (bug "immagini nere"/icona omino, segnalato da Marco): alcune card
     // non ricevevano mai la cover random (IntersectionObserver che non scatta o race col render).
     // Qualche secondo dopo il render, ricontrolla le card rimaste senza foto e ritenta.
@@ -898,7 +945,7 @@
         keys.forEach(function (k) {
             (albums[k] || []).forEach(function (url) {
                 if (VIDEO_RE.test(url)) {
-                    if (posters[url]) media.push(posters[url]);
+                    if (posters[url]) { media.push(posters[url]); __videoByPoster[posters[url]] = url; } // v2.7 — per hover-to-play
                 } else {
                     media.push(withW(url, 600));
                 }
@@ -926,6 +973,7 @@
         var card = btn.closest('.crew-pub-card');
         var photo = card && card.querySelector('.crew-pub-photo');
         if (!card || !photo) return;
+        stopHoverVideo(card); // v2.7 — le frecce sfogliano le immagini: il video hover si ferma
         var dir = parseInt(btn.getAttribute('data-cardnav'), 10) || 1;
         function cycle(media) {
             if (!media || media.length <= 1) return;
