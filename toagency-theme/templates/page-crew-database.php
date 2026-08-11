@@ -1,6 +1,8 @@
 <?php
 /**
  * Template Name: Crew Database
+ * v1.3 — 2026-08-11 (CREATIVE-HOME Fase 2: strisce editoriali "In evidenza" per categoria sotto
+ *        l'hero — riempite dal JS v2.9, visibili solo senza filtri; titolo "Tutti i creativi")
  * v1.2 — 2026-08-11 (CREATIVE-HOME Fase 2: campo ricerca testuale in evidenza nell'hero —
  *        filtro client-side in crew-database-list.js v2.8, nessuna chiamata CRM aggiuntiva)
  * v1.1 — 2026-08-10 (CREW-REDESIGN: sezione rinominata "Creative Network" — solo copy, URL/slug
@@ -118,6 +120,9 @@ $T = [
     'portfolio_btn'   => ['it'=>'Portfolio','en'=>'Portfolio','fr'=>'Portfolio','es'=>'Portfolio'],
     // 2026-08-11 CREATIVE-HOME Fase 2 — ricerca testuale in evidenza (placeholder = anche aria-label)
     'search_ph'       => ['it'=>'Cerca nome, categoria o provincia…','en'=>'Search name, category or province…','fr'=>'Chercher nom, catégorie ou province…','es'=>'Buscar nombre, categoría o provincia…'],
+    // 2026-08-11 CREATIVE-HOME Fase 2 — strisce editoriali "In evidenza" + titolo catalogo
+    'featured_all'    => ['it'=>'Vedi tutti','en'=>'View all','fr'=>'Voir tout','es'=>'Ver todos'],
+    'all_title'       => ['it'=>'Tutti i creativi','en'=>'All creatives','fr'=>'Tous les créatifs','es'=>'Todos los creativos'],
 ];
 
 $theme_uri = get_stylesheet_directory_uri();
@@ -135,6 +140,19 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-search input { width:100%; box-sizing:border-box; background:#1a1a1e; border:1.5px solid #2a2a2e; color:#fff; padding:13px 22px !important; border-radius:999px !important; font-size:16px; font-family:inherit; transition:border-color .15s; }
 .crew-pub-search input:focus { outline:none; border-color:#c8ff00; }
 .crew-pub-search input::placeholder { color:#6b7280; }
+/* 2026-08-11 CREATIVE-HOME Fase 2 — strisce editoriali "In evidenza": riusano .crew-pub-card
+   identica, larghezza fissa + scroll orizzontale con snap. Il titolo catalogo .crew-all-title
+   è visibile solo insieme alle strisce (toggle in JS v2.9). */
+.crew-feat { padding:28px 24px 0; }
+.crew-feat-sec { margin-bottom:26px; }
+.crew-feat-head { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+.crew-feat-title { color:#fff; font-size:20px; font-weight:800; margin:0; letter-spacing:-.3px; padding-left:12px; border-left:3px solid #c8ff00; }
+.crew-feat-all { margin-left:auto; background:transparent; border:1.5px solid rgba(255,255,255,.22); border-radius:999px !important; padding:6px 14px !important; color:#fff; font-size:12.5px; font-weight:700; cursor:pointer; white-space:nowrap; transition:border-color .15s, color .15s; }
+.crew-feat-all:hover { border-color:#c8ff00; color:#c8ff00; }
+.crew-feat-row { display:flex; gap:14px; overflow-x:auto; -webkit-overflow-scrolling:touch; scroll-snap-type:x proximity; padding-bottom:10px; }
+.crew-feat-row .crew-pub-card { flex:0 0 240px; scroll-snap-align:start; }
+.crew-all-title { color:#fff; font-size:20px; font-weight:800; margin:26px 24px 0; padding-left:12px; border-left:3px solid #c8ff00; letter-spacing:-.3px; }
+@media (max-width:640px) { .crew-feat { padding:20px 16px 0; } .crew-feat-row .crew-pub-card { flex-basis:190px; } .crew-all-title { margin:20px 16px 0; } }
 /* 2026-06-06 marco — nav switcher Talent ↔ Crew */
 .toa-db-switcher { display:inline-flex; align-items:center; gap:8px; margin:10px 0 4px; }
 .toa-db-switcher__chip { display:inline-flex; align-items:center; padding:6px 16px; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; text-decoration:none; transition:border-color .15s, color .15s; white-space:nowrap; }
@@ -348,6 +366,11 @@ $theme_uri = get_stylesheet_directory_uri();
         </div>
     </header>
 
+    <!-- 2026-08-11 CREATIVE-HOME Fase 2 — strisce editoriali "In evidenza" (riempite dal JS v2.9, solo senza filtri attivi) -->
+    <div class="crew-feat" id="crewFeatured" style="display:none"></div>
+
+    <h2 class="crew-all-title" id="crewAllTitle" style="display:none"><?= esc_html($_t($T['all_title'])) ?></h2>
+
     <!-- 2026-07-26 — chip categoria (sostituisce la tendina, stile talent) -->
     <div class="crew-cat-chips" id="crewCatChips" role="tablist" aria-label="<?= esc_attr($_t($T['filter_all_cat'])) ?>">
         <button type="button" class="crew-cat-chip is-active" data-cat=""><?= esc_html($_t($T['filter_all_cat'])) ?></button>
@@ -468,9 +491,10 @@ window.crewPubConfig = {
         proLabel: <?= json_encode($_t($T['pro_label'])) ?>,
         worksCount: <?= json_encode($_t($T['works_count'])) ?>,
         portfolioBtn: <?= json_encode($_t($T['portfolio_btn'])) ?>,
+        featuredAll: <?= json_encode($_t($T['featured_all'])) ?>,
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=5.6-search" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=5.7-home" defer></script>
 
 <?php toa_component('footer'); ?>

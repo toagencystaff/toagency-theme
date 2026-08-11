@@ -1,5 +1,9 @@
 /**
- * crew-database-list.js — v2.8 (2026-08-11)
+ * crew-database-list.js — v2.9 (2026-08-11)
+ * v2.9: CREATIVE-HOME Fase 2 — strisce editoriali "In evidenza": le 3-4 categorie con piu' crew
+ *       (min 2 con media, 'altro' escluso), top 8 a striscia gia' ordinati per voto staff dal CRM.
+ *       Card estratta in buildCard() e riusata identica (crossfade, hover-video, selezione).
+ *       Le strisce compaiono SOLO senza filtri/ricerca attivi; "Vedi tutti →" attiva il chip.
  * v2.8: CREATIVE-HOME Fase 2 — ricerca testuale in evidenza (input nell'hero): filtro client-side
  *       su nome/categoria/provincia/paese/codice sui risultati gia' caricati, debounce 200ms,
  *       nessuna chiamata CRM aggiuntiva. Accenti normalizzati (cerca "fotografo" trova "Fotógrafo").
@@ -96,6 +100,68 @@
         var shown = document.querySelectorAll('#crew-grid .crew-pub-card').length;
         $('#results-count').textContent = shown + ' ' + (STR.resultsLabel || 'crew');
     }
+    // 2026-08-11 v2.9 — home editoriale: strisce "In evidenza" per le 3-4 categorie con piu' crew
+    // (min 2 crew con media, 'altro' escluso perche' non editoriale), top 8 a striscia — l'ordine
+    // per voto staff arriva GIA' dal CRM, qui si prende solo la testa. Visibili SOLO senza filtri
+    // ne' ricerca attivi: con un filtro la pagina torna catalogo puro.
+    function renderFeatured(crews) {
+        var wrap = $('#crewFeatured');
+        if (!wrap) return;
+        var allTitle = $('#crewAllTitle');
+        var provEl = $('#filter-provincia');
+        var hasFilter = !!(textQuery || $('#filter-categoria').value || $('#filter-paese').value || (provEl && provEl.value));
+        if (hasFilter) {
+            wrap.style.display = 'none';
+            wrap.innerHTML = '';
+            if (allTitle) allTitle.style.display = 'none';
+            return;
+        }
+        var byCat = {};
+        (crews || []).forEach(function (c) {
+            if (c.n_foto != null && ((c.n_foto | 0) + (c.n_video | 0)) === 0) return;
+            (c.categorie || []).forEach(function (cat) {
+                (byCat[cat] = byCat[cat] || []).push(c);
+            });
+        });
+        var top = Object.keys(byCat)
+            .filter(function (k) { return k !== 'altro' && byCat[k].length >= 2; })
+            .sort(function (a, b) { return byCat[b].length - byCat[a].length; })
+            .slice(0, 4);
+        wrap.innerHTML = '';
+        if (!top.length) {
+            wrap.style.display = 'none';
+            if (allTitle) allTitle.style.display = 'none';
+            return;
+        }
+        var catLabels = cfg.catLabels || {};
+        top.forEach(function (cat) {
+            var sec = document.createElement('section');
+            sec.className = 'crew-feat-sec';
+            var head = document.createElement('div');
+            head.className = 'crew-feat-head';
+            var h = document.createElement('h2');
+            h.className = 'crew-feat-title';
+            h.textContent = catLabels[cat] || cat;
+            head.appendChild(h);
+            var all = document.createElement('button');
+            all.type = 'button';
+            all.className = 'crew-feat-all';
+            all.dataset.cat = cat;
+            all.textContent = (STR.featuredAll || 'Vedi tutti') + ' →';
+            head.appendChild(all);
+            sec.appendChild(head);
+            var row = document.createElement('div');
+            row.className = 'crew-feat-row';
+            byCat[cat].slice(0, 8).forEach(function (c) {
+                var card = buildCard(c);
+                if (card) row.appendChild(card);
+            });
+            sec.appendChild(row);
+            wrap.appendChild(sec);
+        });
+        wrap.style.display = '';
+        if (allTitle) allTitle.style.display = '';
+    }
     // 2026-07-26 — cache "cover" provvisoria (uuid -> array media), evita refetch ad ogni cambio filtro
     var __coverCache = {};
     // 2026-08-10 v2.7 — mappa poster JPG -> URL video originale (per l'hover-to-play sulle card)
@@ -165,6 +231,8 @@
             renderGrid(applyTextFilter(lastResults));
             // v2.6 — conta le card davvero renderizzate (skip n_foto+n_video=0), non tutti i results
             updateShownCount();
+            // v2.9 — strisce "In evidenza" (si nascondono da sole se c'e' un filtro attivo)
+            renderFeatured(lastResults);
             setTimeout(sweepMissingCovers, 3000); // 2026-08-01 — vedi sweepMissingCovers
         })
         .catch(function (err) {
@@ -183,117 +251,8 @@
         var frag = document.createDocumentFragment();
         var rendered = 0;
         crews.forEach(function (c) {
-            // 2026-08-10 v2.6 — n_foto/n_video dalla search: crew senza alcun media approvato
-            // scartato SUBITO (prima: card placeholder + fetch + hide a posteriori). Se i campi
-            // mancano (risposta vecchia in cache) si torna al comportamento precedente (fetch+hide).
-            if (c.n_foto != null && ((c.n_foto | 0) + (c.n_video | 0)) === 0) return;
-            var card = document.createElement('div');
-            card.className = 'crew-pub-card' + (selectedUuids.has(c.uuid) ? ' selected' : '');
-            card.dataset.uuid = c.uuid;
-
-            // Foto profilo
-            var photo = document.createElement('div');
-            photo.className = 'crew-pub-photo';
-            // 2026-08-10 v2.2 (feedback Marco) — la foto PROFILO non va MAI nel riquadro grande:
-            // è già nell'avatar tondo sotto. Placeholder finché non arriva il portfolio; se il
-            // crew non ha foto lavori, resta il placeholder. (Emoji in <span> dedicato: prima
-            // photo.textContent='' cancellava anche i child del div — frecce nav, layer fade.)
-            var phEmoji = document.createElement('span');
-            phEmoji.className = 'crew-pub-ph';
-            phEmoji.textContent = '👤';
-            photo.appendChild(phEmoji);
-            card.appendChild(photo);
-            // 2026-07-31 — solo quando la card e' vicina alla vista (vedi coverObserver sopra), non tutte insieme
-            if (coverObserver) coverObserver.observe(card); else loadRandomCover(card, photo, c.uuid);
-            // 2026-08-10 — traccia la visibilità per il crossfade automatico (autoTick cambia solo card in vista)
-            if (autoObserver) autoObserver.observe(card);
-
-            // 2026-07-26 Fase 2 — bottoncino selezione (+/✓) per "Richiedi info", separato dal click-card che ora apre il profilo
-            var addBtn = document.createElement('button');
-            addBtn.type = 'button';
-            addBtn.className = 'crew-pub-add';
-            addBtn.setAttribute('aria-label', STR.selectForLead || 'Seleziona per richiesta info');
-            addBtn.textContent = selectedUuids.has(c.uuid) ? '✓' : '+';
-            addBtn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                toggleSelect(c.uuid);
-            });
-            card.appendChild(addBtn);
-
-            // Body
-            var body = document.createElement('div');
-            body.className = 'crew-pub-body';
-
-            // 2026-07-26 — riga nome+codice affiancati (come talent): codice MAIUSCOLO, senza #, pill visibile
-            var nameRow = document.createElement('div');
-            nameRow.className = 'crew-pub-name-row';
-            // 2026-07-26 — avatar piccolo (la persona), la foto grande ora e' il lavoro
-            var avatar = document.createElement('span');
-            avatar.className = 'crew-pub-avatar';
-            if (c.foto_profilo_url) avatar.style.backgroundImage = 'url(' + encodeURI(c.foto_profilo_url) + ')';
-            nameRow.appendChild(avatar);
-            var name = document.createElement('span');
-            name.className = 'crew-pub-name';
-            name.textContent = c.nome ? properCase(c.nome) : '—';
-            nameRow.appendChild(name);
-            var codiceRaw = c.uuid_short || (c.uuid ? c.uuid.substring(0, 8) : '');
-            if (codiceRaw) {
-                var uuid = document.createElement('span');
-                uuid.className = 'crew-pub-uuid';
-                uuid.textContent = codiceRaw.toUpperCase();
-                nameRow.appendChild(uuid);
-            }
-            body.appendChild(nameRow);
-
-            if (c.categorie && c.categorie.length) {
-                var cats = document.createElement('div');
-                cats.className = 'crew-pub-categories';
-                // 2026-07-26 — testo pulito "Beauty • Hair" con le etichette leggibili invece dei codici grezzi
-                var catLabels = cfg.catLabels || {};
-                cats.textContent = c.categorie.slice(0, 3).map(function (cat) { return catLabels[cat] || cat; }).join(' • ');
-                body.appendChild(cats);
-            }
-
-            var meta = document.createElement('div');
-            meta.className = 'crew-pub-meta';
-            var metaParts = [];
-            // 2026-07-31 — "da X anni" accanto al livello (CRM ha aggiunto eta/attivita_dal/pro_dal
-            // anche in crew-public-search.php, prima disponibili solo nel profilo)
-            if (c.livello) {
-                var annoRif = (c.pro_dal != null) ? c.pro_dal : c.attivita_dal;
-                var livelloTxt = c.livello.charAt(0).toUpperCase() + c.livello.slice(1);
-                if (annoRif != null) {
-                    var nAnniGrid = new Date().getFullYear() - parseInt(annoRif, 10);
-                    if (nAnniGrid >= 1) livelloTxt += ' da ' + nAnniGrid + ' anni';
-                }
-                metaParts.push(livelloTxt);
-            }
-            // 2026-07-26 — provincia in griglia (privacy: solo provincia, mai comune), ora presente nell'endpoint di ricerca
-            if (c.provincia) metaParts.push(provName(String(c.provincia)));
-            if (c.paese) metaParts.push(c.paese);
-            meta.textContent = metaParts.join(' · ');
-            body.appendChild(meta);
-
-            // 2026-07-26 — conteggio lavori (proposta ChatGPT): vuoto finche' non arriva il fetch della cover random
-            var projCount = document.createElement('div');
-            projCount.className = 'crew-pub-projcount';
-            // v2.6 — conteggio immediato dalla search; applyCover poi lo raffina coi media effettivi
-            if (c.n_foto != null && ((c.n_foto | 0) + (c.n_video | 0)) > 0) {
-                projCount.textContent = ((c.n_foto | 0) + (c.n_video | 0)) + ' ' + (STR.worksCount || 'lavori');
-            }
-            body.appendChild(projCount);
-
-            // 2026-08-10 CREW-REDESIGN — bottone "Portfolio →" esplicito: il click-card resta attivo,
-            // il bottone rende visibile l'azione (il click risale al listener della card, nessun handler suo)
-            var pfBtn = document.createElement('button');
-            pfBtn.type = 'button';
-            pfBtn.className = 'crew-pub-portfolio';
-            pfBtn.textContent = (STR.portfolioBtn || 'Portfolio') + ' →';
-            body.appendChild(pfBtn);
-
-            card.appendChild(body);
-            // 2026-07-26 Fase 2 — click ovunque sulla card apre il profilo (come talent); selezione spostata sul bottoncino +/✓
-            card.addEventListener('click', function () { openProfile(c.uuid, false, c.foto_profilo_url); });
+            var card = buildCard(c);
+            if (!card) return;
             frag.appendChild(card);
             rendered++;
         });
@@ -304,6 +263,123 @@
             return;
         }
         grid.appendChild(frag);
+    }
+
+    // 2026-08-11 v2.9 — card estratta da renderGrid: riusata identica dalla griglia e
+    // dalle strisce "In evidenza" della home editoriale (ritorna null se il crew non ha media)
+    function buildCard(c) {
+        // 2026-08-10 v2.6 — n_foto/n_video dalla search: crew senza alcun media approvato
+        // scartato SUBITO (prima: card placeholder + fetch + hide a posteriori). Se i campi
+        // mancano (risposta vecchia in cache) si torna al comportamento precedente (fetch+hide).
+        if (c.n_foto != null && ((c.n_foto | 0) + (c.n_video | 0)) === 0) return null;
+        var card = document.createElement('div');
+        card.className = 'crew-pub-card' + (selectedUuids.has(c.uuid) ? ' selected' : '');
+        card.dataset.uuid = c.uuid;
+
+        // Foto profilo
+        var photo = document.createElement('div');
+        photo.className = 'crew-pub-photo';
+        // 2026-08-10 v2.2 (feedback Marco) — la foto PROFILO non va MAI nel riquadro grande:
+        // è già nell'avatar tondo sotto. Placeholder finché non arriva il portfolio; se il
+        // crew non ha foto lavori, resta il placeholder. (Emoji in <span> dedicato: prima
+        // photo.textContent='' cancellava anche i child del div — frecce nav, layer fade.)
+        var phEmoji = document.createElement('span');
+        phEmoji.className = 'crew-pub-ph';
+        phEmoji.textContent = '👤';
+        photo.appendChild(phEmoji);
+        card.appendChild(photo);
+        // 2026-07-31 — solo quando la card e' vicina alla vista (vedi coverObserver sopra), non tutte insieme
+        if (coverObserver) coverObserver.observe(card); else loadRandomCover(card, photo, c.uuid);
+        // 2026-08-10 — traccia la visibilità per il crossfade automatico (autoTick cambia solo card in vista)
+        if (autoObserver) autoObserver.observe(card);
+
+        // 2026-07-26 Fase 2 — bottoncino selezione (+/✓) per "Richiedi info", separato dal click-card che ora apre il profilo
+        var addBtn = document.createElement('button');
+        addBtn.type = 'button';
+        addBtn.className = 'crew-pub-add';
+        addBtn.setAttribute('aria-label', STR.selectForLead || 'Seleziona per richiesta info');
+        addBtn.textContent = selectedUuids.has(c.uuid) ? '✓' : '+';
+        addBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            toggleSelect(c.uuid);
+        });
+        card.appendChild(addBtn);
+
+        // Body
+        var body = document.createElement('div');
+        body.className = 'crew-pub-body';
+
+        // 2026-07-26 — riga nome+codice affiancati (come talent): codice MAIUSCOLO, senza #, pill visibile
+        var nameRow = document.createElement('div');
+        nameRow.className = 'crew-pub-name-row';
+        // 2026-07-26 — avatar piccolo (la persona), la foto grande ora e' il lavoro
+        var avatar = document.createElement('span');
+        avatar.className = 'crew-pub-avatar';
+        if (c.foto_profilo_url) avatar.style.backgroundImage = 'url(' + encodeURI(c.foto_profilo_url) + ')';
+        nameRow.appendChild(avatar);
+        var name = document.createElement('span');
+        name.className = 'crew-pub-name';
+        name.textContent = c.nome ? properCase(c.nome) : '—';
+        nameRow.appendChild(name);
+        var codiceRaw = c.uuid_short || (c.uuid ? c.uuid.substring(0, 8) : '');
+        if (codiceRaw) {
+            var uuid = document.createElement('span');
+            uuid.className = 'crew-pub-uuid';
+            uuid.textContent = codiceRaw.toUpperCase();
+            nameRow.appendChild(uuid);
+        }
+        body.appendChild(nameRow);
+
+        if (c.categorie && c.categorie.length) {
+            var cats = document.createElement('div');
+            cats.className = 'crew-pub-categories';
+            // 2026-07-26 — testo pulito "Beauty • Hair" con le etichette leggibili invece dei codici grezzi
+            var catLabels = cfg.catLabels || {};
+            cats.textContent = c.categorie.slice(0, 3).map(function (cat) { return catLabels[cat] || cat; }).join(' • ');
+            body.appendChild(cats);
+        }
+
+        var meta = document.createElement('div');
+        meta.className = 'crew-pub-meta';
+        var metaParts = [];
+        // 2026-07-31 — "da X anni" accanto al livello (CRM ha aggiunto eta/attivita_dal/pro_dal
+        // anche in crew-public-search.php, prima disponibili solo nel profilo)
+        if (c.livello) {
+            var annoRif = (c.pro_dal != null) ? c.pro_dal : c.attivita_dal;
+            var livelloTxt = c.livello.charAt(0).toUpperCase() + c.livello.slice(1);
+            if (annoRif != null) {
+                var nAnniGrid = new Date().getFullYear() - parseInt(annoRif, 10);
+                if (nAnniGrid >= 1) livelloTxt += ' da ' + nAnniGrid + ' anni';
+            }
+            metaParts.push(livelloTxt);
+        }
+        // 2026-07-26 — provincia in griglia (privacy: solo provincia, mai comune), ora presente nell'endpoint di ricerca
+        if (c.provincia) metaParts.push(provName(String(c.provincia)));
+        if (c.paese) metaParts.push(c.paese);
+        meta.textContent = metaParts.join(' · ');
+        body.appendChild(meta);
+
+        // 2026-07-26 — conteggio lavori (proposta ChatGPT): vuoto finche' non arriva il fetch della cover random
+        var projCount = document.createElement('div');
+        projCount.className = 'crew-pub-projcount';
+        // v2.6 — conteggio immediato dalla search; applyCover poi lo raffina coi media effettivi
+        if (c.n_foto != null && ((c.n_foto | 0) + (c.n_video | 0)) > 0) {
+            projCount.textContent = ((c.n_foto | 0) + (c.n_video | 0)) + ' ' + (STR.worksCount || 'lavori');
+        }
+        body.appendChild(projCount);
+
+        // 2026-08-10 CREW-REDESIGN — bottone "Portfolio →" esplicito: il click-card resta attivo,
+        // il bottone rende visibile l'azione (il click risale al listener della card, nessun handler suo)
+        var pfBtn = document.createElement('button');
+        pfBtn.type = 'button';
+        pfBtn.className = 'crew-pub-portfolio';
+        pfBtn.textContent = (STR.portfolioBtn || 'Portfolio') + ' →';
+        body.appendChild(pfBtn);
+
+        card.appendChild(body);
+        // 2026-07-26 Fase 2 — click ovunque sulla card apre il profilo (come talent); selezione spostata sul bottoncino +/✓
+        card.addEventListener('click', function () { openProfile(c.uuid, false, c.foto_profilo_url); });
+        return card;
     }
 
     function toggleSelect(uuid) {
@@ -1059,9 +1135,18 @@
                     textQuery = searchEl.value.trim();
                     renderGrid(applyTextFilter(lastResults));
                     updateShownCount();
+                    renderFeatured(lastResults); // v2.9 — nasconde/rimostra le strisce
                 }, 200);
             });
         }
+        // 2026-08-11 v2.9 — "Vedi tutti →" delle strisce: attiva il chip categoria (riusa la
+        // logica esistente del chip, zero duplicazione) e scrolla al catalogo
+        document.addEventListener('click', function (e) {
+            var btn = e.target.closest('.crew-feat-all');
+            if (!btn) return;
+            var chip = catChipsWrap && catChipsWrap.querySelector('.crew-cat-chip[data-cat="' + cssEscape(btn.dataset.cat) + '"]');
+            if (chip) { chip.click(); catChipsWrap.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        });
         populateProvinceFilter();
         syncProvinceVisibility();
         var initialLoad = loadCrews();
