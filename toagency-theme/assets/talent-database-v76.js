@@ -19,6 +19,9 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
  *   GET  {API}?action=talent&id=ID
  *     -> { ok, talent:{…campi pubblici…}, photos:[{id, larghezza, altezza}] }
  *
+ * v76.2 — 2026-08-11 marco — cover card da album eventi (search: campo `cover`, URL pronto w=400,
+ *   fallback foto profilo) + livelli lingue (`lingue_liv`: base/fluente/madrelingua|null, slug
+ *   "altro"→label libera; il QCER resta lato API, il tema non lo vede mai).
  * v76 — 2026-08-11 marco — HOSTESS EVENTI: campi API `lingue` (csv) e `automunito` (1|null)
  *   su card+scheda (solo se presenti, mai se null); filtri lingua[]/automunito (API li accetta
  *   solo con ruolo=hostess); deep-link: ruolo/province/lingua/automunito letti E scritti in URL.
@@ -175,6 +178,33 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     }
     function linguaName(slug) { var m = LINGUA_NAME[slug]; return m ? (m[LANG] || m.it) : cap(slug); }
     function isHostessRole() { var sel = $('#tdbFilterRuolo'); return !!(sel && sel.value === 'hostess'); }
+
+    // ── 2026-08-11 marco — v76.2: livelli lingua (contratto CRM: base|fluente|madrelingua|null) ──
+    var LIV_NAME = {
+        base:        { it:'base',        en:'basic',  fr:'de base',           es:'básico' },
+        fluente:     { it:'fluente',     en:'fluent', fr:'courant',           es:'fluido' },
+        madrelingua: { it:'madrelingua', en:'native', fr:'langue maternelle', es:'nativo' }
+    };
+    function livName(l) { var m = LIV_NAME[l]; return m ? (m[LANG] || m.it) : ''; }
+    // Lingue con livello: preferisce `lingue_liv` [{slug,livello,label?}], fallback su `lingue` csv.
+    // "altro" arriva SOLO con label libera → si mostra la label. Livello null → chip senza etichetta.
+    function lingueInfo(t) {
+        if (t && Array.isArray(t.lingue_liv) && t.lingue_liv.length) {
+            return t.lingue_liv.map(function (x) {
+                if (!x || !x.slug) return null;
+                var slug = String(x.slug).toLowerCase();
+                var isAltro = (slug === 'altro');
+                var name = isAltro ? (x.label ? String(x.label) : '') : linguaName(slug);
+                if (!name) return null;
+                return { name: name,
+                         code: isAltro ? name.slice(0, 2).toUpperCase() : (LINGUA_CODE[slug] || slug.slice(0, 2).toUpperCase()),
+                         liv:  x.livello ? livName(String(x.livello).toLowerCase()) : '' };
+            }).filter(function (x) { return !!x; });
+        }
+        return lingueList(t).map(function (slug) {
+            return { name: linguaName(slug), code: LINGUA_CODE[slug] || slug.slice(0, 2).toUpperCase(), liv: '' };
+        });
+    }
 
     // ═════════════════════════════════════════════════════════════════
     // INIT
@@ -843,7 +873,9 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     function cardHtml(t, idx) {
         var id = parseInt(t.id, 10) || 0;
         var sel = TD.selectedIds.has(id) ? ' selected' : '';
-        var fotoSrc = FOTO_URL + '?id=' + encodeURIComponent(id) + '&w=400'; // FIX 2026-06-25 marco — miniatura card (~80% peso in meno); modal/galleria restano full
+        // 2026-08-11 marco — v76.2 COVER da album eventi (contratto CRM): URL già pronto con w=400, si usa
+        // così com'è, senza aggiungere parametri; null/assente → foto profilo come prima (fallback pulito).
+        var fotoSrc = t.cover || (FOTO_URL + '?id=' + encodeURIComponent(id) + '&w=400'); // FIX 2026-06-25 marco — miniatura card (~80% peso in meno); modal/galleria restano full
         // 2026-06-02 marco — BUG FIX foto bianche: le prime 12 card (above-the-fold) caricano la foto
         // SUBITO (src diretto, niente lazy) → nessuna dipendenza da lazySizes/observer per ciò che è già visibile.
         var eager = (parseInt(idx, 10) || 0) < 12;
@@ -872,9 +904,9 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         var tdbInfoHtml = tdbInfo.join(' · ');
 
         // 2026-08-11 marco — HOSTESS EVENTI: chip lingue [IT][EN]… + badge 🚗 (solo se il dato arriva dall'API, mai se null)
-        var tdbLangs = lingueList(t);
-        var tdbTags = tdbLangs.map(function (s) {
-            return '<span class="toa-tdb-card-lang" title="' + escapeHtml(linguaName(s)) + '">' + escapeHtml(LINGUA_CODE[s] || s.slice(0, 2).toUpperCase()) + '</span>';
+        var tdbLangs = lingueInfo(t);   // 2026-08-11 marco — v76.2: livello nel tooltip (es. "Inglese · fluente")
+        var tdbTags = tdbLangs.map(function (L) {
+            return '<span class="toa-tdb-card-lang" title="' + escapeHtml(L.name + (L.liv ? ' · ' + L.liv : '')) + '">' + escapeHtml(L.code) + '</span>';
         }).join('');
         if (t.automunito == 1) tdbTags += '<span class="toa-tdb-card-car" title="' + escapeHtml(i18n('modal_car')) + '">🚗</span>';
         var tdbTagsHtml = tdbTags ? '<div class="toa-tdb-card-tags">' + tdbTags + '</div>' : '';
@@ -1075,8 +1107,8 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         addRow(i18n('modal_eyes'),    t.occhi ? cap(t.occhi) : null);
         addRow(i18n('modal_shoes'),   t.scarpe);
         // 2026-08-11 marco — HOSTESS EVENTI: lingue + automunito in scheda (solo se presenti, mai se null)
-        var dLangs = lingueList(t);
-        if (dLangs.length) addRow(i18n('modal_langs'), dLangs.map(linguaName).join(', '));
+        var dLangs = lingueInfo(t);   // 2026-08-11 marco — v76.2: "Inglese · fluente, Italiano · madrelingua"
+        if (dLangs.length) addRow(i18n('modal_langs'), dLangs.map(function (L) { return L.name + (L.liv ? ' · ' + L.liv : ''); }).join(', '));
         if (t.automunito == 1) addRow(i18n('modal_car'), i18n('yes_label'));
         // FIX 2026-06-24 marco — il DB salva il genere come parola ("Femmina"), non "F": prima le misure non comparivano MAI.
         if (t.sesso === 'Femmina' || t.sesso === 'F') {
