@@ -1,6 +1,8 @@
 <?php
 /**
  * Template Name: Crew Database
+ * v1.9 — 2026-08-11 (fallback province vicine a 0 risultati — JS v2.17: chiave no_results_near
+ *        4 lingue, stringa nearFallback, CSS .crew-pub-nearnote, bump ?v)
  * v1.8 — 2026-08-11 (comuni completi nella ricerca — comuniJsonUrl per JS v2.16, solo config+bump)
  * v1.7 — 2026-08-11 (ricerca con sinonimi comuni per categoria — JS v2.13, solo bump ?v)
  * v1.6 — 2026-08-11 (feedback Marco: badge ▶ sulle cover-video in card + messaggio "nessun
@@ -132,6 +134,8 @@ $T = [
     'featured_all'    => ['it'=>'Vedi tutti','en'=>'View all','fr'=>'Voir tout','es'=>'Ver todos'],
     // 2026-08-11 v1.6 — griglia vuota con ricerca attiva: messaggio col termine (%s sostituito dal JS)
     'no_results_search' => ['it'=>'Nessun risultato per «%s». Prova un\'altra parola o svuota la ricerca.','en'=>'No results for «%s». Try another word or clear the search.','fr'=>'Aucun résultat pour «%s». Essayez un autre mot ou videz la recherche.','es'=>'Sin resultados para «%s». Prueba otra palabra o vacía la búsqueda.'],
+    // 2026-08-11 v1.9 — fallback geografico: %s = termine/provincia cercata, %p = province vicine (dal JS)
+    'no_results_near' => ['it'=>'Nessun risultato esatto per «%s» — ti mostriamo i crew delle province vicine: %p.','en'=>'No exact results for «%s» — showing crew from nearby provinces: %p.','fr'=>'Aucun résultat exact pour «%s» — voici les crews des provinces voisines : %p.','es'=>'Sin resultados exactos para «%s» — te mostramos los crew de provincias cercanas: %p.'],
     'all_title'       => ['it'=>'Tutti i creativi','en'=>'All creatives','fr'=>'Tous les créatifs','es'=>'Todos los creativos'],
 ];
 
@@ -232,6 +236,9 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-portfolio:hover { border-color:#c8ff00; color:#c8ff00; }
 .crew-pub-projcount:not(:empty), .crew-pub-meta { margin-bottom:10px; } /* respiro minimo sopra il bottone */
 .crew-pub-empty { text-align:center; padding:80px 20px; color:#6b7280; grid-column:1/-1; }
+/* 2026-08-11 v1.9 — avviso fallback "province vicine" sopra le card */
+.crew-pub-nearnote { grid-column:1/-1; text-align:center; padding:12px 16px; color:#9ca3af; font-size:14px; background:rgba(255,255,255,.05); border-radius:10px; }
+.crew-pub-nearnote strong { color:#c8ff00; font-weight:700; }
 
 .crew-pub-actionbar { position:fixed; bottom:0; left:0; right:0; background:#1a1a1e; border-top:1px solid #c8ff00; padding:14px 24px; display:none; align-items:center; justify-content:space-between; z-index:100; box-shadow:0 -4px 16px rgba(0,0,0,.4); }
 .crew-pub-actionbar.visible { display:flex; }
@@ -510,9 +517,10 @@ window.crewPubConfig = {
         portfolioBtn: <?= json_encode($_t($T['portfolio_btn'])) ?>,
         featuredAll: <?= json_encode($_t($T['featured_all'])) ?>,
         emptySearch: <?= json_encode($_t($T['no_results_search'])) ?>,
+        nearFallback: <?= json_encode($_t($T['no_results_near'])) ?>,
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.4-comuni" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.5-near" defer></script>
 
 <?php toa_component('footer'); ?>

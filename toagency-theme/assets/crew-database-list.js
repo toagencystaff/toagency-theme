@@ -1,5 +1,9 @@
 /**
- * crew-database-list.js — v2.16 (2026-08-11)
+ * crew-database-list.js — v2.17 (2026-08-11)
+ * v2.17: fallback province vicine — ricerca/filtro geografico a 0 risultati riprova con le
+ *        province vicine (PROV_NEAR, generata da _scripts/gen_prov_near.py: ≤130km, max 5,
+ *        le isole restano isole) e mostra un avviso sopra la griglia. Copre sia la ricerca
+ *        testuale (client-side) sia la tendina provincia (1 sola richiesta extra, solo a vuoto).
  * v2.16: comuni completi nella ricerca ("estetista ivrea" → provincia TO): mappa
  *        assets/data/comuni-prov.json (8211 voci, generata da _data/comuni_raw.json ISTAT/github),
  *        caricata LAZY al primo uso della ricerca; comuni multi-parola (fino a 3) e doppioni
@@ -183,6 +187,11 @@
         NA: 'naples napules', VE: 'venice venise venecia', GE: 'genoa genes genova',
         PD: 'padua padoue', MN: 'mantua'
     };
+    // 2026-08-11 v2.17 — province vicine per il fallback geografico (0 risultati → si allarga):
+    // generata da _scripts/gen_prov_near.py (capoluoghi entro 130km, max 5, min 3 per le isole).
+    var PROV_NEAR = {"AG":["CL","EN","PA","RG","TP"],"AL":["AT","VC","PV","NO","GE"],"AN":["MC","FM","PU","AP","RN"],"AO":["BI","TO","VB","VC","NO"],"AP":["TE","FM","MC","AQ","PE"],"AQ":["TE","RI","AP","CH","TR"],"AR":["SI","PG","FI","PO","FC"],"AT":["AL","TO","VC","SV","NO"],"AV":["BN","SA","CE","NA","CB"],"BA":["BT","MT","TA","BR","PZ"],"BG":["LC","MB","LO","BS","MI"],"BI":["VC","NO","VB","AO","TO"],"BL":["PN","TV","BZ","VE","UD"],"BN":["AV","CE","CB","SA","NA"],"BO":["MO","FE","RE","FC","RA"],"BR":["LE","TA","BA","MT"],"BS":["BG","CR","LO","VR","MN"],"BT":["BA","FG","MT","PZ","TA"],"BZ":["TN","BL","VI","TV","PN"],"CA":["SU","OR","NU"],"CB":["IS","BN","CE","AV","FG"],"CE":["NA","BN","AV","SA","IS"],"CH":["PE","TE","AQ","AP","IS"],"CL":["EN","AG","RG","CT","PA"],"CN":["IM","SV","TO","AT","AL"],"CO":["VA","LC","MB","MI","VB"],"CR":["PC","PR","LO","BS","MN"],"CS":["CZ","VV","KR"],"CT":["SR","RG","EN","RC","ME"],"CZ":["VV","KR","CS","ME","RC"],"EN":["CL","AG","CT","RG","PA"],"FC":["RA","RN","BO","FE","PU"],"FE":["RO","BO","MO","RA","PD"],"FG":["BT","BN","CB","AV","PZ"],"FI":["PO","PT","SI","AR","LU"],"FM":["MC","AP","AN","TE","PE"],"FR":["LT","IS","RM","AQ","RI"],"GE":["SV","AL","SP","AT","PV"],"GO":["UD","TS","PN","BL","TV"],"GR":["SI","VT","AR","LI","PG"],"IM":["SV","CN","GE","AT","AL"],"IS":["CB","CE","BN","FR","NA"],"KR":["CZ","CS","VV"],"LC":["CO","BG","MB","VA","MI"],"LE":["BR","TA","MT"],"LI":["PI","LU","MS","PT","PO"],"LO":["MI","PV","PC","MB","BG"],"LT":["FR","RM","RI","AQ","IS"],"LU":["PI","PT","LI","MS","PO"],"MB":["MI","CO","LC","BG","LO"],"MC":["FM","AN","AP","TE","PU"],"ME":["RC","VV","CT","CZ","SR"],"MI":["MB","LO","PV","CO","NO"],"MN":["VR","RE","PR","MO","CR"],"MO":["RE","BO","PR","MN","FE"],"MS":["SP","LU","PI","LI","PT"],"MT":["BA","TA","BT","PZ","BR"],"NA":["CE","AV","SA","BN","IS"],"NO":["VC","VA","MI","BI","PV"],"NU":["OR","SS","CA"],"OR":["NU","SU","CA","SS"],"PA":["TP","AG","CL","EN"],"PC":["CR","LO","PV","PR","MI"],"PD":["VI","VE","RO","TV","FE"],"PE":["CH","TE","AP","AQ","FM"],"PG":["AR","TR","VT","RI","MC"],"PI":["LU","LI","MS","PT","PO"],"PN":["BL","TV","UD","VE","GO"],"PO":["PT","FI","LU","PI","SI"],"PR":["RE","CR","MO","MN","PC"],"PT":["PO","FI","LU","PI","MS"],"PU":["RN","AN","FC","RA","MC"],"PV":["LO","MI","MB","PC","NO"],"PZ":["MT","BT","SA","AV","FG"],"RA":["FC","RN","FE","BO","RO"],"RC":["ME","VV","CT","SR","CZ"],"RE":["MO","PR","MN","BO","CR"],"RG":["SR","CT","EN","CL","AG"],"RI":["TR","AQ","VT","RM","TE"],"RM":["LT","RI","VT","TR","FR"],"RN":["PU","FC","RA","AR","AN"],"RO":["FE","PD","VI","VE","BO"],"SA":["AV","NA","BN","CE","PZ"],"SI":["AR","FI","GR","PO","PT"],"SO":["LC","BG","CO","BS","MB"],"SP":["MS","LU","PI","LI","GE"],"SR":["CT","RG","EN","CL","RC"],"SS":["NU","OR","SU"],"SU":["CA","OR","NU"],"SV":["GE","IM","AL","AT","CN"],"TA":["MT","BR","BA","LE","BT"],"TE":["AP","AQ","PE","CH","FM"],"TN":["BZ","VI","VR","BL","BS"],"TO":["AT","BI","VC","AL","CN"],"TP":["PA","AG","CL"],"TR":["RI","VT","PG","AQ","RM"],"TS":["GO","UD","PN","VE","TV"],"TV":["VE","PD","PN","BL","VI"],"UD":["GO","PN","TS","BL","TV"],"VA":["CO","VB","MB","LC","NO"],"VB":["VA","CO","NO","BI","LC"],"VC":["NO","BI","AL","AT","PV"],"VE":["TV","PD","RO","VI","PN"],"VI":["PD","VR","TV","RO","VE"],"VR":["MN","VI","BS","PD","TN"],"VT":["TR","RI","RM","PG","GR"],"VV":["CZ","CS","ME","RC","KR"]};
+    // v2.17 — {term, provs:[sigle]} quando il fallback è scattato; renderGrid ci fa l'avviso
+    var __nearNote = null;
     // 2026-08-11 v2.16 — comuni→provincia: mappa lazy (158KB, solo al primo uso della ricerca)
     var __comuniMap = null, __comuniLoading = false;
     function loadComuni() {
@@ -213,13 +222,9 @@
         }
         return out;
     }
-    function applyTextFilter(crews) {
-        if (!textQuery) return crews;
-        // 2026-08-11 v2.14 — query multi-parola in AND (feedback Marco: "truccatrice milano"):
-        // ogni parola deve stare da qualche parte nel testo della card, in qualsiasi ordine
-        var toks = normTxt(textQuery).split(/\s+/).filter(Boolean);
-        if (!toks.length) return crews;
-        var parts = expandComuni(toks); // v2.16
+    // v2.17 — matcher estratto da applyTextFilter: riusato identico dal passaggio normale
+    // e dal secondo passaggio "province vicine" (cambiano solo le parts)
+    function matchByParts(crews, parts) {
         var catLabels = cfg.catLabels || {};
         return crews.filter(function (c) {
             var sigla = String(c.provincia || '').toUpperCase().trim();
@@ -232,6 +237,41 @@
                 return p.t ? hayN.indexOf(p.t) !== -1 : false;                // testo normale
             });
         });
+    }
+    function applyTextFilter(crews) {
+        __nearNote = null; // v2.17 — si (ri)decide a ogni applicazione del filtro
+        if (!textQuery) return crews;
+        // 2026-08-11 v2.14 — query multi-parola in AND (feedback Marco: "truccatrice milano"):
+        // ogni parola deve stare da qualche parte nel testo della card, in qualsiasi ordine
+        var toks = normTxt(textQuery).split(/\s+/).filter(Boolean);
+        if (!toks.length) return crews;
+        var parts = expandComuni(toks); // v2.16
+        var out = matchByParts(crews, parts);
+        // v2.17 — 0 risultati ma la query ha un vincolo geografico → secondo passaggio con le
+        // province vicine (solo geografia: il testo del comune non conta più come testo libero)
+        if (!out.length && parts.some(function (p) { return p.prov; })) {
+            var near = [];
+            var wide = parts.map(function (p) {
+                if (!p.prov) return p;
+                var set = p.prov.slice();
+                p.prov.forEach(function (s) {
+                    (PROV_NEAR[s] || []).forEach(function (n) {
+                        if (set.indexOf(n) === -1) set.push(n);
+                        if (near.indexOf(n) === -1 && p.prov.indexOf(n) === -1) near.push(n);
+                    });
+                });
+                return { t: null, prov: set };
+            });
+            var out2 = matchByParts(crews, wide);
+            if (out2.length) {
+                var got = {};
+                out2.forEach(function (c) { got[String(c.provincia || '').toUpperCase().trim()] = 1; });
+                // nell'avviso solo le province vicine dove c'è DAVVERO qualcuno
+                __nearNote = { term: textQuery, provs: near.filter(function (s) { return got[s]; }) };
+                return out2;
+            }
+        }
+        return out;
     }
     function updateShownCount() {
         var shown = document.querySelectorAll('#crew-grid .crew-pub-card').length;
@@ -347,6 +387,8 @@
         if (!show) prov.value = '';
     }
 
+    // v2.17 — nome provincia (valore della tendina) → sigla, serve al fallback di loadCrews
+    var __provCode = {};
     function populateProvinceFilter() {
         var sel = document.querySelector('#filter-provincia');
         if (!sel || !cfg.provinceJsonUrl) return;
@@ -356,6 +398,7 @@
                 o.value = p.name;
                 o.textContent = p.name + (p.code ? ' (' + p.code + ')' : '');
                 sel.appendChild(o);
+                if (p.code) __provCode[p.name] = String(p.code).toUpperCase(); // v2.17
             });
             // 2026-08-11 v2.11 — provincia da deep-link: ora che le opzioni ci sono, applica e ricarica
             if (__initProv) {
@@ -392,13 +435,40 @@
                 return;
             }
             lastResults = d.results || [];
-            // v2.8 — la ricerca testuale (se attiva) si riapplica anche dopo un cambio filtro
-            renderGrid(applyTextFilter(lastResults));
-            // v2.6 — conta le card davvero renderizzate (skip n_foto+n_video=0), non tutti i results
-            updateShownCount();
-            // v2.9 — strisce "In evidenza" (si nascondono da sole se c'e' un filtro attivo)
-            renderFeatured(lastResults);
-            setTimeout(sweepMissingCovers, 3000); // 2026-08-01 — vedi sweepMissingCovers
+            // v2.17 — tendina provincia a 0 risultati → UNA richiesta in più senza provincia,
+            // tenendo solo le vicine (PROV_NEAR); scatta solo nel caso vuoto, costo zero altrove
+            var dropNote = null;
+            var code = __provCode[body.provincia] || '';
+            var near = (!lastResults.length && body.provincia && PROV_NEAR[code]) || null;
+            var chain = Promise.resolve();
+            if (near) {
+                chain = fetch(API_SEARCH, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ categoria: body.categoria, paese: body.paese, provincia: '' }),
+                    credentials: 'same-origin'
+                }).then(function (r) { return r.json(); }).then(function (d2) {
+                    var all = (d2 && d2.success && d2.results) || [];
+                    var kept = all.filter(function (c) { return near.indexOf(String(c.provincia || '').toUpperCase().trim()) !== -1; });
+                    if (kept.length) {
+                        lastResults = kept;
+                        var got = {};
+                        kept.forEach(function (c) { got[String(c.provincia || '').toUpperCase().trim()] = 1; });
+                        dropNote = { term: body.provincia, provs: near.filter(function (s) { return got[s]; }) };
+                    }
+                }).catch(function () {}); // fallback fallito → si resta sul normale "0 risultati"
+            }
+            return chain.then(function () {
+                // v2.8 — la ricerca testuale (se attiva) si riapplica anche dopo un cambio filtro
+                var filtered = applyTextFilter(lastResults); // azzera/imposta __nearNote (caso testo)
+                if (dropNote && !__nearNote) __nearNote = dropNote; // caso tendina provincia
+                renderGrid(filtered);
+                // v2.6 — conta le card davvero renderizzate (skip n_foto+n_video=0), non tutti i results
+                updateShownCount();
+                // v2.9 — strisce "In evidenza" (si nascondono da sole se c'e' un filtro attivo)
+                renderFeatured(lastResults);
+                setTimeout(sweepMissingCovers, 3000); // 2026-08-01 — vedi sweepMissingCovers
+            });
         })
         .catch(function (err) {
             console.error('[crew-pub] load error:', err);
@@ -426,6 +496,16 @@
         if (!rendered) {
             grid.innerHTML = '<div class="crew-pub-empty">' + emptyMsg() + '</div>'; // v2.12
             return;
+        }
+        // v2.17 — fallback geografico scattato → avviso sopra le card (stesso pattern escape
+        // di emptyMsg: prima escapeHtml, poi i replace con contenuto già sanificato)
+        if (__nearNote && __nearNote.provs.length) {
+            var note = document.createElement('div');
+            note.className = 'crew-pub-nearnote';
+            note.innerHTML = escapeHtml(STR.nearFallback || 'Nessun risultato esatto per «%s» — ti mostriamo i crew delle province vicine: %p.')
+                .replace('%s', '<strong>' + escapeHtml(__nearNote.term) + '</strong>')
+                .replace('%p', '<strong>' + escapeHtml(__nearNote.provs.map(provName).join(', ')) + '</strong>');
+            grid.appendChild(note);
         }
         grid.appendChild(frag);
     }
