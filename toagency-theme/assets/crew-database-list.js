@@ -1,5 +1,8 @@
 /**
- * crew-database-list.js — v2.9 (2026-08-11)
+ * crew-database-list.js — v2.10 (2026-08-11)
+ * v2.10: feedback Marco su preview — niente profili ripetuti tra le strisce "In evidenza":
+ *        ogni crew compare in UNA sola striscia (resta nella categoria sua piu' numerosa);
+ *        striscia che dopo il dedup scende sotto 2 card non si mostra.
  * v2.9: CREATIVE-HOME Fase 2 — strisce editoriali "In evidenza": le 3-4 categorie con piu' crew
  *       (min 2 con media, 'altro' escluso), top 8 a striscia gia' ordinati per voto staff dal CRM.
  *       Card estratta in buildCard() e riusata identica (crossfade, hover-video, selezione).
@@ -134,7 +137,20 @@
             return;
         }
         var catLabels = cfg.catLabels || {};
+        // 2026-08-11 v2.10 — feedback Marco: niente profili ripetuti tra le strisce. Ogni crew
+        // appare in UNA sola striscia (viene assegnato alla sua categoria piu' numerosa, che
+        // essendo top ordinata viene processata prima); striscia sotto 2 card dopo il dedup → via.
+        var used = {};
         top.forEach(function (cat) {
+            var row = document.createElement('div');
+            row.className = 'crew-feat-row';
+            var added = 0;
+            byCat[cat].forEach(function (c) {
+                if (added >= 8 || used[c.uuid]) return;
+                var card = buildCard(c);
+                if (card) { row.appendChild(card); used[c.uuid] = 1; added++; }
+            });
+            if (added < 2) return;
             var sec = document.createElement('section');
             sec.className = 'crew-feat-sec';
             var head = document.createElement('div');
@@ -150,15 +166,15 @@
             all.textContent = (STR.featuredAll || 'Vedi tutti') + ' →';
             head.appendChild(all);
             sec.appendChild(head);
-            var row = document.createElement('div');
-            row.className = 'crew-feat-row';
-            byCat[cat].slice(0, 8).forEach(function (c) {
-                var card = buildCard(c);
-                if (card) row.appendChild(card);
-            });
             sec.appendChild(row);
             wrap.appendChild(sec);
         });
+        // dopo il dedup potrebbe non restare nessuna striscia valida
+        if (!wrap.children.length) {
+            wrap.style.display = 'none';
+            if (allTitle) allTitle.style.display = 'none';
+            return;
+        }
         wrap.style.display = '';
         if (allTitle) allTitle.style.display = '';
     }

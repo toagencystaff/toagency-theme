@@ -1,6 +1,8 @@
 <?php
 /**
  * Template Name: Crew Database
+ * v1.4 — 2026-08-11 (feedback Marco su preview: filtri sopra le strisce "In evidenza" — prima
+ *        si vede CHE figure ci sono, poi le strisce; dedup profili in JS v2.10)
  * v1.3 — 2026-08-11 (CREATIVE-HOME Fase 2: strisce editoriali "In evidenza" per categoria sotto
  *        l'hero — riempite dal JS v2.9, visibili solo senza filtri; titolo "Tutti i creativi")
  * v1.2 — 2026-08-11 (CREATIVE-HOME Fase 2: campo ricerca testuale in evidenza nell'hero —
@@ -366,11 +368,6 @@ $theme_uri = get_stylesheet_directory_uri();
         </div>
     </header>
 
-    <!-- 2026-08-11 CREATIVE-HOME Fase 2 — strisce editoriali "In evidenza" (riempite dal JS v2.9, solo senza filtri attivi) -->
-    <div class="crew-feat" id="crewFeatured" style="display:none"></div>
-
-    <h2 class="crew-all-title" id="crewAllTitle" style="display:none"><?= esc_html($_t($T['all_title'])) ?></h2>
-
     <!-- 2026-07-26 — chip categoria (sostituisce la tendina, stile talent) -->
     <div class="crew-cat-chips" id="crewCatChips" role="tablist" aria-label="<?= esc_attr($_t($T['filter_all_cat'])) ?>">
         <button type="button" class="crew-cat-chip is-active" data-cat=""><?= esc_html($_t($T['filter_all_cat'])) ?></button>
@@ -397,6 +394,12 @@ $theme_uri = get_stylesheet_directory_uri();
         </select>
         <span class="crew-pub-results-count" id="results-count"><?= esc_html($_t($T['loading'])) ?></span>
     </div>
+
+    <!-- 2026-08-11 CREATIVE-HOME Fase 2 — strisce editoriali "In evidenza" (riempite dal JS, solo senza filtri attivi).
+         v1.4 feedback Marco: spostate SOTTO i filtri — prima chip+tendine per capire subito le figure disponibili -->
+    <div class="crew-feat" id="crewFeatured" style="display:none"></div>
+
+    <h2 class="crew-all-title" id="crewAllTitle" style="display:none"><?= esc_html($_t($T['all_title'])) ?></h2>
 
     <div class="crew-pub-grid" id="crew-grid"></div>
 
@@ -495,6 +498,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=5.7-home" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=5.8-home" defer></script>
 
 <?php toa_component('footer'); ?>
