@@ -1,6 +1,7 @@
 <?php
 /**
  * Template Name: Crew Database
+ * v1.8 — 2026-08-11 (comuni completi nella ricerca — comuniJsonUrl per JS v2.16, solo config+bump)
  * v1.7 — 2026-08-11 (ricerca con sinonimi comuni per categoria — JS v2.13, solo bump ?v)
  * v1.6 — 2026-08-11 (feedback Marco: badge ▶ sulle cover-video in card + messaggio "nessun
  *        risultato per «X»" della ricerca — JS v2.12)
@@ -483,6 +484,7 @@ window.crewPubConfig = {
     apiLead:   '/crm_toagency/actions/crew-lead.php',
     apiProfile:'/crm_toagency/actions/crew-public-profile.php',
     provinceJsonUrl: <?= json_encode($theme_uri . '/assets/data/province-italia.json') ?>,
+    comuniJsonUrl: <?= json_encode($theme_uri . '/assets/data/comuni-prov.json') ?>,
     lang: <?= json_encode($__l) ?>,
     catLabels: <?= json_encode(array_combine(
         array_column($CREW_CATEGORIES, 'code'),
@@ -511,6 +513,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.3-geo" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.4-comuni" defer></script>
 
 <?php toa_component('footer'); ?>

@@ -1,5 +1,9 @@
 /**
- * crew-database-list.js — v2.15 (2026-08-11)
+ * crew-database-list.js — v2.16 (2026-08-11)
+ * v2.16: comuni completi nella ricerca ("estetista ivrea" → provincia TO): mappa
+ *        assets/data/comuni-prov.json (8211 voci, generata da _data/comuni_raw.json ISTAT/github),
+ *        caricata LAZY al primo uso della ricerca; comuni multi-parola (fino a 3) e doppioni
+ *        (Samone TO/TN) gestiti; per i token singoli vale comune OPPURE testo normale.
  * v2.15: ricerca geografica leggera — regioni ("piemonte" trova TO/VC/CN..., con esonimi
  *        piedmont/lombardy/tuscany...) + grandi città in EN/FR/ES (turin, milan, rome...).
  *        NIENTE comuni (~7900, file pesante) e NIENTE fallback province vicine: task futuri.
@@ -179,12 +183,43 @@
         NA: 'naples napules', VE: 'venice venise venecia', GE: 'genoa genes genova',
         PD: 'padua padoue', MN: 'mantua'
     };
+    // 2026-08-11 v2.16 — comuni→provincia: mappa lazy (158KB, solo al primo uso della ricerca)
+    var __comuniMap = null, __comuniLoading = false;
+    function loadComuni() {
+        if (__comuniMap || __comuniLoading || !cfg.comuniJsonUrl) return;
+        __comuniLoading = true;
+        fetch(cfg.comuniJsonUrl).then(function (r) { return r.json(); }).then(function (m) {
+            __comuniMap = m || {};
+            // deep-link ?q=ivrea: la query puo' essere arrivata PRIMA della mappa → riapplica
+            if (textQuery) { renderGrid(applyTextFilter(lastResults)); updateShownCount(); renderFeatured(lastResults); }
+        }).catch(function () { __comuniMap = {}; });
+    }
+    // Trasforma i token: sequenze fino a 3 parole che sono un comune diventano un vincolo
+    // di provincia. Token singolo che e' ANCHE un comune → vale comune OPPURE testo (es. "vita" TP).
+    function expandComuni(toks) {
+        var out = [], i = 0;
+        while (i < toks.length) {
+            var hit = null, len = 0;
+            if (__comuniMap) {
+                for (var L = 3; L >= 1; L--) {
+                    if (i + L <= toks.length) {
+                        var key = toks.slice(i, i + L).join(' ');
+                        if (__comuniMap[key]) { hit = __comuniMap[key]; len = L; break; }
+                    }
+                }
+            }
+            if (hit) { out.push({ t: len === 1 ? toks[i] : null, prov: hit.split(' ') }); i += len; }
+            else { out.push({ t: toks[i], prov: null }); i++; }
+        }
+        return out;
+    }
     function applyTextFilter(crews) {
         if (!textQuery) return crews;
         // 2026-08-11 v2.14 — query multi-parola in AND (feedback Marco: "truccatrice milano"):
         // ogni parola deve stare da qualche parte nel testo della card, in qualsiasi ordine
         var toks = normTxt(textQuery).split(/\s+/).filter(Boolean);
         if (!toks.length) return crews;
+        var parts = expandComuni(toks); // v2.16
         var catLabels = cfg.catLabels || {};
         return crews.filter(function (c) {
             var sigla = String(c.provincia || '').toUpperCase().trim();
@@ -192,7 +227,10 @@
                        PROV_REGION[sigla] || '', PROV_EXONYMS[sigla] || ''] // v2.15 — regione+esonimi
                 .concat((c.categorie || []).map(function (cat) { return (catLabels[cat] || cat) + ' ' + (CAT_KEYWORDS[cat] || ''); }));
             var hayN = normTxt(hay.join(' '));
-            return toks.every(function (t) { return hayN.indexOf(t) !== -1; });
+            return parts.every(function (p) {
+                if (p.prov && p.prov.indexOf(sigla) !== -1) return true;      // comune → provincia
+                return p.t ? hayN.indexOf(p.t) !== -1 : false;                // testo normale
+            });
         });
     }
     function updateShownCount() {
@@ -1277,6 +1315,7 @@
         if (searchEl) {
             var searchT = null;
             searchEl.addEventListener('input', function () {
+                loadComuni(); // v2.16 — mappa comuni al primo uso, poi no-op
                 clearTimeout(searchT);
                 searchT = setTimeout(function () {
                     textQuery = searchEl.value.trim();
@@ -1302,7 +1341,7 @@
         // (prov si applica async in populateProvinceFilter; lang/uuid non si toccano)
         var __qs = new URLSearchParams(window.location.search);
         var qInit = __qs.get('q') || '';
-        if (qInit && searchEl) { searchEl.value = qInit; textQuery = qInit.trim(); }
+        if (qInit && searchEl) { searchEl.value = qInit; textQuery = qInit.trim(); loadComuni(); } // v2.16
         var catInit = __qs.get('cat') || '';
         if (catInit) {
             var catSel = $('#filter-categoria');
