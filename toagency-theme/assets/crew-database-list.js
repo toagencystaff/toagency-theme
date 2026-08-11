@@ -1,5 +1,8 @@
 /**
- * crew-database-list.js — v2.7 (2026-08-10)
+ * crew-database-list.js — v2.8 (2026-08-11)
+ * v2.8: CREATIVE-HOME Fase 2 — ricerca testuale in evidenza (input nell'hero): filtro client-side
+ *       su nome/categoria/provincia/paese/codice sui risultati gia' caricati, debounce 200ms,
+ *       nessuna chiamata CRM aggiuntiva. Accenti normalizzati (cerca "fotografo" trova "Fotógrafo").
  * v2.7: hover-to-play — su desktop (hover+pointer fine) passando il mouse su una card con video
  *       parte il video muto in loop nel riquadro cover; all'uscita si ferma e si distrugge (zero
  *       consumi finché non interagisci). Su mobile resta il poster. Futuro: clip ottimizzate CRM.
@@ -72,6 +75,27 @@
 
     var selectedUuids = new Set();
     var lastResults = [];
+    // 2026-08-11 v2.8 — ricerca testuale client-side: si applica a lastResults, zero chiamate extra
+    var textQuery = '';
+    function normTxt(s) {
+        s = String(s || '').toLowerCase();
+        try { s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); } catch (e) {}
+        return s;
+    }
+    function applyTextFilter(crews) {
+        if (!textQuery) return crews;
+        var q = normTxt(textQuery);
+        var catLabels = cfg.catLabels || {};
+        return crews.filter(function (c) {
+            var hay = [c.nome, c.uuid_short, c.provincia, provName(c.provincia), c.paese]
+                .concat((c.categorie || []).map(function (cat) { return catLabels[cat] || cat; }));
+            return normTxt(hay.join(' ')).indexOf(q) !== -1;
+        });
+    }
+    function updateShownCount() {
+        var shown = document.querySelectorAll('#crew-grid .crew-pub-card').length;
+        $('#results-count').textContent = shown + ' ' + (STR.resultsLabel || 'crew');
+    }
     // 2026-07-26 — cache "cover" provvisoria (uuid -> array media), evita refetch ad ogni cambio filtro
     var __coverCache = {};
     // 2026-08-10 v2.7 — mappa poster JPG -> URL video originale (per l'hover-to-play sulle card)
@@ -137,10 +161,10 @@
                 return;
             }
             lastResults = d.results || [];
-            renderGrid(lastResults);
+            // v2.8 — la ricerca testuale (se attiva) si riapplica anche dopo un cambio filtro
+            renderGrid(applyTextFilter(lastResults));
             // v2.6 — conta le card davvero renderizzate (skip n_foto+n_video=0), non tutti i results
-            var shown = document.querySelectorAll('#crew-grid .crew-pub-card').length;
-            $('#results-count').textContent = shown + ' ' + (STR.resultsLabel || 'crew');
+            updateShownCount();
             setTimeout(sweepMissingCovers, 3000); // 2026-08-01 — vedi sweepMissingCovers
         })
         .catch(function (err) {
@@ -1024,6 +1048,20 @@
         $('#filter-paese').addEventListener('change', function () { syncProvinceVisibility(); loadCrews(); });
         var provSel = $('#filter-provincia');
         if (provSel) provSel.addEventListener('change', loadCrews);
+        // 2026-08-11 v2.8 — ricerca testuale: debounce 200ms, filtra i risultati gia' in pagina
+        // (l'evento 'input' scatta anche sulla X di clear del type=search)
+        var searchEl = $('#crew-search');
+        if (searchEl) {
+            var searchT = null;
+            searchEl.addEventListener('input', function () {
+                clearTimeout(searchT);
+                searchT = setTimeout(function () {
+                    textQuery = searchEl.value.trim();
+                    renderGrid(applyTextFilter(lastResults));
+                    updateShownCount();
+                }, 200);
+            });
+        }
         populateProvinceFilter();
         syncProvinceVisibility();
         var initialLoad = loadCrews();

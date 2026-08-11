@@ -1,6 +1,8 @@
 <?php
 /**
  * Template Name: Crew Database
+ * v1.2 — 2026-08-11 (CREATIVE-HOME Fase 2: campo ricerca testuale in evidenza nell'hero —
+ *        filtro client-side in crew-database-list.js v2.8, nessuna chiamata CRM aggiuntiva)
  * v1.1 — 2026-08-10 (CREW-REDESIGN: sezione rinominata "Creative Network" — solo copy, URL/slug
  *        /crew-database/ INTATTO perché indicizzato; CSS layer crossfade cover + bottone Portfolio)
  * v1.0 — 2026-05-19
@@ -114,6 +116,8 @@ $T = [
     'works_count'     => ['it'=>'lavori','en'=>'works','fr'=>'travaux','es'=>'trabajos'],
     // 2026-08-10 CREW-REDESIGN — bottone esplicito sulla card ("Portfolio" è invariato nelle 4 lingue)
     'portfolio_btn'   => ['it'=>'Portfolio','en'=>'Portfolio','fr'=>'Portfolio','es'=>'Portfolio'],
+    // 2026-08-11 CREATIVE-HOME Fase 2 — ricerca testuale in evidenza (placeholder = anche aria-label)
+    'search_ph'       => ['it'=>'Cerca nome, categoria o provincia…','en'=>'Search name, category or province…','fr'=>'Chercher nom, catégorie ou province…','es'=>'Buscar nombre, categoría o provincia…'],
 ];
 
 $theme_uri = get_stylesheet_directory_uri();
@@ -125,6 +129,12 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-hero-eyebrow { color:#c8ff00; font-size:13px; letter-spacing:2px; font-weight:600; margin-bottom:8px; }
 .crew-pub-hero-title { font-size:56px; font-weight:800; color:#fff; margin:0; letter-spacing:-1.5px; }
 .crew-pub-hero-subtitle { color:#9ca3af; margin-top:12px; max-width:640px; margin-left:auto; margin-right:auto; line-height:1.5; }
+/* 2026-08-11 CREATIVE-HOME Fase 2 — ricerca in evidenza nell'hero. font-size 16px: sotto, iOS zooma
+   la pagina al focus. !important su padding/border-radius per il solito reset globale sugli input. */
+.crew-pub-search { max-width:560px; margin:20px auto 0; }
+.crew-pub-search input { width:100%; box-sizing:border-box; background:#1a1a1e; border:1.5px solid #2a2a2e; color:#fff; padding:13px 22px !important; border-radius:999px !important; font-size:16px; font-family:inherit; transition:border-color .15s; }
+.crew-pub-search input:focus { outline:none; border-color:#c8ff00; }
+.crew-pub-search input::placeholder { color:#6b7280; }
 /* 2026-06-06 marco — nav switcher Talent ↔ Crew */
 .toa-db-switcher { display:inline-flex; align-items:center; gap:8px; margin:10px 0 4px; }
 .toa-db-switcher__chip { display:inline-flex; align-items:center; padding:6px 16px; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; text-decoration:none; transition:border-color .15s, color .15s; white-space:nowrap; }
@@ -332,6 +342,10 @@ $theme_uri = get_stylesheet_directory_uri();
             </span>
         </nav>
         <p class="crew-pub-hero-subtitle"><?= esc_html($_t($T['hero_subtitle'])) ?></p>
+        <!-- 2026-08-11 CREATIVE-HOME Fase 2 — ricerca testuale in evidenza -->
+        <div class="crew-pub-search">
+            <input type="search" id="crew-search" placeholder="<?= esc_attr($_t($T['search_ph'])) ?>" aria-label="<?= esc_attr($_t($T['search_ph'])) ?>" autocomplete="off">
+        </div>
     </header>
 
     <!-- 2026-07-26 — chip categoria (sostituisce la tendina, stile talent) -->
@@ -457,6 +471,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=5.5-hoverposter" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=5.6-search" defer></script>
 
 <?php toa_component('footer'); ?>
