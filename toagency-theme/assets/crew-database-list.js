@@ -1,5 +1,8 @@
 /**
- * crew-database-list.js — v2.5 (2026-08-10)
+ * crew-database-list.js — v2.6 (2026-08-10)
+ * v2.6: usa n_foto/n_video dalla search (CRM CREW-VOTAZIONE): crew senza media scartati al RENDER
+ *       (niente flash placeholder, contatore giusto da subito), "N lavori" immediato. L'ordinamento
+ *       per voto staff e' tutto lato CRM (il voto NON arriva nel JSON e NON va mai mostrato).
  * v2.5: sweepMissingCovers con coda (max 3 fetch concorrenti) — da v2.2 lo sweep copriva tutta
  *       la griglia in un colpo (~25 fetch paralleli, rallentavano l'apertura delle schede)
  * v2.4: card — i video ruotano col loro poster JPG (prima scartati: chi aveva solo video sembrava
@@ -130,7 +133,9 @@
             }
             lastResults = d.results || [];
             renderGrid(lastResults);
-            $('#results-count').textContent = lastResults.length + ' ' + (STR.resultsLabel || 'crew');
+            // v2.6 — conta le card davvero renderizzate (skip n_foto+n_video=0), non tutti i results
+            var shown = document.querySelectorAll('#crew-grid .crew-pub-card').length;
+            $('#results-count').textContent = shown + ' ' + (STR.resultsLabel || 'crew');
             setTimeout(sweepMissingCovers, 3000); // 2026-08-01 — vedi sweepMissingCovers
         })
         .catch(function (err) {
@@ -147,7 +152,12 @@
             return;
         }
         var frag = document.createDocumentFragment();
+        var rendered = 0;
         crews.forEach(function (c) {
+            // 2026-08-10 v2.6 — n_foto/n_video dalla search: crew senza alcun media approvato
+            // scartato SUBITO (prima: card placeholder + fetch + hide a posteriori). Se i campi
+            // mancano (risposta vecchia in cache) si torna al comportamento precedente (fetch+hide).
+            if (c.n_foto != null && ((c.n_foto | 0) + (c.n_video | 0)) === 0) return;
             var card = document.createElement('div');
             card.className = 'crew-pub-card' + (selectedUuids.has(c.uuid) ? ' selected' : '');
             card.dataset.uuid = c.uuid;
@@ -238,6 +248,10 @@
             // 2026-07-26 — conteggio lavori (proposta ChatGPT): vuoto finche' non arriva il fetch della cover random
             var projCount = document.createElement('div');
             projCount.className = 'crew-pub-projcount';
+            // v2.6 — conteggio immediato dalla search; applyCover poi lo raffina coi media effettivi
+            if (c.n_foto != null && ((c.n_foto | 0) + (c.n_video | 0)) > 0) {
+                projCount.textContent = ((c.n_foto | 0) + (c.n_video | 0)) + ' ' + (STR.worksCount || 'lavori');
+            }
             body.appendChild(projCount);
 
             // 2026-08-10 CREW-REDESIGN — bottone "Portfolio →" esplicito: il click-card resta attivo,
@@ -252,8 +266,14 @@
             // 2026-07-26 Fase 2 — click ovunque sulla card apre il profilo (come talent); selezione spostata sul bottoncino +/✓
             card.addEventListener('click', function () { openProfile(c.uuid, false, c.foto_profilo_url); });
             frag.appendChild(card);
+            rendered++;
         });
         grid.innerHTML = '';
+        // v2.6 — tutti scartati dal filtro n_foto/n_video → stesso messaggio "nessun risultato"
+        if (!rendered) {
+            grid.innerHTML = '<div class="crew-pub-empty">' + escapeHtml(STR.empty || 'Nessun crew.') + '</div>';
+            return;
+        }
         grid.appendChild(frag);
     }
 

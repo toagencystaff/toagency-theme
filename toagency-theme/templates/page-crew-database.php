@@ -454,6 +454,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=5.2-sweepthrottle" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=5.3-nfoto" defer></script>
 
 <?php toa_component('footer'); ?>
