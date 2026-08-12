@@ -1,6 +1,10 @@
 <?php
 /**
  * Template Name: Crew Database
+ * v2.0 — 2026-08-11 (SEO CREATIVE-HOME: elenco statico minimo lato server dentro #crew-grid,
+ *        letto da crew-public-search.php con cache 15min (transient) e timeout 3s — se fallisce
+ *        non stampa nulla, pagina identica a prima. JS invariato: grid.innerHTML='' lo sostituisce
+ *        subito con le card vere, riga 494 di crew-database-list.js)
  * v1.9 — 2026-08-11 (fallback province vicine a 0 risultati — JS v2.17: chiave no_results_near
  *        4 lingue, stringa nearFallback, CSS .crew-pub-nearnote, bump ?v)
  * v1.8 — 2026-08-11 (comuni completi nella ricerca — comuniJsonUrl per JS v2.16, solo config+bump)
@@ -140,6 +144,46 @@ $T = [
 ];
 
 $theme_uri = get_stylesheet_directory_uri();
+
+// 2026-08-11 SEO CREATIVE-HOME — elenco statico minimo per i crawler (vedi nota v2.0 nel docblock sopra).
+$crew_seo_items = get_transient('toa_crew_seo_grid');
+if ($crew_seo_items === false) {
+    $crew_seo_items = [];
+    try {
+        $ctx = stream_context_create(['http' => [
+            'method'  => 'POST',
+            'header'  => "Content-Type: application/json\r\n",
+            'content' => '{}',
+            'timeout' => 3,
+        ]]);
+        $seo_json = @file_get_contents('https://toagency.it/crm_toagency/actions/crew-public-search.php', false, $ctx);
+        if ($seo_json !== false) {
+            $seo_data = json_decode($seo_json, true);
+            if (!empty($seo_data['success']) && !empty($seo_data['results'])) {
+                $catLabelsByCode = [];
+                foreach ($CREW_CATEGORIES as $cat) { $catLabelsByCode[$cat['code']] = $_t($cat['label']); }
+                foreach (array_slice($seo_data['results'], 0, 60) as $c) {
+                    $nome = trim((string)($c['nome'] ?? ''));
+                    $uuid = trim((string)($c['uuid'] ?? ''));
+                    if ($nome === '' || $uuid === '') continue;
+                    // FIX 2026-08-11 marco — 'categorie' torna un ARRAY dall'API (["content_creator"]), non una
+                    // stringa CSV: il cast (string) su array generava un warning che diventava eccezione (WP strict
+                    // error handling) catturata dal catch sotto, azzerando TUTTO l'elenco.
+                    $categorieRaw = $c['categorie'] ?? [];
+                    $catsRaw = is_array($categorieRaw)
+                        ? array_filter(array_map('trim', $categorieRaw))
+                        : array_filter(array_map('trim', explode(',', (string)$categorieRaw)));
+                    $cats = [];
+                    foreach ($catsRaw as $cc) { if (isset($catLabelsByCode[$cc])) $cats[] = $catLabelsByCode[$cc]; }
+                    $crew_seo_items[] = ['nome' => $nome, 'uuid' => $uuid, 'cat' => implode(' • ', $cats)];
+                }
+            }
+        }
+    } catch (\Throwable $e) {
+        $crew_seo_items = [];
+    }
+    set_transient('toa_crew_seo_grid', $crew_seo_items, 15 * MINUTE_IN_SECONDS);
+}
 ?>
 
 <style>
@@ -236,6 +280,10 @@ $theme_uri = get_stylesheet_directory_uri();
 .crew-pub-portfolio:hover { border-color:#c8ff00; color:#c8ff00; }
 .crew-pub-projcount:not(:empty), .crew-pub-meta { margin-bottom:10px; } /* respiro minimo sopra il bottone */
 .crew-pub-empty { text-align:center; padding:80px 20px; color:#6b7280; grid-column:1/-1; }
+/* 2026-08-11 SEO CREATIVE-HOME — card statica minima (no foto), sostituita dal JS al load (vedi v2.0 nel docblock) */
+.crew-seo-card { background:#1a1a1e; border:1px solid #2a2a2e; border-radius:10px; padding:16px; color:#fff; text-decoration:none; display:flex; flex-direction:column; justify-content:center; min-height:140px; }
+.crew-seo-card strong { font-size:15px; font-weight:600; }
+.crew-seo-card span { color:#c8ff00; font-size:12.5px; font-weight:600; margin-top:8px; }
 /* 2026-08-11 v1.9 — avviso fallback "province vicine" sopra le card */
 .crew-pub-nearnote { grid-column:1/-1; text-align:center; padding:12px 16px; color:#9ca3af; font-size:14px; background:rgba(255,255,255,.05); border-radius:10px; }
 .crew-pub-nearnote strong { color:#c8ff00; font-weight:700; }
@@ -421,7 +469,7 @@ $theme_uri = get_stylesheet_directory_uri();
 
     <h2 class="crew-all-title" id="crewAllTitle" style="display:none"><?= esc_html($_t($T['all_title'])) ?></h2>
 
-    <div class="crew-pub-grid" id="crew-grid"></div>
+    <div class="crew-pub-grid" id="crew-grid"><?php foreach ($crew_seo_items as $it): ?><a class="crew-seo-card" href="<?= esc_url(home_url('/crew-database/?uuid=' . $it['uuid'])) ?>"><strong><?= esc_html($it['nome']) ?></strong><?php if ($it['cat'] !== ''): ?><span><?= esc_html($it['cat']) ?></span><?php endif; ?></a><?php endforeach; ?></div>
 
     <!-- Bottom action bar -->
     <div class="crew-pub-actionbar" id="actionbar">
