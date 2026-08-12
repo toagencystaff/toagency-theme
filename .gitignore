@@ -28,3 +28,6 @@ php_errorlog
 # Sensitive
 .env
 .env.*
+
+# Pull temporanei di file CRM (scp-only, non del repo tema)
+_data/_crm_pull/

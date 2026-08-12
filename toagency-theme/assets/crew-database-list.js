@@ -561,6 +561,9 @@
         var avatar = document.createElement('span');
         avatar.className = 'crew-pub-avatar';
         if (c.foto_profilo_url) avatar.style.backgroundImage = 'url(' + encodeURI(c.foto_profilo_url) + ')';
+        // 2026-08-12 — riquadratura impostata dallo staff nel CRM (foto_position "NN% NN%")
+        var avPos = (typeof c.foto_position === 'string' && /^\d{1,3}%\s+\d{1,3}%$/.test(c.foto_position.trim())) ? c.foto_position.trim() : '';
+        if (avPos) avatar.style.backgroundPosition = avPos;
         nameRow.appendChild(avatar);
         var name = document.createElement('span');
         name.className = 'crew-pub-name';
@@ -863,7 +866,8 @@
         html += '<div class="crew-pf-header">';
         // 2026-07-26 — layout affiancato: avatar a sinistra, info a destra (richiesto da Marco per ottimizzare lo spazio)
         html += '<div class="crew-pf-headrow">';
-        if (avatarUrl) html += '<span class="crew-pf-avatar" style="background-image:url(' + escapeHtml(encodeURI(avatarUrl)) + ')"></span>';
+        var pfPos = (typeof d.foto_position === 'string' && /^\d{1,3}%\s+\d{1,3}%$/.test(d.foto_position.trim())) ? d.foto_position.trim() : '';
+        if (avatarUrl) html += '<span class="crew-pf-avatar" style="background-image:url(' + escapeHtml(encodeURI(avatarUrl)) + ')' + (pfPos ? ';background-position:' + pfPos : '') + '"></span>';
         html += '<div class="crew-pf-headinfo">';
         if (!heroPhotos.length) html += '<h2 class="crew-pf-name">' + escapeHtml(d.nome ? properCase(d.nome) : '—') + codice + '</h2>';
         if (d.categorie && d.categorie.length) {
