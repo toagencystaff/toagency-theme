@@ -293,6 +293,13 @@
         var wrap = $('#crewFeatured');
         if (!wrap) return;
         var allTitle = $('#crewAllTitle');
+        // 2026-08-12 — feedback Marco: via le strisce per categoria (favorivano chi ha piu' iscritti,
+        // es. MUA/Stylist), meglio la griglia unica che mostra subito tutte le figure. Codice sotto
+        // lasciato intatto e raggiungibile: basta togliere questo return per riattivarle.
+        wrap.style.display = 'none';
+        wrap.innerHTML = '';
+        if (allTitle) allTitle.style.display = 'none';
+        return;
         var provEl = $('#filter-provincia');
         var hasFilter = !!(textQuery || $('#filter-categoria').value || $('#filter-paese').value || (provEl && provEl.value));
         if (hasFilter) {
