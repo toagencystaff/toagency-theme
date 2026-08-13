@@ -2251,6 +2251,68 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         }
     };
     function ssT(k) { return (SS_T[k] || {})[LANG] || (SS_T[k] || {}).it || ''; }
+    // 2026-08-13 marco — se la ricerca su Talenti da' zero risultati e la frase e' tipica di una
+    // figura del Creative Network (fotografo, stylist, truccatore...), NON diciamo solo "nessun
+    // risultato": diciamo che la offriamo, con link diretto alla categoria giusta.
+    // Parole prese dalle etichette già tradotte in page-crew-database.php ($CREW_CATEGORIES),
+    // + qualche sinonimo italiano comune dove l'etichetta è un prestito inglese poco cercato così.
+    // ogni valore è un'alternanza regex (parole singole O frasi con \s+ tra le parole),
+    // testata sul resto della frase non ancora interpretato — stesso schema di SS_ETNIA_VAL.
+    // NOTA: nessun accento nei pattern — a questo punto il testo è già passato da ssNorm(),
+    // che li ha già rimossi (é/è→e, ñ→n, ó→o, ecc.), come per tutti gli altri dizionari sopra.
+    var SS_CREW_VAL = [
+        ['fotografo',          'fotograf[oaie]|photographers?|photographes?'],
+        ['videomaker',         'videomakers?|cameraman|videaste|operatore'],
+        ['makeup_artist',      'make\\s*up|truccator[ei]|truccatric[ei]|maquilleur|maquilleuse|maquillador[ae]?|mua'],
+        ['hairstylist',        'hairstylist'],
+        ['parrucchiere',       'parrucchier[ei]|hairdressers?|coiffeur|coiffeuse|peluquer[oa]'],
+        ['stylist',            'stylist|styliste|estilista'],
+        ['fashion_designer',   'fashion\\s+designer|stilista|designer|disenador[ae]?'],
+        ['postproduzione',     'postproduzione|post\\s+production|retouch(?:er)?|ritocco|fotoritocco|retocador'],
+        ['video_editing',      'montator[ei]|montatric[ei]|video\\s+editing|montage\\s+video|editor\\s+video|edicion\\s+de\\s+video'],
+        ['social_media',       'social\\s+media(?:\\s+manager)?|smm'],
+        ['fashion_journalist', 'fashion\\s+journalist|giornalista\\s+di\\s+moda|journaliste\\s+mode|periodista\\s+de\\s+moda'],
+        ['art_director',       'art\\s+director|direttore\\s+artistico|directeur\\s+artistique|director\\s+de\\s+arte'],
+        ['dj',                 'dj|deejay'],
+        ['security',           'security|sicurezza|securite|seguridad|buttafuori'],
+        ['tecnico_luci',       'tecnico\\s+luci|lighting\\s+tech|tech\\.?\\s+lumiere|tec\\.?\\s+iluminacion'],
+        ['tecnico_suono',      'tecnico\\s+suono|sound\\s+tech|fonico|tech\\.?\\s+son|tec\\.?\\s+sonido'],
+        ['runner',             'runner']
+    ];
+    // Cerca nel resto della frase (parole non riconosciute da nessun altro filtro) una figura
+    // tipica del Creative Network. Ritorna il codice categoria o null.
+    function ssCrewMatch(restoWords) {
+        var s = ' ' + restoWords.join(' ') + ' ';
+        for (var i = 0; i < SS_CREW_VAL.length; i++) {
+            if (new RegExp('\\b(?:' + SS_CREW_VAL[i][1] + ')\\b').test(s)) return SS_CREW_VAL[i][0];
+        }
+        return null;
+    }
+    var SS_CREW_T = {
+        it: 'Non troviamo «%s» tra i Talenti, ma lo offriamo nel Creative Network:',
+        en: 'We can\'t find «%s» among Talents, but we do offer it in the Creative Network:',
+        fr: 'Nous ne trouvons pas «%s» parmi les Talents, mais nous l\'offrons dans le Creative Network :',
+        es: 'No encontramos «%s» entre los Talents, pero lo ofrecemos en el Creative Network:'
+    };
+    var SS_CREW_LINK_T = { it: 'Cerca lì →', en: 'Search there →', fr: 'Chercher là-bas →', es: 'Buscar allí →' };
+    // Nota con link cliccabile verso /crew-database/?cat=... (costruita via DOM, mai innerHTML
+    // con la frase dell'utente dentro, per sicurezza).
+    function ssNoteCrew(code, queryText) {
+        var host = $('#tdbNearNote');
+        if (!host) {
+            var grid = $('#tdbGrid'); if (!grid) return;
+            host = document.createElement('div'); host.id = 'tdbNearNote'; host.className = 'toa-tdb-nearnote';
+            grid.parentNode.insertBefore(host, grid);
+        }
+        host.textContent = '';
+        var msg = (SS_CREW_T[LANG] || SS_CREW_T.it).replace('%s', queryText.trim());
+        host.appendChild(document.createTextNode(msg + ' '));
+        var a = document.createElement('a');
+        a.href = '/crew-database/?cat=' + encodeURIComponent(code) + (LANG !== 'it' ? '&lang=' + LANG : '');
+        a.textContent = SS_CREW_LINK_T[LANG] || SS_CREW_LINK_T.it;
+        host.appendChild(a);
+        host.hidden = false;
+    }
     function ssNorm(s) {
         s = String(s || '').toLowerCase();
         try { s = s.normalize('NFD').replace(/[̀-ͯ]/g, ''); } catch (e) {}
@@ -2451,6 +2513,13 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
                 if (TD.total > 0) ssNote(ssT('near').replace('%s', text.trim()).replace('%p', near.join(', ')));
                 else ssNote('');
             });
+        }).then(function () {
+            // 4° tentativo, ultima spiaggia: ancora zero risultati e la frase è tipica di una
+            // figura del Creative Network (fotografo, stylist, truccatore...) → non un "nessun
+            // risultato" muto, ma il link diretto a dove quella figura si trova davvero.
+            if (TD.total > 0) return;
+            var crewCode = ssCrewMatch(p.resto);
+            if (crewCode) ssNoteCrew(crewCode, text);
         });
     }
     function initSmartSearch() {
