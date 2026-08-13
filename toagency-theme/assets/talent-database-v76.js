@@ -2275,7 +2275,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     // 2026-08-13 marco — soglia 40 risultati: ordine di allargamento consigliato dal confronto
     // con altre AI (età prima, è la concessione più "morbida"; etnia MAI in automatico, è un
     // attributo identitario). Un solo messaggio combinato, non uno per filtro toccato.
-    var SS_MIN_RESULTS = 40;
+    var SS_MIN_RESULTS = 50; // 2026-08-13 marco: alzata da 40 a 50, mai mostrare ricerche con meno risultati
     var SS_WIDEN_LBL = {
         eta: { it: 'età', en: 'age', fr: 'âge', es: 'edad' },
         geo: { it: 'zona geografica', en: 'nearby area', fr: 'zone géographique', es: 'zona geográfica' }
