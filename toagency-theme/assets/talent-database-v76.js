@@ -2106,6 +2106,20 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     Object.keys(SS_GENDER_KW).forEach(function (g) {
         SS_GENDER_KW[g].split(' ').forEach(function (w) { if (w) SS_GENDER_SET[w] = g; });
     });
+    // 2026-08-13 marco — in IT/FR/ES certe parole di RUOLO sono già di genere (modello/modella,
+    // attore/attrice, steward/hostess...), quindi implicano anche il sesso. Solo le parole
+    // davvero di genere: "hostess"/"model"/"creator" restano neutre (categoria generica).
+    var SS_ROLE_GENDER = {
+        modello: 'M', modelli: 'M', modella: 'F', modelle: 'F',
+        indossatore: 'M', indossatrice: 'F', fotomodello: 'M', fotomodella: 'F',
+        attore: 'M', attori: 'M', attrice: 'F', attrici: 'F',
+        acteur: 'M', acteurs: 'M', actrice: 'F', actriz: 'F', actress: 'F',
+        steward: 'M', stewards: 'M', promotrice: 'F', hotesse: 'F', hotesses: 'F', azafata: 'F', azafatas: 'F',
+        bambino: 'M', bambini: 'M', bambina: 'F', bambine: 'F',
+        ragazzo: 'M', ragazzi: 'M', ragazza: 'F', ragazze: 'F',
+        nino: 'M', ninos: 'M', nina: 'F',
+        creatrice: 'F', creador: 'M', creadora: 'F'
+    };
     // età/altezza: pattern multi-parola ("tra 20 e 30") che il loop a token singolo non gestisce,
     // quindi si estraggono con regex sulla frase intera PRIMA della tokenizzazione.
     var SS_NUM_HEIGHT_HINT = '(?:alta|alto|altezza|tall|height|taille|grande?|altura)';
@@ -2340,7 +2354,11 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
                     if (out.province.indexOf(nm) < 0) out.province.push(nm);
                     out.country = out.country || 'IT'; consumed = len; break;
                 }
-                if (len === 1 && SS_ROLE_SET[key]) { out.ruolo = out.ruolo || SS_ROLE_SET[key]; consumed = 1; break; }
+                if (len === 1 && SS_ROLE_SET[key]) {
+                    out.ruolo = out.ruolo || SS_ROLE_SET[key];
+                    if (!out.sesso && SS_ROLE_GENDER[key]) out.sesso = SS_ROLE_GENDER[key];
+                    consumed = 1; break;
+                }
                 if (len === 1 && SS_GENDER_SET[key] && !out.sesso) { out.sesso = SS_GENDER_SET[key]; consumed = 1; break; }
                 if (len === 1 && SS_LANG_SET[key] && out.lingua.indexOf(SS_LANG_SET[key]) < 0) { out.lingua.push(SS_LANG_SET[key]); consumed = 1; break; }
             }
