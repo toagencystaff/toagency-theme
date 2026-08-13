@@ -2124,7 +2124,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     var SS_STOP = {};
     'a ad in di da per il lo la i gli le un uno una del della dei delle su con e o zona provincia citta comune vicino cerco cercasi voglio trovare mi serve serve the in at near from for and or of city province area je cherche des une un le les dans pres pour et ou en busco cerca ciudad provincia cerca de los las y'.split(' ').forEach(function (w) { if (w) SS_STOP[w] = 1; });
 
-    var SS = { comuni: null, provByCode: null, geoIdx: null, loading: false, lastNear: null };
+    var SS = { comuni: null, provStatic: null, provByCode: null, geoIdx: null, loading: false };
 
     // Indice geografico costruito dai dati che l'API manda già (filter_options.geo):
     // funziona per IT/FR/ES/GB senza tabelle nostre. Le province sono NOMI, non sigle.
@@ -2140,19 +2140,25 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
                 list.forEach(function (p) { prov[ssNorm(p)] = { country: country, name: p }; });
             });
         });
+        // BUG 2026-08-13 (visto in preview): filter_options arriva in asincrono. Se l'indice viene
+        // costruito prima, esce vuoto — e se lo mettiamo in cache resta vuoto per sempre e la
+        // ricerca non riconosce più nessuna città. Quindi si mette in cache SOLO se è pieno.
+        if (!Object.keys(prov).length) return { prov: {}, reg: {} };
         SS.geoIdx = { prov: prov, reg: reg };
         return SS.geoIdx;
     }
     // sigla provincia → nome canonico usato dall'API (serve a comuni e province vicine).
     // Fonte 1: geo.IT.normalizza (già dall'API). Fonte 2: province-italia.json del tema.
     function ssBuildProvByCode(listaStatica) {
+        if (listaStatica) SS.provStatic = listaStatica;
         var idx = ssGeoIndex(), out = {};
+        if (!Object.keys(idx.prov).length) return null;   // filter_options non c'è ancora: si riprova al primo uso
         var norm = ((((TD.filterOptions || {}).geo) || {}).IT || {}).normalizza || {};
         Object.keys(norm).forEach(function (code) {
             var hit = idx.prov[ssNorm(norm[code])];
             out[code] = hit ? hit.name : norm[code];
         });
-        (listaStatica || []).forEach(function (p) {
+        (SS.provStatic || []).forEach(function (p) {
             if (out[p.code]) return;
             var hit = idx.prov[ssNorm(p.name)];
             if (hit) out[p.code] = hit.name;
@@ -2222,6 +2228,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     // Scrive i filtri e lancia la ricerca. Se zero risultati e c'era una provincia, allarga alle vicine.
     function ssApply(text) {
         var f = $('#tdbFilters'); if (!f) return;
+        if (!SS.provByCode) ssBuildProvByCode();   // 2° tentativo: ora filter_options c'è
         var p = ssParse(text);
         var sel = $('#tdbFilterRuolo');
         if (sel) { sel.value = p.ruolo || ''; }
