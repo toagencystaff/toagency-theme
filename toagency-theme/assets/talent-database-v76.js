@@ -2146,6 +2146,79 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         }
         return { out: out, text: s };
     }
+    // 2026-08-13 RICERCA IN LINGUAGGIO LIBERO — fetta 3: capelli/occhi/etnia/taglia + lingua/automunito.
+    // Valori canonici = quelli dell'API (fo.capelli/fo.occhi/fo.etnia). Colori come "nero"/"grigio"
+    // sono ambigui (colore vs altro): si riconoscono SOLO se preceduti dalla parola guida
+    // ("capelli"/"occhi" e traduzioni), come da regola progetto sulle ambiguità.
+    var SS_HAIR_GUIDE = '(?:capelli|hair|cheveux|cabello|pelo)';
+    var SS_EYES_GUIDE = '(?:occhi|eyes|yeux|ojos)';
+    var SS_SIZE_GUIDE = '(?:taglia|size|taille|talla)';
+    var SS_HAIR_VAL = [
+        ['Biondo Chiaro',  'biondo chiaro|bionda chiara|biondi chiari|bionde chiare|light blonde|blond clair|rubio claro'],
+        ['Biondo Scuro',   'biondo scuro|bionda scura|biondi scuri|bionde scure|dark blonde|blond fonce|rubio oscuro'],
+        ['Castano Chiaro', 'castano chiaro|castana chiara|castani chiari|castane chiare|light brown|chatain clair|castano claro'],
+        ['Castano Scuro',  'castano scuro|castana scura|castani scuri|castane scure|dark brown|chatain fonce|castano oscuro'],
+        ['Biondo',  'biondo|bionda|biondi|bionde|blonde?s?|rubio|rubia|rubios|rubias'],
+        ['Castano', 'castano|castana|castani|castane|chestnut|browns?|chatains?|marrons?'],
+        ['Calvo',   'calvo|calva|calvi|calve|pelato|pelata|pelati|pelate|balds?|chauves?'],
+        ['Bianco',  'bianco|bianca|bianchi|bianche|whites?|blanc|blanche|blancs?|blancos?'],
+        ['Grigio',  'grigio|grigia|grigi|grigie|greys?|grays?|gris'],
+        ['Nero',    'nero|nera|neri|nere|blacks?|noir|noire|noirs?|negros?'],
+        ['Rosso',   'rosso|rossa|rossi|rosse|reds?|ginger|roux|rousse|pelirrojo|pelirroja']
+    ];
+    var SS_EYES_VAL = [
+        ['Azzurri', 'azzurro|azzurra|azzurri|azzurre|blues?|bleu|bleue|bleus|bleues|azules?'],
+        ['Grigi',   'grigio|grigia|grigi|grigie|greys?|grays?|gris'],
+        ['Marroni', 'marrone|marroni|browns?|noisettes?|marrons?|castanos?'],
+        ['Neri',    'nero|nera|neri|nere|blacks?|noir|noire|noirs?|negros?'],
+        ['Verdi',   'verde|verdi|greens?|vert|verte|verts|vertes|verdes?']
+    ];
+    var SS_ETNIA_VAL = [
+        ['Nero Africano',    'nero africano|nera africana|black african|noir africain|negro africano'],
+        ['Bianco Caucasico', 'bianco caucasico|bianca caucasica|caucasian|caucasien(?:ne)?|caucasico'],
+        ['Mediorientale',    'mediorientale|medio orientale|middle eastern|moyen orient(?:al)?|medio oriental'],
+        ['Sudasiatico',      'sudasiatico|sud asiatico|south asian|sud asiatique'],
+        ['Asiatico',         'asiatic[oa]|asian|asiatique'],
+        ['Ispanico',         'ispanic[oa]|hispanic|hispanique'],
+        ['Magrebino',        'magrebin[oa]|maghrebin?'],
+        ['Mixed',            'mixed|mist[oa]|meticci[oa]|metisse|mestiz[oa]']
+    ];
+    var SS_CAR_RE = /\b(?:automunit[oa]|con\s+auto|con\s+macchina|ha\s+la\s+macchina|has\s+a\s+car|own\s+car|avec\s+voiture|con\s+coche)\b/;
+    var SS_LANG_KW = {
+        italiano: 'italiano italian italien', inglese: 'inglese english anglais ingles',
+        francese: 'francese french francais frances', spagnolo: 'spagnolo spanish espagnol espanol',
+        tedesco: 'tedesco german allemand aleman', portoghese: 'portoghese portuguese portugais portugues',
+        russo: 'russo russian russe ruso', arabo: 'arabo arabic arabe',
+        cinese: 'cinese chinese chinois chino', giapponese: 'giapponese japanese japonais japones'
+    };
+    var SS_LANG_SET = {};
+    Object.keys(SS_LANG_KW).forEach(function (l) {
+        SS_LANG_KW[l].split(' ').forEach(function (w) { if (w) SS_LANG_SET[w] = l; });
+    });
+    // Estrae dalla frase (già ripulita da numeri/età/altezza) capelli/occhi/etnia/taglia/automunito.
+    // NOTA: se nella stessa frase si citano 2 colori capelli con una sola parola guida
+    // ("capelli neri o castani") viene riconosciuto solo il primo — caso raro, non gestito.
+    function ssExtractAttrs(s) {
+        var out = { capelli: [], occhi: [], etnia: [], taglia: [], automunito: false };
+        function pass(guideRe, pairs, bucket) {
+            pairs.forEach(function (p) {
+                var re = new RegExp('\\b' + guideRe + '\\s+(?:colore\\s+|color\\s+|couleur\\s+)?(?:' + p[1] + ')\\b');
+                var m = s.match(re);
+                if (m) { out[bucket].push(p[0]); s = s.replace(m[0], ' '); }
+            });
+        }
+        pass(SS_HAIR_GUIDE, SS_HAIR_VAL, 'capelli');
+        pass(SS_EYES_GUIDE, SS_EYES_VAL, 'occhi');
+        SS_ETNIA_VAL.forEach(function (p) {
+            var m = s.match(new RegExp('\\b(?:' + p[1] + ')\\b'));
+            if (m) { out.etnia.push(p[0]); s = s.replace(m[0], ' '); }
+        });
+        var m = s.match(new RegExp('\\b' + SS_SIZE_GUIDE + '\\s+(xxl|xl|xs|s|m|l)\\b'));
+        if (m) { out.taglia.push(m[1].toUpperCase()); s = s.replace(m[0], ' '); }
+        m = s.match(SS_CAR_RE);
+        if (m) { out.automunito = true; s = s.replace(m[0], ' '); }
+        return { out: out, text: s };
+    }
     // province vicine (capoluoghi entro ~130km) — stessa tabella della Creative Network,
     // generata da _scripts/gen_prov_near.py. Serve solo al fallback "zero risultati".
     var SS_PROV_NEAR = {"AG":["CL","EN","PA","RG","TP"],"AL":["AT","VC","PV","NO","GE"],"AN":["MC","FM","PU","AP","RN"],"AO":["BI","TO","VB","VC","NO"],"AP":["TE","FM","MC","AQ","PE"],"AQ":["TE","RI","AP","CH","TR"],"AR":["SI","PG","FI","PO","FC"],"AT":["AL","TO","VC","SV","NO"],"AV":["BN","SA","CE","NA","CB"],"BA":["BT","MT","TA","BR","PZ"],"BG":["LC","MB","LO","BS","MI"],"BI":["VC","NO","VB","AO","TO"],"BL":["PN","TV","BZ","VE","UD"],"BN":["AV","CE","CB","SA","NA"],"BO":["MO","FE","RE","FC","RA"],"BR":["LE","TA","BA","MT"],"BS":["BG","CR","LO","VR","MN"],"BT":["BA","FG","MT","PZ","TA"],"BZ":["TN","BL","VI","TV","PN"],"CA":["SU","OR","NU"],"CB":["IS","BN","CE","AV","FG"],"CE":["NA","BN","AV","SA","IS"],"CH":["PE","TE","AQ","AP","IS"],"CL":["EN","AG","RG","CT","PA"],"CN":["IM","SV","TO","AT","AL"],"CO":["VA","LC","MB","MI","VB"],"CR":["PC","PR","LO","BS","MN"],"CS":["CZ","VV","KR"],"CT":["SR","RG","EN","RC","ME"],"CZ":["VV","KR","CS","ME","RC"],"EN":["CL","AG","CT","RG","PA"],"FC":["RA","RN","BO","FE","PU"],"FE":["RO","BO","MO","RA","PD"],"FG":["BT","BN","CB","AV","PZ"],"FI":["PO","PT","SI","AR","LU"],"FM":["MC","AP","AN","TE","PE"],"FR":["LT","IS","RM","AQ","RI"],"GE":["SV","AL","SP","AT","PV"],"GO":["UD","TS","PN","BL","TV"],"GR":["SI","VT","AR","LI","PG"],"IM":["SV","CN","GE","AT","AL"],"IS":["CB","CE","BN","FR","NA"],"KR":["CZ","CS","VV"],"LC":["CO","BG","MB","VA","MI"],"LE":["BR","TA","MT"],"LI":["PI","LU","MS","PT","PO"],"LO":["MI","PV","PC","MB","BG"],"LT":["FR","RM","RI","AQ","IS"],"LU":["PI","PT","LI","MS","PO"],"MB":["MI","CO","LC","BG","LO"],"MC":["FM","AN","AP","TE","PU"],"ME":["RC","VV","CT","CZ","SR"],"MI":["MB","LO","PV","CO","NO"],"MN":["VR","RE","PR","MO","CR"],"MO":["RE","BO","PR","MN","FE"],"MS":["SP","LU","PI","LI","PT"],"MT":["BA","TA","BT","PZ","BR"],"NA":["CE","AV","SA","BN","IS"],"NO":["VC","VA","MI","BI","PV"],"NU":["OR","SS","CA"],"OR":["NU","SU","CA","SS"],"PA":["TP","AG","CL","EN"],"PC":["CR","LO","PV","PR","MI"],"PD":["VI","VE","RO","TV","FE"],"PE":["CH","TE","AP","AQ","FM"],"PG":["AR","TR","VT","RI","MC"],"PI":["LU","LI","MS","PT","PO"],"PN":["BL","TV","UD","VE","GO"],"PO":["PT","FI","LU","PI","SI"],"PR":["RE","CR","MO","MN","PC"],"PT":["PO","FI","LU","PI","MS"],"PU":["RN","AN","FC","RA","MC"],"PV":["LO","MI","MB","PC","NO"],"PZ":["MT","BT","SA","AV","FG"],"RA":["FC","RN","FE","BO","RO"],"RC":["ME","VV","CT","SR","CZ"],"RE":["MO","PR","MN","BO","CR"],"RG":["SR","CT","EN","CL","AG"],"RI":["TR","AQ","VT","RM","TE"],"RM":["LT","RI","VT","TR","FR"],"RN":["PU","FC","RA","AR","AN"],"RO":["FE","PD","VI","VE","BO"],"SA":["AV","NA","BN","CE","PZ"],"SI":["AR","FI","GR","PO","PT"],"SO":["LC","BG","CO","BS","MB"],"SP":["MS","LU","PI","LI","GE"],"SR":["CT","RG","EN","CL","RC"],"SS":["NU","OR","SU"],"SU":["CA","OR","NU"],"SV":["GE","IM","AL","AT","CN"],"TA":["MT","BR","BA","LE","BT"],"TE":["AP","AQ","PE","CH","FM"],"TN":["BZ","VI","VR","BL","BS"],"TO":["AT","BI","VC","AL","CN"],"TP":["PA","AG","CL"],"TR":["RI","VT","PG","AQ","RM"],"TS":["GO","UD","PN","BL","TV"],"TV":["VE","PD","PN","BL","VI"],"UD":["GO","PN","TS","BL","TV"],"VA":["CO","VB","MB","LC","NO"],"VB":["VA","CO","NO","BI","LC"],"VC":["NO","BI","AL","AT","PV"],"VE":["TV","PD","RO","VI","PN"],"VI":["PD","VR","TV","RO","VE"],"VR":["MN","VI","BS","PD","TN"],"VT":["TR","RI","RM","PG","GR"],"VV":["CZ","CS","ME","RC","KR"]};
@@ -2237,11 +2310,14 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     function ssParse(text) {
         var idx = ssGeoIndex();
         var numRes = ssExtractNumeric(ssNorm(text));
-        var toks = numRes.text.split(' ').filter(Boolean);
+        var attrRes = ssExtractAttrs(numRes.text);
+        var toks = attrRes.text.split(' ').filter(Boolean);
         var out = {
-            ruolo: '', sesso: '', province: [], country: '', resto: [],
+            ruolo: '', sesso: '', province: [], country: '', resto: [], lingua: [],
             eta_min: numRes.out.eta_min, eta_max: numRes.out.eta_max,
-            altezza_min: numRes.out.altezza_min, altezza_max: numRes.out.altezza_max
+            altezza_min: numRes.out.altezza_min, altezza_max: numRes.out.altezza_max,
+            capelli: attrRes.out.capelli, occhi: attrRes.out.occhi, etnia: attrRes.out.etnia,
+            taglia: attrRes.out.taglia, automunito: attrRes.out.automunito
         };
         var i = 0;
         while (i < toks.length) {
@@ -2266,6 +2342,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
                 }
                 if (len === 1 && SS_ROLE_SET[key]) { out.ruolo = out.ruolo || SS_ROLE_SET[key]; consumed = 1; break; }
                 if (len === 1 && SS_GENDER_SET[key] && !out.sesso) { out.sesso = SS_GENDER_SET[key]; consumed = 1; break; }
+                if (len === 1 && SS_LANG_SET[key] && out.lingua.indexOf(SS_LANG_SET[key]) < 0) { out.lingua.push(SS_LANG_SET[key]); consumed = 1; break; }
             }
             if (consumed) { i += consumed; }
             else { if (!SS_STOP[toks[i]]) out.resto.push(toks[i]); i++; }
@@ -2282,6 +2359,16 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         }
         host.textContent = msg || '';
         host.hidden = !msg;
+    }
+    // fetta 3 — spunta/deseleziona i checkbox di un multi-select esistente (msBox/msText sono
+    // le funzioni già usate dal pannello filtri, definite più sopra nel file).
+    function ssSetMs(name, values) {
+        var box = msBox(name); if (!box) return;
+        var want = (values || []).map(function (v) { return String(v).toLowerCase(); });
+        $$('.toa-tdb-ms-menu input', box).forEach(function (c) {
+            c.checked = want.indexOf(String(c.value).toLowerCase()) !== -1;
+        });
+        msText(box);
     }
     // Scrive i filtri e lancia la ricerca. Se zero risultati e c'era una provincia, allarga alle vicine.
     function ssApply(text) {
@@ -2308,6 +2395,14 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         ['eta_min', 'eta_max', 'altezza_min', 'altezza_max'].forEach(function (k) {
             var el = f[k]; if (el) el.value = (p[k] !== undefined && p[k] !== null) ? p[k] : '';
         });
+        // fetta 3 — capelli/occhi/etnia/taglia (sempre) + lingua/automunito (solo se ruolo=hostess,
+        // stesso contratto API di readFilters()); toggleHostessFilters() sopra ha già nascosto/azzerato
+        // il blocco se non è hostess.
+        ['capelli', 'occhi', 'etnia', 'taglia'].forEach(function (name) { ssSetMs(name, p[name]); });
+        if (isHostessRole()) {
+            ssSetMs('lingua', p.lingua);
+            var autoEl = f.automunito; if (autoEl) autoEl.checked = !!p.automunito;
+        }
         if (f.q) f.q.value = p.resto.join(' ');
         ssNote('');
         // 1° tentativo → 2° senza le parole non capite → 3° allargando alle province vicine
