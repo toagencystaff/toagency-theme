@@ -2361,3 +2361,23 @@ body.tdb-drawer-open::before{display:none !important;}
 /* ── 2026-08-11 marco — v76.2.1: lingue in scheda una per riga, livello in grigio ── */
 .toa-tdb-detail-langs{display:flex;flex-direction:column;gap:3px;text-align:left}
 .toa-tdb-detail-lang em{font-style:normal;color:rgba(255,255,255,.5);font-size:.85em;margin-left:8px}
+
+/* ═════ 2026-08-13 UI-COERENZA DATABASE — feedback Marco: "⚙ Filtri" stava nella stessa riga di
+   "Talent Immagine" e "Creative Network", cioè sembrava un terzo pulsante di navigazione, mentre
+   i filtri riguardano SOLO i Talent Immagine.
+   Fix SENZA toccare markup né JS (il bottone resta #tdbFiltersBtn dov'è):
+   1. ::after = interruzione di riga flex a larghezza piena → tutto ciò che ha order:3 va a capo;
+   2. il bottone Filtri (order:3) finisce su una riga sua, larghezza naturale, centrato;
+   3. aspetto più leggero (trasparente, 40px) così non si legge come voce di navigazione.
+   Va in fondo al file di proposito: stessa specificità delle regole del 20/06, vince l'ultima. ═════ */
+.toa-tdb-macros::after { content:""; flex:0 0 100%; height:0; order:2; }
+.toa-tdb-macros .toa-tdb-macro.toa-tdb-filters-btn {
+  order:3 !important; flex:0 0 auto !important; margin-top:14px !important;
+  min-height:40px !important; padding:9px 20px !important; font-size:14px !important;
+  background:transparent !important; color:rgba(255,255,255,.85) !important;
+  border:1px solid rgba(255,255,255,.18) !important; border-radius:999px !important;
+}
+.toa-tdb-macros .toa-tdb-macro.toa-tdb-filters-btn:hover { border-color:#c8ff00 !important; color:#c8ff00 !important; }
+.tdb-filters-open .toa-tdb-macros .toa-tdb-macro.toa-tdb-filters-btn { background:#c8ff00 !important; color:#0a0a0a !important; border-color:#c8ff00 !important; }
+/* mobile: il bottone in alto resta nascosto (c'è il FAB in basso), quindi niente riga vuota */
+@media (max-width:767px) { .toa-tdb-macros::after { display:none; } }

@@ -1,6 +1,9 @@
 <?php
 /**
  * Template Name: Crew Database
+ * v2.1 — 2026-08-13 (UI-COERENZA DATABASE: barra sezione Talent↔Creative identica a quella di
+ *        /talent-database/ (riquadri 15px/46px al posto delle pillole 12px maiuscolo) e spostata
+ *        sotto ricerca, ultimo elemento prima delle chip categoria. Solo CSS+posizione, zero JS)
  * v2.0 — 2026-08-11 (SEO CREATIVE-HOME: elenco statico minimo lato server dentro #crew-grid,
  *        letto da crew-public-search.php con cache 15min (transient) e timeout 3s — se fallisce
  *        non stampa nulla, pagina identica a prima. JS invariato: grid.innerHTML='' lo sostituisce
@@ -211,13 +214,20 @@ if ($crew_seo_items === false) {
 .crew-feat-row .crew-pub-card { flex:0 0 240px; scroll-snap-align:start; }
 .crew-all-title { color:#fff; font-size:20px; font-weight:800; margin:26px 24px 0; padding-left:12px; border-left:3px solid #c8ff00; letter-spacing:-.3px; }
 @media (max-width:640px) { .crew-feat { padding:20px 16px 0; } .crew-feat-row .crew-pub-card { flex-basis:190px; } .crew-all-title { margin:20px 16px 0; } }
-/* 2026-06-06 marco — nav switcher Talent ↔ Crew */
-.toa-db-switcher { display:inline-flex; align-items:center; gap:8px; margin:10px 0 4px; }
-.toa-db-switcher__chip { display:inline-flex; align-items:center; padding:6px 16px; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; text-decoration:none; transition:border-color .15s, color .15s; white-space:nowrap; }
-.toa-db-switcher__chip--active { background:#c8ff00; color:#0a0a0a; border:2px solid #c8ff00; }
-.toa-db-switcher__chip--link { background:transparent; color:rgba(255,255,255,0.5); border:1.5px solid rgba(255,255,255,0.18); }
-.toa-db-switcher__chip--link:hover { border-color:rgba(200,255,0,0.45); color:#fff; }
-.toa-db-switcher__sep { width:3px; height:3px; border-radius:50%; background:rgba(255,255,255,0.2); flex-shrink:0; }
+/* 2026-06-06 marco — nav switcher Talent ↔ Crew
+   2026-08-13 UI-COERENZA — stessa identica barra di /talent-database/ (.toa-tdb-macros,
+   talent-database-v81.css riga 1976-1981): riquadri 15px/46px invece delle pillole 12px
+   maiuscolo. !important su padding/border-radius per il reset globale su button/a. */
+.toa-db-switcher { display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap; margin:22px 0 0; }
+.toa-db-switcher__chip { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:46px; padding:11px 24px !important; border-radius:10px !important; font-size:15px; font-weight:700; letter-spacing:.02em; text-transform:none; text-decoration:none; border:1px solid rgba(255,255,255,.18); white-space:nowrap; transition:background .15s, color .15s, border-color .15s; }
+.toa-db-switcher__chip--active { background:#c8ff00; color:#0a0a0a; border-color:#c8ff00; }
+.toa-db-switcher__chip--link { background:#0a0a0a; color:#fff; }
+.toa-db-switcher__chip--link:hover { border-color:#c8ff00; color:#c8ff00; }
+/* freccia sul link, come .toa-tdb-macro--link::after della pagina talent. Qui il link è il chip
+   di SINISTRA (Talent Immagine) quindi la freccia va prima del testo e punta a sinistra. */
+.toa-db-switcher__chip--link::before { content:""; width:7px; height:7px; flex:0 0 auto; border-left:2px solid currentColor; border-bottom:2px solid currentColor; transform:rotate(45deg) translateX(2px); opacity:.75; transition:transform .2s; }
+.toa-db-switcher__chip--link:hover::before { transform:translateX(-1px) rotate(45deg); }
+.toa-db-switcher__sep { display:none; }
 
 .crew-pub-filters { display:flex; gap:12px; padding:24px; flex-wrap:wrap; align-items:center; border-bottom:1px solid #2a2a2e; }
 .crew-pub-filters select { background:#1a1a1e; border:1px solid #2a2a2e; color:#fff; padding:10px 14px; border-radius:6px; font-size:14px; min-width:200px; cursor:pointer; }
@@ -419,7 +429,14 @@ if ($crew_seo_items === false) {
     <header class="crew-pub-hero">
         <div class="crew-pub-hero-eyebrow"><?= esc_html($_t($T['hero_eyebrow'])) ?></div>
         <h1 class="crew-pub-hero-title"><?= esc_html($_t($T['hero_title'])) ?></h1>
-        <!-- 2026-06-06 marco — nav switcher Talent ↔ Crew -->
+        <p class="crew-pub-hero-subtitle"><?= esc_html($_t($T['hero_subtitle'])) ?></p>
+        <!-- 2026-08-11 CREATIVE-HOME Fase 2 — ricerca testuale in evidenza -->
+        <div class="crew-pub-search">
+            <input type="search" id="crew-search" placeholder="<?= esc_attr($_t($T['search_ph'])) ?>" aria-label="<?= esc_attr($_t($T['search_ph'])) ?>" autocomplete="off">
+        </div>
+        <!-- 2026-06-06 marco — nav switcher Talent ↔ Crew
+             2026-08-13 UI-COERENZA — spostata sotto (ultimo elemento prima delle chip categoria),
+             stessa posizione che ha su /talent-database/ -->
         <nav class="toa-db-switcher" aria-label="<?= esc_attr($_t(['it'=>'Sezione database','en'=>'Database section','fr'=>'Section base de données','es'=>'Sección base de datos'])) ?>">
             <a class="toa-db-switcher__chip toa-db-switcher__chip--link" href="<?= esc_url(home_url('/talent-database/')) ?>">
                 <?= esc_html($_t(['it'=>'Talent Immagine','en'=>'Image Talent','fr'=>'Talent Image','es'=>'Talent Imagen'])) ?>
@@ -429,11 +446,6 @@ if ($crew_seo_items === false) {
                 <?= esc_html($_t(['it'=>'Creative Network','en'=>'Creative Network','fr'=>'Creative Network','es'=>'Creative Network'])) ?>
             </span>
         </nav>
-        <p class="crew-pub-hero-subtitle"><?= esc_html($_t($T['hero_subtitle'])) ?></p>
-        <!-- 2026-08-11 CREATIVE-HOME Fase 2 — ricerca testuale in evidenza -->
-        <div class="crew-pub-search">
-            <input type="search" id="crew-search" placeholder="<?= esc_attr($_t($T['search_ph'])) ?>" aria-label="<?= esc_attr($_t($T['search_ph'])) ?>" autocomplete="off">
-        </div>
     </header>
 
     <!-- 2026-07-26 — chip categoria (sostituisce la tendina, stile talent) -->
