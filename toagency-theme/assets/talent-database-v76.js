@@ -2167,18 +2167,24 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     var SS_HAIR_GUIDE = '(?:capelli|hair|cheveux|cabello|pelo)';
     var SS_EYES_GUIDE = '(?:occhi|eyes|yeux|ojos)';
     var SS_SIZE_GUIDE = '(?:taglia|size|taille|talla)';
+    // 2026-08-13 marco — 3° elemento = variante "nuda" (senza dover scrivere "capelli" davanti).
+    // true = tutta la riga è sicura da sole (composti a 2 parole, nessuno si chiama così).
+    // stringa = solo il sottoinsieme sicuro (femminile singolare/plurale: i cognomi italiani
+    // non si declinano al femminile, quindi "bionda/rossa/..." da sole non sono mai un cognome).
+    // Bianco e Nero restano SEMPRE dietro "capelli": Bianca è anche nome proprio, ed entrambi
+    // si confondono con l'etnia ("modella bianca/nera" più probabile intento etnia che capelli).
     var SS_HAIR_VAL = [
-        ['Biondo Chiaro',  'biondo chiaro|bionda chiara|biondi chiari|bionde chiare|light blonde|blond clair|rubio claro'],
-        ['Biondo Scuro',   'biondo scuro|bionda scura|biondi scuri|bionde scure|dark blonde|blond fonce|rubio oscuro'],
-        ['Castano Chiaro', 'castano chiaro|castana chiara|castani chiari|castane chiare|light brown|chatain clair|castano claro'],
-        ['Castano Scuro',  'castano scuro|castana scura|castani scuri|castane scure|dark brown|chatain fonce|castano oscuro'],
-        ['Biondo',  'biondo|bionda|biondi|bionde|blonde?s?|rubio|rubia|rubios|rubias'],
-        ['Castano', 'castano|castana|castani|castane|chestnut|browns?|chatains?|marrons?'],
-        ['Calvo',   'calvo|calva|calvi|calve|pelato|pelata|pelati|pelate|balds?|chauves?'],
+        ['Biondo Chiaro',  'biondo chiaro|bionda chiara|biondi chiari|bionde chiare|light blonde|blond clair|rubio claro', true],
+        ['Biondo Scuro',   'biondo scuro|bionda scura|biondi scuri|bionde scure|dark blonde|blond fonce|rubio oscuro', true],
+        ['Castano Chiaro', 'castano chiaro|castana chiara|castani chiari|castane chiare|light brown|chatain clair|castano claro', true],
+        ['Castano Scuro',  'castano scuro|castana scura|castani scuri|castane scure|dark brown|chatain fonce|castano oscuro', true],
+        ['Biondo',  'biondo|bionda|biondi|bionde|blonde?s?|rubio|rubia|rubios|rubias', 'bionda|bionde'],
+        ['Castano', 'castano|castana|castani|castane|chestnut|browns?|chatains?|marrons?', 'castana|castane'],
+        ['Calvo',   'calvo|calva|calvi|calve|pelato|pelata|pelati|pelate|balds?|chauves?', 'calva|calve'],
         ['Bianco',  'bianco|bianca|bianchi|bianche|whites?|blanc|blanche|blancs?|blancos?'],
-        ['Grigio',  'grigio|grigia|grigi|grigie|greys?|grays?|gris'],
+        ['Grigio',  'grigio|grigia|grigi|grigie|greys?|grays?|gris', 'grigia|grigie'],
         ['Nero',    'nero|nera|neri|nere|blacks?|noir|noire|noirs?|negros?'],
-        ['Rosso',   'rosso|rossa|rossi|rosse|reds?|ginger|roux|rousse|pelirrojo|pelirroja']
+        ['Rosso',   'rosso|rossa|rossi|rosse|reds?|ginger|roux|rousse|pelirrojo|pelirroja', 'rossa|rosse']
     ];
     var SS_EYES_VAL = [
         ['Azzurri', 'azzurro|azzurra|azzurri|azzurre|blues?|bleu|bleue|bleus|bleues|azules?'],
@@ -2223,15 +2229,21 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     // ("capelli neri o castani") viene riconosciuto solo il primo — caso raro, non gestito.
     function ssExtractAttrs(s) {
         var out = { capelli: [], occhi: [], etnia: [], taglia: [], automunito: false };
-        function pass(guideRe, pairs, bucket) {
+        function pass(guideRe, pairs, bucket, allowBare) {
             pairs.forEach(function (p) {
                 var re = new RegExp('\\b' + guideRe + '\\s+(?:colore\\s+|color\\s+|couleur\\s+)?(?:' + p[1] + ')\\b');
                 var m = s.match(re);
-                if (m) { out[bucket].push(p[0]); s = s.replace(m[0], ' '); }
+                if (m) { out[bucket].push(p[0]); s = s.replace(m[0], ' '); return; }
+                // 2026-08-13 marco — varianti sicure senza parola guida (solo capelli, vedi SS_HAIR_VAL)
+                if (allowBare && p[2] && out[bucket].indexOf(p[0]) < 0) {
+                    var barePattern = p[2] === true ? p[1] : p[2];
+                    var bm = s.match(new RegExp('\\b(?:' + barePattern + ')\\b'));
+                    if (bm) { out[bucket].push(p[0]); s = s.replace(bm[0], ' '); }
+                }
             });
         }
-        pass(SS_HAIR_GUIDE, SS_HAIR_VAL, 'capelli');
-        pass(SS_EYES_GUIDE, SS_EYES_VAL, 'occhi');
+        pass(SS_HAIR_GUIDE, SS_HAIR_VAL, 'capelli', true);
+        pass(SS_EYES_GUIDE, SS_EYES_VAL, 'occhi', false);
         SS_ETNIA_VAL.forEach(function (p) {
             var m = s.match(new RegExp('\\b(?:' + p[1] + ')\\b'));
             if (m) { out.etnia.push(p[0]); s = s.replace(m[0], ' '); }
