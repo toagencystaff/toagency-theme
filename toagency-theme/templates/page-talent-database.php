@@ -315,6 +315,24 @@ $hub_sections = array(
             </a>
         </nav>
         <p class="toa-tdb-hero-subtitle"><?php echo esc_html($_t($T['hero_subtitle'])); ?></p>
+        <?php /* 2026-08-13 UI-COERENZA — ricerca in linguaggio libero, gemella di quella della
+                 Creative Network. Traduce la frase in filtri veri (categoria + zona) in
+                 talent-database-v76.js, blocco "RICERCA IN LINGUAGGIO LIBERO". */ ?>
+        <div class="toa-tdb-hero-search">
+            <input type="search" id="tdbSmartSearch" autocomplete="off"
+                   placeholder="<?php echo esc_attr($_t(array(
+                       'it' => 'Cerca: «modella a Ivrea», «attori a Milano»…',
+                       'en' => 'Search: «model in Ivrea», «actors in Milan»…',
+                       'fr' => 'Rechercher : «mannequin à Ivrea», «acteurs à Milan»…',
+                       'es' => 'Buscar: «modelo en Ivrea», «actores en Milán»…',
+                   ))); ?>"
+                   aria-label="<?php echo esc_attr($_t(array(
+                       'it' => 'Cerca talent per categoria e zona',
+                       'en' => 'Search talent by category and area',
+                       'fr' => 'Rechercher par catégorie et zone',
+                       'es' => 'Buscar por categoría y zona',
+                   ))); ?>">
+        </div>
     </header>
 
     <!-- Toggle filtri (mobile) -->

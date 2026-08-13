@@ -2381,3 +2381,14 @@ body.tdb-drawer-open::before{display:none !important;}
 .tdb-filters-open .toa-tdb-macros .toa-tdb-macro.toa-tdb-filters-btn { background:#c8ff00 !important; color:#0a0a0a !important; border-color:#c8ff00 !important; }
 /* mobile: il bottone in alto resta nascosto (c'è il FAB in basso), quindi niente riga vuota */
 @media (max-width:767px) { .toa-tdb-macros::after { display:none; } }
+
+/* ═════ 2026-08-13 — ricerca in linguaggio libero nell'hero (stessa di .crew-pub-search).
+   font-size 16px: sotto, iOS zooma la pagina al focus. !important su padding/border-radius
+   per il reset globale sugli input. ═════ */
+.toa-tdb-hero-search { max-width:560px; margin:20px auto 0; }
+.toa-tdb-hero-search input { width:100%; box-sizing:border-box; background:#1a1a1e; border:1.5px solid #2a2a2e; color:#fff; padding:13px 22px !important; border-radius:999px !important; font-size:16px; font-family:inherit; transition:border-color .15s; }
+.toa-tdb-hero-search input:focus { outline:none; border-color:#c8ff00; }
+.toa-tdb-hero-search input::placeholder { color:#6b7280; }
+/* nota "province vicine" sopra la griglia (creata dal JS, non esiste nel template) */
+.toa-tdb-nearnote { margin:0 0 14px; padding:10px 14px; border-left:3px solid #c8ff00; background:rgba(200,255,0,.06); color:rgba(255,255,255,.8); font-size:14px; line-height:1.45; }
+.toa-tdb-nearnote[hidden] { display:none !important; }

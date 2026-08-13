@@ -2080,12 +2080,211 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     }
 
     // ═════════════════════════════════════════════════════════════════
+    // 2026-08-13 RICERCA IN LINGUAGGIO LIBERO — fetta 1: categoria + luogo + nome
+    // (gemella di quella della Creative Network, ma qui i talent sono 10.401 e arrivano
+    //  paginati dal server: non si filtra nel browser, si TRADUCE la frase in filtri veri
+    //  e si lascia cercare l'API. Scrive nei campi del pannello filtri già esistenti,
+    //  quindi non tocca il contratto API né readFilters().)
+    // ═════════════════════════════════════════════════════════════════
+    var SS_ROLE_KW = {
+        actor:   'attore attrice attori attrici comparsa comparse figurazione figurante figuranti cinema film spot fiction serie actor actress actors extra extras acteur acteurs actrice figurant actriz actores',
+        model:   'modella modello modelli modelle indossatrice indossatore fotomodella fotomodello sfilata sfilate passerella catalogo cataloghi shooting model models mannequin mannequins modelo modelos maniqui',
+        hostess: 'hostess steward stewards promoter promoters promotrice accoglienza fiera fiere stand congressuale congressuali congresso congressi hotesse hotesses azafata azafatas',
+        kids:    'bambino bambina bambini bambine ragazzo ragazza ragazzi ragazze kid kids child children enfant enfants nino nina ninos baby teen teenager minorenne minorenni',
+        creator: 'influencer influencers creator creators creatrice ugc tiktoker tiktokers instagrammer youtuber blogger createur createurs creador creadora'
+    };
+    var SS_ROLE_SET = {};
+    Object.keys(SS_ROLE_KW).forEach(function (r) {
+        SS_ROLE_KW[r].split(' ').forEach(function (w) { if (w) SS_ROLE_SET[w] = r; });
+    });
+    // province vicine (capoluoghi entro ~130km) — stessa tabella della Creative Network,
+    // generata da _scripts/gen_prov_near.py. Serve solo al fallback "zero risultati".
+    var SS_PROV_NEAR = {"AG":["CL","EN","PA","RG","TP"],"AL":["AT","VC","PV","NO","GE"],"AN":["MC","FM","PU","AP","RN"],"AO":["BI","TO","VB","VC","NO"],"AP":["TE","FM","MC","AQ","PE"],"AQ":["TE","RI","AP","CH","TR"],"AR":["SI","PG","FI","PO","FC"],"AT":["AL","TO","VC","SV","NO"],"AV":["BN","SA","CE","NA","CB"],"BA":["BT","MT","TA","BR","PZ"],"BG":["LC","MB","LO","BS","MI"],"BI":["VC","NO","VB","AO","TO"],"BL":["PN","TV","BZ","VE","UD"],"BN":["AV","CE","CB","SA","NA"],"BO":["MO","FE","RE","FC","RA"],"BR":["LE","TA","BA","MT"],"BS":["BG","CR","LO","VR","MN"],"BT":["BA","FG","MT","PZ","TA"],"BZ":["TN","BL","VI","TV","PN"],"CA":["SU","OR","NU"],"CB":["IS","BN","CE","AV","FG"],"CE":["NA","BN","AV","SA","IS"],"CH":["PE","TE","AQ","AP","IS"],"CL":["EN","AG","RG","CT","PA"],"CN":["IM","SV","TO","AT","AL"],"CO":["VA","LC","MB","MI","VB"],"CR":["PC","PR","LO","BS","MN"],"CS":["CZ","VV","KR"],"CT":["SR","RG","EN","RC","ME"],"CZ":["VV","KR","CS","ME","RC"],"EN":["CL","AG","CT","RG","PA"],"FC":["RA","RN","BO","FE","PU"],"FE":["RO","BO","MO","RA","PD"],"FG":["BT","BN","CB","AV","PZ"],"FI":["PO","PT","SI","AR","LU"],"FM":["MC","AP","AN","TE","PE"],"FR":["LT","IS","RM","AQ","RI"],"GE":["SV","AL","SP","AT","PV"],"GO":["UD","TS","PN","BL","TV"],"GR":["SI","VT","AR","LI","PG"],"IM":["SV","CN","GE","AT","AL"],"IS":["CB","CE","BN","FR","NA"],"KR":["CZ","CS","VV"],"LC":["CO","BG","MB","VA","MI"],"LE":["BR","TA","MT"],"LI":["PI","LU","MS","PT","PO"],"LO":["MI","PV","PC","MB","BG"],"LT":["FR","RM","RI","AQ","IS"],"LU":["PI","PT","LI","MS","PO"],"MB":["MI","CO","LC","BG","LO"],"MC":["FM","AN","AP","TE","PU"],"ME":["RC","VV","CT","CZ","SR"],"MI":["MB","LO","PV","CO","NO"],"MN":["VR","RE","PR","MO","CR"],"MO":["RE","BO","PR","MN","FE"],"MS":["SP","LU","PI","LI","PT"],"MT":["BA","TA","BT","PZ","BR"],"NA":["CE","AV","SA","BN","IS"],"NO":["VC","VA","MI","BI","PV"],"NU":["OR","SS","CA"],"OR":["NU","SU","CA","SS"],"PA":["TP","AG","CL","EN"],"PC":["CR","LO","PV","PR","MI"],"PD":["VI","VE","RO","TV","FE"],"PE":["CH","TE","AP","AQ","FM"],"PG":["AR","TR","VT","RI","MC"],"PI":["LU","LI","MS","PT","PO"],"PN":["BL","TV","UD","VE","GO"],"PO":["PT","FI","LU","PI","SI"],"PR":["RE","CR","MO","MN","PC"],"PT":["PO","FI","LU","PI","MS"],"PU":["RN","AN","FC","RA","MC"],"PV":["LO","MI","MB","PC","NO"],"PZ":["MT","BT","SA","AV","FG"],"RA":["FC","RN","FE","BO","RO"],"RC":["ME","VV","CT","SR","CZ"],"RE":["MO","PR","MN","BO","CR"],"RG":["SR","CT","EN","CL","AG"],"RI":["TR","AQ","VT","RM","TE"],"RM":["LT","RI","VT","TR","FR"],"RN":["PU","FC","RA","AR","AN"],"RO":["FE","PD","VI","VE","BO"],"SA":["AV","NA","BN","CE","PZ"],"SI":["AR","FI","GR","PO","PT"],"SO":["LC","BG","CO","BS","MB"],"SP":["MS","LU","PI","LI","GE"],"SR":["CT","RG","EN","CL","RC"],"SS":["NU","OR","SU"],"SU":["CA","OR","NU"],"SV":["GE","IM","AL","AT","CN"],"TA":["MT","BR","BA","LE","BT"],"TE":["AP","AQ","PE","CH","FM"],"TN":["BZ","VI","VR","BL","BS"],"TO":["AT","BI","VC","AL","CN"],"TP":["PA","AG","CL"],"TR":["RI","VT","PG","AQ","RM"],"TS":["GO","UD","PN","BL","TV"],"TV":["VE","PD","PN","BL","VI"],"UD":["GO","PN","TS","BL","TV"],"VA":["CO","VB","MB","LC","NO"],"VB":["VA","CO","NO","BI","LC"],"VC":["NO","BI","AL","AT","PV"],"VE":["TV","PD","RO","VI","PN"],"VI":["PD","VR","TV","RO","VE"],"VR":["MN","VI","BS","PD","TN"],"VT":["TR","RI","RM","PG","GR"],"VV":["CZ","CS","ME","RC","KR"]};
+    var SS_T = {
+        near: {
+            it: 'Nessun risultato esatto per «%s» — ti mostriamo anche le province vicine: %p.',
+            en: 'No exact results for «%s» — showing nearby provinces too: %p.',
+            fr: 'Aucun résultat exact pour «%s» — voici aussi les provinces voisines : %p.',
+            es: 'Sin resultados exactos para «%s» — te mostramos también las provincias cercanas: %p.'
+        },
+        dropped: {
+            it: 'Non ho capito «%w»: ti mostro i risultati per il resto della ricerca.',
+            en: 'I didn\'t understand «%w»: showing results for the rest of your search.',
+            fr: 'Je n\'ai pas compris «%w» : voici les résultats pour le reste de la recherche.',
+            es: 'No he entendido «%w»: te muestro los resultados del resto de la búsqueda.'
+        }
+    };
+    function ssT(k) { return (SS_T[k] || {})[LANG] || (SS_T[k] || {}).it || ''; }
+    function ssNorm(s) {
+        s = String(s || '').toLowerCase();
+        try { s = s.normalize('NFD').replace(/[̀-ͯ]/g, ''); } catch (e) {}
+        return s.replace(/[^a-z0-9\s']/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+    // parole da ignorare: preposizioni e riempitivi nelle 4 lingue
+    var SS_STOP = {};
+    'a ad in di da per il lo la i gli le un uno una del della dei delle su con e o zona provincia citta comune vicino cerco cercasi voglio trovare mi serve serve the in at near from for and or of city province area je cherche des une un le les dans pres pour et ou en busco cerca ciudad provincia cerca de los las y'.split(' ').forEach(function (w) { if (w) SS_STOP[w] = 1; });
+
+    var SS = { comuni: null, provByCode: null, geoIdx: null, loading: false, lastNear: null };
+
+    // Indice geografico costruito dai dati che l'API manda già (filter_options.geo):
+    // funziona per IT/FR/ES/GB senza tabelle nostre. Le province sono NOMI, non sigle.
+    function ssGeoIndex() {
+        if (SS.geoIdx) return SS.geoIdx;
+        var geo = ((TD.filterOptions || {}).geo) || {};
+        var prov = {}, reg = {};
+        Object.keys(geo).forEach(function (country) {
+            var regioni = (geo[country] || {}).regioni || {};
+            Object.keys(regioni).forEach(function (rname) {
+                var list = regioni[rname] || [];
+                reg[ssNorm(rname)] = { country: country, provs: list.slice() };
+                list.forEach(function (p) { prov[ssNorm(p)] = { country: country, name: p }; });
+            });
+        });
+        SS.geoIdx = { prov: prov, reg: reg };
+        return SS.geoIdx;
+    }
+    // sigla provincia → nome canonico usato dall'API (serve a comuni e province vicine).
+    // Fonte 1: geo.IT.normalizza (già dall'API). Fonte 2: province-italia.json del tema.
+    function ssBuildProvByCode(listaStatica) {
+        var idx = ssGeoIndex(), out = {};
+        var norm = ((((TD.filterOptions || {}).geo) || {}).IT || {}).normalizza || {};
+        Object.keys(norm).forEach(function (code) {
+            var hit = idx.prov[ssNorm(norm[code])];
+            out[code] = hit ? hit.name : norm[code];
+        });
+        (listaStatica || []).forEach(function (p) {
+            if (out[p.code]) return;
+            var hit = idx.prov[ssNorm(p.name)];
+            if (hit) out[p.code] = hit.name;
+        });
+        SS.provByCode = out;
+        return out;
+    }
+    // Carica una volta sola comuni-prov.json (8.211 voci) + province-italia.json (110).
+    function ssLoadData() {
+        if (SS.comuni && SS.provByCode) return Promise.resolve();
+        if (SS.loading) return SS.loading;
+        var base = (window.toaThemeUri || '') + '/assets/data/';
+        SS.loading = Promise.all([
+            fetch(base + 'comuni-prov.json').then(function (r) { return r.json(); }).catch(function () { return {}; }),
+            fetch(base + 'province-italia.json').then(function (r) { return r.json(); }).catch(function () { return []; })
+        ]).then(function (res) {
+            SS.comuni = res[0] || {};
+            ssBuildProvByCode(res[1] || []);
+        }).catch(function () { SS.comuni = SS.comuni || {}; SS.provByCode = SS.provByCode || {}; });
+        return SS.loading;
+    }
+    // Frase → { ruolo, province[], country, resto[] }. Finestre di 3/2/1 parole per i comuni
+    // e le province composte ("monza e brianza", "reggio calabria", "san giuliano milanese").
+    function ssParse(text) {
+        var idx = ssGeoIndex();
+        var toks = ssNorm(text).split(' ').filter(Boolean);
+        var out = { ruolo: '', province: [], country: '', resto: [] };
+        var i = 0;
+        while (i < toks.length) {
+            var consumed = 0;   // quante parole ha mangiato il match (0 = nessun match)
+            for (var len = Math.min(3, toks.length - i); len >= 1 && !consumed; len--) {
+                var key = toks.slice(i, i + len).join(' ');
+                var hitReg = idx.reg[key];
+                if (hitReg) {
+                    hitReg.provs.forEach(function (p) { if (out.province.indexOf(p) < 0) out.province.push(p); });
+                    out.country = out.country || hitReg.country; consumed = len; break;
+                }
+                var hitProv = idx.prov[key];
+                if (hitProv) {
+                    if (out.province.indexOf(hitProv.name) < 0) out.province.push(hitProv.name);
+                    out.country = out.country || hitProv.country; consumed = len; break;
+                }
+                var code = SS.comuni ? SS.comuni[key] : null;
+                if (code && SS.provByCode && SS.provByCode[code]) {
+                    var nm = SS.provByCode[code];
+                    if (out.province.indexOf(nm) < 0) out.province.push(nm);
+                    out.country = out.country || 'IT'; consumed = len; break;
+                }
+                if (len === 1 && SS_ROLE_SET[key]) { out.ruolo = out.ruolo || SS_ROLE_SET[key]; consumed = 1; break; }
+            }
+            if (consumed) { i += consumed; }
+            else { if (!SS_STOP[toks[i]]) out.resto.push(toks[i]); i++; }
+        }
+        return out;
+    }
+    // Nota "province vicine" sopra la griglia (creata al volo, nessun markup nel template).
+    function ssNote(msg) {
+        var host = $('#tdbNearNote');
+        if (!host) {
+            var grid = $('#tdbGrid'); if (!grid) return;
+            host = document.createElement('div'); host.id = 'tdbNearNote'; host.className = 'toa-tdb-nearnote';
+            grid.parentNode.insertBefore(host, grid);
+        }
+        host.textContent = msg || '';
+        host.hidden = !msg;
+    }
+    // Scrive i filtri e lancia la ricerca. Se zero risultati e c'era una provincia, allarga alle vicine.
+    function ssApply(text) {
+        var f = $('#tdbFilters'); if (!f) return;
+        var p = ssParse(text);
+        var sel = $('#tdbFilterRuolo');
+        if (sel) { sel.value = p.ruolo || ''; }
+        $$('.toa-tdb-cat-chip').forEach(function (c) {
+            c.classList.toggle('is-active', (c.getAttribute('data-ruolo') || '') === (p.ruolo || ''));
+        });
+        if (typeof toggleHostessFilters === 'function') toggleHostessFilters();
+        var cEl = $('#tdbFilterCountry');
+        if (cEl && p.country && cEl.value !== p.country) cEl.value = p.country;
+        TD.selectedProvinces = p.province.slice();
+        TD.geoHub = null;
+        populateProvinces();
+        if (f.q) f.q.value = p.resto.join(' ');
+        ssNote('');
+        // 1° tentativo → 2° senza le parole non capite → 3° allargando alle province vicine
+        return tdSearch(false).then(function () {
+            if (TD.total > 0) return;
+            if (!p.resto.length || (!p.ruolo && !p.province.length)) return;
+            // le parole che non ho riconosciuto stavano cercando un NOME e hanno azzerato tutto:
+            // meglio mostrare il resto della ricerca che una pagina vuota
+            if (f.q) f.q.value = '';
+            return tdSearch(false).then(function () {
+                if (TD.total > 0) ssNote(ssT('dropped').replace('%w', p.resto.join(' ')));
+            });
+        }).then(function () {
+            if (TD.total > 0 || !p.province.length || !SS.provByCode) return;
+            // fallback geografico: sigle vicine alle province cercate → nomi canonici
+            var codeOf = {}; Object.keys(SS.provByCode).forEach(function (c) { codeOf[SS.provByCode[c]] = c; });
+            var near = [];
+            p.province.forEach(function (nome) {
+                (SS_PROV_NEAR[codeOf[nome]] || []).forEach(function (c) {
+                    var nm = SS.provByCode[c];
+                    if (nm && p.province.indexOf(nm) < 0 && near.indexOf(nm) < 0) near.push(nm);
+                });
+            });
+            if (!near.length) return;
+            TD.selectedProvinces = p.province.concat(near);
+            populateProvinces();
+            return tdSearch(false).then(function () {
+                if (TD.total > 0) ssNote(ssT('near').replace('%s', text.trim()).replace('%p', near.join(', ')));
+                else ssNote('');
+            });
+        });
+    }
+    function initSmartSearch() {
+        var input = $('#tdbSmartSearch'); if (!input) return;
+        var run = debounce(function () {
+            var v = input.value.trim();
+            if (!v) { ssNote(''); if ($('#tdbFilters').q) $('#tdbFilters').q.value = ''; TD.selectedProvinces = []; populateProvinces(); tdSearch(false); return; }
+            ssLoadData().then(function () { ssApply(v); });
+        }, 450);
+        input.addEventListener('input', run);
+        input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); input.blur(); run(); } });
+        ssLoadData();   // scalda i due json al primo render (159KB, una volta sola)
+    }
+
+    // ═════════════════════════════════════════════════════════════════
     // BOOT
     // ═════════════════════════════════════════════════════════════════
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', tdInit);
+        document.addEventListener('DOMContentLoaded', function () { tdInit(); initSmartSearch(); });
     } else {
-        tdInit();
+        tdInit(); initSmartSearch();
     }
 })();
 
