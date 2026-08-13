@@ -2188,10 +2188,15 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         ['Verdi',   'verde|verdi|greens?|vert|verte|verts|vertes|verdes?']
     ];
     var SS_ETNIA_VAL = [
-        ['Nero Africano',    'nero africano|nera africana|black african|noir africain|negro africano'],
-        ['Bianco Caucasico', 'bianco caucasico|bianca caucasica|caucasian|caucasien(?:ne)?|caucasico'],
+        ['Nero Africano',    'nero africano|nera africana|black african|noir africain|negro africano|negra africana'],
+        // 2026-08-13 marco — FIX: mancava "caucasica" (femminile) accanto a "caucasico"; aggiunto
+        // anche "mediterraneo/a" come sinonimo su richiesta — nella tassonomia di questo settore
+        // (sud Europa/pelle olivastra) si accosta di solito a Caucasico, non a Mediorientale.
+        // Se non è la lettura giusta per TOAgency, si sposta con una riga sola.
+        ['Bianco Caucasico', 'bianco caucasico|bianca caucasica|caucasian|caucasien(?:ne)?|caucasic[oa]|mediterrane[oa]'],
         ['Mediorientale',    'mediorientale|medio orientale|middle eastern|moyen orient(?:al)?|medio oriental'],
-        ['Sudasiatico',      'sudasiatico|sud asiatico|south asian|sud asiatique'],
+        // FIX: mancava "sudasiatica" (femminile)
+        ['Sudasiatico',      'sudasiatic[oa]|sud asiatic[oa]|south asian|sud asiatique'],
         ['Asiatico',         'asiatic[oa]|asian|asiatique'],
         ['Ispanico',         'ispanic[oa]|hispanic|hispanique'],
         ['Magrebino',        'magrebin[oa]|maghrebin?'],
@@ -2349,7 +2354,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     function ssGeoIndex() {
         if (SS.geoIdx) return SS.geoIdx;
         var geo = ((TD.filterOptions || {}).geo) || {};
-        var prov = {}, reg = {}, nick = {};
+        var prov = {}, reg = {}, nick = {}, hubNear = {};
         Object.keys(geo).forEach(function (country) {
             var regioni = (geo[country] || {}).regioni || {};
             Object.keys(regioni).forEach(function (rname) {
@@ -2368,12 +2373,28 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
                 if (!key || prov[key] || reg[key]) return;   // non sovrascrivere un match già valido
                 nick[key] = { country: country, name: norm[nickname] };
             });
+            // 2026-08-13 marco — geo[paese].hub ha fasce di vicinanza curate a mano dal CRM (fascia
+            // 1 = raggiungibile), per ora per poche città principali per nazione, ma vale per TUTTE
+            // le nazioni (non solo Italia come la tabella statica SS_PROV_NEAR). Si inverte: per ogni
+            // provincia che compare in una fascia 1, le "vicine" sono le altre della stessa fascia 1.
+            var hubs = (geo[country] || {}).hub || {};
+            var byProv = {};
+            Object.keys(hubs).forEach(function (hubName) {
+                var f1 = ((hubs[hubName] || {}).fasce || {})['1'] || [];
+                f1.forEach(function (provName) {
+                    if (!byProv[provName]) byProv[provName] = [];
+                    f1.forEach(function (other) {
+                        if (other !== provName && byProv[provName].indexOf(other) < 0) byProv[provName].push(other);
+                    });
+                });
+            });
+            if (Object.keys(byProv).length) hubNear[country] = byProv;
         });
         // BUG 2026-08-13 (visto in preview): filter_options arriva in asincrono. Se l'indice viene
         // costruito prima, esce vuoto — e se lo mettiamo in cache resta vuoto per sempre e la
         // ricerca non riconosce più nessuna città. Quindi si mette in cache SOLO se è pieno.
-        if (!Object.keys(prov).length) return { prov: {}, reg: {}, nick: {} };
-        SS.geoIdx = { prov: prov, reg: reg, nick: nick };
+        if (!Object.keys(prov).length) return { prov: {}, reg: {}, nick: {}, hubNear: {} };
+        SS.geoIdx = { prov: prov, reg: reg, nick: nick, hubNear: hubNear };
         return SS.geoIdx;
     }
     // sigla provincia → nome canonico usato dall'API (serve a comuni e province vicine).
@@ -2541,15 +2562,27 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
             widened.push('eta');
             return tdSearch(false);
         }).then(function () {
-            // 4° — ancora sotto soglia: allarga anche la PROVINCIA alle vicine (tabella statica).
-            if (TD.total >= SS_MIN_RESULTS || !p.province.length || !SS.provByCode) return;
-            var codeOf = {}; Object.keys(SS.provByCode).forEach(function (c) { codeOf[SS.provByCode[c]] = c; });
+            // 4° — ancora sotto soglia: allarga anche la PROVINCIA alle vicine. Preferisce le fasce
+            // hub del CRM (dati reali, valgono per tutte le nazioni); se la provincia non è coperta
+            // da nessun hub, ripiega sulla tabella statica ~130km (oggi disponibile solo per l'Italia).
+            if (TD.total >= SS_MIN_RESULTS || !p.province.length) return;
+            var hubIdx = ssGeoIndex().hubNear || {};
+            var hubByCountry = hubIdx[p.country] || {};
+            var codeOf = null;
+            if (SS.provByCode) { codeOf = {}; Object.keys(SS.provByCode).forEach(function (c) { codeOf[SS.provByCode[c]] = c; }); }
             var near = [];
             p.province.forEach(function (nome) {
-                (SS_PROV_NEAR[codeOf[nome]] || []).forEach(function (c) {
-                    var nm = SS.provByCode[c];
-                    if (nm && p.province.indexOf(nm) < 0 && near.indexOf(nm) < 0) near.push(nm);
-                });
+                var fromHub = hubByCountry[nome];
+                if (fromHub && fromHub.length) {
+                    fromHub.forEach(function (nm) { if (p.province.indexOf(nm) < 0 && near.indexOf(nm) < 0) near.push(nm); });
+                    return;
+                }
+                if (p.country === 'IT' && codeOf) {
+                    (SS_PROV_NEAR[codeOf[nome]] || []).forEach(function (c) {
+                        var nm = SS.provByCode[c];
+                        if (nm && p.province.indexOf(nm) < 0 && near.indexOf(nm) < 0) near.push(nm);
+                    });
+                }
             });
             if (!near.length) return;
             TD.selectedProvinces = p.province.concat(near);
