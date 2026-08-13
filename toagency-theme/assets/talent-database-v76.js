@@ -2138,6 +2138,17 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
             if (isH) { out.altezza_min = lo; out.altezza_max = hi; } else { out.eta_min = lo; out.eta_max = hi; }
             s = s.replace(m[0], ' ');
         }
+        // 2026-08-13 marco — "20/30 anni" / "170/180 cm": ssNorm toglie lo slash prima che si arrivi
+        // qui, quindi arrivano come due numeri vicini senza connettivo ("e"/"tra"). Ancorati da
+        // "cm"/parola età per non scambiare 2 numeri a caso per un range.
+        if (out.altezza_min === undefined && out.altezza_max === undefined) {
+            m = s.match(/\b(\d{2,3})\s+(\d{2,3})\s*cm\b/);
+            if (m) {
+                var a2 = parseInt(m[1], 10), b2 = parseInt(m[2], 10);
+                out.altezza_min = Math.min(a2, b2); out.altezza_max = Math.max(a2, b2);
+                s = s.replace(m[0], ' ');
+            }
+        }
         if (out.altezza_min === undefined) {
             m = s.match(new RegExp('\\b' + SS_NUM_HEIGHT_HINT + '\\s+(\\d{2,3})(\\s*cm)?\\b'));
             if (m) { out.altezza_min = parseInt(m[1], 10); s = s.replace(m[0], ' '); }
@@ -2145,6 +2156,14 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         if (out.altezza_min === undefined && out.altezza_max === undefined) {
             m = s.match(/\b(\d{2,3})\s*cm\b/);
             if (m) { out.altezza_min = out.altezza_max = parseInt(m[1], 10); s = s.replace(m[0], ' '); }
+        }
+        if (out.eta_min === undefined && out.eta_max === undefined) {
+            m = s.match(new RegExp('\\b(\\d{1,2})\\s+(\\d{1,2})\\s*' + SS_NUM_AGE_HINT + '\\b'));
+            if (m) {
+                var a3 = parseInt(m[1], 10), b3 = parseInt(m[2], 10);
+                out.eta_min = Math.min(a3, b3); out.eta_max = Math.max(a3, b3);
+                s = s.replace(m[0], ' ');
+            }
         }
         if (out.eta_min === undefined && out.eta_max === undefined) {
             m = s.match(new RegExp('\\b(\\d{1,2})\\s*' + SS_NUM_AGE_HINT + '\\b'));
@@ -2252,6 +2271,75 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         if (m) { out.taglia.push(m[1].toUpperCase()); s = s.replace(m[0], ' '); }
         m = s.match(SS_CAR_RE);
         if (m) { out.automunito = true; s = s.replace(m[0], ' '); }
+        return { out: out, text: s };
+    }
+    // 2026-08-13 marco — macro-aree (nord/centro/sud). Liste = NOMI DI REGIONE (dati reali
+    // dell'API 13/08); le province si risolvono a runtime da idx.reg, così restano coerenti
+    // anche se l'API cambia. "Isole" volutamente NON c'è: si cerca Sicilia/Sardegna diretto.
+    // FR/ES/GB solo nord/sud (nessuna convenzione standard per nord-ovest/nord-est fuori Italia).
+    var IT_NORDOVEST = ["Piemonte", "Valle d'Aosta", "Liguria", "Lombardia"];
+    var IT_NORDEST   = ["Trentino-Alto Adige", "Veneto", "Friuli-Venezia Giulia", "Emilia-Romagna"];
+    var IT_NORD      = IT_NORDOVEST.concat(IT_NORDEST);
+    var IT_CENTRO    = ["Toscana", "Umbria", "Marche", "Lazio"];
+    var IT_SUD       = ["Abruzzo", "Molise", "Campania", "Puglia", "Basilicata", "Calabria"];
+    var SS_MACRO_REGIONS = {
+        IT: { nordovest: IT_NORDOVEST, nordest: IT_NORDEST, nord: IT_NORD, centro: IT_CENTRO, sud: IT_SUD,
+              centronord: IT_CENTRO.concat(IT_NORD), centrosud: IT_CENTRO.concat(IT_SUD) },
+        FR: { sud: ["Provence-Alpes-Côte d'Azur", "Occitanie", "Nouvelle-Aquitaine", "Auvergne-Rhône-Alpes"],
+              nord: ["Île-de-France", "Hauts-de-France", "Grand Est", "Normandie", "Bretagne", "Pays de la Loire", "Centre-Val de Loire", "Bourgogne-Franche-Comté"] },
+        ES: { nord: ["Galicia", "Asturias", "Cantabria", "País Vasco", "Navarra", "La Rioja"],
+              sud: ["Andalucía", "Región de Murcia", "Extremadura"] },
+        GB: { nord: ["North West", "Yorkshire"],
+              sud: ["South West", "South East", "Greater London", "East of England"] }
+    };
+    // parola macro (qualunque lingua) -> chiave canonica. "nord"/"sud"/"centro" restano
+    // ambigui-ma-accettati: in questo dominio (ricerca talent) l'intento geografico è quasi
+    // sempre quello, rischio di falso positivo basso.
+    var SS_MACRO_WORD = {
+        'nord ovest': 'nordovest', 'nordovest': 'nordovest', 'northwest': 'nordovest', 'north west': 'nordovest', 'nord ouest': 'nordovest', 'noroeste': 'nordovest',
+        'nord est': 'nordest', 'nordest': 'nordest', 'northeast': 'nordest', 'north east': 'nordest', 'nordeste': 'nordest',
+        'centro nord': 'centronord', 'centronord': 'centronord',
+        'centro sud': 'centrosud', 'centrosud': 'centrosud',
+        'nord': 'nord', 'north': 'nord', 'norte': 'nord',
+        'sud': 'sud', 'south': 'sud', 'sur': 'sud',
+        'centro': 'centro', 'center': 'centro', 'centre': 'centro'
+    };
+    // parola paese (qualunque lingua) -> codice. Senza paese esplicito = default Italia.
+    var SS_MACRO_COUNTRY = {
+        italia: 'IT', italy: 'IT', italie: 'IT',
+        francia: 'FR', france: 'FR',
+        spagna: 'ES', spain: 'ES', espana: 'ES', espagne: 'ES',
+        'regno unito': 'GB', uk: 'GB', 'united kingdom': 'GB', inghilterra: 'GB', england: 'GB', angleterre: 'GB', inglaterra: 'GB', 'royaume uni': 'GB'
+    };
+    var SS_MACRO_KEYS = Object.keys(SS_MACRO_WORD).sort(function (a, b) { return b.split(' ').length - a.split(' ').length; });
+    var SS_MACRO_COUNTRY_KEYS = Object.keys(SS_MACRO_COUNTRY).sort(function (a, b) { return b.split(' ').length - a.split(' ').length; });
+    // Estrae UN solo termine macro-area (raro averne 2 nella stessa frase) + paese opzionale
+    // subito dopo. Se la combinazione macro+paese non è definita (es. "centro Regno Unito"),
+    // non tocca nulla: resta testo normale, nessun errore.
+    function ssExtractMacro(s, idx) {
+        var out = { province: [], country: '' };
+        for (var i = 0; i < SS_MACRO_KEYS.length; i++) {
+            var word = SS_MACRO_KEYS[i];
+            var m = s.match(new RegExp('\\b' + word.split(' ').join('\\s+') + '\\b'));
+            if (!m) continue;
+            var canon = SS_MACRO_WORD[word];
+            var rest = s.slice(m.index + m[0].length);
+            var country = 'IT', consumedCountry = '';
+            for (var j = 0; j < SS_MACRO_COUNTRY_KEYS.length; j++) {
+                var cw = SS_MACRO_COUNTRY_KEYS[j];
+                var cm = rest.match(new RegExp('^\\s+' + cw.split(' ').join('\\s+') + '\\b'));
+                if (cm) { country = SS_MACRO_COUNTRY[cw]; consumedCountry = cm[0]; break; }
+            }
+            var group = (SS_MACRO_REGIONS[country] || {})[canon];
+            if (!group) continue;
+            group.forEach(function (rname) {
+                var hit = idx.reg[ssNorm(rname)];
+                if (hit) hit.provs.forEach(function (p) { if (out.province.indexOf(p) < 0) out.province.push(p); });
+            });
+            out.country = out.country || country;
+            s = s.replace(m[0] + consumedCountry, ' ');
+            break;
+        }
         return { out: out, text: s };
     }
     // province vicine (capoluoghi entro ~130km) — stessa tabella della Creative Network,
@@ -2452,9 +2540,10 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         var idx = ssGeoIndex();
         var numRes = ssExtractNumeric(ssNorm(text));
         var attrRes = ssExtractAttrs(numRes.text);
-        var toks = attrRes.text.split(' ').filter(Boolean);
+        var macroRes = ssExtractMacro(attrRes.text, idx);
+        var toks = macroRes.text.split(' ').filter(Boolean);
         var out = {
-            ruolo: '', sesso: '', province: [], country: '', resto: [], lingua: [],
+            ruolo: '', sesso: '', province: macroRes.out.province.slice(), country: macroRes.out.country, resto: [], lingua: [],
             eta_min: numRes.out.eta_min, eta_max: numRes.out.eta_max,
             altezza_min: numRes.out.altezza_min, altezza_max: numRes.out.altezza_max,
             capelli: attrRes.out.capelli, occhi: attrRes.out.occhi, etnia: attrRes.out.etnia,
