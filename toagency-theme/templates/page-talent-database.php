@@ -333,6 +333,18 @@ $hub_sections = array(
                        'es' => 'Buscar por categoría y zona',
                    ))); ?>">
         </div>
+        <?php /* 2026-08-13 — invito ai filtri manuali se la ricerca libera non basta */ ?>
+        <p class="toa-tdb-hero-hint"><?php echo esc_html($_t(array(
+            'it' => 'Non trovi quello che cerchi?',
+            'en' => "Can't find what you're looking for?",
+            'fr' => 'Vous ne trouvez pas ce que vous cherchez ?',
+            'es' => '¿No encuentras lo que buscas?',
+        ))); ?> <button type="button" onclick="var b=document.getElementById('tdbFiltersBtn'); if(b) b.click();"><?php echo esc_html($_t(array(
+            'it' => 'Usa i filtri',
+            'en' => 'Use the filters',
+            'fr' => 'Utilisez les filtres',
+            'es' => 'Usa los filtros',
+        ))); ?></button></p>
     </header>
 
     <!-- Toggle filtri (mobile) -->
