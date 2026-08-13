@@ -2188,7 +2188,11 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         ['Verdi',   'verde|verdi|greens?|vert|verte|verts|vertes|verdes?']
     ];
     var SS_ETNIA_VAL = [
-        ['Nero Africano',    'nero africano|nera africana|black african|noir africain|negro africano|negra africana'],
+        // 2026-08-13 marco — aggiunto "di colore": espressione colloquiale italiana, qui indica
+        // specificamente carnagione nera/afro (non l'inglese "of color", che in inglese è più
+        // ampio e includerebbe anche asiatico/ispanico — per questo NON l'ho aggiunto alle
+        // versioni EN/FR/ES, solo a quella italiana dove il significato è più circoscritto).
+        ['Nero Africano',    'nero africano|nera africana|black african|noir africain|negro africano|negra africana|di colore'],
         // 2026-08-13 marco — FIX: mancava "caucasica" (femminile) accanto a "caucasico"; aggiunto
         // anche "mediterraneo/a" come sinonimo su richiesta — nella tassonomia di questo settore
         // (sud Europa/pelle olivastra) si accosta di solito a Caucasico, non a Mediorientale.
