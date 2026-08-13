@@ -219,7 +219,9 @@ if ($crew_seo_items === false) {
    talent-database-v81.css riga 1976-1981): riquadri 15px/46px invece delle pillole 12px
    maiuscolo. !important su padding/border-radius per il reset globale su button/a. */
 .toa-db-switcher { display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap; margin:22px 0 0; }
-.toa-db-switcher__chip { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:46px; padding:11px 24px !important; border-radius:10px !important; font-size:15px; font-weight:700; letter-spacing:.02em; text-transform:none; text-decoration:none; border:1px solid rgba(255,255,255,.18); white-space:nowrap; transition:background .15s, color .15s, border-color .15s; }
+/* font-family + uppercase forzati: il wrap crew gira in DM Sans, la pagina talent in Inter —
+   senza questi due la barra restava diversa a occhio (verificato in preview 13/08). */
+.toa-db-switcher__chip { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:46px; padding:11px 24px !important; border-radius:10px !important; font-family:Inter,'Helvetica Neue',Arial,sans-serif; font-size:15px; font-weight:700; letter-spacing:.02em; text-transform:uppercase; text-decoration:none; border:1px solid rgba(255,255,255,.18); white-space:nowrap; transition:background .15s, color .15s, border-color .15s; }
 .toa-db-switcher__chip--active { background:#c8ff00; color:#0a0a0a; border-color:#c8ff00; }
 .toa-db-switcher__chip--link { background:#0a0a0a; color:#fff; }
 .toa-db-switcher__chip--link:hover { border-color:#c8ff00; color:#c8ff00; }
