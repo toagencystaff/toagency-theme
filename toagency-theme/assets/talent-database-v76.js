@@ -2097,6 +2097,55 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     Object.keys(SS_ROLE_KW).forEach(function (r) {
         SS_ROLE_KW[r].split(' ').forEach(function (w) { if (w) SS_ROLE_SET[w] = r; });
     });
+    // 2026-08-13 RICERCA IN LINGUAGGIO LIBERO — fetta 2: sesso + età + altezza
+    var SS_GENDER_KW = {
+        M: 'uomo uomini maschio maschi maschile man men male males homme hommes masculin hombre hombres masculino',
+        F: 'donna donne femmina femmine femminile woman women female females femme femmes feminin mujer mujeres femenino'
+    };
+    var SS_GENDER_SET = {};
+    Object.keys(SS_GENDER_KW).forEach(function (g) {
+        SS_GENDER_KW[g].split(' ').forEach(function (w) { if (w) SS_GENDER_SET[w] = g; });
+    });
+    // età/altezza: pattern multi-parola ("tra 20 e 30") che il loop a token singolo non gestisce,
+    // quindi si estraggono con regex sulla frase intera PRIMA della tokenizzazione.
+    var SS_NUM_HEIGHT_HINT = '(?:alta|alto|altezza|tall|height|taille|grande?|altura)';
+    var SS_NUM_AGE_HINT    = '(?:anni|anno|years?|yo|ans?|anos?)';
+    var SS_NUM_OVER  = '(?:over|almeno|minimo|piu di|più di|plus de|mas de|más de)';
+    var SS_NUM_UNDER = '(?:under|massimo|entro|meno di|moins de|menos de)';
+    // numeri "nudi" (senza indizio): un range tipo "tra 20 e 30" è età di default; l'altezza
+    // richiede sempre un indizio (parola o "cm") per non essere confusa con l'età.
+    function ssExtractNumeric(s) {
+        var out = {};
+        var m = s.match(new RegExp('\\b(' + SS_NUM_HEIGHT_HINT + '\\s+)?(?:tra|between|entre)\\s+(\\d{1,3})\\s+(?:e|and|et|y)\\s+(\\d{1,3})(\\s*cm)?\\b'));
+        if (m) {
+            var isH = !!(m[1] || m[4]);
+            var a = parseInt(m[2], 10), b = parseInt(m[3], 10);
+            var lo = Math.min(a, b), hi = Math.max(a, b);
+            if (isH) { out.altezza_min = lo; out.altezza_max = hi; } else { out.eta_min = lo; out.eta_max = hi; }
+            s = s.replace(m[0], ' ');
+        }
+        if (out.altezza_min === undefined) {
+            m = s.match(new RegExp('\\b' + SS_NUM_HEIGHT_HINT + '\\s+(\\d{2,3})(\\s*cm)?\\b'));
+            if (m) { out.altezza_min = parseInt(m[1], 10); s = s.replace(m[0], ' '); }
+        }
+        if (out.altezza_min === undefined && out.altezza_max === undefined) {
+            m = s.match(/\b(\d{2,3})\s*cm\b/);
+            if (m) { out.altezza_min = out.altezza_max = parseInt(m[1], 10); s = s.replace(m[0], ' '); }
+        }
+        if (out.eta_min === undefined && out.eta_max === undefined) {
+            m = s.match(new RegExp('\\b(\\d{1,2})\\s*' + SS_NUM_AGE_HINT + '\\b'));
+            if (m) { out.eta_min = out.eta_max = parseInt(m[1], 10); s = s.replace(m[0], ' '); }
+        }
+        if (out.eta_min === undefined && out.eta_max === undefined) {
+            m = s.match(new RegExp('\\b' + SS_NUM_OVER + '\\s+(\\d{1,2})\\b'));
+            if (m) { out.eta_min = parseInt(m[1], 10); s = s.replace(m[0], ' '); }
+            else {
+                m = s.match(new RegExp('\\b' + SS_NUM_UNDER + '\\s+(\\d{1,2})\\b'));
+                if (m) { out.eta_max = parseInt(m[1], 10); s = s.replace(m[0], ' '); }
+            }
+        }
+        return { out: out, text: s };
+    }
     // province vicine (capoluoghi entro ~130km) — stessa tabella della Creative Network,
     // generata da _scripts/gen_prov_near.py. Serve solo al fallback "zero risultati".
     var SS_PROV_NEAR = {"AG":["CL","EN","PA","RG","TP"],"AL":["AT","VC","PV","NO","GE"],"AN":["MC","FM","PU","AP","RN"],"AO":["BI","TO","VB","VC","NO"],"AP":["TE","FM","MC","AQ","PE"],"AQ":["TE","RI","AP","CH","TR"],"AR":["SI","PG","FI","PO","FC"],"AT":["AL","TO","VC","SV","NO"],"AV":["BN","SA","CE","NA","CB"],"BA":["BT","MT","TA","BR","PZ"],"BG":["LC","MB","LO","BS","MI"],"BI":["VC","NO","VB","AO","TO"],"BL":["PN","TV","BZ","VE","UD"],"BN":["AV","CE","CB","SA","NA"],"BO":["MO","FE","RE","FC","RA"],"BR":["LE","TA","BA","MT"],"BS":["BG","CR","LO","VR","MN"],"BT":["BA","FG","MT","PZ","TA"],"BZ":["TN","BL","VI","TV","PN"],"CA":["SU","OR","NU"],"CB":["IS","BN","CE","AV","FG"],"CE":["NA","BN","AV","SA","IS"],"CH":["PE","TE","AQ","AP","IS"],"CL":["EN","AG","RG","CT","PA"],"CN":["IM","SV","TO","AT","AL"],"CO":["VA","LC","MB","MI","VB"],"CR":["PC","PR","LO","BS","MN"],"CS":["CZ","VV","KR"],"CT":["SR","RG","EN","RC","ME"],"CZ":["VV","KR","CS","ME","RC"],"EN":["CL","AG","CT","RG","PA"],"FC":["RA","RN","BO","FE","PU"],"FE":["RO","BO","MO","RA","PD"],"FG":["BT","BN","CB","AV","PZ"],"FI":["PO","PT","SI","AR","LU"],"FM":["MC","AP","AN","TE","PE"],"FR":["LT","IS","RM","AQ","RI"],"GE":["SV","AL","SP","AT","PV"],"GO":["UD","TS","PN","BL","TV"],"GR":["SI","VT","AR","LI","PG"],"IM":["SV","CN","GE","AT","AL"],"IS":["CB","CE","BN","FR","NA"],"KR":["CZ","CS","VV"],"LC":["CO","BG","MB","VA","MI"],"LE":["BR","TA","MT"],"LI":["PI","LU","MS","PT","PO"],"LO":["MI","PV","PC","MB","BG"],"LT":["FR","RM","RI","AQ","IS"],"LU":["PI","PT","LI","MS","PO"],"MB":["MI","CO","LC","BG","LO"],"MC":["FM","AN","AP","TE","PU"],"ME":["RC","VV","CT","CZ","SR"],"MI":["MB","LO","PV","CO","NO"],"MN":["VR","RE","PR","MO","CR"],"MO":["RE","BO","PR","MN","FE"],"MS":["SP","LU","PI","LI","PT"],"MT":["BA","TA","BT","PZ","BR"],"NA":["CE","AV","SA","BN","IS"],"NO":["VC","VA","MI","BI","PV"],"NU":["OR","SS","CA"],"OR":["NU","SU","CA","SS"],"PA":["TP","AG","CL","EN"],"PC":["CR","LO","PV","PR","MI"],"PD":["VI","VE","RO","TV","FE"],"PE":["CH","TE","AP","AQ","FM"],"PG":["AR","TR","VT","RI","MC"],"PI":["LU","LI","MS","PT","PO"],"PN":["BL","TV","UD","VE","GO"],"PO":["PT","FI","LU","PI","SI"],"PR":["RE","CR","MO","MN","PC"],"PT":["PO","FI","LU","PI","MS"],"PU":["RN","AN","FC","RA","MC"],"PV":["LO","MI","MB","PC","NO"],"PZ":["MT","BT","SA","AV","FG"],"RA":["FC","RN","FE","BO","RO"],"RC":["ME","VV","CT","SR","CZ"],"RE":["MO","PR","MN","BO","CR"],"RG":["SR","CT","EN","CL","AG"],"RI":["TR","AQ","VT","RM","TE"],"RM":["LT","RI","VT","TR","FR"],"RN":["PU","FC","RA","AR","AN"],"RO":["FE","PD","VI","VE","BO"],"SA":["AV","NA","BN","CE","PZ"],"SI":["AR","FI","GR","PO","PT"],"SO":["LC","BG","CO","BS","MB"],"SP":["MS","LU","PI","LI","GE"],"SR":["CT","RG","EN","CL","RC"],"SS":["NU","OR","SU"],"SU":["CA","OR","NU"],"SV":["GE","IM","AL","AT","CN"],"TA":["MT","BR","BA","LE","BT"],"TE":["AP","AQ","PE","CH","FM"],"TN":["BZ","VI","VR","BL","BS"],"TO":["AT","BI","VC","AL","CN"],"TP":["PA","AG","CL"],"TR":["RI","VT","PG","AQ","RM"],"TS":["GO","UD","PN","BL","TV"],"TV":["VE","PD","PN","BL","VI"],"UD":["GO","PN","TS","BL","TV"],"VA":["CO","VB","MB","LC","NO"],"VB":["VA","CO","NO","BI","LC"],"VC":["NO","BI","AL","AT","PV"],"VE":["TV","PD","RO","VI","PN"],"VI":["PD","VR","TV","RO","VE"],"VR":["MN","VI","BS","PD","TN"],"VT":["TR","RI","RM","PG","GR"],"VV":["CZ","CS","ME","RC","KR"]};
@@ -2123,6 +2172,9 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     // parole da ignorare: preposizioni e riempitivi nelle 4 lingue
     var SS_STOP = {};
     'a ad in di da per il lo la i gli le un uno una del della dei delle su con e o zona provincia citta comune vicino cerco cercasi voglio trovare mi serve serve the in at near from for and or of city province area je cherche des une un le les dans pres pour et ou en busco cerca ciudad provincia cerca de los las y'.split(' ').forEach(function (w) { if (w) SS_STOP[w] = 1; });
+    // fetta 2 — parole-indizio di età/altezza: se la regex non le consuma tutte, i resti
+    // non devono finire nella ricerca per nome.
+    'tra between entre anni anno years year yo ans an anos ano cm alta alto altezza tall height taille grande grand altura over under almeno minimo massimo entro min max'.split(' ').forEach(function (w) { if (w) SS_STOP[w] = 1; });
 
     var SS = { comuni: null, provStatic: null, provByCode: null, geoIdx: null, loading: false };
 
@@ -2184,8 +2236,13 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     // e le province composte ("monza e brianza", "reggio calabria", "san giuliano milanese").
     function ssParse(text) {
         var idx = ssGeoIndex();
-        var toks = ssNorm(text).split(' ').filter(Boolean);
-        var out = { ruolo: '', province: [], country: '', resto: [] };
+        var numRes = ssExtractNumeric(ssNorm(text));
+        var toks = numRes.text.split(' ').filter(Boolean);
+        var out = {
+            ruolo: '', sesso: '', province: [], country: '', resto: [],
+            eta_min: numRes.out.eta_min, eta_max: numRes.out.eta_max,
+            altezza_min: numRes.out.altezza_min, altezza_max: numRes.out.altezza_max
+        };
         var i = 0;
         while (i < toks.length) {
             var consumed = 0;   // quante parole ha mangiato il match (0 = nessun match)
@@ -2208,6 +2265,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
                     out.country = out.country || 'IT'; consumed = len; break;
                 }
                 if (len === 1 && SS_ROLE_SET[key]) { out.ruolo = out.ruolo || SS_ROLE_SET[key]; consumed = 1; break; }
+                if (len === 1 && SS_GENDER_SET[key] && !out.sesso) { out.sesso = SS_GENDER_SET[key]; consumed = 1; break; }
             }
             if (consumed) { i += consumed; }
             else { if (!SS_STOP[toks[i]]) out.resto.push(toks[i]); i++; }
@@ -2241,6 +2299,15 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         TD.selectedProvinces = p.province.slice();
         TD.geoHub = null;
         populateProvinces();
+        // fetta 2 — sesso (toggle-group) + età/altezza (input number)
+        var sg = $('.toa-tdb-toggle-group[data-name="sesso"]');
+        if (sg) {
+            $$('.toa-tdb-toggle', sg).forEach(function (b) { b.classList.toggle('active', (b.getAttribute('data-value') || '') === (p.sesso || '')); });
+            var sh = sg.querySelector('input[type="hidden"]'); if (sh) sh.value = p.sesso || '';
+        }
+        ['eta_min', 'eta_max', 'altezza_min', 'altezza_max'].forEach(function (k) {
+            var el = f[k]; if (el) el.value = (p[k] !== undefined && p[k] !== null) ? p[k] : '';
+        });
         if (f.q) f.q.value = p.resto.join(' ');
         ssNote('');
         // 1° tentativo → 2° senza le parole non capite → 3° allargando alle province vicine
