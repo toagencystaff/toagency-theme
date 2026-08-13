@@ -2237,20 +2237,37 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     // generata da _scripts/gen_prov_near.py. Serve solo al fallback "zero risultati".
     var SS_PROV_NEAR = {"AG":["CL","EN","PA","RG","TP"],"AL":["AT","VC","PV","NO","GE"],"AN":["MC","FM","PU","AP","RN"],"AO":["BI","TO","VB","VC","NO"],"AP":["TE","FM","MC","AQ","PE"],"AQ":["TE","RI","AP","CH","TR"],"AR":["SI","PG","FI","PO","FC"],"AT":["AL","TO","VC","SV","NO"],"AV":["BN","SA","CE","NA","CB"],"BA":["BT","MT","TA","BR","PZ"],"BG":["LC","MB","LO","BS","MI"],"BI":["VC","NO","VB","AO","TO"],"BL":["PN","TV","BZ","VE","UD"],"BN":["AV","CE","CB","SA","NA"],"BO":["MO","FE","RE","FC","RA"],"BR":["LE","TA","BA","MT"],"BS":["BG","CR","LO","VR","MN"],"BT":["BA","FG","MT","PZ","TA"],"BZ":["TN","BL","VI","TV","PN"],"CA":["SU","OR","NU"],"CB":["IS","BN","CE","AV","FG"],"CE":["NA","BN","AV","SA","IS"],"CH":["PE","TE","AQ","AP","IS"],"CL":["EN","AG","RG","CT","PA"],"CN":["IM","SV","TO","AT","AL"],"CO":["VA","LC","MB","MI","VB"],"CR":["PC","PR","LO","BS","MN"],"CS":["CZ","VV","KR"],"CT":["SR","RG","EN","RC","ME"],"CZ":["VV","KR","CS","ME","RC"],"EN":["CL","AG","CT","RG","PA"],"FC":["RA","RN","BO","FE","PU"],"FE":["RO","BO","MO","RA","PD"],"FG":["BT","BN","CB","AV","PZ"],"FI":["PO","PT","SI","AR","LU"],"FM":["MC","AP","AN","TE","PE"],"FR":["LT","IS","RM","AQ","RI"],"GE":["SV","AL","SP","AT","PV"],"GO":["UD","TS","PN","BL","TV"],"GR":["SI","VT","AR","LI","PG"],"IM":["SV","CN","GE","AT","AL"],"IS":["CB","CE","BN","FR","NA"],"KR":["CZ","CS","VV"],"LC":["CO","BG","MB","VA","MI"],"LE":["BR","TA","MT"],"LI":["PI","LU","MS","PT","PO"],"LO":["MI","PV","PC","MB","BG"],"LT":["FR","RM","RI","AQ","IS"],"LU":["PI","PT","LI","MS","PO"],"MB":["MI","CO","LC","BG","LO"],"MC":["FM","AN","AP","TE","PU"],"ME":["RC","VV","CT","CZ","SR"],"MI":["MB","LO","PV","CO","NO"],"MN":["VR","RE","PR","MO","CR"],"MO":["RE","BO","PR","MN","FE"],"MS":["SP","LU","PI","LI","PT"],"MT":["BA","TA","BT","PZ","BR"],"NA":["CE","AV","SA","BN","IS"],"NO":["VC","VA","MI","BI","PV"],"NU":["OR","SS","CA"],"OR":["NU","SU","CA","SS"],"PA":["TP","AG","CL","EN"],"PC":["CR","LO","PV","PR","MI"],"PD":["VI","VE","RO","TV","FE"],"PE":["CH","TE","AP","AQ","FM"],"PG":["AR","TR","VT","RI","MC"],"PI":["LU","LI","MS","PT","PO"],"PN":["BL","TV","UD","VE","GO"],"PO":["PT","FI","LU","PI","SI"],"PR":["RE","CR","MO","MN","PC"],"PT":["PO","FI","LU","PI","MS"],"PU":["RN","AN","FC","RA","MC"],"PV":["LO","MI","MB","PC","NO"],"PZ":["MT","BT","SA","AV","FG"],"RA":["FC","RN","FE","BO","RO"],"RC":["ME","VV","CT","SR","CZ"],"RE":["MO","PR","MN","BO","CR"],"RG":["SR","CT","EN","CL","AG"],"RI":["TR","AQ","VT","RM","TE"],"RM":["LT","RI","VT","TR","FR"],"RN":["PU","FC","RA","AR","AN"],"RO":["FE","PD","VI","VE","BO"],"SA":["AV","NA","BN","CE","PZ"],"SI":["AR","FI","GR","PO","PT"],"SO":["LC","BG","CO","BS","MB"],"SP":["MS","LU","PI","LI","GE"],"SR":["CT","RG","EN","CL","RC"],"SS":["NU","OR","SU"],"SU":["CA","OR","NU"],"SV":["GE","IM","AL","AT","CN"],"TA":["MT","BR","BA","LE","BT"],"TE":["AP","AQ","PE","CH","FM"],"TN":["BZ","VI","VR","BL","BS"],"TO":["AT","BI","VC","AL","CN"],"TP":["PA","AG","CL"],"TR":["RI","VT","PG","AQ","RM"],"TS":["GO","UD","PN","BL","TV"],"TV":["VE","PD","PN","BL","VI"],"UD":["GO","PN","TS","BL","TV"],"VA":["CO","VB","MB","LC","NO"],"VB":["VA","CO","NO","BI","LC"],"VC":["NO","BI","AL","AT","PV"],"VE":["TV","PD","RO","VI","PN"],"VI":["PD","VR","TV","RO","VE"],"VR":["MN","VI","BS","PD","TN"],"VT":["TR","RI","RM","PG","GR"],"VV":["CZ","CS","ME","RC","KR"]};
     var SS_T = {
-        near: {
-            it: 'Nessun risultato esatto per «%s» — ti mostriamo anche le province vicine: %p.',
-            en: 'No exact results for «%s» — showing nearby provinces too: %p.',
-            fr: 'Aucun résultat exact pour «%s» — voici aussi les provinces voisines : %p.',
-            es: 'Sin resultados exactos para «%s» — te mostramos también las provincias cercanas: %p.'
-        },
         dropped: {
             it: 'Non ho capito «%w»: ti mostro i risultati per il resto della ricerca.',
             en: 'I didn\'t understand «%w»: showing results for the rest of your search.',
             fr: 'Je n\'ai pas compris «%w» : voici les résultats pour le reste de la recherche.',
             es: 'No he entendido «%w»: te muestro los resultados del resto de la búsqueda.'
+        },
+        widen: {
+            it: 'Pochi risultati esatti: abbiamo ampliato %s per mostrarti profili simili.',
+            en: 'Few exact results: we widened %s to show similar profiles.',
+            fr: 'Peu de résultats exacts : nous avons élargi %s pour vous montrer des profils similaires.',
+            es: 'Pocos resultados exactos: ampliamos %s para mostrarte perfiles similares.'
         }
     };
     function ssT(k) { return (SS_T[k] || {})[LANG] || (SS_T[k] || {}).it || ''; }
+    // 2026-08-13 marco — soglia 40 risultati: ordine di allargamento consigliato dal confronto
+    // con altre AI (età prima, è la concessione più "morbida"; etnia MAI in automatico, è un
+    // attributo identitario). Un solo messaggio combinato, non uno per filtro toccato.
+    var SS_MIN_RESULTS = 40;
+    var SS_WIDEN_LBL = {
+        eta: { it: 'età', en: 'age', fr: 'âge', es: 'edad' },
+        geo: { it: 'zona geografica', en: 'nearby area', fr: 'zone géographique', es: 'zona geográfica' }
+    };
+    var SS_AND = { it: ' e ', en: ' and ', fr: ' et ', es: ' y ' };
+    function ssNoteWiden(list) {
+        if (!list.length) return;
+        var labels = list.map(function (k) { return (SS_WIDEN_LBL[k] || {})[LANG] || (SS_WIDEN_LBL[k] || {}).it || k; });
+        var joined = labels.length > 1
+            ? labels.slice(0, -1).join(', ') + (SS_AND[LANG] || SS_AND.it) + labels[labels.length - 1]
+            : labels[0];
+        ssNote(ssT('widen').replace('%s', joined));
+    }
     // 2026-08-13 marco — se la ricerca su Talenti da' zero risultati e la frase e' tipica di una
     // figura del Creative Network (fotografo, stylist, truccatore...), NON diciamo solo "nessun
     // risultato": diciamo che la offriamo, con link diretto alla categoria giusta.
@@ -2332,7 +2349,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     function ssGeoIndex() {
         if (SS.geoIdx) return SS.geoIdx;
         var geo = ((TD.filterOptions || {}).geo) || {};
-        var prov = {}, reg = {};
+        var prov = {}, reg = {}, nick = {};
         Object.keys(geo).forEach(function (country) {
             var regioni = (geo[country] || {}).regioni || {};
             Object.keys(regioni).forEach(function (rname) {
@@ -2340,12 +2357,23 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
                 reg[ssNorm(rname)] = { country: country, provs: list.slice() };
                 list.forEach(function (p) { prov[ssNorm(p)] = { country: country, name: p }; });
             });
+            // 2026-08-13 marco — geo[paese].normalizza ha anche città famose non capoluogo
+            // (es. FR "Nizza"->Alpes-Maritimes) e sinonimi/refusi comuni (es. ES "Terragona"
+            // ->Tarragona). Prima si usava solo per l'Italia (via SS.comuni); ora vale per tutte
+            // le nazioni, riusando dati che il CRM ha già — nessun dato nuovo da indovinare.
+            var norm = (geo[country] || {}).normalizza || {};
+            Object.keys(norm).forEach(function (nickname) {
+                if (/^[a-z]{1,3}$/.test(nickname.toLowerCase()) && nickname === nickname.toUpperCase()) return; // sigle (TO, MI...)
+                var key = ssNorm(nickname);
+                if (!key || prov[key] || reg[key]) return;   // non sovrascrivere un match già valido
+                nick[key] = { country: country, name: norm[nickname] };
+            });
         });
         // BUG 2026-08-13 (visto in preview): filter_options arriva in asincrono. Se l'indice viene
         // costruito prima, esce vuoto — e se lo mettiamo in cache resta vuoto per sempre e la
         // ricerca non riconosce più nessuna città. Quindi si mette in cache SOLO se è pieno.
-        if (!Object.keys(prov).length) return { prov: {}, reg: {} };
-        SS.geoIdx = { prov: prov, reg: reg };
+        if (!Object.keys(prov).length) return { prov: {}, reg: {}, nick: {} };
+        SS.geoIdx = { prov: prov, reg: reg, nick: nick };
         return SS.geoIdx;
     }
     // sigla provincia → nome canonico usato dall'API (serve a comuni e province vicine).
@@ -2409,6 +2437,11 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
                 if (hitProv) {
                     if (out.province.indexOf(hitProv.name) < 0) out.province.push(hitProv.name);
                     out.country = out.country || hitProv.country; consumed = len; break;
+                }
+                var hitNick = idx.nick ? idx.nick[key] : null;
+                if (hitNick) {
+                    if (out.province.indexOf(hitNick.name) < 0) out.province.push(hitNick.name);
+                    out.country = out.country || hitNick.country; consumed = len; break;
                 }
                 var code = SS.comuni ? SS.comuni[key] : null;
                 if (code && SS.provByCode && SS.provByCode[code]) {
@@ -2485,7 +2518,8 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         }
         if (f.q) f.q.value = p.resto.join(' ');
         ssNote('');
-        // 1° tentativo → 2° senza le parole non capite → 3° allargando alle province vicine
+        var widened = [];   // etichette di cosa abbiamo ampliato, per il messaggio finale unico
+        // 1° tentativo → 2° senza le parole non capite (se ha azzerato tutto)
         return tdSearch(false).then(function () {
             if (TD.total > 0) return;
             if (!p.resto.length || (!p.ruolo && !p.province.length)) return;
@@ -2496,8 +2530,19 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
                 if (TD.total > 0) ssNote(ssT('dropped').replace('%w', p.resto.join(' ')));
             });
         }).then(function () {
-            if (TD.total > 0 || !p.province.length || !SS.provByCode) return;
-            // fallback geografico: sigle vicine alle province cercate → nomi canonici
+            // 3° — soglia SS_MIN_RESULTS: prima si allarga l'ETÀ (±5 anni), la concessione più
+            // "morbida" in un casting — vedi confronto con altre AI del 13/08. Etnia/ruolo non si
+            // allargano MAI in automatico (sono vincoli di brief, non compromessi accettabili).
+            if (TD.total >= SS_MIN_RESULTS) return;
+            var hasMin = f.eta_min && f.eta_min.value !== '', hasMax = f.eta_max && f.eta_max.value !== '';
+            if (!hasMin && !hasMax) return;
+            if (hasMin) f.eta_min.value = Math.max(6, parseInt(f.eta_min.value, 10) - 5);
+            if (hasMax) f.eta_max.value = Math.min(99, parseInt(f.eta_max.value, 10) + 5);
+            widened.push('eta');
+            return tdSearch(false);
+        }).then(function () {
+            // 4° — ancora sotto soglia: allarga anche la PROVINCIA alle vicine (tabella statica).
+            if (TD.total >= SS_MIN_RESULTS || !p.province.length || !SS.provByCode) return;
             var codeOf = {}; Object.keys(SS.provByCode).forEach(function (c) { codeOf[SS.provByCode[c]] = c; });
             var near = [];
             p.province.forEach(function (nome) {
@@ -2509,12 +2554,11 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
             if (!near.length) return;
             TD.selectedProvinces = p.province.concat(near);
             populateProvinces();
-            return tdSearch(false).then(function () {
-                if (TD.total > 0) ssNote(ssT('near').replace('%s', text.trim()).replace('%p', near.join(', ')));
-                else ssNote('');
-            });
+            widened.push('geo');
+            return tdSearch(false);
         }).then(function () {
-            // 4° tentativo, ultima spiaggia: ancora zero risultati e la frase è tipica di una
+            if (widened.length) ssNoteWiden(widened);
+            // 5° tentativo, ultima spiaggia: ancora zero risultati e la frase è tipica di una
             // figura del Creative Network (fotografo, stylist, truccatore...) → non un "nessun
             // risultato" muto, ma il link diretto a dove quella figura si trova davvero.
             if (TD.total > 0) return;
