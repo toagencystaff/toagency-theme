@@ -20,6 +20,13 @@
     var THEME_URI = (window.toaThemeUri || '/wp-content/themes/toagency-theme');
 
     var MAX_PHOTOS = 15;
+    /* ═══ 2026-08-14 (TEMA REGISTRAZIONE TALENT) — UPLOAD PER ALBUM ═══
+       INTERRUTTORE. Finché è false le foto vengono spedite come sempre (tutte in polaroid,
+       endpoint upload-foto-talent.php): la UI a card è già attiva, il backend no.
+       Mettere a true SOLO dopo una registrazione di prova completata in preview.
+       Se qualcosa va storto, rimetterlo a false e ridiventa il comportamento di prima. */
+    var USE_ALBUM_UPLOAD = false;
+    var ALBUM_ENDPOINT = '/crm_toagency/actions/talent-media-upload.php';
     var MAX_PHOTO_SIZE_MB = 60; /* TASK hardening-upload STEP A 2026-06-04 marco — era 15: le foto grandi ora passano e vengono compresse client-side; resta backstop per file assurdi */
 
     // ─── i18n messaggi runtime (lingua WP corrente — window.toaTalentLang) ───
@@ -658,10 +665,18 @@
 
     function updateCounters() {
         if (photosCounter) photosCounter.innerHTML = '<strong>' + uploadState.photos.length + '</strong> / ' + MAX_PHOTOS;
+        // 2026-08-14: contatore per singola card album + barra completamento
+        if (typeof albumCards !== 'undefined' && albumCards) {
+            albumCards.forEach(function(card) {
+                var el = document.getElementById('toaTalentCount_' + card.dataset.album);
+                if (el) el.textContent = photosInAlbum(card.dataset.album);
+            });
+            updateCompleteness();
+        }
     }
     updateCounters();
 
-    function setupDropzone(zoneId, inputId, mode) {
+    function setupDropzone(zoneId, inputId, mode, album) {
         var zone = document.getElementById(zoneId);
         var input = document.getElementById(inputId);
         if (!zone || !input) return;
@@ -676,17 +691,78 @@
         zone.addEventListener('drop', function(e) {
             e.preventDefault();
             zone.classList.remove('dragover');
-            handleFiles(e.dataTransfer.files, mode);
+            handleFiles(e.dataTransfer.files, mode, album);
         });
         input.addEventListener('change', function() {
-            handleFiles(input.files, mode);
+            handleFiles(input.files, mode, album);
             input.value = '';
         });
     }
     setupDropzone('toaTalentProfileDrop', 'toaTalentProfileInput', 'profile');
-    setupDropzone('toaTalentPhotosDrop', 'toaTalentPhotosInput', 'photo');
+    setupDropzone('toaTalentPhotosDrop', 'toaTalentPhotosInput', 'photo'); // resta per compatibilità: se il riquadro unico non c'è più, esce subito
 
-    function handleFiles(files, mode) {
+    /* ─── 9-bis. ALBUM FOTO — 2026-08-14 (TEMA REGISTRAZIONE TALENT) ───────────
+       Una card per album: si vedono solo quelle che servono ai ruoli spuntati allo Step 3.
+       Mappa in page-registrati-talent.php ($TALENT_ALBUM), qui si legge solo data-roles. */
+    var albumCards = Array.prototype.slice.call(document.querySelectorAll('.toa-album-card'));
+    albumCards.forEach(function(card) {
+        setupDropzone('toaTalentDrop_' + card.dataset.album, 'toaTalentInput_' + card.dataset.album, 'photo', card.dataset.album);
+    });
+
+    function photosInAlbum(code) {
+        return uploadState.photos.filter(function(p) { return p.album === code; }).length;
+    }
+
+    function updateAlbumVisibility() {
+        var roles = Array.prototype.map.call(
+            document.querySelectorAll('#toaTalentCategoriesImmagine input[type="checkbox"]:checked'),
+            function(cb) { return cb.value; }
+        );
+        albumCards.forEach(function(card) {
+            var want = card.dataset.roles || '*';
+            var show = (want === '*') || want.split(',').some(function(r) { return roles.indexOf(r.trim()) > -1; });
+            card.style.display = show ? '' : 'none';
+        });
+        updateCompleteness();
+    }
+    document.querySelectorAll('#toaTalentCategoriesImmagine input[type="checkbox"]').forEach(function(cb) {
+        cb.addEventListener('change', updateAlbumVisibility);
+    });
+
+    /* Barra "profilo completo": stessi pesi del CRM (profilo_completezza.php)
+       base 40 · polaroid 30 · foto del ruolo 20 · extra 10. Qui è solo una stima
+       che si muove mentre l'utente compila; dopo l'invio la verità la dà il CRM. */
+    function updateCompleteness() {
+        var fill  = document.getElementById('toaTalentCompletenessFill');
+        var pctEl = document.getElementById('toaTalentCompletenessPct');
+        if (!fill || !pctEl) return;
+        var baseFields = ['nome','cognome','email','telefono','data_nascita','res_nation','res_city_name','altezza','taglia'];
+        var filled = 0;
+        baseFields.forEach(function(n) {
+            var el = form.querySelector('[name="' + n + '"]');
+            if (el && String(el.value || '').trim()) filled++;
+        });
+        var pct = Math.round(40 * filled / baseFields.length);
+        if (photosInAlbum('polaroid') > 0) pct += 30;
+        var richiesti = albumCards.filter(function(c) {
+            return c.style.display !== 'none' && c.dataset.album !== 'polaroid' && c.dataset.album !== 'casual';
+        });
+        if (richiesti.length) {
+            var fatti = richiesti.filter(function(c) { return photosInAlbum(c.dataset.album) > 0; }).length;
+            pct += Math.round(20 * fatti / richiesti.length);
+        } else {
+            pct += 20; // il ruolo scelto non richiede album extra: quella fetta è già soddisfatta
+        }
+        var misura = form.querySelector('[name="misura_petto"]');
+        if ((misura && misura.value) || photosInAlbum('casual') > 0) pct += 10;
+        pct = Math.max(0, Math.min(100, pct));
+        fill.style.width = pct + '%';
+        pctEl.textContent = pct + '%';
+    }
+    if (form) form.addEventListener('input', updateCompleteness);
+    updateAlbumVisibility();
+
+    function handleFiles(files, mode, album) {
         if (mode === 'profile') {
             // 1 sola foto profilo
             var file = files[0];
@@ -711,9 +787,11 @@
                 showInlineError('toaTalentPhotosError', tmsg(MSG.fileTooBig) + ': ' + file.name + ' (max ' + MAX_PHOTO_SIZE_MB + 'MB)', true);
                 return;
             }
-            var fileObj = { file: file, id: Date.now() + '_' + Math.random().toString(36).slice(2,8) };
+            // 2026-08-14: ogni foto porta con sé l'album di destinazione (default polaroid, com'era prima)
+            var fileObj = { file: file, id: Date.now() + '_' + Math.random().toString(36).slice(2,8), album: album || 'polaroid' };
             uploadState.photos.push(fileObj);
-            renderThumb(fileObj, photosThumbs, 'photo');
+            var box = document.getElementById('toaTalentThumbs_' + fileObj.album) || photosThumbs;
+            if (box) renderThumb(fileObj, box, 'photo');
         });
         updateCounters();
     }
@@ -753,7 +831,8 @@
 
     function removeFile(id) {
         uploadState.photos = uploadState.photos.filter(function(f) { return f.id !== id; });
-        var thumb = photosThumbs.querySelector('[data-id="' + id + '"]');
+        // 2026-08-14: la miniatura può stare in una qualsiasi delle card album, non più in un solo contenitore
+        var thumb = document.querySelector('.toa-talent-thumbs [data-id="' + id + '"]');
         if (thumb) thumb.remove();
         updateCounters();
     }
@@ -1139,15 +1218,41 @@
     }
 
     // Upload sequenziale: foto profilo → foto portfolio (no video per i talent)
-    function uploadOneFile(talentId, token, file, tipo) {
+    function uploadOneFile(talentId, token, file, tipo, album) {
         /* TASK hardening-upload STEP A 2026-06-04 marco — comprimi prima di spedire, poi catena identica */
         return toaCompressImage(file, 1280, 0.78).then(function(cfile) { /* TASK hardening-upload STEP A.2 2026-06-04 — 1280px q78 */
             var fd = new FormData();
+            var endpoint = UPLOAD_ENDPOINT;
+            /* 2026-08-14 (TEMA REGISTRAZIONE TALENT) — se l'interruttore è acceso e la foto ha un album,
+               si usa l'endpoint del self-edit che sa dove metterla. Altrimenti tutto come prima. */
+            if (USE_ALBUM_UPLOAD && album && tipo === 'foto' && talentUuidAfterRegister) {
+                endpoint = ALBUM_ENDPOINT;
+                fd.append('uuid', talentUuidAfterRegister);
+                fd.append('t', token);
+                fd.append('album_tipo', album);
+                fd.append('foto', cfile);
+                fd.append('dichiarazione_legale', '1');
+                fd.append('veridicita', '1');
+                if (album === 'polaroid') fd.append('data_scatto', new Date().toISOString().slice(0, 10));
+                return fetch(endpoint, {
+                    method: 'POST',
+                    body: fd,
+                    credentials: 'same-origin'
+                }).then(function(r) {
+                    return r.text().then(function(t) {
+                        try { return JSON.parse(t); }
+                        catch (e) {
+                            console.error('[upload album] non-JSON:', t.substring(0, 200));
+                            return { ok: false, error: 'invalid_response' };
+                        }
+                    });
+                });
+            }
             fd.append('talent_id', talentId);
             fd.append('token_profilo', token);
             fd.append('tipo', tipo);
             fd.append('file', cfile);
-            return fetch(UPLOAD_ENDPOINT, {
+            return fetch(endpoint, {
                 method: 'POST',
                 body: fd,
                 credentials: 'same-origin'
@@ -1175,7 +1280,7 @@
         }
         // 2. Foto portfolio (no video per i talent)
         uploadState.photos.forEach(function(p) {
-            queue.push({ file: p.file, tipo: 'foto' });
+            queue.push({ file: p.file, tipo: 'foto', album: p.album || 'polaroid' }); // 2026-08-14: l'album viaggia con la foto
         });
 
         console.log('[uploadAll] queue length:', queue.length, queue);
@@ -1198,7 +1303,7 @@
         var results = [];
         queue.forEach(function(item) {
             promise = promise.then(function() {
-                return uploadOneFile(talentId, token, item.file, item.tipo).then(function(res) {
+                return uploadOneFile(talentId, token, item.file, item.tipo, item.album).then(function(res) {
                     doneCount++;
                     if (submitBtn) {
                         submitBtn.textContent = 'Upload file ' + doneCount + '/' + totalCount + '...';

@@ -101,6 +101,70 @@ $TALENT_ETNIA = array(
 );
 $TALENT_TAGLIE = array('XS','S','M','L','XL','XXL');
 
+// ─────────────────────────────────────────────────────────────────────
+// 2026-08-14 (TEMA REGISTRAZIONE TALENT) — ALBUM FOTO PER RUOLO
+// Mappa confermata dalla chat CRM EVENTI HOSTESS ANALISI (14/08):
+//   model → polaroid + portfolio + dettaglio · actor → polaroid + portfolio
+//   hostess → polaroid + eventi · tutti gli altri → solo polaroid
+//   casual → sempre disponibile, facoltativo per tutti
+// portfolio_cinema e archivio NON vanno MAI esposti nel form pubblico.
+// 'roles' = '*' significa: sempre visibile, qualunque ruolo.
+// Le immagini guida vivono in assets/guide/esempio-<album>-si.jpg e -no.jpg:
+// finché non ci sono, la card mostra un segnaposto (nessun errore, nessun buco).
+// ─────────────────────────────────────────────────────────────────────
+$TALENT_ALBUM = array(
+    array(
+        'code' => 'polaroid', 'roles' => '*', 'req' => true,
+        'label' => array('it'=>'Pola e presentazione','en'=>'Polaroids','fr'=>'Polas','es'=>'Polas'),
+        'hint'  => array(
+            'it'=>'Tu come sei. Muro chiaro, luce di finestra, niente trucco e niente filtri. Corpo intero e primo piano. Te le fai col telefono in due minuti.',
+            'en'=>'You as you are. Plain wall, window light, no makeup, no filters. Full body and close-up. Two minutes with your phone.',
+            'fr'=>'Toi tel que tu es. Mur clair, lumière de fenêtre, sans maquillage ni filtres. Plein pied et gros plan. Deux minutes avec ton téléphone.',
+            'es'=>'Tú tal cual eres. Pared clara, luz de ventana, sin maquillaje ni filtros. Cuerpo entero y primer plano. Dos minutos con el móvil.',
+        ),
+    ),
+    array(
+        'code' => 'portfolio', 'roles' => 'model,actor', 'req' => true,
+        'label' => array('it'=>'Portfolio moda','en'=>'Fashion portfolio','fr'=>'Portfolio mode','es'=>'Portfolio moda'),
+        'hint'  => array(
+            'it'=>'Solo scatti fatti da un fotografo. Se non li hai, salta questo album: mettici Pola e Altre foto, contano lo stesso.',
+            'en'=>'Photographer shots only. If you have none, skip this album: use Polaroids and Other photos, they count too.',
+            'fr'=>'Uniquement des photos de photographe. Si tu n\'en as pas, saute cet album : mets des Polas et Autres photos, elles comptent aussi.',
+            'es'=>'Solo fotos de fotógrafo. Si no tienes, salta este álbum: pon Polas y Otras fotos, también cuentan.',
+        ),
+    ),
+    array(
+        'code' => 'dettaglio', 'roles' => 'model', 'req' => true,
+        'label' => array('it'=>'Dettagli','en'=>'Details','fr'=>'Détails','es'=>'Detalles'),
+        'hint'  => array(
+            'it'=>'Mani, profilo, capelli. Primi piani puliti su sfondo neutro: i casting moda li chiedono sempre.',
+            'en'=>'Hands, profile, hair. Clean close-ups on a neutral background: fashion castings always ask for them.',
+            'fr'=>'Mains, profil, cheveux. Gros plans nets sur fond neutre : les castings mode les demandent toujours.',
+            'es'=>'Manos, perfil, pelo. Primeros planos limpios sobre fondo neutro: los castings de moda siempre los piden.',
+        ),
+    ),
+    array(
+        'code' => 'eventi', 'roles' => 'hostess', 'req' => true,
+        'label' => array('it'=>'Fiere e eventi','en'=>'Trade fairs & events','fr'=>'Salons et événements','es'=>'Ferias y eventos'),
+        'hint'  => array(
+            'it'=>'Tu al lavoro: una in elegante, una in sportivo. Vanno benissimo anche foto scattate a un evento vero.',
+            'en'=>'You at work: one smart, one sporty. Photos taken at a real event are perfect too.',
+            'fr'=>'Toi au travail : une en tenue élégante, une en sportive. Des photos prises à un vrai événement conviennent aussi.',
+            'es'=>'Tú trabajando: una elegante, una deportiva. También valen fotos hechas en un evento real.',
+        ),
+    ),
+    array(
+        'code' => 'casual', 'roles' => '*', 'req' => false,
+        'label' => array('it'=>'Altre foto (non pro)','en'=>'Other photos (not pro)','fr'=>'Autres photos (non pro)','es'=>'Otras fotos (no pro)'),
+        'hint'  => array(
+            'it'=>'Foto col telefono, in vacanza, con gli amici: qui vanno benissimo. Caricarle alza il tuo profilo, non lo abbassa.',
+            'en'=>'Phone photos, holidays, with friends: perfect here. Uploading them raises your profile, it does not lower it.',
+            'fr'=>'Photos au téléphone, en vacances, entre amis : ici c\'est parfait. Les charger fait monter ton profil, pas l\'inverse.',
+            'es'=>'Fotos con el móvil, de vacaciones, con amigos: aquí van perfectas. Subirlas sube tu perfil, no lo baja.',
+        ),
+    ),
+);
+
 $theme_uri = get_stylesheet_directory_uri();
 ?>
 <!-- TOA-TALENT-FORM-V1 -->
@@ -758,24 +822,89 @@ $theme_uri = get_stylesheet_directory_uri();
         <div class="toa-talent-step" data-step="4">
             <h3><?php echo _ht_talent(array('it'=>'Foto e portfolio','en'=>'Photo & portfolio','fr'=>'Photo et portfolio','es'=>'Foto y portfolio')); ?></h3>
 
-            <!-- Foto portfolio -->
+            <!-- ALBUM FOTO — 2026-08-14 (TEMA REGISTRAZIONE TALENT)
+                 Al posto del riquadro unico: una card per ogni album che serve al ruolo scelto.
+                 Le card compaiono/spariscono da talent-form-v40.js in base ai ruoli spuntati allo Step 3. -->
+            <style>
+                .toa-album-card{border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:16px;margin-bottom:14px;background:rgba(255,255,255,.02)}
+                .toa-album-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+                .toa-album-head strong{font-size:1rem;letter-spacing:.2px}
+                .toa-album-badge{font-size:.7rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:3px 8px;border-radius:99px;white-space:nowrap}
+                .toa-album-badge.req{background:rgba(200,255,0,.14);color:#c8ff00;border:1px solid rgba(200,255,0,.35)}
+                .toa-album-badge.opt{background:rgba(255,255,255,.06);color:#9ca3af;border:1px solid rgba(255,255,255,.15)}
+                .toa-album-hint{font-size:.85rem;line-height:1.5;color:#cbd5e1;margin:0 0 12px}
+                .toa-album-examples{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+                .toa-album-examples figure{margin:0}
+                .toa-album-ph{aspect-ratio:3/4;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.18);color:#6b7280;font-size:.72rem;text-align:center;padding:8px}
+                .toa-album-ph img{width:100%;height:100%;object-fit:cover;display:block}
+                .toa-album-examples figcaption{font-size:.75rem;font-weight:700;margin-top:6px;text-align:center}
+                .toa-album-cap-si{color:#c8ff00}
+                .toa-album-cap-no{color:#f87171}
+                .toa-album-count{font-size:.78rem;color:#9ca3af;margin-top:8px}
+                .toa-albums-bar{margin:0 0 16px}
+                .toa-albums-bar-track{height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+                .toa-albums-bar-fill{height:100%;width:0;background:#c8ff00;border-radius:99px;transition:width .35s ease}
+                .toa-albums-bar-label{font-size:.8rem;color:#cbd5e1;margin-top:6px}
+                .toa-albums-bar-label strong{color:#c8ff00}
+                @media (max-width:480px){.toa-album-examples{gap:8px}}
+            </style>
             <div class="toa-talent-upload-section">
-                <h5>📷 <?php echo _ht_talent(array('it'=>'Foto del portfolio (facoltative)','en'=>'Portfolio photos (optional)','fr'=>'Photos portfolio (facultatif)','es'=>'Fotos portfolio (opcional)')); ?></h5>
-                <span style="display:inline-block;margin:2px 0 8px;font-size:0.78rem;color:#c8ff00;font-weight:600;letter-spacing:.2px;"><?php echo _ht_talent(array('it'=>'Facoltativo ma consigliato','en'=>'Optional but recommended','es'=>'Opcional pero recomendado','fr'=>'Facultatif mais conseillé')); ?></span>
+                <h5>📷 <?php echo _ht_talent(array('it'=>'Le tue foto','en'=>'Your photos','fr'=>'Tes photos','es'=>'Tus fotos')); ?></h5>
                 <p class="toa-talent-step-help"><?php echo _ht_talent(array(
-                    'it'=>'Facoltativo — puoi aggiungerle anche dopo la registrazione. Ti consigliamo almeno 2-3 foto: i casting le guardano prima di contattarti.',
-                    'en'=>'Optional — you can add them after registration. We recommend at least 2-3 photos: casting directors check them before reaching out.',
-                    'fr'=>'Facultatif — tu peux les ajouter aussi après l\'inscription. Nous te conseillons au moins 2-3 photos : les directeurs de casting les regardent avant de te contacter.',
-                    'es'=>'Opcional — puedes añadirlas también después del registro. Te recomendamos al menos 2-3 fotos: los directores de casting las miran antes de contactarte.',
+                    'it'=>'Più album completi, più lavori ti arrivano. Puoi aggiungerle anche dopo, ma chi ha le foto viene contattato prima.',
+                    'en'=>'The more albums you fill, the more jobs you get. You can add them later, but those with photos get contacted first.',
+                    'fr'=>'Plus tu remplis d\'albums, plus tu reçois de missions. Tu peux les ajouter plus tard, mais ceux qui ont des photos sont contactés en premier.',
+                    'es'=>'Cuantos más álbumes completes, más trabajos recibes. Puedes añadirlas después, pero a quien tiene fotos lo contactan antes.',
                 )); ?></p>
-                <div class="toa-talent-upload-counter" id="toaTalentPhotosCounter"><strong>0</strong> / 15</div>
-                <div class="toa-talent-dropzone" id="toaTalentPhotosDrop">
-                    <div class="toa-talent-dropzone-icon">⬆️</div>
-                    <div class="toa-talent-dropzone-text"><strong><?php echo _ht_talent(array('it'=>'Clicca','en'=>'Click','fr'=>'Clique','es'=>'Clic')); ?></strong> <?php echo _ht_talent(array('it'=>'o trascina qui le foto','en'=>'or drag photos','fr'=>'ou glisse','es'=>'o arrastra')); ?></div>
-                    <div class="toa-talent-dropzone-hint">JPG, PNG • <?php /* TASK hardening-upload STEP A 2026-06-04 */ echo _ht_talent(array('it'=>'Carica le tue foto: le ottimizziamo noi automaticamente','en'=>'Upload your photos: we optimize them automatically','fr'=>'Charge tes photos : on les optimise automatiquement','es'=>'Sube tus fotos: las optimizamos automáticamente')); ?></div>
-                    <input type="file" id="toaTalentPhotosInput" accept="image/*" multiple style="display:none;">
+
+                <div class="toa-albums-bar">
+                    <div class="toa-albums-bar-track"><div class="toa-albums-bar-fill" id="toaTalentCompletenessFill"></div></div>
+                    <div class="toa-albums-bar-label"><strong id="toaTalentCompletenessPct">0%</strong> <?php echo _ht_talent(array('it'=>'di profilo completo','en'=>'profile complete','fr'=>'de profil complété','es'=>'de perfil completo')); ?></div>
                 </div>
-                <div class="toa-talent-thumbs" id="toaTalentPhotosThumbs"></div>
+
+                <div class="toa-talent-upload-counter" id="toaTalentPhotosCounter"><strong>0</strong> / 15</div>
+
+                <div id="toaTalentAlbums">
+                <?php
+                $badge_req = _ht_talent(array('it'=>'consigliata','en'=>'recommended','fr'=>'conseillé','es'=>'recomendado'));
+                $badge_opt = _ht_talent(array('it'=>'facoltativa','en'=>'optional','fr'=>'facultatif','es'=>'opcional'));
+                $cap_si    = _ht_talent(array('it'=>'✅ Così sì','en'=>'✅ Yes like this','fr'=>'✅ Oui comme ça','es'=>'✅ Así sí'));
+                $cap_no    = _ht_talent(array('it'=>'❌ Così no','en'=>'❌ Not like this','fr'=>'❌ Pas comme ça','es'=>'❌ Así no'));
+                $ph_soon   = _ht_talent(array('it'=>'esempio in arrivo','en'=>'example coming','fr'=>'exemple à venir','es'=>'ejemplo próximamente'));
+                $drop_txt  = _ht_talent(array('it'=>'Aggiungi foto','en'=>'Add photos','fr'=>'Ajoute des photos','es'=>'Añade fotos'));
+                foreach ($TALENT_ALBUM as $al):
+                    $code = $al['code'];
+                    $rel  = '/assets/guide/esempio-' . $code;
+                    $has_si = file_exists(get_stylesheet_directory() . $rel . '-si.jpg');
+                    $has_no = file_exists(get_stylesheet_directory() . $rel . '-no.jpg');
+                ?>
+                    <div class="toa-album-card" data-album="<?php echo esc_attr($code); ?>" data-roles="<?php echo esc_attr($al['roles']); ?>" style="display:none;">
+                        <div class="toa-album-head">
+                            <strong><?php echo esc_html(_ht_talent_raw($al['label'])); ?></strong>
+                            <span class="toa-album-badge <?php echo $al['req'] ? 'req' : 'opt'; ?>"><?php echo $al['req'] ? $badge_req : $badge_opt; ?></span>
+                        </div>
+                        <p class="toa-album-hint"><?php echo esc_html(_ht_talent_raw($al['hint'])); ?></p>
+                        <div class="toa-album-examples">
+                            <figure>
+                                <div class="toa-album-ph"><?php if ($has_si): ?><img src="<?php echo esc_url($theme_uri . $rel . '-si.jpg'); ?>" alt="" loading="lazy"><?php else: echo esc_html($ph_soon); endif; ?></div>
+                                <figcaption class="toa-album-cap-si"><?php echo $cap_si; ?></figcaption>
+                            </figure>
+                            <figure>
+                                <div class="toa-album-ph"><?php if ($has_no): ?><img src="<?php echo esc_url($theme_uri . $rel . '-no.jpg'); ?>" alt="" loading="lazy"><?php else: echo esc_html($ph_soon); endif; ?></div>
+                                <figcaption class="toa-album-cap-no"><?php echo $cap_no; ?></figcaption>
+                            </figure>
+                        </div>
+                        <div class="toa-talent-dropzone" id="toaTalentDrop_<?php echo esc_attr($code); ?>">
+                            <div class="toa-talent-dropzone-icon">⬆️</div>
+                            <div class="toa-talent-dropzone-text"><strong><?php echo esc_html($drop_txt); ?></strong></div>
+                            <div class="toa-talent-dropzone-hint">JPG, PNG</div>
+                            <input type="file" id="toaTalentInput_<?php echo esc_attr($code); ?>" accept="image/*" multiple style="display:none;">
+                        </div>
+                        <div class="toa-talent-thumbs" id="toaTalentThumbs_<?php echo esc_attr($code); ?>"></div>
+                        <div class="toa-album-count"><strong id="toaTalentCount_<?php echo esc_attr($code); ?>">0</strong> <?php echo _ht_talent(array('it'=>'foto','en'=>'photos','fr'=>'photos','es'=>'fotos')); ?></div>
+                    </div>
+                <?php endforeach; ?>
+                </div>
                 <div class="toa-talent-error-msg" id="toaTalentPhotosError"></div>
             </div>
 
@@ -937,7 +1066,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814geo2" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
