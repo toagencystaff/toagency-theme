@@ -918,7 +918,8 @@ $theme_uri = get_stylesheet_directory_uri();
                         <?php if (!empty($slides)): ?>
                         <div class="toa-foto-gallery" data-auto="1">
                             <?php foreach ($slides as $i => $sl): ?>
-                                <div class="toa-fg-slide<?php echo $i === 0 ? ' active' : ''; ?>"><img src="<?php echo esc_url($theme_uri . '/assets/' . $sl[0]); ?>" alt="" loading="lazy"><span class="toa-fg-badge <?php echo $sl[1] ? 'ok' : 'wrong'; ?>"><?php echo $sl[1] ? $badge_ok_g : $badge_no_g; ?></span></div>
+                                <?php // la PRIMA slide non è lazy: altrimenti la card resta un rettangolo nero finché non decodifica ?>
+                                <div class="toa-fg-slide<?php echo $i === 0 ? ' active' : ''; ?>"><img src="<?php echo esc_url($theme_uri . '/assets/' . $sl[0]); ?>" alt="" loading="<?php echo $i === 0 ? 'eager' : 'lazy'; ?>"><span class="toa-fg-badge <?php echo $sl[1] ? 'ok' : 'wrong'; ?>"><?php echo $sl[1] ? $badge_ok_g : $badge_no_g; ?></span></div>
                             <?php endforeach; ?>
                         </div>
                         <?php else: ?>
