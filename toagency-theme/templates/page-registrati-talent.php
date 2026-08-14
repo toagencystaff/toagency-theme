@@ -169,6 +169,24 @@ $TALENT_ALBUM = array(
     ),
 );
 
+// 2026-08-14 — Immagini che scorrono dentro ogni card, stesso meccanismo della galleria del selfie
+// (classi .toa-foto-gallery/.toa-fg-slide già definite più sotto). Formato: array(file, 1=così sì | 0=così no).
+// I file stanno in assets/. Album senza immagini → la card mostra un segnaposto, nessun errore.
+$TALENT_ALBUM_SLIDES = array(
+    'polaroid'  => array(
+        array('ok-3.jpg', 1), array('wrong-trucco.jpg', 0), array('ok-4.jpg', 1),
+        array('wrong-cappello.jpg', 0), array('ok-5.jpg', 1), array('wrong-selfie-alto.jpg', 0),
+        array('wrong-lontana.jpg', 0), array('ok-2.jpg', 1), array('wrong-sfondo.jpg', 0),
+    ),
+    'eventi'    => array(
+        array('staff/hostess.jpg', 1), array('staff/steward.jpg', 1), array('gallery/g08.jpg', 1),
+        array('wrong-lontana.jpg', 0), array('wrong-spiaggia.jpg', 0),
+    ),
+    'portfolio' => array(),
+    'dettaglio' => array(),
+    'casual'    => array(),
+);
+
 $theme_uri = get_stylesheet_directory_uri();
 ?>
 <!-- TOA-TALENT-FORM-V1 -->
@@ -843,15 +861,16 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-album-badge{font-size:.7rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:3px 8px;border-radius:99px;white-space:nowrap}
                 .toa-album-badge.req{background:rgba(200,255,0,.14);color:#c8ff00;border:1px solid rgba(200,255,0,.35)}
                 .toa-album-badge.opt{background:rgba(255,255,255,.06);color:#9ca3af;border:1px solid rgba(255,255,255,.15)}
-                .toa-album-hint{font-size:.85rem;line-height:1.5;color:#cbd5e1;margin:0 0 12px}
-                .toa-album-examples{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-                .toa-album-examples figure{margin:0}
-                .toa-album-ph{aspect-ratio:3/4;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.18);color:#6b7280;font-size:.72rem;text-align:center;padding:8px}
-                .toa-album-ph img{width:100%;height:100%;object-fit:cover;display:block}
-                .toa-album-examples figcaption{font-size:.75rem;font-weight:700;margin-top:6px;text-align:center}
-                .toa-album-cap-si{color:#c8ff00}
-                .toa-album-cap-no{color:#f87171}
-                .toa-album-count{font-size:.78rem;color:#9ca3af;margin-top:8px}
+                .toa-album-hint{font-size:1rem;line-height:1.55;color:#e5e7eb;margin:0 0 14px}
+                .toa-album-card .toa-foto-gallery{width:100%;max-width:230px;height:310px;margin:0 auto 14px}
+                .toa-album-card .toa-fg-badge{font-size:15px;padding:7px 0}
+                .toa-album-ph{max-width:230px;height:310px;margin:0 auto 14px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.18);color:#6b7280;font-size:.85rem;text-align:center;padding:10px}
+                .toa-album-count{font-size:.85rem;color:#9ca3af;margin-top:8px}
+                /* album non richiesto dai ruoli scelti: resta visibile ma spento */
+                .toa-album-card.is-off{opacity:.5}
+                .toa-album-serve{font-size:.8rem;font-weight:600;margin:0 0 10px}
+                .toa-album-serve.on{color:#c8ff00}
+                .toa-album-serve.off{color:#9ca3af}
                 .toa-albums-bar{margin:0 0 16px}
                 .toa-albums-bar-track{height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
                 .toa-albums-bar-fill{height:100%;width:0;background:#c8ff00;border-radius:99px;transition:width .35s ease}
@@ -875,36 +894,36 @@ $theme_uri = get_stylesheet_directory_uri();
 
                 <div class="toa-talent-upload-counter" id="toaTalentPhotosCounter"><strong>0</strong> / 15</div>
 
-                <div id="toaTalentAlbums">
+                <div id="toaTalentAlbums"
+                     data-serve-on="<?php echo esc_attr(_ht_talent(array('it'=>'★ Serve per i ruoli che hai scelto','en'=>'★ Needed for the roles you picked','fr'=>'★ Nécessaire pour tes rôles','es'=>'★ Necesario para tus roles'))); ?>"
+                     data-serve-off="<?php echo esc_attr(_ht_talent(array('it'=>'Non richiesto per i tuoi ruoli — puoi caricarle lo stesso','en'=>'Not required for your roles — you can still upload','fr'=>'Pas requis pour tes rôles — tu peux quand même charger','es'=>'No requerido para tus roles — puedes subirlas igual'))); ?>">
                 <?php
                 $badge_req = _ht_talent(array('it'=>'consigliata','en'=>'recommended','fr'=>'conseillé','es'=>'recomendado'));
                 $badge_opt = _ht_talent(array('it'=>'facoltativa','en'=>'optional','fr'=>'facultatif','es'=>'opcional'));
-                $cap_si    = _ht_talent(array('it'=>'✅ Così sì','en'=>'✅ Yes like this','fr'=>'✅ Oui comme ça','es'=>'✅ Así sí'));
-                $cap_no    = _ht_talent(array('it'=>'❌ Così no','en'=>'❌ Not like this','fr'=>'❌ Pas comme ça','es'=>'❌ Así no'));
+                $badge_ok_g = _ht_talent(array('it'=>'✅ Così sì','en'=>'✅ Yes like this','fr'=>'✅ Oui comme ça','es'=>'✅ Así sí'));
+                $badge_no_g = _ht_talent(array('it'=>'❌ Così no','en'=>'❌ Not like this','fr'=>'❌ Pas comme ça','es'=>'❌ Así no'));
                 $ph_soon   = _ht_talent(array('it'=>'esempio in arrivo','en'=>'example coming','fr'=>'exemple à venir','es'=>'ejemplo próximamente'));
                 $drop_txt  = _ht_talent(array('it'=>'Aggiungi foto','en'=>'Add photos','fr'=>'Ajoute des photos','es'=>'Añade fotos'));
                 foreach ($TALENT_ALBUM as $al):
                     $code = $al['code'];
-                    $rel  = '/assets/guide/esempio-' . $code;
-                    $has_si = file_exists(get_stylesheet_directory() . $rel . '-si.jpg');
-                    $has_no = file_exists(get_stylesheet_directory() . $rel . '-no.jpg');
                 ?>
-                    <div class="toa-album-card" data-album="<?php echo esc_attr($code); ?>" data-roles="<?php echo esc_attr($al['roles']); ?>" style="display:none;">
+                    <div class="toa-album-card" data-album="<?php echo esc_attr($code); ?>" data-roles="<?php echo esc_attr($al['roles']); ?>">
                         <div class="toa-album-head">
                             <strong><?php echo esc_html(_ht_talent_raw($al['label'])); ?></strong>
                             <span class="toa-album-badge <?php echo $al['req'] ? 'req' : 'opt'; ?>"><?php echo $al['req'] ? $badge_req : $badge_opt; ?></span>
                         </div>
+                        <p class="toa-album-serve off"></p>
                         <p class="toa-album-hint"><?php echo esc_html(_ht_talent_raw($al['hint'])); ?></p>
-                        <div class="toa-album-examples">
-                            <figure>
-                                <div class="toa-album-ph"><?php if ($has_si): ?><img src="<?php echo esc_url($theme_uri . $rel . '-si.jpg'); ?>" alt="" loading="lazy"><?php else: echo esc_html($ph_soon); endif; ?></div>
-                                <figcaption class="toa-album-cap-si"><?php echo $cap_si; ?></figcaption>
-                            </figure>
-                            <figure>
-                                <div class="toa-album-ph"><?php if ($has_no): ?><img src="<?php echo esc_url($theme_uri . $rel . '-no.jpg'); ?>" alt="" loading="lazy"><?php else: echo esc_html($ph_soon); endif; ?></div>
-                                <figcaption class="toa-album-cap-no"><?php echo $cap_no; ?></figcaption>
-                            </figure>
+                        <?php $slides = isset($TALENT_ALBUM_SLIDES[$code]) ? $TALENT_ALBUM_SLIDES[$code] : array(); ?>
+                        <?php if (!empty($slides)): ?>
+                        <div class="toa-foto-gallery" data-auto="1">
+                            <?php foreach ($slides as $i => $sl): ?>
+                                <div class="toa-fg-slide<?php echo $i === 0 ? ' active' : ''; ?>"><img src="<?php echo esc_url($theme_uri . '/assets/' . $sl[0]); ?>" alt="" loading="lazy"><span class="toa-fg-badge <?php echo $sl[1] ? 'ok' : 'wrong'; ?>"><?php echo $sl[1] ? $badge_ok_g : $badge_no_g; ?></span></div>
+                            <?php endforeach; ?>
                         </div>
+                        <?php else: ?>
+                        <div class="toa-album-ph"><?php echo esc_html($ph_soon); ?></div>
+                        <?php endif; ?>
                         <div class="toa-talent-dropzone" id="toaTalentDrop_<?php echo esc_attr($code); ?>">
                             <div class="toa-talent-dropzone-icon">⬆️</div>
                             <div class="toa-talent-dropzone-text"><strong><?php echo esc_html($drop_txt); ?></strong></div>
@@ -1077,7 +1096,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album2" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT

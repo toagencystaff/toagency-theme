@@ -713,18 +713,41 @@
         return uploadState.photos.filter(function(p) { return p.album === code; }).length;
     }
 
+    /* 2026-08-14 — le card degli album si vedono SEMPRE tutte (Marco: serve l'impatto visivo di
+       quali album esistono). Quelle non richieste dai ruoli scelti restano visibili ma spente. */
+    var albumsWrap = document.getElementById('toaTalentAlbums');
     function updateAlbumVisibility() {
         var roles = Array.prototype.map.call(
             document.querySelectorAll('#toaTalentCategoriesImmagine input[type="checkbox"]:checked'),
             function(cb) { return cb.value; }
         );
+        var txtOn  = albumsWrap ? (albumsWrap.dataset.serveOn  || '') : '';
+        var txtOff = albumsWrap ? (albumsWrap.dataset.serveOff || '') : '';
         albumCards.forEach(function(card) {
             var want = card.dataset.roles || '*';
-            var show = (want === '*') || want.split(',').some(function(r) { return roles.indexOf(r.trim()) > -1; });
-            card.style.display = show ? '' : 'none';
+            var serve = (want === '*') || want.split(',').some(function(r) { return roles.indexOf(r.trim()) > -1; });
+            card.classList.toggle('is-off', !serve);
+            var lab = card.querySelector('.toa-album-serve');
+            if (lab) {
+                lab.textContent = serve ? txtOn : txtOff;
+                lab.className = 'toa-album-serve ' + (serve ? 'on' : 'off');
+            }
         });
         updateCompleteness();
     }
+
+    /* Galleria che scorre dentro le card: stesso comportamento di quella del selfie,
+       ma generica (tutte le .toa-foto-gallery con data-auto, non un solo id). */
+    document.querySelectorAll('.toa-foto-gallery[data-auto]').forEach(function(g) {
+        var s = g.querySelectorAll('.toa-fg-slide');
+        if (s.length < 2) return;
+        var i = 0;
+        setInterval(function() {
+            s[i].classList.remove('active');
+            i = (i + 1) % s.length;
+            s[i].classList.add('active');
+        }, 2200);
+    });
     document.querySelectorAll('#toaTalentCategoriesImmagine input[type="checkbox"]').forEach(function(cb) {
         cb.addEventListener('change', updateAlbumVisibility);
     });
@@ -745,7 +768,7 @@
         var pct = Math.round(40 * filled / baseFields.length);
         if (photosInAlbum('polaroid') > 0) pct += 30;
         var richiesti = albumCards.filter(function(c) {
-            return c.style.display !== 'none' && c.dataset.album !== 'polaroid' && c.dataset.album !== 'casual';
+            return !c.classList.contains('is-off') && c.dataset.album !== 'polaroid' && c.dataset.album !== 'casual';
         });
         if (richiesti.length) {
             var fatti = richiesti.filter(function(c) { return photosInAlbum(c.dataset.album) > 0; }).length;
