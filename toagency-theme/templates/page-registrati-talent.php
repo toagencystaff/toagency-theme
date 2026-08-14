@@ -611,6 +611,13 @@ $theme_uri = get_stylesheet_directory_uri();
                     <div class="toa-talent-field">
                         <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Altezza (cm)','en'=>'Height (cm)','fr'=>'Taille (cm)','es'=>'Altura (cm)')); ?> <span class="req">*</span></label>
                         <input type="number" name="altezza" class="toa-talent-input" min="100" max="220" placeholder="170" required>
+                        <?php // 2026-08-14 (TEMA REGISTRAZIONE TALENT): istruzioni di misurazione + avviso veridicità ?>
+                        <small class="toa-talent-form-hint" style="display:block;margin-top:6px;color:#9ca3af;font-size:0.78rem;line-height:1.5;"><?php echo _ht_talent(array(
+                            'it'=>'Senza scarpe, fino alla sommità della testa (non ai capelli). Dichiara la misura vera: sul set viene verificata e un dato falso può farti perdere l\'ingaggio.',
+                            'en'=>'No shoes, measured to the top of the head (not the hair). Declare your real height: it is checked on set and a false figure can cost you the job.',
+                            'fr'=>'Sans chaussures, jusqu\'au sommet du crâne (pas les cheveux). Déclare ta vraie taille : elle est vérifiée sur le plateau et un chiffre faux peut te coûter le contrat.',
+                            'es'=>'Sin zapatos, hasta la parte más alta de la cabeza (no el pelo). Declara tu altura real: se comprueba en el set y un dato falso puede costarte el trabajo.',
+                        )); ?></small>
                     </div>
                 </div>
 
@@ -682,13 +689,21 @@ $theme_uri = get_stylesheet_directory_uri();
                     </div>
                 </div>
 
-                <!-- Misure (solo se sesso=F) -->
+                <!-- Misure — visibili solo col ruolo Modello/a (updateMisureVisibility in talent-form-v40.js).
+                     2026-08-14 (TEMA REGISTRAZIONE TALENT): blocco richiuso di default, si apre solo chi le ha davvero. -->
                 <div class="toa-talent-misure" id="toaTalentMisure" style="display:none;">
+                    <details class="toa-talent-misure-acc" style="margin-top:12px;border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:10px 14px;">
+                    <summary style="cursor:pointer;font-size:0.9rem;font-weight:600;color:#e5e7eb;"><?php echo _ht_talent(array(
+                        'it'=>'📏 Misure corpo (facoltative) — apri solo se lavori nella moda',
+                        'en'=>'📏 Body measurements (optional) — open only if you work in fashion',
+                        'fr'=>'📏 Mensurations (facultatives) — ouvre seulement si tu travailles dans la mode',
+                        'es'=>'📏 Medidas (opcionales) — abre solo si trabajas en moda',
+                    )); ?></summary>
                     <p class="toa-talent-step-help" style="margin-top:10px;"><?php echo _ht_talent(array(
-                        'it'=>'Misure corpo (cm) — facoltative, utili per casting moda e fitting.',
-                        'en'=>'Body measurements (cm) — optional, useful for fashion casting and fitting.',
-                        'fr'=>'Mensurations (cm) — facultatives, utiles pour les castings mode.',
-                        'es'=>'Medidas (cm) — opcionales, útiles para castings de moda.',
+                        'it'=>'Servono per il fitting nei casting moda. Compila solo se le conosci davvero: misure inventate fanno saltare il fitting il giorno stesso. Se non le sai, lascia vuoto.',
+                        'en'=>'Used for fitting in fashion castings. Fill them in only if you actually know them: made-up measurements blow the fitting on the day. If you don\'t know them, leave blank.',
+                        'fr'=>'Utiles pour le fitting des castings mode. Ne remplis que si tu les connais vraiment : des mensurations inventées font rater le fitting le jour même. Sinon, laisse vide.',
+                        'es'=>'Sirven para el fitting en castings de moda. Rellena solo si las conoces de verdad: unas medidas inventadas arruinan el fitting el mismo día. Si no las sabes, déjalo vacío.',
                     )); ?></p>
                     <div class="toa-talent-field-row">
                         <div class="toa-talent-field">
@@ -707,6 +722,7 @@ $theme_uri = get_stylesheet_directory_uri();
                             <div class="toa-talent-error-msg"></div>
                         </div>
                     </div>
+                    </details>
                 </div>
             </div>
 
