@@ -138,6 +138,19 @@ $TALENT_ALBUM = array(
         ),
     ),
     array(
+        // 2026-08-14 — album dedicato agli attori (album CRM: portfolio_cinema).
+        // Il CRM oggi NON lo conta nella % completamento: per gli attori pesa 'portfolio'.
+        // Qui è facoltativo apposta, così non promettiamo punti che il backend non dà.
+        'code' => 'portfolio_cinema', 'roles' => 'actor', 'req' => false,
+        'label' => array('it'=>'Portfolio attore','en'=>'Acting portfolio','fr'=>'Portfolio comédien','es'=>'Portfolio actor'),
+        'hint'  => array(
+            'it'=>'Scatti da book attoriale o fotogrammi dei tuoi lavori: primo piano espressivo, mezzo busto, luce naturale. Niente trucco pesante.',
+            'en'=>'Acting book shots or frames from your work: expressive close-up, chest-up, natural light. No heavy makeup.',
+            'fr'=>'Photos de book comédien ou images de tes travaux : gros plan expressif, buste, lumière naturelle. Pas de maquillage lourd.',
+            'es'=>'Fotos de book actoral o fotogramas de tus trabajos: primer plano expresivo, medio cuerpo, luz natural. Sin maquillaje pesado.',
+        ),
+    ),
+    array(
         'code' => 'dettaglio', 'roles' => 'model', 'req' => true,
         'label' => array('it'=>'Dettagli','en'=>'Details','fr'=>'Détails','es'=>'Detalles'),
         'hint'  => array(
@@ -185,6 +198,7 @@ $TALENT_ALBUM_SLIDES = array(
         'no' => array('wrong-lontana.jpg', 'wrong-spiaggia.jpg', 'wrong-sfondo.jpg'),
     ),
     'portfolio' => array('si' => array(), 'no' => array()),
+    'portfolio_cinema' => array('si' => array(), 'no' => array()),
     'dettaglio' => array('si' => array(), 'no' => array()),
     'casual'    => array('si' => array(), 'no' => array()),
 );
@@ -871,8 +885,10 @@ $theme_uri = get_stylesheet_directory_uri();
                  Le card compaiono/spariscono da talent-form-v40.js in base ai ruoli spuntati allo Step 3. -->
             <style>
                 /* linguette: si vedono tutti gli album in fila, si apre uno alla volta */
-                .toa-alb-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:-1px}
-                .toa-alb-tab{appearance:none;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-bottom-color:transparent;color:#9ca3af;font:600 .9rem/1.2 inherit;padding:11px 14px;border-radius:10px 10px 0 0;cursor:pointer;display:flex;align-items:center;gap:7px}
+                /* una riga sola: se non ci stanno, si scorre lateralmente invece di andare a capo */
+                .toa-alb-tabs{display:flex;flex-wrap:nowrap;gap:4px;margin-bottom:-1px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+                .toa-alb-tabs::-webkit-scrollbar{display:none}
+                .toa-alb-tab{appearance:none;flex:none;white-space:nowrap;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-bottom-color:transparent;color:#9ca3af;font:600 .8rem/1.2 inherit;padding:10px 11px;border-radius:10px 10px 0 0;cursor:pointer;display:flex;align-items:center;gap:6px}
                 .toa-alb-tab:hover{color:#e5e7eb;background:rgba(255,255,255,.07)}
                 .toa-alb-tab.active{background:rgba(200,255,0,.10);border-color:rgba(200,255,0,.45);border-bottom-color:transparent;color:#fff}
                 .toa-alb-tab .dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.25);flex:none}
@@ -887,8 +903,15 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-alb-ex figcaption{font-size:.9rem;font-weight:700;text-align:center;margin-top:8px}
                 .toa-alb-ex .si{color:#10b981}
                 .toa-alb-ex .no{color:#f87171}
-                .toa-alb-ex .toa-foto-gallery{width:100%;max-width:none;height:270px;margin:0;box-shadow:none;border:1px solid rgba(255,255,255,.10)}
+                .toa-alb-ex .toa-foto-gallery{width:100%;max-width:none;height:auto;aspect-ratio:3/4;margin:0;box-shadow:none;border:1px solid rgba(255,255,255,.10)}
                 .toa-alb-ex .toa-fg-badge{display:none}
+                .toa-alb-ex .toa-album-ph{max-width:none;height:auto;aspect-ratio:3/4;margin:0}
+                /* "aggiungi foto": pulsante nero tondo, non più il riquadro tratteggiato che sprecava spazio */
+                .toa-album-card .toa-talent-dropzone{border:0;background:transparent;padding:0;min-height:0;display:flex;align-items:center;gap:12px;text-align:left}
+                .toa-album-card .toa-talent-dropzone-icon{width:52px;height:52px;flex:none;border-radius:50%;background:#000;border:1px solid rgba(255,255,255,.28);color:#c8ff00;font-size:28px;line-height:50px;text-align:center;margin:0;transition:border-color .15s,transform .15s}
+                .toa-album-card .toa-talent-dropzone:hover .toa-talent-dropzone-icon{border-color:#c8ff00;transform:scale(1.05)}
+                .toa-album-card .toa-talent-dropzone-text{font-size:.95rem;font-weight:600;color:#e5e7eb;margin:0}
+                .toa-album-card .toa-talent-dropzone-hint{display:none}
                 .toa-alb-guida{display:inline-block;margin:0 0 14px;font-size:.92rem;font-weight:600;color:#c8ff00;text-decoration:underline}
                 .toa-alb-wa{display:block;margin:0 0 14px;padding:12px 14px;border-radius:10px;background:rgba(37,211,102,.10);border:1px solid rgba(37,211,102,.35);color:#25D366;font-size:.92rem;font-weight:600;text-decoration:none;line-height:1.45}
                 .toa-alb-wa:hover{background:rgba(37,211,102,.18)}
@@ -984,7 +1007,7 @@ $theme_uri = get_stylesheet_directory_uri();
                         <?php if ($guida): ?>
                             <a class="toa-alb-guida" href="<?php echo esc_url($guida); ?>" target="_blank" rel="noopener"><?php echo esc_html($guida_lbl); ?></a>
                         <?php endif; ?>
-                        <?php if (in_array($code, array('portfolio','dettaglio'), true)): ?>
+                        <?php if (in_array($code, array('portfolio','portfolio_cinema','dettaglio'), true)): ?>
                             <a class="toa-alb-wa" data-wa="1" data-moda="<?php echo esc_attr($wa_moda); ?>" data-cinema="<?php echo esc_attr($wa_cinema); ?>" data-num="<?php echo esc_attr($TALENT_WA_NUM); ?>" href="https://wa.me/<?php echo esc_attr($TALENT_WA_NUM); ?>?text=<?php echo rawurlencode($wa_moda); ?>" target="_blank" rel="noopener"><?php echo esc_html($wa_label); ?></a>
                         <?php endif; ?>
                         <div class="toa-alb-ex">
@@ -1006,7 +1029,7 @@ $theme_uri = get_stylesheet_directory_uri();
                             <?php endforeach; ?>
                         </div>
                         <div class="toa-talent-dropzone" id="toaTalentDrop_<?php echo esc_attr($code); ?>">
-                            <div class="toa-talent-dropzone-icon">⬆️</div>
+                            <div class="toa-talent-dropzone-icon">+</div>
                             <div class="toa-talent-dropzone-text"><strong><?php echo esc_html($drop_txt); ?></strong></div>
                             <div class="toa-talent-dropzone-hint">JPG, PNG</div>
                             <input type="file" id="toaTalentInput_<?php echo esc_attr($code); ?>" accept="image/*" multiple style="display:none;">
@@ -1177,7 +1200,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album3" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album4" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
