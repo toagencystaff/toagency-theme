@@ -2298,8 +2298,10 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     var SS_MACRO_WORD = {
         'nord ovest': 'nordovest', 'nordovest': 'nordovest', 'northwest': 'nordovest', 'north west': 'nordovest', 'nord ouest': 'nordovest', 'noroeste': 'nordovest',
         'nord est': 'nordest', 'nordest': 'nordest', 'northeast': 'nordest', 'north east': 'nordest', 'nordeste': 'nordest',
-        'centro nord': 'centronord', 'centronord': 'centronord',
-        'centro sud': 'centrosud', 'centrosud': 'centrosud',
+        'centro nord': 'centronord', 'centronord': 'centronord', 'nord centro': 'centronord',
+        'center north': 'centronord', 'north center': 'centronord', 'centre nord': 'centronord', 'nord centre': 'centronord', 'centro norte': 'centronord', 'norte centro': 'centronord',
+        'centro sud': 'centrosud', 'centrosud': 'centrosud', 'sud centro': 'centrosud',
+        'center south': 'centrosud', 'south center': 'centrosud', 'centre sud': 'centrosud', 'sud centre': 'centrosud', 'centro sur': 'centrosud', 'sur centro': 'centrosud',
         'nord': 'nord', 'north': 'nord', 'norte': 'nord',
         'sud': 'sud', 'south': 'sud', 'sur': 'sud',
         'centro': 'centro', 'center': 'centro', 'centre': 'centro'
