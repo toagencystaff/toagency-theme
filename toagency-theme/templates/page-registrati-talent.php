@@ -952,10 +952,10 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-alb-ex .toa-fg-badge{display:none}
                 .toa-alb-ex .toa-album-ph{max-width:none;height:auto;aspect-ratio:3/4;margin:0}
                 /* "aggiungi foto": pulsante nero tondo, non più il riquadro tratteggiato che sprecava spazio */
-                .toa-album-card .toa-talent-dropzone{border:0;background:transparent;padding:0;min-height:0;display:flex;align-items:center;gap:12px;text-align:left}
-                .toa-album-card .toa-talent-dropzone-icon{width:52px;height:52px;flex:none;border-radius:50%;background:#000;border:1px solid rgba(255,255,255,.28);color:#c8ff00;font-size:28px;line-height:50px;text-align:center;margin:0;transition:border-color .15s,transform .15s}
-                .toa-album-card .toa-talent-dropzone:hover .toa-talent-dropzone-icon{border-color:#c8ff00;transform:scale(1.05)}
-                .toa-album-card .toa-talent-dropzone-text{font-size:.95rem;font-weight:600;color:#e5e7eb;margin:0}
+                .toa-album-card .toa-talent-dropzone{border:0;background:transparent;padding:10px 0 4px;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
+                .toa-album-card .toa-talent-dropzone-icon{width:104px;height:104px;flex:none;border-radius:50%;background:#000;border:2px solid rgba(255,255,255,.28);color:#c8ff00;font-size:52px;font-weight:300;line-height:100px;text-align:center;margin:0;transition:border-color .15s,transform .15s,box-shadow .15s}
+                .toa-album-card .toa-talent-dropzone:hover .toa-talent-dropzone-icon{border-color:#c8ff00;transform:scale(1.06);box-shadow:0 0 0 6px rgba(200,255,0,.10)}
+                .toa-album-card .toa-talent-dropzone-text{font-size:1rem;font-weight:700;color:#e5e7eb;margin:0}
                 .toa-album-card .toa-talent-dropzone-hint{display:none}
                 .toa-alb-guida{display:inline-block;margin:0 0 14px;font-size:.92rem;font-weight:600;color:#c8ff00;text-decoration:underline}
                 .toa-alb-wa{display:block;margin:0 0 14px;padding:12px 14px;border-radius:10px;background:rgba(37,211,102,.10);border:1px solid rgba(37,211,102,.35);color:#25D366;font-size:.92rem;font-weight:600;text-decoration:none;line-height:1.45}
@@ -970,7 +970,7 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-album-card .toa-foto-gallery{width:100%;max-width:230px;height:310px;margin:0 auto 14px}
                 .toa-album-card .toa-fg-badge{font-size:15px;padding:7px 0}
                 .toa-album-ph{max-width:230px;height:310px;margin:0 auto 14px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.18);color:#6b7280;font-size:.85rem;text-align:center;padding:10px}
-                .toa-album-count{font-size:.85rem;color:#9ca3af;margin-top:8px}
+                .toa-album-count{font-size:.85rem;color:#9ca3af;margin-top:8px;text-align:center}
                 .toa-album-count.ok{color:#10b981}
                 .toa-album-count.ok strong{color:#10b981}
                 .toa-alb-quante{font-size:.86rem;line-height:1.5;color:#c8ff00;margin:0 0 14px;padding:9px 12px;border-radius:8px;background:rgba(200,255,0,.06);border:1px solid rgba(200,255,0,.20)}
@@ -1251,7 +1251,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album8" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album9" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
