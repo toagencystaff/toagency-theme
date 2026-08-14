@@ -47,8 +47,12 @@ $TALENT_RUOLI_IMMAGINE = array(
     array('code'=>'actor',      'min_age'=>14, 'label'=>array('it'=>'Attore/Attrice','en'=>'Actor/Actress','fr'=>'Acteur/Actrice','es'=>'Actor/Actriz')),
     array('code'=>'model',      'min_age'=>14, 'label'=>array('it'=>'Modello/Modella','en'=>'Model','fr'=>'Mannequin','es'=>'Modelo')),
     array('code'=>'hostess',    'min_age'=>18, 'label'=>array('it'=>'Hostess/Steward','en'=>'Hostess/Steward','fr'=>'Hôtesse/Steward','es'=>'Azafata/Steward')),
-    array('code'=>'creator',    'min_age'=>14, 'label'=>array('it'=>'Content Creator','en'=>'Content Creator','fr'=>'Créateur de contenu','es'=>'Creador de contenido')),
-    array('code'=>'influencer', 'min_age'=>14, 'label'=>array('it'=>'Influencer','en'=>'Influencer','fr'=>'Influenceur','es'=>'Influencer')),
+    // 2026-08-14 (TEMA REGISTRAZIONE TALENT) — era 'creator', che il CRM normalizzava in silenzio a
+    // 'influencer' (alias legacy, lib/ruoli.php riga 87): nessuno poteva selezionare il ruolo vero.
+    // Verificato dalla chat CRM RUOLI-TALENT sui dati live: creator=0 record, influencer=2.744, ugc_creator=35.
+    // Etichette allineate a page-talent-self-edit.php ($RUOLI_OPTS), così form e self-edit dicono la stessa cosa.
+    array('code'=>'ugc_creator','min_age'=>14, 'label'=>array('it'=>'UGC Creator','en'=>'UGC Creator','fr'=>'Créateur UGC','es'=>'Creador UGC')),
+    array('code'=>'influencer', 'min_age'=>14, 'label'=>array('it'=>'Influencer/Creator','en'=>'Influencer/Creator','fr'=>'Influenceur/Créateur','es'=>'Influencer/Creador')),
     array('code'=>'comparsa',   'min_age'=>14, 'label'=>array('it'=>'Comparsa','en'=>'Extra','fr'=>'Figurant','es'=>'Extra')),
     // FIX 2026-06-29 marco — rimossa opzione "Altro" dai ruoli (ruoli solo lista canonica, eccetto sesso)
 );
@@ -658,6 +662,13 @@ $theme_uri = get_stylesheet_directory_uri();
                         </label>
                     <?php endforeach; ?>
                 </div>
+                <?php // 2026-08-14 (TEMA REGISTRAZIONE TALENT): "UGC Creator" è gergo, una riga per capirlo al volo ?>
+                <small class="toa-talent-form-hint" style="display:block;margin-top:8px;color:#9ca3af;font-size:0.78rem;line-height:1.5;"><?php echo _ht_talent(array(
+                    'it'=>'UGC Creator = appari nei video creando contenuti per i brand. Influencer/Creator = pubblichi sui tuoi canali con il tuo pubblico.',
+                    'en'=>'UGC Creator = you appear in videos making content for brands. Influencer/Creator = you post on your own channels to your own audience.',
+                    'fr'=>'Créateur UGC = tu apparais dans des vidéos en créant du contenu pour les marques. Influenceur/Créateur = tu publies sur tes canaux, avec ton audience.',
+                    'es'=>'Creador UGC = apareces en vídeos creando contenido para marcas. Influencer/Creador = publicas en tus canales, con tu público.',
+                )); ?></small>
                 <div class="toa-talent-error-msg"></div>
             </div>
 
