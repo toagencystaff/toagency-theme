@@ -671,7 +671,7 @@
                 var el = document.getElementById('toaTalentCount_' + card.dataset.album);
                 if (el) el.textContent = photosInAlbum(card.dataset.album);
             });
-            updateCompleteness();
+            updateAlbumVisibility(); // aggiorna anche pallini e numeri sulle linguette
         }
     }
     updateCounters();
@@ -732,9 +732,33 @@
                 lab.textContent = serve ? txtOn : txtOff;
                 lab.className = 'toa-album-serve ' + (serve ? 'on' : 'off');
             }
+            // linguetta: pallino acceso se l'album serve, verde se ha già foto dentro
+            var tab = document.querySelector('.toa-alb-tab[data-tab="' + card.dataset.album + '"]');
+            if (tab) {
+                var n = photosInAlbum(card.dataset.album);
+                tab.classList.toggle('serve', serve);
+                tab.classList.toggle('done', n > 0);
+                var nEl = document.getElementById('toaTalentTabN_' + card.dataset.album);
+                if (nEl) nEl.textContent = n > 0 ? '(' + n + ')' : '';
+            }
+        });
+        // WhatsApp fotografo: messaggio "cinema" per chi fa solo l'attore, "moda" negli altri casi
+        var cinema = roles.indexOf('actor') > -1 && roles.indexOf('model') === -1;
+        document.querySelectorAll('a[data-wa="1"]').forEach(function(a) {
+            var msg = cinema ? a.dataset.cinema : a.dataset.moda;
+            a.href = 'https://wa.me/' + a.dataset.num + '?text=' + encodeURIComponent(msg || '');
         });
         updateCompleteness();
     }
+
+    /* Linguette: si apre un album alla volta, gli altri restano visibili in cima. */
+    document.querySelectorAll('.toa-alb-tab').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var code = btn.dataset.tab;
+            document.querySelectorAll('.toa-alb-tab').forEach(function(b) { b.classList.toggle('active', b === btn); });
+            albumCards.forEach(function(c) { c.hidden = (c.dataset.album !== code); });
+        });
+    });
 
     /* Galleria che scorre dentro le card: stesso comportamento di quella del selfie,
        ma generica (tutte le .toa-foto-gallery con data-auto, non un solo id). */

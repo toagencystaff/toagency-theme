@@ -172,20 +172,35 @@ $TALENT_ALBUM = array(
 // 2026-08-14 — Immagini che scorrono dentro ogni card, stesso meccanismo della galleria del selfie
 // (classi .toa-foto-gallery/.toa-fg-slide già definite più sotto). Formato: array(file, 1=così sì | 0=così no).
 // I file stanno in assets/. Album senza immagini → la card mostra un segnaposto, nessun errore.
+// Due colonne affiancate: a sinistra scorrono i "così sì", a destra i "così no".
+// Percorso che inizia con "/" = file del sito (media WP), altrimenti = toagency-theme/assets/.
+// Le Pola vengono dall'articolo del blog "Foto Polaroid per Agenzie di Modelli" (9 immagini).
 $TALENT_ALBUM_SLIDES = array(
     'polaroid'  => array(
-        array('ok-3.jpg', 1), array('wrong-trucco.jpg', 0), array('ok-4.jpg', 1),
-        array('wrong-cappello.jpg', 0), array('ok-5.jpg', 1), array('wrong-selfie-alto.jpg', 0),
-        array('wrong-lontana.jpg', 0), array('ok-2.jpg', 1), array('wrong-sfondo.jpg', 0),
+        'si' => array('/wp-content/uploads/2026/06/image3-3.jpg', '/wp-content/uploads/2026/06/image5-3.jpg', '/wp-content/uploads/2026/06/image6-3.jpg', '/wp-content/uploads/2026/06/image7-4.jpg', '/wp-content/uploads/2026/06/image9-4.jpg'),
+        'no' => array('wrong-trucco.jpg', 'wrong-cappello.jpg', 'wrong-selfie-alto.jpg', 'wrong-lontana.jpg', 'wrong-sfondo.jpg'),
     ),
     'eventi'    => array(
-        array('staff/hostess.jpg', 1), array('staff/steward.jpg', 1), array('gallery/g08.jpg', 1),
-        array('wrong-lontana.jpg', 0), array('wrong-spiaggia.jpg', 0),
+        'si' => array('staff/hostess.jpg', 'staff/steward.jpg', 'gallery/g08.jpg', 'staff/accoglienza.jpg', 'staff/interprete.jpg'),
+        'no' => array('wrong-lontana.jpg', 'wrong-spiaggia.jpg', 'wrong-sfondo.jpg'),
     ),
-    'portfolio' => array(),
-    'dettaglio' => array(),
-    'casual'    => array(),
+    'portfolio' => array('si' => array(), 'no' => array()),
+    'dettaglio' => array('si' => array(), 'no' => array()),
+    'casual'    => array('si' => array(), 'no' => array()),
 );
+
+// Articolo guida, un indirizzo per lingua (WPML usa slug diversi — verificato via hreflang il 14/08).
+$TALENT_ALBUM_GUIDA = array(
+    'polaroid' => array(
+        'it' => '/polaroid-agenzia-modelli-guida-completa/',
+        'en' => '/en/polaroid-photos-modeling-agency-complete-guide/',
+        'fr' => '/fr/photos-polaroid-agence-mannequins-guide-complet/',
+        'es' => '/es/fotos-polaroid-agencia-modelos-guia-completa/',
+    ),
+);
+
+// Numero WhatsApp agenzia (lo stesso usato in tutto il tema).
+$TALENT_WA_NUM = '393517899225';
 
 $theme_uri = get_stylesheet_directory_uri();
 ?>
@@ -855,7 +870,29 @@ $theme_uri = get_stylesheet_directory_uri();
                  Al posto del riquadro unico: una card per ogni album che serve al ruolo scelto.
                  Le card compaiono/spariscono da talent-form-v40.js in base ai ruoli spuntati allo Step 3. -->
             <style>
-                .toa-album-card{border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:16px;margin-bottom:14px;background:rgba(255,255,255,.02)}
+                /* linguette: si vedono tutti gli album in fila, si apre uno alla volta */
+                .toa-alb-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:-1px}
+                .toa-alb-tab{appearance:none;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-bottom-color:transparent;color:#9ca3af;font:600 .9rem/1.2 inherit;padding:11px 14px;border-radius:10px 10px 0 0;cursor:pointer;display:flex;align-items:center;gap:7px}
+                .toa-alb-tab:hover{color:#e5e7eb;background:rgba(255,255,255,.07)}
+                .toa-alb-tab.active{background:rgba(200,255,0,.10);border-color:rgba(200,255,0,.45);border-bottom-color:transparent;color:#fff}
+                .toa-alb-tab .dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.25);flex:none}
+                .toa-alb-tab.serve .dot{background:#c8ff00}
+                .toa-alb-tab.done .dot{background:#10b981}
+                .toa-alb-tab .n{font-size:.78rem;opacity:.8}
+                .toa-album-card{border:1px solid rgba(255,255,255,.12);border-radius:0 14px 14px 14px;padding:18px;margin-bottom:14px;background:rgba(255,255,255,.02)}
+                .toa-album-card[hidden]{display:none}
+                /* così sì / così no affiancate */
+                .toa-alb-ex{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+                .toa-alb-ex figure{margin:0}
+                .toa-alb-ex figcaption{font-size:.9rem;font-weight:700;text-align:center;margin-top:8px}
+                .toa-alb-ex .si{color:#10b981}
+                .toa-alb-ex .no{color:#f87171}
+                .toa-alb-ex .toa-foto-gallery{width:100%;max-width:none;height:270px;margin:0;box-shadow:none;border:1px solid rgba(255,255,255,.10)}
+                .toa-alb-ex .toa-fg-badge{display:none}
+                .toa-alb-guida{display:inline-block;margin:0 0 14px;font-size:.92rem;font-weight:600;color:#c8ff00;text-decoration:underline}
+                .toa-alb-wa{display:block;margin:0 0 14px;padding:12px 14px;border-radius:10px;background:rgba(37,211,102,.10);border:1px solid rgba(37,211,102,.35);color:#25D366;font-size:.92rem;font-weight:600;text-decoration:none;line-height:1.45}
+                .toa-alb-wa:hover{background:rgba(37,211,102,.18)}
+                @media (max-width:480px){.toa-alb-ex .toa-foto-gallery{height:200px}.toa-alb-tab{padding:9px 11px;font-size:.82rem}}
                 .toa-album-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
                 .toa-album-head strong{font-size:1rem;letter-spacing:.2px}
                 .toa-album-badge{font-size:.7rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:3px 8px;border-radius:99px;white-space:nowrap}
@@ -881,10 +918,10 @@ $theme_uri = get_stylesheet_directory_uri();
             <div class="toa-talent-upload-section">
                 <h5>📷 <?php echo _ht_talent(array('it'=>'Le tue foto','en'=>'Your photos','fr'=>'Tes photos','es'=>'Tus fotos')); ?></h5>
                 <p class="toa-talent-step-help"><?php echo _ht_talent(array(
-                    'it'=>'Più album completi, più lavori ti arrivano. Puoi aggiungerle anche dopo, ma chi ha le foto viene contattato prima.',
-                    'en'=>'The more albums you fill, the more jobs you get. You can add them later, but those with photos get contacted first.',
-                    'fr'=>'Plus tu remplis d\'albums, plus tu reçois de missions. Tu peux les ajouter plus tard, mais ceux qui ont des photos sont contactés en premier.',
-                    'es'=>'Cuantos más álbumes completes, más trabajos recibes. Puedes añadirlas después, pero a quien tiene fotos lo contactan antes.',
+                    'it'=>'Questi sono gli album del tuo profilo. Più ne completi tra quelli che servono ai ruoli che hai scelto, più opportunità ricevi. Senza le foto richieste il tuo profilo viene proposto meno.',
+                    'en'=>'These are your profile albums. The more you complete among those your chosen roles need, the more opportunities you get. Without the required photos your profile gets proposed less.',
+                    'fr'=>'Voici les albums de ton profil. Plus tu en complètes parmi ceux qu\'exigent tes rôles, plus tu reçois d\'opportunités. Sans les photos demandées, ton profil est proposé moins souvent.',
+                    'es'=>'Estos son los álbumes de tu perfil. Cuantos más completes entre los que piden tus roles, más oportunidades recibes. Sin las fotos requeridas tu perfil se propone menos.',
                 )); ?></p>
 
                 <div class="toa-albums-bar">
@@ -904,27 +941,70 @@ $theme_uri = get_stylesheet_directory_uri();
                 $badge_no_g = _ht_talent(array('it'=>'❌ Così no','en'=>'❌ Not like this','fr'=>'❌ Pas comme ça','es'=>'❌ Así no'));
                 $ph_soon   = _ht_talent(array('it'=>'esempio in arrivo','en'=>'example coming','fr'=>'exemple à venir','es'=>'ejemplo próximamente'));
                 $drop_txt  = _ht_talent(array('it'=>'Aggiungi foto','en'=>'Add photos','fr'=>'Ajoute des photos','es'=>'Añade fotos'));
-                foreach ($TALENT_ALBUM as $al):
-                    $code = $al['code'];
+                $lang_now  = function_exists('toa_current_lang') ? toa_current_lang() : 'it';
+                $wa_moda   = _ht_talent(array(
+                    'it'=>'Ciao, sono interessato ad avere le informazioni per le foto professionali, settore moda, con un fotografo convenzionato dell\'agenzia.',
+                    'en'=>'Hi, I\'d like information about professional photos, fashion, with a photographer affiliated with the agency.',
+                    'fr'=>'Bonjour, je souhaite des informations sur les photos professionnelles, secteur mode, avec un photographe partenaire de l\'agence.',
+                    'es'=>'Hola, quiero información sobre las fotos profesionales, sector moda, con un fotógrafo asociado a la agencia.',
+                ));
+                $wa_cinema = _ht_talent(array(
+                    'it'=>'Ciao, sono interessato ad avere le informazioni per le foto professionali, settore cinema, con un fotografo convenzionato dell\'agenzia.',
+                    'en'=>'Hi, I\'d like information about professional photos, film, with a photographer affiliated with the agency.',
+                    'fr'=>'Bonjour, je souhaite des informations sur les photos professionnelles, secteur cinéma, avec un photographe partenaire de l\'agence.',
+                    'es'=>'Hola, quiero información sobre las fotos profesionales, sector cine, con un fotógrafo asociado a la agencia.',
+                ));
+                $wa_label  = _ht_talent(array(
+                    'it'=>'📸 Non le hai? Scattale con un fotografo convenzionato dell\'agenzia — scrivici su WhatsApp',
+                    'en'=>'📸 Don\'t have them? Shoot them with a photographer affiliated with the agency — message us on WhatsApp',
+                    'fr'=>'📸 Tu ne les as pas ? Fais-les avec un photographe partenaire de l\'agence — écris-nous sur WhatsApp',
+                    'es'=>'📸 ¿No las tienes? Hazlas con un fotógrafo asociado a la agencia — escríbenos por WhatsApp',
+                ));
+                $guida_lbl = _ht_talent(array(
+                    'it'=>'📖 Leggi la guida completa alle foto Pola →',
+                    'en'=>'📖 Read the complete guide to Polaroid photos →',
+                    'fr'=>'📖 Lis le guide complet des photos Polas →',
+                    'es'=>'📖 Lee la guía completa de las fotos Pola →',
+                ));
                 ?>
-                    <div class="toa-album-card" data-album="<?php echo esc_attr($code); ?>" data-roles="<?php echo esc_attr($al['roles']); ?>">
-                        <div class="toa-album-head">
-                            <strong><?php echo esc_html(_ht_talent_raw($al['label'])); ?></strong>
-                            <span class="toa-album-badge <?php echo $al['req'] ? 'req' : 'opt'; ?>"><?php echo $al['req'] ? $badge_req : $badge_opt; ?></span>
-                        </div>
+                    <div class="toa-alb-tabs" role="tablist">
+                    <?php foreach ($TALENT_ALBUM as $k => $al): ?>
+                        <button type="button" class="toa-alb-tab<?php echo $k === 0 ? ' active' : ''; ?>" data-tab="<?php echo esc_attr($al['code']); ?>"><span class="dot"></span><?php echo esc_html(_ht_talent_raw($al['label'])); ?> <span class="n" id="toaTalentTabN_<?php echo esc_attr($al['code']); ?>"></span></button>
+                    <?php endforeach; ?>
+                    </div>
+                <?php
+                foreach ($TALENT_ALBUM as $k => $al):
+                    $code = $al['code'];
+                    $sl   = isset($TALENT_ALBUM_SLIDES[$code]) ? $TALENT_ALBUM_SLIDES[$code] : array('si'=>array(),'no'=>array());
+                    $guida = isset($TALENT_ALBUM_GUIDA[$code][$lang_now]) ? $TALENT_ALBUM_GUIDA[$code][$lang_now] : (isset($TALENT_ALBUM_GUIDA[$code]['it']) ? $TALENT_ALBUM_GUIDA[$code]['it'] : '');
+                ?>
+                    <div class="toa-album-card" data-album="<?php echo esc_attr($code); ?>" data-roles="<?php echo esc_attr($al['roles']); ?>"<?php echo $k === 0 ? '' : ' hidden'; ?>>
                         <p class="toa-album-serve off"></p>
                         <p class="toa-album-hint"><?php echo esc_html(_ht_talent_raw($al['hint'])); ?></p>
-                        <?php $slides = isset($TALENT_ALBUM_SLIDES[$code]) ? $TALENT_ALBUM_SLIDES[$code] : array(); ?>
-                        <?php if (!empty($slides)): ?>
-                        <div class="toa-foto-gallery" data-auto="1">
-                            <?php foreach ($slides as $i => $sl): ?>
-                                <?php // la PRIMA slide non è lazy: altrimenti la card resta un rettangolo nero finché non decodifica ?>
-                                <div class="toa-fg-slide<?php echo $i === 0 ? ' active' : ''; ?>"><img src="<?php echo esc_url($theme_uri . '/assets/' . $sl[0]); ?>" alt="" loading="<?php echo $i === 0 ? 'eager' : 'lazy'; ?>"><span class="toa-fg-badge <?php echo $sl[1] ? 'ok' : 'wrong'; ?>"><?php echo $sl[1] ? $badge_ok_g : $badge_no_g; ?></span></div>
+                        <?php if ($guida): ?>
+                            <a class="toa-alb-guida" href="<?php echo esc_url($guida); ?>" target="_blank" rel="noopener"><?php echo esc_html($guida_lbl); ?></a>
+                        <?php endif; ?>
+                        <?php if (in_array($code, array('portfolio','dettaglio'), true)): ?>
+                            <a class="toa-alb-wa" data-wa="1" data-moda="<?php echo esc_attr($wa_moda); ?>" data-cinema="<?php echo esc_attr($wa_cinema); ?>" data-num="<?php echo esc_attr($TALENT_WA_NUM); ?>" href="https://wa.me/<?php echo esc_attr($TALENT_WA_NUM); ?>?text=<?php echo rawurlencode($wa_moda); ?>" target="_blank" rel="noopener"><?php echo esc_html($wa_label); ?></a>
+                        <?php endif; ?>
+                        <div class="toa-alb-ex">
+                            <?php foreach (array('si','no') as $kind):
+                                $imgs = isset($sl[$kind]) ? $sl[$kind] : array(); ?>
+                                <figure>
+                                    <?php if (!empty($imgs)): ?>
+                                        <div class="toa-foto-gallery" data-auto="1">
+                                            <?php foreach ($imgs as $i => $f):
+                                                $src = (substr($f, 0, 1) === '/') ? $f : $theme_uri . '/assets/' . $f; ?>
+                                                <div class="toa-fg-slide<?php echo $i === 0 ? ' active' : ''; ?>"><img src="<?php echo esc_url($src); ?>" alt="" loading="<?php echo $i === 0 ? 'eager' : 'lazy'; ?>"></div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="toa-album-ph"><?php echo esc_html($ph_soon); ?></div>
+                                    <?php endif; ?>
+                                    <figcaption class="<?php echo $kind; ?>"><?php echo $kind === 'si' ? $badge_ok_g : $badge_no_g; ?></figcaption>
+                                </figure>
                             <?php endforeach; ?>
                         </div>
-                        <?php else: ?>
-                        <div class="toa-album-ph"><?php echo esc_html($ph_soon); ?></div>
-                        <?php endif; ?>
                         <div class="toa-talent-dropzone" id="toaTalentDrop_<?php echo esc_attr($code); ?>">
                             <div class="toa-talent-dropzone-icon">⬆️</div>
                             <div class="toa-talent-dropzone-text"><strong><?php echo esc_html($drop_txt); ?></strong></div>
@@ -1097,7 +1177,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album2" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album3" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
