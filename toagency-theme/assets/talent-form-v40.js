@@ -809,6 +809,23 @@
     if (form) form.addEventListener('input', updateCompleteness);
     updateAlbumVisibility();
 
+    /* 2026-08-14 — scorciatoia per le revisioni: ?toa_step=4&toa_ruoli=model,actor apre lo step
+       indicato con quei ruoli già spuntati, senza compilare tutto il form. Non salta nessuna
+       validazione: al momento dell'invio i controlli restano quelli di sempre. */
+    (function() {
+        var qs = new URLSearchParams(window.location.search);
+        var st = parseInt(qs.get('toa_step'), 10);
+        var rl = qs.get('toa_ruoli');
+        if (!st && !rl) return;
+        if (rl) {
+            var want = rl.split(',').map(function(x) { return x.trim(); });
+            document.querySelectorAll('#toaTalentCategoriesImmagine input[type="checkbox"]').forEach(function(cb) {
+                if (want.indexOf(cb.value) > -1) { cb.checked = true; cb.dispatchEvent(new Event('change', { bubbles: true })); }
+            });
+        }
+        if (st >= 1 && st <= 4) setTimeout(function() { showStep(st); }, 700);
+    })();
+
     function handleFiles(files, mode, album) {
         if (mode === 'profile') {
             // 1 sola foto profilo
