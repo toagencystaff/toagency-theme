@@ -120,6 +120,12 @@ $TALENT_ALBUM = array(
     array(
         'code' => 'polaroid', 'roles' => '*', 'req' => true,
         'label' => array('it'=>'Pola e presentazione','en'=>'Polaroids','fr'=>'Polas','es'=>'Polas'),
+        'quante' => array(
+            'it'=>'Da 3 a 8 foto: primo piano, mezzo busto, figura intera, profilo. Sempre senza filtri.',
+            'en'=>'3 to 8 photos: close-up, chest-up, full length, profile. Always without filters.',
+            'fr'=>'De 3 à 8 photos : gros plan, buste, plein pied, profil. Toujours sans filtres.',
+            'es'=>'De 3 a 8 fotos: primer plano, medio cuerpo, cuerpo entero, perfil. Siempre sin filtros.',
+        ),
         'hint'  => array(
             'it'=>'Tu come sei. Muro chiaro, luce di finestra, niente trucco e niente filtri. Corpo intero e primo piano. Te le fai col telefono in due minuti.',
             'en'=>'You as you are. Plain wall, window light, no makeup, no filters. Full body and close-up. Two minutes with your phone.',
@@ -130,6 +136,12 @@ $TALENT_ALBUM = array(
     array(
         'code' => 'portfolio', 'roles' => 'model,actor', 'req' => true,
         'label' => array('it'=>'Portfolio moda','en'=>'Fashion portfolio','fr'=>'Portfolio mode','es'=>'Portfolio moda'),
+        'quante' => array(
+            'it'=>'Da 3 a 8 foto: un primo piano, una figura intera, un tre quarti, una ambientata.',
+            'en'=>'3 to 8 photos: a close-up, a full length, a three-quarter, one on location.',
+            'fr'=>'De 3 à 8 photos : un gros plan, un plein pied, un trois-quarts, une en situation.',
+            'es'=>'De 3 a 8 fotos: un primer plano, un cuerpo entero, un tres cuartos, una ambientada.',
+        ),
         'hint'  => array(
             'it'=>'Solo scatti fatti da un fotografo. Se non li hai, salta questo album: mettici Pola e Altre foto, contano lo stesso.',
             'en'=>'Photographer shots only. If you have none, skip this album: use Polaroids and Other photos, they count too.',
@@ -143,6 +155,12 @@ $TALENT_ALBUM = array(
         // Qui è facoltativo apposta, così non promettiamo punti che il backend non dà.
         'code' => 'portfolio_cinema', 'roles' => 'actor', 'req' => false,
         'label' => array('it'=>'Portfolio attore','en'=>'Acting portfolio','fr'=>'Portfolio comédien','es'=>'Portfolio actor'),
+        'quante' => array(
+            'it'=>'Da 3 a 8 foto: primo piano espressivo, mezzo busto, una in scena o sul set.',
+            'en'=>'3 to 8 photos: expressive close-up, chest-up, one on set or in character.',
+            'fr'=>'De 3 à 8 photos : gros plan expressif, buste, une en scène ou sur le plateau.',
+            'es'=>'De 3 a 8 fotos: primer plano expresivo, medio cuerpo, una en escena o en el set.',
+        ),
         'hint'  => array(
             'it'=>'Scatti da book attoriale o fotogrammi dei tuoi lavori: primo piano espressivo, mezzo busto, luce naturale. Niente trucco pesante.',
             'en'=>'Acting book shots or frames from your work: expressive close-up, chest-up, natural light. No heavy makeup.',
@@ -153,6 +171,12 @@ $TALENT_ALBUM = array(
     array(
         'code' => 'dettaglio', 'roles' => 'model', 'req' => true,
         'label' => array('it'=>'Dettagli','en'=>'Details','fr'=>'Détails','es'=>'Detalles'),
+        'quante' => array(
+            'it'=>'Da 3 a 8 foto: mani, profilo, capelli, sorriso. Primi piani puliti.',
+            'en'=>'3 to 8 photos: hands, profile, hair, smile. Clean close-ups.',
+            'fr'=>'De 3 à 8 photos : mains, profil, cheveux, sourire. Gros plans nets.',
+            'es'=>'De 3 a 8 fotos: manos, perfil, pelo, sonrisa. Primeros planos limpios.',
+        ),
         'hint'  => array(
             'it'=>'Mani, profilo, capelli. Primi piani puliti su sfondo neutro: i casting moda li chiedono sempre.',
             'en'=>'Hands, profile, hair. Clean close-ups on a neutral background: fashion castings always ask for them.',
@@ -163,6 +187,12 @@ $TALENT_ALBUM = array(
     array(
         'code' => 'eventi', 'roles' => 'hostess', 'req' => true,
         'label' => array('it'=>'Fiere e eventi','en'=>'Trade fairs & events','fr'=>'Salons et événements','es'=>'Ferias y eventos'),
+        'quante' => array(
+            'it'=>'Da 3 a 8 foto: una elegante, una sportiva, una in postazione durante il lavoro.',
+            'en'=>'3 to 8 photos: one smart, one sporty, one at your station while working.',
+            'fr'=>'De 3 à 8 photos : une élégante, une sportive, une au poste pendant le travail.',
+            'es'=>'De 3 a 8 fotos: una elegante, una deportiva, una en el puesto mientras trabajas.',
+        ),
         'hint'  => array(
             'it'=>'Tu al lavoro: una in elegante, una in sportivo. Vanno benissimo anche foto scattate a un evento vero.',
             'en'=>'You at work: one smart, one sporty. Photos taken at a real event are perfect too.',
@@ -173,6 +203,12 @@ $TALENT_ALBUM = array(
     array(
         'code' => 'casual', 'roles' => '*', 'req' => false,
         'label' => array('it'=>'Altre foto (non pro)','en'=>'Other photos (not pro)','fr'=>'Autres photos (non pro)','es'=>'Otras fotos (no pro)'),
+        'quante' => array(
+            'it'=>'Da 3 a 8 foto: varia le situazioni, basta che si veda bene chi sei.',
+            'en'=>'3 to 8 photos: vary the situations, as long as you\'re clearly visible.',
+            'fr'=>'De 3 à 8 photos : varie les situations, du moment qu\'on te voit bien.',
+            'es'=>'De 3 a 8 fotos: varía las situaciones, con que se te vea bien basta.',
+        ),
         'hint'  => array(
             'it'=>'Foto col telefono, in vacanza, con gli amici: qui vanno benissimo. Caricarle alza il tuo profilo, non lo abbassa.',
             'en'=>'Phone photos, holidays, with friends: perfect here. Uploading them raises your profile, it does not lower it.',
@@ -935,6 +971,9 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-album-card .toa-fg-badge{font-size:15px;padding:7px 0}
                 .toa-album-ph{max-width:230px;height:310px;margin:0 auto 14px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.18);color:#6b7280;font-size:.85rem;text-align:center;padding:10px}
                 .toa-album-count{font-size:.85rem;color:#9ca3af;margin-top:8px}
+                .toa-album-count.ok{color:#10b981}
+                .toa-album-count.ok strong{color:#10b981}
+                .toa-alb-quante{font-size:.86rem;line-height:1.5;color:#c8ff00;margin:0 0 14px;padding:9px 12px;border-radius:8px;background:rgba(200,255,0,.06);border:1px solid rgba(200,255,0,.20)}
                 /* album non richiesto dai ruoli scelti: resta visibile ma spento */
                 .toa-album-card.is-off{opacity:.5}
                 .toa-album-serve{font-size:.8rem;font-weight:600;margin:0 0 10px}
@@ -1013,6 +1052,9 @@ $theme_uri = get_stylesheet_directory_uri();
                     <div class="toa-album-card" data-album="<?php echo esc_attr($code); ?>" data-roles="<?php echo esc_attr($al['roles']); ?>"<?php echo $k === 0 ? '' : ' hidden'; ?>>
                         <p class="toa-album-serve off"></p>
                         <p class="toa-album-hint"><?php echo esc_html(_ht_talent_raw($al['hint'])); ?></p>
+                        <?php if (!empty($al['quante'])): ?>
+                            <p class="toa-alb-quante">📸 <?php echo esc_html(_ht_talent_raw($al['quante'])); ?></p>
+                        <?php endif; ?>
                         <?php if ($guida): ?>
                             <a class="toa-alb-guida" href="<?php echo esc_url($guida); ?>" target="_blank" rel="noopener"><?php echo esc_html($guida_lbl); ?></a>
                         <?php endif; ?>
@@ -1044,7 +1086,7 @@ $theme_uri = get_stylesheet_directory_uri();
                             <input type="file" id="toaTalentInput_<?php echo esc_attr($code); ?>" accept="image/*" multiple style="display:none;">
                         </div>
                         <div class="toa-talent-thumbs" id="toaTalentThumbs_<?php echo esc_attr($code); ?>"></div>
-                        <div class="toa-album-count"><strong id="toaTalentCount_<?php echo esc_attr($code); ?>">0</strong> <?php echo _ht_talent(array('it'=>'foto','en'=>'photos','fr'=>'photos','es'=>'fotos')); ?></div>
+                        <div class="toa-album-count" id="toaTalentCountBox_<?php echo esc_attr($code); ?>"><strong id="toaTalentCount_<?php echo esc_attr($code); ?>">0</strong> <?php echo _ht_talent(array('it'=>'foto caricate — consigliate da 3 a 8','en'=>'photos uploaded — 3 to 8 recommended','fr'=>'photos chargées — 3 à 8 conseillées','es'=>'fotos subidas — de 3 a 8 recomendadas')); ?></div>
                     </div>
                 <?php endforeach; ?>
                 </div>
@@ -1209,7 +1251,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album7" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album8" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT

@@ -26,6 +26,7 @@
        Mettere a true SOLO dopo una registrazione di prova completata in preview.
        Se qualcosa va storto, rimetterlo a false e ridiventa il comportamento di prima. */
     var USE_ALBUM_UPLOAD = false;
+    var MIN_PER_ALBUM = 3;  // 2026-08-14 — minimo consigliato per album (consigliate 3-8)
     var ALBUM_ENDPOINT = '/crm_toagency/actions/talent-media-upload.php';
     var MAX_PHOTO_SIZE_MB = 60; /* TASK hardening-upload STEP A 2026-06-04 marco — era 15: le foto grandi ora passano e vengono compresse client-side; resta backstop per file assurdi */
 
@@ -668,8 +669,12 @@
         // 2026-08-14: contatore per singola card album + barra completamento
         if (typeof albumCards !== 'undefined' && albumCards) {
             albumCards.forEach(function(card) {
+                var n  = photosInAlbum(card.dataset.album);
                 var el = document.getElementById('toaTalentCount_' + card.dataset.album);
-                if (el) el.textContent = photosInAlbum(card.dataset.album);
+                if (el) el.textContent = n;
+                // verde quando l'album ha raggiunto il minimo consigliato (3)
+                var box = document.getElementById('toaTalentCountBox_' + card.dataset.album);
+                if (box) box.classList.toggle('ok', n >= MIN_PER_ALBUM);
             });
             updateAlbumVisibility(); // aggiorna anche pallini e numeri sulle linguette
         }
@@ -737,7 +742,7 @@
             if (tab) {
                 var n = photosInAlbum(card.dataset.album);
                 tab.classList.toggle('serve', serve);
-                tab.classList.toggle('done', n > 0);
+                tab.classList.toggle('done', n >= MIN_PER_ALBUM); // verde solo col minimo consigliato
                 var nEl = document.getElementById('toaTalentTabN_' + card.dataset.album);
                 if (nEl) nEl.textContent = n > 0 ? '(' + n + ')' : '';
             }
