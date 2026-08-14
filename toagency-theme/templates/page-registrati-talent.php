@@ -197,9 +197,18 @@ $TALENT_ALBUM_SLIDES = array(
         'si' => array('staff/hostess.jpg', 'staff/steward.jpg', 'gallery/g08.jpg', 'staff/accoglienza.jpg', 'staff/interprete.jpg'),
         'no' => array('wrong-lontana.jpg', 'wrong-spiaggia.jpg', 'wrong-sfondo.jpg'),
     ),
-    'portfolio' => array('si' => array(), 'no' => array()),
+    // Portfolio moda: immagini dagli articoli "Come diventare modello" e "IA nella moda".
+    'portfolio' => array(
+        'si' => array('/wp-content/uploads/2026/06/fashion-model-vs-commercial-model.jpg', '/wp-content/uploads/2026/06/model-digitals-polaroids-agency-submission.jpg', '/wp-content/uploads/2026/06/backstage-shooting.jpg'),
+        'no' => array(),
+    ),
     'portfolio_cinema' => array('si' => array(), 'no' => array()),
-    'dettaglio' => array('si' => array(), 'no' => array()),
+    // Dettagli: profilo e primo piano dall'articolo Pola + le digitals (fronte/retro/profilo).
+    // Mancano ancora mani e capelli: nessuna immagine adatta nel sito.
+    'dettaglio' => array(
+        'si' => array('/wp-content/uploads/2026/06/image7-4.jpg', '/wp-content/uploads/2026/06/image6-3.jpg', '/wp-content/uploads/2026/06/model-digitals-polaroids-agency-submission.jpg'),
+        'no' => array(),
+    ),
     'casual'    => array('si' => array(), 'no' => array()),
 );
 
@@ -1200,7 +1209,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album6" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album7" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
