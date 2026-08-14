@@ -967,7 +967,9 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-album-badge.req{background:rgba(200,255,0,.14);color:#c8ff00;border:1px solid rgba(200,255,0,.35)}
                 .toa-album-badge.opt{background:rgba(255,255,255,.06);color:#9ca3af;border:1px solid rgba(255,255,255,.15)}
                 .toa-album-hint{font-size:1rem;line-height:1.55;color:#e5e7eb;margin:0 0 14px}
-                .toa-album-card .toa-foto-gallery{width:100%;max-width:230px;height:310px;margin:0 auto 14px}
+                <?php /* 2026-08-14: tolto il vecchio limite 230x310 sulla galleria dentro le card —
+                         restava dal layout a colonna unica e rimpiccioliva la colonna "così sì"
+                         rispetto a quella "così no". Ora comandano le regole di .toa-alb-ex. */ ?>
                 .toa-album-card .toa-fg-badge{font-size:15px;padding:7px 0}
                 .toa-album-ph{max-width:230px;height:310px;margin:0 auto 14px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.18);color:#6b7280;font-size:.85rem;text-align:center;padding:10px}
                 .toa-album-count{font-size:.85rem;color:#9ca3af;margin-top:8px;text-align:center}
@@ -1251,7 +1253,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album9" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album10" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
