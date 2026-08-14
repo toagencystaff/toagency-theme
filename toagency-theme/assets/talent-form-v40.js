@@ -532,12 +532,29 @@
         if (!input) return;
         var suggBox = null, t;
 
+        // FIX 2026-08-14 (TEMA REGISTRAZIONE TALENT): trattini, spazi e apostrofi non devono essere
+        // vincolanti — "saint vincent", "saint-vincent" e "Saint-Vincent" devono trovare lo stesso
+        // comune. L'endpoint fa un match letterale, quindi gli mandiamo la PAROLA PIU' LUNGA digitata
+        // (es. "vincent") e poi filtriamo/ordiniamo qui ignorando punteggiatura e accenti.
+        function toaNorm(s) {
+            return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+        }
+        function toaTokens(s) {
+            return (s || '').split(/[\s\-'’.]+/).map(toaNorm).filter(function(x) { return x.length > 1; });
+        }
+        var lastTokens = [];
+
         input.addEventListener('input', function() {
             clearTimeout(t);
+            // se l'utente riscrive a mano dopo aver scelto dall'elenco, il codice comune restava
+            // quello vecchio -> testo e codice disallineati.
+            if (hidden) hidden.value = '';
             var q = this.value.trim();
             if (q.length < 2) { hideSugg(); return; }
+            lastTokens = toaTokens(q);
+            var qSend = lastTokens.slice().sort(function(a, b) { return b.length - a.length; })[0] || q;
             t = setTimeout(function() {
-                fetch(GEO_ENDPOINT + '?type=cities&nation=' + encodeURIComponent(typeaheadBox.dataset.nation || 'IT') + '&q=' + encodeURIComponent(q))
+                fetch(GEO_ENDPOINT + '?type=cities&nation=' + encodeURIComponent(typeaheadBox.dataset.nation || 'IT') + '&q=' + encodeURIComponent(qSend))
                     .then(function(r){return r.json();})
                     .then(showSugg)
                     .catch(function(){});
@@ -548,10 +565,26 @@
         function showSugg(list) {
             hideSugg();
             if (!list || !list.length) return;
+            // Tiene solo i comuni che contengono TUTTE le parole digitate (normalizzate) e mette in
+            // cima quelli che INIZIANO con la prima parola: senza questo, cercando "saint"
+            // Saint-Vincent usciva 16° su 16 e il limite di suggerimenti lo tagliava fuori.
+            var toks = lastTokens || [];
+            var filtered = list.filter(function(c) {
+                var n = toaNorm(c.name_local || c.display);
+                return toks.every(function(tk) { return n.indexOf(tk) > -1; });
+            });
+            if (filtered.length) list = filtered; // se il filtro svuota tutto, meglio i risultati grezzi
+            var first = toks[0] || '';
+            list = list.slice().sort(function(a, b) {
+                var an = toaNorm(a.name_local || a.display), bn = toaNorm(b.name_local || b.display);
+                var ap = an.indexOf(first) === 0 ? 0 : 1, bp = bn.indexOf(first) === 0 ? 0 : 1;
+                if (ap !== bp) return ap - bp;
+                return an.localeCompare(bn);
+            });
             suggBox = document.createElement('div');
             suggBox.style.cssText = 'position:absolute; background:#0e0e0e; border:1px solid rgba(200,255,0,0.3); border-radius:8px; max-height:240px; overflow:auto; z-index:1000; box-shadow:0 6px 20px rgba(0,0,0,0.6); margin-top:4px;';
             suggBox.style.width = input.offsetWidth + 'px';
-            list.slice(0,12).forEach(function(c) {
+            list.slice(0,30).forEach(function(c) {
                 var item = document.createElement('div');
                 item.style.cssText = 'padding:10px 14px; cursor:pointer; color:#fff; font-size:0.92rem;';
                 item.textContent = c.display || c.name_local;
