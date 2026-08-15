@@ -990,6 +990,10 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-album-count{font-size:.85rem;color:#9ca3af;margin-top:8px;text-align:center}
                 .toa-album-count.ok{color:#10b981}
                 .toa-album-count.ok strong{color:#10b981}
+                .toa-alb-addrole{margin:0 0 14px;padding:12px 14px;border-radius:10px;background:rgba(59,130,246,.10);border:1px solid rgba(59,130,246,.40)}
+                .toa-alb-addrole p{margin:0 0 10px;font-size:.9rem;line-height:1.45;color:#bfdbfe}
+                .toa-alb-addrole-btn{appearance:none;cursor:pointer;margin:0 8px 0 0;padding:9px 14px;border-radius:99px;border:1px solid #3b82f6;background:rgba(59,130,246,.18);color:#fff;font:700 .9rem/1 inherit}
+                .toa-alb-addrole-btn:hover{background:#3b82f6}
                 .toa-alb-quante{font-size:.86rem;line-height:1.5;color:#c8ff00;margin:0 0 14px;padding:9px 12px;border-radius:8px;background:rgba(200,255,0,.06);border:1px solid rgba(200,255,0,.20)}
                 /* album non richiesto dai ruoli scelti: resta visibile ma spento */
                 .toa-album-card.is-off{opacity:.5}
@@ -1068,6 +1072,31 @@ $theme_uri = get_stylesheet_directory_uri();
                 ?>
                     <div class="toa-album-card" data-album="<?php echo esc_attr($code); ?>" data-roles="<?php echo esc_attr($al['roles']); ?>"<?php echo $k === 0 ? '' : ' hidden'; ?>>
                         <p class="toa-album-serve off"></p>
+                        <?php
+                        // 2026-08-14 — se apri un album che non serve ai ruoli spuntati, ti si chiede
+                        // se vuoi aggiungere quel ruolo: così non devi tornare indietro a mano.
+                        if ($al['roles'] !== '*'):
+                            $codici = array_map('trim', explode(',', $al['roles']));
+                            $etichette = array();
+                            foreach ($TALENT_RUOLI_IMMAGINE as $_r) {
+                                if (in_array($_r['code'], $codici, true)) $etichette[$_r['code']] = _ht_talent_raw($_r['label']);
+                            }
+                            if ($etichette):
+                        ?>
+                        <div class="toa-alb-addrole" hidden>
+                            <p><?php echo _ht_talent(array(
+                                'it'=>'Questo album serve a un ruolo che non hai selezionato. Vuoi aggiungerlo alla tua scheda?',
+                                'en'=>'This album belongs to a role you haven\'t selected. Do you want to add it to your profile?',
+                                'fr'=>'Cet album correspond à un rôle que tu n\'as pas coché. Tu veux l\'ajouter à ta fiche ?',
+                                'es'=>'Este álbum es de un rol que no has seleccionado. ¿Quieres añadirlo a tu ficha?',
+                            )); ?></p>
+                            <?php foreach ($etichette as $rc => $rl): ?>
+                                <button type="button" class="toa-alb-addrole-btn" data-role="<?php echo esc_attr($rc); ?>">
+                                    + <?php echo esc_html($rl); ?>
+                                </button>
+                            <?php endforeach; ?>
+                        </div>
+                        <?php endif; endif; ?>
                         <p class="toa-album-hint"><?php echo esc_html(_ht_talent_raw($al['hint'])); ?></p>
                         <?php if (!empty($al['quante'])): ?>
                             <p class="toa-alb-quante">📸 <?php echo esc_html(_ht_talent_raw($al['quante'])); ?></p>
@@ -1268,7 +1297,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album14" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album15" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT

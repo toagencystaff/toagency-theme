@@ -737,6 +737,9 @@
                 lab.textContent = serve ? txtOn : txtOff;
                 lab.className = 'toa-album-serve ' + (serve ? 'on' : 'off');
             }
+            // proposta "aggiungi il ruolo": visibile solo se l'album non serve ai ruoli spuntati
+            var addBox = card.querySelector('.toa-alb-addrole');
+            if (addBox) addBox.hidden = serve;
             // linguetta: pallino acceso se l'album serve, verde se ha già foto dentro
             var tab = document.querySelector('.toa-alb-tab[data-tab="' + card.dataset.album + '"]');
             if (tab) {
@@ -755,6 +758,20 @@
         });
         updateCompleteness();
     }
+
+    /* "+ Attore/Attrice": spunta il ruolo allo Step 3 senza tornare indietro a mano.
+       Il resto (pallini, barra, album che si accende) si aggiorna da solo. */
+    document.querySelectorAll('.toa-alb-addrole-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var cb = document.querySelector('#toaTalentCategoriesImmagine input[value="' + btn.dataset.role + '"]');
+            if (!cb) return;
+            cb.checked = true;
+            // il chip mostra la selezione con la classe 'checked' (vedi riga ~216)
+            var chip = cb.closest('.toa-talent-category-chip');
+            if (chip) chip.classList.add('checked');
+            cb.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+    });
 
     /* Linguette: si apre un album alla volta, gli altri restano visibili in cima. */
     document.querySelectorAll('.toa-alb-tab').forEach(function(btn) {
