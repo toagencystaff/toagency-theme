@@ -795,19 +795,57 @@
 
     /* Galleria che scorre dentro le card: stesso comportamento di quella del selfie,
        ma generica (tutte le .toa-foto-gallery con data-auto, non un solo id). */
-    document.querySelectorAll('.toa-foto-gallery[data-auto]').forEach(function(g) {
-        // 2026-08-14 — data-shuffle: ordine mescolato a ogni caricamento, così chi torna sulla
-        // pagina non rivede sempre la stessa sequenza di esempi.
-        if (g.dataset.shuffle) {
-            var arr = Array.prototype.slice.call(g.querySelectorAll('.toa-fg-slide'));
-            for (var j = arr.length - 1; j > 0; j--) {
-                var k = Math.floor(Math.random() * (j + 1));
-                g.appendChild(arr[k]);
-                arr.splice(k, 1);
-            }
-            if (arr.length) g.appendChild(arr[0]);
-            g.querySelectorAll('.toa-fg-slide').forEach(function(el, idx) { el.classList.toggle('active', idx === 0); });
+    /* 2026-08-14 — le due colonne di una scheda scorrono INSIEME: la foto giusta e la foto
+       sbagliata dello stesso soggetto restano affiancate. L'ordine delle coppie viene mescolato
+       a ogni caricamento, ma con la STESSA permutazione sulle due colonne, altrimenti si
+       spaiano. Quando anche la foto di destra è un "sì" (dettagli senza corrispettivo
+       sbagliato), la fascia sotto diventa verde. */
+    function capTesto(el, kind) {
+        var w = document.getElementById('toaTalentAlbums');
+        if (!w || !el) return;
+        el.textContent = kind === 'si' ? (w.dataset.capSi || '') : (w.dataset.capNo || '');
+    }
+    function aggiornaDidascalia(fig) {
+        var att = fig.querySelector('.toa-fg-slide.active');
+        var cap = fig.querySelector('figcaption');
+        if (!att || !cap) return;
+        var kind = att.dataset.kind || (fig.classList.contains('si') ? 'si' : 'no');
+        fig.classList.toggle('si', kind === 'si');
+        fig.classList.toggle('no', kind !== 'si');
+        capTesto(cap, kind);
+    }
+    document.querySelectorAll('.toa-alb-ex[data-paired]').forEach(function(ex) {
+        var gall = ex.querySelectorAll('.toa-foto-gallery');
+        if (!gall.length) return;
+        var n = gall[0].querySelectorAll('.toa-fg-slide').length;
+        if (!n) return;
+        // stessa permutazione per tutte e due le colonne
+        var ordine = Array.from({ length: n }, function(_, i) { return i; });
+        for (var j = ordine.length - 1; j > 0; j--) {
+            var k = Math.floor(Math.random() * (j + 1));
+            var t = ordine[j]; ordine[j] = ordine[k]; ordine[k] = t;
         }
+        gall.forEach(function(g) {
+            var sl = Array.prototype.slice.call(g.querySelectorAll('.toa-fg-slide'));
+            ordine.forEach(function(idx) { g.appendChild(sl[idx]); });
+            g.querySelectorAll('.toa-fg-slide').forEach(function(el, i) { el.classList.toggle('active', i === 0); });
+        });
+        ex.querySelectorAll('figure').forEach(aggiornaDidascalia);
+        if (n < 2) return;
+        var pos = 0;
+        setInterval(function() {
+            pos = (pos + 1) % n;
+            gall.forEach(function(g) {
+                var sl = g.querySelectorAll('.toa-fg-slide');
+                sl.forEach(function(el, i) { el.classList.toggle('active', i === pos); });
+            });
+            ex.querySelectorAll('figure').forEach(aggiornaDidascalia);
+        }, 2600);
+    });
+    // galleria singola (foto profilo dello Step 1): comportamento di prima.
+    // Niente :not() con selettore composto — su Safari vecchi fa esplodere tutto lo script.
+    document.querySelectorAll('.toa-foto-gallery[data-auto]').forEach(function(g) {
+        if (g.closest('.toa-alb-ex')) return; // le coppie sono già gestite sopra
         var s = g.querySelectorAll('.toa-fg-slide');
         if (s.length < 2) return;
         var i = 0;
