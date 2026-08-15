@@ -53,6 +53,7 @@
             fr:['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
             es:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
         },
+        tornaA: { it:'← Torna al passaggio %s', en:'← Back to step %s', es:'← Volver al paso %s', fr:'← Retour à l\'étape %s' },
         dataFutura: {
             it:'La foto non può essere stata scattata nel futuro.',
             en:'The photo cannot have been taken in the future.',
@@ -1036,7 +1037,7 @@
         baseFields.forEach(function(n) {
             var el = form.querySelector('[name="' + n + '"]');
             if (el && !String(el.value || '').trim()) {
-                voci.push({ testo: tmsg(ETICHETTE_CAMPI[n] || { it:n, en:n, fr:n, es:n }), step: STEP_DI[n] || 1 });
+                voci.push({ testo: tmsg(ETICHETTE_CAMPI[n] || { it:n, en:n, fr:n, es:n }), step: STEP_DI[n] || 1, campo: n });
             }
         });
         if (!uploadState.photoProfile) {
@@ -1076,17 +1077,59 @@
             b.type = 'button';
             b.className = 'toa-alb-manca-chip';
             b.textContent = v.testo;
-            b.addEventListener('click', function() {
-                showStep(v.step);
-                if (v.album) {
-                    var t = document.querySelector('.toa-alb-tab[data-tab="' + v.album + '"]');
-                    if (t) t.click();
-                }
-                var target = document.querySelector('.toa-talent-step[data-step="' + v.step + '"]');
-                if (target) target.scrollIntoView({ block: 'start', behavior: 'smooth' });
-            });
+            b.addEventListener('click', function() { vaiA(v); });
             box.appendChild(b);
         });
+    }
+
+    /* Click su una voce di "cosa manca":
+       - se il campo è nello step in cui sei, non ti sposta di passaggio: scorre lì e mette il fuoco
+       - se è altrove, cambia passaggio ma ti lascia un pulsante per tornare dov'eri */
+    function stepCorrente() {
+        var a = form.querySelector('.toa-talent-step.active');
+        return a ? parseInt(a.dataset.step, 10) : 1;
+    }
+    function evidenzia(el) {
+        if (!el) return;
+        el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        el.classList.add('toa-alb-evidenzia');
+        setTimeout(function() { el.classList.remove('toa-alb-evidenzia'); }, 2600);
+        if (typeof el.focus === 'function') { try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
+    }
+    function vaiA(v) {
+        var da = stepCorrente();
+        if (v.step !== da) {
+            showStep(v.step);
+            mostraTorna(da);
+        }
+        if (v.album) {
+            var t = document.querySelector('.toa-alb-tab[data-tab="' + v.album + '"]');
+            if (t) t.click();
+        }
+        setTimeout(function() {
+            var target = v.campo ? form.querySelector('[name="' + v.campo + '"]') : null;
+            if (!target && v.album) target = document.getElementById('toaTalentDrop_' + v.album);
+            if (!target) target = document.querySelector('.toa-talent-step[data-step="' + v.step + '"]');
+            evidenzia(target);
+        }, v.step !== da ? 250 : 0);
+    }
+    function mostraTorna(step) {
+        var barra = document.getElementById('toaTalentSticky');
+        if (!barra) return;
+        var vecchio = barra.querySelector('.toa-alb-torna');
+        if (vecchio) vecchio.remove();
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'toa-alb-torna';
+        b.textContent = tmsg(MSG.tornaA).replace('%s', step);
+        b.addEventListener('click', function() {
+            showStep(step);
+            b.remove();
+            var t = document.querySelector('.toa-talent-step[data-step="' + step + '"]');
+            if (t) t.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        });
+        var btn = document.getElementById('toaTalentMancaBtn');
+        if (btn) btn.parentNode.insertBefore(b, btn.nextSibling);
     }
 
     var mancaBtn = document.getElementById('toaTalentMancaBtn');

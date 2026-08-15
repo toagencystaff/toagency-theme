@@ -1089,8 +1089,13 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-album-serve{font-size:.8rem;font-weight:600;margin:0 0 10px}
                 .toa-album-serve.on{color:#c8ff00}
                 .toa-album-serve.off{color:#9ca3af}
-                /* barra fissa: resta in alto mentre si scorre, in tutti gli step */
-                .toa-alb-sticky{position:sticky;top:0;z-index:40;margin:0 0 18px;padding:12px 14px;border-radius:12px;background:rgba(10,10,10,.92);backdrop-filter:blur(8px);border:1px solid rgba(200,255,0,.25);box-shadow:0 6px 22px rgba(0,0,0,.45)}
+                /* barra sempre a video: ancorata in basso, non si muove mai */
+                .toa-alb-sticky{position:fixed;left:12px;right:12px;bottom:12px;max-width:740px;margin:0 auto;z-index:9999;padding:12px 14px;border-radius:14px;background:rgba(10,10,10,.94);backdrop-filter:blur(10px);border:1px solid rgba(200,255,0,.35);box-shadow:0 -6px 30px rgba(0,0,0,.6)}
+                #toaTalentForm{padding-bottom:170px}
+                .toa-alb-manca{max-height:34vh;overflow-y:auto}
+                .toa-alb-torna{appearance:none;cursor:pointer;margin-top:9px;margin-left:8px;padding:7px 13px;border-radius:99px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#e5e7eb;font:700 .8rem/1 inherit}
+                .toa-alb-evidenzia{outline:3px solid #c8ff00 !important;outline-offset:3px;border-radius:8px;transition:outline-color .3s}
+                @media (max-width:480px){.toa-alb-sticky{left:6px;right:6px;bottom:6px;padding:10px 11px}#toaTalentForm{padding-bottom:200px}}
                 .toa-alb-sticky-riga{display:flex;align-items:center;gap:12px}
                 .toa-alb-sticky-riga .toa-albums-bar-track{flex:1}
                 .toa-alb-sticky-riga strong{font-size:1.05rem;color:#c8ff00;min-width:48px;text-align:right}
@@ -1448,7 +1453,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album28" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album29" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
