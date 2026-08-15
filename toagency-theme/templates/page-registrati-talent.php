@@ -954,13 +954,18 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-album-card[hidden]{display:none}
                 /* così sì / così no affiancate */
                 .toa-alb-ex{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
-                .toa-alb-ex figure{margin:0}
-                .toa-alb-ex figcaption{font-size:.9rem;font-weight:700;text-align:center;margin-top:8px}
-                .toa-alb-ex .si{color:#10b981}
-                .toa-alb-ex .no{color:#f87171}
-                .toa-alb-ex .toa-foto-gallery{width:100%;max-width:none;height:auto;aspect-ratio:3/4;margin:0;box-shadow:none;border:1px solid rgba(255,255,255,.10)}
+                /* 2026-08-14 — l'etichetta sì/no era troppo timida: ora è una fascia piena
+                   sotto l'immagine, maiuscola, con la cornice dello stesso colore attorno. */
+                .toa-alb-ex figure{margin:0;border-radius:12px;overflow:hidden;border:3px solid}
+                .toa-alb-ex figure.si{border-color:#10b981}
+                .toa-alb-ex figure.no{border-color:#ef4444}
+                .toa-alb-ex figcaption{margin:0;padding:10px 4px;font-size:1.05rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;text-align:center;color:#fff;line-height:1.15}
+                .toa-alb-ex figure.si figcaption{background:#10b981}
+                .toa-alb-ex figure.no figcaption{background:#ef4444}
+                .toa-alb-ex .toa-foto-gallery{width:100%;max-width:none;height:auto;aspect-ratio:3/4;margin:0;box-shadow:none;border:0;border-radius:0}
                 .toa-alb-ex .toa-fg-badge{display:none}
-                .toa-alb-ex .toa-album-ph{max-width:none;height:auto;aspect-ratio:3/4;margin:0}
+                .toa-alb-ex .toa-album-ph{max-width:none;height:auto;aspect-ratio:3/4;margin:0;border:0;border-radius:0}
+                @media (max-width:480px){.toa-alb-ex figcaption{font-size:.9rem;padding:8px 2px;letter-spacing:.3px}}
                 /* "aggiungi foto": pulsante nero tondo, non più il riquadro tratteggiato che sprecava spazio */
                 .toa-album-card .toa-talent-dropzone{border:0;background:transparent;padding:10px 0 4px;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
                 .toa-album-card .toa-talent-dropzone-icon{width:104px;height:104px;flex:none;border-radius:50%;background:#000;border:2px solid rgba(255,255,255,.28);color:#c8ff00;font-size:52px;font-weight:300;line-height:100px;text-align:center;margin:0;transition:border-color .15s,transform .15s,box-shadow .15s}
@@ -1076,7 +1081,7 @@ $theme_uri = get_stylesheet_directory_uri();
                         <div class="toa-alb-ex">
                             <?php foreach (array('si','no') as $kind):
                                 $imgs = isset($sl[$kind]) ? $sl[$kind] : array(); ?>
-                                <figure>
+                                <figure class="<?php echo esc_attr($kind); ?>">
                                     <?php if (!empty($imgs)): ?>
                                         <div class="toa-foto-gallery" data-auto="1" data-shuffle="1">
                                             <?php foreach ($imgs as $i => $f):
@@ -1263,7 +1268,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album13" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album14" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
