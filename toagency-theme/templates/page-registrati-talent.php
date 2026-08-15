@@ -1028,6 +1028,8 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-alb-video-del{appearance:none;cursor:pointer;flex:none;width:26px;height:26px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:15px;line-height:1}
                 .toa-alb-video-del:hover{background:#ff5060}
                 .toa-alb-guida{display:inline-block;margin:0 0 14px;font-size:.92rem;font-weight:600;color:#c8ff00;text-decoration:underline}
+                .toa-alb-wa-intro{margin:0 0 8px;padding:11px 13px;border-radius:10px 10px 0 0;background:rgba(37,211,102,.06);border:1px solid rgba(37,211,102,.25);border-bottom:0;font-size:.87rem;line-height:1.55;color:#d1fae5}
+                .toa-alb-wa-intro strong{color:#25D366}
                 .toa-alb-wa{display:block;margin:0 0 14px;padding:12px 14px;border-radius:10px;background:rgba(37,211,102,.10);border:1px solid rgba(37,211,102,.35);color:#25D366;font-size:.92rem;font-weight:600;text-decoration:none;line-height:1.45}
                 .toa-alb-wa:hover{background:rgba(37,211,102,.18)}
                 @media (max-width:480px){.toa-alb-tabs{grid-template-columns:repeat(2,1fr)}.toa-alb-tab{padding:9px 10px;font-size:.76rem}.toa-album-card{padding:14px}}
@@ -1182,6 +1184,13 @@ $theme_uri = get_stylesheet_directory_uri();
                             <a class="toa-alb-guida" href="<?php echo esc_url($guida); ?>" target="_blank" rel="noopener"><?php echo esc_html($guida_lbl); ?></a>
                         <?php endif; ?>
                         <?php if (in_array($code, array('portfolio','portfolio_cinema','dettaglio'), true)): ?>
+                            <?php // 2026-08-14 — prima del pulsante: non andartene senza aver caricato quello che hai ?>
+                            <p class="toa-alb-wa-intro"><?php echo _ht_talent(array(
+                                'it'=>'Non hai foto professionali? Non fermarti qui: carica lo stesso quelle che hai nelle <strong>Pola e presentazione</strong> e in <strong>Altre foto</strong>, e completa la scheda. Poi scrivici su WhatsApp al <strong>+39 351 789 9225</strong> per farle con un fotografo convenzionato dell\'agenzia, oppure usa il pulsante qui sotto.',
+                                'en'=>'No professional photos? Don\'t stop here: upload the ones you do have in <strong>Polaroids</strong> and <strong>Other photos</strong>, and finish your profile. Then message us on WhatsApp at <strong>+39 351 789 9225</strong> to shoot them with a photographer affiliated with the agency, or use the button below.',
+                                'fr'=>'Pas de photos professionnelles ? Ne t\'arrête pas là : charge quand même celles que tu as dans <strong>Polas</strong> et <strong>Autres photos</strong>, et termine ta fiche. Écris-nous ensuite sur WhatsApp au <strong>+39 351 789 9225</strong> pour les faire avec un photographe partenaire de l\'agence, ou utilise le bouton ci-dessous.',
+                                'es'=>'¿No tienes fotos profesionales? No te pares aquí: sube igualmente las que tienes en <strong>Polas</strong> y <strong>Otras fotos</strong>, y completa la ficha. Luego escríbenos por WhatsApp al <strong>+39 351 789 9225</strong> para hacerlas con un fotógrafo asociado a la agencia, o usa el botón de abajo.',
+                            )); ?></p>
                             <a class="toa-alb-wa" data-wa="1" data-moda="<?php echo esc_attr($wa_moda); ?>" data-cinema="<?php echo esc_attr($wa_cinema); ?>" data-num="<?php echo esc_attr($TALENT_WA_NUM); ?>" href="https://wa.me/<?php echo esc_attr($TALENT_WA_NUM); ?>?text=<?php echo rawurlencode($wa_moda); ?>" target="_blank" rel="noopener"><?php echo esc_html($wa_label); ?></a>
                         <?php endif; ?>
                         <?php // 2026-08-14 — due colonne che scorrono INSIEME: coppia sì/no dello stesso soggetto ?>
@@ -1413,7 +1422,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album24" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album25" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
