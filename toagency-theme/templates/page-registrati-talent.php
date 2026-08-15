@@ -118,7 +118,7 @@ $TALENT_TAGLIE = array('XS','S','M','L','XL','XXL');
 // ─────────────────────────────────────────────────────────────────────
 $TALENT_ALBUM = array(
     array(
-        'code' => 'polaroid', 'roles' => '*', 'req' => true,
+        'code' => 'polaroid', 'roles' => '*', 'req' => true, 'video' => 'video_creator',
         'label' => array('it'=>'Pola e presentazione','en'=>'Polaroids','fr'=>'Polas','es'=>'Polas'),
         'quante' => array(
             'it'=>'Da 3 a 8 foto: primo piano, mezzo busto, figura intera, profilo. Sempre senza filtri.',
@@ -134,7 +134,7 @@ $TALENT_ALBUM = array(
         ),
     ),
     array(
-        'code' => 'portfolio', 'roles' => 'model,actor', 'req' => true,
+        'code' => 'portfolio', 'roles' => 'model,actor', 'req' => true, 'video' => 'video_creator',
         'label' => array('it'=>'Portfolio moda','en'=>'Fashion portfolio','fr'=>'Portfolio mode','es'=>'Portfolio moda'),
         'quante' => array(
             'it'=>'Da 3 a 8 foto: un primo piano, una figura intera, un tre quarti, una ambientata.',
@@ -153,7 +153,7 @@ $TALENT_ALBUM = array(
         // 2026-08-14 — album dedicato agli attori (album CRM: portfolio_cinema).
         // Il CRM oggi NON lo conta nella % completamento: per gli attori pesa 'portfolio'.
         // Qui è facoltativo apposta, così non promettiamo punti che il backend non dà.
-        'code' => 'portfolio_cinema', 'roles' => 'actor', 'req' => false,
+        'code' => 'portfolio_cinema', 'roles' => 'actor', 'req' => false, 'video' => 'video_selftape',
         'label' => array('it'=>'Portfolio attore','en'=>'Acting portfolio','fr'=>'Portfolio comédien','es'=>'Portfolio actor'),
         'quante' => array(
             'it'=>'Da 3 a 8 foto: primo piano espressivo, mezzo busto, una in scena o sul set.',
@@ -1017,6 +1017,16 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-album-card .toa-talent-dropzone:hover .toa-talent-dropzone-icon{border-color:#c8ff00;transform:scale(1.06);box-shadow:0 0 0 6px rgba(200,255,0,.10)}
                 .toa-album-card .toa-talent-dropzone-text{font-size:1rem;font-weight:700;color:#e5e7eb;margin:0}
                 .toa-album-card .toa-talent-dropzone-hint{display:none}
+                /* due pulsanti affiancati: foto e video */
+                .toa-alb-azioni{display:flex;justify-content:center;gap:36px;flex-wrap:wrap}
+                .toa-album-card .toa-alb-video .toa-talent-dropzone-icon{color:#60a5fa;font-size:34px;border-color:rgba(96,165,250,.45)}
+                .toa-album-card .toa-alb-video:hover .toa-talent-dropzone-icon{border-color:#60a5fa;box-shadow:0 0 0 6px rgba(96,165,250,.12)}
+                .toa-alb-video-nota{margin:14px 0 0;padding:11px 13px;border-radius:10px;font-size:.86rem;line-height:1.5;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.30);color:#bfdbfe}
+                .toa-alb-video-nota.forte{background:rgba(200,255,0,.08);border-color:rgba(200,255,0,.40);color:#e9ffa3;font-weight:600}
+                .toa-alb-video-scelto{display:flex;align-items:center;gap:10px;margin-top:10px;padding:9px 12px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);font-size:.85rem;color:#e5e7eb}
+                .toa-alb-video-scelto span{flex:1;min-width:0;word-break:break-all}
+                .toa-alb-video-del{appearance:none;cursor:pointer;flex:none;width:26px;height:26px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:15px;line-height:1}
+                .toa-alb-video-del:hover{background:#ff5060}
                 .toa-alb-guida{display:inline-block;margin:0 0 14px;font-size:.92rem;font-weight:600;color:#c8ff00;text-decoration:underline}
                 .toa-alb-wa{display:block;margin:0 0 14px;padding:12px 14px;border-radius:10px;background:rgba(37,211,102,.10);border:1px solid rgba(37,211,102,.35);color:#25D366;font-size:.92rem;font-weight:600;text-decoration:none;line-height:1.45}
                 .toa-alb-wa:hover{background:rgba(37,211,102,.18)}
@@ -1196,12 +1206,40 @@ $theme_uri = get_stylesheet_directory_uri();
                                 </figure>
                             <?php endforeach; ?>
                         </div>
-                        <div class="toa-talent-dropzone" id="toaTalentDrop_<?php echo esc_attr($code); ?>">
-                            <div class="toa-talent-dropzone-icon">+</div>
-                            <div class="toa-talent-dropzone-text"><strong><?php echo esc_html($drop_txt); ?></strong></div>
-                            <div class="toa-talent-dropzone-hint">JPG, PNG</div>
-                            <input type="file" id="toaTalentInput_<?php echo esc_attr($code); ?>" accept="image/*" multiple style="display:none;">
+                        <div class="toa-alb-azioni">
+                            <div class="toa-talent-dropzone" id="toaTalentDrop_<?php echo esc_attr($code); ?>">
+                                <div class="toa-talent-dropzone-icon">+</div>
+                                <div class="toa-talent-dropzone-text"><strong><?php echo esc_html($drop_txt); ?></strong></div>
+                                <div class="toa-talent-dropzone-hint">JPG, PNG</div>
+                                <input type="file" id="toaTalentInput_<?php echo esc_attr($code); ?>" accept="image/*" multiple style="display:none;">
+                            </div>
+                            <?php // 2026-08-14 — secondo pulsante, solo dove il video serve davvero
+                            if (!empty($al['video'])): ?>
+                            <div class="toa-talent-dropzone toa-alb-video" id="toaTalentVidDrop_<?php echo esc_attr($code); ?>" data-albumvideo="<?php echo esc_attr($al['video']); ?>">
+                                <div class="toa-talent-dropzone-icon">▶</div>
+                                <div class="toa-talent-dropzone-text"><strong><?php echo esc_html(_ht_talent(array('it'=>'Carica video','en'=>'Upload video','fr'=>'Charge une vidéo','es'=>'Sube un vídeo'))); ?></strong></div>
+                                <div class="toa-talent-dropzone-hint">MP4, MOV</div>
+                                <input type="file" id="toaTalentVidInput_<?php echo esc_attr($code); ?>" accept="video/mp4,video/quicktime,video/webm" style="display:none;">
+                            </div>
+                            <?php endif; ?>
                         </div>
+                        <?php if (!empty($al['video'])): ?>
+                            <p class="toa-alb-video-nota<?php echo $al['video'] === 'video_selftape' ? ' forte' : ''; ?>"><?php
+                                echo $al['video'] === 'video_selftape'
+                                    ? _ht_talent(array(
+                                        'it'=>'🎬 Per gli attori il self-tape è la cosa più importante di tutte: un minuto in cui ti presenti e reciti qualche battuta, girato col telefono in verticale, luce davanti e sfondo neutro. Senza self-tape le produzioni non ti convocano.',
+                                        'en'=>'🎬 For actors the self-tape matters more than anything else: one minute where you introduce yourself and perform a few lines, shot vertically on your phone, light in front of you, plain background. Without a self-tape productions will not call you.',
+                                        'fr'=>'🎬 Pour les comédiens la self-tape est ce qui compte le plus : une minute où tu te présentes et joues quelques répliques, filmée au téléphone en vertical, lumière de face et fond neutre. Sans self-tape les productions ne te convoquent pas.',
+                                        'es'=>'🎬 Para los actores el self-tape es lo más importante: un minuto en el que te presentas e interpretas unas líneas, grabado con el móvil en vertical, luz de frente y fondo neutro. Sin self-tape las producciones no te llaman.',
+                                    ))
+                                    : _ht_talent(array(
+                                        'it'=>'🎥 Video di presentazione: 30 secondi, in verticale, dici come ti chiami, quanti anni hai e di dove sei. Serve a farti sentire la voce e vedere come ti muovi.',
+                                        'en'=>'🎥 Presentation video: 30 seconds, vertical, say your name, your age and where you are from. It lets us hear your voice and see how you move.',
+                                        'fr'=>'🎥 Vidéo de présentation : 30 secondes, en vertical, dis ton nom, ton âge et d\'où tu viens. Ça permet d\'entendre ta voix et de voir comment tu bouges.',
+                                        'es'=>'🎥 Vídeo de presentación: 30 segundos, en vertical, di tu nombre, tu edad y de dónde eres. Sirve para oír tu voz y ver cómo te mueves.',
+                                    ));
+                            ?></p>
+                        <?php endif; ?>
                         <?php // 2026-08-14 — spiegazione della data, con il pallino informativo ?>
                         <p class="toa-alb-info"><span class="toa-alb-info-dot">i</span><?php echo _ht_talent(array(
                             'it'=>'Su ogni foto scegli il mese e l\'anno in cui è stata SCATTATA, non la data di oggi. Serve per i contratti e le liberatorie: una data sbagliata può invalidarli.',
@@ -1375,7 +1413,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album23" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album24" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT

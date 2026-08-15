@@ -90,7 +90,8 @@
 
     var uploadState = {
         photoProfile: null,
-        photos: []
+        photos: [],
+        videos: []   // 2026-08-14 — video scelti negli album (presentazione / self-tape)
     };
 
     // Stato globale tipo talent: sempre 'immagine' (backstage → form crew)
@@ -749,6 +750,55 @@
     albumCards.forEach(function(card) {
         setupDropzone('toaTalentDrop_' + card.dataset.album, 'toaTalentInput_' + card.dataset.album, 'photo', card.dataset.album);
     });
+
+    /* 2026-08-14 — pulsante video, solo negli album che lo prevedono (Pola, Portfolio moda,
+       Portfolio attore). Il CRM tiene i video come righe separate con album_tipo video_creator
+       o video_selftape: non si sovrascrivono. */
+    var MAX_VIDEO_MB = 50;
+    document.querySelectorAll('.toa-alb-video').forEach(function(zone) {
+        var code = zone.id.replace('toaTalentVidDrop_', '');
+        var input = document.getElementById('toaTalentVidInput_' + code);
+        if (!input) return;
+        zone.addEventListener('click', function(e) {
+            if (e.target === zone || e.target.closest('.toa-talent-dropzone-text, .toa-talent-dropzone-icon, .toa-talent-dropzone-hint')) input.click();
+        });
+        input.addEventListener('change', function() {
+            var f = input.files[0];
+            input.value = '';
+            if (!f) return;
+            if (!/^video\//i.test(f.type)) { showInlineError('toaTalentPhotosError', tmsg(MSG.fileInvalid) + ': ' + f.name, true); return; }
+            if (f.size > MAX_VIDEO_MB * 1024 * 1024) { showInlineError('toaTalentPhotosError', tmsg(MSG.fileTooBig) + ': ' + f.name + ' (max ' + MAX_VIDEO_MB + 'MB)', true); return; }
+            // un solo video per tipo: il nuovo sostituisce quello scelto prima
+            uploadState.videos = (uploadState.videos || []).filter(function(v) { return v.album !== zone.dataset.albumvideo; });
+            uploadState.videos.push({ file: f, album: zone.dataset.albumvideo, id: 'v_' + Date.now() });
+            renderVideoScelto(code, zone.dataset.albumvideo, f.name);
+        });
+    });
+
+    function renderVideoScelto(code, albumVideo, nome) {
+        var card = document.querySelector('.toa-album-card[data-album="' + code + '"]');
+        if (!card) return;
+        var box = card.querySelector('.toa-alb-video-scelto');
+        if (!box) {
+            box = document.createElement('div');
+            box.className = 'toa-alb-video-scelto';
+            var nota = card.querySelector('.toa-alb-video-nota');
+            if (nota) nota.parentNode.insertBefore(box, nota.nextSibling); else card.appendChild(box);
+        }
+        box.innerHTML = '';
+        var t = document.createElement('span');
+        t.textContent = '🎬 ' + nome;
+        var del = document.createElement('button');
+        del.type = 'button';
+        del.className = 'toa-alb-video-del';
+        del.textContent = '×';
+        del.addEventListener('click', function() {
+            uploadState.videos = (uploadState.videos || []).filter(function(v) { return v.album !== albumVideo; });
+            box.remove();
+        });
+        box.appendChild(t);
+        box.appendChild(del);
+    }
 
     function photosInAlbum(code) {
         return uploadState.photos.filter(function(p) { return p.album === code; }).length;
@@ -1509,7 +1559,7 @@
             var endpoint = UPLOAD_ENDPOINT;
             /* 2026-08-14 (TEMA REGISTRAZIONE TALENT) — se l'interruttore è acceso e la foto ha un album,
                si usa l'endpoint del self-edit che sa dove metterla. Altrimenti tutto come prima. */
-            if (USE_ALBUM_UPLOAD && album && tipo === 'foto' && talentUuidAfterRegister) {
+            if (USE_ALBUM_UPLOAD && album && (tipo === 'foto' || tipo === 'video') && talentUuidAfterRegister) {
                 endpoint = ALBUM_ENDPOINT;
                 fd.append('uuid', talentUuidAfterRegister);
                 fd.append('t', token);
@@ -1566,6 +1616,10 @@
         // 2. Foto portfolio (no video per i talent)
         uploadState.photos.forEach(function(p) {
             queue.push({ file: p.file, tipo: 'foto', album: p.album || 'polaroid', data_scatto: p.data_scatto || '' }); // 2026-08-14: album e data dello scatto viaggiano con la foto
+        });
+        // 2026-08-14 — video scelti negli album (video_creator / video_selftape)
+        (uploadState.videos || []).forEach(function(v) {
+            queue.push({ file: v.file, tipo: 'video', album: v.album, data_scatto: '' });
         });
 
         console.log('[uploadAll] queue length:', queue.length, queue);
@@ -1914,7 +1968,7 @@
         modal.classList.remove('show');
         document.body.style.overflow = '';
         form.reset();
-        uploadState = { photoProfile: null, photos: [] };
+        uploadState = { photoProfile: null, photos: [], videos: [] };
         tipoTalentSelected = 'immagine';
         if (profileThumb) profileThumb.innerHTML = '';
         if (photosThumbs) photosThumbs.innerHTML = '';
