@@ -979,12 +979,18 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-alb-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:-1px}
                 .toa-alb-tab{appearance:none;min-width:0;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:#9ca3af;font:600 .8rem/1.2 inherit;padding:10px 11px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:6px}
                 .toa-alb-tab:hover{color:#e5e7eb;background:rgba(255,255,255,.07)}
-                .toa-alb-tab.active{background:rgba(200,255,0,.10);border-color:rgba(200,255,0,.45);color:#fff}
+                /* la scheda aperta deve saltare all'occhio: fondo pieno, non una sfumatura */
+                .toa-alb-tab.active{background:#c8ff00;border-color:#c8ff00;color:#0a0a0a;font-weight:800;box-shadow:0 3px 14px rgba(200,255,0,.28)}
+                .toa-alb-tab.active .dot{background:#0a0a0a}
+                .toa-alb-tab.active .n{opacity:1;color:#0a0a0a}
                 .toa-alb-tab .dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.25);flex:none}
                 .toa-alb-tab.serve .dot{background:#c8ff00}
                 .toa-alb-tab.done .dot{background:#10b981}
                 .toa-alb-tab .n{font-size:.78rem;opacity:.8}
-                .toa-album-card{border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:18px;margin:6px 0 14px;background:rgba(255,255,255,.02)}
+                .toa-album-card{border:2px solid rgba(200,255,0,.45);border-radius:14px;padding:18px;margin:8px 0 14px;background:rgba(255,255,255,.02)}
+                .toa-alb-titolo{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 12px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.10)}
+                .toa-alb-titolo-eti{font-size:.72rem;text-transform:uppercase;letter-spacing:.6px;color:#9ca3af}
+                .toa-alb-titolo strong{font-size:1.2rem;color:#c8ff00;letter-spacing:.2px}
                 .toa-album-card[hidden]{display:none}
                 /* così sì / così no affiancate */
                 .toa-alb-ex{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
@@ -997,11 +1003,11 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-alb-ex figure.si figcaption{background:#10b981}
                 .toa-alb-ex figure.no figcaption{background:#ef4444}
                 .toa-alb-ex .toa-foto-gallery{width:100%;max-width:none;height:auto;aspect-ratio:3/4;margin:0;box-shadow:none;border:0;border-radius:0;position:relative}
-                /* spunta / croce al centro della foto */
-                .toa-alb-mark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;line-height:1;color:#fff;pointer-events:none;border:3px solid rgba(255,255,255,.92);box-shadow:0 3px 14px rgba(0,0,0,.5)}
-                .toa-alb-ex figure.si .toa-alb-mark{background:rgba(16,185,129,.92)}
-                .toa-alb-ex figure.no .toa-alb-mark{background:rgba(239,68,68,.92)}
-                @media (max-width:480px){.toa-alb-mark{width:40px;height:40px;font-size:23px;border-width:2px}}
+                /* spunta / croce al centro della foto: solo il segno, senza cerchi */
+                .toa-alb-mark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;font-size:62px;font-weight:900;line-height:1;pointer-events:none;text-shadow:0 2px 10px rgba(0,0,0,.75),0 0 3px rgba(0,0,0,.9)}
+                .toa-alb-ex figure.si .toa-alb-mark{color:#22e08a}
+                .toa-alb-ex figure.no .toa-alb-mark{color:#ff4d4d}
+                @media (max-width:480px){.toa-alb-mark{font-size:44px}}
                 .toa-alb-ex .toa-fg-badge{display:none}
                 .toa-alb-ex .toa-album-ph{max-width:none;height:auto;aspect-ratio:3/4;margin:0;border:0;border-radius:0}
                 @media (max-width:480px){.toa-alb-ex figcaption{font-size:.9rem;padding:8px 2px;letter-spacing:.3px}}
@@ -1126,6 +1132,12 @@ $theme_uri = get_stylesheet_directory_uri();
                     $guida = isset($TALENT_ALBUM_GUIDA[$code][$lang_now]) ? $TALENT_ALBUM_GUIDA[$code][$lang_now] : (isset($TALENT_ALBUM_GUIDA[$code]['it']) ? $TALENT_ALBUM_GUIDA[$code]['it'] : '');
                 ?>
                     <div class="toa-album-card" data-album="<?php echo esc_attr($code); ?>" data-roles="<?php echo esc_attr($al['roles']); ?>"<?php echo $k === 0 ? '' : ' hidden'; ?>>
+                        <?php // 2026-08-14 — titolo dentro la scheda: si deve capire su quale album si sta caricando ?>
+                        <div class="toa-alb-titolo">
+                            <span class="toa-alb-titolo-eti"><?php echo _ht_talent(array('it'=>'Stai caricando in','en'=>'You are uploading to','fr'=>'Tu charges dans','es'=>'Estás subiendo a')); ?></span>
+                            <strong><?php echo esc_html(_ht_talent_raw($al['label'])); ?></strong>
+                            <span class="toa-album-badge <?php echo $al['req'] ? 'req' : 'opt'; ?>"><?php echo $al['req'] ? $badge_req : $badge_opt; ?></span>
+                        </div>
                         <p class="toa-album-serve off"></p>
                         <?php
                         // 2026-08-14 — se apri un album che non serve ai ruoli spuntati, ti si chiede
@@ -1363,7 +1375,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album22" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album23" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
