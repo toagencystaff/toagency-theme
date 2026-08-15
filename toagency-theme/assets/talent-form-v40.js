@@ -827,6 +827,9 @@
         fig.classList.toggle('si', kind === 'si');
         fig.classList.toggle('no', kind !== 'si');
         capTesto(cap, kind);
+        // spunta o croce al centro dell'immagine
+        var mark = fig.querySelector('.toa-alb-mark');
+        if (mark) mark.textContent = (kind === 'si') ? '✓' : '✕';
     }
     document.querySelectorAll('.toa-alb-ex[data-paired]').forEach(function(ex) {
         var gall = ex.querySelectorAll('.toa-foto-gallery');

@@ -996,7 +996,12 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-alb-ex figcaption{margin:0;padding:10px 4px;font-size:1.05rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;text-align:center;color:#fff;line-height:1.15}
                 .toa-alb-ex figure.si figcaption{background:#10b981}
                 .toa-alb-ex figure.no figcaption{background:#ef4444}
-                .toa-alb-ex .toa-foto-gallery{width:100%;max-width:none;height:auto;aspect-ratio:3/4;margin:0;box-shadow:none;border:0;border-radius:0}
+                .toa-alb-ex .toa-foto-gallery{width:100%;max-width:none;height:auto;aspect-ratio:3/4;margin:0;box-shadow:none;border:0;border-radius:0;position:relative}
+                /* spunta / croce al centro della foto */
+                .toa-alb-mark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;line-height:1;color:#fff;pointer-events:none;border:3px solid rgba(255,255,255,.92);box-shadow:0 3px 14px rgba(0,0,0,.5)}
+                .toa-alb-ex figure.si .toa-alb-mark{background:rgba(16,185,129,.92)}
+                .toa-alb-ex figure.no .toa-alb-mark{background:rgba(239,68,68,.92)}
+                @media (max-width:480px){.toa-alb-mark{width:40px;height:40px;font-size:23px;border-width:2px}}
                 .toa-alb-ex .toa-fg-badge{display:none}
                 .toa-alb-ex .toa-album-ph{max-width:none;height:auto;aspect-ratio:3/4;margin:0;border:0;border-radius:0}
                 @media (max-width:480px){.toa-alb-ex figcaption{font-size:.9rem;padding:8px 2px;letter-spacing:.3px}}
@@ -1074,13 +1079,13 @@ $theme_uri = get_stylesheet_directory_uri();
                 <div id="toaTalentAlbums"
                      data-serve-on="<?php echo esc_attr(_ht_talent(array('it'=>'★ Serve per i ruoli che hai scelto','en'=>'★ Needed for the roles you picked','fr'=>'★ Nécessaire pour tes rôles','es'=>'★ Necesario para tus roles'))); ?>"
                      data-serve-off="<?php echo esc_attr(_ht_talent(array('it'=>'Non richiesto per i tuoi ruoli — puoi caricarle lo stesso','en'=>'Not required for your roles — you can still upload','fr'=>'Pas requis pour tes rôles — tu peux quand même charger','es'=>'No requerido para tus roles — puedes subirlas igual'))); ?>"
-                     data-cap-si="<?php echo esc_attr(_ht_talent(array('it'=>'✅ Così sì','en'=>'✅ Yes like this','fr'=>'✅ Oui comme ça','es'=>'✅ Así sí'))); ?>"
-                     data-cap-no="<?php echo esc_attr(_ht_talent(array('it'=>'❌ Così no','en'=>'❌ Not like this','fr'=>'❌ Pas comme ça','es'=>'❌ Así no'))); ?>">
+                     data-cap-si="<?php echo esc_attr(_ht_talent(array('it'=>'Così sì','en'=>'Yes like this','fr'=>'Oui comme ça','es'=>'Así sí'))); ?>"
+                     data-cap-no="<?php echo esc_attr(_ht_talent(array('it'=>'Così no','en'=>'Not like this','fr'=>'Pas comme ça','es'=>'Así no'))); ?>">
                 <?php
                 $badge_req = _ht_talent(array('it'=>'consigliata','en'=>'recommended','fr'=>'conseillé','es'=>'recomendado'));
                 $badge_opt = _ht_talent(array('it'=>'facoltativa','en'=>'optional','fr'=>'facultatif','es'=>'opcional'));
-                $badge_ok_g = _ht_talent(array('it'=>'✅ Così sì','en'=>'✅ Yes like this','fr'=>'✅ Oui comme ça','es'=>'✅ Así sí'));
-                $badge_no_g = _ht_talent(array('it'=>'❌ Così no','en'=>'❌ Not like this','fr'=>'❌ Pas comme ça','es'=>'❌ Así no'));
+                $badge_ok_g = _ht_talent(array('it'=>'Così sì','en'=>'Yes like this','fr'=>'Oui comme ça','es'=>'Así sí'));
+                $badge_no_g = _ht_talent(array('it'=>'Così no','en'=>'Not like this','fr'=>'Pas comme ça','es'=>'Así no'));
                 $ph_soon   = _ht_talent(array('it'=>'esempio in arrivo','en'=>'example coming','fr'=>'exemple à venir','es'=>'ejemplo próximamente'));
                 $drop_txt  = _ht_talent(array('it'=>'Aggiungi foto','en'=>'Add photos','fr'=>'Ajoute des photos','es'=>'Añade fotos'));
                 $lang_now  = function_exists('toa_current_lang') ? toa_current_lang() : 'it';
@@ -1169,6 +1174,8 @@ $theme_uri = get_stylesheet_directory_uri();
                                                 $src = (substr($f, 0, 1) === '/') ? $f : $theme_uri . '/assets/' . $f; ?>
                                                 <div class="toa-fg-slide<?php echo $i === 0 ? ' active' : ''; ?>" data-kind="<?php echo esc_attr($kind); ?>"><img src="<?php echo esc_url($src); ?>" alt="" loading="<?php echo $i === 0 ? 'eager' : 'lazy'; ?>"></div>
                                             <?php endforeach; ?>
+                                            <?php // 2026-08-14 — spunta/croce al centro della foto: sulla fascia rossa la X non si distingueva ?>
+                                            <span class="toa-alb-mark" aria-hidden="true"></span>
                                         </div>
                                     <?php else: ?>
                                         <div class="toa-album-ph"><?php echo esc_html($ph_soon); ?></div>
@@ -1356,7 +1363,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album20" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album21" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
