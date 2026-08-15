@@ -27,6 +27,9 @@
        Se qualcosa va storto, rimetterlo a false e ridiventa il comportamento di prima. */
     var USE_ALBUM_UPLOAD = false;
     var MIN_PER_ALBUM = 3;  // 2026-08-14 — minimo consigliato per album (consigliate 3-8)
+    // 2026-08-14 — album in cui il mese/anno dello scatto è OBBLIGATORIO per ogni foto.
+    // Negli altri resta facoltativo ma viene comunque chiesto e spedito se compilato.
+    var DATA_OBBLIGATORIA = ['polaroid', 'dettaglio'];
     var ALBUM_ENDPOINT = '/crm_toagency/actions/talent-media-upload.php';
     var MAX_PHOTO_SIZE_MB = 60; /* TASK hardening-upload STEP A 2026-06-04 marco — era 15: le foto grandi ora passano e vengono compresse client-side; resta backstop per file assurdi */
 
@@ -40,6 +43,14 @@
         reqMinor:      { it:'Campo obbligatorio per minori sotto 16 anni', en:'Required for minors under 16', es:'Obligatorio para menores de 16 años', fr:'Obligatoire pour les mineurs de moins de 16 ans' },
         parentConfirm: { it:'La conferma del genitore è obbligatoria', en:'Parent confirmation is required', es:'La confirmación del padre es obligatoria', fr:'La confirmation du parent est obligatoire' },
         pickCity:      { it:'Indica la città', en:'Please enter the city', es:'Indica la ciudad', fr:'Indique la ville' },
+        /* 2026-08-14 — data dello SCATTO, non del caricamento */
+        scattataIl:    { it:'Scattata nel mese di', en:'Taken in', es:'Tomada en', fr:'Prise en' },
+        dataScattoMancante: {
+            it:'Per le Pola e i Dettagli serve il mese e l\'anno in cui la foto è stata scattata (non caricata). Compila le date mancanti.',
+            en:'For Polaroids and Details we need the month and year the photo was taken (not uploaded). Please fill in the missing dates.',
+            es:'Para las Polas y los Detalles hace falta el mes y el año en que se tomó la foto (no cuando la subes). Rellena las fechas que faltan.',
+            fr:'Pour les Polas et les Détails il faut le mois et l\'année de la prise de vue (pas du chargement). Complète les dates manquantes.'
+        },
         pickRole:      { it:'Seleziona almeno un ruolo', en:'Select at least one role', es:'Selecciona al menos un rol', fr:'Sélectionne au moins un rôle' },
         pickEthnicity: { it:"Seleziona almeno un'etnia", en:'Select at least one ethnicity', es:'Selecciona al menos una etnia', fr:'Sélectionne au moins une origine' },
         photoReq:      { it:'Il primo piano è obbligatorio.', en:'The close-up photo is required.', es:'El primer plano es obligatorio.', fr:'Le gros plan est obligatoire.' },
@@ -913,6 +924,27 @@
         var thumb = document.createElement('div');
         thumb.className = 'toa-talent-thumb';
         thumb.dataset.id = fileObj.id;
+        /* 2026-08-14 — sotto ogni miniatura, mese e anno in cui la foto è stata SCATTATA.
+           Obbligatorio per Pola e Dettagli, facoltativo altrove. */
+        if (mode === 'photo' && fileObj.album) {
+            var obbl = DATA_OBBLIGATORIA.indexOf(fileObj.album) > -1;
+            var wrap = document.createElement('div');
+            wrap.className = 'toa-thumb-data-wrap';
+            var lab = document.createElement('label');
+            lab.textContent = obbl ? tmsg(MSG.scattataIl) + ' *' : tmsg(MSG.scattataIl);
+            var d = document.createElement('input');
+            d.type = 'month';
+            d.className = 'toa-thumb-data' + (obbl ? ' obbl' : '');
+            d.dataset.for = fileObj.id;
+            d.max = new Date().toISOString().slice(0, 7);
+            d.addEventListener('change', function() {
+                fileObj.data_scatto = d.value;
+                d.classList.toggle('error', obbl && !d.value);
+            });
+            wrap.appendChild(lab);
+            wrap.appendChild(d);
+            fileObj._dataWrap = wrap; // agganciato dopo, dentro reader.onload (che svuota il thumb)
+        }
         var reader = new FileReader();
         reader.onload = function(e) {
             thumb.innerHTML = '<img src="' + e.target.result + '" alt="">';
@@ -922,6 +954,7 @@
             btn.textContent = '×';
             btn.addEventListener('click', function() { removeFile(fileObj.id); });
             thumb.appendChild(btn);
+            if (fileObj._dataWrap) thumb.appendChild(fileObj._dataWrap); // 2026-08-14: campo data dello scatto
         };
         reader.readAsDataURL(fileObj.file);
         container.appendChild(thumb);
@@ -1172,7 +1205,29 @@
 
         if (n === 4) {
             // foto profilo + disclaimer + gdpr: validazione spostata nello Step 1 (lead-capture 2026-07-12)
-        
+
+            /* 2026-08-14 — Pola e Dettagli: per ogni foto caricata serve il mese/anno dello SCATTO.
+               Negli altri album la data è facoltativa. Se manca, si evidenzia il campo e non si invia. */
+            var mancanti = 0;
+            uploadState.photos.forEach(function(p) {
+                if (DATA_OBBLIGATORIA.indexOf(p.album) === -1) return;
+                if (p.data_scatto) return;
+                mancanti++;
+                var inp = document.querySelector('.toa-thumb-data[data-for="' + p.id + '"]');
+                if (inp) inp.classList.add('error');
+            });
+            if (mancanti) {
+                ok = false;
+                showInlineError('toaTalentPhotosError', tmsg(MSG.dataScattoMancante), true);
+                // porta l'utente sull'album incriminato
+                var primo = uploadState.photos.filter(function(p) {
+                    return DATA_OBBLIGATORIA.indexOf(p.album) > -1 && !p.data_scatto;
+                })[0];
+                if (primo) {
+                    var tab = document.querySelector('.toa-alb-tab[data-tab="' + primo.album + '"]');
+                    if (tab) tab.click();
+                }
+            }
         }
 
         return ok;
@@ -1316,7 +1371,7 @@
     }
 
     // Upload sequenziale: foto profilo → foto portfolio (no video per i talent)
-    function uploadOneFile(talentId, token, file, tipo, album) {
+    function uploadOneFile(talentId, token, file, tipo, album, dataScatto) {
         /* TASK hardening-upload STEP A 2026-06-04 marco — comprimi prima di spedire, poi catena identica */
         return toaCompressImage(file, 1280, 0.78).then(function(cfile) { /* TASK hardening-upload STEP A.2 2026-06-04 — 1280px q78 */
             var fd = new FormData();
@@ -1331,7 +1386,8 @@
                 fd.append('foto', cfile);
                 fd.append('dichiarazione_legale', '1');
                 fd.append('veridicita', '1');
-                if (album === 'polaroid') fd.append('data_scatto', new Date().toISOString().slice(0, 10));
+                // data dello SCATTO indicata dall'utente (YYYY-MM → primo del mese); se manca, oggi
+                fd.append('data_scatto', dataScatto ? dataScatto + '-01' : new Date().toISOString().slice(0, 10));
                 return fetch(endpoint, {
                     method: 'POST',
                     body: fd,
@@ -1378,7 +1434,7 @@
         }
         // 2. Foto portfolio (no video per i talent)
         uploadState.photos.forEach(function(p) {
-            queue.push({ file: p.file, tipo: 'foto', album: p.album || 'polaroid' }); // 2026-08-14: l'album viaggia con la foto
+            queue.push({ file: p.file, tipo: 'foto', album: p.album || 'polaroid', data_scatto: p.data_scatto || '' }); // 2026-08-14: album e data dello scatto viaggiano con la foto
         });
 
         console.log('[uploadAll] queue length:', queue.length, queue);
@@ -1401,7 +1457,7 @@
         var results = [];
         queue.forEach(function(item) {
             promise = promise.then(function() {
-                return uploadOneFile(talentId, token, item.file, item.tipo, item.album).then(function(res) {
+                return uploadOneFile(talentId, token, item.file, item.tipo, item.album, item.data_scatto).then(function(res) {
                     doneCount++;
                     if (submitBtn) {
                         submitBtn.textContent = 'Upload file ' + doneCount + '/' + totalCount + '...';

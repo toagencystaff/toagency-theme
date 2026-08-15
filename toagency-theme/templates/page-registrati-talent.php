@@ -127,10 +127,10 @@ $TALENT_ALBUM = array(
             'es'=>'De 3 a 8 fotos: primer plano, medio cuerpo, cuerpo entero, perfil. Siempre sin filtros.',
         ),
         'hint'  => array(
-            'it'=>'Tu come sei. Muro chiaro, luce di finestra, niente trucco e niente filtri. Corpo intero e primo piano. Te le fai col telefono in due minuti.',
-            'en'=>'You as you are. Plain wall, window light, no makeup, no filters. Full body and close-up. Two minutes with your phone.',
-            'fr'=>'Toi tel que tu es. Mur clair, lumière de fenêtre, sans maquillage ni filtres. Plein pied et gros plan. Deux minutes avec ton téléphone.',
-            'es'=>'Tú tal cual eres. Pared clara, luz de ventana, sin maquillaje ni filtros. Cuerpo entero y primer plano. Dos minutos con el móvil.',
+            'it'=>'Tu come sei. Muro chiaro, luce di finestra, niente trucco e niente filtri. Corpo intero e primo piano. Te le fai col telefono in due minuti. Per ogni foto indica il mese e l\'anno in cui l\'hai SCATTATA: è obbligatorio.',
+            'en'=>'You as you are. Plain wall, window light, no makeup, no filters. Full body and close-up. Two minutes with your phone. For each photo add the month and year it was TAKEN: it is required.',
+            'fr'=>'Toi tel que tu es. Mur clair, lumière de fenêtre, sans maquillage ni filtres. Plein pied et gros plan. Deux minutes avec ton téléphone. Pour chaque photo indique le mois et l\'année de la PRISE DE VUE : c\'est obligatoire.',
+            'es'=>'Tú tal cual eres. Pared clara, luz de ventana, sin maquillaje ni filtros. Cuerpo entero y primer plano. Dos minutos con el móvil. En cada foto indica el mes y el año en que la HICISTE: es obligatorio.',
         ),
     ),
     array(
@@ -178,10 +178,10 @@ $TALENT_ALBUM = array(
             'es'=>'De 3 a 8 fotos: manos, perfil, pelo, sonrisa. Primeros planos limpios.',
         ),
         'hint'  => array(
-            'it'=>'Mani, profilo, capelli. Primi piani puliti su sfondo neutro: i casting moda li chiedono sempre.',
-            'en'=>'Hands, profile, hair. Clean close-ups on a neutral background: fashion castings always ask for them.',
-            'fr'=>'Mains, profil, cheveux. Gros plans nets sur fond neutre : les castings mode les demandent toujours.',
-            'es'=>'Manos, perfil, pelo. Primeros planos limpios sobre fondo neutro: los castings de moda siempre los piden.',
+            'it'=>'Mani, profilo, capelli. Primi piani puliti su sfondo neutro: i casting moda li chiedono sempre. Per ogni foto indica il mese e l\'anno in cui l\'hai SCATTATA: è obbligatorio.',
+            'en'=>'Hands, profile, hair. Clean close-ups on a neutral background: fashion castings always ask for them. For each photo add the month and year it was TAKEN: it is required.',
+            'fr'=>'Mains, profil, cheveux. Gros plans nets sur fond neutre : les castings mode les demandent toujours. Pour chaque photo indique le mois et l\'année de la PRISE DE VUE : c\'est obligatoire.',
+            'es'=>'Manos, perfil, pelo. Primeros planos limpios sobre fondo neutro: los castings de moda siempre los piden. En cada foto indica el mes y el año en que la HICISTE: es obligatorio.',
         ),
     ),
     array(
@@ -990,6 +990,15 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-album-count{font-size:.85rem;color:#9ca3af;margin-top:8px;text-align:center}
                 .toa-album-count.ok{color:#10b981}
                 .toa-album-count.ok strong{color:#10b981}
+                /* mese/anno dello scatto sotto ogni miniatura */
+                .toa-album-card .toa-talent-thumbs{gap:12px}
+                .toa-album-card .toa-talent-thumb{width:104px;height:auto}
+                .toa-album-card .toa-talent-thumb img{width:104px;height:104px;object-fit:cover;border-radius:8px;display:block}
+                .toa-thumb-data-wrap{display:block;margin-top:5px}
+                .toa-thumb-data-wrap label{display:block;font-size:.62rem;line-height:1.2;color:#9ca3af;margin-bottom:2px}
+                .toa-thumb-data{width:104px;padding:4px 5px;font-size:.7rem;border-radius:6px;border:1px solid rgba(255,255,255,.22);background:rgba(0,0,0,.35);color:#e5e7eb}
+                .toa-thumb-data.obbl{border-color:rgba(200,255,0,.45)}
+                .toa-thumb-data.error{border-color:#ef4444;background:rgba(239,68,68,.12)}
                 .toa-alb-addrole{margin:0 0 14px;padding:12px 14px;border-radius:10px;background:rgba(59,130,246,.10);border:1px solid rgba(59,130,246,.40)}
                 .toa-alb-addrole p{margin:0 0 10px;font-size:.9rem;line-height:1.45;color:#bfdbfe}
                 .toa-alb-addrole-btn{appearance:none;cursor:pointer;margin:0 8px 0 0;padding:9px 14px;border-radius:99px;border:1px solid #3b82f6;background:rgba(59,130,246,.18);color:#fff;font:700 .9rem/1 inherit}
@@ -1297,7 +1306,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album15" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album16" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
