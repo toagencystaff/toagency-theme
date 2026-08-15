@@ -1025,9 +1025,11 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-album-count.ok{color:#10b981}
                 .toa-album-count.ok strong{color:#10b981}
                 /* mese/anno dello scatto sotto ogni miniatura */
-                .toa-album-card .toa-talent-thumbs{gap:12px}
-                .toa-album-card .toa-talent-thumb{width:104px;height:auto}
-                .toa-album-card .toa-talent-thumb img{width:104px;height:104px;object-fit:cover;border-radius:8px;display:block}
+                /* la miniatura di serie è un quadrato con overflow:hidden — così il campo data
+                   veniva ritagliato via e non si vedeva. Qui la miniatura torna libera in altezza. */
+                .toa-album-card .toa-talent-thumbs{gap:12px;grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}
+                .toa-album-card .toa-talent-thumb{width:104px;height:auto;aspect-ratio:auto;overflow:visible;background:transparent;border:0;border-radius:0}
+                .toa-album-card .toa-talent-thumb img{width:104px;height:104px;object-fit:cover;border-radius:8px;display:block;border:1px solid rgba(255,255,255,.12)}
                 .toa-thumb-data-wrap{display:block;margin-top:5px}
                 .toa-thumb-data-wrap label{display:block;font-size:.62rem;line-height:1.2;color:#9ca3af;margin-bottom:2px}
                 .toa-thumb-data{width:104px;padding:4px 5px;font-size:.7rem;border-radius:6px;border:1px solid rgba(255,255,255,.22);background:rgba(0,0,0,.35);color:#e5e7eb}
@@ -1344,7 +1346,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album18" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album19" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
