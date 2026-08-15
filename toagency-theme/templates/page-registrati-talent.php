@@ -357,6 +357,23 @@ $theme_uri = get_stylesheet_directory_uri();
             <div class="toa-talent-progress-step" data-step="4"></div>
         </div>
 
+        <?php // 2026-08-14 — barra "profilo completo" fissa: accompagna dallo Step 1 all'invio ?>
+        <div class="toa-alb-sticky" id="toaTalentSticky"
+             data-m0="<?php echo esc_attr(_ht_talent(array('it'=>'Profilo appena iniziato: così non ti troviamo.','en'=>'Profile just started: like this we can\'t find you.','fr'=>'Fiche à peine commencée : comme ça on ne te trouve pas.','es'=>'Ficha recién empezada: así no te encontramos.'))); ?>"
+             data-m1="<?php echo esc_attr(_ht_talent(array('it'=>'Poche possibilità di essere scelto: mancano ancora parecchie cose.','en'=>'Low chance of being picked: several things are still missing.','fr'=>'Peu de chances d\'être choisi : il manque encore pas mal de choses.','es'=>'Pocas posibilidades de que te elijan: aún faltan varias cosas.'))); ?>"
+             data-m2="<?php echo esc_attr(_ht_talent(array('it'=>'Ci sei quasi: ancora un po\' e il tuo profilo diventa competitivo.','en'=>'Almost there: a bit more and your profile becomes competitive.','fr'=>'Tu y es presque : encore un peu et ta fiche devient compétitive.','es'=>'Casi lo tienes: un poco más y tu ficha será competitiva.'))); ?>"
+             data-m3="<?php echo esc_attr(_ht_talent(array('it'=>'Ottimo profilo: da qui in poi le possibilità salgono in fretta.','en'=>'Great profile: from here your chances rise quickly.','fr'=>'Très bonne fiche : à partir d\'ici tes chances montent vite.','es'=>'Ficha muy buena: a partir de aquí tus opciones suben rápido.'))); ?>"
+             data-m4="<?php echo esc_attr(_ht_talent(array('it'=>'Profilo completo: sei tra quelli che i casting vedono per primi.','en'=>'Profile complete: you are among the first castings see.','fr'=>'Fiche complète : tu es parmi les premiers que les castings voient.','es'=>'Ficha completa: estás entre los primeros que ven los castings.'))); ?>"
+             data-tutto="<?php echo esc_attr(_ht_talent(array('it'=>'✅ Non manca niente, bravo.','en'=>'✅ Nothing missing, well done.','fr'=>'✅ Il ne manque rien, bravo.','es'=>'✅ No falta nada, bien hecho.'))); ?>">
+            <div class="toa-alb-sticky-riga">
+                <div class="toa-albums-bar-track"><div class="toa-albums-bar-fill" id="toaTalentCompletenessFill"></div></div>
+                <strong id="toaTalentCompletenessPct">0%</strong>
+            </div>
+            <div class="toa-alb-sticky-msg" id="toaTalentCompMsg"></div>
+            <button type="button" class="toa-alb-sticky-btn" id="toaTalentMancaBtn"><?php echo _ht_talent(array('it'=>'Scopri cosa manca','en'=>'See what\'s missing','fr'=>'Vois ce qui manque','es'=>'Mira qué falta')); ?></button>
+            <div class="toa-alb-manca" id="toaTalentManca" hidden></div>
+        </div>
+
         <!-- Errore form-level (network / server) — inline, sostituisce alert() -->
         <div class="toa-talent-error-msg toa-talent-form-error" id="toaTalentFormError" role="alert" style="text-align:center;margin:0 0 14px;"></div>
 
@@ -1071,6 +1088,18 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-album-serve{font-size:.8rem;font-weight:600;margin:0 0 10px}
                 .toa-album-serve.on{color:#c8ff00}
                 .toa-album-serve.off{color:#9ca3af}
+                /* barra fissa: resta in alto mentre si scorre, in tutti gli step */
+                .toa-alb-sticky{position:sticky;top:0;z-index:40;margin:0 0 18px;padding:12px 14px;border-radius:12px;background:rgba(10,10,10,.92);backdrop-filter:blur(8px);border:1px solid rgba(200,255,0,.25);box-shadow:0 6px 22px rgba(0,0,0,.45)}
+                .toa-alb-sticky-riga{display:flex;align-items:center;gap:12px}
+                .toa-alb-sticky-riga .toa-albums-bar-track{flex:1}
+                .toa-alb-sticky-riga strong{font-size:1.05rem;color:#c8ff00;min-width:48px;text-align:right}
+                .toa-alb-sticky-msg{font-size:.84rem;line-height:1.45;color:#cbd5e1;margin-top:7px}
+                .toa-alb-sticky-btn{appearance:none;cursor:pointer;margin-top:9px;padding:7px 13px;border-radius:99px;border:1px solid rgba(200,255,0,.45);background:transparent;color:#c8ff00;font:700 .8rem/1 inherit}
+                .toa-alb-sticky-btn:hover{background:rgba(200,255,0,.12)}
+                .toa-alb-manca{margin-top:10px;display:flex;flex-wrap:wrap;gap:7px}
+                .toa-alb-manca-chip{appearance:none;cursor:pointer;padding:7px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.05);color:#e5e7eb;font:600 .78rem/1 inherit}
+                .toa-alb-manca-chip:hover{border-color:#c8ff00;color:#c8ff00}
+                .toa-alb-manca-ok{font-size:.85rem;color:#10b981;font-weight:700}
                 .toa-albums-bar{margin:0 0 16px}
                 .toa-albums-bar-track{height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
                 .toa-albums-bar-fill{height:100%;width:0;background:#c8ff00;border-radius:99px;transition:width .35s ease}
@@ -1086,11 +1115,6 @@ $theme_uri = get_stylesheet_directory_uri();
                     'fr'=>'Voici les albums de ton profil. Plus tu en complètes parmi ceux qu\'exigent tes rôles, plus tu reçois d\'opportunités. Sans les photos demandées, ton profil est proposé moins souvent.',
                     'es'=>'Estos son los álbumes de tu perfil. Cuantos más completes entre los que piden tus roles, más oportunidades recibes. Sin las fotos requeridas tu perfil se propone menos.',
                 )); ?></p>
-
-                <div class="toa-albums-bar">
-                    <div class="toa-albums-bar-track"><div class="toa-albums-bar-fill" id="toaTalentCompletenessFill"></div></div>
-                    <div class="toa-albums-bar-label"><strong id="toaTalentCompletenessPct">0%</strong> <?php echo _ht_talent(array('it'=>'di profilo completo','en'=>'profile complete','fr'=>'de profil complété','es'=>'de perfil completo')); ?></div>
-                </div>
 
                 <div class="toa-talent-upload-counter" id="toaTalentPhotosCounter"><strong>0</strong> / 15</div>
 
@@ -1422,7 +1446,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album25" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album26" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT

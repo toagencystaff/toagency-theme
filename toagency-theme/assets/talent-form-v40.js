@@ -1000,6 +1000,101 @@
         pct = Math.max(0, Math.min(100, pct));
         fill.style.width = pct + '%';
         pctEl.textContent = pct + '%';
+        aggiornaMessaggio(pct);
+        aggiornaCosaManca(baseFields);
+    }
+
+    /* Messaggio che accompagna la percentuale: più sale, più diventa incoraggiante. */
+    function aggiornaMessaggio(pct) {
+        var box = document.getElementById('toaTalentSticky');
+        var msg = document.getElementById('toaTalentCompMsg');
+        if (!box || !msg) return;
+        var k = pct >= 100 ? 'm4' : pct >= 90 ? 'm3' : pct >= 70 ? 'm2' : pct >= 40 ? 'm1' : 'm0';
+        msg.textContent = box.dataset[k] || '';
+    }
+
+    /* "Scopri cosa manca": elenco cliccabile, ogni voce porta dove va compilata. */
+    var ETICHETTE_CAMPI = {
+        nome:{it:'Nome',en:'First name',fr:'Prénom',es:'Nombre'},
+        cognome:{it:'Cognome',en:'Last name',fr:'Nom',es:'Apellido'},
+        email:{it:'Email',en:'Email',fr:'E-mail',es:'Email'},
+        telefono:{it:'Telefono',en:'Phone',fr:'Téléphone',es:'Teléfono'},
+        data_nascita:{it:'Data di nascita',en:'Date of birth',fr:'Date de naissance',es:'Fecha de nacimiento'},
+        res_nation:{it:'Nazione',en:'Country',fr:'Pays',es:'País'},
+        res_city_name:{it:'Città',en:'City',fr:'Ville',es:'Ciudad'},
+        altezza:{it:'Altezza',en:'Height',fr:'Taille',es:'Altura'},
+        taglia:{it:'Taglia',en:'Clothing size',fr:'Taille vêtements',es:'Talla'}
+    };
+    var STEP_DI = { nome:1, cognome:1, email:1, telefono:1, data_nascita:1, res_nation:1, res_city_name:1, altezza:3, taglia:3 };
+
+    function aggiornaCosaManca(baseFields) {
+        var box  = document.getElementById('toaTalentManca');
+        var wrap = document.getElementById('toaTalentSticky');
+        if (!box || !wrap) return;
+        box.innerHTML = '';
+        var voci = [];
+        baseFields.forEach(function(n) {
+            var el = form.querySelector('[name="' + n + '"]');
+            if (el && !String(el.value || '').trim()) {
+                voci.push({ testo: tmsg(ETICHETTE_CAMPI[n] || { it:n, en:n, fr:n, es:n }), step: STEP_DI[n] || 1 });
+            }
+        });
+        if (!uploadState.photoProfile) {
+            voci.push({ testo: tmsg({ it:'Foto primo piano', en:'Close-up photo', fr:'Photo gros plan', es:'Foto primer plano' }), step: 1 });
+        }
+        albumCards.forEach(function(c) {
+            if (c.classList.contains('is-off')) return;
+            var n = photosInAlbum(c.dataset.album);
+            if (n >= MIN_PER_ALBUM) return;
+            var tab = document.querySelector('.toa-alb-tab[data-tab="' + c.dataset.album + '"]');
+            var nome = tab ? tab.childNodes[1].textContent.trim() : c.dataset.album;
+            voci.push({
+                testo: (MIN_PER_ALBUM - n) + ' ' + tmsg({ it:'foto in', en:'photos in', fr:'photos dans', es:'fotos en' }) + ' ' + nome,
+                step: 4, album: c.dataset.album
+            });
+        });
+        document.querySelectorAll('.toa-alb-video').forEach(function(z) {
+            var alb = z.dataset.albumvideo;
+            var card = z.closest('.toa-album-card');
+            if (!card || card.classList.contains('is-off')) return;
+            var gia = (uploadState.videos || []).some(function(v) { return v.album === alb; });
+            if (gia) return;
+            voci.push({
+                testo: tmsg({ it:'Video in', en:'Video in', fr:'Vidéo dans', es:'Vídeo en' }) + ' ' + (document.querySelector('.toa-alb-tab[data-tab="' + card.dataset.album + '"]') || {}).textContent.trim(),
+                step: 4, album: card.dataset.album
+            });
+        });
+        if (!voci.length) {
+            var ok = document.createElement('div');
+            ok.className = 'toa-alb-manca-ok';
+            ok.textContent = wrap.dataset.tutto || '';
+            box.appendChild(ok);
+            return;
+        }
+        voci.slice(0, 12).forEach(function(v) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'toa-alb-manca-chip';
+            b.textContent = v.testo;
+            b.addEventListener('click', function() {
+                showStep(v.step);
+                if (v.album) {
+                    var t = document.querySelector('.toa-alb-tab[data-tab="' + v.album + '"]');
+                    if (t) t.click();
+                }
+                var target = document.querySelector('.toa-talent-step[data-step="' + v.step + '"]');
+                if (target) target.scrollIntoView({ block: 'start', behavior: 'smooth' });
+            });
+            box.appendChild(b);
+        });
+    }
+
+    var mancaBtn = document.getElementById('toaTalentMancaBtn');
+    if (mancaBtn) {
+        mancaBtn.addEventListener('click', function() {
+            var box = document.getElementById('toaTalentManca');
+            if (box) box.hidden = !box.hidden;
+        });
     }
     if (form) form.addEventListener('input', updateCompleteness);
     updateAlbumVisibility();
