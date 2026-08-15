@@ -44,7 +44,21 @@
         parentConfirm: { it:'La conferma del genitore è obbligatoria', en:'Parent confirmation is required', es:'La confirmación del padre es obligatoria', fr:'La confirmation du parent est obligatoire' },
         pickCity:      { it:'Indica la città', en:'Please enter the city', es:'Indica la ciudad', fr:'Indique la ville' },
         /* 2026-08-14 — data dello SCATTO, non del caricamento */
-        scattataIl:    { it:'Scattata nel mese di', en:'Taken in', es:'Tomada en', fr:'Prise en' },
+        scattataIl:    { it:'Quando l\'hai scattata?', en:'When was it taken?', es:'¿Cuándo la hiciste?', fr:'Quand l\'as-tu prise ?' },
+        meseSel:       { it:'Mese', en:'Month', es:'Mes', fr:'Mois' },
+        annoSel:       { it:'Anno', en:'Year', es:'Año', fr:'Année' },
+        mesi: {
+            it:['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],
+            en:['January','February','March','April','May','June','July','August','September','October','November','December'],
+            fr:['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+            es:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+        },
+        dataFutura: {
+            it:'La foto non può essere stata scattata nel futuro.',
+            en:'The photo cannot have been taken in the future.',
+            es:'La foto no puede haberse hecho en el futuro.',
+            fr:'La photo ne peut pas avoir été prise dans le futur.'
+        },
         dataScattoMancante: {
             it:'Per le Pola e i Dettagli serve il mese e l\'anno in cui la foto è stata scattata (non caricata). Compila le date mancanti.',
             en:'For Polaroids and Details we need the month and year the photo was taken (not uploaded). Please fill in the missing dates.',
@@ -979,17 +993,38 @@
             wrap.className = 'toa-thumb-data-wrap';
             var lab = document.createElement('label');
             lab.textContent = obbl ? tmsg(MSG.scattataIl) + ' *' : tmsg(MSG.scattataIl);
-            var d = document.createElement('input');
-            d.type = 'month';
-            d.className = 'toa-thumb-data' + (obbl ? ' obbl' : '');
-            d.dataset.for = fileObj.id;
-            d.max = new Date().toISOString().slice(0, 7);
-            d.addEventListener('change', function() {
-                fileObj.data_scatto = d.value;
-                d.classList.toggle('error', obbl && !d.value);
+            // due tendine (mese + anno): il campo "month" del browser mostra solo trattini
+            // e non si capisce cosa scrivere.
+            var oggi = new Date(), annoOggi = oggi.getFullYear(), meseOggi = oggi.getMonth() + 1;
+            var selM = document.createElement('select');
+            selM.className = 'toa-thumb-data toa-thumb-mese' + (obbl ? ' obbl' : '');
+            selM.dataset.for = fileObj.id;
+            selM.innerHTML = '<option value="">' + tmsg(MSG.meseSel) + '</option>';
+            tmsg(MSG.mesi).forEach(function(nome, idx) {
+                selM.innerHTML += '<option value="' + String(idx + 1).padStart(2, '0') + '">' + nome + '</option>';
             });
+            var selA = document.createElement('select');
+            selA.className = 'toa-thumb-data toa-thumb-anno' + (obbl ? ' obbl' : '');
+            selA.dataset.for = fileObj.id;
+            selA.innerHTML = '<option value="">' + tmsg(MSG.annoSel) + '</option>';
+            for (var y = annoOggi; y >= annoOggi - 20; y--) selA.innerHTML += '<option value="' + y + '">' + y + '</option>';
+            function aggiornaData() {
+                var m = selM.value, a = selA.value;
+                // niente date future
+                if (m && a && (+a > annoOggi || (+a === annoOggi && +m > meseOggi))) {
+                    selM.value = ''; m = '';
+                    showInlineError('toaTalentPhotosError', tmsg(MSG.dataFutura), true);
+                }
+                fileObj.data_scatto = (m && a) ? (a + '-' + m) : '';
+                var manca = obbl && !fileObj.data_scatto;
+                selM.classList.toggle('error', manca);
+                selA.classList.toggle('error', manca);
+            }
+            selM.addEventListener('change', aggiornaData);
+            selA.addEventListener('change', aggiornaData);
             wrap.appendChild(lab);
-            wrap.appendChild(d);
+            wrap.appendChild(selM);
+            wrap.appendChild(selA);
             fileObj._dataWrap = wrap; // agganciato dopo, dentro reader.onload (che svuota il thumb)
         }
         var reader = new FileReader();
@@ -1260,8 +1295,7 @@
                 if (DATA_OBBLIGATORIA.indexOf(p.album) === -1) return;
                 if (p.data_scatto) return;
                 mancanti++;
-                var inp = document.querySelector('.toa-thumb-data[data-for="' + p.id + '"]');
-                if (inp) inp.classList.add('error');
+                document.querySelectorAll('.toa-thumb-data[data-for="' + p.id + '"]').forEach(function(inp) { inp.classList.add('error'); });
             });
             if (mancanti) {
                 ok = false;

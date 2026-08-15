@@ -1030,11 +1030,14 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-album-card .toa-talent-thumbs{gap:12px;grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}
                 .toa-album-card .toa-talent-thumb{width:104px;height:auto;aspect-ratio:auto;overflow:visible;background:transparent;border:0;border-radius:0}
                 .toa-album-card .toa-talent-thumb img{width:104px;height:104px;object-fit:cover;border-radius:8px;display:block;border:1px solid rgba(255,255,255,.12)}
-                .toa-thumb-data-wrap{display:block;margin-top:5px}
-                .toa-thumb-data-wrap label{display:block;font-size:.62rem;line-height:1.2;color:#9ca3af;margin-bottom:2px}
-                .toa-thumb-data{width:104px;padding:4px 5px;font-size:.7rem;border-radius:6px;border:1px solid rgba(255,255,255,.22);background:rgba(0,0,0,.35);color:#e5e7eb}
-                .toa-thumb-data.obbl{border-color:rgba(200,255,0,.45)}
+                .toa-thumb-data-wrap{display:block;margin-top:6px}
+                .toa-thumb-data-wrap label{display:block;font-size:.68rem;font-weight:600;line-height:1.25;color:#e5e7eb;margin-bottom:4px}
+                .toa-thumb-data{display:block;width:104px;margin-bottom:4px;padding:5px 6px;font-size:.72rem;border-radius:6px;border:1px solid rgba(255,255,255,.22);background:#111;color:#e5e7eb}
+                .toa-thumb-data.obbl{border-color:rgba(200,255,0,.5)}
                 .toa-thumb-data.error{border-color:#ef4444;background:rgba(239,68,68,.12)}
+                /* riquadro informativo con il pallino */
+                .toa-alb-info{display:flex;gap:9px;align-items:flex-start;margin:14px 0 0;padding:10px 12px;border-radius:10px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.30);font-size:.83rem;line-height:1.45;color:#bfdbfe}
+                .toa-alb-info-dot{flex:none;width:20px;height:20px;border-radius:50%;background:#3b82f6;color:#fff;font:800 .78rem/20px Georgia,serif;text-align:center}
                 .toa-alb-addrole{margin:0 0 14px;padding:12px 14px;border-radius:10px;background:rgba(59,130,246,.10);border:1px solid rgba(59,130,246,.40)}
                 .toa-alb-addrole p{margin:0 0 10px;font-size:.9rem;line-height:1.45;color:#bfdbfe}
                 .toa-alb-addrole-btn{appearance:none;cursor:pointer;margin:0 8px 0 0;padding:9px 14px;border-radius:99px;border:1px solid #3b82f6;background:rgba(59,130,246,.18);color:#fff;font:700 .9rem/1 inherit}
@@ -1180,8 +1183,15 @@ $theme_uri = get_stylesheet_directory_uri();
                             <div class="toa-talent-dropzone-hint">JPG, PNG</div>
                             <input type="file" id="toaTalentInput_<?php echo esc_attr($code); ?>" accept="image/*" multiple style="display:none;">
                         </div>
+                        <?php // 2026-08-14 — spiegazione della data, con il pallino informativo ?>
+                        <p class="toa-alb-info"><span class="toa-alb-info-dot">i</span><?php echo _ht_talent(array(
+                            'it'=>'Su ogni foto scegli il mese e l\'anno in cui è stata SCATTATA, non la data di oggi. Serve per i contratti e le liberatorie: una data sbagliata può invalidarli.',
+                            'en'=>'On each photo pick the month and year it was TAKEN, not today\'s date. It is used for contracts and release forms: a wrong date can invalidate them.',
+                            'fr'=>'Sur chaque photo choisis le mois et l\'année de la PRISE DE VUE, pas la date du jour. Cela sert aux contrats et aux autorisations : une date fausse peut les invalider.',
+                            'es'=>'En cada foto elige el mes y el año en que se HIZO, no la fecha de hoy. Sirve para los contratos y las autorizaciones: una fecha equivocada puede invalidarlos.',
+                        )); ?></p>
                         <div class="toa-talent-thumbs" id="toaTalentThumbs_<?php echo esc_attr($code); ?>"></div>
-                        <div class="toa-album-count" id="toaTalentCountBox_<?php echo esc_attr($code); ?>"><strong id="toaTalentCount_<?php echo esc_attr($code); ?>">0</strong> <?php echo _ht_talent(array('it'=>'foto caricate — consigliate da 3 a 8','en'=>'photos uploaded — 3 to 8 recommended','fr'=>'photos chargées — 3 à 8 conseillées','es'=>'fotos subidas — de 3 a 8 recomendadas')); ?></div>
+                        <div class="toa-album-count" id="toaTalentCountBox_<?php echo esc_attr($code); ?>"><strong id="toaTalentCount_<?php echo esc_attr($code); ?>">0</strong> <?php echo _ht_talent(array('it'=>'foto caricate — consigliate da 3 a 8 per ogni album','en'=>'photos uploaded — 3 to 8 recommended for each album','fr'=>'photos chargées — 3 à 8 conseillées pour chaque album','es'=>'fotos subidas — de 3 a 8 recomendadas para cada álbum')); ?></div>
                     </div>
                 <?php endforeach; ?>
                 </div>
@@ -1346,7 +1356,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album19" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album20" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
