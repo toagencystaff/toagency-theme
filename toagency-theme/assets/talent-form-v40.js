@@ -869,6 +869,15 @@
             });
         }
         if (st >= 1 && st <= 4) setTimeout(function() { showStep(st); }, 700);
+
+        /* Cambiando lingua dall'intestazione si ripartiva sempre dallo Step 1, quindi non si
+           riusciva a rivedere la stessa schermata tradotta. Qui i parametri di revisione
+           vengono riportati sui link del selettore lingua (header e footer). */
+        document.querySelectorAll('.nav-lang-item, .wpml-ls-link').forEach(function(a) {
+            var h = a.getAttribute('href');
+            if (!h || h.indexOf('?') > -1) return;
+            a.setAttribute('href', h + (h.slice(-1) === '/' ? '' : '/') + window.location.search);
+        });
     })();
 
     function handleFiles(files, mode, album) {
