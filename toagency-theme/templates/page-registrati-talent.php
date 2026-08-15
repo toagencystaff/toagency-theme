@@ -227,32 +227,35 @@ $TALENT_ALBUM = array(
 $TALENT_ALBUM_SLIDES = array(
     'polaroid'  => array(
         'si' => array('/wp-content/uploads/2026/06/image3-3.jpg', '/wp-content/uploads/2026/06/image5-3.jpg', '/wp-content/uploads/2026/06/image6-3.jpg', '/wp-content/uploads/2026/06/image7-4.jpg', '/wp-content/uploads/2026/06/image9-4.jpg'),
-        'no' => array('wrong-trucco.jpg', 'wrong-cappello.jpg', 'wrong-selfie-alto.jpg', 'wrong-lontana.jpg', 'wrong-sfondo.jpg'),
+        'no' => array('guide/no-occhiali.jpg','guide/no-spiaggia.jpg','guide/no-gruppo.jpg','guide/no-palestra.jpg','guide/no-sport.jpg','guide/no-discoteca.jpg','guide/no-selfie-vicino.jpg','guide/no-spalle.jpg','guide/no-lontano.jpg','guide/no-filtro.jpg','guide/no-ritagliata.jpg','guide/no-bacio.jpg','guide/no-posa.jpg'),
     ),
     'eventi'    => array(
         'si' => array('staff/hostess.jpg', 'staff/steward.jpg', 'gallery/g08.jpg', 'staff/accoglienza.jpg', 'staff/interprete.jpg'),
-        'no' => array('wrong-lontana.jpg', 'wrong-spiaggia.jpg', 'wrong-sfondo.jpg'),
+        'no' => array('guide/no-occhiali.jpg','guide/no-spiaggia.jpg','guide/no-gruppo.jpg','guide/no-palestra.jpg','guide/no-sport.jpg','guide/no-discoteca.jpg','guide/no-selfie-vicino.jpg','guide/no-spalle.jpg','guide/no-lontano.jpg','guide/no-filtro.jpg','guide/no-ritagliata.jpg','guide/no-bacio.jpg','guide/no-posa.jpg'),
     ),
     // 2026-08-14 — immagini fornite da Marco, ottimizzate 900x1200 sotto i 300KB in assets/guide/.
     // Moda: 5 donna + 5 uomo (book studio, campagna, editoriale, sfilata, e-commerce).
     'portfolio' => array(
         'si' => array('guide/pf-moda-01.jpg','guide/pf-moda-06.jpg','guide/pf-moda-02.jpg','guide/pf-moda-07.jpg','guide/pf-moda-03.jpg','guide/pf-moda-08.jpg','guide/pf-moda-04.jpg','guide/pf-moda-09.jpg','guide/pf-moda-05.jpg','guide/pf-moda-10.jpg'),
-        'no' => array('wrong-spiaggia.jpg','wrong-trucco.jpg','wrong-selfie-alto.jpg'),
+        'no' => array('guide/no-occhiali.jpg','guide/no-spiaggia.jpg','guide/no-gruppo.jpg','guide/no-palestra.jpg','guide/no-sport.jpg','guide/no-discoteca.jpg','guide/no-selfie-vicino.jpg','guide/no-spalle.jpg','guide/no-lontano.jpg','guide/no-filtro.jpg','guide/no-ritagliata.jpg','guide/no-bacio.jpg','guide/no-posa.jpg'),
     ),
     // Attore: headshot casting, ritratto espressivo, sul set, in scena, backstage — donna e uomo alternati.
     'portfolio_cinema' => array(
         'si' => array('guide/pf-attore-01.jpg','guide/pf-attore-07.jpg','guide/pf-attore-02.jpg','guide/pf-attore-08.jpg','guide/pf-attore-03.jpg','guide/pf-attore-09.jpg','guide/pf-attore-04.jpg','guide/pf-attore-10.jpg','guide/pf-attore-05.jpg','guide/pf-attore-11.jpg','guide/pf-attore-06.jpg'),
-        'no' => array('wrong-trucco.jpg','wrong-occhiali.jpg','wrong-cappello.jpg'),
+        'no' => array('guide/no-occhiali.jpg','guide/no-spiaggia.jpg','guide/no-gruppo.jpg','guide/no-palestra.jpg','guide/no-sport.jpg','guide/no-discoteca.jpg','guide/no-selfie-vicino.jpg','guide/no-spalle.jpg','guide/no-lontano.jpg','guide/no-filtro.jpg','guide/no-ritagliata.jpg','guide/no-bacio.jpg','guide/no-posa.jpg'),
     ),
     // Dettagli: profilo e primo piano dall'articolo Pola + le digitals (fronte/retro/profilo).
     // Mancano ancora mani e capelli: nessuna immagine adatta nel sito.
     'dettaglio' => array(
         'si' => array('/wp-content/uploads/2026/06/image7-4.jpg', '/wp-content/uploads/2026/06/image6-3.jpg', '/wp-content/uploads/2026/06/model-digitals-polaroids-agency-submission.jpg'),
-        'no' => array('wrong-occhiali.jpg','wrong-cappello.jpg'),
+        'no' => array('guide/no-occhiali.jpg','guide/no-spiaggia.jpg','guide/no-gruppo.jpg','guide/no-palestra.jpg','guide/no-sport.jpg','guide/no-discoteca.jpg','guide/no-selfie-vicino.jpg','guide/no-spalle.jpg','guide/no-lontano.jpg','guide/no-filtro.jpg','guide/no-ritagliata.jpg','guide/no-bacio.jpg','guide/no-posa.jpg'),
     ),
-    // Casual: la colonna "sì" aspetta le foto pulite (mare, discoteca, amici) — le wrong-*.jpg
-    // NON si possono riusare come positive: hanno la X rossa stampata dentro il file.
-    'casual'    => array('si' => array(), 'no' => array('wrong-lontana.jpg')),
+    // Le 13 "foto sbagliate" di Marco (senza X stampata) fanno doppio lavoro: sono i "così no"
+    // di tutti gli album professionali e, qui sotto, i "così sì" dell'album Altre foto —
+    // mare, palestra, sport, discoteca, amici lì sono esempi BUONI. L'ordine viene mescolato
+    // a ogni caricamento della pagina (data-shuffle in talent-form-v40.js).
+    // Casual: le stesse foto, ma qui mare/palestra/discoteca/amici sono ESEMPI BUONI.
+    'casual'    => array('si' => array('guide/no-spiaggia.jpg','guide/no-palestra.jpg','guide/no-sport.jpg','guide/no-discoteca.jpg','guide/no-gruppo.jpg','guide/no-bacio.jpg','guide/no-posa.jpg'), 'no' => array('guide/no-spalle.jpg','guide/no-lontano.jpg','guide/no-ritagliata.jpg','guide/no-filtro.jpg','guide/no-selfie-vicino.jpg','guide/no-occhiali.jpg')),
 );
 
 // Articolo guida, un indirizzo per lingua (WPML usa slug diversi — verificato via hreflang il 14/08).
@@ -1075,7 +1078,7 @@ $theme_uri = get_stylesheet_directory_uri();
                                 $imgs = isset($sl[$kind]) ? $sl[$kind] : array(); ?>
                                 <figure>
                                     <?php if (!empty($imgs)): ?>
-                                        <div class="toa-foto-gallery" data-auto="1">
+                                        <div class="toa-foto-gallery" data-auto="1" data-shuffle="1">
                                             <?php foreach ($imgs as $i => $f):
                                                 $src = (substr($f, 0, 1) === '/') ? $f : $theme_uri . '/assets/' . $f; ?>
                                                 <div class="toa-fg-slide<?php echo $i === 0 ? ' active' : ''; ?>"><img src="<?php echo esc_url($src); ?>" alt="" loading="<?php echo $i === 0 ? 'eager' : 'lazy'; ?>"></div>
@@ -1260,7 +1263,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album12" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album13" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT

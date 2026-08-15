@@ -768,6 +768,18 @@
     /* Galleria che scorre dentro le card: stesso comportamento di quella del selfie,
        ma generica (tutte le .toa-foto-gallery con data-auto, non un solo id). */
     document.querySelectorAll('.toa-foto-gallery[data-auto]').forEach(function(g) {
+        // 2026-08-14 — data-shuffle: ordine mescolato a ogni caricamento, così chi torna sulla
+        // pagina non rivede sempre la stessa sequenza di esempi.
+        if (g.dataset.shuffle) {
+            var arr = Array.prototype.slice.call(g.querySelectorAll('.toa-fg-slide'));
+            for (var j = arr.length - 1; j > 0; j--) {
+                var k = Math.floor(Math.random() * (j + 1));
+                g.appendChild(arr[k]);
+                arr.splice(k, 1);
+            }
+            if (arr.length) g.appendChild(arr[0]);
+            g.querySelectorAll('.toa-fg-slide').forEach(function(el, idx) { el.classList.toggle('active', idx === 0); });
+        }
         var s = g.querySelectorAll('.toa-fg-slide');
         if (s.length < 2) return;
         var i = 0;
