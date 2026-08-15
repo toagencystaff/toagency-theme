@@ -200,7 +200,18 @@
         dob.addEventListener('change', function() {
             var age = calcAge(this.value);
             toggleGenitoreByAge(age);
+            // 2026-08-14 — minorenni: data dello scatto obbligatoria su OGNI foto e
+            // album "Fiere e eventi" nascosto (è lavoro vietato ai minori)
+            if (typeof aggiornaRegoleMinore === 'function') aggiornaRegoleMinore();
         });
+    }
+
+    /* Minorenne? La regola vale in tutto il modulo, non solo nel blocco genitore. */
+    function isMinore() {
+        var v = dob ? dob.value : '';
+        if (!v) return false;
+        var a = calcAge(v);           // calcAge torna 0 se la data non è valida: non è "minore", è "non lo so"
+        return (a > 0 && a < 18);
     }
 
     /**
@@ -784,6 +795,40 @@
         updateCompleteness();
     }
 
+    /* 2026-08-14 — regole per i minorenni, applicate appena si scrive la data di nascita:
+       1) l'album "Fiere e eventi" sparisce (hostess e steward sono lavori vietati ai minori)
+       2) il mese/anno dello scatto diventa obbligatorio su OGNI foto, non solo Pola e Dettagli */
+    function aggiornaRegoleMinore() {
+        var min = isMinore();
+        var tabEventi  = document.querySelector('.toa-alb-tab[data-tab="eventi"]');
+        var cardEventi = document.querySelector('.toa-album-card[data-album="eventi"]');
+        if (tabEventi) tabEventi.style.display = min ? 'none' : '';
+        if (cardEventi && min) {
+            cardEventi.hidden = true;
+            // se stavo guardando proprio quell'album, torno al primo
+            if (tabEventi && tabEventi.classList.contains('active')) {
+                var primo = document.querySelector('.toa-alb-tab');
+                if (primo) primo.click();
+            }
+            // e tolgo le foto eventualmente già caricate lì dentro
+            uploadState.photos.filter(function(p) { return p.album === 'eventi'; })
+                .forEach(function(p) { removeFile(p.id); });
+        }
+        // aggiorna l'obbligo sulle date già a video
+        document.querySelectorAll('.toa-thumb-data').forEach(function(sel) {
+            var card = sel.closest('.toa-album-card');
+            var alb  = card ? card.dataset.album : '';
+            var obbl = min || DATA_OBBLIGATORIA.indexOf(alb) > -1;
+            sel.classList.toggle('obbl', obbl);
+            var lab = sel.parentElement.querySelector('label');
+            if (lab) {
+                var base = tmsg(MSG.scattataIl);
+                lab.textContent = obbl ? base + ' *' : base;
+            }
+        });
+        updateAlbumVisibility();
+    }
+
     /* "+ Attore/Attrice": spunta il ruolo allo Step 3 senza tornare indietro a mano.
        Il resto (pallini, barra, album che si accende) si aggiorna da solo. */
     document.querySelectorAll('.toa-alb-addrole-btn').forEach(function(btn) {
@@ -908,6 +953,7 @@
     }
     if (form) form.addEventListener('input', updateCompleteness);
     updateAlbumVisibility();
+    aggiornaRegoleMinore(); // se la data di nascita è già compilata (ritorno sul form)
 
     /* 2026-08-14 — scorciatoia per le revisioni: ?toa_step=4&toa_ruoli=model,actor apre lo step
        indicato con quei ruoli già spuntati, senza compilare tutto il form. Non salta nessuna
@@ -991,7 +1037,8 @@
         /* 2026-08-14 — sotto ogni miniatura, mese e anno in cui la foto è stata SCATTATA.
            Obbligatorio per Pola e Dettagli, facoltativo altrove. */
         if (mode === 'photo' && fileObj.album) {
-            var obbl = DATA_OBBLIGATORIA.indexOf(fileObj.album) > -1;
+            // per i minorenni la data dello scatto è obbligatoria su qualsiasi album
+            var obbl = isMinore() || DATA_OBBLIGATORIA.indexOf(fileObj.album) > -1;
             var wrap = document.createElement('div');
             wrap.className = 'toa-thumb-data-wrap';
             var lab = document.createElement('label');
@@ -1295,7 +1342,7 @@
                Negli altri album la data è facoltativa. Se manca, si evidenzia il campo e non si invia. */
             var mancanti = 0;
             uploadState.photos.forEach(function(p) {
-                if (DATA_OBBLIGATORIA.indexOf(p.album) === -1) return;
+                if (!isMinore() && DATA_OBBLIGATORIA.indexOf(p.album) === -1) return;
                 if (p.data_scatto) return;
                 mancanti++;
                 document.querySelectorAll('.toa-thumb-data[data-for="' + p.id + '"]').forEach(function(inp) { inp.classList.add('error'); });
