@@ -1862,15 +1862,6 @@
         uploadState.photos.forEach(function(p) {
             queue.push({ file: p.file, tipo: 'foto', album: p.album || 'polaroid', data_scatto: p.data_scatto || '' }); // 2026-08-14: album e data dello scatto viaggiano con la foto
         });
-        /* 2026-08-15 — se si dichiara UGC creator ma non carica nessun contenuto, lo segnaliamo:
-           il CRM lo registra come "potenziale UGC" e non lo mette nel database UGC. */
-        var vuoleUgc = !!document.querySelector('#toaTalentCategoriesImmagine input[value="ugc_creator"]:checked');
-        var haUgc = (uploadState.videos || []).some(function(v) { return v.album === 'video_creator'; })
-                    || photosInAlbum('ugc') > 0;
-        if (vuoleUgc && !haUgc) {
-            var fdFlag = new FormData();
-            fdFlag.append('ugc_potenziale', '1');
-        }
         // 2026-08-14 — video scelti negli album (video_creator / video_selftape)
         (uploadState.videos || []).forEach(function(v) {
             queue.push({ file: v.file, tipo: 'video', album: v.album, data_scatto: '' });
@@ -1954,6 +1945,11 @@
 
         // Prepara FormData con TUTTI i campi del form
         var fd = new FormData(form);
+        /* 2026-08-15 — UGC dichiarato ma senza contenuti: il CRM lo segna come "potenziale UGC"
+           e NON lo mette nel database UGC finché non arrivano i video. */
+        var vuoleUgc = !!document.querySelector('#toaTalentCategoriesImmagine input[value="ugc_creator"]:checked');
+        var haUgc = (uploadState.videos || []).some(function(v) { return v.album === 'video_creator'; }) || photosInAlbum('ugc') > 0;
+        if (vuoleUgc) fd.append('ugc_potenziale', haUgc ? '0' : '1');
         // Aggiungi lingua corrente (per contenuti email future)
         var htmlLang = document.documentElement.getAttribute('lang') || 'it';
         fd.append('lang', htmlLang.substring(0, 2));
