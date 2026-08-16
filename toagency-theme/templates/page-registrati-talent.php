@@ -119,6 +119,12 @@ $TALENT_TAGLIE = array('XS','S','M','L','XL','XXL');
 $TALENT_ALBUM = array(
     array(
         'code' => 'polaroid', 'roles' => '*', 'req' => true, 'video' => 'video_creator',
+        'clou' => array(
+            'it'=>'⭐ <strong>È l\'album più importante di tutti — e te lo fai da solo.</strong> Non serve un fotografo, non serve aspettare nessuno: bastano il tuo telefono, un muro chiaro e la luce di una finestra. Gratis, a casa tua, in cinque minuti.',
+            'en'=>'⭐ <strong>This is the most important album of all — and you can do it yourself.</strong> No photographer, no waiting for anyone: just your phone, a plain wall and the light from a window. Free, at home, in five minutes.',
+            'fr'=>'⭐ <strong>C\'est l\'album le plus important de tous — et tu le fais tout seul.</strong> Pas besoin de photographe ni d\'attendre qui que ce soit : ton téléphone, un mur clair et la lumière d\'une fenêtre suffisent. Gratuit, chez toi, en cinq minutes.',
+            'es'=>'⭐ <strong>Es el álbum más importante de todos — y te lo haces tú.</strong> No hace falta fotógrafo ni esperar a nadie: basta tu móvil, una pared clara y la luz de una ventana. Gratis, en tu casa, en cinco minutos.',
+        ),
         'label' => array('it'=>'Pola e presentazione','en'=>'Polaroids','fr'=>'Polas','es'=>'Polas'),
         'quante' => array(
             'it'=>'Da 3 a 8 foto: primo piano, mezzo busto, figura intera, profilo. Sempre senza filtri.',
@@ -1083,6 +1089,9 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-alb-addrole p{margin:0 0 10px;font-size:.9rem;line-height:1.45;color:#bfdbfe}
                 .toa-alb-addrole-btn{appearance:none;cursor:pointer;margin:0 8px 0 0;padding:9px 14px;border-radius:99px;border:1px solid #3b82f6;background:rgba(59,130,246,.18);color:#fff;font:700 .9rem/1 inherit}
                 .toa-alb-addrole-btn:hover{background:#3b82f6}
+                /* riquadro "te la fai da solo": deve essere la prima cosa che si legge nelle Pola */
+                .toa-alb-clou{margin:0 0 12px;padding:13px 15px;border-radius:10px;font-size:.95rem;line-height:1.55;color:#0a0a0a;background:#c8ff00;border:0}
+                .toa-alb-clou strong{display:block;margin-bottom:3px;font-size:1rem}
                 .toa-alb-quante{font-size:.86rem;line-height:1.5;color:#c8ff00;margin:0 0 14px;padding:9px 12px;border-radius:8px;background:rgba(200,255,0,.06);border:1px solid rgba(200,255,0,.20)}
                 /* album non richiesto dai ruoli scelti: resta visibile ma spento */
                 .toa-album-card.is-off{opacity:.5}
@@ -1180,6 +1189,9 @@ $theme_uri = get_stylesheet_directory_uri();
                             <strong><?php echo esc_html(_ht_talent_raw($al['label'])); ?></strong>
                             <span class="toa-album-badge <?php echo $al['req'] ? 'req' : 'opt'; ?>"><?php echo $al['req'] ? $badge_req : $badge_opt; ?></span>
                         </div>
+                        <?php if (!empty($al['clou'])): ?>
+                            <p class="toa-alb-clou"><?php echo _ht_talent_raw($al['clou']); ?></p>
+                        <?php endif; ?>
                         <p class="toa-album-serve off"></p>
                         <?php
                         // 2026-08-14 — se apri un album che non serve ai ruoli spuntati, ti si chiede
@@ -1453,7 +1465,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260815album30" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260815album31" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
