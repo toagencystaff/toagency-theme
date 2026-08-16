@@ -54,6 +54,22 @@
             es:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
         },
         tornaA: { it:'← Torna al passaggio %s', en:'← Back to step %s', es:'← Volver al paso %s', fr:'← Retour à l\'étape %s' },
+        /* 2026-08-15 — la percentuale non è "profilo completo", è "possibilità di essere chiamato" */
+        possibilita: {
+            it:'Possibilità di essere chiamato per un lavoro: %p — %l',
+            en:'Chance of being called for a job: %p — %l',
+            fr:'Chances d\'être appelé pour un travail : %p — %l',
+            es:'Posibilidades de que te llamen para un trabajo: %p — %l'
+        },
+        possibZero: {
+            it:'Con questi dati è impossibile contattarti per un lavoro.',
+            en:'With this information it is impossible to contact you for a job.',
+            fr:'Avec ces informations il est impossible de te contacter pour un travail.',
+            es:'Con estos datos es imposible contactarte para un trabajo.'
+        },
+        liv_bassa: { it:'BASSA', en:'LOW', fr:'FAIBLE', es:'BAJA' },
+        liv_media: { it:'MEDIA', en:'MEDIUM', fr:'MOYENNE', es:'MEDIA' },
+        liv_alta:  { it:'ALTA', en:'HIGH', fr:'ÉLEVÉE', es:'ALTA' },
         dataFutura: {
             it:'La foto non può essere stata scattata nel futuro.',
             en:'The photo cannot have been taken in the future.',
@@ -985,20 +1001,30 @@
             var el = form.querySelector('[name="' + n + '"]');
             if (el && String(el.value || '').trim()) filled++;
         });
-        var pct = Math.round(40 * filled / baseFields.length);
-        if (photosInAlbum('polaroid') > 0) pct += 30;
+        /* 2026-08-15 — punteggio PROPORZIONALE: a modulo vuoto deve dare 0, e ogni cosa in più
+           (una foto, un social, il video) deve muovere la percentuale. Prima l'anagrafica vuota
+           dava comunque 20 punti perché la fetta "album del ruolo" veniva regalata. */
+        var pct = 40 * filled / baseFields.length;
         var richiesti = albumCards.filter(function(c) {
             return !c.classList.contains('is-off') && c.dataset.album !== 'polaroid' && c.dataset.album !== 'casual';
         });
+        // se il ruolo non chiede album extra, quei 20 punti passano alle Pola
+        var pesoPola = richiesti.length ? 30 : 50;
+        pct += pesoPola * Math.min(photosInAlbum('polaroid'), MIN_PER_ALBUM) / MIN_PER_ALBUM;
         if (richiesti.length) {
-            var fatti = richiesti.filter(function(c) { return photosInAlbum(c.dataset.album) > 0; }).length;
-            pct += Math.round(20 * fatti / richiesti.length);
-        } else {
-            pct += 20; // il ruolo scelto non richiede album extra: quella fetta è già soddisfatta
+            var somma = 0;
+            richiesti.forEach(function(c) { somma += Math.min(photosInAlbum(c.dataset.album), MIN_PER_ALBUM) / MIN_PER_ALBUM; });
+            pct += 20 * somma / richiesti.length;
         }
-        var misura = form.querySelector('[name="misura_petto"]');
-        if ((misura && misura.value) || photosInAlbum('casual') > 0) pct += 10;
-        pct = Math.max(0, Math.min(100, pct));
+        // extra: misure, social, video, foto libere — ognuno vale un quarto della fetta
+        var extra = 0;
+        var mis = form.querySelector('[name="misura_petto"]');
+        if (mis && mis.value) extra++;
+        if (['instagram','tiktok','youtube'].some(function(n) { var e = form.querySelector('[name="' + n + '"]'); return e && e.value.trim(); })) extra++;
+        if ((uploadState.videos || []).length) extra++;
+        if (photosInAlbum('casual') > 0) extra++;
+        pct += 10 * extra / 4;
+        pct = Math.max(0, Math.min(100, Math.round(pct)));
         fill.style.width = pct + '%';
         pctEl.textContent = pct + '%';
         aggiornaMessaggio(pct);
@@ -1009,9 +1035,19 @@
     function aggiornaMessaggio(pct) {
         var box = document.getElementById('toaTalentSticky');
         var msg = document.getElementById('toaTalentCompMsg');
+        var fill = document.getElementById('toaTalentCompletenessFill');
+        var pctEl = document.getElementById('toaTalentCompletenessPct');
         if (!box || !msg) return;
         var k = pct >= 100 ? 'm4' : pct >= 90 ? 'm3' : pct >= 70 ? 'm2' : pct >= 40 ? 'm1' : 'm0';
-        msg.textContent = box.dataset[k] || '';
+        // 2026-08-15 — colore della barra e parola sul livello: rosso finché è inutile, verde quando conta
+        var col = pct >= 90 ? '#22c55e' : pct >= 70 ? '#c8ff00' : pct >= 40 ? '#f59e0b' : '#ef4444';
+        var liv = pct >= 70 ? 'alta' : pct >= 40 ? 'media' : 'bassa';
+        if (fill) fill.style.background = col;
+        if (pctEl) pctEl.style.color = col;
+        var testa = (pct === 0)
+            ? tmsg(MSG.possibZero)
+            : tmsg(MSG.possibilita).replace('%p', pct + '%').replace('%l', tmsg(MSG['liv_' + liv]));
+        msg.innerHTML = '<strong style="color:' + col + '">' + testa + '</strong><br>' + (box.dataset[k] || '');
     }
 
     /* "Scopri cosa manca": elenco cliccabile, ogni voce porta dove va compilata. */

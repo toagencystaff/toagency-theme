@@ -359,10 +359,10 @@ $theme_uri = get_stylesheet_directory_uri();
 
         <?php // 2026-08-14 — barra "profilo completo" fissa: accompagna dallo Step 1 all'invio ?>
         <div class="toa-alb-sticky" id="toaTalentSticky"
-             data-m0="<?php echo esc_attr(_ht_talent(array('it'=>'Profilo appena iniziato: così non ti troviamo.','en'=>'Profile just started: like this we can\'t find you.','fr'=>'Fiche à peine commencée : comme ça on ne te trouve pas.','es'=>'Ficha recién empezada: así no te encontramos.'))); ?>"
-             data-m1="<?php echo esc_attr(_ht_talent(array('it'=>'Poche possibilità di essere scelto: mancano ancora parecchie cose.','en'=>'Low chance of being picked: several things are still missing.','fr'=>'Peu de chances d\'être choisi : il manque encore pas mal de choses.','es'=>'Pocas posibilidades de que te elijan: aún faltan varias cosas.'))); ?>"
-             data-m2="<?php echo esc_attr(_ht_talent(array('it'=>'Ci sei quasi: ancora un po\' e il tuo profilo diventa competitivo.','en'=>'Almost there: a bit more and your profile becomes competitive.','fr'=>'Tu y es presque : encore un peu et ta fiche devient compétitive.','es'=>'Casi lo tienes: un poco más y tu ficha será competitiva.'))); ?>"
-             data-m3="<?php echo esc_attr(_ht_talent(array('it'=>'Ottimo profilo: da qui in poi le possibilità salgono in fretta.','en'=>'Great profile: from here your chances rise quickly.','fr'=>'Très bonne fiche : à partir d\'ici tes chances montent vite.','es'=>'Ficha muy buena: a partir de aquí tus opciones suben rápido.'))); ?>"
+             data-m0="<?php echo esc_attr(_ht_talent(array('it'=>'Compila i tuoi dati: ogni campo che aggiungi alza le tue possibilità.','en'=>'Fill in your details: every field you add raises your chances.','fr'=>'Remplis tes informations : chaque champ ajouté augmente tes chances.','es'=>'Rellena tus datos: cada campo que añades sube tus posibilidades.'))); ?>"
+             data-m1="<?php echo esc_attr(_ht_talent(array('it'=>'Mancano ancora parecchie cose: continua, ci vogliono pochi minuti.','en'=>'Several things are still missing: keep going, it only takes a few minutes.','fr'=>'Il manque encore pas mal de choses : continue, ça prend quelques minutes.','es'=>'Aún faltan varias cosas: sigue, son solo unos minutos.'))); ?>"
+             data-m2="<?php echo esc_attr(_ht_talent(array('it'=>'Ci sei quasi: aggiungi le ultime cose e passi davanti a chi si è fermato prima.','en'=>'Almost there: add the last few things and you move ahead of those who stopped earlier.','fr'=>'Tu y es presque : ajoute les dernières choses et tu passes devant ceux qui se sont arrêtés avant.','es'=>'Casi lo tienes: añade las últimas cosas y adelantas a quien se paró antes.'))); ?>"
+             data-m3="<?php echo esc_attr(_ht_talent(array('it'=>'Ottimo profilo: sei sopra la media di chi si registra. Ancora un piccolo sforzo.','en'=>'Great profile: you are above the average of those who sign up. One small push left.','fr'=>'Très bonne fiche : tu es au-dessus de la moyenne. Encore un petit effort.','es'=>'Ficha muy buena: estás por encima de la media. Un último esfuerzo.'))); ?>"
              data-m4="<?php echo esc_attr(_ht_talent(array('it'=>'Profilo completo: sei tra quelli che i casting vedono per primi.','en'=>'Profile complete: you are among the first castings see.','fr'=>'Fiche complète : tu es parmi les premiers que les castings voient.','es'=>'Ficha completa: estás entre los primeros que ven los castings.'))); ?>"
              data-tutto="<?php echo esc_attr(_ht_talent(array('it'=>'✅ Non manca niente, bravo.','en'=>'✅ Nothing missing, well done.','fr'=>'✅ Il ne manque rien, bravo.','es'=>'✅ No falta nada, bien hecho.'))); ?>">
             <div class="toa-alb-sticky-riga">
@@ -984,7 +984,7 @@ $theme_uri = get_stylesheet_directory_uri();
 
         <!-- ═════ STEP 4 — Foto profilo + Portfolio ═════ -->
         <div class="toa-talent-step" data-step="4">
-            <h3><?php echo _ht_talent(array('it'=>'Foto e portfolio','en'=>'Photo & portfolio','fr'=>'Photo et portfolio','es'=>'Foto y portfolio')); ?></h3>
+            <h3><?php echo _ht_talent(array('it'=>'Foto, video e portfolio','en'=>'Photos, video & portfolio','fr'=>'Photos, vidéo et portfolio','es'=>'Fotos, vídeo y portfolio')); ?></h3>
 
             <!-- ALBUM FOTO — 2026-08-14 (TEMA REGISTRAZIONE TALENT)
                  Al posto del riquadro unico: una card per ogni album che serve al ruolo scelto.
@@ -1114,7 +1114,7 @@ $theme_uri = get_stylesheet_directory_uri();
                 @media (max-width:480px){.toa-album-examples{gap:8px}}
             </style>
             <div class="toa-talent-upload-section">
-                <h5>📷 <?php echo _ht_talent(array('it'=>'Le tue foto','en'=>'Your photos','fr'=>'Tes photos','es'=>'Tus fotos')); ?></h5>
+                <h5>📷 <?php echo _ht_talent(array('it'=>'Le tue foto e i tuoi video','en'=>'Your photos and videos','fr'=>'Tes photos et tes vidéos','es'=>'Tus fotos y tus vídeos')); ?></h5>
                 <p class="toa-talent-step-help"><?php echo _ht_talent(array(
                     'it'=>'Questi sono gli album del tuo profilo. Più ne completi tra quelli che servono ai ruoli che hai scelto, più opportunità ricevi. Senza le foto richieste il tuo profilo viene proposto meno.',
                     'en'=>'These are your profile albums. The more you complete among those your chosen roles need, the more opportunities you get. Without the required photos your profile gets proposed less.',
@@ -1453,7 +1453,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260814album29" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260815album30" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
