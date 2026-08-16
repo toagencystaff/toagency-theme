@@ -186,10 +186,10 @@ $TALENT_ALBUM = array(
             'es'=>'⭐ <strong>Para un creador UGC cuentan los vídeos, no las fotos.</strong> Son lo que las marcas miran para decidir si trabajan contigo: hablas a cámara, enseñas el producto, se oye tu voz. Puedes grabarlos con el móvil, en casa, sin equipo.',
         ),
         'quante' => array(
-            'it'=>'Da 2 a 5 video: uno in cui parli in camera, uno con un prodotto in mano, uno che mostra come si usa.',
-            'en'=>'2 to 5 videos: one talking to camera, one holding a product, one showing how it is used.',
-            'fr'=>'De 2 à 5 vidéos : une face caméra, une avec un produit en main, une qui montre comment on l\'utilise.',
-            'es'=>'De 2 a 5 vídeos: uno hablando a cámara, uno con un producto en la mano, uno mostrando cómo se usa.',
+            'it'=>'Da 2 a 5 video: uno in cui parli in camera, uno con un prodotto in mano, uno che mostra come si usa. Senza watermark, senza il tuo @ e senza loghi di TikTok o Instagram: i video con la firma social non possiamo proporli ai clienti.',
+            'en'=>'2 to 5 videos: one talking to camera, one holding a product, one showing how it is used. No watermarks, no @handle, no TikTok or Instagram logos: videos with a social signature cannot be offered to clients.',
+            'fr'=>'De 2 à 5 vidéos : une face caméra, une avec un produit en main, une qui montre comment on l\'utilise. Sans filigrane, sans ton @ et sans logos TikTok ou Instagram : les vidéos signées ne sont pas proposables aux clients.',
+            'es'=>'De 2 a 5 vídeos: uno hablando a cámara, uno con un producto en la mano, uno mostrando cómo se usa. Sin marcas de agua, sin tu @ y sin logos de TikTok o Instagram: los vídeos con firma social no podemos ofrecerlos a los clientes.',
         ),
         'hint'  => array(
             'it'=>'Video verticali girati col telefono, luce naturale, voce chiara. Vanno bene anche contenuti che hai già fatto per te o per altri brand.',
@@ -854,6 +854,13 @@ $theme_uri = get_stylesheet_directory_uri();
                     <?php endforeach; ?>
                 </div>
                 <?php // 2026-08-14 (TEMA REGISTRAZIONE TALENT): "UGC Creator" è gergo, una riga per capirlo al volo ?>
+                <?php // 2026-08-15 — invito ad aggiungere ruoli: le domande in più arrivano solo per quelli scelti ?>
+                <p class="toa-alb-altriruoli"><?php echo _ht_talent_raw(array(
+                    'it'=>'<strong>Puoi selezionarne più di uno.</strong> Molti lavorano su più fronti: una hostess fa anche la comparsa, un modello gira contenuti per i brand. Più ruoli spunti, più lavori ti possiamo proporre — e ti chiediamo solo le cose che servono a quei ruoli, niente di più.',
+                    'en'=>'<strong>You can pick more than one.</strong> Many people work across several areas: a hostess also does extra work, a model shoots content for brands. The more roles you tick, the more jobs we can offer you — and we only ask for what those roles need, nothing more.',
+                    'fr'=>'<strong>Tu peux en cocher plusieurs.</strong> Beaucoup travaillent sur plusieurs fronts : une hôtesse fait aussi de la figuration, un mannequin tourne des contenus pour les marques. Plus tu coches de rôles, plus on peut te proposer de missions — et on ne demande que ce qui sert à ces rôles.',
+                    'es'=>'<strong>Puedes marcar más de uno.</strong> Mucha gente trabaja en varios frentes: una azafata también hace de extra, un modelo graba contenidos para marcas. Cuantos más roles marques, más trabajos podemos ofrecerte — y solo te pedimos lo que hace falta para esos roles.',
+                )); ?></p>
                 <small class="toa-talent-form-hint" style="display:block;margin-top:8px;color:#9ca3af;font-size:0.78rem;line-height:1.5;"><?php echo _ht_talent(array(
                     'it'=>'UGC Creator = appari nei video creando contenuti per i brand. Influencer/Creator = pubblichi sui tuoi canali con il tuo pubblico.',
                     'en'=>'UGC Creator = you appear in videos making content for brands. Influencer/Creator = you post on your own channels to your own audience.',
@@ -1142,6 +1149,8 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-alb-promessa{margin:0 0 18px;padding:13px 15px;border-radius:10px;background:rgba(200,255,0,.07);border:1px solid rgba(200,255,0,.30);font-size:.95rem;line-height:1.55;color:#e9ffa3}
                 .toa-alb-promessa strong{display:block;margin-bottom:3px;color:#c8ff00;font-size:1.02rem}
                 /* riquadro "te la fai da solo": deve essere la prima cosa che si legge nelle Pola */
+                .toa-alb-altriruoli{margin:10px 0 0;padding:11px 13px;border-radius:10px;background:rgba(200,255,0,.06);border:1px solid rgba(200,255,0,.25);font-size:.87rem;line-height:1.55;color:#e9ffa3}
+                .toa-alb-altriruoli strong{color:#c8ff00}
                 .toa-alb-potenziale{margin:0 0 14px;padding:12px 14px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.40);font-size:.88rem;line-height:1.55;color:#bfdbfe}
                 .toa-alb-potenziale strong{color:#93c5fd}
                 .toa-alb-clou{margin:0 0 12px;padding:13px 15px;border-radius:10px;font-size:.95rem;line-height:1.55;color:#0a0a0a;background:#c8ff00;border:0}
@@ -1529,7 +1538,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260815album37" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260815album38" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
