@@ -84,17 +84,25 @@ toa_component('header');
 )); ?>
 
 <!-- Hero CTA CENTRATO + trust line -->
-<div class="container" style="margin-top:-8px;margin-bottom:28px;text-align:center">
-    <a href="<?php echo home_url('/form-b2b/'); ?>" class="btn-hero btn-hero-primary" style="display:inline-flex;align-items:center;gap:8px">
+<div class="container hero-cta-wrap">
+    <a href="<?php echo home_url('/form-b2b/'); ?>" class="toa-hero-cta">
         <span><?php echo $_t($t['hero_cta']); ?></span>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
-    <p style="font-size:0.85rem;color:var(--gray-4);margin-top:14px;font-weight:600"><?php echo $_t($t['trust_line']); ?></p>
+    <p style="font-size:0.85rem;color:var(--gray-4);margin-top:16px;font-weight:600"><?php echo $_t($t['trust_line']); ?></p>
     <div><a href="/wp-content/themes/toagency-theme/assets/pdf/presentazione-<?php echo $lang; ?>.pdf" download class="toa-pdf-link">&darr; <?php echo $_t(array('it'=>'Scarica la presentazione (PDF)','en'=>'Download the presentation (PDF)','fr'=>'T&eacute;l&eacute;charger la pr&eacute;sentation (PDF)','es'=>'Descarga la presentaci&oacute;n (PDF)')); ?></a></div>
 </div>
 
 <!-- Fascia cast di esempio — IDENTICA al blocco Modelli/Eventi -->
 <style>
+/* Pulsante CTA hero — pill lime elegante (allineato a /hostess-steward/) */
+.toa-hero-cta{display:inline-flex;align-items:center;gap:10px;padding:16px 38px;background:var(--accent,#c8ff00);color:#0a0a0a;font-size:.95rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border-radius:999px;box-shadow:0 8px 30px rgba(200,255,0,.35),0 2px 8px rgba(0,0,0,.15);transition:transform .25s ease,box-shadow .25s ease}
+.toa-hero-cta svg{transition:transform .25s ease}
+.toa-hero-cta:hover{transform:translateY(-3px);box-shadow:0 14px 42px rgba(200,255,0,.55),0 4px 12px rgba(0,0,0,.2)}
+.toa-hero-cta:hover svg{transform:translateX(4px)}
+@media(max-width:600px){.toa-hero-cta{padding:16px 30px;font-size:.95rem}}
+.hero-cta-wrap{margin-top:16px;margin-bottom:28px;text-align:center}
+@media(max-width:768px){.hero-cta-wrap{margin-top:18px;margin-bottom:20px}}
 .toa-staffband{background:#0a0a0a;padding:48px 20px 40px}
 .toa-staffband .inner{max-width:1080px;margin:0 auto}
 .toa-staffband .toa-cast-hd{text-align:center;margin:0 0 22px}
