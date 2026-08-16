@@ -62,10 +62,23 @@
             es:'Posibilidades de que te llamen para un trabajo: %p — %l'
         },
         possibZero: {
-            it:'Con questi dati è impossibile contattarti per un lavoro.',
-            en:'With this information it is impossible to contact you for a job.',
-            fr:'Avec ces informations il est impossible de te contacter pour un travail.',
-            es:'Con estos datos es imposible contactarte para un trabajo.'
+            it:'Aggiungi i tuoi dati: senza non possiamo proporti a nessuno.',
+            en:'Add your details: without them we cannot put you forward for anything.',
+            fr:'Ajoute tes informations : sans elles on ne peut te proposer nulle part.',
+            es:'Añade tus datos: sin ellos no podemos proponerte para nada.'
+        },
+        /* il momento che conta davvero: finire lo Step 1 e premere Continua */
+        spingiStep1: {
+            it:'Completa questi campi e premi <u>Continua</u>: da lì in poi possiamo contattarti quando esce un lavoro adatto a te.',
+            en:'Fill in these fields and press <u>Continue</u>: from that moment we can contact you when a job fits you.',
+            fr:'Remplis ces champs et appuie sur <u>Continuer</u> : à partir de là on peut te contacter dès qu\'un travail te correspond.',
+            es:'Rellena estos campos y pulsa <u>Continuar</u>: a partir de ahí podemos contactarte cuando salga un trabajo para ti.'
+        },
+        giaDentro: {
+            it:'✅ Ci sei: sei nel nostro database. Ogni dato in più alza le tue possibilità.',
+            en:'✅ You are in our database. Every extra detail raises your chances.',
+            fr:'✅ Tu es dans notre base. Chaque information en plus augmente tes chances.',
+            es:'✅ Ya estás en nuestra base de datos. Cada dato de más sube tus posibilidades.'
         },
         liv_bassa: { it:'BASSA', en:'LOW', fr:'FAIBLE', es:'BAJA' },
         liv_media: { it:'MEDIA', en:'MEDIUM', fr:'MOYENNE', es:'MEDIA' },
@@ -1044,9 +1057,21 @@
         var liv = pct >= 70 ? 'alta' : pct >= 40 ? 'media' : 'bassa';
         if (fill) fill.style.background = col;
         if (pctEl) pctEl.style.color = col;
-        var testa = (pct === 0)
-            ? tmsg(MSG.possibZero)
-            : tmsg(MSG.possibilita).replace('%p', pct + '%').replace('%l', tmsg(MSG['liv_' + liv]));
+        /* 2026-08-15 — finché è sullo Step 1 e non ha ancora premuto Continua, il messaggio non
+           deve dire che è impossibile contattarlo (sta scrivendo proprio in quel momento):
+           deve spingerlo a finire quei campi e passare avanti, che è il momento in cui il
+           contatto entra davvero nel database. */
+        var leadFatto = (typeof step1Lead !== 'undefined' && step1Lead && step1Lead.done);
+        var testa;
+        if (stepCorrente() === 1 && !leadFatto) {
+            testa = tmsg(MSG.spingiStep1);
+        } else if (leadFatto && pct < 40) {
+            testa = tmsg(MSG.giaDentro);
+        } else if (pct === 0) {
+            testa = tmsg(MSG.possibZero);
+        } else {
+            testa = tmsg(MSG.possibilita).replace('%p', pct + '%').replace('%l', tmsg(MSG['liv_' + liv]));
+        }
         msg.innerHTML = '<strong style="color:' + col + '">' + testa + '</strong><br>' + (box.dataset[k] || '');
     }
 
