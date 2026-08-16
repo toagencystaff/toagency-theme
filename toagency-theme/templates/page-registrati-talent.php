@@ -178,6 +178,12 @@ $TALENT_ALBUM = array(
         // 2026-08-15 — album degli UGC creator: qui contano i VIDEO, non le foto.
         // album_tipo lato CRM: video_creator (da confermare con la chat CRM VIDEO-ALBUM).
         'code' => 'ugc', 'roles' => 'ugc_creator,influencer', 'req' => true, 'video' => 'video_creator',
+        'descrizione' => array(
+            'it'=>'<strong>Com\'è fatto un video UGC che funziona.</strong> Verticale, girato col telefono. Si vede bene la faccia e si sente bene la voce: parli tu, non una musica sopra. Luce naturale davanti a te, mai controluce. Un solo pensiero per video, detto in modo naturale, come lo diresti a un amico — non è uno spot, è un consiglio. Il prodotto si vede in mano, girato piano perché resti a fuoco. Niente watermark, niente @, niente loghi TikTok o Instagram: con la firma social non possiamo proporlo ai clienti.',
+            'en'=>'<strong>What a UGC video that works looks like.</strong> Vertical, shot on your phone. Your face is clearly visible and your voice is clearly audible: you talk, not the music. Natural light in front of you, never backlit. One idea per video, said naturally, the way you would tell a friend — it is not an ad, it is a recommendation. The product is held in your hand and turned slowly so it stays in focus. No watermark, no @handle, no TikTok or Instagram logos: with a social signature we cannot offer it to clients.',
+            'fr'=>'<strong>À quoi ressemble une vidéo UGC qui marche.</strong> Verticale, filmée au téléphone. On voit bien ton visage et on entend bien ta voix : c\'est toi qui parles, pas la musique. Lumière naturelle face à toi, jamais à contre-jour. Une seule idée par vidéo, dite naturellement, comme tu le dirais à un ami — ce n\'est pas une pub, c\'est un conseil. Le produit se tient en main et se tourne lentement pour rester net. Pas de filigrane, pas de @, pas de logos TikTok ou Instagram : avec une signature sociale on ne peut pas la proposer aux clients.',
+            'es'=>'<strong>Cómo es un vídeo UGC que funciona.</strong> Vertical, grabado con el móvil. Se te ve bien la cara y se te oye bien la voz: hablas tú, no la música. Luz natural de frente, nunca a contraluz. Una sola idea por vídeo, dicha con naturalidad, como se lo contarías a un amigo — no es un anuncio, es una recomendación. El producto se sostiene en la mano y se gira despacio para que quede enfocado. Sin marca de agua, sin @, sin logos de TikTok o Instagram: con firma social no podemos ofrecerlo a los clientes.',
+        ),
         'label' => array('it'=>'Contenuti UGC','en'=>'UGC content','fr'=>'Contenus UGC','es'=>'Contenidos UGC'),
         'clou' => array(
             'it'=>'⭐ <strong>Per un UGC creator contano i video, non le foto.</strong> Sono i contenuti che i brand guardano per decidere se lavorare con te: parli in camera, mostri il prodotto, si sente la tua voce. Puoi girarli col telefono, in casa, senza nessuna attrezzatura.',
@@ -1151,6 +1157,8 @@ $theme_uri = get_stylesheet_directory_uri();
                 /* riquadro "te la fai da solo": deve essere la prima cosa che si legge nelle Pola */
                 .toa-alb-altriruoli{margin:10px 0 0;padding:11px 13px;border-radius:10px;background:rgba(200,255,0,.06);border:1px solid rgba(200,255,0,.25);font-size:.87rem;line-height:1.55;color:#e9ffa3}
                 .toa-alb-altriruoli strong{color:#c8ff00}
+                .toa-alb-descr{margin:0 0 14px;padding:14px 16px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);font-size:.95rem;line-height:1.6;color:#e5e7eb}
+                .toa-alb-descr strong{display:block;margin-bottom:5px;color:#c8ff00;font-size:1rem}
                 .toa-alb-potenziale{margin:0 0 14px;padding:12px 14px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.40);font-size:.88rem;line-height:1.55;color:#bfdbfe}
                 .toa-alb-potenziale strong{color:#93c5fd}
                 .toa-alb-clou{margin:0 0 12px;padding:13px 15px;border-radius:10px;font-size:.95rem;line-height:1.55;color:#0a0a0a;background:#c8ff00;border:0}
@@ -1298,6 +1306,10 @@ $theme_uri = get_stylesheet_directory_uri();
                             )); ?></p>
                             <a class="toa-alb-wa" data-wa="1" data-moda="<?php echo esc_attr($wa_moda); ?>" data-cinema="<?php echo esc_attr($wa_cinema); ?>" data-num="<?php echo esc_attr($TALENT_WA_NUM); ?>" href="https://wa.me/<?php echo esc_attr($TALENT_WA_NUM); ?>?text=<?php echo rawurlencode($wa_moda); ?>" target="_blank" rel="noopener"><?php echo esc_html($wa_label); ?></a>
                         <?php endif; ?>
+                        <?php if (empty($sl) && !empty($al['descrizione'])): ?>
+                            <?php // niente esempi per questo album: al loro posto la descrizione scritta ?>
+                            <p class="toa-alb-descr"><?php echo _ht_talent_raw($al['descrizione']); ?></p>
+                        <?php else: ?>
                         <?php // 2026-08-14 — due colonne che scorrono INSIEME: coppia sì/no dello stesso soggetto ?>
                         <div class="toa-alb-ex" data-paired="1">
                             <?php foreach (array(0, 1) as $col): ?>
@@ -1320,6 +1332,7 @@ $theme_uri = get_stylesheet_directory_uri();
                                 </figure>
                             <?php endforeach; ?>
                         </div>
+                        <?php endif; ?>
                         <div class="toa-alb-azioni">
                             <div class="toa-talent-dropzone" id="toaTalentDrop_<?php echo esc_attr($code); ?>">
                                 <div class="toa-talent-dropzone-icon">+</div>
@@ -1538,7 +1551,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260815album42" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260815album43" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
