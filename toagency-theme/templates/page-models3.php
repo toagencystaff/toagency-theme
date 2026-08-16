@@ -12,6 +12,18 @@ $t = array(
         'fr' => 'Pour entreprises, marques et productions. Plus de 5 000 mannequins actifs en Italie, France, Espagne et UK.<br>De 6 &agrave; 80 ans, pour tout type de campagne. Disponibles sous 48 heures.',
         'es' => 'Para empresas, marcas y producciones. M&aacute;s de 5.000 modelos activos en Italia, Francia, Espa&ntilde;a y UK.<br>De 6 a 80 a&ntilde;os, para todo tipo de campa&ntilde;a. Disponibles en 48 horas.',
     ),
+    'hero_cta' => array(
+        'it' => 'Richiedi un preventivo',
+        'en' => 'Request a quote',
+        'fr' => 'Demandez un devis',
+        'es' => 'Solicita un presupuesto',
+    ),
+    'trust_line' => array(
+        'it'=>'4,7&#9733; su Google &middot; 346 recensioni &middot; dal 2009 &middot; 20.000+ profili verificati',
+        'en'=>'4.7&#9733; on Google &middot; 346 reviews &middot; since 2009 &middot; 20,000+ verified profiles',
+        'fr'=>'4,7&#9733; sur Google &middot; 346 avis &middot; depuis 2009 &middot; 20 000+ profils v&eacute;rifi&eacute;s',
+        'es'=>'4,7&#9733; en Google &middot; 346 rese&ntilde;as &middot; desde 2009 &middot; 20.000+ perfiles verificados',
+    ),
     'cta_heading' => array(
         'it' => 'Scegli come procedere',
         'en' => 'Choose how to proceed',
@@ -125,7 +137,24 @@ toa_component('header');
     'subtitle'   => $_t($t['hero_subtitle']),
 )); ?>
 
-<div class="container" style="text-align:center;margin:-4px 0 26px"><a href="/wp-content/themes/toagency-theme/assets/pdf/presentazione-<?php echo $lang; ?>.pdf" download class="toa-pdf-link">&darr; <?php echo $_t(array('it'=>'Scarica la presentazione (PDF)','en'=>'Download the presentation (PDF)','fr'=>'T&eacute;l&eacute;charger la pr&eacute;sentation (PDF)','es'=>'Descarga la presentaci&oacute;n (PDF)')); ?></a></div>
+<!-- Hero CTA CENTRATO + trust line (allineato a /actors/ e /hostess-steward/) -->
+<div class="container hero-cta-wrap">
+    <a href="<?php echo home_url('/form-b2b/'); ?>" class="toa-hero-cta">
+        <span><?php echo $_t($t['hero_cta']); ?></span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <p style="font-size:0.85rem;color:var(--gray-4);margin-top:16px;font-weight:600"><?php echo $_t($t['trust_line']); ?></p>
+    <div><a href="/wp-content/themes/toagency-theme/assets/pdf/presentazione-<?php echo $lang; ?>.pdf" download class="toa-pdf-link">&darr; <?php echo $_t(array('it'=>'Scarica la presentazione (PDF)','en'=>'Download the presentation (PDF)','fr'=>'T&eacute;l&eacute;charger la pr&eacute;sentation (PDF)','es'=>'Descarga la presentaci&oacute;n (PDF)')); ?></a></div>
+</div>
+<style>
+.toa-hero-cta{display:inline-flex;align-items:center;gap:10px;padding:16px 38px;background:var(--accent,#c8ff00);color:#0a0a0a;font-size:.95rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border-radius:999px;box-shadow:0 8px 30px rgba(200,255,0,.35),0 2px 8px rgba(0,0,0,.15);transition:transform .25s ease,box-shadow .25s ease}
+.toa-hero-cta svg{transition:transform .25s ease}
+.toa-hero-cta:hover{transform:translateY(-3px);box-shadow:0 14px 42px rgba(200,255,0,.55),0 4px 12px rgba(0,0,0,.2)}
+.toa-hero-cta:hover svg{transform:translateX(4px)}
+@media(max-width:600px){.toa-hero-cta{padding:16px 30px;font-size:.95rem}}
+.hero-cta-wrap{margin-top:16px;margin-bottom:28px;text-align:center}
+@media(max-width:768px){.hero-cta-wrap{margin-top:18px;margin-bottom:20px}}
+</style>
 
 <?php // 2026-06-04 marco — rimossi gallery-talent statica + split-cta (CRO: niente bivi/uscite, focus su griglia live + form iniettati) ?>
 
