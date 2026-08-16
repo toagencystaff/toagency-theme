@@ -74,6 +74,18 @@
             fr:'Remplis ces champs et appuie sur <u>Continuer</u> : à partir de là on peut te contacter dès qu\'un travail te correspond.',
             es:'Rellena estos campos y pulsa <u>Continuar</u>: a partir de ahí podemos contactarte cuando salga un trabajo para ti.'
         },
+        mancanoN: {
+            it:'Ti mancano %n campi e sei dentro. Poi premi <u>Continua</u>.',
+            en:'%n fields left and you are in. Then press <u>Continue</u>.',
+            fr:'Encore %n champs et tu es dedans. Ensuite appuie sur <u>Continuer</u>.',
+            es:'Te faltan %n campos y estás dentro. Luego pulsa <u>Continuar</u>.'
+        },
+        step1Pronto: {
+            it:'Ci sei: premi <u>Continua</u> e sei nel database TOAgency.',
+            en:'That\'s it: press <u>Continue</u> and you are in the TOAgency database.',
+            fr:'C\'est bon : appuie sur <u>Continuer</u> et tu es dans la base TOAgency.',
+            es:'Ya está: pulsa <u>Continuar</u> y estás en la base de datos de TOAgency.'
+        },
         giaDentro: {
             it:'✅ Ci sei: sei nel nostro database. Ogni dato in più alza le tue possibilità.',
             en:'✅ You are in our database. Every extra detail raises your chances.',
@@ -1044,6 +1056,21 @@
         aggiornaCosaManca(baseFields);
     }
 
+    /* Quanto manca a chiudere lo Step 1 — è il conto che vede l'utente sulla prima pagina. */
+    function statoStep1() {
+        var campi = ['nome', 'cognome', 'email', 'telefono', 'data_nascita', 'sesso', 'res_nation', 'res_city_name'];
+        var nat = form.querySelector('[name="res_nation"]');
+        if (nat && nat.value === 'IT') campi.push('res_provincia');
+        var fatti = 0;
+        campi.forEach(function(n) {
+            var el = form.querySelector('[name="' + n + '"]');
+            if (el && String(el.value || '').trim()) fatti++;
+        });
+        var totali = campi.length + 1;              // +1 = foto primo piano
+        if (uploadState.photoProfile) fatti++;
+        return { fatti: fatti, totali: totali, mancano: Math.max(0, totali - fatti) };
+    }
+
     /* Messaggio che accompagna la percentuale: più sale, più diventa incoraggiante. */
     function aggiornaMessaggio(pct) {
         var box = document.getElementById('toaTalentSticky');
@@ -1064,7 +1091,19 @@
         var leadFatto = (typeof step1Lead !== 'undefined' && step1Lead && step1Lead.done);
         var testa;
         if (stepCorrente() === 1 && !leadFatto) {
-            testa = tmsg(MSG.spingiStep1);
+            /* Sullo Step 1 la barra NON mostra la percentuale globale: mostra solo quanto manca
+               a finire QUESTA pagina. L'obiettivo deve sembrare a portata di mano, perché è qui
+               che si vince o si perde l'iscrizione. */
+            var s1 = statoStep1();
+            var quota = Math.round(100 * s1.fatti / s1.totali);
+            if (fill) fill.style.background = quota >= 100 ? '#22c55e' : '#c8ff00';
+            if (pctEl) { pctEl.textContent = s1.fatti + '/' + s1.totali; pctEl.style.color = quota >= 100 ? '#22c55e' : '#c8ff00'; }
+            if (fill) fill.style.width = quota + '%';
+            testa = s1.mancano > 0
+                ? tmsg(MSG.mancanoN).replace('%n', s1.mancano)
+                : tmsg(MSG.step1Pronto);
+            msg.innerHTML = '<strong style="color:' + (quota >= 100 ? '#22c55e' : '#c8ff00') + '">' + testa + '</strong>';
+            return;
         } else if (leadFatto && pct < 40) {
             testa = tmsg(MSG.giaDentro);
         } else if (pct === 0) {

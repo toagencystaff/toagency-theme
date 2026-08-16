@@ -445,6 +445,13 @@ $theme_uri = get_stylesheet_directory_uri();
         <!-- ═════ STEP 1 — Chi sei ═════ -->
         <div class="toa-talent-step active" data-step="1">
             <h3><?php echo _ht_talent(array('it'=>'Chi sei','en'=>'Who you are','fr'=>'Qui es-tu','es'=>'Quién eres')); ?></h3>
+            <?php // 2026-08-15 — promessa corta in cima allo Step 1: è qui che si vince l'iscrizione ?>
+            <p class="toa-alb-promessa"><?php echo _ht_talent_raw(array(
+                'it'=>'<strong>Ti basta questa pagina per entrare.</strong> Nome, contatti, dove vivi e una foto del viso: meno di un minuto. Ruoli, misure, album e video li aggiungi dopo, con calma — anche in un altro momento.',
+                'en'=>'<strong>This page is all you need to get in.</strong> Name, contacts, where you live and one photo of your face: under a minute. Roles, measurements, albums and video come later, at your own pace — even another day.',
+                'fr'=>'<strong>Cette page suffit pour entrer.</strong> Nom, contacts, où tu vis et une photo du visage : moins d\'une minute. Rôles, mensurations, albums et vidéo viennent après, tranquillement — même un autre jour.',
+                'es'=>'<strong>Con esta página ya estás dentro.</strong> Nombre, contactos, dónde vives y una foto de la cara: menos de un minuto. Roles, medidas, álbumes y vídeo los añades después, con calma — incluso otro día.',
+            )); ?></p>
             <p class="toa-talent-step-help"><?php echo _ht_talent(array('it'=>'Iniziamo con i dati base. Se stai registrando un minore, inserisci i suoi dati anagrafici (nome, data di nascita ecc.) e poi quelli del genitore.','en'=>'Basic info first. If registering a minor, enter the minor\'s personal data first.','fr'=>'Infos de base. Pour un mineur, saisis ses données.','es'=>'Datos básicos. Para un menor, introduce sus datos.')); ?></p>
 
             <div class="toa-talent-field-row">
@@ -1089,6 +1096,8 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-alb-addrole p{margin:0 0 10px;font-size:.9rem;line-height:1.45;color:#bfdbfe}
                 .toa-alb-addrole-btn{appearance:none;cursor:pointer;margin:0 8px 0 0;padding:9px 14px;border-radius:99px;border:1px solid #3b82f6;background:rgba(59,130,246,.18);color:#fff;font:700 .9rem/1 inherit}
                 .toa-alb-addrole-btn:hover{background:#3b82f6}
+                .toa-alb-promessa{margin:0 0 18px;padding:13px 15px;border-radius:10px;background:rgba(200,255,0,.07);border:1px solid rgba(200,255,0,.30);font-size:.95rem;line-height:1.55;color:#e9ffa3}
+                .toa-alb-promessa strong{display:block;margin-bottom:3px;color:#c8ff00;font-size:1.02rem}
                 /* riquadro "te la fai da solo": deve essere la prima cosa che si legge nelle Pola */
                 .toa-alb-clou{margin:0 0 12px;padding:13px 15px;border-radius:10px;font-size:.95rem;line-height:1.55;color:#0a0a0a;background:#c8ff00;border:0}
                 .toa-alb-clou strong{display:block;margin-bottom:3px;font-size:1rem}
@@ -1465,7 +1474,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260815album32" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260815album33" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
