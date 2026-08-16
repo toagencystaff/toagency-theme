@@ -137,15 +137,9 @@ toa_component('header');
     'subtitle'   => $_t($t['hero_subtitle']),
 )); ?>
 
-<!-- Hero CTA CENTRATO + trust line (allineato a /actors/ e /hostess-steward/) -->
-<div class="container hero-cta-wrap">
-    <a href="<?php echo home_url('/form-b2b/'); ?>" class="toa-hero-cta">
-        <span><?php echo $_t($t['hero_cta']); ?></span>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
-    <p style="font-size:0.85rem;color:var(--gray-4);margin-top:16px;font-weight:600"><?php echo $_t($t['trust_line']); ?></p>
-    <div><a href="/wp-content/themes/toagency-theme/assets/pdf/presentazione-<?php echo $lang; ?>.pdf" download class="toa-pdf-link">&darr; <?php echo $_t(array('it'=>'Scarica la presentazione (PDF)','en'=>'Download the presentation (PDF)','fr'=>'T&eacute;l&eacute;charger la pr&eacute;sentation (PDF)','es'=>'Descarga la presentaci&oacute;n (PDF)')); ?></a></div>
-</div>
+<!-- Hero CTA: iniettata via JS da functions.php (add_action wp_footer, priority 1000) per
+     restare SUBITO dopo l'hero nonostante loghi/griglia/form dinamici — vedi TEMA PULSANTI HOME.
+     Il CSS sotto resta qui perché serve al pulsante iniettato. -->
 <style>
 .toa-hero-cta{display:inline-flex;align-items:center;gap:10px;padding:16px 38px;background:var(--accent,#c8ff00);color:#0a0a0a;font-size:.95rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border-radius:999px;box-shadow:0 8px 30px rgba(200,255,0,.35),0 2px 8px rgba(0,0,0,.15);transition:transform .25s ease,box-shadow .25s ease}
 .toa-hero-cta svg{transition:transform .25s ease}

@@ -1207,6 +1207,42 @@ add_action('wp_footer', function() {
 }, 999);
 // === END 2026-06-03 marco — LOGHI + GRIGLIA MODELLI + FORM models ===
 
+// === BEGIN 2026-08-16 marco — CTA HERO uniforme su /models/ (allineata a /actors/ + /hostess-steward/) [chat TEMA PULSANTI HOME] ===
+// Il pulsante deve comparire SUBITO dopo l'hero, ma il blocco sopra (loghi/griglia/form) usa lo
+// stesso punto di aggancio (.page-hero.nextSibling) con priority 999 -> qui uso 1000 (eseguito
+// dopo) cosi il pulsante "vince" e resta il primo elemento subito sotto il sottotitolo.
+add_action('wp_footer', function() {
+    if (!is_page('models')) return;
+    $loc = substr(get_locale(), 0, 2);
+    $cta = array('it'=>'Richiedi un preventivo','en'=>'Request a quote','fr'=>'Demandez un devis','es'=>'Solicita un presupuesto');
+    $trust = array('it'=>'4,7&#9733; su Google &middot; 346 recensioni &middot; dal 2009 &middot; 20.000+ profili verificati','en'=>'4.7&#9733; on Google &middot; 346 reviews &middot; since 2009 &middot; 20,000+ verified profiles','fr'=>'4,7&#9733; sur Google &middot; 346 avis &middot; depuis 2009 &middot; 20 000+ profils v&eacute;rifi&eacute;s','es'=>'4,7&#9733; en Google &middot; 346 rese&ntilde;as &middot; desde 2009 &middot; 20.000+ perfiles verificados');
+    $pdfLabel = array('it'=>'Scarica la presentazione (PDF)','en'=>'Download the presentation (PDF)','fr'=>'T&eacute;l&eacute;charger la pr&eacute;sentation (PDF)','es'=>'Descarga la presentaci&oacute;n (PDF)');
+    $ctaText = isset($cta[$loc]) ? $cta[$loc] : $cta['it'];
+    $trustText = isset($trust[$loc]) ? $trust[$loc] : $trust['it'];
+    $pdfLabelText = isset($pdfLabel[$loc]) ? $pdfLabel[$loc] : $pdfLabel['it'];
+    $formUrl = home_url('/form-b2b/');
+    $pdfUrl = home_url('/wp-content/themes/toagency-theme/assets/pdf/presentazione-' . $loc . '.pdf');
+    ?>
+    <script>
+    (function(){
+      if (document.querySelector('.toa-hero-cta')) return;
+      var hero = document.querySelector('.page-hero');
+      if (!hero) return;
+      var FORM_URL = <?php echo json_encode($formUrl); ?>;
+      var PDF_URL = <?php echo json_encode($pdfUrl); ?>;
+      var CTA_TXT = <?php echo json_encode($ctaText, JSON_UNESCAPED_UNICODE); ?>;
+      var TRUST_HTML = <?php echo json_encode($trustText, JSON_UNESCAPED_UNICODE); ?>;
+      var PDF_TXT = <?php echo json_encode($pdfLabelText, JSON_UNESCAPED_UNICODE); ?>;
+      var wrap = document.createElement('div');
+      wrap.className = 'container hero-cta-wrap';
+      wrap.innerHTML = '<a href="'+FORM_URL+'" class="toa-hero-cta"><span>'+CTA_TXT+'</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a><p style="font-size:0.85rem;color:var(--gray-4);margin-top:16px;font-weight:600">'+TRUST_HTML+'</p><div><a href="'+PDF_URL+'" download class="toa-pdf-link">&darr; '+PDF_TXT+'</a></div>';
+      hero.parentNode.insertBefore(wrap, hero.nextSibling);
+    })();
+    </script>
+    <?php
+}, 1000);
+// === END 2026-08-16 marco — CTA HERO uniforme /models/ ===
+
 // === BEGIN 2026-06-04 marco — FIX overlap widget fixed bottom-right ===
 // I 3 elementi fixed in basso a destra si calpestano (mobile soprattutto):
 //  PREVENTIVO (.sticky-cta-mobile, 16px) · WhatsApp (.toa-whatsapp-btn, mobile 88px) · Amelia FAB
