@@ -175,6 +175,30 @@ $TALENT_ALBUM = array(
         ),
     ),
     array(
+        // 2026-08-15 — album degli UGC creator: qui contano i VIDEO, non le foto.
+        // album_tipo lato CRM: video_creator (da confermare con la chat CRM VIDEO-ALBUM).
+        'code' => 'ugc', 'roles' => 'ugc_creator,influencer', 'req' => true, 'video' => 'video_creator',
+        'label' => array('it'=>'Contenuti UGC','en'=>'UGC content','fr'=>'Contenus UGC','es'=>'Contenidos UGC'),
+        'clou' => array(
+            'it'=>'⭐ <strong>Per un UGC creator contano i video, non le foto.</strong> Sono i contenuti che i brand guardano per decidere se lavorare con te: parli in camera, mostri il prodotto, si sente la tua voce. Puoi girarli col telefono, in casa, senza nessuna attrezzatura.',
+            'en'=>'⭐ <strong>For a UGC creator the videos matter, not the photos.</strong> They are what brands watch to decide whether to work with you: you talk to camera, you show the product, we hear your voice. You can shoot them on your phone, at home, with no equipment.',
+            'fr'=>'⭐ <strong>Pour un créateur UGC ce sont les vidéos qui comptent, pas les photos.</strong> C\'est ce que les marques regardent pour décider de travailler avec toi : tu parles face caméra, tu montres le produit, on entend ta voix. Tu peux les filmer au téléphone, chez toi, sans matériel.',
+            'es'=>'⭐ <strong>Para un creador UGC cuentan los vídeos, no las fotos.</strong> Son lo que las marcas miran para decidir si trabajan contigo: hablas a cámara, enseñas el producto, se oye tu voz. Puedes grabarlos con el móvil, en casa, sin equipo.',
+        ),
+        'quante' => array(
+            'it'=>'Da 2 a 5 video: uno in cui parli in camera, uno con un prodotto in mano, uno che mostra come si usa.',
+            'en'=>'2 to 5 videos: one talking to camera, one holding a product, one showing how it is used.',
+            'fr'=>'De 2 à 5 vidéos : une face caméra, une avec un produit en main, une qui montre comment on l\'utilise.',
+            'es'=>'De 2 a 5 vídeos: uno hablando a cámara, uno con un producto en la mano, uno mostrando cómo se usa.',
+        ),
+        'hint'  => array(
+            'it'=>'Video verticali girati col telefono, luce naturale, voce chiara. Vanno bene anche contenuti che hai già fatto per te o per altri brand.',
+            'en'=>'Vertical videos shot on your phone, natural light, clear voice. Content you already made for yourself or other brands works too.',
+            'fr'=>'Vidéos verticales filmées au téléphone, lumière naturelle, voix claire. Les contenus déjà faits pour toi ou d\'autres marques conviennent aussi.',
+            'es'=>'Vídeos verticales grabados con el móvil, luz natural, voz clara. También valen contenidos que ya hiciste para ti o para otras marcas.',
+        ),
+    ),
+    array(
         'code' => 'dettaglio', 'roles' => 'model', 'req' => true,
         'label' => array('it'=>'Dettagli','en'=>'Details','fr'=>'Détails','es'=>'Detalles'),
         'quante' => array(
@@ -271,6 +295,7 @@ $TALENT_ALBUM_SLIDES = array(
     ),
     // Dettagli: 4 coppie vere (mani, piedi, denti, gambe) + 2 coppie di soli "sì"
     // (capelli, occhi, schiena tatuata) che non hanno un corrispettivo sbagliato.
+    'ugc' => array(),
     'dettaglio' => array(
         array('guide/det-mani-si.jpg',    'guide/det-mani-no.jpg'),
         array('guide/det-piedi-si.jpg',   'guide/det-piedi-no.jpg'),
@@ -1117,6 +1142,8 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-alb-promessa{margin:0 0 18px;padding:13px 15px;border-radius:10px;background:rgba(200,255,0,.07);border:1px solid rgba(200,255,0,.30);font-size:.95rem;line-height:1.55;color:#e9ffa3}
                 .toa-alb-promessa strong{display:block;margin-bottom:3px;color:#c8ff00;font-size:1.02rem}
                 /* riquadro "te la fai da solo": deve essere la prima cosa che si legge nelle Pola */
+                .toa-alb-potenziale{margin:0 0 14px;padding:12px 14px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.40);font-size:.88rem;line-height:1.55;color:#bfdbfe}
+                .toa-alb-potenziale strong{color:#93c5fd}
                 .toa-alb-clou{margin:0 0 12px;padding:13px 15px;border-radius:10px;font-size:.95rem;line-height:1.55;color:#0a0a0a;background:#c8ff00;border:0}
                 .toa-alb-clou strong{display:block;margin-bottom:3px;font-size:1rem}
                 .toa-alb-quante{font-size:.86rem;line-height:1.5;color:#c8ff00;margin:0 0 14px;padding:9px 12px;border-radius:8px;background:rgba(200,255,0,.06);border:1px solid rgba(200,255,0,.20)}
@@ -1301,6 +1328,16 @@ $theme_uri = get_stylesheet_directory_uri();
                             </div>
                             <?php endif; ?>
                         </div>
+                        <?php // 2026-08-15 — chi si dichiara UGC ma non ha ancora contenuti: non lo perdiamo,
+                              // lo registriamo lo stesso e lo segnaliamo come potenziale. ?>
+                        <?php if ($code === 'ugc'): ?>
+                            <p class="toa-alb-potenziale" id="toaTalentUgcPotenziale"><?php echo _ht_talent_raw(array(
+                                'it'=>'<strong>Non hai ancora contenuti UGC?</strong> Completa comunque la registrazione: ti segnaliamo come <em>potenziale UGC creator</em>. Non entrerai subito nel database UGC — per quello servono i video — ma ti contattiamo noi per aiutarti a produrre i primi, anche con lo staff TOAgency a condizioni agevolate. Intanto carica foto e video che hai: ci servono per proporti su altri lavori.',
+                                'en'=>'<strong>No UGC content yet?</strong> Complete the registration anyway: we will flag you as a <em>potential UGC creator</em>. You will not enter the UGC database right away — that needs videos — but we will contact you to help you make your first ones, also with the TOAgency staff at a reduced rate. Meanwhile upload the photos and videos you do have: we need them to put you forward for other jobs.',
+                                'fr'=>'<strong>Pas encore de contenus UGC ?</strong> Termine quand même ton inscription : on te signale comme <em>créateur UGC potentiel</em>. Tu n\'entreras pas tout de suite dans la base UGC — il faut des vidéos — mais on te contacte pour t\'aider à faire les premières, aussi avec l\'équipe TOAgency à tarif réduit. En attendant charge les photos et vidéos que tu as : elles nous servent pour te proposer sur d\'autres missions.',
+                                'es'=>'<strong>¿Aún no tienes contenidos UGC?</strong> Completa igualmente el registro: te marcamos como <em>potencial creador UGC</em>. No entrarás enseguida en la base UGC — para eso hacen falta vídeos — pero te contactamos para ayudarte a hacer los primeros, también con el equipo de TOAgency a precio reducido. Mientras tanto sube las fotos y vídeos que tengas: nos sirven para proponerte en otros trabajos.',
+                            )); ?></p>
+                        <?php endif; ?>
                         <?php if (!empty($al['video'])): ?>
                             <p class="toa-alb-video-nota<?php echo $al['video'] === 'video_selftape' ? ' forte' : ''; ?>"><?php
                                 // testi con <strong>/<br>: vanno in raw, altrimenti si vedono i tag

@@ -1862,6 +1862,15 @@
         uploadState.photos.forEach(function(p) {
             queue.push({ file: p.file, tipo: 'foto', album: p.album || 'polaroid', data_scatto: p.data_scatto || '' }); // 2026-08-14: album e data dello scatto viaggiano con la foto
         });
+        /* 2026-08-15 — se si dichiara UGC creator ma non carica nessun contenuto, lo segnaliamo:
+           il CRM lo registra come "potenziale UGC" e non lo mette nel database UGC. */
+        var vuoleUgc = !!document.querySelector('#toaTalentCategoriesImmagine input[value="ugc_creator"]:checked');
+        var haUgc = (uploadState.videos || []).some(function(v) { return v.album === 'video_creator'; })
+                    || photosInAlbum('ugc') > 0;
+        if (vuoleUgc && !haUgc) {
+            var fdFlag = new FormData();
+            fdFlag.append('ugc_potenziale', '1');
+        }
         // 2026-08-14 — video scelti negli album (video_creator / video_selftape)
         (uploadState.videos || []).forEach(function(v) {
             queue.push({ file: v.file, tipo: 'video', album: v.album, data_scatto: '' });
