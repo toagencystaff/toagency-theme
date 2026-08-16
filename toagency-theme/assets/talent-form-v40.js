@@ -74,11 +74,17 @@
             fr:'Remplis ces champs et appuie sur <u>Continuer</u> : à partir de là on peut te contacter dès qu\'un travail te correspond.',
             es:'Rellena estos campos y pulsa <u>Continuar</u>: a partir de ahí podemos contactarte cuando salga un trabajo para ti.'
         },
+        mancaUno: {
+            it:'Ti manca <strong>1 campo</strong> e sei dentro. Poi premi <u>Continua</u>.',
+            en:'<strong>1 field</strong> left and you are in. Then press <u>Continue</u>.',
+            fr:'Encore <strong>1 champ</strong> et tu es dedans. Ensuite appuie sur <u>Continuer</u>.',
+            es:'Te falta <strong>1 campo</strong> y estás dentro. Luego pulsa <u>Continuar</u>.'
+        },
         mancanoN: {
-            it:'Ti mancano %n campi e sei dentro. Poi premi <u>Continua</u>.',
-            en:'%n fields left and you are in. Then press <u>Continue</u>.',
-            fr:'Encore %n champs et tu es dedans. Ensuite appuie sur <u>Continuer</u>.',
-            es:'Te faltan %n campos y estás dentro. Luego pulsa <u>Continuar</u>.'
+            it:'Ti mancano <strong>%n campi</strong> e sei dentro. Poi premi <u>Continua</u>.',
+            en:'<strong>%n fields</strong> left and you are in. Then press <u>Continue</u>.',
+            fr:'Encore <strong>%n champs</strong> et tu es dedans. Ensuite appuie sur <u>Continuer</u>.',
+            es:'Te faltan <strong>%n campos</strong> y estás dentro. Luego pulsa <u>Continuar</u>.'
         },
         step1Pronto: {
             it:'Ci sei: premi <u>Continua</u> e sei nel database TOAgency.',
@@ -1100,7 +1106,7 @@
             if (pctEl) { pctEl.textContent = s1.fatti + '/' + s1.totali; pctEl.style.color = quota >= 100 ? '#22c55e' : '#c8ff00'; }
             if (fill) fill.style.width = quota + '%';
             testa = s1.mancano > 0
-                ? tmsg(MSG.mancanoN).replace('%n', s1.mancano)
+                ? tmsg(s1.mancano === 1 ? MSG.mancaUno : MSG.mancanoN).replace('%n', s1.mancano)
                 : tmsg(MSG.step1Pronto);
             msg.innerHTML = '<strong style="color:' + (quota >= 100 ? '#22c55e' : '#c8ff00') + '">' + testa + '</strong>';
             return;
@@ -1278,6 +1284,7 @@
             if (file.size > MAX_PHOTO_SIZE_MB * 1024 * 1024) { showInlineError('toaTalentProfileError', tmsg(MSG.photoTooBig) + ' (max ' + MAX_PHOTO_SIZE_MB + 'MB)', true); return; }
             uploadState.photoProfile = { file: file, id: 'profile_' + Date.now() };
             renderProfileThumb(uploadState.photoProfile);
+            updateCompleteness(); // 2026-08-15: anche la foto profilo conta nel conto dello Step 1
             return;
         }
 
