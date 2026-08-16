@@ -1102,6 +1102,10 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-talent-actions{margin-top:28px}
                 .toa-talent-btn-primary{padding:18px 40px !important;font-size:1.12rem !important;font-weight:800 !important;letter-spacing:.3px;border-radius:14px !important;box-shadow:0 6px 22px rgba(200,255,0,.30);animation:toaPulsa 2.6s ease-in-out infinite}
                 .toa-talent-btn-primary:hover:not(:disabled){box-shadow:0 10px 30px rgba(200,255,0,.45) !important}
+                /* Il pulsante finale era NERO: una regola globale del tema (button[type="submit"])
+                   vince per specificità su .toa-talent-btn-primary. Qui lo riportiamo giallo come gli altri. */
+                #toaTalentSubmit{background:#c8ff00 !important;color:#0a0a0a !important}
+                #toaTalentSubmit:disabled{opacity:.45}
                 .toa-talent-btn-ghost{padding:14px 20px !important;font-size:.92rem !important;opacity:.75}
                 @keyframes toaPulsa{0%,100%{box-shadow:0 6px 22px rgba(200,255,0,.30)}50%{box-shadow:0 6px 26px rgba(200,255,0,.55)}}
                 @media (prefers-reduced-motion:reduce){.toa-talent-btn-primary{animation:none}}
@@ -1488,7 +1492,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260815album35" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260815album36" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
