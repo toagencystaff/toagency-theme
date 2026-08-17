@@ -53,6 +53,7 @@
             fr:['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
             es:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
         },
+        chiudiElenco: { it:'Chiudi l\'elenco ✕', en:'Close the list ✕', fr:'Fermer la liste ✕', es:'Cerrar la lista ✕' },
         tornaA: { it:'← Torna al passaggio %s', en:'← Back to step %s', es:'← Volver al paso %s', fr:'← Retour à l\'étape %s' },
         /* 2026-08-15 — la percentuale non è "profilo completo", è "possibilità di essere chiamato" */
         possibilita: {
@@ -1183,7 +1184,11 @@
             b.type = 'button';
             b.className = 'toa-alb-manca-chip';
             b.textContent = v.testo;
-            b.addEventListener('click', function() { vaiA(v); });
+            b.addEventListener('click', function() {
+                var box = document.getElementById('toaTalentManca');
+                if (box) box.hidden = true;   // 2026-08-16: su telefono restava aperta e copriva il campo
+                vaiA(v);
+            });
             box.appendChild(b);
         });
     }
@@ -1240,9 +1245,12 @@
 
     var mancaBtn = document.getElementById('toaTalentMancaBtn');
     if (mancaBtn) {
+        var etichettaApri = mancaBtn.textContent;
         mancaBtn.addEventListener('click', function() {
             var box = document.getElementById('toaTalentManca');
-            if (box) box.hidden = !box.hidden;
+            if (!box) return;
+            box.hidden = !box.hidden;
+            mancaBtn.textContent = box.hidden ? etichettaApri : tmsg(MSG.chiudiElenco);
         });
     }
     if (form) form.addEventListener('input', updateCompleteness);
