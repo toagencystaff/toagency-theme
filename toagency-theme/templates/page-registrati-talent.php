@@ -367,20 +367,20 @@ $theme_uri = get_stylesheet_directory_uri();
     <!-- Banner valutazione staff -->
     <div class="toa-talent-info-banner">
         ✨ <?php echo wp_kses(_ht_talent_raw(array(
-            'it'=>'Il tuo profilo verrà valutato dal nostro staff TOAgency. <strong>Una volta approvato</strong> sarà visibile alle aziende che cercano talent come te.',
-            'en'=>'Your profile will be reviewed by our TOAgency staff. <strong>Once approved</strong> it will be visible to companies looking for talents like you.',
-            'fr'=>'Ton profil sera évalué par notre équipe TOAgency. <strong>Une fois approuvé</strong>, il sera visible aux entreprises.',
-            'es'=>'Tu perfil será evaluado por nuestro equipo TOAgency. <strong>Una vez aprobado</strong> será visible a las empresas.',
+            'it'=>'Valutiamo ogni profilo. <strong>Una volta approvato</strong> sei visibile alle aziende che cercano talent.',
+            'en'=>'We review every profile. <strong>Once approved</strong> you are visible to companies looking for talent.',
+            'fr'=>'On examine chaque fiche. <strong>Une fois validée</strong> tu es visible auprès des entreprises.',
+            'es'=>'Revisamos cada perfil. <strong>Una vez aprobado</strong> eres visible para las empresas que buscan talent.',
         )), array('strong'=>array(),'b'=>array(),'em'=>array(),'i'=>array(),'br'=>array())); ?>
     </div>
 
     <!-- Banner registrazione minore -->
     <div class="toa-talent-info-banner toa-talent-banner-secondary">
         👨‍👩‍👧 <?php echo wp_kses(_ht_talent_raw(array(
-            'it'=>'<strong>Stai registrando un minore?</strong> Per talent sotto i 16 anni, il form deve essere compilato dal genitore/tutore legale. Per talent tra 16 e 17 anni, è necessaria la conferma del genitore.',
-            'en'=>'<strong>Registering a minor?</strong> For talents under 16, the form must be filled by the parent/guardian. For 16-17 year olds, parent confirmation is required.',
-            'fr'=>'<strong>Inscription d\'un mineur ?</strong> Pour les moins de 16 ans, le formulaire doit être rempli par le parent. Pour les 16-17 ans, la confirmation parentale est requise.',
-            'es'=>'<strong>¿Registras a un menor?</strong> Para menores de 16, el formulario debe completarlo el padre/tutor. Para 16-17 años, se requiere confirmación del padre.',
+            'it'=>'<strong>Minorenni:</strong> sotto i 16 anni compila un genitore. Tra i 16 e i 17 serve la sua conferma.',
+            'en'=>'<strong>Minors:</strong> under 16 a parent fills the form. Between 16 and 17 the parent must confirm.',
+            'fr'=>'<strong>Mineurs :</strong> avant 16 ans c\'est un parent qui remplit. Entre 16 et 17 ans il doit confirmer.',
+            'es'=>'<strong>Menores:</strong> antes de los 16 rellena un padre. Entre 16 y 17 hace falta su confirmación.',
         )), array('strong'=>array(),'b'=>array(),'em'=>array(),'i'=>array(),'br'=>array())); ?>
     </div>
 
@@ -485,7 +485,7 @@ $theme_uri = get_stylesheet_directory_uri();
                 'fr'=>'<strong>Cette page suffit pour entrer.</strong> Nom, contacts, ville et une photo du visage : moins d\'une minute. Le reste vient après.',
                 'es'=>'<strong>Con esta página ya estás dentro.</strong> Nombre, contactos, ciudad y una foto de la cara: menos de un minuto. El resto lo añades después.',
             )); ?></p>
-            <p class="toa-talent-step-help"><?php echo _ht_talent(array('it'=>'Iniziamo con i dati base. Se stai registrando un minore, inserisci i suoi dati anagrafici (nome, data di nascita ecc.) e poi quelli del genitore.','en'=>'Basic info first. If registering a minor, enter the minor\'s personal data first.','fr'=>'Infos de base. Pour un mineur, saisis ses données.','es'=>'Datos básicos. Para un menor, introduce sus datos.')); ?></p>
+            
 
             <div class="toa-talent-field-row">
                 <div class="toa-talent-field">
@@ -1566,7 +1566,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260817album49" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260817album50" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
