@@ -96,8 +96,10 @@ toa_component('header');
         </div>
     </div>
     <div class="container" style="margin-top:30px"><!-- FIX 2026-06-18 marco -->
-        <div class="alert-box" style="text-align:center;background:#f0f0ff;border-left:4px solid #6c63ff">
-            <p style="font-size:1.1rem;font-weight:700;margin:0 0 14px;color:#1a1a1a"><?php echo $_t($t['edit_q']); ?></p>
+        <!-- FIX 2026-08-17 (TEMA COLLABORA RESTYLING) — tolto style inline viola/lavanda fuori palette,
+             ora usa .alert-box di main.css (dark+lime, gia' scritta apposta per questa pagina) -->
+        <div class="alert-box" style="text-align:center">
+            <p style="font-size:1.1rem;font-weight:700;margin:0 0 14px;color:var(--white-pure)"><?php echo $_t($t['edit_q']); ?></p>
             <a href="https://toagency.it/crm_toagency/recupera-link.php?lang=<?php echo $lang; ?>" class="btn-hero btn-hero-primary" style="padding:16px 32px;font-size:0.95rem"><?php echo $_t($t['edit_btn']); ?></a>
         </div>
     </div>
