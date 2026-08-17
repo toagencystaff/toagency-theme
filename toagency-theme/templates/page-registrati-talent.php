@@ -120,10 +120,10 @@ $TALENT_ALBUM = array(
     array(
         'code' => 'polaroid', 'roles' => '*', 'req' => true, 'video' => 'video_creator',
         'clou' => array(
-            'it'=>'⭐ <strong>È l\'album più importante di tutti — e te lo fai da solo.</strong> Non serve un fotografo, non serve aspettare nessuno: bastano il tuo telefono, un muro chiaro e la luce di una finestra. Gratis, a casa tua, in cinque minuti.',
-            'en'=>'⭐ <strong>This is the most important album of all — and you can do it yourself.</strong> No photographer, no waiting for anyone: just your phone, a plain wall and the light from a window. Free, at home, in five minutes.',
-            'fr'=>'⭐ <strong>C\'est l\'album le plus important de tous — et tu le fais tout seul.</strong> Pas besoin de photographe ni d\'attendre qui que ce soit : ton téléphone, un mur clair et la lumière d\'une fenêtre suffisent. Gratuit, chez toi, en cinq minutes.',
-            'es'=>'⭐ <strong>Es el álbum más importante de todos — y te lo haces tú.</strong> No hace falta fotógrafo ni esperar a nadie: basta tu móvil, una pared clara y la luz de una ventana. Gratis, en tu casa, en cinco minutos.',
+            'it'=>'⭐ <strong>L\'album più importante. E te lo fai da solo:</strong> telefono, muro chiaro, luce di finestra. Gratis, in cinque minuti.',
+            'en'=>'⭐ <strong>The most important album. And you do it yourself:</strong> phone, plain wall, window light. Free, in five minutes.',
+            'fr'=>'⭐ <strong>L\'album le plus important. Et tu le fais tout seul :</strong> téléphone, mur clair, lumière de fenêtre. Gratuit, en cinq minutes.',
+            'es'=>'⭐ <strong>El álbum más importante. Y te lo haces tú:</strong> móvil, pared clara, luz de ventana. Gratis, en cinco minutos.',
         ),
         'label' => array('it'=>'Pola e presentazione','en'=>'Polaroids','fr'=>'Polas','es'=>'Polas'),
         'quante' => array(
@@ -133,10 +133,10 @@ $TALENT_ALBUM = array(
             'es'=>'De 3 a 8 fotos: primer plano, medio cuerpo, cuerpo entero, perfil. Siempre sin filtros.',
         ),
         'hint'  => array(
-            'it'=>'Tu come sei. Muro chiaro, luce di finestra, niente trucco e niente filtri. Corpo intero e primo piano. Te le fai col telefono in due minuti. Per ogni foto indica il mese e l\'anno in cui l\'hai SCATTATA: è obbligatorio.',
-            'en'=>'You as you are. Plain wall, window light, no makeup, no filters. Full body and close-up. Two minutes with your phone. For each photo add the month and year it was TAKEN: it is required.',
-            'fr'=>'Toi tel que tu es. Mur clair, lumière de fenêtre, sans maquillage ni filtres. Plein pied et gros plan. Deux minutes avec ton téléphone. Pour chaque photo indique le mois et l\'année de la PRISE DE VUE : c\'est obligatoire.',
-            'es'=>'Tú tal cual eres. Pared clara, luz de ventana, sin maquillaje ni filtros. Cuerpo entero y primer plano. Dos minutos con el móvil. En cada foto indica el mes y el año en que la HICISTE: es obligatorio.',
+            'it'=>'Tu come sei: niente trucco, niente filtri. Primo piano e figura intera. Su ogni foto indica mese e anno dello scatto.',
+            'en'=>'You as you are: no makeup, no filters. Close-up and full body. On each photo add the month and year it was taken.',
+            'fr'=>'Toi tel que tu es : sans maquillage ni filtres. Gros plan et plein pied. Sur chaque photo indique le mois et l\'année de la prise de vue.',
+            'es'=>'Tú tal cual eres: sin maquillaje ni filtros. Primer plano y cuerpo entero. En cada foto indica el mes y el año en que la hiciste.',
         ),
     ),
     array(
@@ -181,23 +181,23 @@ $TALENT_ALBUM = array(
         // album_tipo lato CRM: video_creator (da confermare con la chat CRM VIDEO-ALBUM).
         'code' => 'ugc', 'roles' => 'ugc_creator,influencer', 'req' => true, 'video' => 'video_creator',
         'descrizione' => array(
-            'it'=>'<strong>Com\'è fatto un video UGC che funziona.</strong> Verticale, girato col telefono. Si vede bene la faccia e si sente bene la voce: parli tu, non una musica sopra. Luce naturale davanti a te, mai controluce. Un solo pensiero per video, detto in modo naturale, come lo diresti a un amico — non è uno spot, è un consiglio. Il prodotto si vede in mano, girato piano perché resti a fuoco. Niente watermark, niente @, niente loghi TikTok o Instagram: con la firma social non possiamo proporlo ai clienti.',
-            'en'=>'<strong>What a UGC video that works looks like.</strong> Vertical, shot on your phone. Your face is clearly visible and your voice is clearly audible: you talk, not the music. Natural light in front of you, never backlit. One idea per video, said naturally, the way you would tell a friend — it is not an ad, it is a recommendation. The product is held in your hand and turned slowly so it stays in focus. No watermark, no @handle, no TikTok or Instagram logos: with a social signature we cannot offer it to clients.',
-            'fr'=>'<strong>À quoi ressemble une vidéo UGC qui marche.</strong> Verticale, filmée au téléphone. On voit bien ton visage et on entend bien ta voix : c\'est toi qui parles, pas la musique. Lumière naturelle face à toi, jamais à contre-jour. Une seule idée par vidéo, dite naturellement, comme tu le dirais à un ami — ce n\'est pas une pub, c\'est un conseil. Le produit se tient en main et se tourne lentement pour rester net. Pas de filigrane, pas de @, pas de logos TikTok ou Instagram : avec une signature sociale on ne peut pas la proposer aux clients.',
-            'es'=>'<strong>Cómo es un vídeo UGC que funciona.</strong> Vertical, grabado con el móvil. Se te ve bien la cara y se te oye bien la voz: hablas tú, no la música. Luz natural de frente, nunca a contraluz. Una sola idea por vídeo, dicha con naturalidad, como se lo contarías a un amigo — no es un anuncio, es una recomendación. El producto se sostiene en la mano y se gira despacio para que quede enfocado. Sin marca de agua, sin @, sin logos de TikTok o Instagram: con firma social no podemos ofrecerlo a los clientes.',
+            'it'=>'<strong>Com\'è fatto un video UGC che funziona.</strong> Verticale, col telefono. Faccia in luce, voce chiara: parli tu, non la musica. Un\'idea sola, detta come a un amico. Prodotto in mano, girato piano. <strong>Mai watermark, @ o loghi social</strong>: con la firma non possiamo proporlo.',
+            'en'=>'<strong>What a UGC video that works looks like.</strong> Vertical, on your phone. Face in the light, clear voice: you talk, not the music. One idea, said like you would to a friend. Product in hand, turned slowly. <strong>Never a watermark, @handle or social logo</strong>: with a signature we cannot offer it.',
+            'fr'=>'<strong>À quoi ressemble une vidéo UGC qui marche.</strong> Verticale, au téléphone. Visage éclairé, voix claire : c\'est toi qui parles, pas la musique. Une seule idée, dite comme à un ami. Produit en main, tourné lentement. <strong>Jamais de filigrane, de @ ni de logo social</strong> : avec une signature on ne peut pas la proposer.',
+            'es'=>'<strong>Cómo es un vídeo UGC que funciona.</strong> Vertical, con el móvil. Cara iluminada, voz clara: hablas tú, no la música. Una sola idea, dicha como a un amigo. Producto en la mano, girado despacio. <strong>Nunca marca de agua, @ ni logos sociales</strong>: con firma no podemos ofrecerlo.',
         ),
         'label' => array('it'=>'Contenuti UGC','en'=>'UGC content','fr'=>'Contenus UGC','es'=>'Contenidos UGC'),
         'clou' => array(
-            'it'=>'⭐ <strong>Per un UGC creator contano i video, non le foto.</strong> Sono i contenuti che i brand guardano per decidere se lavorare con te: parli in camera, mostri il prodotto, si sente la tua voce. Puoi girarli col telefono, in casa, senza nessuna attrezzatura.',
-            'en'=>'⭐ <strong>For a UGC creator the videos matter, not the photos.</strong> They are what brands watch to decide whether to work with you: you talk to camera, you show the product, we hear your voice. You can shoot them on your phone, at home, with no equipment.',
-            'fr'=>'⭐ <strong>Pour un créateur UGC ce sont les vidéos qui comptent, pas les photos.</strong> C\'est ce que les marques regardent pour décider de travailler avec toi : tu parles face caméra, tu montres le produit, on entend ta voix. Tu peux les filmer au téléphone, chez toi, sans matériel.',
-            'es'=>'⭐ <strong>Para un creador UGC cuentan los vídeos, no las fotos.</strong> Son lo que las marcas miran para decidir si trabajan contigo: hablas a cámara, enseñas el producto, se oye tu voz. Puedes grabarlos con el móvil, en casa, sin equipo.',
+            'it'=>'⭐ <strong>Per un UGC creator contano i video, non le foto.</strong> Sono quelli che i brand guardano. Bastano il telefono e casa tua.',
+            'en'=>'⭐ <strong>For a UGC creator the videos matter, not the photos.</strong> They are what brands watch. Your phone and your home are enough.',
+            'fr'=>'⭐ <strong>Pour un créateur UGC ce sont les vidéos qui comptent, pas les photos.</strong> C\'est ce que les marques regardent. Ton téléphone et chez toi suffisent.',
+            'es'=>'⭐ <strong>Para un creador UGC cuentan los vídeos, no las fotos.</strong> Son los que miran las marcas. Basta tu móvil y tu casa.',
         ),
         'quante' => array(
-            'it'=>'Da 2 a 5 video: uno in cui parli in camera, uno con un prodotto in mano, uno che mostra come si usa. Senza watermark, senza il tuo @ e senza loghi di TikTok o Instagram: i video con la firma social non possiamo proporli ai clienti.',
-            'en'=>'2 to 5 videos: one talking to camera, one holding a product, one showing how it is used. No watermarks, no @handle, no TikTok or Instagram logos: videos with a social signature cannot be offered to clients.',
-            'fr'=>'De 2 à 5 vidéos : une face caméra, une avec un produit en main, une qui montre comment on l\'utilise. Sans filigrane, sans ton @ et sans logos TikTok ou Instagram : les vidéos signées ne sont pas proposables aux clients.',
-            'es'=>'De 2 a 5 vídeos: uno hablando a cámara, uno con un producto en la mano, uno mostrando cómo se usa. Sin marcas de agua, sin tu @ y sin logos de TikTok o Instagram: los vídeos con firma social no podemos ofrecerlos a los clientes.',
+            'it'=>'Da 2 a 5 video: parli in camera · prodotto in mano · come si usa. Mai watermark, @ o loghi social.',
+            'en'=>'2 to 5 videos: talking to camera · product in hand · how it is used. Never a watermark, @handle or social logo.',
+            'fr'=>'De 2 à 5 vidéos : face caméra · produit en main · comment on l\'utilise. Jamais de filigrane, de @ ni de logo social.',
+            'es'=>'De 2 a 5 vídeos: hablando a cámara · producto en la mano · cómo se usa. Nunca marca de agua, @ ni logos sociales.',
         ),
         'hint'  => array(
             'it'=>'Video verticali girati col telefono, luce naturale, voce chiara. Vanno bene anche contenuti che hai già fatto per te o per altri brand.',
@@ -480,10 +480,10 @@ $theme_uri = get_stylesheet_directory_uri();
             <h3><?php echo _ht_talent(array('it'=>'Chi sei','en'=>'Who you are','fr'=>'Qui es-tu','es'=>'Quién eres')); ?></h3>
             <?php // 2026-08-15 — promessa corta in cima allo Step 1: è qui che si vince l'iscrizione ?>
             <p class="toa-alb-promessa"><?php echo _ht_talent_raw(array(
-                'it'=>'<strong>Ti basta questa pagina per entrare.</strong> Nome, contatti, dove vivi e una foto del viso: meno di un minuto. Ruoli, misure, album e video li aggiungi dopo, con calma — anche in un altro momento.',
-                'en'=>'<strong>This page is all you need to get in.</strong> Name, contacts, where you live and one photo of your face: under a minute. Roles, measurements, albums and video come later, at your own pace — even another day.',
-                'fr'=>'<strong>Cette page suffit pour entrer.</strong> Nom, contacts, où tu vis et une photo du visage : moins d\'une minute. Rôles, mensurations, albums et vidéo viennent après, tranquillement — même un autre jour.',
-                'es'=>'<strong>Con esta página ya estás dentro.</strong> Nombre, contactos, dónde vives y una foto de la cara: menos de un minuto. Roles, medidas, álbumes y vídeo los añades después, con calma — incluso otro día.',
+                'it'=>'<strong>Ti basta questa pagina per entrare.</strong> Nome, contatti, città e una foto del viso: meno di un minuto. Il resto lo aggiungi dopo.',
+                'en'=>'<strong>This page is all you need to get in.</strong> Name, contacts, city and one photo of your face: under a minute. The rest comes later.',
+                'fr'=>'<strong>Cette page suffit pour entrer.</strong> Nom, contacts, ville et une photo du visage : moins d\'une minute. Le reste vient après.',
+                'es'=>'<strong>Con esta página ya estás dentro.</strong> Nombre, contactos, ciudad y una foto de la cara: menos de un minuto. El resto lo añades después.',
             )); ?></p>
             <p class="toa-talent-step-help"><?php echo _ht_talent(array('it'=>'Iniziamo con i dati base. Se stai registrando un minore, inserisci i suoi dati anagrafici (nome, data di nascita ecc.) e poi quelli del genitore.','en'=>'Basic info first. If registering a minor, enter the minor\'s personal data first.','fr'=>'Infos de base. Pour un mineur, saisis ses données.','es'=>'Datos básicos. Para un menor, introduce sus datos.')); ?></p>
 
@@ -864,10 +864,10 @@ $theme_uri = get_stylesheet_directory_uri();
                 <?php // 2026-08-14 (TEMA REGISTRAZIONE TALENT): "UGC Creator" è gergo, una riga per capirlo al volo ?>
                 <?php // 2026-08-15 — invito ad aggiungere ruoli: le domande in più arrivano solo per quelli scelti ?>
                 <p class="toa-alb-altriruoli"><?php echo _ht_talent_raw(array(
-                    'it'=>'<strong>Puoi selezionarne più di uno.</strong> Molti lavorano su più fronti: una hostess fa anche la comparsa, un modello gira contenuti per i brand. Più ruoli spunti, più lavori ti possiamo proporre — e ti chiediamo solo le cose che servono a quei ruoli, niente di più.',
-                    'en'=>'<strong>You can pick more than one.</strong> Many people work across several areas: a hostess also does extra work, a model shoots content for brands. The more roles you tick, the more jobs we can offer you — and we only ask for what those roles need, nothing more.',
-                    'fr'=>'<strong>Tu peux en cocher plusieurs.</strong> Beaucoup travaillent sur plusieurs fronts : une hôtesse fait aussi de la figuration, un mannequin tourne des contenus pour les marques. Plus tu coches de rôles, plus on peut te proposer de missions — et on ne demande que ce qui sert à ces rôles.',
-                    'es'=>'<strong>Puedes marcar más de uno.</strong> Mucha gente trabaja en varios frentes: una azafata también hace de extra, un modelo graba contenidos para marcas. Cuantos más roles marques, más trabajos podemos ofrecerte — y solo te pedimos lo que hace falta para esos roles.',
+                    'it'=>'<strong>Puoi sceglierne più di uno:</strong> più ruoli, più lavori. Ti chiediamo solo quello che serve ai ruoli che scegli.',
+                    'en'=>'<strong>You can pick more than one:</strong> more roles, more jobs. We only ask for what the roles you pick actually need.',
+                    'fr'=>'<strong>Tu peux en cocher plusieurs :</strong> plus de rôles, plus de missions. On ne demande que ce qui sert aux rôles choisis.',
+                    'es'=>'<strong>Puedes marcar más de uno:</strong> más roles, más trabajos. Solo te pedimos lo que hace falta para los roles que elijas.',
                 )); ?></p>
                 <small class="toa-talent-form-hint" style="display:block;margin-top:8px;color:#9ca3af;font-size:0.78rem;line-height:1.5;"><?php echo _ht_talent(array(
                     'it'=>'UGC Creator = appari nei video creando contenuti per i brand. Influencer/Creator = pubblichi sui tuoi canali con il tuo pubblico.',
@@ -894,10 +894,10 @@ $theme_uri = get_stylesheet_directory_uri();
                         <input type="number" name="altezza" class="toa-talent-input" min="100" max="220" placeholder="170" required>
                         <?php // 2026-08-14 (TEMA REGISTRAZIONE TALENT): istruzioni di misurazione + avviso veridicità ?>
                         <small class="toa-talent-form-hint" style="display:block;margin-top:6px;color:#9ca3af;font-size:0.78rem;line-height:1.5;"><?php echo _ht_talent(array(
-                            'it'=>'Senza scarpe, fino alla sommità della testa (non ai capelli). Dichiara la misura vera: sul set viene verificata e un dato falso può farti perdere l\'ingaggio.',
-                            'en'=>'No shoes, measured to the top of the head (not the hair). Declare your real height: it is checked on set and a false figure can cost you the job.',
-                            'fr'=>'Sans chaussures, jusqu\'au sommet du crâne (pas les cheveux). Déclare ta vraie taille : elle est vérifiée sur le plateau et un chiffre faux peut te coûter le contrat.',
-                            'es'=>'Sin zapatos, hasta la parte más alta de la cabeza (no el pelo). Declara tu altura real: se comprueba en el set y un dato falso puede costarte el trabajo.',
+                            'it'=>'Senza scarpe, fino alla sommità della testa. Dichiara la misura vera: sul set la verificano.',
+                            'en'=>'No shoes, up to the top of the head. Declare your real height: they check it on set.',
+                            'fr'=>'Sans chaussures, jusqu\'au sommet du crâne. Déclare ta vraie taille : elle est vérifiée sur le plateau.',
+                            'es'=>'Sin zapatos, hasta la parte más alta de la cabeza. Declara tu altura real: la comprueban en el set.',
                         )); ?></small>
                     </div>
                 </div>
@@ -981,10 +981,10 @@ $theme_uri = get_stylesheet_directory_uri();
                         'es'=>'📏 Medidas (opcionales) — abre solo si trabajas en moda',
                     )); ?></summary>
                     <p class="toa-talent-step-help" style="margin-top:10px;"><?php echo _ht_talent(array(
-                        'it'=>'Servono per il fitting nei casting moda. Compila solo se le conosci davvero: misure inventate fanno saltare il fitting il giorno stesso. Se non le sai, lascia vuoto.',
-                        'en'=>'Used for fitting in fashion castings. Fill them in only if you actually know them: made-up measurements blow the fitting on the day. If you don\'t know them, leave blank.',
-                        'fr'=>'Utiles pour le fitting des castings mode. Ne remplis que si tu les connais vraiment : des mensurations inventées font rater le fitting le jour même. Sinon, laisse vide.',
-                        'es'=>'Sirven para el fitting en castings de moda. Rellena solo si las conoces de verdad: unas medidas inventadas arruinan el fitting el mismo día. Si no las sabes, déjalo vacío.',
+                        'it'=>'Servono per il fitting moda. Compila solo se le conosci: misure inventate fanno saltare il fitting.',
+                        'en'=>'Used for fashion fittings. Fill them in only if you know them: made-up measurements blow the fitting.',
+                        'fr'=>'Utiles pour le fitting mode. Ne remplis que si tu les connais : des mensurations inventées font rater le fitting.',
+                        'es'=>'Sirven para el fitting de moda. Rellena solo si las conoces: unas medidas inventadas arruinan el fitting.',
                     )); ?></p>
                     <div class="toa-talent-field-row">
                         <div class="toa-talent-field">
@@ -1210,10 +1210,10 @@ $theme_uri = get_stylesheet_directory_uri();
             <div class="toa-talent-upload-section">
                 <h5>📷 <?php echo _ht_talent(array('it'=>'Le tue foto e i tuoi video','en'=>'Your photos and videos','fr'=>'Tes photos et tes vidéos','es'=>'Tus fotos y tus vídeos')); ?></h5>
                 <p class="toa-talent-step-help"><?php echo _ht_talent(array(
-                    'it'=>'Questi sono gli album del tuo profilo. Più ne completi tra quelli che servono ai ruoli che hai scelto, più opportunità ricevi. Senza le foto richieste il tuo profilo viene proposto meno.',
-                    'en'=>'These are your profile albums. The more you complete among those your chosen roles need, the more opportunities you get. Without the required photos your profile gets proposed less.',
-                    'fr'=>'Voici les albums de ton profil. Plus tu en complètes parmi ceux qu\'exigent tes rôles, plus tu reçois d\'opportunités. Sans les photos demandées, ton profil est proposé moins souvent.',
-                    'es'=>'Estos son los álbumes de tu perfil. Cuantos más completes entre los que piden tus roles, más oportunidades recibes. Sin las fotos requeridas tu perfil se propone menos.',
+                    'it'=>'Più album completi tra quelli che ti servono, più lavori ricevi. Senza foto il profilo viene proposto meno.',
+                    'en'=>'The more albums you complete among those you need, the more jobs you get. Without photos your profile gets proposed less.',
+                    'fr'=>'Plus tu complètes d\'albums parmi ceux qu\'il te faut, plus tu reçois de missions. Sans photos, ta fiche est proposée moins souvent.',
+                    'es'=>'Cuantos más álbumes completes entre los que necesitas, más trabajos recibes. Sin fotos tu perfil se propone menos.',
                 )); ?></p>
 
                 <div class="toa-talent-upload-counter" id="toaTalentPhotosCounter"><strong>0</strong> / 15</div>
@@ -1314,10 +1314,10 @@ $theme_uri = get_stylesheet_directory_uri();
                         <?php if (in_array($code, array('portfolio','portfolio_cinema','dettaglio'), true)): ?>
                             <?php // 2026-08-14 — prima del pulsante: non andartene senza aver caricato quello che hai ?>
                             <p class="toa-alb-wa-intro"><?php echo _ht_talent_raw(array(
-                                'it'=>'Non hai foto professionali? Non fermarti qui: carica lo stesso quelle che hai nelle <strong>Pola e presentazione</strong> e in <strong>Altre foto</strong>, e completa la scheda. Poi scrivici su WhatsApp al <strong>+39 351 789 9225</strong> per farle con un fotografo convenzionato dell\'agenzia, oppure usa il pulsante qui sotto.',
-                                'en'=>'No professional photos? Don\'t stop here: upload the ones you do have in <strong>Polaroids</strong> and <strong>Other photos</strong>, and finish your profile. Then message us on WhatsApp at <strong>+39 351 789 9225</strong> to shoot them with a photographer affiliated with the agency, or use the button below.',
-                                'fr'=>'Pas de photos professionnelles ? Ne t\'arrête pas là : charge quand même celles que tu as dans <strong>Polas</strong> et <strong>Autres photos</strong>, et termine ta fiche. Écris-nous ensuite sur WhatsApp au <strong>+39 351 789 9225</strong> pour les faire avec un photographe partenaire de l\'agence, ou utilise le bouton ci-dessous.',
-                                'es'=>'¿No tienes fotos profesionales? No te pares aquí: sube igualmente las que tienes en <strong>Polas</strong> y <strong>Otras fotos</strong>, y completa la ficha. Luego escríbenos por WhatsApp al <strong>+39 351 789 9225</strong> para hacerlas con un fotógrafo asociado a la agencia, o usa el botón de abajo.',
+                                'it'=>'<strong>Non hai foto professionali?</strong> Carica quelle che hai in <strong>Pola</strong> e <strong>Altre foto</strong> e finisci la scheda. Per farle con un fotografo dell\'agenzia scrivici al <strong>+39 351 789 9225</strong>.',
+                                'en'=>'<strong>No professional photos?</strong> Upload the ones you have in <strong>Polaroids</strong> and <strong>Other photos</strong> and finish your profile. To shoot them with an agency photographer message us at <strong>+39 351 789 9225</strong>.',
+                                'fr'=>'<strong>Pas de photos professionnelles ?</strong> Charge celles que tu as dans <strong>Polas</strong> et <strong>Autres photos</strong> et termine ta fiche. Pour les faire avec un photographe de l\'agence écris-nous au <strong>+39 351 789 9225</strong>.',
+                                'es'=>'<strong>¿No tienes fotos profesionales?</strong> Sube las que tienes en <strong>Polas</strong> y <strong>Otras fotos</strong> y termina la ficha. Para hacerlas con un fotógrafo de la agencia escríbenos al <strong>+39 351 789 9225</strong>.',
                             )); ?></p>
                             <a class="toa-alb-wa" data-wa="1" data-moda="<?php echo esc_attr($wa_moda); ?>" data-cinema="<?php echo esc_attr($wa_cinema); ?>" data-num="<?php echo esc_attr($TALENT_WA_NUM); ?>" href="https://wa.me/<?php echo esc_attr($TALENT_WA_NUM); ?>?text=<?php echo rawurlencode($wa_moda); ?>" target="_blank" rel="noopener"><?php echo esc_html($wa_label); ?></a>
                         <?php endif; ?>
@@ -1369,10 +1369,10 @@ $theme_uri = get_stylesheet_directory_uri();
                               // lo registriamo lo stesso e lo segnaliamo come potenziale. ?>
                         <?php if ($code === 'ugc'): ?>
                             <p class="toa-alb-potenziale" id="toaTalentUgcPotenziale"><?php echo _ht_talent_raw(array(
-                                'it'=>'<strong>Non hai ancora contenuti UGC?</strong> Completa comunque la registrazione: ti segnaliamo come <em>potenziale UGC creator</em>. Non entrerai subito nel database UGC — per quello servono i video — ma ti contattiamo noi per aiutarti a produrre i primi, anche con lo staff TOAgency a condizioni agevolate. Intanto carica foto e video che hai: ci servono per proporti su altri lavori.',
-                                'en'=>'<strong>No UGC content yet?</strong> Complete the registration anyway: we will flag you as a <em>potential UGC creator</em>. You will not enter the UGC database right away — that needs videos — but we will contact you to help you make your first ones, also with the TOAgency staff at a reduced rate. Meanwhile upload the photos and videos you do have: we need them to put you forward for other jobs.',
-                                'fr'=>'<strong>Pas encore de contenus UGC ?</strong> Termine quand même ton inscription : on te signale comme <em>créateur UGC potentiel</em>. Tu n\'entreras pas tout de suite dans la base UGC — il faut des vidéos — mais on te contacte pour t\'aider à faire les premières, aussi avec l\'équipe TOAgency à tarif réduit. En attendant charge les photos et vidéos que tu as : elles nous servent pour te proposer sur d\'autres missions.',
-                                'es'=>'<strong>¿Aún no tienes contenidos UGC?</strong> Completa igualmente el registro: te marcamos como <em>potencial creador UGC</em>. No entrarás enseguida en la base UGC — para eso hacen falta vídeos — pero te contactamos para ayudarte a hacer los primeros, también con el equipo de TOAgency a precio reducido. Mientras tanto sube las fotos y vídeos que tengas: nos sirven para proponerte en otros trabajos.',
+                                'it'=>'<strong>Non hai ancora contenuti?</strong> Registrati lo stesso: ti segniamo come <em>potenziale UGC</em> e ti contattiamo per aiutarti a farli, anche con lo staff TOAgency. Intanto carica quello che hai.',
+                                'en'=>'<strong>No content yet?</strong> Register anyway: we flag you as a <em>potential UGC creator</em> and contact you to help you make your first ones, also with the TOAgency staff. Meanwhile upload what you have.',
+                                'fr'=>'<strong>Pas encore de contenus ?</strong> Inscris-toi quand même : on te signale comme <em>créateur UGC potentiel</em> et on te contacte pour t\'aider à faire les premières, aussi avec l\'équipe TOAgency. En attendant charge ce que tu as.',
+                                'es'=>'<strong>¿Aún no tienes contenidos?</strong> Regístrate igualmente: te marcamos como <em>potencial creador UGC</em> y te contactamos para ayudarte a hacer los primeros, también con el equipo de TOAgency. Mientras tanto sube lo que tengas.',
                             )); ?></p>
                         <?php endif; ?>
                         <?php if (!empty($al['video'])): ?>
@@ -1380,25 +1380,25 @@ $theme_uri = get_stylesheet_directory_uri();
                                 // testi con <strong>/<br>: vanno in raw, altrimenti si vedono i tag
                                 echo $al['video'] === 'video_selftape'
                                     ? _ht_talent_raw(array(
-                                        'it'=>'🎬 <strong>Self-tape — per gli attori è la cosa più importante di tutte.</strong><br>1. Apri con il tuo <strong>nome</strong> e l\'età, e subito dopo <strong>la data di oggi</strong>: «Sono Luca, ho 28 anni, oggi è il 15 agosto 2026». <span class="toa-alb-vietato">⛔ Mai il cognome: se lo dici il video non viene accettato.</span><br>3. Presentati e recita qualche battuta, un minuto basta. Telefono in verticale, luce davanti, sfondo neutro.<br>4. Primo piano e figura intera. Senza self-tape le produzioni non ti convocano.',
-                                        'en'=>'🎬 <strong>Self-tape — for actors this matters more than anything else.</strong><br>1. Open with your <strong>first name</strong> and age, then <strong>today\'s date</strong>: "I\'m Luca, I\'m 28, today is 15 August 2026". <span class="toa-alb-vietato">⛔ Never your surname: if you say it the video is not accepted.</span><br>3. Introduce yourself and perform a few lines, one minute is enough. Phone vertical, light in front, plain background.<br>4. Close-up and full length. Without a self-tape productions will not call you.',
-                                        'fr'=>'🎬 <strong>Self-tape — pour les comédiens c\'est ce qui compte le plus.</strong><br>1. Commence par ton <strong>prénom</strong> et ton âge, puis <strong>la date du jour</strong> : « Je suis Luca, j\'ai 28 ans, aujourd\'hui nous sommes le 15 août 2026 ». <span class="toa-alb-vietato">⛔ Jamais ton nom de famille : si tu le dis la vidéo n\'est pas acceptée.</span><br>3. Présente-toi et joue quelques répliques, une minute suffit. Téléphone en vertical, lumière de face, fond neutre.<br>4. Gros plan et plein pied. Sans self-tape les productions ne te convoquent pas.',
-                                        'es'=>'🎬 <strong>Self-tape — para los actores es lo más importante de todo.</strong><br>1. Empieza con tu <strong>nombre</strong> y tu edad, y justo después <strong>la fecha de hoy</strong>: «Soy Luca, tengo 28 años, hoy es 15 de agosto de 2026». <span class="toa-alb-vietato">⛔ Nunca el apellido: si lo dices el vídeo no se acepta.</span><br>3. Preséntate e interpreta unas líneas, un minuto basta. Móvil en vertical, luz de frente, fondo neutro.<br>4. Primer plano y cuerpo entero. Sin self-tape las producciones no te llaman.',
+                                        'it'=>'🎬 <strong>Self-tape — per un attore è tutto.</strong><br>1. Nome, età e <strong>data di oggi</strong>.<br>2. <span class="toa-alb-vietato">⛔ Mai il cognome</span>, o il video non viene accettato.<br>3. Presentati e recita qualche battuta: un minuto basta. Telefono in verticale, luce davanti, sfondo neutro.<br>4. Primo piano e figura intera. <strong>Senza self-tape le produzioni non ti convocano.</strong>',
+                                        'en'=>'🎬 <strong>Self-tape — for an actor this is everything.</strong><br>1. Name, age and <strong>today\'s date</strong>.<br>2. <span class="toa-alb-vietato">⛔ Never your surname</span>, or the video is not accepted.<br>3. Introduce yourself and perform a few lines: one minute is enough. Phone vertical, light in front, plain background.<br>4. Close-up and full body. <strong>Without a self-tape productions will not call you.</strong>',
+                                        'fr'=>'🎬 <strong>Self-tape — pour un comédien c\'est tout.</strong><br>1. Prénom, âge et <strong>date du jour</strong>.<br>2. <span class="toa-alb-vietato">⛔ Jamais ton nom de famille</span>, sinon la vidéo est refusée.<br>3. Présente-toi et joue quelques répliques : une minute suffit. Téléphone vertical, lumière de face, fond neutre.<br>4. Gros plan et plein pied. <strong>Sans self-tape les productions ne te convoquent pas.</strong>',
+                                        'es'=>'🎬 <strong>Self-tape — para un actor lo es todo.</strong><br>1. Nombre, edad y <strong>fecha de hoy</strong>.<br>2. <span class="toa-alb-vietato">⛔ Nunca el apellido</span>, o el vídeo no se acepta.<br>3. Preséntate e interpreta unas líneas: un minuto basta. Móvil vertical, luz de frente, fondo neutro.<br>4. Primer plano y cuerpo entero. <strong>Sin self-tape las producciones no te llaman.</strong>',
                                     ))
                                     : _ht_talent_raw(array(
-                                        'it'=>'🎥 <strong>Video di presentazione — 30 secondi, in verticale.</strong><br>1. Di\' il tuo <strong>nome</strong> e l\'età, e subito dopo <strong>la data di oggi</strong>: «Sono Giulia, ho 24 anni, oggi è il 15 agosto 2026». <span class="toa-alb-vietato">⛔ Mai il cognome: se lo dici il video non viene accettato.</span><br>3. Parla per 30 secondi di quello che vuoi, anche del tempo che fa oggi nella tua città: serve solo a sentire la tua voce.<br>4. Fai vedere: <strong>profilo destro e sinistro</strong>, le <strong>mani davanti e dietro</strong>, il sorriso e i denti. Poi allontanati fino a farti vedere a figura intera e fai un giro su te stesso.',
-                                        'en'=>'🎥 <strong>Presentation video — 30 seconds, vertical.</strong><br>1. Say your <strong>first name</strong> and your age, then <strong>today\'s date</strong>: "I\'m Giulia, I\'m 24, today is 15 August 2026". <span class="toa-alb-vietato">⛔ Never your surname: if you say it the video is not accepted.</span><br>3. Talk for 30 seconds about anything, even today\'s weather in your city: it is only to hear your voice.<br>4. Show: <strong>left and right profile</strong>, your <strong>hands front and back</strong>, your smile and teeth. Then step back to full length and turn once around yourself.',
-                                        'fr'=>'🎥 <strong>Vidéo de présentation — 30 secondes, en vertical.</strong><br>1. Dis ton <strong>prénom</strong> et ton âge, puis <strong>la date du jour</strong> : « Je suis Giulia, j\'ai 24 ans, aujourd\'hui nous sommes le 15 août 2026 ». <span class="toa-alb-vietato">⛔ Jamais ton nom de famille : si tu le dis la vidéo n\'est pas acceptée.</span><br>3. Parle 30 secondes de ce que tu veux, même du temps qu\'il fait aujourd\'hui dans ta ville : c\'est juste pour entendre ta voix.<br>4. Montre : <strong>profil droit et gauche</strong>, tes <strong>mains devant et derrière</strong>, ton sourire et tes dents. Puis recule en plein pied et fais un tour sur toi-même.',
-                                        'es'=>'🎥 <strong>Vídeo de presentación — 30 segundos, en vertical.</strong><br>1. Di tu <strong>nombre</strong> y tu edad, y justo después <strong>la fecha de hoy</strong>: «Soy Giulia, tengo 24 años, hoy es 15 de agosto de 2026». <span class="toa-alb-vietato">⛔ Nunca el apellido: si lo dices el vídeo no se acepta.</span><br>3. Habla 30 segundos de lo que quieras, incluso del tiempo que hace hoy en tu ciudad: sirve solo para oír tu voz.<br>4. Enseña: <strong>perfil derecho e izquierdo</strong>, las <strong>manos por delante y por detrás</strong>, la sonrisa y los dientes. Luego aléjate a cuerpo entero y da una vuelta sobre ti mismo.',
+                                        'it'=>'🎥 <strong>Video di presentazione — 30 secondi.</strong><br>1. Nome, età e <strong>data di oggi</strong>: «Sono Giulia, 24 anni, oggi è il 15 agosto».<br>2. <span class="toa-alb-vietato">⛔ Mai il cognome</span>, o il video non viene accettato.<br>3. Parla di quello che vuoi: serve solo a sentire la voce.<br>4. Mostra profili, mani davanti e dietro, denti. Poi figura intera e un giro su te stesso.',
+                                        'en'=>'🎥 <strong>Presentation video — 30 seconds.</strong><br>1. Name, age and <strong>today\'s date</strong>: "I\'m Giulia, 24, today is 15 August".<br>2. <span class="toa-alb-vietato">⛔ Never your surname</span>, or the video is not accepted.<br>3. Talk about anything: it is only to hear your voice.<br>4. Show profiles, hands front and back, teeth. Then full body and one turn around.',
+                                        'fr'=>'🎥 <strong>Vidéo de présentation — 30 secondes.</strong><br>1. Prénom, âge et <strong>date du jour</strong> : « Je suis Giulia, 24 ans, aujourd\'hui le 15 août ».<br>2. <span class="toa-alb-vietato">⛔ Jamais ton nom de famille</span>, sinon la vidéo est refusée.<br>3. Parle de ce que tu veux : c\'est pour entendre ta voix.<br>4. Montre profils, mains devant et derrière, dents. Puis plein pied et un tour sur toi-même.',
+                                        'es'=>'🎥 <strong>Vídeo de presentación — 30 segundos.</strong><br>1. Nombre, edad y <strong>fecha de hoy</strong>: «Soy Giulia, 24 años, hoy es 15 de agosto».<br>2. <span class="toa-alb-vietato">⛔ Nunca el apellido</span>, o el vídeo no se acepta.<br>3. Habla de lo que quieras: sirve para oír tu voz.<br>4. Enseña perfiles, manos por delante y detrás, dientes. Luego cuerpo entero y una vuelta.',
                                     ));
                             ?></p>
                         <?php endif; ?>
                         <?php // 2026-08-14 — spiegazione della data, con il pallino informativo ?>
                         <p class="toa-alb-info"><span class="toa-alb-info-dot">i</span><?php echo _ht_talent(array(
-                            'it'=>'Su ogni foto scegli il mese e l\'anno in cui è stata SCATTATA, non la data di oggi. Serve per i contratti e le liberatorie: una data sbagliata può invalidarli.',
-                            'en'=>'On each photo pick the month and year it was TAKEN, not today\'s date. It is used for contracts and release forms: a wrong date can invalidate them.',
-                            'fr'=>'Sur chaque photo choisis le mois et l\'année de la PRISE DE VUE, pas la date du jour. Cela sert aux contrats et aux autorisations : une date fausse peut les invalider.',
-                            'es'=>'En cada foto elige el mes y el año en que se HIZO, no la fecha de hoy. Sirve para los contratos y las autorizaciones: una fecha equivocada puede invalidarlos.',
+                            'it'=>'Su ogni foto scegli mese e anno dello <strong>scatto</strong>, non di oggi: serve per contratti e liberatorie.',
+                            'en'=>'On each photo pick the month and year it was <strong>taken</strong>, not today: it is used for contracts and releases.',
+                            'fr'=>'Sur chaque photo choisis le mois et l\'année de la <strong>prise de vue</strong>, pas du jour : ça sert aux contrats et aux autorisations.',
+                            'es'=>'En cada foto elige el mes y el año en que se <strong>hizo</strong>, no el de hoy: sirve para contratos y autorizaciones.',
                         )); ?></p>
                         <div class="toa-talent-thumbs" id="toaTalentThumbs_<?php echo esc_attr($code); ?>"></div>
                         <div class="toa-album-count" id="toaTalentCountBox_<?php echo esc_attr($code); ?>"><strong id="toaTalentCount_<?php echo esc_attr($code); ?>">0</strong> <?php echo _ht_talent(array('it'=>'foto caricate — consigliate da 3 a 8 per ogni album','en'=>'photos uploaded — 3 to 8 recommended for each album','fr'=>'photos chargées — 3 à 8 conseillées pour chaque album','es'=>'fotos subidas — de 3 a 8 recomendadas para cada álbum')); ?></div>
@@ -1566,7 +1566,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260817album48" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260817album49" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
