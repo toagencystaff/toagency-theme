@@ -1287,12 +1287,13 @@ $theme_uri = get_stylesheet_directory_uri();
                             if ($etichette):
                         ?>
                         <div class="toa-alb-addrole" hidden>
-                            <p><?php echo _ht_talent(array(
-                                'it'=>'Questo album serve a un ruolo che non hai selezionato. Vuoi aggiungerlo alla tua scheda?',
-                                'en'=>'This album belongs to a role you haven\'t selected. Do you want to add it to your profile?',
-                                'fr'=>'Cet album correspond à un rôle que tu n\'as pas coché. Tu veux l\'ajouter à ta fiche ?',
-                                'es'=>'Este álbum es de un rol que no has seleccionado. ¿Quieres añadirlo a tu ficha?',
-                            )); ?></p>
+                            <?php // il testo nomina i ruoli veri dell'album: "serve a un ruolo" era troppo vago ?>
+                            <p><?php echo esc_html(str_replace('%r', implode(' · ', $etichette), _ht_talent(array(
+                                'it'=>'Questo album serve a: %r. Fai anche tu uno di questi lavori? Aggiungilo alla tua scheda e l\'album si accende.',
+                                'en'=>'This album is for: %r. Do you do any of these too? Add it to your profile and the album lights up.',
+                                'fr'=>'Cet album concerne : %r. Tu fais aussi l\'un de ces métiers ? Ajoute-le à ta fiche et l\'album s\'active.',
+                                'es'=>'Este álbum es para: %r. ¿Tú también haces alguno de estos trabajos? Añádelo a tu ficha y el álbum se activa.',
+                            )))); ?></p>
                             <?php foreach ($etichette as $rc => $rl): ?>
                                 <button type="button" class="toa-alb-addrole-btn" data-role="<?php echo esc_attr($rc); ?>">
                                     + <?php echo esc_html($rl); ?>
@@ -1562,7 +1563,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260816album45" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260817album46" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
