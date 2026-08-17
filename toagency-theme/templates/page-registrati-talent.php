@@ -170,10 +170,10 @@ $TALENT_ALBUM = array(
             'es'=>'De 3 a 8 fotos: primer plano expresivo, medio cuerpo, una en escena o en el set.',
         ),
         'hint'  => array(
-            'it'=>'Scatti da book attoriale o fotogrammi dei tuoi lavori: primo piano espressivo, mezzo busto, luce naturale. Niente trucco pesante.',
-            'en'=>'Acting book shots or frames from your work: expressive close-up, chest-up, natural light. No heavy makeup.',
-            'fr'=>'Photos de book comédien ou images de tes travaux : gros plan expressif, buste, lumière naturelle. Pas de maquillage lourd.',
-            'es'=>'Fotos de book actoral o fotogramas de tus trabajos: primer plano expresivo, medio cuerpo, luz natural. Sin maquillaje pesado.',
+            'it'=>'Book attoriale o fotogrammi dei tuoi lavori: primo piano espressivo, mezzo busto, luce naturale.',
+            'en'=>'Acting book or frames from your work: expressive close-up, chest-up, natural light.',
+            'fr'=>'Book comédien ou images de tes travaux : gros plan expressif, buste, lumière naturelle.',
+            'es'=>'Book actoral o fotogramas de tus trabajos: primer plano expresivo, medio cuerpo, luz natural.',
         ),
     ),
     array(
@@ -200,10 +200,10 @@ $TALENT_ALBUM = array(
             'es'=>'De 2 a 5 vídeos: hablando a cámara · producto en la mano · cómo se usa. Nunca marca de agua, @ ni logos sociales.',
         ),
         'hint'  => array(
-            'it'=>'Video verticali girati col telefono, luce naturale, voce chiara. Vanno bene anche contenuti che hai già fatto per te o per altri brand.',
-            'en'=>'Vertical videos shot on your phone, natural light, clear voice. Content you already made for yourself or other brands works too.',
-            'fr'=>'Vidéos verticales filmées au téléphone, lumière naturelle, voix claire. Les contenus déjà faits pour toi ou d\'autres marques conviennent aussi.',
-            'es'=>'Vídeos verticales grabados con el móvil, luz natural, voz clara. También valen contenidos que ya hiciste para ti o para otras marcas.',
+            'it'=>'Verticali, col telefono, voce chiara. Vanno bene anche contenuti già fatti per te o per altri brand.',
+            'en'=>'Vertical, on your phone, clear voice. Content you already made for yourself or other brands works too.',
+            'fr'=>'Verticales, au téléphone, voix claire. Les contenus déjà faits pour toi ou d\'autres marques conviennent aussi.',
+            'es'=>'Verticales, con el móvil, voz clara. También valen contenidos ya hechos para ti o para otras marcas.',
         ),
     ),
     array(
@@ -216,10 +216,10 @@ $TALENT_ALBUM = array(
             'es'=>'De 3 a 8 fotos: manos, perfil, pelo, sonrisa. Primeros planos limpios.',
         ),
         'hint'  => array(
-            'it'=>'Mani, profilo, capelli. Primi piani puliti su sfondo neutro: i casting moda li chiedono sempre. Per ogni foto indica il mese e l\'anno in cui l\'hai SCATTATA: è obbligatorio.',
-            'en'=>'Hands, profile, hair. Clean close-ups on a neutral background: fashion castings always ask for them. For each photo add the month and year it was TAKEN: it is required.',
-            'fr'=>'Mains, profil, cheveux. Gros plans nets sur fond neutre : les castings mode les demandent toujours. Pour chaque photo indique le mois et l\'année de la PRISE DE VUE : c\'est obligatoire.',
-            'es'=>'Manos, perfil, pelo. Primeros planos limpios sobre fondo neutro: los castings de moda siempre los piden. En cada foto indica el mes y el año en que la HICISTE: es obligatorio.',
+            'it'=>'Mani, profilo, capelli, sorriso. Primi piani puliti su sfondo neutro: i casting moda li chiedono sempre.',
+            'en'=>'Hands, profile, hair, smile. Clean close-ups on a neutral background: fashion castings always ask for them.',
+            'fr'=>'Mains, profil, cheveux, sourire. Gros plans nets sur fond neutre : les castings mode les demandent toujours.',
+            'es'=>'Manos, perfil, pelo, sonrisa. Primeros planos limpios sobre fondo neutro: los castings de moda siempre los piden.',
         ),
     ),
     array(
@@ -552,10 +552,10 @@ $theme_uri = get_stylesheet_directory_uri();
             <div class="toa-talent-genitore" id="toaTalentGenitore015">
                 <h4>👨‍👩‍👧 <?php echo _ht_talent(array('it'=>'Dati del genitore / tutore legale','en'=>'Parent / legal guardian data','fr'=>'Données du parent','es'=>'Datos del padre/tutor')); ?></h4>
                 <p><?php echo _ht_talent(array(
-                    'it'=>'Il talent ha meno di 16 anni. Inserisci i dati del genitore o tutore legale che compila il form e autorizza la registrazione.',
-                    'en'=>'The talent is under 16. Enter the parent/guardian data who fills in the form and authorizes registration.',
-                    'fr'=>'Talent de moins de 16 ans. Renseigne les données du parent qui autorise l\'inscription.',
-                    'es'=>'Talent menor de 16 años. Introduce los datos del padre/tutor que autoriza el registro.',
+                    'it'=>'Sotto i 16 anni: servono i dati del genitore o tutore che compila e autorizza.',
+                    'en'=>'Under 16: we need the details of the parent or guardian filling in and authorising.',
+                    'fr'=>'Moins de 16 ans : il faut les données du parent ou tuteur qui remplit et autorise.',
+                    'es'=>'Menos de 16 años: hacen falta los datos del padre o tutor que rellena y autoriza.',
                 )); ?></p>
                 <div class="toa-talent-field-row">
                     <div class="toa-talent-field">
@@ -676,10 +676,10 @@ $theme_uri = get_stylesheet_directory_uri();
             <div class="toa-talent-upload-section">
                 <h5>👤 <?php echo _ht_talent(array('it'=>'Primo piano','en'=>'Close-up','fr'=>'Gros plan','es'=>'Primer plano')); ?> <span class="req">*</span></h5>
                 <p class="toa-talent-step-help"><?php echo _ht_talent(array(
-                    'it'=>'Una foto chiara del viso, frontale, su sfondo neutro e luce naturale, come nell\'esempio qui sotto. Sarà la tua immagine principale.',
-                    'en'=>'A clear, frontal photo of the face on a neutral background in natural light, like the example below. It will be your main image.',
-                    'fr'=>'Une photo claire du visage, de face, sur fond neutre et en lumière naturelle, comme dans l\'exemple ci-dessous. Ce sera votre image principale.',
-                    'es'=>'Una foto clara del rostro, frontal, con fondo neutro y luz natural, como en el ejemplo de abajo. Será tu imagen principal.',
+                    'it'=>'Viso frontale, sfondo neutro, luce naturale — come nell\'esempio. Sarà la tua immagine principale.',
+                    'en'=>'Face front-on, plain background, natural light — like the example. This will be your main image.',
+                    'fr'=>'Visage de face, fond neutre, lumière naturelle — comme l\'exemple. Ce sera ton image principale.',
+                    'es'=>'Cara de frente, fondo neutro, luz natural — como el ejemplo. Será tu imagen principal.',
                 )); ?></p>
                 <?php
                 $badge_ok = _ht_talent(array('it'=>'✅ Così sì','en'=>'✅ Yes like this','es'=>'✅ Así sí','fr'=>'✅ Oui comme ça'));
@@ -766,7 +766,7 @@ $theme_uri = get_stylesheet_directory_uri();
         <!-- ═════ STEP 2 — Dove vivi ═════ -->
         <div class="toa-talent-step" data-step="2">
             <h3><?php echo _ht_talent(array('it'=>'Domicilio','en'=>'Domicile','fr'=>'Domicile','es'=>'Domicilio')); ?></h3>
-            <p class="toa-talent-step-help"><?php echo _ht_talent(array('it'=>'Il domicilio coincide con la tua residenza? Se è diverso, indicacelo qui.','en'=>'Is your domicile the same as your residence? If not, tell us here.','fr'=>'Ton domicile est-il le même que ta résidence ?','es'=>'¿Tu domicilio coincide con tu residencia?')); ?></p>
+            <p class="toa-talent-step-help"><?php echo _ht_talent(array('it'=>'Vivi dove sei residente? Se no, indicaci l\'altro indirizzo.','en'=>'Do you live where you are resident? If not, tell us the other address.','fr'=>'Tu vis là où tu es domicilié ? Sinon, indique l\'autre adresse.','es'=>'¿Vives donde estás empadronado? Si no, indícanos la otra dirección.')); ?></p>
 
             <!-- Toggle domicilio -->
             <div class="toa-talent-field">
@@ -845,7 +845,7 @@ $theme_uri = get_stylesheet_directory_uri();
         <!-- ═════ STEP 3 — Cosa fai ═════ -->
         <div class="toa-talent-step" data-step="3">
             <h3><?php echo _ht_talent(array('it'=>'Cosa fai','en'=>'What you do','fr'=>'Ce que tu fais','es'=>'Qué haces')); ?></h3>
-            <p class="toa-talent-step-help"><?php echo _ht_talent(array('it'=>'Scegli i ruoli e compila le caratteristiche fisiche. Le categorie con badge "18+" richiedono la maggiore età.','en'=>'Choose roles and fill in physical features.','fr'=>'Rôles et caractéristiques physiques.','es'=>'Roles y características físicas.')); ?></p>
+            <p class="toa-talent-step-help"><?php echo _ht_talent(array('it'=>'Scegli i ruoli e compila le caratteristiche fisiche. Le categorie 18+ richiedono la maggiore età.','en'=>'Pick your roles and fill in your physical features. The 18+ categories require you to be of age.','fr'=>'Choisis tes rôles et remplis tes caractéristiques physiques. Les catégories 18+ exigent la majorité.','es'=>'Elige tus roles y rellena tus características físicas. Las categorías 18+ exigen ser mayor de edad.')); ?></p>
 
             <!-- Tipo talent forzato a immagine (backstage → form crew) -->
             <input type="hidden" name="tipo_talent" value="immagine">
@@ -870,10 +870,10 @@ $theme_uri = get_stylesheet_directory_uri();
                     'es'=>'<strong>Puedes marcar más de uno:</strong> más roles, más trabajos. Solo te pedimos lo que hace falta para los roles que elijas.',
                 )); ?></p>
                 <small class="toa-talent-form-hint" style="display:block;margin-top:8px;color:#9ca3af;font-size:0.78rem;line-height:1.5;"><?php echo _ht_talent(array(
-                    'it'=>'UGC Creator = appari nei video creando contenuti per i brand. Influencer/Creator = pubblichi sui tuoi canali con il tuo pubblico.',
-                    'en'=>'UGC Creator = you appear in videos making content for brands. Influencer/Creator = you post on your own channels to your own audience.',
-                    'fr'=>'Créateur UGC = tu apparais dans des vidéos en créant du contenu pour les marques. Influenceur/Créateur = tu publies sur tes canaux, avec ton audience.',
-                    'es'=>'Creador UGC = apareces en vídeos creando contenido para marcas. Influencer/Creador = publicas en tus canales, con tu público.',
+                    'it'=>'UGC Creator = giri contenuti per i brand. Influencer = pubblichi sui tuoi canali, col tuo pubblico.',
+                    'en'=>'UGC Creator = you shoot content for brands. Influencer = you post on your own channels, to your own audience.',
+                    'fr'=>'Créateur UGC = tu tournes des contenus pour les marques. Influenceur = tu publies sur tes canaux, avec ton public.',
+                    'es'=>'Creador UGC = grabas contenidos para marcas. Influencer = publicas en tus canales, con tu público.',
                 )); ?></small>
                 <div class="toa-talent-error-msg"></div>
             </div>
@@ -1566,7 +1566,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260817album50" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260817album51" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
