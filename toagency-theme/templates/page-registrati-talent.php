@@ -1132,6 +1132,7 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-alb-info-dot{flex:none;width:20px;height:20px;border-radius:50%;background:#3b82f6;color:#fff;font:800 .78rem/20px Georgia,serif;text-align:center}
                 .toa-alb-addrole{margin:0 0 14px;padding:12px 14px;border-radius:10px;background:rgba(59,130,246,.10);border:1px solid rgba(59,130,246,.40)}
                 .toa-alb-addrole p{margin:0 0 10px;font-size:.9rem;line-height:1.45;color:#bfdbfe}
+                .toa-alb-addrole-nota{margin:-4px 0 10px;font-size:.82rem;line-height:1.45;color:#9ec5fe;opacity:.9}
                 .toa-alb-addrole-btn{appearance:none;cursor:pointer;margin:0 8px 0 0;padding:9px 14px;border-radius:99px;border:1px solid #3b82f6;background:rgba(59,130,246,.18);color:#fff;font:700 .9rem/1 inherit}
                 .toa-alb-addrole-btn:hover{background:#3b82f6}
                 /* 2026-08-15 — il "Continua" deve essere lo stesso in tutti i passaggi e non si deve
@@ -1294,6 +1295,15 @@ $theme_uri = get_stylesheet_directory_uri();
                                 'fr'=>'Cet album concerne : %r. Tu fais aussi l\'un de ces métiers ? Ajoute-le à ta fiche et l\'album s\'active.',
                                 'es'=>'Este álbum es para: %r. ¿Tú también haces alguno de estos trabajos? Añádelo a tu ficha y el álbum se activa.',
                             )))); ?></p>
+                            <?php // Portfolio moda vale per due ruoli: senza una riga di spiegazione sembra un errore ?>
+                            <?php if ($code === 'portfolio'): ?>
+                                <p class="toa-alb-addrole-nota"><?php echo _ht_talent(array(
+                                    'it'=>'Sì, serve anche agli attori: per le pubblicità e i cataloghi i casting chiedono il book moda, non solo il self-tape.',
+                                    'en'=>'Yes, actors need it too: for commercials and catalogues castings ask for a fashion book, not just the self-tape.',
+                                    'fr'=>'Oui, les comédiens en ont besoin aussi : pour les pubs et les catalogues les castings demandent un book mode, pas seulement la self-tape.',
+                                    'es'=>'Sí, también lo necesitan los actores: para publicidad y catálogos los castings piden un book de moda, no solo el self-tape.',
+                                )); ?></p>
+                            <?php endif; ?>
                             <?php foreach ($etichette as $rc => $rl): ?>
                                 <button type="button" class="toa-alb-addrole-btn" data-role="<?php echo esc_attr($rc); ?>">
                                     + <?php echo esc_html($rl); ?>
@@ -1563,7 +1573,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260817album46" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260817album47" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
