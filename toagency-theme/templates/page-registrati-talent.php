@@ -140,7 +140,9 @@ $TALENT_ALBUM = array(
         ),
     ),
     array(
-        'code' => 'portfolio', 'roles' => 'model,actor', 'req' => true, 'video' => 'video_creator',
+        // 2026-08-17 (decisione di Marco): il book moda NON è richiesto agli attori.
+        // Prima era 'model,actor' perché così lo conta il motore del CRM: allineamento chiesto alla chat CRM.
+        'code' => 'portfolio', 'roles' => 'model', 'req' => true, 'video' => 'video_creator',
         'label' => array('it'=>'Portfolio moda','en'=>'Fashion portfolio','fr'=>'Portfolio mode','es'=>'Portfolio moda'),
         'quante' => array(
             'it'=>'Da 3 a 8 foto: un primo piano, una figura intera, un tre quarti, una ambientata.',
@@ -159,7 +161,7 @@ $TALENT_ALBUM = array(
         // 2026-08-14 — album dedicato agli attori (album CRM: portfolio_cinema).
         // Il CRM oggi NON lo conta nella % completamento: per gli attori pesa 'portfolio'.
         // Qui è facoltativo apposta, così non promettiamo punti che il backend non dà.
-        'code' => 'portfolio_cinema', 'roles' => 'actor', 'req' => false, 'video' => 'video_selftape',
+        'code' => 'portfolio_cinema', 'roles' => 'actor', 'req' => true, 'video' => 'video_selftape',
         'label' => array('it'=>'Portfolio attore','en'=>'Acting portfolio','fr'=>'Portfolio comédien','es'=>'Portfolio actor'),
         'quante' => array(
             'it'=>'Da 3 a 8 foto: primo piano espressivo, mezzo busto, una in scena o sul set.',
@@ -1295,16 +1297,7 @@ $theme_uri = get_stylesheet_directory_uri();
                                 'fr'=>'Cet album concerne : %r. Tu fais aussi l\'un de ces métiers ? Ajoute-le à ta fiche et l\'album s\'active.',
                                 'es'=>'Este álbum es para: %r. ¿Tú también haces alguno de estos trabajos? Añádelo a tu ficha y el álbum se activa.',
                             )))); ?></p>
-                            <?php // Portfolio moda vale per due ruoli: senza una riga di spiegazione sembra un errore ?>
-                            <?php if ($code === 'portfolio'): ?>
-                                <p class="toa-alb-addrole-nota"><?php echo _ht_talent(array(
-                                    'it'=>'Sì, serve anche agli attori: per le pubblicità e i cataloghi i casting chiedono il book moda, non solo il self-tape.',
-                                    'en'=>'Yes, actors need it too: for commercials and catalogues castings ask for a fashion book, not just the self-tape.',
-                                    'fr'=>'Oui, les comédiens en ont besoin aussi : pour les pubs et les catalogues les castings demandent un book mode, pas seulement la self-tape.',
-                                    'es'=>'Sí, también lo necesitan los actores: para publicidad y catálogos los castings piden un book de moda, no solo el self-tape.',
-                                )); ?></p>
-                            <?php endif; ?>
-                            <?php foreach ($etichette as $rc => $rl): ?>
+                                                        <?php foreach ($etichette as $rc => $rl): ?>
                                 <button type="button" class="toa-alb-addrole-btn" data-role="<?php echo esc_attr($rc); ?>">
                                     + <?php echo esc_html($rl); ?>
                                 </button>
@@ -1573,7 +1566,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260817album47" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260817album48" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
