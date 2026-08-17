@@ -1173,6 +1173,8 @@ $theme_uri = get_stylesheet_directory_uri();
                 .toa-alb-sticky{position:fixed;left:12px;right:12px;bottom:12px;max-width:740px;margin:0 auto;z-index:9999;padding:12px 14px;border-radius:14px;background:rgba(10,10,10,.94);backdrop-filter:blur(10px);border:1px solid rgba(200,255,0,.35);box-shadow:0 -6px 30px rgba(0,0,0,.6)}
                 #toaTalentForm{padding-bottom:170px}
                 .toa-alb-manca{max-height:30vh;overflow-y:auto}
+                /* senza questa riga display:flex batte l'attributo hidden e l'elenco resta sempre aperto */
+                .toa-alb-manca[hidden],.toa-alb-addrole[hidden]{display:none !important}
                 /* su telefono la banda non deve mangiarsi mezzo schermo */
                 @media (max-width:560px){
                     .toa-alb-sticky{padding:9px 11px}
@@ -1560,7 +1562,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260816album44" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260816album45" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
