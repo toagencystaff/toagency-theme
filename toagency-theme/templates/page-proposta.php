@@ -110,7 +110,7 @@ foreach ($J as $k => $a) { $J_out[$k] = $_t($a); }
 <link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-database-v81.css?v=' . filemtime(get_stylesheet_directory() . '/assets/talent-database-v81.css')); ?>">
 <link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/proposta-v1.css?v=' . filemtime(get_stylesheet_directory() . '/assets/proposta-v1.css')); ?>">
 <script>
-window.toaPropApiUrl = "/actions/dispo-proposta-api.php";
+window.toaPropApiUrl = "/crm_toagency/actions/dispo-proposta-api.php"; /* 2026-08-18 — path REALE verificato (su /actions/ = 404 WP) */
 window.toaPropLang   = "<?php echo esc_js($__l); ?>";
 window.toaPropI18n   = <?php echo wp_json_encode($J_out); ?>;
 </script>
@@ -138,12 +138,10 @@ window.toaPropI18n   = <?php echo wp_json_encode($J_out); ?>;
         </div>
         <div class="toa-prop-filter">
             <label class="toa-tdb-label" for="propFascia"><?php echo esc_html($_t($T['filter_height'])); ?></label>
+            <?php /* 2026-08-18 — fasce h1/h2/h3 riempite dal JS con opzioni.altezze dell'API
+                     (il filtro altezza CAMBIA il prezzo → filtro server-side, mai client) */ ?>
             <select id="propFascia" class="toa-tdb-select">
                 <option value=""><?php echo esc_html($_t($T['h_any'])); ?></option>
-                <option value="u160">&lt; 160 cm</option>
-                <option value="160">160–169 cm</option>
-                <option value="170">170–179 cm</option>
-                <option value="180p">&ge; 180 cm</option>
             </select>
         </div>
         <div class="toa-prop-filter">
@@ -161,12 +159,13 @@ window.toaPropI18n   = <?php echo wp_json_encode($J_out); ?>;
             <div class="toa-prop-lang-panel" id="propLinguePanel" hidden>
                 <div class="toa-prop-lang-list" id="propLingueList"><!-- checkbox generati dal JS --></div>
                 <label class="toa-tdb-label" for="propLivMin"><?php echo esc_html($_t($T['filter_level'])); ?></label>
+                <?php /* 2026-08-18 — scala REALE CRM a 3 livelli: 1=Base 2=Fluente 3=Madrelingua
+                         (via il vecchio "intermedio" a 4 livelli stile talent-db) */ ?>
                 <select id="propLivMin" class="toa-tdb-select">
                     <option value=""><?php echo esc_html($_t($T['level_any'])); ?></option>
-                    <option value="base"><?php echo esc_html($_t($J['liv_base'])); ?></option>
-                    <option value="intermedio"><?php echo esc_html($_t($J['liv_intermedio'])); ?></option>
-                    <option value="fluente"><?php echo esc_html($_t($J['liv_fluente'])); ?></option>
-                    <option value="madrelingua"><?php echo esc_html($_t($J['liv_madrelingua'])); ?></option>
+                    <option value="1"><?php echo esc_html($_t($J['liv_base'])); ?></option>
+                    <option value="2"><?php echo esc_html($_t($J['liv_fluente'])); ?></option>
+                    <option value="3"><?php echo esc_html($_t($J['liv_madrelingua'])); ?></option>
                 </select>
             </div>
         </div>

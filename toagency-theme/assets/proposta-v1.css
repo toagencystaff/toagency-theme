@@ -14,6 +14,9 @@
 /* ─── Fix visibilità: hidden vince SEMPRE sui display del layout ───── */
 .toa-prop-wrap [hidden] { display: none !important; }
 
+/* Ri-fetch filtri in corso (v1.2: filtro server-side, hf cambia i prezzi) */
+.toa-prop-grid.is-loading { opacity: .45; pointer-events: none; transition: opacity .15s; }
+
 /* ─── Hero ─────────────────────────────────────────────────────────── */
 .toa-prop-eyebrow {
     font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
