@@ -113,6 +113,12 @@
             return new Intl.DateTimeFormat(LOCALE, { day: 'numeric', month: 'short', year: 'numeric' }).format(d);
         } catch (e) { return String(s).slice(0, 10); }
     }
+    // "09:00" → "9" · "09:30" → "9:30" (orari compatti nell'elenco giorni)
+    function fmtHour(s) {
+        var m = String(s || '').trim().match(/^(\d{1,2}):(\d{2})/);
+        if (!m) return String(s || '').trim();
+        return m[2] === '00' ? String(parseInt(m[1], 10)) : parseInt(m[1], 10) + ':' + m[2];
+    }
 
     // ─── Stati pagina ────────────────────────────────────────────────
     function showError(msg) {
@@ -140,11 +146,24 @@
 
         var meta = [];
         if (d.titolo && d.luogo) meta.push('📍 ' + d.luogo);   // luogo in meta solo se non già usato come titolo
-        var dal = fmtDate(d.dal), al = fmtDate(d.al);
-        if (dal) meta.push('📅 ' + (al && al !== dal ? dal + ' → ' + al : dal));
-        var g = parseInt(d.giorni, 10);
+
+        // 2026-08-18 — giorni_dett [{data,oi,of,ore}]: giorni anche NON consecutivi,
+        // ognuno col suo orario (es. "10/09 9–13 · 12/09 9–18"). Fallback: dal→al.
+        var gd = Array.isArray(d.giorni_dett) ? d.giorni_dett.filter(function (x) { return x && x.data; }) : [];
+        if (gd.length) {
+            meta.push('📅 ' + gd.map(function (x) {
+                var p = String(x.data).slice(0, 10).split('-');   // [YYYY,MM,DD]
+                var lbl = (p.length === 3) ? parseInt(p[2], 10) + '/' + p[1] : String(x.data);
+                var oi = fmtHour(x.oi), of = fmtHour(x.of);
+                return lbl + (oi && of ? ' ' + oi + '–' + of : '');
+            }).join(' · '));
+        } else {
+            var dal = fmtDate(d.dal), al = fmtDate(d.al);
+            if (dal) meta.push('📅 ' + (al && al !== dal ? dal + ' → ' + al : dal));
+            if (d.ora_in && d.ora_fi) meta.push('🕘 ' + d.ora_in + '–' + d.ora_fi);
+        }
+        var g = parseInt(d.giorni, 10) || gd.length;
         if (g > 0) meta.push(g + ' ' + (g === 1 ? t('day_s') : t('day_p')));
-        if (d.ora_in && d.ora_fi) meta.push('🕘 ' + d.ora_in + '–' + d.ora_fi);
         $('#propMeta').textContent = meta.join('  ·  ');
     }
 
