@@ -1,31 +1,38 @@
 /**
- * proposta-v1.css — v1.0 2026-08-18 (chat TEMA DISPO-PROPOSTA)
+ * proposta-v1.css — v1.1 2026-08-18 (chat TEMA DISPO-PROPOSTA)
  *
  * SOLO le aggiunte della pagina /proposta/: badge tipo, meta evento,
  * barra filtri, prezzi card, stati. Card/griglia/hero ereditano tutto
  * da talent-database-v81.css (caricato prima di questo).
- * Palette tema: bianco/nero/grigi + lime #c8ff00. Font: Inter (dal tema).
+ *
+ * v1.1 — fix dal primo test preview:
+ *  1. [hidden] perdeva contro display:flex/grid → ora !important scoped.
+ *  2. Palette allineata al look REALE di /talent-database/ (dark #0a0a0a,
+ *     testo #fff, accent lime #c8ff00) — la v1.0 era chiara per errore.
  */
+
+/* ─── Fix visibilità: hidden vince SEMPRE sui display del layout ───── */
+.toa-prop-wrap [hidden] { display: none !important; }
 
 /* ─── Hero ─────────────────────────────────────────────────────────── */
 .toa-prop-eyebrow {
     font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-    color: #777; margin: 0 0 10px;
+    color: #888; margin: 0 0 10px;
 }
 .toa-prop-badge {
     display: inline-block; padding: 4px 12px; margin-bottom: 10px;
     font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-    border: 1px solid #000; background: #fff; color: #000;
+    border: 1px solid #fff; background: transparent; color: #fff;
 }
-.toa-prop-badge--effettivo { background: #c8ff00; border-color: #c8ff00; }
+.toa-prop-badge--effettivo { background: #c8ff00; border-color: #c8ff00; color: #000; }
 .toa-prop-meta { font-weight: 500; }
-.toa-prop-tipo-note { font-size: 13px; color: #777; margin: 6px 0 0; }
+.toa-prop-tipo-note { font-size: 13px; color: #888; margin: 6px 0 0; }
 
 /* ─── Barra filtri ─────────────────────────────────────────────────── */
 .toa-prop-filters {
     display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px;
     padding: 14px 0; margin-bottom: 18px;
-    border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5;
+    border-top: 1px solid #2a2a2a; border-bottom: 1px solid #2a2a2a;
 }
 .toa-prop-filter { display: flex; flex-direction: column; gap: 4px; position: relative; }
 .toa-prop-range { display: flex; gap: 6px; }
@@ -34,48 +41,49 @@
 /* Pannello lingue richiudibile */
 .toa-prop-lang-toggle {
     font: inherit; font-size: 14px; padding: 8px 12px; cursor: pointer;
-    background: #fff; border: 1px solid #ccc; color: #000;
+    background: transparent; border: 1px solid #444; color: #fff;
 }
 .toa-prop-lang-toggle.is-open,
-.toa-prop-lang-toggle:hover { border-color: #000; }
+.toa-prop-lang-toggle:hover { border-color: #c8ff00; }
 .toa-prop-lang-panel {
     position: absolute; top: 100%; left: 0; z-index: 30; min-width: 220px;
     margin-top: 6px; padding: 12px;
-    background: #fff; border: 1px solid #000; box-shadow: 4px 4px 0 #000;
+    background: #0e0e0e; border: 1px solid #444;
     display: flex; flex-direction: column; gap: 8px;
 }
 .toa-prop-lang-list { display: flex; flex-direction: column; gap: 6px; max-height: 220px; overflow: auto; }
-.toa-prop-lang-opt { font-size: 14px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.toa-prop-lang-opt { font-size: 14px; color: #fff; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.toa-prop-lang-opt input { accent-color: #c8ff00; }
 
 .toa-prop-reset {
     font: inherit; font-size: 13px; padding: 8px 12px; cursor: pointer;
-    background: #fff; border: 1px solid #ccc; color: #555;
+    background: transparent; border: 1px solid #444; color: #aaa;
 }
-.toa-prop-reset:hover { border-color: #000; color: #000; }
+.toa-prop-reset:hover { border-color: #fff; color: #fff; }
 .toa-prop-count { margin-left: auto; align-self: center; }
 
 /* ─── Prezzi card (i prezzi si vedono — decisione 18/08) ───────────── */
 .toa-prop-price {
     display: flex; flex-direction: column; gap: 2px;
-    margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e5e5;
+    margin-top: 8px; padding-top: 8px; border-top: 1px solid #2a2a2a;
 }
-.toa-prop-price-day { font-size: 15px; font-weight: 700; color: #000; }
-.toa-prop-price-day em { font-style: normal; font-size: 11px; font-weight: 500; color: #777; }
-.toa-prop-price-tot { font-size: 12px; color: #555; }
+.toa-prop-price-day { font-size: 15px; font-weight: 700; color: #c8ff00; }
+.toa-prop-price-day em { font-style: normal; font-size: 11px; font-weight: 500; color: #999; }
+.toa-prop-price-tot { font-size: 12px; color: #aaa; }
 
 /* Card senza foto */
 .toa-prop-noimg-box {
     aspect-ratio: 3 / 4; display: flex; align-items: center; justify-content: center;
-    font-size: 42px; background: #f2f2f2; color: #bbb;
+    font-size: 42px; background: #1a1a1a; color: #555;
 }
 .toa-prop-card.toa-prop-noimg .toa-tdb-card-img { display: none; }
 
 /* ─── Stati ────────────────────────────────────────────────────────── */
-.toa-prop-state { padding: 48px 0; text-align: center; color: #777; font-size: 15px; }
-.toa-prop-state--error { color: #000; }
-.toa-prop-state--error a { color: #000; font-weight: 700; }
+.toa-prop-state { padding: 48px 0; text-align: center; color: #999; font-size: 15px; }
+.toa-prop-state--error { color: #fff; }
+.toa-prop-state--error a { color: #c8ff00; font-weight: 700; }
 
-.toa-prop-privacy { margin-top: 28px; font-size: 12px; color: #999; text-align: center; }
+.toa-prop-privacy { margin-top: 28px; font-size: 12px; color: #888; text-align: center; }
 
 /* ─── Mobile (breakpoint tema: 768px) ──────────────────────────────── */
 @media (max-width: 768px) {
