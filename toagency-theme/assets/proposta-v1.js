@@ -257,7 +257,9 @@
             ? '<img class="toa-tdb-card-img" src="' + escapeHtml(c.foto) + '" alt="' + name + '" loading="lazy" onerror="this.closest(\'.toa-tdb-card\').classList.add(\'toa-prop-noimg\')">'
             : '<div class="toa-prop-noimg-box" aria-hidden="true">👤</div>';
 
-        return '<article class="toa-tdb-card toa-prop-card">' +
+        /* is-visible SUBITO: il CSS tdb tiene le card a opacity:0 per il fade-in
+           gestito dal JS v76 (observer) che qui non c'è. */
+        return '<article class="toa-tdb-card toa-prop-card is-visible">' +
                  photo +
                  '<div class="toa-tdb-card-meta">' +
                    '<div class="toa-tdb-card-name-row"><strong>' + name + '</strong></div>' +
