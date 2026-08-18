@@ -30,6 +30,7 @@
 .toa-prop-badge--effettivo { background: #c8ff00; border-color: #c8ff00; color: #000; }
 .toa-prop-meta { font-weight: 500; }
 .toa-prop-tipo-note { font-size: 13px; color: #888; margin: 6px 0 0; }
+.toa-prop-condizioni { font-size: 13px; color: #ccc; margin: 4px 0 0; }
 
 /* ─── Barra filtri ─────────────────────────────────────────────────── */
 .toa-prop-filters {

@@ -54,6 +54,10 @@ $T = array(
     'filter_min'    => array('it'=>'Da','en'=>'From','fr'=>'De','es'=>'Desde'),
     'filter_max'    => array('it'=>'A','en'=>'To','fr'=>'À','es'=>'Hasta'),
     'filter_langs'  => array('it'=>'Lingue','en'=>'Languages','fr'=>'Langues','es'=>'Idiomas'),
+    /* 2026-08-18 — durata giornata (hd): il prezzo si ricalcola lato server */
+    'filter_duration'=> array('it'=>'Durata giornata','en'=>'Day length','fr'=>'Durée de la journée','es'=>'Duración de la jornada'),
+    'dur_req'       => array('it'=>'Come richiesto','en'=>'As requested','fr'=>'Comme demandé','es'=>'Como solicitado'),
+    'hours'         => array('it'=>'ore','en'=>'hours','fr'=>'heures','es'=>'horas'),
     'filter_level'  => array('it'=>'Livello minimo','en'=>'Minimum level','fr'=>'Niveau minimum','es'=>'Nivel mínimo'),
     'level_any'     => array('it'=>'Qualsiasi','en'=>'Any','fr'=>'Indifférent','es'=>'Cualquiera'),
     'filter_reset'  => array('it'=>'Reset','en'=>'Reset','fr'=>'Reset','es'=>'Reset'),
@@ -97,6 +101,10 @@ $J = array(
     'count_s'   => array('it'=>'profilo','en'=>'profile','fr'=>'profil','es'=>'perfil'),
     'count_p'   => array('it'=>'profili','en'=>'profiles','fr'=>'profils','es'=>'perfiles'),
     'empty'     => array('it'=>'Nessun profilo corrisponde ai filtri.','en'=>'No profile matches your filters.','fr'=>'Aucun profil ne correspond.','es'=>'Ningún perfil coincide.'),
+    'note_anticipo' => array(
+        'it'=>'Prezzi con pagamento anticipato ({pct}%)','en'=>'Prices with {pct}% advance payment',
+        'fr'=>'Prix avec paiement anticipé ({pct} %)','es'=>'Precios con pago anticipado ({pct} %)',
+    ),
     'liv_base'        => array('it'=>'Base','en'=>'Basic','fr'=>'Base','es'=>'Básico'),
     'liv_intermedio'  => array('it'=>'Intermedio','en'=>'Intermediate','fr'=>'Intermédiaire','es'=>'Intermedio'),
     'liv_fluente'     => array('it'=>'Fluente','en'=>'Fluent','fr'=>'Courant','es'=>'Fluido'),
@@ -124,6 +132,7 @@ window.toaPropI18n   = <?php echo wp_json_encode($J_out); ?>;
         <h1 class="toa-tdb-hero-title" id="propTitle">&nbsp;</h1>
         <p class="toa-tdb-hero-subtitle toa-prop-meta" id="propMeta"></p>
         <p class="toa-prop-tipo-note" id="propTipoNote"></p>
+        <p class="toa-prop-condizioni" id="propCondizioni" hidden></p>
     </header>
 
     <!-- ═════ Filtri (client-side, compaiono a dati caricati) ═════ -->
@@ -168,6 +177,15 @@ window.toaPropI18n   = <?php echo wp_json_encode($J_out); ?>;
                     <option value="3"><?php echo esc_html($_t($J['liv_madrelingua'])); ?></option>
                 </select>
             </div>
+        </div>
+        <div class="toa-prop-filter">
+            <label class="toa-tdb-label" for="propDurata"><?php echo esc_html($_t($T['filter_duration'])); ?></label>
+            <select id="propDurata" class="toa-tdb-select">
+                <option value=""><?php echo esc_html($_t($T['dur_req'])); ?></option>
+                <option value="4">4 <?php echo esc_html($_t($T['hours'])); ?></option>
+                <option value="6">6 <?php echo esc_html($_t($T['hours'])); ?></option>
+                <option value="8">8 <?php echo esc_html($_t($T['hours'])); ?></option>
+            </select>
         </div>
         <button type="button" class="toa-prop-reset" id="propReset"><?php echo esc_html($_t($T['filter_reset'])); ?></button>
         <span class="toa-tdb-results-count toa-prop-count" id="propCount"></span>

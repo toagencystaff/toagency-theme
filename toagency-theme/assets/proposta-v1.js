@@ -165,6 +165,16 @@
         var g = parseInt(d.giorni, 10) || gd.length;
         if (g > 0) meta.push(g + ' ' + (g === 1 ? t('day_s') : t('day_p')));
         $('#propMeta').textContent = meta.join('  ·  ');
+
+        /* 2026-08-18 — condizioni pagamento (anticipo è la BASE dei prezzi, non uno sconto):
+           anticipo numerico → stringa localizzata; fallback testo `condizioni` dell'API. */
+        var pct = parseInt(d.anticipo, 10) || 0;
+        var cond = pct ? t('note_anticipo').replace('{pct}', pct) : String(d.condizioni || '');
+        if (cond) {
+            var ce = $('#propCondizioni');
+            ce.textContent = cond;
+            ce.hidden = false;
+        }
     }
 
     // ─── Filtri UI (costruiti UNA volta da opzioni + filtri) ─────────
@@ -195,7 +205,7 @@
         $('#propFieldLingue').hidden = lingueOff;
 
         // Wiring: ogni cambio → ri-fetch server-side (hf cambia i prezzi).
-        ['propSesso', 'propFascia', 'propLivMin'].forEach(function (id) {
+        ['propSesso', 'propFascia', 'propLivMin', 'propDurata'].forEach(function (id) {
             document.getElementById(id).addEventListener('change', refresh);
         });
         ['propEtaMin', 'propEtaMax'].forEach(function (id) {
@@ -218,7 +228,7 @@
         $('#propReset').addEventListener('click', function () {
             $('#propSesso').value = ''; $('#propFascia').value = '';
             $('#propEtaMin').value = ''; $('#propEtaMax').value = '';
-            $('#propLivMin').value = '';
+            $('#propLivMin').value = ''; $('#propDurata').value = '';
             box.querySelectorAll('input:checked').forEach(function (i) { i.checked = false; });
             refresh();
         });
@@ -238,6 +248,9 @@
         if (sx) q.push('sx=' + encodeURIComponent(sx.toUpperCase()));
         var hf = $('#propFascia').value;
         if (hf) q.push('hf=' + encodeURIComponent(hf));
+        /* 2026-08-18 — hd: durata giornata (0=come richiesto|4|6|8), prezzo ricalcolato server-side */
+        var hd = $('#propDurata').value;
+        if (hd) q.push('hd=' + encodeURIComponent(hd));
         var e1 = parseInt($('#propEtaMin').value, 10) || 0;
         var e2 = parseInt($('#propEtaMax').value, 10) || 0;
         if (e1) q.push('e1=' + e1);
