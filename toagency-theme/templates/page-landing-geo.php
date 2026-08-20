@@ -103,6 +103,9 @@ if (have_posts()) the_post(); // setup postdata per the_title()/the_content()
       <p class="toa-landing-form-sub">
         <?php echo _ht(['it'=>'Risposta entro 24 ore lavorative.','en'=>'Response within 24 business hours.','fr'=>'Réponse sous 24 heures ouvrées.','es'=>'Respuesta en 24 horas hábiles.']); ?>
       </p>
+      <p class="toa-landing-form-talent-note">
+        <?php echo _ht(['it'=>'Sei un talent (hostess, modello/a, promoter)? Questo modulo è per le aziende — ','en'=>'Are you a talent (hostess, model, promoter)? This form is for companies — ','fr'=>'Vous êtes un talent (hôtesse, mannequin, promoteur) ? Ce formulaire est pour les entreprises — ','es'=>'¿Eres un talent (azafata, modelo, promotor)? Este formulario es para empresas — ']); ?><a href="<?php echo home_url('/registrati-talent/'); ?>"><?php echo _ht(['it'=>'candidati qui','en'=>'apply here','fr'=>'postulez ici','es'=>'postúlate aquí']); ?> &rarr;</a>
+      </p>
       <?php toa_component('form-b2b-inline'); ?>
     </div>
   </section>
