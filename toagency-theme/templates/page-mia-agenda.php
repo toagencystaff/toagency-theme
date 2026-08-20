@@ -39,6 +39,24 @@ $T = [
     'btn_save'       => ['it'=>'Salva modifiche','en'=>'Save changes','fr'=>'Enregistrer','es'=>'Guardar cambios'],
     'btn_saving'     => ['it'=>'Salvataggio…','en'=>'Saving…','fr'=>'Enregistrement…','es'=>'Guardando…'],
 
+    // Preferenze lavoro (toggle tri-stato: null = mai risposto, 0 = no, 1 = sì)
+    'section_preferenze'   => ['it'=>'Preferenze lavoro','en'=>'Work preferences','fr'=>'Préférences de travail','es'=>'Preferencias de trabajo'],
+    'pref_sconto_q'  => [
+        'it'=>'Accetti uno sconto del 10% dal 3° giorno consecutivo di lavoro nello stesso evento?',
+        'en'=>'Do you accept a 10% discount from the 3rd consecutive day of work on the same event?',
+        'fr'=>'Acceptes-tu une remise de 10 % à partir du 3ᵉ jour consécutif de travail sur le même événement ?',
+        'es'=>'¿Aceptas un descuento del 10% a partir del 3.º día consecutivo de trabajo en el mismo evento?',
+    ],
+    'pref_ore_q'  => [
+        'it'=>'Accetti turni non a giornata piena (mezze giornate)?',
+        'en'=>'Do you accept shifts that are not full-day (half days)?',
+        'fr'=>'Acceptes-tu des créneaux qui ne sont pas des journées complètes (demi-journées) ?',
+        'es'=>'¿Aceptas turnos que no sean de jornada completa (medias jornadas)?',
+    ],
+    'pref_si'          => ['it'=>'Sì','en'=>'Yes','fr'=>'Oui','es'=>'Sí'],
+    'pref_no'          => ['it'=>'No','en'=>'No','fr'=>'Non','es'=>'No'],
+    'pref_non_risposto'=> ['it'=>'Non hai ancora risposto','en'=>'Not answered yet','fr'=>'Pas encore répondu','es'=>'Aún no has respondido'],
+
     'section_basi'   => ['it'=>'Le tue basi temporanee','en'=>'Your temporary bases','fr'=>'Tes bases temporaires','es'=>'Tus bases temporales'],
     'basi_subtitle'  => [
         'it'=>'Se in certi periodi ti trovi in un\'altra città o zona, indicalo qui.',
@@ -149,6 +167,17 @@ $token_get = $_GET['t']    ?? '';
 .ma-save-msg.err { color:#ef4444; }
 .ma-skip-msg { background:rgba(255,179,0,.10); border:1px solid rgba(255,179,0,.4); color:#ffb300; font-size:12px; border-radius:8px; padding:10px 12px; margin-bottom:12px; line-height:1.5; }
 
+/* Preferenze lavoro (toggle tri-stato) */
+.ma-pref-row { background:#0f0f12; border:1px solid #2a2a2e; border-radius:8px; padding:14px; margin-bottom:10px; }
+.ma-pref-q { font-size:13px; color:#e5e7eb; line-height:1.4; margin-bottom:10px; }
+.ma-pref-toggle { display:flex; gap:8px; }
+.ma-pref-btn { flex:1; background:#1a1a1e; border:1px solid #2a2a2e; color:#9ca3af; font-size:13px; font-weight:600; padding:9px; border-radius:6px; cursor:pointer; }
+.ma-pref-btn:hover { border-color:#52525b; color:#fff; }
+.ma-pref-btn.active[data-value="1"] { background:var(--accent,#c8ff00); border-color:var(--accent,#c8ff00); color:#0a0a0a; }
+.ma-pref-btn.active[data-value="0"] { background:#3a3a42; border-color:#52525b; color:#fff; }
+.ma-pref-status { font-size:11px; color:#6b7280; margin-top:8px; }
+.ma-pref-row.pending { border-color:var(--accent,#c8ff00); border-style:dashed; }
+
 /* Basi temporanee */
 .ma-basi-list { display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
 .ma-basi-empty { color:#6b7280; font-size:12px; font-style:italic; padding:10px 0; }
@@ -217,6 +246,28 @@ $token_get = $_GET['t']    ?? '';
                 </div>
             </div>
 
+            <div class="ma-section" id="ma-preferenze-section">
+                <div class="ma-section-title">⚙️ <?= esc_html($_t($T['section_preferenze'])) ?></div>
+
+                <div class="ma-pref-row" data-pref="sconto_consecutivi_ok">
+                    <div class="ma-pref-q"><?= esc_html($_t($T['pref_sconto_q'])) ?></div>
+                    <div class="ma-pref-toggle">
+                        <button type="button" class="ma-pref-btn" data-value="1"><?= esc_html($_t($T['pref_si'])) ?></button>
+                        <button type="button" class="ma-pref-btn" data-value="0"><?= esc_html($_t($T['pref_no'])) ?></button>
+                    </div>
+                    <div class="ma-pref-status"></div>
+                </div>
+
+                <div class="ma-pref-row" data-pref="ore_flessibili_ok">
+                    <div class="ma-pref-q"><?= esc_html($_t($T['pref_ore_q'])) ?></div>
+                    <div class="ma-pref-toggle">
+                        <button type="button" class="ma-pref-btn" data-value="1"><?= esc_html($_t($T['pref_si'])) ?></button>
+                        <button type="button" class="ma-pref-btn" data-value="0"><?= esc_html($_t($T['pref_no'])) ?></button>
+                    </div>
+                    <div class="ma-pref-status"></div>
+                </div>
+            </div>
+
             <div class="ma-section" id="ma-basi-section">
                 <div class="ma-section-title">📍 <?= esc_html($_t($T['section_basi'])) ?></div>
                 <p class="ma-section-subtitle"><?= esc_html($_t($T['basi_subtitle'])) ?></p>
@@ -244,6 +295,9 @@ window.__MA_CONFIG = {
         errorGeneric: <?= json_encode($_t($T['error_generic'])) ?>,
         lastUpdate:   <?= json_encode($_t($T['last_update'])) ?>,
         neverUpdated: <?= json_encode($_t($T['never_updated'])) ?>,
+        prefSi:       <?= json_encode($_t($T['pref_si'])) ?>,
+        prefNo:       <?= json_encode($_t($T['pref_no'])) ?>,
+        prefNonRisposto: <?= json_encode($_t($T['pref_non_risposto'])) ?>,
         basiEmpty:    <?= json_encode($_t($T['basi_empty'])) ?>,
         basiPeriod:   <?= json_encode($_t($T['basi_period'])) ?>,
         basiAlloggio: <?= json_encode($_t($T['basi_alloggio'])) ?>,

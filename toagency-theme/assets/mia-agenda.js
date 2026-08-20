@@ -18,6 +18,7 @@
     var STATI_BLOCCATI = { opzionato: true, confermato: true };
 
     var pendingChanges = {}; // { 'YYYY-MM-DD': 'stato' }
+    var pendingOpzioni = {}; // { 'sconto_consecutivi_ok': 0|1, 'ore_flessibili_ok': 0|1 }
     var openPickerDate = null;
 
     function $(id) { return document.getElementById(id); }
@@ -145,7 +146,43 @@
 
     function updateSaveButtonState() {
         var btn = $('ma-btn-save');
-        btn.disabled = Object.keys(pendingChanges).length === 0;
+        btn.disabled = Object.keys(pendingChanges).length === 0 && Object.keys(pendingOpzioni).length === 0;
+    }
+
+    // ─── Preferenze lavoro (toggle tri-stato) ───
+
+    function renderPreferenze(d) {
+        // Robusto a due possibili forme di risposta: d.talent.<campo> oppure d.<campo> diretto.
+        var talent = d.talent || d;
+
+        document.querySelectorAll('.ma-pref-row').forEach(function (row) {
+            var key = row.getAttribute('data-pref');
+            var current = pendingOpzioni.hasOwnProperty(key) ? pendingOpzioni[key] : talent[key];
+            var isPending = pendingOpzioni.hasOwnProperty(key);
+
+            row.classList.toggle('pending', isPending);
+
+            row.querySelectorAll('.ma-pref-btn').forEach(function (btn) {
+                var val = parseInt(btn.getAttribute('data-value'), 10);
+                var isActive = (current === 0 || current === 1) && val === current;
+                btn.classList.toggle('active', isActive);
+            });
+
+            var statusEl = row.querySelector('.ma-pref-status');
+            if (statusEl) {
+                statusEl.textContent = (current === null || current === undefined) ? (STR.prefNonRisposto || '') : '';
+            }
+        });
+    }
+
+    function onPrefBtnClick(e) {
+        var btn = e.currentTarget;
+        var row = btn.closest('.ma-pref-row');
+        var key = row.getAttribute('data-pref');
+        var val = parseInt(btn.getAttribute('data-value'), 10);
+        pendingOpzioni[key] = val;
+        renderPreferenze(lastLoadData);
+        updateSaveButtonState();
     }
 
     function renderSkipped(skipped) {
@@ -164,7 +201,12 @@
         var giorni = Object.keys(pendingChanges).map(function (data) {
             return { data: data, stato: pendingChanges[data] };
         });
-        if (!giorni.length) return;
+        var haveOpzioni = Object.keys(pendingOpzioni).length > 0;
+        if (!giorni.length && !haveOpzioni) return;
+
+        var payload = { uuid: UUID, t: TOKEN };
+        if (giorni.length) payload.giorni = giorni;
+        if (haveOpzioni) payload.opzioni = pendingOpzioni;
 
         var btn = $('ma-btn-save');
         var msg = $('ma-save-msg');
@@ -177,7 +219,7 @@
             method: 'POST',
             credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ uuid: UUID, t: TOKEN, giorni: giorni })
+            body: JSON.stringify(payload)
         })
         .then(function (r) { return r.json(); })
         .then(function (d) {
@@ -189,10 +231,11 @@
                 return;
             }
             pendingChanges = {};
+            pendingOpzioni = {};
             msg.textContent = STR.saveOk || 'OK';
             msg.className = 'ma-save-msg ok';
             renderSkipped(d.skipped);
-            loadData(); // ricarica stato vero dal server (giorni salvati + eventuali bloccati)
+            loadData(); // ricarica stato vero dal server (giorni salvati + eventuali bloccati + opzioni)
         })
         .catch(function () {
             btn.textContent = STR.btnSave || 'Salva';
@@ -378,6 +421,7 @@
 
             renderLastUpdate(d.dispo_aggiornato);
             renderCalendario(d);
+            renderPreferenze(d);
             renderBasi(d.basi_temporanee);
 
             $('ma-status').style.display = 'none';
@@ -392,5 +436,8 @@
         loadData();
         $('ma-btn-save').addEventListener('click', doSave);
         $('ma-btn-add-base').addEventListener('click', toggleAddBaseForm);
+        document.querySelectorAll('.ma-pref-btn').forEach(function (btn) {
+            btn.addEventListener('click', onPrefBtnClick);
+        });
     });
 })();
