@@ -563,6 +563,20 @@
 
         // Reset valori (per evitare dati vecchi che bloccano validazione)
         cityWrap.querySelectorAll('input').forEach(function(i) { i.value = ''; });
+        /* 2026-08-21 — anche la PROVINCIA va azzerata, non solo la città. Prima restava
+           quella di prima: chi sceglieva Italia + Torino e poi cambiava in Regno Unito
+           veniva salvato con provincia "TO" e città inglese. Verificato dal vivo 21/08. */
+        var provOld = document.querySelector('input[name="' + prefix + '_provincia"]');
+        if (provOld) provOld.value = '';
+        var provLab = provinceContainer ? provinceContainer.querySelector('.toa-talent-customselect-label') : null;
+        if (provLab) {
+            if (!provLab.dataset.originale) provLab.dataset.originale = provLab.textContent;
+            provLab.textContent = provLab.dataset.originale;
+        }
+        if (provinceContainer) {
+            provinceContainer.querySelectorAll('.toa-talent-customselect-option.selected')
+                .forEach(function(o) { o.classList.remove('selected'); });
+        }
         // Reset trigger custom select
         var trigger = cityWrap.querySelector('.toa-talent-customselect-label');
         if (trigger) trigger.textContent = 'Seleziona...';
@@ -710,6 +724,24 @@
                     e.preventDefault();
                     input.value = c.name_local;
                     if (hidden) hidden.value = c.code;
+                    /* ═══ 2026-08-21 (TEMA-AGENZIA-REGISTRAZIONE-TALENT) — AREA PER GLI ESTERI ═══
+                       Per i paesi esteri il campo Provincia è nascosto, quindi res_provincia
+                       (o dom_provincia) restava SEMPRE vuoto: in database finivano città
+                       scritte a mano e nessuna area. L'area sta fra parentesi nel display
+                       dell'endpoint: "Manchester (Greater Manchester)".
+                       NON si usa il campo c.regione, che pure esiste: per GB è quasi sempre
+                       vuoto (pieno solo su London e Manchester) e per ES/FR contiene la
+                       regione grande — "Cataluña" invece di "Barcelona". Verificato dal vivo
+                       sull'endpoint il 21/08/2026.
+                       L'Italia resta esclusa: lì la provincia la sceglie l'utente dalla tendina. */
+                    var natSel = (typeaheadBox.dataset.nation || 'IT').toUpperCase();
+                    if (natSel !== 'IT') {
+                        var provEst = document.querySelector('input[name="' + prefix + '_provincia"]');
+                        if (provEst) {
+                            var mArea = /\(([^)]+)\)\s*$/.exec(c.display || '');
+                            provEst.value = mArea ? mArea[1].trim() : '';
+                        }
+                    }
                     hideSugg();
                 });
                 suggBox.appendChild(item);
