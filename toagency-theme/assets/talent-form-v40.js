@@ -31,6 +31,28 @@
     // Negli altri resta facoltativo ma viene comunque chiesto e spedito se compilato.
     var DATA_OBBLIGATORIA = ['polaroid', 'dettaglio'];
     var ALBUM_ENDPOINT = '/crm_toagency/actions/talent-media-upload.php';
+    /* ═══ 2026-08-21 (TEMA-AGENZIA-REGISTRAZIONE-TALENT) — BLOCCO "SEI RAPPRESENTATO DA UN'AGENZIA?" ═══
+       Il blocco sta nello Step 2 e compare SOLO se la nazione di residenza (scelta allo Step 1)
+       rientra nella regola qui sotto.
+
+       ► PER AGGIUNGERE UN PAESE: metti il suo codice a 2 lettere dentro AGENZIA_PAESI_IN_PIU.
+         Esempio:  var AGENZIA_PAESI_IN_PIU = ['ES','PT','IT'];   // Spagna, Portogallo, Italia
+       ► PER TOGLIERLO: cancella il codice dalla lista.
+       ► AGENZIA_MODO = 'extra-ue' → il blocco esce in TUTTI i paesi fuori dall'Unione Europea
+                                       (Marocco, Brasile, UK, Svizzera, USA...) PIÙ quelli elencati sopra.
+         AGENZIA_MODO = 'lista'    → il blocco esce SOLO nei paesi elencati in AGENZIA_PAESI_IN_PIU. */
+    var AGENZIA_MODO = 'extra-ue';
+    var AGENZIA_PAESI_IN_PIU = [];
+    /* I 27 paesi dell'Unione Europea — non serve toccarla. */
+    var UE_NATIONS = ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE'];
+    function agenziaVisibileFor(nationCode) {
+        var c = (nationCode || '').toUpperCase();
+        if (!c) return false;
+        if (AGENZIA_PAESI_IN_PIU.indexOf(c) > -1) return true;
+        if (AGENZIA_MODO === 'extra-ue') return UE_NATIONS.indexOf(c) === -1;
+        return false;
+    }
+
     var MAX_PHOTO_SIZE_MB = 60; /* TASK hardening-upload STEP A 2026-06-04 marco — era 15: le foto grandi ora passano e vengono compresse client-side; resta backstop per file assurdi */
 
     // ─── i18n messaggi runtime (lingua WP corrente — window.toaTalentLang) ───
@@ -703,10 +725,33 @@
         }
     }
 
+    /* 2026-08-21 — accende/spegne il blocco agenzia (Step 2) secondo la nazione di RESIDENZA.
+       Se si spegne, azzera le risposte: così non restano dati di un paese scelto per sbaglio. */
+    function updateAgenziaVisibility(nationCode) {
+        var wrap = document.getElementById('toaTalentAgenziaWrap');
+        if (!wrap) return;
+        var visibile = agenziaVisibileFor(nationCode);
+        wrap.style.display = visibile ? '' : 'none';
+        if (visibile) return;
+        var hid = wrap.querySelector('input[name="ag_presente"]');
+        if (hid) hid.value = '0';
+        var exHid = wrap.querySelector('input[name="ag_esclusiva"]');
+        if (exHid) exHid.value = '0';
+        wrap.querySelectorAll('.toa-talent-toggle').forEach(function(b) {
+            if (b.dataset.value === '0') { b.classList.add('active'); } else { b.classList.remove('active'); }
+        });
+        wrap.querySelectorAll('input[type="text"], input[type="date"]').forEach(function(i) { i.value = ''; });
+        var box = document.getElementById('toaTalentAgenziaBox');
+        if (box) box.style.display = 'none';
+        var exBox = document.getElementById('toaTalentAgEsclusivaBox');
+        if (exBox) exBox.style.display = 'none';
+    }
+
     // Listener cambio nazione
     if (nationSelect) {
         nationSelect.addEventListener('toa:select', function(e) {
             handleNationChange(e.detail.value, 'res');
+            updateAgenziaVisibility(e.detail.value);   // 2026-08-21 blocco agenzia
         });
     }
     if (domNationSelect) {
@@ -718,6 +763,7 @@
     // Init iniziale (default IT)
     setTimeout(function() {
         handleNationChange('IT', 'res');
+        updateAgenziaVisibility('IT');   // 2026-08-21 blocco agenzia (IT è UE → nascosto)
         // Attacca typeahead UNA volta sui campi statici (sia residenza che domicilio)
         attachCityTypeaheadStatic('res');
         attachCityTypeaheadStatic('dom');
@@ -742,6 +788,23 @@
             } else {
                 domicilioBox.style.display = 'none';
             }
+        });
+    }
+
+    /* ─── 8-bis. Blocco agenzia (2026-08-21) ──────────────────
+       Stesso schema del toggle domicilio: risposta "Sì" → apre il box. */
+    var agenziaGroup = document.getElementById('toaTalentAgenziaGroup');
+    var agenziaBox   = document.getElementById('toaTalentAgenziaBox');
+    if (agenziaGroup && agenziaBox) {
+        agenziaGroup.addEventListener('toa:toggle', function(e) {
+            agenziaBox.style.display = (e.detail.value === '1') ? '' : 'none';
+        });
+    }
+    var agEsclGroup = document.getElementById('toaTalentAgEsclusivaGroup');
+    var agEsclBox   = document.getElementById('toaTalentAgEsclusivaBox');
+    if (agEsclGroup && agEsclBox) {
+        agEsclGroup.addEventListener('toa:toggle', function(e) {
+            agEsclBox.style.display = (e.detail.value === '1') ? '' : 'none';
         });
     }
 
@@ -1576,6 +1639,21 @@
                 }
             }
 
+            /* 2026-08-21 — blocco agenzia: se è visibile e ha risposto "Sì",
+               il nome dell'agenzia è l'unico campo davvero necessario. */
+            var agWrapV = document.getElementById('toaTalentAgenziaWrap');
+            if (agWrapV && agWrapV.style.display !== 'none') {
+                var agPres = agWrapV.querySelector('input[name="ag_presente"]');
+                if (agPres && agPres.value === '1') {
+                    var agNome = agWrapV.querySelector('input[name="ag_nome"]');
+                    if (agNome && !agNome.value.trim()) {
+                        showFieldError(agNome, tmsg(MSG.required));
+                        ok = false;
+                        failReasons.push('agenzia: nome vuoto');
+                    }
+                }
+            }
+
             // Se fallisce, mostra solo console.warn (no alert disturbo)
             if (!ok && failReasons.length) {
                 console.warn('[validateStep 2] FAILURES:\n' + failReasons.join('\n'));
@@ -1951,6 +2029,26 @@
             });
         });
 
+        /* 2026-08-21 — STESSO MOTIVO delle città qui sopra: i campi agenzia nascosti
+           (paese UE, oppure risposta "No") vanno disabilitati, altrimenti FormData
+           spedisce campi vuoti al CRM. Vengono riabilitati nel .finally() in fondo. */
+        var agWrap = document.getElementById('toaTalentAgenziaWrap');
+        if (agWrap) {
+            var agOff  = (agWrap.style.display === 'none');
+            var agBox2 = document.getElementById('toaTalentAgenziaBox');
+            var boxOff = agOff || !agBox2 || agBox2.style.display === 'none';
+            if (agBox2) agBox2.querySelectorAll('input').forEach(function(i) { i.disabled = boxOff; });
+            var exBox2 = document.getElementById('toaTalentAgEsclusivaBox');
+            if (exBox2) {
+                var exOff = boxOff || exBox2.style.display === 'none';
+                exBox2.querySelectorAll('input').forEach(function(i) { i.disabled = exOff; });
+            }
+            var agHid = agWrap.querySelector('input[name="ag_presente"]');
+            if (agHid) agHid.disabled = agOff;
+            var exHid2 = agWrap.querySelector('input[name="ag_esclusiva"]');
+            if (exHid2) exHid2.disabled = boxOff;
+        }
+
         // Prepara FormData con TUTTI i campi del form
         var fd = new FormData(form);
         /* 2026-08-15 — UGC dichiarato ma senza contenuti: il CRM lo segna come "potenziale UGC"
@@ -2019,6 +2117,9 @@
                 if (!wrap) return;
                 wrap.querySelectorAll('input').forEach(function(inp) { inp.disabled = false; });
             });
+            // 2026-08-21 — riabilita anche i campi agenzia (per permettere di riprovare)
+            var agWrapR = document.getElementById('toaTalentAgenziaWrap');
+            if (agWrapR) agWrapR.querySelectorAll('input').forEach(function(inp) { inp.disabled = false; });
         });
     });
 

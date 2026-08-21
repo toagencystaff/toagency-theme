@@ -836,6 +836,82 @@ $theme_uri = get_stylesheet_directory_uri();
                 </div>
             </div>
 
+            <!-- ═══ 2026-08-21 (TEMA-AGENZIA-REGISTRAZIONE-TALENT) — AGENZIA DI RAPPRESENTANZA ═══
+                 Compare solo se la nazione di RESIDENZA (Step 1) rientra nella regola scritta in
+                 assets/talent-form-v40.js → costanti AGENZIA_MODO / AGENZIA_PAESI_IN_PIU (in testa al file).
+                 I dati sono una DICHIARAZIONE del talent: non creano nulla in automatico sul CRM. -->
+            <div id="toaTalentAgenziaWrap" style="display:none;">
+                <div class="toa-talent-field">
+                    <label class="toa-talent-label"><?php echo _ht_talent(array(
+                        'it'=>'Sei rappresentato da un\'agenzia?',
+                        'en'=>'Are you represented by an agency?',
+                        'fr'=>'Es-tu représenté par une agence ?',
+                        'es'=>'¿Estás representado por una agencia?',
+                    )); ?></label>
+                    <p class="toa-talent-step-help"><?php echo _ht_talent(array(
+                        'it'=>'Serve solo per sapere con chi parlare. Non cambia la tua candidatura.',
+                        'en'=>'This is only so we know who to talk to. It does not change your application.',
+                        'fr'=>'C\'est seulement pour savoir à qui parler. Cela ne change rien à ta candidature.',
+                        'es'=>'Es solo para saber con quién hablar. No cambia tu candidatura.',
+                    )); ?></p>
+                    <div class="toa-talent-toggle-group" id="toaTalentAgenziaGroup">
+                        <input type="hidden" name="ag_presente" value="0">
+                        <div class="toa-talent-toggle" data-value="1"><?php echo _ht_talent(array('it'=>'Sì','en'=>'Yes','fr'=>'Oui','es'=>'Sí')); ?></div>
+                        <div class="toa-talent-toggle active" data-value="0"><?php echo _ht_talent(array('it'=>'No','en'=>'No','fr'=>'Non','es'=>'No')); ?></div>
+                    </div>
+                </div>
+
+                <div class="toa-talent-domicilio-box" id="toaTalentAgenziaBox" style="display:none;">
+                    <div class="toa-talent-domicilio-info">
+                        📝 <?php echo _ht_talent(array(
+                            'it'=>'È una tua dichiarazione: la verifichiamo noi. Non crea nessun accesso per l\'agenzia.',
+                            'en'=>'This is your own declaration: we check it ourselves. It does not create any access for the agency.',
+                            'fr'=>'C\'est ta déclaration : nous la vérifions nous-mêmes. Elle ne crée aucun accès pour l\'agence.',
+                            'es'=>'Es tu declaración: la verificamos nosotros. No crea ningún acceso para la agencia.',
+                        )); ?>
+                    </div>
+
+                    <div class="toa-talent-field">
+                        <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Nome dell\'agenzia','en'=>'Agency name','fr'=>'Nom de l\'agence','es'=>'Nombre de la agencia')); ?> <span class="req">*</span></label>
+                        <input type="text" name="ag_nome" class="toa-talent-input" autocomplete="off">
+                        <div class="toa-talent-error-msg"></div>
+                    </div>
+
+                    <div class="toa-talent-field-row">
+                        <div class="toa-talent-field">
+                            <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Nome del referente','en'=>'Contact person','fr'=>'Nom du contact','es'=>'Nombre del contacto')); ?></label>
+                            <input type="text" name="ag_referente" class="toa-talent-input" autocomplete="off">
+                            <div class="toa-talent-error-msg"></div>
+                        </div>
+                        <div class="toa-talent-field">
+                            <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Email o telefono del referente','en'=>'Contact email or phone','fr'=>'E-mail ou téléphone du contact','es'=>'Email o teléfono del contacto')); ?></label>
+                            <input type="text" name="ag_contatto" class="toa-talent-input" autocomplete="off">
+                            <div class="toa-talent-error-msg"></div>
+                        </div>
+                    </div>
+
+                    <div class="toa-talent-field">
+                        <label class="toa-talent-label"><?php echo _ht_talent(array(
+                            'it'=>'Hai un contratto di esclusiva con questa agenzia?',
+                            'en'=>'Do you have an exclusive contract with this agency?',
+                            'fr'=>'As-tu un contrat d\'exclusivité avec cette agence ?',
+                            'es'=>'¿Tienes un contrato de exclusividad con esta agencia?',
+                        )); ?></label>
+                        <div class="toa-talent-toggle-group" id="toaTalentAgEsclusivaGroup">
+                            <input type="hidden" name="ag_esclusiva" value="0">
+                            <div class="toa-talent-toggle" data-value="1"><?php echo _ht_talent(array('it'=>'Sì','en'=>'Yes','fr'=>'Oui','es'=>'Sí')); ?></div>
+                            <div class="toa-talent-toggle active" data-value="0"><?php echo _ht_talent(array('it'=>'No','en'=>'No','fr'=>'Non','es'=>'No')); ?></div>
+                        </div>
+                    </div>
+
+                    <div class="toa-talent-field" id="toaTalentAgEsclusivaBox" style="display:none;">
+                        <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Fino a quando?','en'=>'Until when?','fr'=>'Jusqu\'à quand ?','es'=>'¿Hasta cuándo?')); ?></label>
+                        <input type="date" name="ag_esclusiva_fino" class="toa-talent-input">
+                        <div class="toa-talent-error-msg"></div>
+                    </div>
+                </div>
+            </div>
+
             <div class="toa-talent-actions">
                 <button type="button" class="toa-talent-btn toa-talent-btn-ghost" data-go="1">← <?php echo _ht_talent(array('it'=>'Indietro','en'=>'Back','fr'=>'Retour','es'=>'Atrás')); ?></button>
                 <button type="button" class="toa-talent-btn toa-talent-btn-primary" data-go="3"><?php echo _ht_talent(array('it'=>'Continua','en'=>'Continue','fr'=>'Continuer','es'=>'Continuar')); ?> → <small style="display:block;font-weight:600;opacity:.75;font-size:.72rem;margin-top:2px;"><?php echo _ht_talent(array('it'=>'passaggio 3 di 4','en'=>'step 3 of 4','fr'=>'étape 3 sur 4','es'=>'paso 3 de 4')); ?></small></button>
@@ -1566,7 +1642,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260817album52" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260821agenzia1" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
