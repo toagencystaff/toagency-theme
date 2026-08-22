@@ -6,7 +6,8 @@
 ?>
 <!-- Footer -->
 <footer class="footer">
-  <p>TOAGENCY by Toa Group &mdash; Via Cavour, Torino (Italy) &mdash; P.I. 11800210012</p>
+  <?php /* FIX 2026-08-22 marco — denominazione titolare corretta: ditta individuale TOA di Leonardi Marco (la vecchia dicitura indicava una società inesistente) */ ?>
+  <p>TOAGENCY è un marchio di TOA di Leonardi Marco &mdash; Via Cavour 21, 10123 Torino (Italy) &mdash; P.IVA 11800210012</p>
   <div class="footer-links">
     <?php
     $toa_lang = defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : 'it';

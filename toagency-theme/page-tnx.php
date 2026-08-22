@@ -399,7 +399,8 @@
 
     <!-- FOOTER -->
     <footer class="tnx-footer">
-        <div>TOAGENCY by Toa Group — Via Cavour, Torino (Italy) — P.I. 11800210012</div>
+        <?php /* FIX 2026-08-22 marco — denominazione titolare corretta: ditta individuale TOA di Leonardi Marco */ ?>
+        <div>TOAGENCY è un marchio di TOA di Leonardi Marco — Via Cavour 21, 10123 Torino (Italy) — P.IVA 11800210012</div>
         <div>
             <a href="<?php echo esc_url(home_url('/privacy-policy-3/')); ?>">Privacy Policy</a>
             <a href="<?php echo esc_url(home_url('/cookie-policy-ue/')); ?>">Cookie Policy</a>
