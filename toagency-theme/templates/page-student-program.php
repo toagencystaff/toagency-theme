@@ -345,7 +345,7 @@ $roles = array(
           <input type="checkbox" id="consent" required
                  style="width:16px;height:16px;margin-top:1px;accent-color:var(--white);flex-shrink:0">
           <span><?php echo sp_t('privacy_text'); ?>
-            <a href="https://www.iubenda.com/privacy-policy/58462877" target="_blank"
+            <a href="<?php echo esc_url(toa_privacy_url()); ?>" target="_blank"
                style="color:var(--white);text-decoration:underline"><?php echo sp_t('privacy_link'); ?></a>
           </span>
         </label>

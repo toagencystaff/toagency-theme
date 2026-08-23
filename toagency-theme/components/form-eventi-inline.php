@@ -73,7 +73,7 @@ $fe_js = array(
 
         <label class="inline-quote-consent" for="fe_consent">
           <input type="checkbox" id="fe_consent" required>
-          <span><?php echo _ht(array('it'=>'Accetto il trattamento dei dati secondo la','en'=>'I accept the processing of my data according to the','fr'=>'J\'accepte le traitement de mes données selon la','es'=>'Acepto el tratamiento de mis datos según la')); ?> <a href="https://www.iubenda.com/privacy-policy/58462877" target="_blank" rel="noopener"><?php echo _ht(array('it'=>'Privacy Policy','en'=>'Privacy Policy','fr'=>'Politique de confidentialité','es'=>'Política de privacidad')); ?></a></span>
+          <span><?php echo _ht(array('it'=>'Accetto il trattamento dei dati secondo la','en'=>'I accept the processing of my data according to the','fr'=>'J\'accepte le traitement de mes données selon la','es'=>'Acepto el tratamiento de mis datos según la')); ?> <a href="<?php echo esc_url(toa_privacy_url()); ?>" target="_blank" rel="noopener"><?php echo _ht(array('it'=>'Privacy Policy','en'=>'Privacy Policy','fr'=>'Politique de confidentialité','es'=>'Política de privacidad')); ?></a></span>
         </label>
 
         <button type="submit" class="btn-hero btn-hero-primary iq-submit" id="feSubmit">

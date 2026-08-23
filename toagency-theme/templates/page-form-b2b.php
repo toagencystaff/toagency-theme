@@ -201,7 +201,7 @@ $b2bw_dir  = array('b2bw-a', 'b2bw-b');
       <div style="margin:16px 0;padding:12px;border:1px solid var(--gray-2)">
         <label style="display:flex;align-items:flex-start;gap:8px;font-size:0.75rem;opacity:0.5;cursor:pointer">
           <input type="checkbox" id="consent" required style="width:16px;height:16px;margin-top:1px;accent-color:var(--white)">
-          <span><?php echo toa_t('form_b2b', 'privacy_text'); ?> <a href="https://www.iubenda.com/privacy-policy/58462877" target="_blank" style="color:var(--white);text-decoration:underline"><?php echo toa_t('form_b2b', 'privacy_link'); ?></a></span>
+          <span><?php echo toa_t('form_b2b', 'privacy_text'); ?> <a href="<?php echo esc_url(toa_privacy_url()); ?>" target="_blank" style="color:var(--white);text-decoration:underline"><?php echo toa_t('form_b2b', 'privacy_link'); ?></a></span>
         </label>
       </div>
 

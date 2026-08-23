@@ -1174,7 +1174,7 @@ add_action('wp_footer', function() {
             '<div class="iq-field"><label class="iq-label" for="tm_phone">'+esc(ft.phone)+'</label><input type="tel" id="tm_phone" name="phone" class="iq-input"></div></div>'+
             '<div class="iq-field"><label class="iq-label" for="tm_event_type">'+esc(ft.service)+'</label><select id="tm_event_type" name="event_type" required class="iq-input"><option value="">'+esc(ft.select)+'</option>'+svcOpts+'</select></div>'+
             '<div class="iq-field"><label class="iq-label" for="tm_message">'+esc(ft.message)+'</label><textarea id="tm_message" name="message" class="iq-input" placeholder="'+esc(ft.msgph)+'"></textarea></div>'+
-            '<label class="inline-quote-consent" for="tm_consent"><input type="checkbox" id="tm_consent" required> <span>'+esc(ft.consent)+' <a href="https://www.iubenda.com/privacy-policy/58462877" target="_blank" rel="noopener">'+esc(ft.privacy)+'</a></span></label>'+
+            '<label class="inline-quote-consent" for="tm_consent"><input type="checkbox" id="tm_consent" required> <span>'+esc(ft.consent)+' <a href="<?php echo esc_url(toa_privacy_url()); ?>" target="_blank" rel="noopener">'+esc(ft.privacy)+'</a></span></label>'+
             '<button type="submit" class="btn-hero btn-hero-primary iq-submit" id="tmSubmit"><span class="iq-spinner" id="tmSpinner" style="display:none"></span><span id="tmSubmitText">'+esc(ft.submit)+'</span></button>'+
           '<p style="text-align:center;font-size:12px;color:rgba(255,255,255,.5);margin:10px 0 0">'+esc(ft.microcopy)+'</p>'+
           '</form></div></div>';
@@ -1274,3 +1274,19 @@ add_action('wp_enqueue_scripts', function() {
     wp_dequeue_script('jquery-migrate');
 }, 100); // prio 100 = dopo che i plugin hanno accodato
 // === END 2026-07-22 marco — LP Ads dequeue ===
+
+// === BEGIN 2026-08-22 marco — informativa privacy interna nei form ===
+// I form del sito linkavano https://www.iubenda.com/privacy-policy/58462877,
+// che iubenda ha DISATTIVATO ("questa Privacy Policy non è più attiva"):
+// il consenso raccolto rimandava a un'informativa inesistente.
+// Fonte unica dell'URL corretto, per lingua. Usata da tutti i form del sito.
+function toa_privacy_url() {
+    $lang = defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : 'it';
+    $map = array(
+        'en' => 'https://toagency.it/en/gdpr-privacy-policy/',
+        'fr' => 'https://toagency.it/fr/gdpr-privacy-policy/',
+        'es' => 'https://toagency.it/es/gdpr-politica-de-privacidad/',
+    );
+    return isset($map[$lang]) ? $map[$lang] : 'https://toagency.it/privacy-policy-3/';
+}
+// === END 2026-08-22 marco — informativa privacy interna nei form ===
