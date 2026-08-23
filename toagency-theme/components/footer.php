@@ -12,7 +12,8 @@
     <?php
     $toa_lang = defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : 'it';
     $toa_privacy = array(
-        'en' => 'https://toagency.it/privacy-policy-english/',
+        // FIX 2026-08-22 marco — era /privacy-policy-english/: pagina diversa da quella dello switcher WPML, due informative EN in circolazione
+        'en' => 'https://toagency.it/en/gdpr-privacy-policy/',
         'fr' => 'https://toagency.it/fr/gdpr-privacy-policy/',
         'es' => 'https://toagency.it/es/gdpr-politica-de-privacidad/'
     );
