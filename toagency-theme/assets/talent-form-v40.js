@@ -92,28 +92,28 @@
         },
         /* il momento che conta davvero: finire lo Step 1 e premere Continua */
         spingiStep1: {
-            it:'Completa questi campi e premi <u>Continua</u>: da lì in poi possiamo contattarti quando esce un lavoro adatto a te.',
-            en:'Fill in these fields and press <u>Continue</u>: from that moment we can contact you when a job fits you.',
-            fr:'Remplis ces champs et appuie sur <u>Continuer</u> : à partir de là on peut te contacter dès qu\'un travail te correspond.',
-            es:'Rellena estos campos y pulsa <u>Continuar</u>: a partir de ahí podemos contactarte cuando salga un trabajo para ti.'
+            it:'Completa questi campi e premi <u>Invia i tuoi dati</u>: da lì in poi possiamo contattarti quando esce un lavoro adatto a te.',
+            en:'Fill in these fields and press <u>Send your details</u>: from that moment we can contact you when a job fits you.',
+            fr:'Remplis ces champs et appuie sur <u>Envoie tes informations</u> : à partir de là on peut te contacter dès qu\'un travail te correspond.',
+            es:'Rellena estos campos y pulsa <u>Envía tus datos</u>: a partir de ahí podemos contactarte cuando salga un trabajo para ti.'
         },
         mancaUno: {
-            it:'Ti manca <strong>1 campo</strong> e sei dentro. Poi premi <u>Continua</u>.',
-            en:'<strong>1 field</strong> left and you are in. Then press <u>Continue</u>.',
-            fr:'Encore <strong>1 champ</strong> et tu es dedans. Ensuite appuie sur <u>Continuer</u>.',
-            es:'Te falta <strong>1 campo</strong> y estás dentro. Luego pulsa <u>Continuar</u>.'
+            it:'Ti manca <strong>1 campo</strong> e sei dentro. Poi premi <u>Invia i tuoi dati</u>.',
+            en:'<strong>1 field</strong> left and you are in. Then press <u>Send your details</u>.',
+            fr:'Encore <strong>1 champ</strong> et tu es dedans. Ensuite appuie sur <u>Envoie tes informations</u>.',
+            es:'Te falta <strong>1 campo</strong> y estás dentro. Luego pulsa <u>Envía tus datos</u>.'
         },
         mancanoN: {
-            it:'Ti mancano <strong>%n campi</strong> e sei dentro. Poi premi <u>Continua</u>.',
-            en:'<strong>%n fields</strong> left and you are in. Then press <u>Continue</u>.',
-            fr:'Encore <strong>%n champs</strong> et tu es dedans. Ensuite appuie sur <u>Continuer</u>.',
-            es:'Te faltan <strong>%n campos</strong> y estás dentro. Luego pulsa <u>Continuar</u>.'
+            it:'Ti mancano <strong>%n campi</strong> e sei dentro. Poi premi <u>Invia i tuoi dati</u>.',
+            en:'<strong>%n fields</strong> left and you are in. Then press <u>Send your details</u>.',
+            fr:'Encore <strong>%n champs</strong> et tu es dedans. Ensuite appuie sur <u>Envoie tes informations</u>.',
+            es:'Te faltan <strong>%n campos</strong> y estás dentro. Luego pulsa <u>Envía tus datos</u>.'
         },
         step1Pronto: {
-            it:'Ci sei: premi <u>Continua</u> e sei nel database TOAgency.',
-            en:'That\'s it: press <u>Continue</u> and you are in the TOAgency database.',
-            fr:'C\'est bon : appuie sur <u>Continuer</u> et tu es dans la base TOAgency.',
-            es:'Ya está: pulsa <u>Continuar</u> y estás en la base de datos de TOAgency.'
+            it:'Ci sei: premi <u>Invia i tuoi dati</u> e sei nel database TOAgency.',
+            en:'That\'s it: press <u>Send your details</u> and you are in the TOAgency database.',
+            fr:'C\'est bon : appuie sur <u>Envoie tes informations</u> et tu es dans la base TOAgency.',
+            es:'Ya está: pulsa <u>Envía tus datos</u> y estás en la base de datos de TOAgency.'
         },
         giaDentro: {
             it:'✅ Ci sei: sei nel nostro database. Ogni dato in più alza le tue possibilità.',

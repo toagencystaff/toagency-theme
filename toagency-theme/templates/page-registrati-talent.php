@@ -759,7 +759,7 @@ $theme_uri = get_stylesheet_directory_uri();
 
             <div class="toa-talent-actions">
                 <span></span>
-                <button type="button" class="toa-talent-btn toa-talent-btn-primary" data-go="2"><?php echo _ht_talent(array('it'=>'Continua','en'=>'Continue','fr'=>'Continuer','es'=>'Continuar')); ?> → <small style="display:block;font-weight:600;opacity:.75;font-size:.72rem;margin-top:2px;"><?php echo _ht_talent(array('it'=>'passaggio 2 di 4','en'=>'step 2 of 4','fr'=>'étape 2 sur 4','es'=>'paso 2 de 4')); ?></small></button>
+                <button type="button" class="toa-talent-btn toa-talent-btn-primary" data-go="2"><?php echo _ht_talent(array('it'=>'Invia i tuoi dati','en'=>'Send your details','fr'=>'Envoie tes informations','es'=>'Envía tus datos')); ?> → <small style="display:block;font-weight:600;opacity:.75;font-size:.72rem;margin-top:2px;"><?php echo _ht_talent(array('it'=>'2 di 4','en'=>'2 of 4','fr'=>'2 sur 4','es'=>'2 de 4')); ?></small></button>
             </div>
         </div>
 
@@ -914,7 +914,7 @@ $theme_uri = get_stylesheet_directory_uri();
 
             <div class="toa-talent-actions">
                 <button type="button" class="toa-talent-btn toa-talent-btn-ghost" data-go="1">← <?php echo _ht_talent(array('it'=>'Indietro','en'=>'Back','fr'=>'Retour','es'=>'Atrás')); ?></button>
-                <button type="button" class="toa-talent-btn toa-talent-btn-primary" data-go="3"><?php echo _ht_talent(array('it'=>'Continua','en'=>'Continue','fr'=>'Continuer','es'=>'Continuar')); ?> → <small style="display:block;font-weight:600;opacity:.75;font-size:.72rem;margin-top:2px;"><?php echo _ht_talent(array('it'=>'passaggio 3 di 4','en'=>'step 3 of 4','fr'=>'étape 3 sur 4','es'=>'paso 3 de 4')); ?></small></button>
+                <button type="button" class="toa-talent-btn toa-talent-btn-primary" data-go="3"><?php echo _ht_talent(array('it'=>'Continua','en'=>'Continue','fr'=>'Continuer','es'=>'Continuar')); ?> → <small style="display:block;font-weight:600;opacity:.75;font-size:.72rem;margin-top:2px;"><?php echo _ht_talent(array('it'=>'3 di 4','en'=>'3 of 4','fr'=>'3 sur 4','es'=>'3 de 4')); ?></small></button>
             </div>
         </div>
 
@@ -1107,7 +1107,7 @@ $theme_uri = get_stylesheet_directory_uri();
 
             <div class="toa-talent-actions">
                 <button type="button" class="toa-talent-btn toa-talent-btn-ghost" data-go="2">← <?php echo _ht_talent(array('it'=>'Indietro','en'=>'Back','fr'=>'Retour','es'=>'Atrás')); ?></button>
-                <button type="button" class="toa-talent-btn toa-talent-btn-primary" data-go="4"><?php echo _ht_talent(array('it'=>'Continua','en'=>'Continue','fr'=>'Continuer','es'=>'Continuar')); ?> → <small style="display:block;font-weight:600;opacity:.75;font-size:.72rem;margin-top:2px;"><?php echo _ht_talent(array('it'=>'ultimo passaggio','en'=>'last step','fr'=>'dernière étape','es'=>'último paso')); ?></small></button>
+                <button type="button" class="toa-talent-btn toa-talent-btn-primary" data-go="4"><?php echo _ht_talent(array('it'=>'Ultimo passaggio','en'=>'Last step','fr'=>'Dernière étape','es'=>'Último paso')); ?> → <small style="display:block;font-weight:600;opacity:.75;font-size:.72rem;margin-top:2px;"><?php echo _ht_talent(array('it'=>'4 di 4','en'=>'4 of 4','fr'=>'4 sur 4','es'=>'4 de 4')); ?></small></button>
             </div>
         </div>
 
@@ -1642,7 +1642,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260821estero1" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260823cta1" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
