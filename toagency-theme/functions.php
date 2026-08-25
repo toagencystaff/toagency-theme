@@ -1299,8 +1299,13 @@ function toa_privacy_url() {
 // in questo tema l'header è già chiuso quando parte il template, quindi il tag finisce
 // nel <body>, dove Google lo ignora. Yoast SEO scrive il robots attraverso il filtro
 // wp_robots di WordPress core: si interviene lì, con priorità alta per avere l'ultima parola.
+// 2026-08-25 — aggiunte anche le landing /lp/ (template page-landing-ads.php): quelle
+// pagine hanno un <head> proprio e stampano già noindex, ma su 2 delle 4 Yoast diceva
+// "index, follow" nello stesso head. Google in caso di conflitto applica la direttiva più
+// restrittiva (quindi erano comunque escluse), ma un segnale contraddittorio è fragile.
 function toa_noindex_aree_riservate($robots) {
-    if (is_page_template('templates/page-agenzia-area.php') || is_page(273355)) {
+    if (is_page_template('templates/page-agenzia-area.php') || is_page(273355)
+        || is_page_template('templates/page-landing-ads.php')) {
         $robots = array('noindex' => true, 'nofollow' => true);
     }
     return $robots;
