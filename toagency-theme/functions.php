@@ -836,6 +836,8 @@ function _t_raw($strings) {
 
 // === FIX 2026-05-30 marco — schema markup #33 ===
 require_once get_template_directory() . '/inc/schema.php';
+// 2026-08-25 marco — short-link dei filtri talent/crew database (chat TEMA LINK-FILTRI-CORTI)
+require_once get_template_directory() . '/inc/toa-shortlink.php';
 
 // === FIX 2026-05-30 marco — google-reviews CSS ===
 add_action('wp_enqueue_scripts', function() {

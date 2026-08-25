@@ -381,6 +381,14 @@ $hub_sections = array(
                     <!-- 2026-06-06 marco: count + open-button nel menubar (toggle spostato in cima alla sidebar) -->
                     <div class="toa-tdb-menubar-right">
                         <span class="toa-tdb-results-count" id="tdbResultsCount"><?php echo esc_html($_t($T['results_loading'])); ?></span>
+                        <?php /* 2026-08-25 marco — short-link: trasforma i filtri correnti in un link corto da inviare (chat TEMA LINK-FILTRI-CORTI) */ ?>
+                        <button type="button" class="toa-tdb-share-btn" id="tdbShareBtn"
+                                data-ajax="<?php echo esc_url(admin_url('admin-ajax.php')); ?>"
+                                data-label-idle="<?php echo esc_attr($_t(array('it'=>'🔗 Copia link','en'=>'🔗 Copy link','fr'=>'🔗 Copier le lien','es'=>'🔗 Copiar enlace'))); ?>"
+                                data-label-wait="<?php echo esc_attr($_t(array('it'=>'…','en'=>'…','fr'=>'…','es'=>'…'))); ?>"
+                                data-label-done="<?php echo esc_attr($_t(array('it'=>'✓ Copiato','en'=>'✓ Copied','fr'=>'✓ Copié','es'=>'✓ Copiado'))); ?>"
+                                data-label-manual="<?php echo esc_attr($_t(array('it'=>'Copia il link:','en'=>'Copy the link:','fr'=>'Copiez le lien :','es'=>'Copia el enlace:'))); ?>"
+                                title="<?php echo esc_attr($_t(array('it'=>'Crea un link breve con i filtri attivi, pronto da inviare','en'=>'Create a short link with the active filters, ready to send','fr'=>'Créer un lien court avec les filtres actifs, prêt à envoyer','es'=>'Crea un enlace corto con los filtros activos, listo para enviar'))); ?>"><?php echo esc_html($_t(array('it'=>'🔗 Copia link','en'=>'🔗 Copy link','fr'=>'🔗 Copier le lien','es'=>'🔗 Copiar enlace'))); ?></button>
                     </div>
                 </div>
 
@@ -739,5 +747,67 @@ $hub_sections = array(
 <?php /* 2026-08-11 marco — v76 (HOSTESS EVENTI) + cache-buster filemtime: risolve la cache browser
          sul file statico segnalata da TEMA FOTO TALENT-DB (prima l'include era senza ?v=) */ ?>
 <script src="<?php echo esc_url($theme_uri . '/assets/talent-database-v76.js?v=' . filemtime(get_stylesheet_directory() . '/assets/talent-database-v76.js')); ?>" defer></script>
+
+<?php /* ═══ 2026-08-25 marco — SHORT-LINK FILTRI (chat TEMA LINK-FILTRI-CORTI) ═══
+         Tutto isolato qui: NON tocca talent-database-v76.js, che resta com'era.
+         Il pulsante legge l'URL corrente (che il JS tiene già aggiornato via replaceState),
+         lo manda a inc/toa-shortlink.php e riceve un codice corto da copiare. */ ?>
+<style>
+.toa-tdb-share-btn{margin-left:12px;padding:6px 12px;font-family:inherit;font-size:.72rem;font-weight:600;letter-spacing:.3px;color:var(--gray-4);background:transparent;border:1px solid var(--gray-2);border-radius:2px;cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s}
+.toa-tdb-share-btn:hover{color:var(--accent);border-color:var(--accent)}
+.toa-tdb-share-btn:disabled{opacity:.5;cursor:default}
+.toa-tdb-share-btn.is-done{color:var(--accent);border-color:var(--accent)}
+@media(max-width:767px){.toa-tdb-share-btn{margin-left:8px;padding:5px 9px;font-size:.68rem}}
+</style>
+<script>
+(function () {
+    var b = document.getElementById('tdbShareBtn');
+    if (!b) return;
+
+    // Mette il link negli appunti; se il browser lo vieta, lo mostra in un prompt.
+    function copia(url) {
+        function feedback() {
+            b.textContent = b.dataset.labelDone;
+            b.classList.add('is-done');
+            setTimeout(function () {
+                b.textContent = b.dataset.labelIdle;
+                b.classList.remove('is-done');
+            }, 2200);
+        }
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(url).then(feedback, function () {
+                window.prompt(b.dataset.labelManual, url);
+            });
+        } else {
+            window.prompt(b.dataset.labelManual, url);
+        }
+    }
+
+    b.addEventListener('click', function () {
+        var base = window.location.origin + window.location.pathname;
+        var qs = window.location.search.replace(/^\?/, '');
+        if (!qs) { copia(base); return; }              // nessun filtro attivo: link già corto
+
+        b.disabled = true;
+        b.textContent = b.dataset.labelWait;
+
+        fetch(b.dataset.ajax, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'action=toa_shortlink&q=' + encodeURIComponent(qs)
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+            b.disabled = false;
+            if (j && j.success && j.data && j.data.code) copia(base + '?k=' + j.data.code);
+            else copia(window.location.href);          // fallback: link lungo, meglio di niente
+        })
+        .catch(function () {
+            b.disabled = false;
+            copia(window.location.href);
+        });
+    });
+})();
+</script>
 
 <?php toa_component('footer'); ?>
