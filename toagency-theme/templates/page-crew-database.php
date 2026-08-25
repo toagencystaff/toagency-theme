@@ -583,6 +583,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.6-nofeat" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.7-flag" defer></script>
 
 <?php toa_component('footer'); ?>

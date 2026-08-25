@@ -97,6 +97,23 @@
         return PROV[c] || code;
     }
 
+    // 2026-08-25 — bandiera del paese nella scheda profilo (richiesta Marco).
+    // Emoji generata dal codice ISO2 (IT -> 2 "regional indicator" = bandiera): zero asset, zero richieste,
+    // funziona con QUALSIASI paese senza manutenzione. Nota: su Windows/Chrome le bandiere non vengono
+    // disegnate e si vedono le 2 lettere -> accanto stampiamo sempre anche la sigla a 3 lettere.
+    function flagEmoji(iso2) {
+        if (!/^[A-Z]{2}$/.test(iso2)) return '';
+        return String.fromCodePoint(0x1F1E6 + iso2.charCodeAt(0) - 65, 0x1F1E6 + iso2.charCodeAt(1) - 65);
+    }
+    // ISO2 -> ISO3 per i paesi plausibili nel DB crew; se manca la voce si mostra il codice a 2 lettere.
+    var ISO3 = {
+        IT:'ITA',FR:'FRA',ES:'ESP',CH:'CHE',GB:'GBR',DE:'DEU',AT:'AUT',PT:'PRT',BE:'BEL',NL:'NLD',IE:'IRL',
+        SE:'SWE',NO:'NOR',DK:'DNK',FI:'FIN',GR:'GRC',HU:'HUN',CZ:'CZE',SK:'SVK',PL:'POL',RO:'ROU',BG:'BGR',
+        HR:'HRV',SI:'SVN',RS:'SRB',AL:'ALB',UA:'UKR',MD:'MDA',LT:'LTU',LV:'LVA',EE:'EST',TR:'TUR',RU:'RUS',
+        US:'USA',CA:'CAN',MX:'MEX',BR:'BRA',AR:'ARG',CO:'COL',VE:'VEN',PE:'PER',CU:'CUB',DO:'DOM',
+        MA:'MAR',TN:'TUN',EG:'EGY',SN:'SEN',NG:'NGA',ZA:'ZAF',CN:'CHN',JP:'JPN',IN:'IND',PH:'PHL',AU:'AUS'
+    };
+
     // 2026-07-26 — richiesta Marco: nomi sempre "Prima lettera maiuscola poi minuscolo" a display (il dato in DB puo' arrivare in qualsiasi case)
     function properCase(s) {
         if (!s) return s;
@@ -893,10 +910,13 @@
                 }
             });
         }
-        // Privacy: SOLO provincia (mai il comune di residenza/domicilio); paese solo se non IT
-        var loc = d.provincia ? provName(String(d.provincia)) : '';
-        if (d.paese && d.paese !== 'IT') loc = loc ? (loc + ' · ' + d.paese) : String(d.paese);
-        if (loc) html += '<div class="crew-pf-loc">📍 ' + escapeHtml(loc) + '</div>';
+        // Privacy: SOLO provincia (mai il comune di residenza/domicilio).
+        // 2026-08-25 — bandiera + sigla paese SEMPRE, anche per l'Italia (prima il paese usciva solo se != IT).
+        // Estero senza provincia (lista comuni non disponibile) -> resta solo bandiera + sigla.
+        var loc = d.provincia ? escapeHtml(provName(String(d.provincia))) : '';
+        var iso2 = String(d.paese || '').toUpperCase().trim();
+        if (/^[A-Z]{2}$/.test(iso2)) loc = (loc ? loc + ' · ' : '') + flagEmoji(iso2) + ' ' + (ISO3[iso2] || iso2);
+        if (loc) html += '<div class="crew-pf-loc">📍 ' + loc + '</div>';
         // 2026-08-02 — livello/esperienza PER RUOLO (task #18): se il crew ha 2+ ruoli e almeno uno ha
         // ruoli_dati compilato (self-edit), mostra una riga per ruolo invece del badge unico sotto.
         // Feedback Marco su Valentina: "make up artist e hairstylist ma non so l'esperienza di ognuna".
