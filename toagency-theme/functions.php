@@ -1290,3 +1290,18 @@ function toa_privacy_url() {
     return isset($map[$lang]) ? $map[$lang] : 'https://toagency.it/privacy-policy-3/';
 }
 // === END 2026-08-22 marco — informativa privacy interna nei form ===
+
+// === BEGIN 2026-08-25 marco — /agenzia-area/ fuori dall'indice (chat TEMA LINK-FILTRI-CORTI) ===
+// L'area riservata delle agenzie partner rispondeva a Google con "index, follow".
+// NOTA per il futuro: stampare <meta name="robots"> dentro il template NON basta —
+// in questo tema l'header è già chiuso quando parte il template, quindi il tag finisce
+// nel <body>, dove Google lo ignora. Yoast SEO scrive il robots attraverso il filtro
+// wp_robots di WordPress core: si interviene lì, con priorità alta per avere l'ultima parola.
+function toa_noindex_aree_riservate($robots) {
+    if (is_page_template('templates/page-agenzia-area.php') || is_page(273355)) {
+        $robots = array('noindex' => true, 'nofollow' => true);
+    }
+    return $robots;
+}
+add_filter('wp_robots', 'toa_noindex_aree_riservate', 999);
+// === END 2026-08-25 marco — /agenzia-area/ fuori dall'indice ===
