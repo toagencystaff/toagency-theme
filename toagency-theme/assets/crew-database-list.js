@@ -982,38 +982,94 @@
         html += '</div>';
         html += '<button type="button" class="crew-pf-cta" onclick="crewPfRequestInfo()">' + escapeHtml(STR.requestInfo || '📧 Richiedi info') + '</button>';
         html += '<p class="crew-pf-intro"' + (d.bio ? '' : ' style="opacity:.5;font-style:italic;"') + '>' + escapeHtml(d.bio || (STR.bioPlaceholder || 'Bio in aggiornamento.')) + '</p>';
+        // ═══ 2026-08-25 marco — GRIGLIA UNICA + LINGUETTE (chat TEMA LINK-FILTRI-CORTI) ═══
+        // PRIMA: una <section> impilata per ogni ruolo. Due difetti segnalati da Marco:
+        //   1) con 1 foto per ruolo la griglia (4-5 colonne) restava mezza vuota;
+        //   2) una foto messa in due album veniva mostrata DUE volte nella stessa pagina
+        //      (caso reale: stessa foto sotto "Makeup Artist" e "Hair Stylist").
+        // ORA: una griglia sola, ogni foto una volta, linguette in cima per filtrare.
+        // Il filtro nasconde/mostra (non ricostruisce il DOM) così gli indici del lightbox
+        // restano validi e le frecce continuano a scorrere tutte le foto.
         var keys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
         if (albums.generale) keys.push('generale');
-        var any = false;
+
+        // Foto uniche, in ordine, ognuna con l'elenco degli album a cui appartiene.
+        var order = [], byUrl = {};
         keys.forEach(function (k) {
-            var photos = albums[k] || [];
-            var hasBio = (k !== 'generale' && bio[k]);
-            if (!photos.length && !hasBio) return;
-            any = true;
-            var title = (k === 'generale') ? (STR.generalAlbum || 'Generale') : (labels[k] || k);
-            html += '<section class="crew-pf-album"><div class="crew-pf-album-head"><h3 class="crew-pf-album-title">' + escapeHtml(title) + '</h3><span class="crew-pf-count">' + photos.length + '</span></div>';
-            if (hasBio) html += '<p class="crew-pf-bio">' + escapeHtml(bio[k]) + '</p>';
-            if (photos.length) {
-                html += '<div class="crew-pf-grid">';
-                photos.forEach(function (url) {
-                    var idx = pfPhotos.length;
-                    if (VIDEO_RE.test(url)) {
-                        pfPhotos.push({ type: 'video', src: encodeURI(url) });
-                        html += videoTag(url, idx);
-                        return;
-                    }
-                    pfPhotos.push({ type: 'photo', src: withW(url, 1600) });
-                    html += '<img class="crew-pf-media crew-pf-clic" src="' + encodeURI(withW(url, 600)) + '" alt="" loading="lazy" data-idx="' + idx + '">';
+            (albums[k] || []).forEach(function (url) {
+                if (!byUrl[url]) { byUrl[url] = []; order.push(url); }
+                if (byUrl[url].indexOf(k) === -1) byUrl[url].push(k);
+            });
+        });
+        var tabs = keys.filter(function (k) { return (albums[k] || []).length; });
+        var bioKeys = keys.filter(function (k) { return k !== 'generale' && bio[k]; });
+
+        if (order.length) {
+            // Linguette solo se c'è più di un album: con uno solo non servono a niente.
+            if (tabs.length > 1) {
+                html += '<div class="crew-pf-tabs" role="tablist">';
+                html += '<button type="button" class="crew-pf-tab is-active" data-album="*">' +
+                        escapeHtml(STR.albumAll || 'Tutte') + ' <span class="crew-pf-count">' + order.length + '</span></button>';
+                tabs.forEach(function (k) {
+                    var title = (k === 'generale') ? (STR.generalAlbum || 'Generale') : (labels[k] || k);
+                    html += '<button type="button" class="crew-pf-tab" data-album="' + escapeHtml(k) + '">' +
+                            escapeHtml(title) + ' <span class="crew-pf-count">' + albums[k].length + '</span></button>';
                 });
                 html += '</div>';
             }
-            html += '</section>';
-        });
-        if (!any) html += '<div class="crew-pf-empty">' + escapeHtml(STR.noMedia || 'Nessun contenuto disponibile.') + '</div>';
+            // Bio di specializzazione: compare solo quando è selezionata la sua linguetta.
+            bioKeys.forEach(function (k) {
+                html += '<p class="crew-pf-bio" data-album="' + escapeHtml(k) + '" hidden>' + escapeHtml(bio[k]) + '</p>';
+            });
+            html += '<div class="crew-pf-grid">';
+            order.forEach(function (url) {
+                var idx = pfPhotos.length;
+                if (VIDEO_RE.test(url)) {
+                    pfPhotos.push({ type: 'video', src: encodeURI(url) });
+                    html += videoTag(url, idx);
+                    return;
+                }
+                pfPhotos.push({ type: 'photo', src: withW(url, 1600) });
+                html += '<img class="crew-pf-media crew-pf-clic" src="' + encodeURI(withW(url, 600)) + '" alt="" loading="lazy" data-idx="' + idx + '">';
+            });
+            html += '</div>';
+        } else if (!bioKeys.length) {
+            html += '<div class="crew-pf-empty">' + escapeHtml(STR.noMedia || 'Nessun contenuto disponibile.') + '</div>';
+        }
         body.innerHTML = html;
         body.scrollTop = 0;
+        // data-albums applicato DOPO il render: i figli della griglia sono nello stesso ordine
+        // di `order`, così non serve toccare videoTag() che genera i tile dei video.
+        var gridEl = body.querySelector('.crew-pf-grid');
+        if (gridEl) {
+            Array.prototype.forEach.call(gridEl.children, function (el, i) {
+                if (order[i]) el.setAttribute('data-albums', byUrl[order[i]].join(' '));
+            });
+        }
+        wirePfTabs(body);
         wireVideos(body);
         wireHeroSlideshow(body);
+    }
+
+    // 2026-08-25 — linguette della scheda crew (Tutte / Makeup Artist / …): filtrano la griglia
+    // nascondendo i tile, senza ricostruire il DOM. Così il lightbox continua a scorrere tutte
+    // le foto con le frecce, anche quelle momentaneamente nascoste dal filtro.
+    function wirePfTabs(scope) {
+        var tabs = scope.querySelectorAll('.crew-pf-tab');
+        if (!tabs.length) return;
+        Array.prototype.forEach.call(tabs, function (btn) {
+            btn.addEventListener('click', function () {
+                var key = btn.getAttribute('data-album');
+                Array.prototype.forEach.call(tabs, function (b) { b.classList.toggle('is-active', b === btn); });
+                Array.prototype.forEach.call(scope.querySelectorAll('.crew-pf-grid > *'), function (el) {
+                    var albs = (el.getAttribute('data-albums') || '').split(' ');
+                    el.hidden = !(key === '*' || albs.indexOf(key) !== -1);
+                });
+                Array.prototype.forEach.call(scope.querySelectorAll('.crew-pf-bio[data-album]'), function (p) {
+                    p.hidden = (p.getAttribute('data-album') !== key);
+                });
+            });
+        });
     }
 
     // 2026-07-31 — ciclo dissolvenza tra le foto dell'hero (max 5, gia' in DOM). Solo opacity/transform

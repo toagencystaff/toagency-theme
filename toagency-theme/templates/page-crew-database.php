@@ -123,6 +123,8 @@ $T = [
     'loading_profile' => ['it'=>'Carico…','en'=>'Loading…','fr'=>'Chargement…','es'=>'Cargando…'],
     'error_profile'   => ['it'=>'Profilo non disponibile.','en'=>'Profile unavailable.','fr'=>'Profil indisponible.','es'=>'Perfil no disponible.'],
     'album_general'   => ['it'=>'Generale','en'=>'General','fr'=>'Général','es'=>'General'],
+    // 2026-08-25 — linguette griglia unica scheda crew
+    'album_all'       => ['it'=>'Tutte','en'=>'All','fr'=>'Toutes','es'=>'Todas'],
     'no_media'        => ['it'=>'Nessun contenuto ancora.','en'=>'No content yet.','fr'=>'Aucun contenu.','es'=>'Sin contenido.'],
     'bio_placeholder' => ['it'=>'Bio in aggiornamento.','en'=>'Bio coming soon.','fr'=>'Bio à venir.','es'=>'Bio en breve.'],
     'lb_close'        => ['it'=>'Chiudi','en'=>'Close','fr'=>'Fermer','es'=>'Cerrar'],
@@ -376,7 +378,16 @@ if ($crew_seo_items === false) {
 .crew-pf-album-title { color:#fff; font-size:16px; font-weight:700; margin:0; text-transform:uppercase; letter-spacing:.06em; padding-left:12px; border-left:3px solid #c8ff00; }
 .crew-pf-count { background:#1a1a1e; color:#9ca3af; font-size:12px; font-weight:600; padding:2px 9px; border-radius:999px; }
 .crew-pf-bio { color:#b8bcc4; font-size:14.5px; line-height:1.6; margin:0 0 14px; max-width:640px; }
-.crew-pf-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:12px; }
+.crew-pf-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:12px; margin-top:20px; }
+/* 2026-08-25 — linguette griglia unica. [hidden] va forzato: .crew-pf-media ha display:block
+   e senza !important vincerebbe sull'attributo, lasciando visibili i tile filtrati. */
+.crew-pf-grid > [hidden] { display:none !important; }
+.crew-pf-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-top:28px; }
+.crew-pf-tab { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border:1px solid #2a2a2a; border-radius:999px; background:transparent; color:#9a9a9a; font-size:13px; font-weight:600; letter-spacing:.02em; cursor:pointer; transition:color .15s, border-color .15s, background .15s; }
+.crew-pf-tab:hover { color:#fff; border-color:#4a4a4a; }
+.crew-pf-tab.is-active { color:#0a0a0a; background:#c8ff00; border-color:#c8ff00; }
+.crew-pf-tab .crew-pf-count { opacity:.65; font-size:11px; }
+.crew-pf-tab.is-active .crew-pf-count { opacity:.55; }
 .crew-pf-media { width:100%; aspect-ratio:1; object-fit:cover; border-radius:10px; background:#0a0a0a; display:block; transition:transform .2s; }
 .crew-pf-grid img.crew-pf-media:hover { transform:scale(1.02); outline:2px solid #c8ff00; outline-offset:-2px; }
 .crew-pf-vwrap { position:relative; display:block; border-radius:10px; overflow:hidden; }
@@ -568,6 +579,7 @@ window.crewPubConfig = {
         loadingProfile: <?= json_encode($_t($T['loading_profile'])) ?>,
         errorProfile: <?= json_encode($_t($T['error_profile'])) ?>,
         generalAlbum: <?= json_encode($_t($T['album_general'])) ?>,
+        albumAll: <?= json_encode($_t($T['album_all'])) ?>,
         noMedia: <?= json_encode($_t($T['no_media'])) ?>,
         bioPlaceholder: <?= json_encode($_t($T['bio_placeholder'])) ?>,
         requestInfo: <?= json_encode($_t($T['request_info'])) ?>,
@@ -583,6 +595,6 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.8-flag2" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.9-grid1" defer></script>
 
 <?php toa_component('footer'); ?>
