@@ -101,8 +101,30 @@
     // Emoji generata dal codice ISO2 (IT -> 2 "regional indicator" = bandiera): zero asset, zero richieste,
     // funziona con QUALSIASI paese senza manutenzione. Nota: su Windows/Chrome le bandiere non vengono
     // disegnate e si vedono le 2 lettere -> accanto stampiamo sempre anche la sigla a 3 lettere.
+    // 2026-08-25 v2 (scelta Marco): se il browser NON sa disegnare le bandiere (Windows/Chrome) non
+    // mostriamo nulla invece delle 2 lettere -> "📍 Caserta · ITA" invece del brutto "IT ITA".
+    // Test: disegno 🇺🇳 su canvas e lo confronto con le stesse 2 lettere separate da uno spazio a
+    // larghezza zero; se il risultato e' identico vuol dire che la bandiera non e' stata composta.
+    var __flagOK = null;
+    function flagsSupported() {
+        try {
+            var c = document.createElement('canvas');
+            if (!c.getContext) return false;
+            var ctx = c.getContext('2d');
+            if (!ctx || !ctx.fillText) return false;
+            ctx.textBaseline = 'top';
+            ctx.font = '32px sans-serif';
+            ctx.fillText('\uD83C\uDDFA\uD83C\uDDF3', 0, 0);           // 2 lettere attaccate = bandiera 🇺🇳
+            var a = c.toDataURL();
+            ctx.clearRect(0, 0, c.width, c.height);
+            ctx.fillText('\uD83C\uDDFA\u200B\uD83C\uDDF3', 0, 0);   // stesse lettere separate da spazio invisibile
+            return a !== c.toDataURL();
+        } catch (e) { return false; }
+    }
     function flagEmoji(iso2) {
         if (!/^[A-Z]{2}$/.test(iso2)) return '';
+        if (__flagOK === null) __flagOK = flagsSupported();
+        if (!__flagOK) return '';
         return String.fromCodePoint(0x1F1E6 + iso2.charCodeAt(0) - 65, 0x1F1E6 + iso2.charCodeAt(1) - 65);
     }
     // ISO2 -> ISO3 per i paesi plausibili nel DB crew; se manca la voce si mostra il codice a 2 lettere.
@@ -915,7 +937,10 @@
         // Estero senza provincia (lista comuni non disponibile) -> resta solo bandiera + sigla.
         var loc = d.provincia ? escapeHtml(provName(String(d.provincia))) : '';
         var iso2 = String(d.paese || '').toUpperCase().trim();
-        if (/^[A-Z]{2}$/.test(iso2)) loc = (loc ? loc + ' · ' : '') + flagEmoji(iso2) + ' ' + (ISO3[iso2] || iso2);
+        if (/^[A-Z]{2}$/.test(iso2)) {
+            var fl = flagEmoji(iso2); // '' se il browser non sa disegnare le bandiere -> resta solo la sigla
+            loc = (loc ? loc + ' · ' : '') + (fl ? fl + ' ' : '') + (ISO3[iso2] || iso2);
+        }
         if (loc) html += '<div class="crew-pf-loc">📍 ' + loc + '</div>';
         // 2026-08-02 — livello/esperienza PER RUOLO (task #18): se il crew ha 2+ ruoli e almeno uno ha
         // ruoli_dati compilato (self-edit), mostra una riga per ruolo invece del badge unico sotto.
