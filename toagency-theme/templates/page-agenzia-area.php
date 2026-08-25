@@ -81,6 +81,14 @@ toa_component('header');
 .agp-modal-head h3{font-family:var(--font-display);font-size:1.15rem}
 .agp-modal-close{background:none;border:none;color:var(--gray-4);font-size:1.4rem;cursor:pointer;line-height:1}
 
+.agp-steps{display:flex;gap:6px;margin-bottom:22px}
+.agp-step-dot{flex:1;text-align:center;padding:9px 4px;border:1px solid var(--gray-3);background:transparent;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--gray-4);cursor:pointer}
+.agp-step-dot.active{border-color:var(--accent);color:var(--accent)}
+.agp-step-dot:disabled{opacity:.35;cursor:not-allowed}
+.agp-step-panel{display:none}
+.agp-step-panel.active{display:block}
+.agp-step-nav{margin-top:20px;display:flex;gap:10px}
+
 @media(max-width:768px){
   .agp-row,.agp-row3{grid-template-columns:1fr}
   .agp-head{flex-direction:column}
@@ -116,11 +124,11 @@ toa_component('header');
       </div>
     </div>
 
-    <div class="agp-banner">ⓘ Tutto quello che carichi o modifichi qui passa prima dall'approvazione dello staff TOAgency: non compare online subito.</div>
+    <div class="agp-banner">ⓘ Diamo sempre un'occhiata a quello che carichi prima che vada online — è così che restiamo affidabili con i clienti a cui proponete i vostri talent.</div>
 
     <div class="agp-section">
       <h2>I tuoi dati</h2>
-      <div class="agp-section-sub">Le modifiche vengono proposte allo staff, non applicate subito.</div>
+      <div class="agp-section-sub">Le modifiche passano da una rapida verifica nostra prima di essere visibili.</div>
       <div class="agp-card">
         <div id="agpPendingBox" style="display:none;margin-bottom:16px;padding:12px;border:1px solid #ffb84d;font-size:.78rem;color:#ffb84d">Hai dati o modifiche in attesa di revisione dello staff.</div>
         <form id="agpAgenziaForm">
@@ -163,81 +171,117 @@ toa_component('header');
       <h3 id="agpTalentModalTitle">Nuovo talent</h3>
       <button type="button" class="agp-modal-close" id="agpTalentModalClose">&times;</button>
     </div>
+    <p id="agpTalentEditHint" style="display:none;font-size:.78rem;color:var(--gray-4);margin:-10px 0 18px;line-height:1.5">Lascia vuoto un campo se non vuoi cambiarlo: resta come sta.</p>
+
+    <div class="agp-steps" id="agpSteps">
+      <button type="button" class="agp-step-dot" data-step="1">1 · Chi è</button>
+      <button type="button" class="agp-step-dot" data-step="2">2 · Dove vive</button>
+      <button type="button" class="agp-step-dot" data-step="3">3 · Cosa fa</button>
+      <button type="button" class="agp-step-dot" data-step="4">4 · Foto</button>
+    </div>
+
     <form id="agpTalentForm">
       <input type="hidden" id="agp_talent_id">
-      <div class="agp-row">
-        <div><label class="agp-label">Nome</label><input class="agp-input" id="agp_nome" required></div>
-        <div><label class="agp-label">Cognome</label><input class="agp-input" id="agp_cognome" required></div>
-      </div>
-      <div class="agp-row3">
-        <div><label class="agp-label">Data di nascita</label><input class="agp-input" type="date" id="agp_data_nascita"></div>
-        <div><label class="agp-label">Sesso</label>
-          <select class="agp-select" id="agp_sesso"><option value="">—</option><option value="F">F</option><option value="M">M</option><option value="altro">Altro</option></select>
+
+      <div class="agp-step-panel" data-step="1">
+        <div class="agp-row">
+          <div><label class="agp-label">Nome</label><input class="agp-input" id="agp_nome" required></div>
+          <div><label class="agp-label">Cognome</label><input class="agp-input" id="agp_cognome" required></div>
         </div>
-        <div><label class="agp-label">Lingue parlate</label><input class="agp-input" id="agp_lingua" placeholder="italiano, inglese…"></div>
-      </div>
-      <div class="agp-row3">
-        <div><label class="agp-label">Paese residenza</label><input class="agp-input" id="agp_paese_residenza" list="agpPaesiList" maxlength="2" style="text-transform:uppercase" placeholder="IT"></div>
-        <div><label class="agp-label">Comune residenza</label><input class="agp-input" id="agp_comune_residenza"></div>
-        <div><label class="agp-label">Provincia residenza</label><input class="agp-input" id="agp_provincia_residenza"></div>
-      </div>
-      <datalist id="agpPaesiList">
-        <option value="IT">Italia</option><option value="ES">Spagna</option><option value="FR">Francia</option>
-        <option value="GB">Regno Unito</option><option value="DE">Germania</option><option value="CH">Svizzera</option>
-        <option value="US">Stati Uniti</option><option value="BR">Brasile</option><option value="PT">Portogallo</option>
-        <option value="NL">Paesi Bassi</option><option value="BE">Belgio</option><option value="AT">Austria</option>
-        <option value="PL">Polonia</option><option value="RO">Romania</option><option value="UA">Ucraina</option>
-        <option value="RU">Russia</option><option value="CN">Cina</option><option value="JP">Giappone</option>
-      </datalist>
-      <div class="agp-row3">
-        <div><label class="agp-label">Altezza (cm)</label><input class="agp-input" type="number" id="agp_altezza"></div>
-        <div><label class="agp-label">Peso (kg)</label><input class="agp-input" type="number" id="agp_peso"></div>
-        <div><label class="agp-label">Taglia</label>
-          <select class="agp-select" id="agp_taglia"><option value="">—</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select>
+        <div class="agp-row3">
+          <div><label class="agp-label">Data di nascita</label><input class="agp-input" type="date" id="agp_data_nascita" min="<?php echo esc_attr(date('Y-m-d', strtotime('-100 years'))); ?>" max="<?php echo esc_attr(date('Y-m-d')); ?>"></div>
+          <div style="grid-column:span 2"><label class="agp-label">Sesso</label>
+            <select class="agp-select" id="agp_sesso"><option value="">—</option><option value="F">F</option><option value="M">M</option><option value="altro">Altro</option></select>
+          </div>
         </div>
-      </div>
-      <div class="agp-row3">
-        <div><label class="agp-label">Scarpe</label><input class="agp-input" id="agp_scarpe"></div>
-        <div><label class="agp-label">Capelli</label><input class="agp-input" id="agp_capelli" placeholder="colore"></div>
-        <div><label class="agp-label">Lunghezza capelli</label><input class="agp-input" id="agp_lunghezza_capelli"></div>
-      </div>
-      <div class="agp-row3">
-        <div><label class="agp-label">Occhi</label><input class="agp-input" id="agp_occhi"></div>
-        <div><label class="agp-label">Instagram</label><input class="agp-input" id="agp_instagram" placeholder="@handle"></div>
-        <div><label class="agp-label">TikTok</label><input class="agp-input" id="agp_tiktok" placeholder="@handle"></div>
-      </div>
-      <label class="agp-label" style="display:block">Etnia (max 2)</label>
-      <div class="agp-checks" id="agpEtniaChecks"></div>
-      <div class="agp-row3">
-        <div><label class="agp-label">Petto (cm)</label><input class="agp-input" type="number" id="agp_misura_petto"></div>
-        <div><label class="agp-label">Vita (cm)</label><input class="agp-input" type="number" id="agp_misura_vita"></div>
-        <div><label class="agp-label">Fianchi (cm)</label><input class="agp-input" type="number" id="agp_misura_fianchi"></div>
+        <div class="agp-step-nav"><button type="button" class="agp-btn" data-next="2">Avanti</button></div>
       </div>
 
-      <label class="agp-label" style="display:block">Ruoli</label>
-      <div class="agp-checks" id="agpRuoliChecks"></div>
-
-      <div style="margin-top:10px">
-        <label class="agp-check" style="display:inline-flex"><input type="checkbox" id="agp_esclusiva"> Esclusiva con questo talent</label>
-        <div id="agpEsclusivaDataWrap" style="display:none;margin-top:10px;max-width:220px">
-          <label class="agp-label">Esclusiva fino al</label>
-          <input class="agp-input" type="date" id="agp_esclusiva_fino">
+      <div class="agp-step-panel" data-step="2">
+        <div class="agp-row3">
+          <div><label class="agp-label">Paese residenza</label><input class="agp-input" id="agp_paese_residenza" list="agpPaesiList" maxlength="2" style="text-transform:uppercase" placeholder="IT"></div>
+          <div><label class="agp-label">Comune residenza</label><input class="agp-input" id="agp_comune_residenza"></div>
+          <div><label class="agp-label">Provincia residenza</label><input class="agp-input" id="agp_provincia_residenza"></div>
+        </div>
+        <datalist id="agpPaesiList">
+          <option value="IT">Italia</option><option value="ES">Spagna</option><option value="FR">Francia</option>
+          <option value="GB">Regno Unito</option><option value="DE">Germania</option><option value="CH">Svizzera</option>
+          <option value="US">Stati Uniti</option><option value="BR">Brasile</option><option value="PT">Portogallo</option>
+          <option value="NL">Paesi Bassi</option><option value="BE">Belgio</option><option value="AT">Austria</option>
+          <option value="PL">Polonia</option><option value="RO">Romania</option><option value="UA">Ucraina</option>
+          <option value="RU">Russia</option><option value="CN">Cina</option><option value="JP">Giappone</option>
+        </datalist>
+        <div class="agp-step-nav">
+          <button type="button" class="agp-btn agp-btn-secondary" data-prev="1">Indietro</button>
+          <button type="button" class="agp-btn" data-next="3">Avanti</button>
         </div>
       </div>
 
-      <div id="agpRegolamentoWrap" style="margin-top:16px">
-        <label class="agp-check" style="display:inline-flex"><input type="checkbox" id="agp_regolamento_ok"> Confermo di avere il consenso del talent a caricare questo profilo, secondo il regolamento agenzie partner</label>
+      <div class="agp-step-panel" data-step="3">
+        <label class="agp-label" style="display:block">Ruoli</label>
+        <div class="agp-checks" id="agpRuoliChecks"></div>
+
+        <div class="agp-row3" style="margin-top:14px">
+          <div><label class="agp-label">Altezza (cm)</label><input class="agp-input" type="number" id="agp_altezza" min="100" max="220"></div>
+          <div><label class="agp-label">Taglia</label>
+            <select class="agp-select" id="agp_taglia"><option value="">—</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select>
+          </div>
+          <div><label class="agp-label">Scarpe</label><input class="agp-input" type="number" id="agp_scarpe" min="30" max="50"></div>
+        </div>
+        <div class="agp-row">
+          <div><label class="agp-label">Colore occhi</label>
+            <select class="agp-select" id="agp_occhi">
+              <option value="">—</option>
+              <option value="azzurri">Azzurri</option><option value="verdi">Verdi</option>
+              <option value="marroni">Marroni</option><option value="neri">Neri</option><option value="grigi">Grigi</option>
+            </select>
+          </div>
+          <div><label class="agp-label">Colore capelli</label>
+            <select class="agp-select" id="agp_capelli">
+              <option value="">—</option>
+              <option value="biondi">Biondi</option><option value="castani">Castani</option><option value="neri">Neri</option>
+              <option value="rossi">Rossi</option><option value="grigi">Grigi</option><option value="bianchi">Bianchi</option><option value="calvo">Calvo</option>
+            </select>
+          </div>
+        </div>
+        <label class="agp-label" style="display:block">Etnia (max 2)</label>
+        <div class="agp-checks" id="agpEtniaChecks"></div>
+        <div id="agpMisureWrap" style="display:none">
+          <label class="agp-label" style="display:block">Misure (cm) — solo per il ruolo Modello/a</label>
+          <div class="agp-row3">
+            <div><label class="agp-label">Petto</label><input class="agp-input" type="number" id="agp_misura_petto" min="50" max="150"></div>
+            <div><label class="agp-label">Vita</label><input class="agp-input" type="number" id="agp_misura_vita" min="40" max="150"></div>
+            <div><label class="agp-label">Fianchi</label><input class="agp-input" type="number" id="agp_misura_fianchi" min="50" max="150"></div>
+          </div>
+        </div>
+
+        <div class="agp-row" style="margin-top:14px">
+          <div><label class="agp-label">Instagram</label><input class="agp-input" id="agp_instagram" placeholder="@handle"></div>
+          <div><label class="agp-label">TikTok</label><input class="agp-input" id="agp_tiktok" placeholder="@handle"></div>
+        </div>
+        <div style="margin-top:10px">
+          <label class="agp-check" style="display:inline-flex"><input type="checkbox" id="agp_esclusiva"> Esclusiva con questo talent</label>
+          <div id="agpEsclusivaDataWrap" style="display:none;margin-top:10px;max-width:220px">
+            <label class="agp-label">Esclusiva fino al</label>
+            <input class="agp-input" type="date" id="agp_esclusiva_fino">
+          </div>
+        </div>
+        <div id="agpRegolamentoWrap" style="margin-top:16px">
+          <label class="agp-check" style="display:inline-flex"><input type="checkbox" id="agp_regolamento_ok"> Confermo di avere il consenso del talent a caricare questo profilo, secondo il regolamento agenzie partner</label>
+        </div>
+        <div class="agp-step-nav">
+          <button type="button" class="agp-btn agp-btn-secondary" data-prev="2">Indietro</button>
+          <button type="submit" class="agp-btn" id="agpTalentSubmit">Salva talent</button>
+          <button type="button" class="agp-btn agp-btn-secondary" id="agpTalentCancel">Annulla</button>
+        </div>
       </div>
 
-      <div style="margin-top:20px;display:flex;gap:10px">
-        <button type="submit" class="agp-btn" id="agpTalentSubmit">Salva talent</button>
-        <button type="button" class="agp-btn agp-btn-secondary" id="agpTalentCancel">Annulla</button>
-      </div>
       <div class="agp-msg" id="agpTalentMsg"></div>
     </form>
 
-    <div id="agpFotoSection" style="display:none;margin-top:30px;padding-top:24px;border-top:1px solid var(--gray-2)">
-      <h3 style="font-family:var(--font-display);font-size:1.05rem;margin-bottom:14px">Foto di questo talent</h3>
+    <div id="agpFotoSection" class="agp-step-panel" data-step="4" style="margin-top:24px;padding-top:24px;border-top:1px solid var(--gray-2)">
+      <h3 style="font-family:var(--font-display);font-size:1.05rem;margin-bottom:6px">Foto di questo talent</h3>
+      <p style="font-size:.78rem;color:var(--gray-4);margin-bottom:14px">Disponibile dopo aver salvato il talent (step 1-3).</p>
       <div id="agpFotoGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-bottom:16px"></div>
       <form id="agpFotoForm">
         <div class="agp-row">
@@ -255,6 +299,10 @@ toa_component('header');
         <div style="margin-top:14px"><button type="submit" class="agp-btn" id="agpFotoSubmit">Carica foto</button></div>
         <div class="agp-msg" id="agpFotoMsg"></div>
       </form>
+      <div class="agp-step-nav">
+        <button type="button" class="agp-btn agp-btn-secondary" data-prev="3">Indietro</button>
+        <button type="button" class="agp-btn" id="agpFotoDone">Fatto</button>
+      </div>
     </div>
   </div>
 </div>
@@ -264,7 +312,10 @@ toa_component('header');
   'use strict';
   var API = '/crm_toagency/actions/';
   var state = { csrf:'', talenti:[], agenzia:null, quote:{talent_oggi:0,talent_max:0,upload_ultima_ora:0,upload_max:0} };
-  var ROLES = ['Modelli','Attori','Hostess','Steward','Creator','Fotografi','Truccatori','Comparse','Parrucchieri','Stylist'];
+  var agpStep = 1;
+  // Codici canonici da lib/ruoli.php ($RUOLI_TALENT) — SOLO ruoli talent, niente crew.
+  // 'bambino' escluso: il portale agenzie rifiuta i minorenni (vedi agenzia-portale-salva-talent.php).
+  var ROLES = [['model','Modello/a'],['actor','Attore/Attrice'],['hostess','Hostess/Steward'],['comparsa','Comparsa'],['influencer','Influencer'],['ugc_creator','UGC Creator']];
   var ETNIE = [['caucasica','Caucasica'],['africana','Africana'],['asiatica','Asiatica'],['sud_asiatica','Sud-asiatica'],['latina','Latina'],['araba','Araba']];
 
   function el(id){ return document.getElementById(id); }
@@ -284,16 +335,24 @@ toa_component('header');
     if (msg) el('agpErrorText').textContent = msg;
   }
 
+  function updateMisureVisibility(){
+    // Stessa logica del form talent reale (talent-form-v40.js): misure visibili
+    // solo col ruolo "model" (Modello/a) selezionato, non legate al sesso.
+    var hasModello = !!el('agpRuoliChecks').querySelector('input[value="model"]:checked');
+    el('agpMisureWrap').style.display = hasModello ? 'block' : 'none';
+  }
+
   function buildRuoliChecks(selected){
     selected = selected||[];
     var box = el('agpRuoliChecks'); box.innerHTML='';
     ROLES.forEach(function(r){
       var lab = document.createElement('label');
-      lab.className='agp-check'+(selected.indexOf(r)>-1?' active':'');
-      lab.innerHTML='<input type="checkbox" value="'+r+'"'+(selected.indexOf(r)>-1?' checked':'')+'> '+r;
-      lab.querySelector('input').addEventListener('change', function(){ lab.classList.toggle('active', this.checked); });
+      lab.className='agp-check'+(selected.indexOf(r[0])>-1?' active':'');
+      lab.innerHTML='<input type="checkbox" value="'+r[0]+'"'+(selected.indexOf(r[0])>-1?' checked':'')+'> '+r[1];
+      lab.querySelector('input').addEventListener('change', function(){ lab.classList.toggle('active', this.checked); updateMisureVisibility(); });
       box.appendChild(lab);
     });
+    updateMisureVisibility();
   }
   function buildEtniaChecks(selected){
     selected = selected||[];
@@ -371,7 +430,7 @@ toa_component('header');
         btn.disabled=false;
         var msg = el('agpAgenziaMsg');
         if (data.ok){
-          msg.className='agp-msg ok'; msg.textContent='Modifiche inviate: in attesa di approvazione dello staff.';
+          msg.className='agp-msg ok'; msg.textContent='Modifiche inviate — le controlliamo noi e poi vanno online.';
           load();
         } else {
           msg.className='agp-msg err'; msg.textContent = data.messaggio || 'Errore, riprova.';
@@ -422,6 +481,29 @@ toa_component('header');
     });
   }
 
+  function agpGoStep(n){
+    n = String(n);
+    document.querySelectorAll('.agp-step-panel').forEach(function(p){ p.classList.toggle('active', String(p.getAttribute('data-step'))===n); });
+    document.querySelectorAll('.agp-step-dot').forEach(function(d){ d.classList.toggle('active', d.getAttribute('data-step')===n); });
+    agpStep = n;
+    el('agpTalentMsg').className = 'agp-msg';
+    if (n==='4'){ var t = findTalent(el('agp_talent_id').value); if (t) renderFotoGrid(t); }
+  }
+  document.querySelectorAll('.agp-step-dot').forEach(function(d){
+    d.addEventListener('click', function(){ if (!this.disabled) agpGoStep(this.getAttribute('data-step')); });
+  });
+  document.querySelectorAll('[data-next]').forEach(function(b){
+    b.addEventListener('click', function(){
+      if (this.getAttribute('data-next')==='2' && (!el('agp_nome').value.trim() || !el('agp_cognome').value.trim())){
+        var msg = el('agpTalentMsg'); msg.className='agp-msg err'; msg.textContent='Inserisci almeno nome e cognome per continuare.';
+        return;
+      }
+      agpGoStep(this.getAttribute('data-next'));
+    });
+  });
+  document.querySelectorAll('[data-prev]').forEach(function(b){ b.addEventListener('click', function(){ agpGoStep(this.getAttribute('data-prev')); }); });
+  el('agpFotoDone').addEventListener('click', function(){ closeTalentModal(); });
+
   function openTalentModal(talentId, focusFoto){
     var t = talentId ? findTalent(talentId) : null;
     el('agpTalentForm').reset();
@@ -435,11 +517,12 @@ toa_component('header');
     buildRuoliChecks([]);
     buildEtniaChecks([]);
     el('agpRegolamentoWrap').style.display = t ? 'none' : 'block';
+    el('agpTalentEditHint').style.display = t ? 'block' : 'none';
     el('agpTalentMsg').className = 'agp-msg';
-    el('agpFotoSection').style.display = t ? 'block' : 'none';
+    document.querySelectorAll('.agp-step-dot[data-step="4"]').forEach(function(d){ d.disabled = !t; });
     if (t) renderFotoGrid(t);
     el('agpTalentModalBg').classList.add('open');
-    if (focusFoto && t) setTimeout(function(){ el('agpFotoSection').scrollIntoView({behavior:'smooth'}); }, 150);
+    agpGoStep(focusFoto && t ? 4 : 1);
   }
   function closeTalentModal(){ el('agpTalentModalBg').classList.remove('open'); }
   el('agpNewTalentBtn').addEventListener('click', function(){ openTalentModal(null); });
@@ -455,7 +538,7 @@ toa_component('header');
     fd.append('csrf', state.csrf);
     if (isEdit) fd.append('talent_id', el('agp_talent_id').value);
 
-    var fields = ['nome','cognome','data_nascita','sesso','paese_residenza','comune_residenza','provincia_residenza','altezza','peso','taglia','scarpe','capelli','lunghezza_capelli','occhi','lingua','instagram','tiktok','misura_petto','misura_vita','misura_fianchi'];
+    var fields = ['nome','cognome','data_nascita','sesso','paese_residenza','comune_residenza','provincia_residenza','altezza','taglia','scarpe','capelli','occhi','instagram','tiktok','misura_petto','misura_vita','misura_fianchi'];
     fields.forEach(function(f){
       var v = el('agp_'+f).value.trim();
       if (!isEdit || v!=='') fd.append(f, v);
@@ -478,7 +561,7 @@ toa_component('header');
         btn.disabled=false;
         var msg = el('agpTalentMsg');
         if (data.ok){
-          msg.className='agp-msg ok'; msg.textContent = isEdit ? 'Modifiche inviate: in attesa di approvazione.' : 'Talent creato: in attesa di approvazione.';
+          msg.className='agp-msg ok'; msg.textContent = isEdit ? 'Modifiche inviate — le controlliamo noi e poi vanno online.' : 'Talent creato — lo controlliamo noi e poi va online.';
           var newId = data.talent_id;
           load().then(function(){ if (!isEdit && newId){ setTimeout(function(){ openTalentModal(newId, true); }, 400); } });
         } else {
@@ -509,7 +592,7 @@ toa_component('header');
         btn.disabled=false;
         var msg = el('agpFotoMsg');
         if (data.ok){
-          msg.className='agp-msg ok'; msg.textContent='Foto caricata: in attesa di approvazione.';
+          msg.className='agp-msg ok'; msg.textContent='Foto caricata — la controlliamo noi e poi va online.';
           fileInput.value='';
           load().then(function(){ var t=findTalent(talentId); if (t) renderFotoGrid(t); });
         } else {
