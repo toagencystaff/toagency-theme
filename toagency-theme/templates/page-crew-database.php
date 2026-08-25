@@ -125,6 +125,11 @@ $T = [
     'album_general'   => ['it'=>'Generale','en'=>'General','fr'=>'Général','es'=>'General'],
     // 2026-08-25 — linguette griglia unica scheda crew
     'album_all'       => ['it'=>'Tutte','en'=>'All','fr'=>'Toutes','es'=>'Todas'],
+    // 2026-08-25 — short-link dei filtri (stesso motore di /talent-database/)
+    'share_idle'      => ['it'=>'🔗 Copia link','en'=>'🔗 Copy link','fr'=>'🔗 Copier le lien','es'=>'🔗 Copiar enlace'],
+    'share_done'      => ['it'=>'✓ Copiato','en'=>'✓ Copied','fr'=>'✓ Copié','es'=>'✓ Copiado'],
+    'share_manual'    => ['it'=>'Copia il link:','en'=>'Copy the link:','fr'=>'Copiez le lien :','es'=>'Copia el enlace:'],
+    'share_title'     => ['it'=>'Crea un link breve con i filtri attivi, pronto da inviare','en'=>'Create a short link with the active filters, ready to send','fr'=>'Créer un lien court avec les filtres actifs, prêt à envoyer','es'=>'Crea un enlace corto con los filtros activos, listo para enviar'],
     'no_media'        => ['it'=>'Nessun contenuto ancora.','en'=>'No content yet.','fr'=>'Aucun contenu.','es'=>'Sin contenido.'],
     'bio_placeholder' => ['it'=>'Bio in aggiornamento.','en'=>'Bio coming soon.','fr'=>'Bio à venir.','es'=>'Bio en breve.'],
     'lb_close'        => ['it'=>'Chiudi','en'=>'Close','fr'=>'Fermer','es'=>'Cerrar'],
@@ -238,6 +243,11 @@ if ($crew_seo_items === false) {
 .crew-pub-filters select:focus { outline:none; border-color:#c8ff00; }
 .crew-cat-select-hidden { display:none !important; }
 .crew-pub-results-count { color:#9ca3af; font-size:14px; margin-left:auto; }
+/* 2026-08-25 — pulsante short-link, gemello di quello su /talent-database/ */
+.crew-pub-share-btn { margin-left:10px; padding:6px 12px; font-family:inherit; font-size:13px; font-weight:600; color:#9ca3af; background:transparent; border:1px solid #2a2a2a; border-radius:999px; cursor:pointer; white-space:nowrap; transition:color .15s, border-color .15s; }
+.crew-pub-share-btn:hover { color:#c8ff00; border-color:#c8ff00; }
+.crew-pub-share-btn:disabled { opacity:.5; cursor:default; }
+.crew-pub-share-btn.is-done { color:#c8ff00; border-color:#c8ff00; }
 /* 2026-07-26 — chip categoria al posto della tendina (stile talent .toa-tdb-cat-chip).
    !important su padding/border-radius: reset globale button{border-radius:6px!important;padding:12px 28px!important} altrimenti li squadra. */
 .crew-cat-chips { display:flex; flex-wrap:wrap; gap:8px; padding:20px 24px 0; }
@@ -486,6 +496,14 @@ if ($crew_seo_items === false) {
             <option value=""><?= esc_html($_t($T['filter_all_prov'])) ?></option>
         </select>
         <span class="crew-pub-results-count" id="results-count"><?= esc_html($_t($T['loading'])) ?></span>
+        <?php /* 2026-08-25 marco — short-link: stesso pulsante di /talent-database/, motore in inc/toa-shortlink.php */ ?>
+        <button type="button" class="crew-pub-share-btn" id="crewShareBtn"
+                data-ajax="<?= esc_url(admin_url('admin-ajax.php')) ?>"
+                data-label-idle="<?= esc_attr($_t($T['share_idle'])) ?>"
+                data-label-wait="…"
+                data-label-done="<?= esc_attr($_t($T['share_done'])) ?>"
+                data-label-manual="<?= esc_attr($_t($T['share_manual'])) ?>"
+                title="<?= esc_attr($_t($T['share_title'])) ?>"><?= esc_html($_t($T['share_idle'])) ?></button>
     </div>
 
     <!-- 2026-08-11 CREATIVE-HOME Fase 2 — strisce editoriali "In evidenza" (riempite dal JS, solo senza filtri attivi).
@@ -596,5 +614,46 @@ window.crewPubConfig = {
 };
 </script>
 <script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.9-grid1" defer></script>
+
+<?php /* 2026-08-25 marco — SHORT-LINK FILTRI su /crew-database/ (chat TEMA LINK-FILTRI-CORTI).
+         Stesso motore di /talent-database/ (inc/toa-shortlink.php): il pulsante legge l'URL
+         corrente, lo scambia con un codice corto e lo mette negli appunti. */ ?>
+<script>
+(function () {
+    var b = document.getElementById('crewShareBtn');
+    if (!b) return;
+    function copia(url) {
+        function feedback() {
+            b.textContent = b.dataset.labelDone;
+            b.classList.add('is-done');
+            setTimeout(function () { b.textContent = b.dataset.labelIdle; b.classList.remove('is-done'); }, 2200);
+        }
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(url).then(feedback, function () { window.prompt(b.dataset.labelManual, url); });
+        } else {
+            window.prompt(b.dataset.labelManual, url);
+        }
+    }
+    b.addEventListener('click', function () {
+        var base = window.location.origin + window.location.pathname;
+        var qs = window.location.search.replace(/^\?/, '');
+        if (!qs) { copia(base); return; }
+        b.disabled = true;
+        b.textContent = b.dataset.labelWait;
+        fetch(b.dataset.ajax, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'action=toa_shortlink&q=' + encodeURIComponent(qs)
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+            b.disabled = false;
+            if (j && j.success && j.data && j.data.code) copia(base + '?k=' + j.data.code);
+            else copia(window.location.href);
+        })
+        .catch(function () { b.disabled = false; copia(window.location.href); });
+    });
+})();
+</script>
 
 <?php toa_component('footer'); ?>
