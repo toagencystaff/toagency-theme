@@ -538,11 +538,11 @@ $hub_sections = array(
                 </div>
 
                 <div class="toa-tdb-field flt-adv">
-                    <label class="toa-tdb-label">Rating</label>
+                    <label class="toa-tdb-label">Rtg</label>
                     <div class="toa-tdb-range">
-                        <input type="number" name="valutazione_min" class="toa-tdb-input toa-tdb-input-sm" min="1" max="10" placeholder="<?php echo esc_attr($_t($T['filter_min'])); ?>">
+                        <input type="number" name="livello_min" class="toa-tdb-input toa-tdb-input-sm" min="0" max="100" placeholder="<?php echo esc_attr($_t($T['filter_min'])); ?>">
                         <span class="toa-tdb-range-sep">—</span>
-                        <input type="number" name="valutazione_max" class="toa-tdb-input toa-tdb-input-sm" min="1" max="10" placeholder="<?php echo esc_attr($_t($T['filter_max'])); ?>">
+                        <input type="number" name="livello_max" class="toa-tdb-input toa-tdb-input-sm" min="0" max="100" placeholder="<?php echo esc_attr($_t($T['filter_max'])); ?>">
                     </div>
                 </div>
 
@@ -577,7 +577,7 @@ $hub_sections = array(
                 <p><?php echo esc_html($_t($T['results_empty'])); ?></p>
             </div>
             <div class="toa-tdb-loadmore-wrap">
-                <button type="button" class="toa-tdb-btn toa-tdb-btn-ghost" id="tdbLoadMore" hidden><?php echo esc_html($_t($T['results_more'])); ?></button>
+                <button type="button" class="toa-tdb-btn toa-tdb-btn-primary" id="tdbLoadMore" hidden><?php echo esc_html($_t($T['results_more'])); ?></button>
             </div>
         </div>
 

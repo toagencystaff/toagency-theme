@@ -659,7 +659,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         }
 
         ['eta_min', 'eta_max', 'altezza_min', 'altezza_max', 'scarpe_min', 'scarpe_max',
-         'valutazione_min', 'valutazione_max'].forEach(function (k) {
+         'livello_min', 'livello_max'].forEach(function (k) {
             var el = f[k];
             if (!el) return;
             var v = el.value;
@@ -1728,7 +1728,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         msSet('capelli', params.getAll('capelli'));
         msSet('occhi',   params.getAll('occhi'));
         ['eta_min', 'eta_max', 'altezza_min', 'altezza_max', 'scarpe_min', 'scarpe_max',
-         'valutazione_min', 'valutazione_max'].forEach(function (n) {
+         'livello_min', 'livello_max'].forEach(function (n) {
             setVal(n, params.get(n));
         });
         var sesso = params.get('sesso') || '';
@@ -1831,7 +1831,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         // Range numerici: search su change (non su ogni tasto)
         var f = $('#tdbFilters');
         ['eta_min', 'eta_max', 'altezza_min', 'altezza_max', 'scarpe_min', 'scarpe_max',
-         'valutazione_min', 'valutazione_max'].forEach(function (name) {
+         'livello_min', 'livello_max'].forEach(function (name) {
             if (f[name]) f[name].addEventListener('change', function () { tdSearch(false); });
         });
 
