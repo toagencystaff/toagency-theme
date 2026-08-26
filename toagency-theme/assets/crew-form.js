@@ -364,13 +364,14 @@
 
         if (!cityWrap) return;
 
-        // Trova i 3 sotto-container città (typeahead, select, free)
+        // Trova i sotto-container città (typeahead, select, free, area)
         var cityTypeahead = cityWrap.querySelector('.city-typeahead');
         var citySelectBox = cityWrap.querySelector('.city-select');
         var cityFree = cityWrap.querySelector('.city-free');
+        var cityArea = cityWrap.querySelector('.city-area'); // 2026-08-26 — paesi esteri con tendina
 
         // Reset visibility
-        [cityTypeahead, citySelectBox, cityFree].forEach(function(el) {
+        [cityTypeahead, citySelectBox, cityFree, cityArea].forEach(function(el) {
             if (el) el.style.display = 'none';
         });
 
@@ -380,8 +381,11 @@
         var trigger = cityWrap.querySelector('.toa-crew-customselect-label');
         if (trigger) trigger.textContent = 'Seleziona...';
 
-        // FIX 2026-06-29 marco — paesi con dato pieno in geo_cities usano il typeahead (come IT)
-        var TYPEAHEAD_NATIONS = ['FR','ES','GB','DE','CH','BE','NL','AT','PT','IE','PL','US','AE','CA','AU','SE','NO','DK','FI','GR','RO','CZ','HU','HR','RS','UA','BG','SK','SI','LU','TR','IL','SA','EG','ZA','MA','BR','MX','AR','CL','CO','RU','IN','CN','JP','KR','SG','HK','TH','NZ','AL','MD','LT','LV','EE','BY','BA','MK','ME','XK','VE','DO','CU','NG','KE','TN','DZ','GH','SN','CI','ET','AO'];
+        /* 2026-08-26 (TEMA-AREE-GEOGRAFICHE) — solo questi paesi hanno l'elenco comuni completo nel CRM:
+           lì si sceglie il comune vero col typeahead. TUTTI gli altri (Svizzera compresa) passano dalla
+           tendina città grandi (ramo cityArea più sotto) — sostituisce sia la vecchia TYPEAHEAD_NATIONS
+           (~70 paesi che non scrivevano mai la provincia) sia il ramo dedicato CH col JSON locale. */
+        var COMUNI_COMPLETI = ['FR','ES','GB'];
         if (cityTypeahead) cityTypeahead.dataset.nation = nationCode;
 
         if (nationCode === 'IT') {
@@ -402,39 +406,60 @@
             // Mostra typeahead comuni
             if (cityTypeahead) cityTypeahead.style.display = '';
         }
-        else if (TYPEAHEAD_NATIONS.indexOf(nationCode) > -1) {
-            // Francia (e futuri paesi importati in geo_cities): typeahead come l'Italia, provincia nascosta
+        else if (COMUNI_COMPLETI.indexOf(nationCode) > -1) {
+            // FR/ES/GB: elenco comuni completo, typeahead come l'Italia, provincia nascosta
             if (provinceContainer) provinceContainer.style.display = 'none';
             if (cityTypeahead) cityTypeahead.style.display = '';
         }
-        else if (['CH'].indexOf(nationCode) > -1) {
-            // Provincia nascosta
+        else if (cityArea) {
+            /* ═══ 2026-08-26 (TEMA-AREE-GEOGRAFICHE) — TUTTI GLI ALTRI PAESI ═══
+               Tendina città grandi (dato PUBBLICO -> *_provincia) + posto preciso a mano (PRIVATO ->
+               *_city_name). Se il paese non ha città in elenco si ricade sul testo libero. */
             if (provinceContainer) provinceContainer.style.display = 'none';
-            // Mostra select città
-            if (citySelectBox) {
-                citySelectBox.style.display = '';
-                var cs = citySelectBox.querySelector('.toa-crew-customselect');
-                // Forza ricarica città per il nuovo paese
-                if (cs) {
-                    cs.dataset.loaded = '';
-                    loadJSON(THEME_URI + '/assets/data/cities-foreign-extended.json').then(function(byNation) {
-                        var cities = byNation[nationCode] || [];
-                        populateSelect(cs, cities, function(opt, item) {
-                            opt.dataset.value = item.code;
-                            opt.dataset.label = item.name;
-                            opt.textContent = item.name;
-                        });
-                        cs.dataset.loaded = '1';
-                    });
+            var areaSel = cityArea.querySelector('.toa-crew-customselect');
+            if (areaSel) areaSel.dataset.loaded = '';
+            loadJSON(GEO_ENDPOINT + '?type=aree&nation=' + encodeURIComponent(nationCode)).then(function(list) {
+                if (!list || !list.length) {
+                    if (cityFree) cityFree.style.display = '';
+                    return;
                 }
-            }
+                if (areaSel) {
+                    populateSelect(areaSel, list, function(opt, item) {
+                        opt.dataset.value = item.name;   // il CRM salva il NOME della città, non il code
+                        opt.dataset.label = item.name;
+                        opt.textContent = item.name;
+                    });
+                    areaSel.dataset.loaded = '1';
+                }
+                cityArea.style.display = '';
+            }).catch(function() {
+                if (cityFree) cityFree.style.display = ''; // endpoint irraggiungibile -> non blocchiamo l'iscrizione
+            });
         }
         else {
-            // Resto del mondo: testo libero
+            // Non dovrebbe capitare (cityArea manca dal DOM): fallback di sicurezza
             if (provinceContainer) provinceContainer.style.display = 'none';
             if (cityFree) cityFree.style.display = '';
         }
     }
+
+    /* 2026-08-26 (TEMA-AREE-GEOGRAFICHE) — tendina città grandi -> campo *_provincia reale.
+       La tendina tiene la scelta in un suo hidden (res_area_city / dom_area_city) e da lì la copia
+       nell'UNICO campo *_provincia dentro ProvinceWrap: due input con lo stesso name si sarebbero
+       pestati i piedi (il salvataggio legge sempre il primo del DOM). */
+    document.addEventListener('toa:select', function(e) {
+        var c = e.target;
+        if (!c) return;
+        var areaInput = c.querySelector('input[name="res_area_city"], input[name="dom_area_city"]');
+        if (areaInput) {
+            var pfx = areaInput.name.indexOf('dom_') === 0 ? 'dom' : 'res';
+            areaInput.value = e.detail.value || '';
+            var wrapId = pfx === 'dom' ? 'toaCrewDomProvinceWrap' : 'toaCrewProvinceWrap';
+            var provReale = document.querySelector('#' + wrapId + ' input[name="' + pfx + '_provincia"]');
+            if (provReale) provReale.value = e.detail.value || '';
+            c.classList.remove('error');
+        }
+    });
 
     // Custom select città estere salva sia code che name
     document.addEventListener('toa:select', function(e) {
@@ -725,13 +750,16 @@
 
             var natCode = nationVal ? nationVal.value : '';
 
-            if (natCode === 'IT') {
+            // 2026-08-26 — la città pubblica è obbligatoria anche per gli esteri con tendina, non solo per l'IT
+            var resAreaBox = document.querySelector('#toaCrewCityWrap .city-area');
+            var resAreaVis = !!(resAreaBox && resAreaBox.style.display !== 'none');
+            if (natCode === 'IT' || resAreaVis) {
                 var provVal = scope.querySelector('[name="res_provincia"]');
                 if (!provVal || !provVal.value) {
-                    var provCs = document.getElementById('toaCrewProvince');
+                    var provCs = resAreaVis ? document.getElementById('toaCrewArea') : document.getElementById('toaCrewProvince');
                     if (provCs) provCs.classList.add('error');
                     ok = false;
-                    failReasons.push('residenza: provincia IT vuota (nat=' + natCode + ')');
+                    failReasons.push('residenza: provincia vuota (nat=' + natCode + ')');
                 }
             }
 
@@ -741,7 +769,7 @@
                 var visibleCityInput = null;
                 var debugCityList = [];
                 cityWrap.querySelectorAll('input[name="res_city_name"]').forEach(function(inp, idx) {
-                    var parent = inp.closest('.city-typeahead, .city-select, .city-free');
+                    var parent = inp.closest('.city-typeahead, .city-select, .city-free, .city-area');
                     var disp = parent ? parent.style.display : '?';
                     debugCityList.push('  #' + idx + ' parent=' + (parent?parent.className.replace(/[^a-z\-]/g,''):'?') + ' display="' + disp + '" value="' + inp.value + '"');
                     if (parent && parent.style.display !== 'none') {
@@ -754,7 +782,7 @@
                 } else if (!visibleCityInput.value.trim()) {
                     showFieldError(visibleCityInput, 'Indica la città');
                     ok = false;
-                    failReasons.push('residenza: città vuota (input visibile=' + (visibleCityInput.closest('.city-typeahead, .city-select, .city-free')||{}).className + ')');
+                    failReasons.push('residenza: città vuota (input visibile=' + (visibleCityInput.closest('.city-typeahead, .city-select, .city-free, .city-area')||{}).className + ')');
                 }
             } else {
                 ok = false;
@@ -771,12 +799,15 @@
                     failReasons.push('domicilio: nazione vuota');
                 }
                 var domNatCode = domNationVal ? domNationVal.value : '';
-                if (domNatCode === 'IT') {
+                var domAreaBox = document.querySelector('#toaCrewDomCityWrap .city-area');
+                var domAreaVis = !!(domAreaBox && domAreaBox.style.display !== 'none');
+                if (domNatCode === 'IT' || domAreaVis) {
                     var domProvVal = scope.querySelector('[name="dom_provincia"]');
                     if (!domProvVal || !domProvVal.value) {
-                        if (domProvinceSelect) domProvinceSelect.classList.add('error');
+                        var domProvCs = domAreaVis ? document.getElementById('toaCrewDomArea') : domProvinceSelect;
+                        if (domProvCs) domProvCs.classList.add('error');
                         ok = false;
-                        failReasons.push('domicilio: provincia IT vuota');
+                        failReasons.push('domicilio: provincia vuota (nat=' + domNatCode + ')');
                     }
                 }
                 var domCityWrap = document.getElementById('toaCrewDomCityWrap');
@@ -784,7 +815,7 @@
                     var visDom = null;
                     var debugDomList = [];
                     domCityWrap.querySelectorAll('input[name="dom_city_name"]').forEach(function(inp, idx) {
-                        var parent = inp.closest('.city-typeahead, .city-select, .city-free');
+                        var parent = inp.closest('.city-typeahead, .city-select, .city-free, .city-area');
                         var disp = parent ? parent.style.display : '?';
                         debugDomList.push('  #' + idx + ' parent=' + (parent?parent.className.replace(/[^a-z\-]/g,''):'?') + ' display="' + disp + '" value="' + inp.value + '"');
                         if (parent && parent.style.display !== 'none') {
@@ -995,7 +1026,7 @@
         ['toaCrewCityWrap', 'toaCrewDomCityWrap'].forEach(function(wrapId) {
             var wrap = document.getElementById(wrapId);
             if (!wrap) return;
-            wrap.querySelectorAll('.city-typeahead, .city-select, .city-free').forEach(function(box) {
+            wrap.querySelectorAll('.city-typeahead, .city-select, .city-free, .city-area').forEach(function(box) {
                 var hidden = box.style.display === 'none';
                 box.querySelectorAll('input').forEach(function(inp) {
                     inp.disabled = hidden;

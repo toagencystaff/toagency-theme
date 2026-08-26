@@ -234,6 +234,29 @@ $theme_uri = get_stylesheet_directory_uri();
                         <input type="hidden" name="res_city_code">
                         <div class="toa-crew-error-msg"></div>
                     </div>
+                    <?php /* 2026-08-26 (TEMA-AREE-GEOGRAFICHE) — Container 4: tutti gli altri paesi.
+                             Tendina città grandi (dato PUBBLICO -> res_provincia) + posto preciso a
+                             mano (PRIVATO -> res_city_name). Stesso pattern del form talent. */ ?>
+                    <div class="city-area" style="display:none;">
+                        <label class="toa-crew-label"><?php echo _ht_crew(array('it'=>'Città grande più vicina','en'=>'Nearest major city','fr'=>'Grande ville la plus proche','es'=>'Ciudad grande más cercana')); ?> <span class="req">*</span></label>
+                        <div class="toa-crew-customselect searchable" id="toaCrewArea">
+                            <input type="hidden" name="res_area_city" value="">
+                            <div class="toa-crew-customselect-trigger"><span class="toa-crew-customselect-label"><?php echo _ht_crew(array('it'=>'Seleziona...','en'=>'Select...','fr'=>'Sélectionne...','es'=>'Selecciona...')); ?></span></div>
+                            <div class="toa-crew-customselect-search"><input type="text" placeholder="<?php echo _ht_crew(array('it'=>'Cerca...','en'=>'Search...','fr'=>'Chercher...','es'=>'Buscar...')); ?>"></div>
+                            <div class="toa-crew-customselect-options"></div>
+                        </div>
+                        <div class="toa-crew-error-msg"></div>
+                        <label class="toa-crew-label" style="margin-top:14px;"><?php echo _ht_crew(array('it'=>'Dove vivi esattamente','en'=>'Where you actually live','fr'=>'Où tu vis exactement','es'=>'Dónde vives exactamente')); ?> <span class="req">*</span></label>
+                        <input type="text" name="res_city_name" class="toa-crew-input" autocomplete="off" placeholder="<?php echo _ht_crew(array('it'=>'Es. Podolsk','en'=>'E.g. Podolsk','fr'=>'Ex. Podolsk','es'=>'Ej. Podolsk')); ?>">
+                        <input type="hidden" name="res_city_code">
+                        <p class="toa-crew-step-help"><?php echo _ht_crew(array(
+                            'it'=>'Resta privato: sul sito pubblico mostriamo solo la città grande scelta sopra.',
+                            'en'=>'This stays private: the public site only shows the major city picked above.',
+                            'fr'=>'Reste privé : le site public n\'affiche que la grande ville choisie ci-dessus.',
+                            'es'=>'Queda privado: en el sitio público solo mostramos la ciudad grande elegida arriba.'
+                        )); ?></p>
+                        <div class="toa-crew-error-msg"></div>
+                    </div>
                 </div>
             </div>
 
@@ -301,6 +324,22 @@ $theme_uri = get_stylesheet_directory_uri();
                         <div class="city-free" style="display:none;">
                             <label class="toa-crew-label"><?php echo _ht_crew(array('it'=>'Città','en'=>'City','fr'=>'Ville','es'=>'Ciudad')); ?> <span class="req">*</span></label>
                             <input type="text" name="dom_city_name" class="toa-crew-input" placeholder="Es. New York, Tokyo, ...">
+                            <input type="hidden" name="dom_city_code">
+                            <div class="toa-crew-error-msg"></div>
+                        </div>
+                        <?php /* 2026-08-26 (TEMA-AREE-GEOGRAFICHE) — stesso blocco tendina+posto preciso
+                                 applicato al DOMICILIO. */ ?>
+                        <div class="city-area" style="display:none;">
+                            <label class="toa-crew-label"><?php echo _ht_crew(array('it'=>'Città grande più vicina','en'=>'Nearest major city','fr'=>'Grande ville la plus proche','es'=>'Ciudad grande más cercana')); ?> <span class="req">*</span></label>
+                            <div class="toa-crew-customselect searchable" id="toaCrewDomArea">
+                                <input type="hidden" name="dom_area_city" value="">
+                                <div class="toa-crew-customselect-trigger"><span class="toa-crew-customselect-label"><?php echo _ht_crew(array('it'=>'Seleziona...','en'=>'Select...','fr'=>'Sélectionne...','es'=>'Selecciona...')); ?></span></div>
+                                <div class="toa-crew-customselect-search"><input type="text" placeholder="<?php echo _ht_crew(array('it'=>'Cerca...','en'=>'Search...','fr'=>'Chercher...','es'=>'Buscar...')); ?>"></div>
+                                <div class="toa-crew-customselect-options"></div>
+                            </div>
+                            <div class="toa-crew-error-msg"></div>
+                            <label class="toa-crew-label" style="margin-top:14px;"><?php echo _ht_crew(array('it'=>'Dove vivi esattamente','en'=>'Where you actually live','fr'=>'Où tu vis exactement','es'=>'Dónde vives exactamente')); ?> <span class="req">*</span></label>
+                            <input type="text" name="dom_city_name" class="toa-crew-input" autocomplete="off" placeholder="<?php echo _ht_crew(array('it'=>'Es. Podolsk','en'=>'E.g. Podolsk','fr'=>'Ex. Podolsk','es'=>'Ej. Podolsk')); ?>">
                             <input type="hidden" name="dom_city_code">
                             <div class="toa-crew-error-msg"></div>
                         </div>
@@ -618,7 +657,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.4-20260726temi" defer></script><!-- TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
+<script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.5-20260826aree" defer></script><!-- 2026-08-26 (TEMA-AREE-GEOGRAFICHE): tendina città grandi paesi esteri, residenza+domicilio; TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
 
 <!-- ══════════════════════════════════════════════
      PREFILL — pre-compila campi se l'utente arriva da Student Program
