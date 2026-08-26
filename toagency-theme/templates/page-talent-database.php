@@ -103,6 +103,13 @@ $T = array(
     'form_phone'     => array('it'=>'Telefono','en'=>'Phone','fr'=>'Téléphone','es'=>'Teléfono'),
     'form_company'   => array('it'=>'Azienda','en'=>'Company','fr'=>'Société','es'=>'Empresa'),
     'form_project'   => array('it'=>'Descrizione progetto','en'=>'Project description','fr'=>'Description du projet','es'=>'Descripción del proyecto'),
+    // 2026-08-26 marco — placeholder + minlength: l'endpoint rifiuta descrizioni <10 caratteri (TEMA FORM-RICHIESTA-TALENT)
+    'form_project_ph'=> array(
+        'it'=>'Es. evento aziendale a Milano il 12/05, servono 4 hostess per 6 ore',
+        'en'=>'E.g. corporate event in Milan on 12/05, 4 hostesses needed for 6 hours',
+        'fr'=>'Ex. événement d\'entreprise à Milan le 12/05, 4 hôtesses pour 6 heures',
+        'es'=>'Ej. evento corporativo en Milán el 12/05, 4 azafatas durante 6 horas',
+    ),
     'form_date'      => array('it'=>'Data ipotetica','en'=>'Tentative date','fr'=>'Date envisagée','es'=>'Fecha estimada'),
     'form_gdpr'      => array(
         'it'=>'Accetto la <a href="/privacy-policy/" target="_blank" rel="noopener">privacy policy</a>.',
@@ -704,7 +711,7 @@ $hub_sections = array(
 
             <div class="toa-tdb-field">
                 <label class="toa-tdb-label"><?php echo esc_html($_t($T['form_project'])); ?> <span class="req">*</span></label>
-                <textarea name="progetto" class="toa-tdb-textarea" rows="4" required></textarea>
+                <textarea name="progetto" class="toa-tdb-textarea" rows="4" required minlength="10" placeholder="<?php echo esc_attr($_t($T['form_project_ph'])); ?>"></textarea>
             </div>
 
             <div class="toa-tdb-field">

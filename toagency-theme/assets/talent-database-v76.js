@@ -1588,11 +1588,15 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
             lang:          LANG
         };
 
-        fetchJson(REQUEST_URL, {
+        // 2026-08-26 marco — NON usare fetchJson qui: su HTTP 400 scarta il body e nasconde
+        // il motivo vero del rifiuto (es. "Descrizione progetto troppo corta"). Leggiamo
+        // sempre il JSON. (TEMA FORM-RICHIESTA-TALENT)
+        fetch(REQUEST_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         })
+            .then(function (r) { return r.json().catch(function () { return null; }); })
             .then(function (res) {
                 if (res && res.ok) {
                     window.dataLayer = window.dataLayer || [];
