@@ -932,10 +932,15 @@
                 }
             });
         }
-        // Privacy: SOLO il luogo pubblico (mai il comune esatto). 2026-08-26 (TEMA-AREE-GEOGRAFICHE):
-        // il CRM ora manda luogo_pubblico già pronto ("Comune (Provincia)" per IT/FR/ES/GB, città
-        // dalla tendina per gli altri) al posto del vecchio "provincia". Se il domicilio è diverso
-        // dalla residenza si mostrano ENTRAMBI con etichetta (regola Marco 25/08); se coincidono, uno solo.
+        // Privacy: SOLO provincia, MAI il comune. 2026-08-26 bugfix (Marco): il CRM manda
+        // luogo_pubblico come "Comune (Provincia)" per IT/FR/ES/GB — qui si tiene SOLO la parte
+        // fra parentesi (la provincia). Senza parentesi (paesi con tendina, o capoluogo=provincia)
+        // il valore resta com'è, è già sicuro. Se il domicilio è diverso dalla residenza si mostrano
+        // ENTRAMBI con etichetta (regola Marco 25/08); se coincidono, uno solo.
+        function soloProvinciaPubblica(luogo) {
+            var m = /\(([^)]+)\)\s*$/.exec(String(luogo || ''));
+            return m ? m[1].trim() : String(luogo || '');
+        }
         var iso2 = String(d.paese || '').toUpperCase().trim();
         var flagTxt = '';
         if (/^[A-Z]{2}$/.test(iso2)) {
@@ -943,12 +948,17 @@
             flagTxt = (fl ? fl + ' ' : '') + (ISO3[iso2] || iso2);
         }
         var mostraDom = !!(d.domicilio_diverso && d.luogo_pubblico_domicilio);
-        if (d.luogo_pubblico) {
-            var locRes = escapeHtml(d.luogo_pubblico) + (flagTxt ? ' · ' + flagTxt : '');
-            html += '<div class="crew-pf-loc">📍 ' + (mostraDom ? '<strong>' + escapeHtml(STR.locResidenza || 'Residenza') + ':</strong> ' : '') + locRes + '</div>';
+        var provRes = soloProvinciaPubblica(d.luogo_pubblico);
+        var provDom = soloProvinciaPubblica(d.luogo_pubblico_domicilio);
+        // 2026-08-26 — bandiera ripetuta su entrambe le righe (l'API non manda un paese separato
+        // per il domicilio): mostrarla solo sulla prima riga sembrava che il domicilio non avesse nazione.
+        if (provRes) {
+            var locRes = escapeHtml(provRes) + (flagTxt ? ' · ' + flagTxt : '');
+            html += '<div class="crew-pf-loc">📍 ' + (mostraDom ? '<strong>' + escapeHtml(STR.locResidenza || 'R') + ':</strong> ' : '') + locRes + '</div>';
         }
-        if (mostraDom) {
-            html += '<div class="crew-pf-loc crew-pf-loc-dom">🏠 <strong>' + escapeHtml(STR.locDomicilio || 'Domicilio') + ':</strong> ' + escapeHtml(d.luogo_pubblico_domicilio) + '</div>';
+        if (mostraDom && provDom) {
+            var locDom = escapeHtml(provDom) + (flagTxt ? ' · ' + flagTxt : '');
+            html += '<div class="crew-pf-loc crew-pf-loc-dom">🏠 <strong>' + escapeHtml(STR.locDomicilio || 'D') + ':</strong> ' + locDom + '</div>';
         }
         // 2026-08-02 — livello/esperienza PER RUOLO (task #18): se il crew ha 2+ ruoli e almeno uno ha
         // ruoli_dati compilato (self-edit), mostra una riga per ruolo invece del badge unico sotto.
