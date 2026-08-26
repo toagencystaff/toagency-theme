@@ -113,7 +113,15 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
             en: 'Send error. Try again or write to info@toagency.it',
             fr: 'Erreur. Réessaye ou écris à info@toagency.it',
             es: 'Error. Inténtalo o escribe a info@toagency.it'
-        }
+        },
+        // 2026-08-26 marco — FALLBACK selezione (TEMA FORM-RICHIESTA-TALENT)
+        fb_title:   { it: 'Selezione talent TOAgency', en: 'TOAgency talent selection', fr: 'Sélection de talents TOAgency', es: 'Selección de talents TOAgency' },
+        fb_link:    { it: 'Link alla selezione', en: 'Selection link', fr: 'Lien vers la sélection', es: 'Enlace a la selección' },
+        fb_company: { it: 'Azienda', en: 'Company', fr: 'Société', es: 'Empresa' },
+        fb_project: { it: 'Progetto', en: 'Project', fr: 'Projet', es: 'Proyecto' },
+        fb_date:    { it: 'Data ipotetica', en: 'Tentative date', fr: 'Date envisagée', es: 'Fecha estimada' },
+        fb_subject: { it: 'Selezione talent', en: 'Talent selection', fr: 'Sélection de talents', es: 'Selección de talents' },
+        fb_copied:  { it: '✅ Copiato!', en: '✅ Copied!', fr: '✅ Copié !', es: '✅ ¡Copiado!' }
     };
 
     // FIX 2026-06-24 marco — mappa display VALORI dal DB (genere/etnia/capelli/occhi) it->en/fr/es.
@@ -213,6 +221,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     // Entry point: ripristina selezione, fa wiring, carica filter_options e prima search.
     function tdInit() {
         loadSelectedFromStorage();
+        restoreSelectionFromUrl();   // 2026-08-26 marco — ?sel=id,id riapre la selezione (link del fallback)
         applyUrlStateBeforeOptions();
 
         wireFiltersForm();
@@ -225,6 +234,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         wireGallerySwipe();
         wireCart();
         wireRequestForm();
+        wireSelectionFallback();   // 2026-08-26 marco — pulsanti Copia / Invia per email
         wireModalCloses();
         wireSidebarDrawer();
 
@@ -1550,6 +1560,109 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
     function closeRequestModal() {
         $('#tdbRequestModal').hidden = true;
         if (!anyOtherModalOpen()) document.body.style.overflow = '';
+    }
+
+    // ── 2026-08-26 marco — FALLBACK selezione (TEMA FORM-RICHIESTA-TALENT) ──
+    // Se l'invio non riesce (rete, endpoint giù, adblock) il cliente non deve perdere la
+    // selezione: due pulsanti sotto il form producono un testo pronto da incollare ovunque.
+
+    // URL che riapre la pagina con la stessa selezione. Niente codice lato server: gli id
+    // stanno in chiaro nel parametro ?sel=.
+    function selectionUrl() {
+        return location.origin + location.pathname + '?sel=' + Array.from(TD.selectedIds).join(',');
+    }
+
+    // Testo riepilogo: talent (nome + codice), link selezione, contatti e dati già digitati.
+    function buildSelectionText() {
+        var form = $('#tdbRequestForm');
+        var lines = [i18n('fb_title'), ''];
+        var n = 0;
+        TD.selectedIds.forEach(function (id) {
+            var t = TD.selectedTalents.get(id) || TD.results.find(function (r) { return r.id === id; }) || {};
+            n++;
+            lines.push(n + ') ' + (t.nome || ('#' + id)) + (t.talent_id ? ' — cod. ' + tdCodeDisplay(t.talent_id) : ''));
+        });
+        lines.push('');
+        lines.push(i18n('fb_link') + ': ' + selectionUrl());
+        if (form) {
+            var v = function (name) { return (form[name] && form[name].value) ? form[name].value.trim() : ''; };
+            var contact = [v('nome'), v('email'), v('telefono')].filter(Boolean).join(' · ');
+            if (contact) { lines.push(''); lines.push(contact); }
+            if (v('azienda'))       lines.push(i18n('fb_company') + ': ' + v('azienda'));
+            if (v('progetto'))      lines.push(i18n('fb_project') + ': ' + v('progetto'));
+            if (v('data_progetto')) lines.push(i18n('fb_date') + ': ' + v('data_progetto'));
+        }
+        return lines.join('\n');
+    }
+
+    // Copia con textarea nascosta: serve dove navigator.clipboard non c'è (http, browser vecchi).
+    function fallbackCopy(txt, done) {
+        try {
+            var ta = document.createElement('textarea');
+            ta.value = txt;
+            ta.setAttribute('readonly', '');
+            ta.style.position = 'absolute';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            done();
+        } catch (e) { /* ignore */ }
+    }
+
+    function wireSelectionFallback() {
+        var btn = $('#tdbFbCopy'), mail = $('#tdbFbMail');
+        if (btn) btn.addEventListener('click', function () {
+            var txt = buildSelectionText();
+            var old = btn.textContent;
+            var done = function () {
+                btn.textContent = i18n('fb_copied');
+                setTimeout(function () { btn.textContent = old; }, 2000);
+            };
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(txt).then(done, function () { fallbackCopy(txt, done); });
+            } else {
+                fallbackCopy(txt, done);
+            }
+        });
+        if (mail) mail.addEventListener('click', function () {
+            var form = $('#tdbRequestForm');
+            var who = (form && form.nome && form.nome.value.trim()) ? ' — ' + form.nome.value.trim() : '';
+            location.href = 'mailto:info@toagency.it?subject=' + encodeURIComponent(i18n('fb_subject') + who) +
+                            '&body=' + encodeURIComponent(buildSelectionText());
+        });
+    }
+
+    // ?sel=12,34,56 → riapre la pagina con quei talent già selezionati (link del fallback).
+    // I nomi si recuperano dall'endpoint scheda, altrimenti il pannello mostrerebbe "#id".
+    function restoreSelectionFromUrl() {
+        var raw = null;
+        try { raw = new URLSearchParams(location.search).get('sel'); } catch (e) { return; }
+        if (!raw) return;
+        var ids = raw.split(',').map(function (s) { return parseInt(s, 10); })
+                     .filter(function (n) { return n > 0; }).slice(0, 30);
+        if (!ids.length) return;
+        ids.forEach(function (id) { TD.selectedIds.add(id); });
+        saveSelectedToStorage();
+        ids.forEach(function (id) {
+            if (TD.selectedTalents.get(id)) return;
+            fetch(API_URL + '?action=talent&id=' + encodeURIComponent(id))
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
+                    var t = res && res.talent;
+                    if (!t) return;
+                    TD.selectedTalents.set(id, {
+                        id: id,
+                        nome: t.nome || '',
+                        talent_id: t.talent_id || 0,
+                        is_minor: (t.is_minor === undefined ? null : t.is_minor)
+                    });
+                    saveSelectedToStorage();
+                    updateCart();
+                })
+                .catch(function () { /* ignore */ });
+        });
     }
 
     // Renderizza i chip della selezione corrente con button "✕" per rimuovere.

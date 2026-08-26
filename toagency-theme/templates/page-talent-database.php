@@ -118,6 +118,15 @@ $T = array(
         'es'=>'Acepto la <a href="/privacy-policy/" target="_blank" rel="noopener">política de privacidad</a>.',
     ),
     'form_submit'    => array('it'=>'Invia richiesta','en'=>'Send request','fr'=>'Envoyer','es'=>'Enviar'),
+    // 2026-08-26 marco — FALLBACK selezione: se l'invio non parte, il cliente si porta via la selezione (TEMA FORM-RICHIESTA-TALENT)
+    'form_fb_intro'  => array(
+        'it'=>'Problemi con l\'invio? Copia la selezione e mandacela come preferisci (email, WhatsApp).',
+        'en'=>'Trouble sending? Copy your selection and send it however you prefer (email, WhatsApp).',
+        'fr'=>'Problème d\'envoi ? Copie ta sélection et envoie-la comme tu préfères (email, WhatsApp).',
+        'es'=>'¿Problemas al enviar? Copia tu selección y envíanosla como prefieras (email, WhatsApp).',
+    ),
+    'form_fb_copy'   => array('it'=>'📋 Copia selezione','en'=>'📋 Copy selection','fr'=>'📋 Copier la sélection','es'=>'📋 Copiar selección'),
+    'form_fb_mail'   => array('it'=>'✉️ Invia per email','en'=>'✉️ Send by email','fr'=>'✉️ Envoyer par email','es'=>'✉️ Enviar por email'),
     'form_back'      => array('it'=>'← Indietro','en'=>'← Back','fr'=>'← Retour','es'=>'← Atrás'),
     'form_success'   => array('it'=>'Richiesta inviata!','en'=>'Request sent!','fr'=>'Envoyée !','es'=>'¡Enviada!'),
     'form_success_msg'=> array(
@@ -737,6 +746,15 @@ $hub_sections = array(
             </div>
 
             <div class="toa-tdb-form-msg" id="tdbRequestMsg" hidden></div>
+
+            <?php /* 2026-08-26 marco — FALLBACK selezione: sempre visibile sotto il form, riempito dal JS al click (TEMA FORM-RICHIESTA-TALENT) */ ?>
+            <div id="tdbFallback" style="margin-top:18px; padding-top:14px; border-top:1px solid rgba(255,255,255,.14);">
+                <p style="margin:0 0 10px; font-size:13px; line-height:1.45; opacity:.72;"><?php echo esc_html($_t($T['form_fb_intro'])); ?></p>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button type="button" class="toa-tdb-btn toa-tdb-btn-ghost" id="tdbFbCopy"><?php echo esc_html($_t($T['form_fb_copy'])); ?></button>
+                    <button type="button" class="toa-tdb-btn toa-tdb-btn-ghost" id="tdbFbMail"><?php echo esc_html($_t($T['form_fb_mail'])); ?></button>
+                </div>
+            </div>
         </form>
     </div>
 </div>
