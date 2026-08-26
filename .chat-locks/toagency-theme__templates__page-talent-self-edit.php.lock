@@ -1,6 +1,6 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=TEMA TALENT-SELFEDIT-BUGFIX
 INIZIO=2026-08-26 15:44:57
-UPDATE=2026-08-26 15:45:21
+UPDATE=2026-08-26 15:48:10
 SHA1_ATTESO=a757beedb1c34f22130dd433a619f143189e45a8
-NOTA=commit 3ac4e5b13 fatto, in attesa deploy
+NOTA=LIVE prod 26/08 15:48 (commit 6cca010a3), health check OK. Verificato codice sorgente; conferma visiva "Bambino/a" nascosto e data_nascita dal CRM ancora da fare con link vero. Coda vuota
