@@ -396,6 +396,20 @@
             // FIX 2026-07-16 TEMA — precompila profilo professionale
             setChips('f-etnia',  d.talent.etnia);
             setChips('f-ruoli',  d.talent.ruoli);
+            // TEMA 26/08 — "Bambino/a" non si sceglie a mano: si calcola da data_nascita (<18 anni).
+            // Se data_nascita non arriva dal CRM non tocchiamo lo stato (niente da calcolare).
+            (function () {
+                var dn = d.talent.data_nascita;
+                if (!dn) return;
+                var bd = new Date(dn);
+                if (isNaN(bd.getTime())) return;
+                var oggi = new Date();
+                var eta = oggi.getFullYear() - bd.getFullYear();
+                var m = oggi.getMonth() - bd.getMonth();
+                if (m < 0 || (m === 0 && oggi.getDate() < bd.getDate())) eta--;
+                var cbBambino = document.querySelector('#f-ruoli input[value="bambino"]');
+                if (cbBambino) cbBambino.checked = (eta < 18);
+            })();
             setChips('f-lingue', d.talent.lingue);
             // 2026-08-08 TEMA — livello+certificazioni per lingua (sostituisce lingue_pubbliche, tolta dal form talent)
             lingueDettaglioData = (d.talent.lingue_dettaglio && typeof d.talent.lingue_dettaglio === 'object') ? d.talent.lingue_dettaglio : {};

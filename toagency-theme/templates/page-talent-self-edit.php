@@ -289,6 +289,8 @@ $token_get = $_GET['t']    ?? '';
 .tse-chip { display:inline-flex; align-items:center; gap:6px; font-size:13px; color:#e5e7eb; background:#1a1a1e; border:1px solid #2a2a2e; border-radius:99px; padding:7px 12px; cursor:pointer; user-select:none; }
 .tse-chip input { accent-color:#c8ff00; margin:0; }
 .tse-chip:hover { border-color:#c8ff00; }
+/* TEMA 26/08 — "Bambino/a" non è selezionabile a mano: lo mette JS in base alla data di nascita (<18) */
+.tse-chip-auto { display:none !important; }
 .tse-check-row { display:flex; align-items:center; gap:8px; font-size:13px; color:#e5e7eb; cursor:pointer; }
 .tse-check-row input { accent-color:#c8ff00; }
 .tse-name-display { background:#1a1a1e; border:1px solid #2a2a2e; padding:10px 13px; border-radius:6px; color:#9ca3af; font-size:13px; margin-bottom:18px; }
@@ -578,7 +580,7 @@ $token_get = $_GET['t']    ?? '';
                 <div class="tse-field">
                     <label class="tse-label"><?= esc_html($_t($T['field_ruoli'])) ?></label>
                     <div class="tse-chips" id="f-ruoli" data-group="ruoli">
-                        <?php foreach ($RUOLI_OPTS as $k=>$v): ?><label class="tse-chip"><input type="checkbox" value="<?= esc_attr($k) ?>"><?= esc_html($_t($v)) ?></label><?php endforeach; ?>
+                        <?php foreach ($RUOLI_OPTS as $k=>$v): ?><label class="tse-chip<?= $k === 'bambino' ? ' tse-chip-auto' : '' ?>"><input type="checkbox" value="<?= esc_attr($k) ?>"><?= esc_html($_t($v)) ?></label><?php endforeach; ?>
                     </div>
                 </div>
                 <div class="tse-field">
