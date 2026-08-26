@@ -551,13 +551,14 @@
 
         if (!cityWrap) return;
 
-        // Trova i 3 sotto-container città (typeahead, select, free)
+        // Trova i sotto-container città (typeahead, select, free, area)
         var cityTypeahead = cityWrap.querySelector('.city-typeahead');
         var citySelectBox = cityWrap.querySelector('.city-select');
         var cityFree = cityWrap.querySelector('.city-free');
+        var cityArea = cityWrap.querySelector('.city-area'); // 2026-08-26 — paesi esteri con tendina
 
         // Reset visibility
-        [cityTypeahead, citySelectBox, cityFree].forEach(function(el) {
+        [cityTypeahead, citySelectBox, cityFree, cityArea].forEach(function(el) {
             if (el) el.style.display = 'none';
         });
 
@@ -581,8 +582,12 @@
         var trigger = cityWrap.querySelector('.toa-talent-customselect-label');
         if (trigger) trigger.textContent = 'Seleziona...';
 
-        // FIX 2026-06-29 marco — paesi con dato pieno in geo_cities usano il typeahead (come IT)
-        var TYPEAHEAD_NATIONS = ['FR','ES','GB','DE','CH','BE','NL','AT','PT','IE','PL','US','AE','CA','AU','SE','NO','DK','FI','GR','RO','CZ','HU','HR','RS','UA','BG','SK','SI','LU','TR','IL','SA','EG','ZA','MA','BR','MX','AR','CL','CO','RU','IN','CN','JP','KR','SG','HK','TH','NZ','AL','MD','LT','LV','EE','BY','BA','MK','ME','XK','VE','DO','CU','NG','KE','TN','DZ','GH','SN','CI','ET','AO'];
+        /* 2026-08-26 (TEMA-AREE-GEOGRAFICHE) — solo questi paesi hanno l'elenco comuni completo nel CRM
+           (55.101 righe): lì si sceglie il comune vero col typeahead. TUTTI gli altri passano dalla
+           tendina delle città grandi (vedi ramo cityArea più sotto).
+           Sostituisce la vecchia TYPEAHEAD_NATIONS (~70 paesi): per quelli il typeahead non riempiva
+           mai *_provincia, quindi la città pubblica restava vuota. */
+        var COMUNI_COMPLETI = ['FR','ES','GB'];
         if (cityTypeahead) cityTypeahead.dataset.nation = nationCode;
 
         if (nationCode === 'IT') {
@@ -603,10 +608,39 @@
             // Mostra typeahead comuni
             if (cityTypeahead) cityTypeahead.style.display = '';
         }
-        else if (TYPEAHEAD_NATIONS.indexOf(nationCode) > -1) {
-            // Francia (e futuri paesi importati in geo_cities): typeahead come l'Italia, provincia nascosta
+        else if (COMUNI_COMPLETI.indexOf(nationCode) > -1) {
+            /* FR/ES/GB: elenco comuni completo nel CRM, si tiene il typeahead come l'Italia.
+               La provincia resta nascosta: il CRM la ricava dal comune scelto. */
             if (provinceContainer) provinceContainer.style.display = 'none';
             if (cityTypeahead) cityTypeahead.style.display = '';
+        }
+        else if (cityArea) {
+            /* ═══ 2026-08-26 (TEMA-AREE-GEOGRAFICHE) — TUTTI GLI ALTRI PAESI ═══
+               Tendina delle città grandi (dato PUBBLICO → *_provincia) + posto preciso scritto a
+               mano (PRIVATO → *_city_name). Sostituisce sia il vecchio typeahead esteri sia il
+               testo libero: quelli lasciavano *_provincia sempre vuoto, per cui sul sito pubblico
+               non compariva nessuna città (bug aperto dal 21/08).
+               Se il paese non ha città in elenco si ricade sul testo libero, così nessuno resta bloccato. */
+            if (provinceContainer) provinceContainer.style.display = 'none';
+            var areaSel = cityArea.querySelector('.toa-talent-customselect');
+            if (areaSel) areaSel.dataset.loaded = '';
+            loadJSON(GEO_ENDPOINT + '?type=aree&nation=' + encodeURIComponent(nationCode)).then(function(list) {
+                if (!list || !list.length) {          // paese senza elenco → testo libero come prima
+                    if (cityFree) cityFree.style.display = '';
+                    return;
+                }
+                if (areaSel) {
+                    populateSelect(areaSel, list, function(opt, item) {
+                        opt.dataset.value = item.name;   // il CRM salva il NOME della città, non il code
+                        opt.dataset.label = item.name;
+                        opt.textContent = item.name;
+                    });
+                    areaSel.dataset.loaded = '1';
+                }
+                cityArea.style.display = '';
+            }).catch(function() {
+                if (cityFree) cityFree.style.display = ''; // endpoint irraggiungibile → non blocchiamo l'iscrizione
+            });
         }
         else if (['CH'].indexOf(nationCode) > -1) {
             // Provincia nascosta
@@ -636,6 +670,23 @@
             if (cityFree) cityFree.style.display = '';
         }
     }
+
+    /* 2026-08-26 (TEMA-AREE-GEOGRAFICHE) — tendina città grandi → campo *_provincia.
+       La tendina tiene la scelta in un suo hidden (res_area_city / dom_area_city) e da lì la copia
+       nell'UNICO campo *_provincia del form, quello dentro ProvinceWrap: due input con lo stesso
+       name si sarebbero pestati i piedi (il salvataggio legge sempre il primo del DOM). */
+    document.addEventListener('toa:select', function(e) {
+        var c = e.target;
+        if (!c) return;
+        var areaInput = c.querySelector('input[name="res_area_city"], input[name="dom_area_city"]');
+        if (areaInput) {
+            var pfx = areaInput.name.indexOf('dom_') === 0 ? 'dom' : 'res';
+            areaInput.value = e.detail.value || '';
+            var provReale = document.querySelector('#toaTalent' + (pfx === 'dom' ? 'Dom' : '') + 'ProvinceWrap input[name="' + pfx + '_provincia"]');
+            if (provReale) provReale.value = e.detail.value || '';
+            c.classList.remove('error');
+        }
+    });
 
     // Custom select città estere salva sia code che name
     document.addEventListener('toa:select', function(e) {
@@ -724,16 +775,14 @@
                     e.preventDefault();
                     input.value = c.name_local;
                     if (hidden) hidden.value = c.code;
-                    /* ═══ 2026-08-21 (TEMA-AGENZIA-REGISTRAZIONE-TALENT) — AREA PER GLI ESTERI ═══
-                       Per i paesi esteri il campo Provincia è nascosto, quindi res_provincia
-                       (o dom_provincia) restava SEMPRE vuoto: in database finivano città
-                       scritte a mano e nessuna area. L'area sta fra parentesi nel display
-                       dell'endpoint: "Manchester (Greater Manchester)".
-                       NON si usa il campo c.regione, che pure esiste: per GB è quasi sempre
-                       vuoto (pieno solo su London e Manchester) e per ES/FR contiene la
-                       regione grande — "Cataluña" invece di "Barcelona". Verificato dal vivo
-                       sull'endpoint il 21/08/2026.
-                       L'Italia resta esclusa: lì la provincia la sceglie l'utente dalla tendina. */
+                    /* ═══ AREA PER FR/ES/GB ═══ (2026-08-21, ridotto ai soli 3 paesi il 26/08)
+                       Per questi paesi il campo Provincia è nascosto ma serve comunque il dato
+                       pubblico: l'area sta fra parentesi nel display dell'endpoint comuni,
+                       "Manchester (Greater Manchester)". NON si usa c.regione: per GB è quasi
+                       sempre vuoto e per ES/FR contiene la regione grande ("Cataluña" invece di
+                       "Barcelona"). Verificato dal vivo sull'endpoint il 21/08/2026.
+                       L'Italia resta esclusa (provincia scelta dalla tendina) e gli altri paesi
+                       non passano più di qui: usano la tendina città grandi (TEMA-AREE-GEOGRAFICHE). */
                     var natSel = (typeaheadBox.dataset.nation || 'IT').toUpperCase();
                     if (natSel !== 'IT') {
                         var provEst = document.querySelector('input[name="' + prefix + '_provincia"]');
@@ -1162,7 +1211,10 @@
     function statoStep1() {
         var campi = ['nome', 'cognome', 'email', 'telefono', 'data_nascita', 'sesso', 'res_nation', 'res_city_name'];
         var nat = form.querySelector('[name="res_nation"]');
-        if (nat && nat.value === 'IT') campi.push('res_provincia');
+        // 2026-08-26 — la città pubblica conta anche per gli esteri con tendina, non solo per l'Italia
+        var areaBoxS1 = document.querySelector('#toaTalentCityWrap .city-area');
+        var areaVisS1 = !!(areaBoxS1 && areaBoxS1.style.display !== 'none');
+        if ((nat && nat.value === 'IT') || areaVisS1) campi.push('res_provincia');
         var fatti = 0;
         campi.forEach(function(n) {
             var el = form.querySelector('[name="' + n + '"]');
@@ -1602,10 +1654,16 @@
                 if (nationSelect) nationSelect.classList.add('error');
                 ok = false;
             }
-            if (s1nation && s1nation.value === 'IT') {
+            /* 2026-08-26 (TEMA-AREE-GEOGRAFICHE) — la città pubblica è obbligatoria SEMPRE, non più
+               solo per l'Italia: per l'Italia è la tendina province, per i paesi con tendina città
+               grandi è quella. L'elemento da evidenziare in errore cambia di conseguenza.
+               FR/ES/GB restano fuori: lì *_provincia lo riempie il typeahead comuni, non l'utente. */
+            var s1areaBox = document.getElementById('toaTalentArea');
+            var s1areaVisibile = !!(s1areaBox && s1areaBox.closest('.city-area') && s1areaBox.closest('.city-area').style.display !== 'none');
+            if (s1nation && (s1nation.value === 'IT' || s1areaVisibile)) {
                 var s1prov = scope.querySelector('[name="res_provincia"]');
                 if (!s1prov || !s1prov.value) {
-                    var s1provCs = document.getElementById('toaTalentProvince');
+                    var s1provCs = s1areaVisibile ? s1areaBox : document.getElementById('toaTalentProvince');
                     if (s1provCs) s1provCs.classList.add('error');
                     ok = false;
                 }
@@ -1615,7 +1673,7 @@
             if (s1cityWrap) {
                 var s1city = null;
                 s1cityWrap.querySelectorAll('input[name="res_city_name"]').forEach(function(inp) {
-                    var par = inp.closest('.city-typeahead, .city-select, .city-free');
+                    var par = inp.closest('.city-typeahead, .city-select, .city-free, .city-area');
                     if (par && par.style.display !== 'none') s1city = inp;
                 });
                 if (!s1city) { ok = false; }
@@ -1653,7 +1711,7 @@
                     var visDom = null;
                     var debugDomList = [];
                     domCityWrap.querySelectorAll('input[name="dom_city_name"]').forEach(function(inp, idx) {
-                        var parent = inp.closest('.city-typeahead, .city-select, .city-free');
+                        var parent = inp.closest('.city-typeahead, .city-select, .city-free, .city-area');
                         var disp = parent ? parent.style.display : '?';
                         debugDomList.push('  #' + idx + ' parent=' + (parent?parent.className.replace(/[^a-z\-]/g,''):'?') + ' display="' + disp + '" value="' + inp.value + '"');
                         if (parent && parent.style.display !== 'none') {
@@ -2053,7 +2111,7 @@
         ['toaTalentCityWrap', 'toaTalentDomCityWrap'].forEach(function(wrapId) {
             var wrap = document.getElementById(wrapId);
             if (!wrap) return;
-            wrap.querySelectorAll('.city-typeahead, .city-select, .city-free').forEach(function(box) {
+            wrap.querySelectorAll('.city-typeahead, .city-select, .city-free, .city-area').forEach(function(box) {
                 var hidden = box.style.display === 'none';
                 box.querySelectorAll('input').forEach(function(inp) {
                     inp.disabled = hidden;

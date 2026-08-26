@@ -669,6 +669,32 @@ $theme_uri = get_stylesheet_directory_uri();
                     <input type="hidden" name="res_city_code">
                     <div class="toa-talent-error-msg"></div>
                 </div>
+                <?php /* ═══ 2026-08-26 (TEMA-AREE-GEOGRAFICHE) — CONTAINER 4: PAESI ESTERI CON TENDINA ═══
+                         Paesi diversi da IT/FR/ES/GB (dove l'elenco comuni è completo): si sceglie la città
+                         grande più vicina da una tendina (numero di città per paese calibrato sull'importanza
+                         commerciale, elenco dal CRM: cerca-comune.php?type=aree&nation=XX) e si scrive a parte
+                         il posto preciso. La tendina va in res_provincia = PUBBLICA sul sito; il posto preciso
+                         va in res_city_name = PRIVATO, visibile solo nel CRM. */ ?>
+                <div class="city-area" style="display:none;">
+                    <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Città grande più vicina','en'=>'Nearest major city','fr'=>'Grande ville la plus proche','es'=>'Ciudad grande más cercana')); ?> <span class="req">*</span></label>
+                    <div class="toa-talent-customselect searchable" id="toaTalentArea">
+                        <input type="hidden" name="res_area_city" value="">
+                        <div class="toa-talent-customselect-trigger"><span class="toa-talent-customselect-label"><?php echo _ht_talent(array('it'=>'Seleziona...','en'=>'Select...','fr'=>'Sélectionne...','es'=>'Selecciona...')); ?></span></div>
+                        <div class="toa-talent-customselect-search"><input type="text" placeholder="<?php echo _ht_talent(array('it'=>'Cerca...','en'=>'Search...','fr'=>'Chercher...','es'=>'Buscar...')); ?>"></div>
+                        <div class="toa-talent-customselect-options"></div>
+                    </div>
+                    <div class="toa-talent-error-msg"></div>
+                    <label class="toa-talent-label" style="margin-top:14px;"><?php echo _ht_talent(array('it'=>'Dove vivi esattamente','en'=>'Where you actually live','fr'=>'Où tu vis exactement','es'=>'Dónde vives exactamente')); ?> <span class="req">*</span></label>
+                    <input type="text" name="res_city_name" class="toa-talent-input" autocomplete="off" placeholder="<?php echo _ht_talent(array('it'=>'Es. Podolsk','en'=>'E.g. Podolsk','fr'=>'Ex. Podolsk','es'=>'Ej. Podolsk')); ?>">
+                    <input type="hidden" name="res_city_code">
+                    <p class="toa-talent-step-help"><?php echo _ht_talent(array(
+                        'it'=>'Resta privato: sul sito pubblico mostriamo solo la città grande che hai scelto sopra.',
+                        'en'=>'This stays private: the public site only shows the major city you picked above.',
+                        'fr'=>'Reste privé : le site public n\'affiche que la grande ville choisie ci-dessus.',
+                        'es'=>'Queda privado: en el sitio público solo mostramos la ciudad grande elegida arriba.'
+                    )); ?></p>
+                    <div class="toa-talent-error-msg"></div>
+                </div>
             </div>
 
             <!-- MOVED 2026-07-12: foto profilo + disclaimer + GDPR spostati qui da Step 4 per lead-capture Step 1 -->
@@ -829,6 +855,23 @@ $theme_uri = get_stylesheet_directory_uri();
                         <div class="city-free" style="display:none;">
                             <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Città','en'=>'City','fr'=>'Ville','es'=>'Ciudad')); ?> <span class="req">*</span></label>
                             <input type="text" name="dom_city_name" class="toa-talent-input" placeholder="Es. New York, Tokyo, ...">
+                            <input type="hidden" name="dom_city_code">
+                            <div class="toa-talent-error-msg"></div>
+                        </div>
+                        <?php /* 2026-08-26 (TEMA-AREE-GEOGRAFICHE) — stesso blocco tendina+posto preciso della
+                                 residenza, applicato al DOMICILIO (regola Marco 25/08: i due dati sono distinti
+                                 e vanno mostrati entrambi in pubblico quando differiscono). */ ?>
+                        <div class="city-area" style="display:none;">
+                            <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Città grande più vicina','en'=>'Nearest major city','fr'=>'Grande ville la plus proche','es'=>'Ciudad grande más cercana')); ?> <span class="req">*</span></label>
+                            <div class="toa-talent-customselect searchable" id="toaTalentDomArea">
+                                <input type="hidden" name="dom_area_city" value="">
+                                <div class="toa-talent-customselect-trigger"><span class="toa-talent-customselect-label"><?php echo _ht_talent(array('it'=>'Seleziona...','en'=>'Select...','fr'=>'Sélectionne...','es'=>'Selecciona...')); ?></span></div>
+                                <div class="toa-talent-customselect-search"><input type="text" placeholder="<?php echo _ht_talent(array('it'=>'Cerca...','en'=>'Search...','fr'=>'Chercher...','es'=>'Buscar...')); ?>"></div>
+                                <div class="toa-talent-customselect-options"></div>
+                            </div>
+                            <div class="toa-talent-error-msg"></div>
+                            <label class="toa-talent-label" style="margin-top:14px;"><?php echo _ht_talent(array('it'=>'Dove vivi esattamente','en'=>'Where you actually live','fr'=>'Où tu vis exactement','es'=>'Dónde vives exactamente')); ?> <span class="req">*</span></label>
+                            <input type="text" name="dom_city_name" class="toa-talent-input" autocomplete="off" placeholder="<?php echo _ht_talent(array('it'=>'Es. Podolsk','en'=>'E.g. Podolsk','fr'=>'Ex. Podolsk','es'=>'Ej. Podolsk')); ?>">
                             <input type="hidden" name="dom_city_code">
                             <div class="toa-talent-error-msg"></div>
                         </div>
@@ -1642,7 +1685,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260823cta1" defer></script><!-- 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20260826aree1" defer></script><!-- 2026-08-26 (TEMA-AREE-GEOGRAFICHE): bump v — tendina città grandi per i paesi senza elenco comuni (residenza+domicilio), città pubblica in *_provincia e posto preciso privato in *_city_name; 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
