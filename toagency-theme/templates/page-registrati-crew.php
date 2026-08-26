@@ -657,7 +657,7 @@ $theme_uri = get_stylesheet_directory_uri();
     </div>
 </div>
 
-<script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.5-20260826aree" defer></script><!-- 2026-08-26 (TEMA-AREE-GEOGRAFICHE): tendina città grandi paesi esteri, residenza+domicilio; TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
+<script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.5-20260826aree2" defer></script><!-- 2026-08-26 (TEMA-AREE-GEOGRAFICHE): tendina città grandi paesi esteri, residenza+domicilio; TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
 
 <!-- ══════════════════════════════════════════════
      PREFILL — pre-compila campi se l'utente arriva da Student Program

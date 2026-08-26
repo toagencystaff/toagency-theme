@@ -380,6 +380,21 @@
         // Reset trigger custom select
         var trigger = cityWrap.querySelector('.toa-crew-customselect-label');
         if (trigger) trigger.textContent = 'Seleziona...';
+        /* 2026-08-26 — la tendina città grandi scrive nel *_provincia REALE, che sta FUORI da cityWrap
+           (dentro ProvinceWrap): il reset di riga 379 non lo tocca. Senza questo, chi sceglieva un
+           paese estero e poi tornava a un altro paese si portava dietro la provincia vecchia. */
+        var provOld = document.querySelector('input[name="' + prefix + '_provincia"]');
+        if (provOld) provOld.value = '';
+        var provLab = provinceContainer ? provinceContainer.querySelector('.toa-crew-customselect-label') : null;
+        if (provLab) {
+            if (!provLab.dataset.originale) provLab.dataset.originale = provLab.textContent;
+            provLab.textContent = provLab.dataset.originale;
+        }
+        if (provinceContainer) {
+            provinceContainer.querySelectorAll('.toa-crew-customselect-option.selected')
+                .forEach(function(o) { o.classList.remove('selected'); });
+            provinceContainer.classList.remove('error');
+        }
 
         /* 2026-08-26 (TEMA-AREE-GEOGRAFICHE) — solo questi paesi hanno l'elenco comuni completo nel CRM:
            lì si sceglie il comune vero col typeahead. TUTTI gli altri (Svizzera compresa) passano dalla
