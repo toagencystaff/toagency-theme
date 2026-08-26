@@ -402,8 +402,8 @@ $token_get = $_GET['t']    ?? '';
         <div id="tse-pending" class="tse-pending-notice" style="display:none;"></div>
 
         <div id="tse-photo-alert" class="tse-photo-alert" onclick="document.getElementById('tse-foto-section').scrollIntoView({behavior:'smooth'})">
-            <div class="tse-photo-alert-title">📸 Nessuna foto nel profilo!</div>
-            <div class="tse-photo-alert-sub">Le foto sono essenziali — clicca qui per aggiungerle ↓</div>
+            <div class="tse-photo-alert-title">📸 Manca la tua foto Polaroid!</div>
+            <div class="tse-photo-alert-sub">È la foto principale del tuo profilo — clicca qui per caricarla ↓</div>
         </div>
 
         <div id="tse-polaroid-scadute" class="tse-pol-scadute" onclick="document.getElementById('tse-foto-section').scrollIntoView({behavior:'smooth'})">
