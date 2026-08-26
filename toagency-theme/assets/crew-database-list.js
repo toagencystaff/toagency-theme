@@ -932,16 +932,24 @@
                 }
             });
         }
-        // Privacy: SOLO provincia (mai il comune di residenza/domicilio).
-        // 2026-08-25 — bandiera + sigla paese SEMPRE, anche per l'Italia (prima il paese usciva solo se != IT).
-        // Estero senza provincia (lista comuni non disponibile) -> resta solo bandiera + sigla.
-        var loc = d.provincia ? escapeHtml(provName(String(d.provincia))) : '';
+        // Privacy: SOLO il luogo pubblico (mai il comune esatto). 2026-08-26 (TEMA-AREE-GEOGRAFICHE):
+        // il CRM ora manda luogo_pubblico già pronto ("Comune (Provincia)" per IT/FR/ES/GB, città
+        // dalla tendina per gli altri) al posto del vecchio "provincia". Se il domicilio è diverso
+        // dalla residenza si mostrano ENTRAMBI con etichetta (regola Marco 25/08); se coincidono, uno solo.
         var iso2 = String(d.paese || '').toUpperCase().trim();
+        var flagTxt = '';
         if (/^[A-Z]{2}$/.test(iso2)) {
             var fl = flagEmoji(iso2); // '' se il browser non sa disegnare le bandiere -> resta solo la sigla
-            loc = (loc ? loc + ' · ' : '') + (fl ? fl + ' ' : '') + (ISO3[iso2] || iso2);
+            flagTxt = (fl ? fl + ' ' : '') + (ISO3[iso2] || iso2);
         }
-        if (loc) html += '<div class="crew-pf-loc">📍 ' + loc + '</div>';
+        var mostraDom = !!(d.domicilio_diverso && d.luogo_pubblico_domicilio);
+        if (d.luogo_pubblico) {
+            var locRes = escapeHtml(d.luogo_pubblico) + (flagTxt ? ' · ' + flagTxt : '');
+            html += '<div class="crew-pf-loc">📍 ' + (mostraDom ? '<strong>' + escapeHtml(STR.locResidenza || 'Residenza') + ':</strong> ' : '') + locRes + '</div>';
+        }
+        if (mostraDom) {
+            html += '<div class="crew-pf-loc crew-pf-loc-dom">🏠 <strong>' + escapeHtml(STR.locDomicilio || 'Domicilio') + ':</strong> ' + escapeHtml(d.luogo_pubblico_domicilio) + '</div>';
+        }
         // 2026-08-02 — livello/esperienza PER RUOLO (task #18): se il crew ha 2+ ruoli e almeno uno ha
         // ruoli_dati compilato (self-edit), mostra una riga per ruolo invece del badge unico sotto.
         // Feedback Marco su Valentina: "make up artist e hairstylist ma non so l'esperienza di ognuna".

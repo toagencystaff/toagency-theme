@@ -138,6 +138,9 @@ $T = [
     'since_label'     => ['it'=>'Nel settore da','en'=>'In the field for','fr'=>'Dans le métier depuis','es'=>'En el sector desde hace'],
     'years_label'     => ['it'=>'anni','en'=>'years','fr'=>'ans','es'=>'años'],
     'pro_label'       => ['it'=>'professionista da','en'=>'professional for','fr'=>'professionnel depuis','es'=>'profesional desde hace'],
+    // 2026-08-26 (TEMA-AREE-GEOGRAFICHE) — label mostrate SOLO quando residenza e domicilio sono diversi
+    'loc_residenza'   => ['it'=>'Residenza','en'=>'Based in','fr'=>'Résidence','es'=>'Residencia'],
+    'loc_domicilio'   => ['it'=>'Domicilio','en'=>'Currently in','fr'=>'Domicile','es'=>'Domicilio'],
     // 2026-07-26 — conteggio lavori in griglia (proposta ChatGPT, calcolato lato client dagli album gia' caricati)
     'works_count'     => ['it'=>'lavori','en'=>'works','fr'=>'travaux','es'=>'trabajos'],
     // 2026-08-10 CREW-REDESIGN — bottone esplicito sulla card ("Portfolio" è invariato nelle 4 lingue)
@@ -605,6 +608,8 @@ window.crewPubConfig = {
         sinceLabel: <?= json_encode($_t($T['since_label'])) ?>,
         yearsLabel: <?= json_encode($_t($T['years_label'])) ?>,
         proLabel: <?= json_encode($_t($T['pro_label'])) ?>,
+        locResidenza: <?= json_encode($_t($T['loc_residenza'])) ?>,
+        locDomicilio: <?= json_encode($_t($T['loc_domicilio'])) ?>,
         worksCount: <?= json_encode($_t($T['works_count'])) ?>,
         portfolioBtn: <?= json_encode($_t($T['portfolio_btn'])) ?>,
         featuredAll: <?= json_encode($_t($T['featured_all'])) ?>,
