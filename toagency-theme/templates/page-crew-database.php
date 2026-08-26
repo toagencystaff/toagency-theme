@@ -139,8 +139,8 @@ $T = [
     'years_label'     => ['it'=>'anni','en'=>'years','fr'=>'ans','es'=>'años'],
     'pro_label'       => ['it'=>'professionista da','en'=>'professional for','fr'=>'professionnel depuis','es'=>'profesional desde hace'],
     // 2026-08-26 (TEMA-AREE-GEOGRAFICHE) — label mostrate SOLO quando residenza e domicilio sono diversi
-    'loc_residenza'   => ['it'=>'Residenza','en'=>'Based in','fr'=>'Résidence','es'=>'Residencia'],
-    'loc_domicilio'   => ['it'=>'Domicilio','en'=>'Currently in','fr'=>'Domicile','es'=>'Domicilio'],
+    'loc_residenza'   => ['it'=>'R','en'=>'R','fr'=>'R','es'=>'R'],
+    'loc_domicilio'   => ['it'=>'D','en'=>'D','fr'=>'D','es'=>'D'],
     // 2026-07-26 — conteggio lavori in griglia (proposta ChatGPT, calcolato lato client dagli album gia' caricati)
     'works_count'     => ['it'=>'lavori','en'=>'works','fr'=>'travaux','es'=>'trabajos'],
     // 2026-08-10 CREW-REDESIGN — bottone esplicito sulla card ("Portfolio" è invariato nelle 4 lingue)
