@@ -1312,3 +1312,29 @@ function toa_noindex_aree_riservate($robots) {
 }
 add_filter('wp_robots', 'toa_noindex_aree_riservate', 999);
 // === END 2026-08-25 marco — /agenzia-area/ fuori dall'indice ===
+
+// === BEGIN FIX 2026-08-30 marco — REST META LANDING GEO (chat TEMA SEO-STRUTTURE-RICETTIVE) ===
+// Espone via REST i meta custom del template "Landing Geo/Servizio" + i campi SEO Yoast.
+// Senza questo, sono meta "protetti" (prefisso _) e il box "Campi personalizzati" di WP
+// li nasconde/blocca di default: bisognava impostarli a mano via phpMyAdmin ad ogni pagina.
+// Con show_in_rest=true si possono scrivere via block editor (wp.data / REST API), quindi
+// una nuova landing si crea e si compila da script, senza intervento manuale.
+add_action('init', function() {
+    $auth = function () { return current_user_can('edit_posts'); };
+    $fields = [
+        '_toa_subtitle'         => 'string', // sottotitolo hero
+        '_toa_service_type'     => 'string', // tag interno servizio
+        '_toa_local_events'     => 'string', // fiere/eventi collegati, CSV
+        '_yoast_wpseo_title'    => 'string', // SEO title (Yoast)
+        '_yoast_wpseo_metadesc' => 'string', // meta description (Yoast)
+    ];
+    foreach ($fields as $key => $type) {
+        register_post_meta('page', $key, [
+            'type'          => $type,
+            'single'        => true,
+            'show_in_rest'  => true,
+            'auth_callback' => $auth,
+        ]);
+    }
+});
+// === END FIX 2026-08-30 marco — REST META LANDING GEO ===
