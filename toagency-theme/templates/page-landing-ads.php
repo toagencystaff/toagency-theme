@@ -241,7 +241,7 @@ body.toa-ads-lp .toa-ads-gallery-lab{font-size:11px;letter-spacing:2px;text-tran
 body.toa-ads-lp .toa-ads-gallery-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
 body.toa-ads-lp .toa-ads-gallery-grid img{width:64px;height:64px;object-fit:cover;border-radius:6px;opacity:.75;transition:opacity .2s}
 body.toa-ads-lp .toa-ads-gallery-grid img:hover{opacity:1}
-/* FIX 2026-08-31 marco — 4 ruoli offerti (hostess/steward/security/promoter) */
+/* FIX 2026-08-31 marco — ruoli offerti (griglia, quanti ne servono) */
 body.toa-ads-lp .toa-ads-roles{padding:28px 0 0;text-align:center}
 body.toa-ads-lp .toa-ads-roles-lab{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#777!important;margin:0 0 14px}
 body.toa-ads-lp .toa-ads-roles-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
@@ -312,16 +312,24 @@ body.toa-ads-lp .toa-ads-role-card span{display:block;margin-top:6px;font-size:1
     </div>
   </section>
 
-  <!-- FIX 2026-08-31 marco — 4 ruoli coerenti col copy della LP (hostess/steward/security/promoter). Solo etichetta ruolo, niente nomi propri inventati (alcune foto staff non sono di persone reali). -->
+  <!-- FIX 2026-08-31 marco — tutti i 12 ruoli offerti (max esposizione servizi, richiesta esplicita). Solo etichetta ruolo, niente nomi propri inventati (alcune foto staff non sono di persone reali). -->
   <section class="toa-ads-roles">
     <div class="toa-ads-roles-lab"><?php echo _ht(['it'=>'Le figure che forniamo','en'=>'The staff we provide','fr'=>'Le personnel que nous fournissons','es'=>'El personal que proporcionamos']); ?></div>
     <div class="toa-ads-roles-grid">
       <?php
       $__roles = [
-        ['img'=>'hostess.jpg',  'label'=>['it'=>'Hostess','en'=>'Hostess','fr'=>'Hôtesse','es'=>'Azafata']],
-        ['img'=>'steward.jpg',  'label'=>['it'=>'Steward','en'=>'Steward','fr'=>'Steward','es'=>'Steward']],
-        ['img'=>'security.jpg','label'=>['it'=>'Security','en'=>'Security','fr'=>'Sécurité','es'=>'Seguridad']],
-        ['img'=>'promoter.jpg','label'=>['it'=>'Promoter','en'=>'Promoter','fr'=>'Promotrice','es'=>'Promotora']],
+        ['img'=>'hostess.jpg',   'label'=>['it'=>'Hostess','en'=>'Hostess','fr'=>'Hôtesse','es'=>'Azafata']],
+        ['img'=>'steward.jpg',   'label'=>['it'=>'Steward','en'=>'Steward','fr'=>'Steward','es'=>'Steward']],
+        ['img'=>'security.jpg', 'label'=>['it'=>'Security','en'=>'Security','fr'=>'Sécurité','es'=>'Seguridad']],
+        ['img'=>'promoter.jpg', 'label'=>['it'=>'Promoter','en'=>'Promoter','fr'=>'Promotrice','es'=>'Promotora']],
+        ['img'=>'bartender.jpg','label'=>['it'=>'Bartender','en'=>'Bartender','fr'=>'Barman','es'=>'Bartender']],
+        ['img'=>'cameriera.jpg','label'=>['it'=>'Cameriera','en'=>'Waiter','fr'=>'Serveuse','es'=>'Camarera']],
+        ['img'=>'interprete.jpg','label'=>['it'=>'Interprete','en'=>'Interpreter','fr'=>'Interprète','es'=>'Intérprete']],
+        ['img'=>'autista.jpg',  'label'=>['it'=>'Autista','en'=>'Driver','fr'=>'Chauffeur','es'=>'Conductor']],
+        ['img'=>'dj.jpg',       'label'=>['it'=>'DJ','en'=>'DJ','fr'=>'DJ','es'=>'DJ']],
+        ['img'=>'fotografa.jpg','label'=>['it'=>'Fotografa','en'=>'Photographer','fr'=>'Photographe','es'=>'Fotógrafa']],
+        ['img'=>'videomaker.jpg','label'=>['it'=>'Videomaker','en'=>'Videomaker','fr'=>'Vidéaste','es'=>'Videomaker']],
+        ['img'=>'runner.jpg',   'label'=>['it'=>'Runner','en'=>'Runner','fr'=>'Runner','es'=>'Runner']],
       ];
       foreach ($__roles as $__r): ?>
       <div class="toa-ads-role-card">
