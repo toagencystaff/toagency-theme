@@ -1,6 +1,6 @@
 STATO=OPEN
 CHAT=TEMA LP-HOSTESS-EVENTI
 INIZIO=2026-08-31 17:01:55
-UPDATE=2026-08-31 17:03:29
-SHA1_ATTESO=20cd4f2f6a4acb69eea1b6cdd35b5bcc41dc0deb
-NOTA=commit 18b126c2d locale fatto. Resta da deployare (preview poi prod). Lock resta OPEN finche' non e' live.
+UPDATE=2026-08-31 21:27:07
+SHA1_ATTESO=3d63f04b9ac00c9cde4ca9182932b0f8d9a0c9ea
+NOTA=LIVE prod 31/08 (commit 106e10821). Fascia brand su /lp/hostess-eventi/ verificata live (IT+EN).
