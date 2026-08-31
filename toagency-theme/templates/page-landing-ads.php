@@ -317,19 +317,20 @@ body.toa-ads-lp .toa-ads-role-card span{display:block;margin-top:6px;font-size:1
     <div class="toa-ads-roles-lab"><?php echo _ht(['it'=>'Le figure che forniamo','en'=>'The staff we provide','fr'=>'Le personnel que nous fournissons','es'=>'El personal que proporcionamos']); ?></div>
     <div class="toa-ads-roles-grid">
       <?php
+      // FIX 2026-08-31 marco — etichette al plurale/generico: sono ruoli offerti, non una persona (niente nome proprio a fianco)
       $__roles = [
-        ['img'=>'hostess.jpg',   'label'=>['it'=>'Hostess','en'=>'Hostess','fr'=>'Hôtesse','es'=>'Azafata']],
-        ['img'=>'steward.jpg',   'label'=>['it'=>'Steward','en'=>'Steward','fr'=>'Steward','es'=>'Steward']],
+        ['img'=>'hostess.jpg',   'label'=>['it'=>'Hostess','en'=>'Hostesses','fr'=>'Hôtesses','es'=>'Azafatas']],
+        ['img'=>'steward.jpg',   'label'=>['it'=>'Steward','en'=>'Stewards','fr'=>'Stewards','es'=>'Stewards']],
         ['img'=>'security.jpg', 'label'=>['it'=>'Security','en'=>'Security','fr'=>'Sécurité','es'=>'Seguridad']],
-        ['img'=>'promoter.jpg', 'label'=>['it'=>'Promoter','en'=>'Promoter','fr'=>'Promotrice','es'=>'Promotora']],
-        ['img'=>'bartender.jpg','label'=>['it'=>'Bartender','en'=>'Bartender','fr'=>'Barman','es'=>'Bartender']],
-        ['img'=>'cameriera.jpg','label'=>['it'=>'Cameriera','en'=>'Waiter','fr'=>'Serveuse','es'=>'Camarera']],
-        ['img'=>'interprete.jpg','label'=>['it'=>'Interprete','en'=>'Interpreter','fr'=>'Interprète','es'=>'Intérprete']],
-        ['img'=>'autista.jpg',  'label'=>['it'=>'Autista','en'=>'Driver','fr'=>'Chauffeur','es'=>'Conductor']],
-        ['img'=>'dj.jpg',       'label'=>['it'=>'DJ','en'=>'DJ','fr'=>'DJ','es'=>'DJ']],
-        ['img'=>'fotografa.jpg','label'=>['it'=>'Fotografa','en'=>'Photographer','fr'=>'Photographe','es'=>'Fotógrafa']],
-        ['img'=>'videomaker.jpg','label'=>['it'=>'Videomaker','en'=>'Videomaker','fr'=>'Vidéaste','es'=>'Videomaker']],
-        ['img'=>'runner.jpg',   'label'=>['it'=>'Runner','en'=>'Runner','fr'=>'Runner','es'=>'Runner']],
+        ['img'=>'promoter.jpg', 'label'=>['it'=>'Promoter','en'=>'Promoters','fr'=>'Promoteurs','es'=>'Promotores']],
+        ['img'=>'bartender.jpg','label'=>['it'=>'Bartender','en'=>'Bartenders','fr'=>'Barmans','es'=>'Bartenders']],
+        ['img'=>'cameriera.jpg','label'=>['it'=>'Camerieri','en'=>'Waiters','fr'=>'Serveurs','es'=>'Camareros']],
+        ['img'=>'interprete.jpg','label'=>['it'=>'Interpreti','en'=>'Interpreters','fr'=>'Interprètes','es'=>'Intérpretes']],
+        ['img'=>'autista.jpg',  'label'=>['it'=>'Autisti','en'=>'Drivers','fr'=>'Chauffeurs','es'=>'Conductores']],
+        ['img'=>'dj.jpg',       'label'=>['it'=>'DJ','en'=>'DJs','fr'=>'DJs','es'=>'DJs']],
+        ['img'=>'fotografa.jpg','label'=>['it'=>'Fotografi','en'=>'Photographers','fr'=>'Photographes','es'=>'Fotógrafos']],
+        ['img'=>'videomaker.jpg','label'=>['it'=>'Videomaker','en'=>'Videomakers','fr'=>'Vidéastes','es'=>'Videomakers']],
+        ['img'=>'runner.jpg',   'label'=>['it'=>'Runner','en'=>'Runners','fr'=>'Runners','es'=>'Runners']],
       ];
       foreach ($__roles as $__r): ?>
       <div class="toa-ads-role-card">
