@@ -1,6 +1,6 @@
 STATO=OPEN
 CHAT=TEMA LP-HOSTESS-EVENTI
 INIZIO=2026-08-31 17:01:55
-UPDATE=2026-08-31 22:06:11
-SHA1_ATTESO=aebee222dd523f943bd0e04538eaa1c0b002a134
-NOTA=LIVE prod 31/08 (commit 961df1966, health check 5/5). Fascia brand + recensioni + mini-gallery 8 foto + 4 ruoli (hostess/steward/security/promoter, solo etichetta no nomi finti) su /lp/hostess-eventi/. Punti 1,2,3,6 escalation FATTI. Restano 4-5 (Come funziona/FAQ, in attesa file COPY).
+UPDATE=2026-08-31 22:12:08
+SHA1_ATTESO=6b00c035870792c668339b4413d347c3d67f8a2c
+NOTA=LIVE prod 31/08 (commit dadfbc2e9, health check 5/5). Fascia brand + recensioni + mini-gallery 8 foto + 12 ruoli (etichetta sola, no nomi finti) su /lp/hostess-eventi/. Punti 1,2,3,6 escalation FATTI. Restano 4-5 (Come funziona/FAQ, in attesa file COPY). Nota: 12 ruoli allarga il messaggio oltre hostess/steward/fiere — da rivedere se il QS Ads segnala di nuovo bassa pertinenza.
