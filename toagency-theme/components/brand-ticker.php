@@ -11,10 +11,10 @@ $__tr = function($a) use ($__lang) {
 ?>
 <section class="brand-section">
   <div class="brand-label"><?php echo esc_html($__tr([
-    'it'=>'Hanno scelto TOAgency',
-    'en'=>'They chose TOAgency',
-    'fr'=>'Ils ont choisi TOAgency',
-    'es'=>'Eligieron TOAgency'
+    'it'=>'Abbiamo lavorato per',
+    'en'=>"We've worked with",
+    'fr'=>'Nous avons collaboré avec',
+    'es'=>'Hemos colaborado con'
   ])); ?></div>
   <div class="ticker-row" id="tickerRow1"></div>
   <div class="ticker-row reverse" id="tickerRow2"></div>

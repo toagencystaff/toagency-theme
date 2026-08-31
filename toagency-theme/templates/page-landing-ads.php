@@ -286,6 +286,10 @@ body.toa-ads-lp .toa-ads-footer a:hover{color:#c2f24e!important}
     </div>
   </div>
 
+  <?php if ($key === 'hostess-eventi'): ?>
+  <?php toa_component('brand-ticker', array('lang' => $lang)); ?>
+  <?php endif; ?>
+
   <footer class="toa-ads-footer">
     <a href="<?php echo esc_url($DB_URL); ?>" target="_blank" rel="noopener" onclick="toaLpTrack('database')"><?php echo _ht($db_l); ?> &rarr;</a>
   </footer>

@@ -964,7 +964,7 @@ add_action('wp_footer', function() {
       function row(arr){return arr.concat(arr).map(function(b){return '<span class="'+b.c+'">'+b.t+'</span>';}).join('');}
       var brandSec=document.createElement('section');
       brandSec.className='brand-section';
-      brandSec.innerHTML='<div class="brand-label">Hanno scelto TOAgency</div><div class="ticker-row">'+row(b1)+'</div><div class="ticker-row reverse">'+row(b2)+'</div>';
+      brandSec.innerHTML='<div class="brand-label">Abbiamo lavorato per</div><div class="ticker-row">'+row(b1)+'</div><div class="ticker-row reverse">'+row(b2)+'</div>';
 
       // --- B) SEZIONE GRIGLIA (nascosta finche non ci sono risultati) ---
       var sec=document.createElement('section');
@@ -1042,7 +1042,7 @@ function toa_cro_loghi_block($label) {
 if (!function_exists('toa_cro_loghi_label')) {
 function toa_cro_loghi_label() {
     $loc = substr(get_locale(), 0, 2);
-    $m = array('it'=>'Hanno scelto TOAgency','en'=>'They chose TOAgency','fr'=>'Ils ont choisi TOAgency','es'=>'Eligieron TOAgency');
+    $m = array('it'=>'Abbiamo lavorato per','en'=>"We've worked with",'fr'=>'Nous avons collaboré avec','es'=>'Hemos colaborado con');
     return isset($m[$loc]) ? $m[$loc] : $m['it'];
 }
 }
