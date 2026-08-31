@@ -1,6 +1,6 @@
 STATO=OPEN
 CHAT=TEMA LP-HOSTESS-EVENTI
 INIZIO=2026-08-31 17:01:55
-UPDATE=2026-08-31 21:50:20
-SHA1_ATTESO=ba271beeac87e5aa6d801c45a6e20f5ce6bafab4
-NOTA=LIVE prod 31/08 (commit feb6e8df3). Fascia brand + recensioni Google su /lp/hostess-eventi/ verificate live.
+UPDATE=2026-08-31 21:58:28
+SHA1_ATTESO=041df91631224a6af758e13ab0e04be3c30fdfd7
+NOTA=LIVE prod 31/08 (commit 398eb38b6, health check 5/5). Fascia brand + recensioni + mini-gallery 8 foto su /lp/hostess-eventi/. Punti 1,2,3,6 escalation FATTI. Restano 4-5 (Come funziona/FAQ, in attesa file COPY).
