@@ -235,6 +235,12 @@ body.toa-ads-lp .toa-ads-trust .stars{color:#c2f24e!important;letter-spacing:1px
 body.toa-ads-lp .toa-ads-footer{margin:44px 0 0;padding-top:18px;border-top:1px solid #232323;text-align:center}
 body.toa-ads-lp .toa-ads-footer a{color:#8a8a8a!important;text-decoration:none!important;font-size:13px;margin:0 10px}
 body.toa-ads-lp .toa-ads-footer a:hover{color:#c2f24e!important}
+/* FIX 2026-08-31 marco — mini-gallery foto reali (piccole, come chiesto: qualità foto originali non altissima) */
+body.toa-ads-lp .toa-ads-gallery{padding:6px 0 0;text-align:center}
+body.toa-ads-lp .toa-ads-gallery-lab{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#777!important;margin:0 0 12px}
+body.toa-ads-lp .toa-ads-gallery-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+body.toa-ads-lp .toa-ads-gallery-grid img{width:64px;height:64px;object-fit:cover;border-radius:6px;opacity:.75;transition:opacity .2s}
+body.toa-ads-lp .toa-ads-gallery-grid img:hover{opacity:1}
 @media(max-width:880px){
   body.toa-ads-lp .toa-ads-grid{grid-template-columns:1fr;gap:28px}
   body.toa-ads-lp .toa-ads-h1{font-size:28px}
@@ -289,6 +295,15 @@ body.toa-ads-lp .toa-ads-footer a:hover{color:#c2f24e!important}
   <?php if ($key === 'hostess-eventi'): ?>
   <?php toa_component('brand-ticker', array('lang' => $lang)); ?>
   <?php toa_component('google-reviews'); ?>
+  <!-- FIX 2026-08-31 marco — mini-gallery foto reali (8 su 37, riuso assets/gallery esistenti, no upload nuovo) -->
+  <section class="toa-ads-gallery">
+    <div class="toa-ads-gallery-lab"><?php echo _ht(['it'=>'Alcuni dei nostri eventi','en'=>'Some of our events','fr'=>'Quelques-uns de nos événements','es'=>'Algunos de nuestros eventos']); ?></div>
+    <div class="toa-ads-gallery-grid">
+      <?php foreach (['g01','g06','g11','g16','g21','g26','g31','g36'] as $__g): ?>
+      <img src="<?php echo esc_url(get_theme_file_uri('assets/gallery/'.$__g.'.jpg')); ?>" alt="TOAgency staff evento" loading="lazy" width="500" height="500">
+      <?php endforeach; ?>
+    </div>
+  </section>
   <?php endif; ?>
 
   <footer class="toa-ads-footer">
