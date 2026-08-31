@@ -239,7 +239,7 @@ body.toa-ads-lp .toa-ads-footer a:hover{color:#c2f24e!important}
 body.toa-ads-lp .toa-ads-gallery{padding:6px 0 0;text-align:center}
 body.toa-ads-lp .toa-ads-gallery-lab{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#777!important;margin:0 0 12px}
 body.toa-ads-lp .toa-ads-gallery-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
-body.toa-ads-lp .toa-ads-gallery-grid img{width:64px;height:64px;object-fit:cover;border-radius:6px;opacity:.75;transition:opacity .2s}
+body.toa-ads-lp .toa-ads-gallery-grid img{width:120px;height:120px;object-fit:cover;border-radius:8px;opacity:.75;transition:opacity .2s}
 body.toa-ads-lp .toa-ads-gallery-grid img:hover{opacity:1}
 /* FIX 2026-08-31 marco — ruoli offerti (griglia, quanti ne servono) */
 body.toa-ads-lp .toa-ads-roles{padding:28px 0 0;text-align:center}
