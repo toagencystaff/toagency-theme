@@ -288,6 +288,7 @@ body.toa-ads-lp .toa-ads-footer a:hover{color:#c2f24e!important}
 
   <?php if ($key === 'hostess-eventi'): ?>
   <?php toa_component('brand-ticker', array('lang' => $lang)); ?>
+  <?php toa_component('google-reviews'); ?>
   <?php endif; ?>
 
   <footer class="toa-ads-footer">
