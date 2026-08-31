@@ -1,6 +1,6 @@
 STATO=OPEN
 CHAT=TEMA LP-HOSTESS-EVENTI
 INIZIO=2026-08-31 17:01:55
-UPDATE=2026-08-31 21:37:56
-SHA1_ATTESO=3d63f04b9ac00c9cde4ca9182932b0f8d9a0c9ea
-NOTA=LIVE prod 31/08 (commit 106e10821). Fascia brand su /lp/hostess-eventi/ verificata live (IT+EN).
+UPDATE=2026-08-31 21:50:20
+SHA1_ATTESO=ba271beeac87e5aa6d801c45a6e20f5ce6bafab4
+NOTA=LIVE prod 31/08 (commit feb6e8df3). Fascia brand + recensioni Google su /lp/hostess-eventi/ verificate live.
