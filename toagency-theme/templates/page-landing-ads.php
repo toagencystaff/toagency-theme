@@ -241,6 +241,13 @@ body.toa-ads-lp .toa-ads-gallery-lab{font-size:11px;letter-spacing:2px;text-tran
 body.toa-ads-lp .toa-ads-gallery-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
 body.toa-ads-lp .toa-ads-gallery-grid img{width:64px;height:64px;object-fit:cover;border-radius:6px;opacity:.75;transition:opacity .2s}
 body.toa-ads-lp .toa-ads-gallery-grid img:hover{opacity:1}
+/* FIX 2026-08-31 marco — 4 ruoli offerti (hostess/steward/security/promoter) */
+body.toa-ads-lp .toa-ads-roles{padding:28px 0 0;text-align:center}
+body.toa-ads-lp .toa-ads-roles-lab{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#777!important;margin:0 0 14px}
+body.toa-ads-lp .toa-ads-roles-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+body.toa-ads-lp .toa-ads-role-card{width:90px}
+body.toa-ads-lp .toa-ads-role-card img{width:90px;height:120px;object-fit:cover;border-radius:8px;display:block}
+body.toa-ads-lp .toa-ads-role-card span{display:block;margin-top:6px;font-size:11px;color:#ccc!important;font-weight:600;letter-spacing:.3px}
 @media(max-width:880px){
   body.toa-ads-lp .toa-ads-grid{grid-template-columns:1fr;gap:28px}
   body.toa-ads-lp .toa-ads-h1{font-size:28px}
@@ -301,6 +308,26 @@ body.toa-ads-lp .toa-ads-gallery-grid img:hover{opacity:1}
     <div class="toa-ads-gallery-grid">
       <?php foreach (['g01','g06','g11','g16','g21','g26','g31','g36'] as $__g): ?>
       <img src="<?php echo esc_url(get_theme_file_uri('assets/gallery/'.$__g.'.jpg')); ?>" alt="TOAgency staff evento" loading="lazy" width="500" height="500">
+      <?php endforeach; ?>
+    </div>
+  </section>
+
+  <!-- FIX 2026-08-31 marco — 4 ruoli coerenti col copy della LP (hostess/steward/security/promoter). Solo etichetta ruolo, niente nomi propri inventati (alcune foto staff non sono di persone reali). -->
+  <section class="toa-ads-roles">
+    <div class="toa-ads-roles-lab"><?php echo _ht(['it'=>'Le figure che forniamo','en'=>'The staff we provide','fr'=>'Le personnel que nous fournissons','es'=>'El personal que proporcionamos']); ?></div>
+    <div class="toa-ads-roles-grid">
+      <?php
+      $__roles = [
+        ['img'=>'hostess.jpg',  'label'=>['it'=>'Hostess','en'=>'Hostess','fr'=>'Hôtesse','es'=>'Azafata']],
+        ['img'=>'steward.jpg',  'label'=>['it'=>'Steward','en'=>'Steward','fr'=>'Steward','es'=>'Steward']],
+        ['img'=>'security.jpg','label'=>['it'=>'Security','en'=>'Security','fr'=>'Sécurité','es'=>'Seguridad']],
+        ['img'=>'promoter.jpg','label'=>['it'=>'Promoter','en'=>'Promoter','fr'=>'Promotrice','es'=>'Promotora']],
+      ];
+      foreach ($__roles as $__r): ?>
+      <div class="toa-ads-role-card">
+        <img src="<?php echo esc_url(get_theme_file_uri('assets/staff/'.$__r['img'])); ?>" alt="<?php echo esc_attr(_ht($__r['label'])); ?>" loading="lazy" width="600" height="800">
+        <span><?php echo _ht($__r['label']); ?></span>
+      </div>
       <?php endforeach; ?>
     </div>
   </section>
