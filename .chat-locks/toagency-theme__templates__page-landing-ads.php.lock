@@ -1,6 +1,6 @@
-STATO=CLOSED
+STATO=OPEN
 CHAT=TEMA LP-HOSTESS-EVENTI
 INIZIO=2026-08-31 17:01:55
-UPDATE=2026-09-01 12:39:07
-SHA1_ATTESO=31df24fa7269db2eac3aa7b01f70cd2d39a0f640
-NOTA=LIVE prod 01/09 (commit 742fae4a5, health check 5/5). Escalation QS /lp/hostess-eventi/ COMPLETA: 1) mini-gallery 8 foto eventi, 2) badge+3 recensioni Google (4,7/346), 3) fascia "Abbiamo lavorato per" (70+ loghi, label cambiata anche in homepage), 4) Come funziona (3 step), 5) FAQ (8 domande), 6) label fascia ovunque. 12 ruoli forniti con etichette plurali 4 lingue. Coda vuota.
+UPDATE=2026-09-01 16:06:50
+SHA1_ATTESO=7c770c8aa7556c877bca178a3ed289510711ae4c
+NOTA=hostess-eventi CHIUSA e live (v. nota precedente). In corso: replica struttura su models-aziende + attori-produzioni (richiesta chat ADS REVIEW SETTIMANALE, campagna Models&Casting budget alzato 5->8e/g). Commit e32972c6f: fascia brand+recensioni+Come funziona+ruoli(solo testo) su entrambe, 4 lingue. In coda: foto gallery+ruoli (aspetta Marco) e FAQ (aspetta risposte Marco su diritti immagine/compenso/tempi/minorenni).
