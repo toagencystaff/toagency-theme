@@ -248,6 +248,8 @@ body.toa-ads-lp .toa-ads-roles-grid{display:flex;flex-wrap:wrap;justify-content:
 body.toa-ads-lp .toa-ads-role-card{width:90px}
 body.toa-ads-lp .toa-ads-role-card img{width:90px;height:120px;object-fit:cover;border-radius:8px;display:block}
 body.toa-ads-lp .toa-ads-role-card span{display:block;margin-top:6px;font-size:11px;color:#ccc!important;font-weight:600;letter-spacing:.3px}
+/* FIX 2026-09-02 marco — ruolo senza foto (in coda): pill di solo testo, stesso posto della card */
+body.toa-ads-lp .toa-ads-role-pill{display:inline-block;padding:10px 18px;border:1px solid #2a2a2a;border-radius:20px;font-size:13px;color:#eee!important;font-weight:600;background:rgba(255,255,255,.02)}
 /* FIX 2026-09-01 marco — "Come funziona" 3 passaggi */
 body.toa-ads-lp .toa-ads-how{padding:34px 0 0;text-align:center}
 body.toa-ads-lp .toa-ads-how-lab{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#777!important;margin:0 0 20px}
@@ -319,83 +321,91 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
     </div>
   </div>
 
-  <?php if ($key === 'hostess-eventi'): ?>
-
-  <!-- FIX 2026-09-01 marco — "Come funziona" 3 passaggi, copy da chat Gogle ADS -->
-  <section class="toa-ads-how">
-    <div class="toa-ads-how-lab"><?php echo _ht(['it'=>'Come funziona','en'=>'How it works','fr'=>'Comment ça marche','es'=>'Cómo funciona']); ?></div>
-    <div class="toa-ads-how-grid">
-      <?php
-      $__how = [
-        ['it'=>['t'=>"Raccontaci l'evento",'d'=>'Data, città, quante persone, quali lingue, cosa devono fare. Bastano due righe.'],
-         'en'=>['t'=>'Tell us about your event','d'=>'Date, city, how many people, which languages, what they need to do. A couple of lines is enough.'],
-         'fr'=>['t'=>'Parlez-nous de votre événement','d'=>'Date, ville, combien de personnes, quelles langues, quelles missions. Deux lignes suffisent.'],
-         'es'=>['t'=>'Cuéntanos tu evento','d'=>'Fecha, ciudad, cuántas personas, qué idiomas, qué tienen que hacer. Bastan dos líneas.']],
-        ['it'=>['t'=>'Ricevi i profili in 24 ore','d'=>'Ti mandiamo una rosa con foto, esperienza e lingue parlate, insieme al preventivo. Scegli tu chi vuoi in squadra.'],
-         'en'=>['t'=>'Get profiles within 24 hours','d'=>'We send you a shortlist with photos, experience and languages, along with the quote. You pick your team.'],
-         'fr'=>['t'=>'Recevez les profils sous 24 heures','d'=>'Nous vous envoyons une sélection avec photos, expérience et langues parlées, ainsi que le devis. C\'est vous qui choisissez votre équipe.'],
-         'es'=>['t'=>'Recibe los perfiles en 24 horas','d'=>'Te enviamos una selección con fotos, experiencia e idiomas, junto al presupuesto. Eliges tú a tu equipo.']],
-        ['it'=>['t'=>'Al resto pensiamo noi','d'=>'Contratti, compensi e coordinamento sul posto sono a carico nostro. Un solo referente, una sola fattura.'],
-         'en'=>['t'=>'We handle the rest','d'=>'Contracts, fees and on-site coordination are on us. One contact, one invoice.'],
-         'fr'=>['t'=>'Nous nous occupons du reste','d'=>'Contrats, rémunérations et coordination sur place sont à notre charge. Un seul interlocuteur, une seule facture.'],
-         'es'=>['t'=>'Del resto nos ocupamos nosotros','d'=>'Contratos, honorarios y coordinación in situ corren por nuestra cuenta. Un solo interlocutor, una sola factura.']],
-      ];
-      foreach ($__how as $__i => $__s): $__c = $__s[$lang] ?? $__s['it']; ?>
-      <div class="toa-ads-how-step">
-        <span class="toa-ads-how-num"><?php echo $__i + 1; ?></span>
-        <h3><?php echo esc_html($__c['t']); ?></h3>
-        <p><?php echo esc_html($__c['d']); ?></p>
-      </div>
-      <?php endforeach; ?>
-    </div>
-  </section>
-
-  <?php toa_component('brand-ticker', array('lang' => $lang)); ?>
-  <?php toa_component('google-reviews'); ?>
-  <!-- FIX 2026-08-31 marco — mini-gallery foto reali (8 su 37, riuso assets/gallery esistenti, no upload nuovo) -->
-  <section class="toa-ads-gallery">
-    <div class="toa-ads-gallery-lab"><?php echo _ht(['it'=>'Alcuni dei nostri eventi','en'=>'Some of our events','fr'=>'Quelques-uns de nos événements','es'=>'Algunos de nuestros eventos']); ?></div>
-    <div class="toa-ads-gallery-grid">
-      <?php foreach (['g01','g06','g11','g16','g21','g26','g31','g36'] as $__g): ?>
-      <img src="<?php echo esc_url(get_theme_file_uri('assets/gallery/'.$__g.'.jpg')); ?>" alt="TOAgency staff evento" loading="lazy" width="500" height="500">
-      <?php endforeach; ?>
-    </div>
-  </section>
-
-  <!-- FIX 2026-08-31 marco — tutti i 12 ruoli offerti (max esposizione servizi, richiesta esplicita). Solo etichetta ruolo, niente nomi propri inventati (alcune foto staff non sono di persone reali). -->
-  <section class="toa-ads-roles">
-    <div class="toa-ads-roles-lab"><?php echo _ht(['it'=>'Le figure che forniamo','en'=>'The staff we provide','fr'=>'Le personnel que nous fournissons','es'=>'El personal que proporcionamos']); ?></div>
-    <div class="toa-ads-roles-grid">
-      <?php
-      // FIX 2026-08-31 marco — etichette al plurale/generico: sono ruoli offerti, non una persona (niente nome proprio a fianco)
-      $__roles = [
-        ['img'=>'hostess.jpg',   'label'=>['it'=>'Hostess','en'=>'Hostesses','fr'=>'Hôtesses','es'=>'Azafatas']],
-        ['img'=>'steward.jpg',   'label'=>['it'=>'Steward','en'=>'Stewards','fr'=>'Stewards','es'=>'Stewards']],
-        ['img'=>'security.jpg', 'label'=>['it'=>'Security','en'=>'Security','fr'=>'Sécurité','es'=>'Seguridad']],
-        ['img'=>'promoter.jpg', 'label'=>['it'=>'Promoter','en'=>'Promoters','fr'=>'Promoteurs','es'=>'Promotores']],
-        ['img'=>'bartender.jpg','label'=>['it'=>'Bartender','en'=>'Bartenders','fr'=>'Barmans','es'=>'Bartenders']],
-        ['img'=>'cameriera.jpg','label'=>['it'=>'Camerieri','en'=>'Waiters','fr'=>'Serveurs','es'=>'Camareros']],
-        ['img'=>'interprete.jpg','label'=>['it'=>'Interpreti','en'=>'Interpreters','fr'=>'Interprètes','es'=>'Intérpretes']],
-        ['img'=>'autista.jpg',  'label'=>['it'=>'Autisti','en'=>'Drivers','fr'=>'Chauffeurs','es'=>'Conductores']],
-        ['img'=>'dj.jpg',       'label'=>['it'=>'DJ','en'=>'DJs','fr'=>'DJs','es'=>'DJs']],
-        ['img'=>'fotografa.jpg','label'=>['it'=>'Fotografi','en'=>'Photographers','fr'=>'Photographes','es'=>'Fotógrafos']],
-        ['img'=>'videomaker.jpg','label'=>['it'=>'Videomaker','en'=>'Videomakers','fr'=>'Vidéastes','es'=>'Videomakers']],
-        ['img'=>'runner.jpg',   'label'=>['it'=>'Runner','en'=>'Runners','fr'=>'Runners','es'=>'Runners']],
-      ];
-      foreach ($__roles as $__r): ?>
-      <div class="toa-ads-role-card">
-        <img src="<?php echo esc_url(get_theme_file_uri('assets/staff/'.$__r['img'])); ?>" alt="<?php echo esc_attr(_ht($__r['label'])); ?>" loading="lazy" width="600" height="800">
-        <span><?php echo _ht($__r['label']); ?></span>
-      </div>
-      <?php endforeach; ?>
-    </div>
-  </section>
-
-  <!-- FIX 2026-09-01 marco — FAQ, copy da chat Gogle ADS -->
-  <section class="toa-ads-faq">
-    <div class="toa-ads-faq-lab"><?php echo _ht(['it'=>'Domande frequenti','en'=>'FAQ','fr'=>'Questions fréquentes','es'=>'Preguntas frecuentes']); ?></div>
-    <?php
-    $__faq = [
+  <?php
+  // FIX 2026-09-02 marco — sezioni extra generalizzate a più landing (era solo hostess-eventi); dati per-chiave, un solo blocco HTML per tutte
+  $__extra_keys = ['hostess-eventi', 'models-aziende', 'attori-produzioni'];
+  $__how_map = [
+    'hostess-eventi' => [
+      ['it'=>['t'=>"Raccontaci l'evento",'d'=>'Data, città, quante persone, quali lingue, cosa devono fare. Bastano due righe.'],
+       'en'=>['t'=>'Tell us about your event','d'=>'Date, city, how many people, which languages, what they need to do. A couple of lines is enough.'],
+       'fr'=>['t'=>'Parlez-nous de votre événement','d'=>'Date, ville, combien de personnes, quelles langues, quelles missions. Deux lignes suffisent.'],
+       'es'=>['t'=>'Cuéntanos tu evento','d'=>'Fecha, ciudad, cuántas personas, qué idiomas, qué tienen que hacer. Bastan dos líneas.']],
+      ['it'=>['t'=>'Ricevi i profili in 24 ore','d'=>'Ti mandiamo una rosa con foto, esperienza e lingue parlate, insieme al preventivo. Scegli tu chi vuoi in squadra.'],
+       'en'=>['t'=>'Get profiles within 24 hours','d'=>'We send you a shortlist with photos, experience and languages, along with the quote. You pick your team.'],
+       'fr'=>['t'=>'Recevez les profils sous 24 heures','d'=>'Nous vous envoyons une sélection avec photos, expérience et langues parlées, ainsi que le devis. C\'est vous qui choisissez votre équipe.'],
+       'es'=>['t'=>'Recibe los perfiles en 24 horas','d'=>'Te enviamos una selección con fotos, experiencia e idiomas, junto al presupuesto. Eliges tú a tu equipo.']],
+      ['it'=>['t'=>'Al resto pensiamo noi','d'=>'Contratti, compensi e coordinamento sul posto sono a carico nostro. Un solo referente, una sola fattura.'],
+       'en'=>['t'=>'We handle the rest','d'=>'Contracts, fees and on-site coordination are on us. One contact, one invoice.'],
+       'fr'=>['t'=>'Nous nous occupons du reste','d'=>'Contrats, rémunérations et coordination sur place sont à notre charge. Un seul interlocuteur, une seule facture.'],
+       'es'=>['t'=>'Del resto nos ocupamos nosotros','d'=>'Contratos, honorarios y coordinación in situ corren por nuestra cuenta. Un solo interlocutor, una sola factura.']],
+    ],
+    'models-aziende' => [
+      ['it'=>['t'=>'Raccontaci il progetto','d'=>'Location, data, che tipo di shooting o campagna, quale look cerchi. Bastano due righe.'],
+       'en'=>['t'=>'Tell us about your project','d'=>"Location, date, type of shoot or campaign, what look you're after. A couple of lines is enough."],
+       'fr'=>['t'=>'Parlez-nous de votre projet','d'=>'Lieu, date, type de shooting ou de campagne, quel style vous recherchez. Deux lignes suffisent.'],
+       'es'=>['t'=>'Cuéntanos tu proyecto','d'=>'Localización, fecha, tipo de sesión o campaña, qué imagen buscas. Bastan dos líneas.']],
+      ['it'=>['t'=>'Ricevi i profili in 24 ore','d'=>'Ti mandiamo una selezione di modelle e modelli con foto, misure ed esperienza, insieme al preventivo. Scegli tu chi vuoi.'],
+       'en'=>['t'=>'Get profiles within 24 hours','d'=>'We send you a shortlist of models with photos, measurements and experience, along with the quote. You pick who you want.'],
+       'fr'=>['t'=>'Recevez les profils sous 24 heures','d'=>'Nous vous envoyons une sélection de mannequins avec photos, mensurations et expérience, ainsi que le devis. C\'est vous qui choisissez.'],
+       'es'=>['t'=>'Recibe los perfiles en 24 horas','d'=>'Te enviamos una selección de modelos con fotos, medidas y experiencia, junto al presupuesto. Eliges tú a quién quieres.']],
+      ['it'=>['t'=>'Al resto pensiamo noi','d'=>'Contratti, liberatorie e compensi sono a carico nostro. Un solo referente, una sola fattura.'],
+       'en'=>['t'=>'We handle the rest','d'=>'Contracts, releases and fees are on us. One contact, one invoice.'],
+       'fr'=>['t'=>'Nous nous occupons du reste','d'=>'Contrats, autorisations et rémunérations sont à notre charge. Un seul interlocuteur, une seule facture.'],
+       'es'=>['t'=>'Del resto nos ocupamos nosotros','d'=>'Contratos, autorizaciones y honorarios corren por nuestra cuenta. Un solo interlocutor, una sola factura.']],
+    ],
+    'attori-produzioni' => [
+      ['it'=>['t'=>'Raccontaci il progetto','d'=>'Ruolo cercato, tipo di produzione, location, tempistiche. Bastano due righe.'],
+       'en'=>['t'=>'Tell us about your project','d'=>"Role you're casting, type of production, location, timeline. A couple of lines is enough."],
+       'fr'=>['t'=>'Parlez-nous de votre projet','d'=>'Rôle recherché, type de production, lieu, calendrier. Deux lignes suffisent.'],
+       'es'=>['t'=>'Cuéntanos tu proyecto','d'=>'Papel buscado, tipo de producción, localización, plazos. Bastan dos líneas.']],
+      ['it'=>['t'=>'Ricevi i profili in 24 ore','d'=>'Ti mandiamo una selezione di attori, attrici e comparse con foto e provini, insieme al preventivo. Scegli tu il cast.'],
+       'en'=>['t'=>'Get profiles within 24 hours','d'=>'We send you a shortlist of actors and extras with photos and audition tapes, along with the quote. You pick the cast.'],
+       'fr'=>['t'=>'Recevez les profils sous 24 heures','d'=>'Nous vous envoyons une sélection d\'acteurs et de figurants avec photos et bandes d\'essai, ainsi que le devis. C\'est vous qui choisissez le casting.'],
+       'es'=>['t'=>'Recibe los perfiles en 24 horas','d'=>'Te enviamos una selección de actores y figurantes con fotos y pruebas, junto al presupuesto. Eliges tú el reparto.']],
+      ['it'=>['t'=>'Al resto pensiamo noi','d'=>'Contratti, liberatorie e compensi sono a carico nostro. Un solo referente, una sola fattura.'],
+       'en'=>['t'=>'We handle the rest','d'=>'Contracts, releases and fees are on us. One contact, one invoice.'],
+       'fr'=>['t'=>'Nous nous occupons du reste','d'=>'Contrats, autorisations et rémunérations sont à notre charge. Un seul interlocuteur, une seule facture.'],
+       'es'=>['t'=>'Del resto nos ocupamos nosotros','d'=>'Contratos, autorizaciones y honorarios corren por nuestra cuenta. Un solo interlocutor, una sola factura.']],
+    ],
+  ];
+  $__gallery_map = [
+    'hostess-eventi'    => ['g01','g06','g11','g16','g21','g26','g31','g36'],
+    'models-aziende'    => [], // in coda: aspetta foto shooting da Marco
+    'attori-produzioni' => [], // in coda: aspetta foto set/produzione da Marco
+  ];
+  // FIX 2026-08-31 marco — etichette al plurale/generico: sono ruoli offerti, non una persona (niente nome proprio a fianco)
+  $__roles_map = [
+    'hostess-eventi' => [
+      ['img'=>'hostess.jpg',   'label'=>['it'=>'Hostess','en'=>'Hostesses','fr'=>'Hôtesses','es'=>'Azafatas']],
+      ['img'=>'steward.jpg',   'label'=>['it'=>'Steward','en'=>'Stewards','fr'=>'Stewards','es'=>'Stewards']],
+      ['img'=>'security.jpg', 'label'=>['it'=>'Security','en'=>'Security','fr'=>'Sécurité','es'=>'Seguridad']],
+      ['img'=>'promoter.jpg', 'label'=>['it'=>'Promoter','en'=>'Promoters','fr'=>'Promoteurs','es'=>'Promotores']],
+      ['img'=>'bartender.jpg','label'=>['it'=>'Bartender','en'=>'Bartenders','fr'=>'Barmans','es'=>'Bartenders']],
+      ['img'=>'cameriera.jpg','label'=>['it'=>'Camerieri','en'=>'Waiters','fr'=>'Serveurs','es'=>'Camareros']],
+      ['img'=>'interprete.jpg','label'=>['it'=>'Interpreti','en'=>'Interpreters','fr'=>'Interprètes','es'=>'Intérpretes']],
+      ['img'=>'autista.jpg',  'label'=>['it'=>'Autisti','en'=>'Drivers','fr'=>'Chauffeurs','es'=>'Conductores']],
+      ['img'=>'dj.jpg',       'label'=>['it'=>'DJ','en'=>'DJs','fr'=>'DJs','es'=>'DJs']],
+      ['img'=>'fotografa.jpg','label'=>['it'=>'Fotografi','en'=>'Photographers','fr'=>'Photographes','es'=>'Fotógrafos']],
+      ['img'=>'videomaker.jpg','label'=>['it'=>'Videomaker','en'=>'Videomakers','fr'=>'Vidéastes','es'=>'Videomakers']],
+      ['img'=>'runner.jpg',   'label'=>['it'=>'Runner','en'=>'Runners','fr'=>'Runners','es'=>'Runners']],
+    ],
+    'models-aziende' => [ // FIX 2026-09-02 marco — solo etichetta, niente foto (in coda: aspetta foto da Marco)
+      ['label'=>['it'=>'Modelle','en'=>'Female Models','fr'=>'Mannequins femmes','es'=>'Modelos mujeres']],
+      ['label'=>['it'=>'Modelli','en'=>'Male Models','fr'=>'Mannequins hommes','es'=>'Modelos hombres']],
+      ['label'=>['it'=>'Fit Model','en'=>'Fit Models','fr'=>'Fit Models','es'=>'Fit Models']],
+      ['label'=>['it'=>'Hand Model','en'=>'Hand Models','fr'=>'Hand Models','es'=>'Hand Models']],
+      ['label'=>['it'=>'Hostess Shooting','en'=>'Shoot Hostesses','fr'=>'Hôtesses shooting','es'=>'Azafatas de shooting']],
+    ],
+    'attori-produzioni' => [ // FIX 2026-09-02 marco — solo etichetta, niente foto (in coda: aspetta foto da Marco)
+      ['label'=>['it'=>'Attori','en'=>'Actors','fr'=>'Acteurs','es'=>'Actores']],
+      ['label'=>['it'=>'Attrici','en'=>'Actresses','fr'=>'Actrices','es'=>'Actrices']],
+      ['label'=>['it'=>'Comparse','en'=>'Extras','fr'=>'Figurants','es'=>'Extras']],
+      ['label'=>['it'=>'Figuranti Speciali','en'=>'Featured Extras','fr'=>'Figurants spéciaux','es'=>'Extras especiales']],
+      ['label'=>['it'=>'Bambini Attori','en'=>'Child Actors','fr'=>'Enfants acteurs','es'=>'Niños actores']],
+    ],
+  ];
+  $__faq_map = [
+    'hostess-eventi' => [
       ['it'=>['q'=>'In quanto tempo ricevo il preventivo?','a'=>'Entro 24 ore lavorative, insieme ai profili disponibili. Gratuito e senza impegno.'],
        'en'=>['q'=>'How soon will I get a quote?','a'=>'Within 24 working hours, together with the available profiles. Free, no commitment.'],
        'fr'=>['q'=>'Sous quel délai vais-je recevoir le devis ?','a'=>'Sous 24 heures ouvrées, avec les profils disponibles. Gratuit et sans engagement.'],
@@ -428,14 +438,78 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
        'en'=>['q'=>'How does payment work?','a'=>'Terms are agreed case by case, based on the length and size of the project. We usually offer a discount for advance payment.'],
        'fr'=>['q'=>'Comment se passe le paiement ?','a'=>"Les conditions sont convenues au cas par cas, selon la durée et l'ampleur du projet. En cas de paiement anticipé, nous appliquons généralement une remise."],
        'es'=>['q'=>'¿Cómo funciona el pago?','a'=>'Las condiciones se acuerdan caso por caso, según la duración y el tamaño del proyecto. Con pago anticipado solemos aplicar un descuento.']],
-    ];
-    foreach ($__faq as $__f): $__c = $__f[$lang] ?? $__f['it']; ?>
+    ],
+    'models-aziende'    => [], // in coda: aspetta risposte di Marco (diritti immagine, compenso, tempi, minorenni)
+    'attori-produzioni' => [], // in coda: aspetta risposte di Marco (diritti immagine, compenso, tempi, minorenni)
+  ];
+  ?>
+
+  <?php if (in_array($key, $__extra_keys, true)):
+    $__how     = $__how_map[$key] ?? [];
+    $__gallery = $__gallery_map[$key] ?? [];
+    $__roles   = $__roles_map[$key] ?? [];
+    $__faq     = $__faq_map[$key] ?? [];
+  ?>
+
+  <?php if ($__how): ?>
+  <section class="toa-ads-how">
+    <div class="toa-ads-how-lab"><?php echo _ht(['it'=>'Come funziona','en'=>'How it works','fr'=>'Comment ça marche','es'=>'Cómo funciona']); ?></div>
+    <div class="toa-ads-how-grid">
+      <?php foreach ($__how as $__i => $__s): $__c = $__s[$lang] ?? $__s['it']; ?>
+      <div class="toa-ads-how-step">
+        <span class="toa-ads-how-num"><?php echo $__i + 1; ?></span>
+        <h3><?php echo esc_html($__c['t']); ?></h3>
+        <p><?php echo esc_html($__c['d']); ?></p>
+      </div>
+      <?php endforeach; ?>
+    </div>
+  </section>
+  <?php endif; ?>
+
+  <?php toa_component('brand-ticker', array('lang' => $lang)); ?>
+  <?php toa_component('google-reviews'); ?>
+
+  <?php if ($__gallery): ?>
+  <section class="toa-ads-gallery">
+    <div class="toa-ads-gallery-lab"><?php echo _ht(['it'=>'Alcuni dei nostri eventi','en'=>'Some of our events','fr'=>'Quelques-uns de nos événements','es'=>'Algunos de nuestros eventos']); ?></div>
+    <div class="toa-ads-gallery-grid">
+      <?php foreach ($__gallery as $__g): ?>
+      <img src="<?php echo esc_url(get_theme_file_uri('assets/gallery/'.$__g.'.jpg')); ?>" alt="TOAgency staff evento" loading="lazy" width="500" height="500">
+      <?php endforeach; ?>
+    </div>
+  </section>
+  <?php endif; ?>
+
+  <?php if ($__roles): ?>
+  <section class="toa-ads-roles">
+    <div class="toa-ads-roles-lab"><?php echo _ht(['it'=>'Le figure che forniamo','en'=>'The staff we provide','fr'=>'Le personnel que nous fournissons','es'=>'El personal que proporcionamos']); ?></div>
+    <div class="toa-ads-roles-grid">
+      <?php foreach ($__roles as $__r): ?>
+      <?php if (!empty($__r['img'])): ?>
+      <div class="toa-ads-role-card">
+        <img src="<?php echo esc_url(get_theme_file_uri('assets/staff/'.$__r['img'])); ?>" alt="<?php echo esc_attr(_ht($__r['label'])); ?>" loading="lazy" width="600" height="800">
+        <span><?php echo _ht($__r['label']); ?></span>
+      </div>
+      <?php else: ?>
+      <span class="toa-ads-role-pill"><?php echo _ht($__r['label']); ?></span>
+      <?php endif; ?>
+      <?php endforeach; ?>
+    </div>
+  </section>
+  <?php endif; ?>
+
+  <?php if ($__faq): ?>
+  <section class="toa-ads-faq">
+    <div class="toa-ads-faq-lab"><?php echo _ht(['it'=>'Domande frequenti','en'=>'FAQ','fr'=>'Questions fréquentes','es'=>'Preguntas frecuentes']); ?></div>
+    <?php foreach ($__faq as $__f): $__c = $__f[$lang] ?? $__f['it']; ?>
     <details class="toa-ads-faq-item">
       <summary><?php echo esc_html($__c['q']); ?></summary>
       <p><?php echo esc_html($__c['a']); ?></p>
     </details>
     <?php endforeach; ?>
   </section>
+  <?php endif; ?>
+
   <?php endif; ?>
 
   <footer class="toa-ads-footer">
