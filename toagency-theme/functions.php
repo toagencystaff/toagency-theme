@@ -1272,7 +1272,7 @@ add_action('wp_enqueue_scripts', function() {
     wp_dequeue_style('wpml-menu-item-0');
     // Google Reviews: trust ★ è hardcoded, widget assente — TRANNE le landing con recensioni vere (FIX 2026-09-02 marco, era solo hostess-eventi: bug, G/stelle giganti senza CSS su models-aziende/attori-produzioni)
     $__lp_slug = get_post_field('post_name', get_queried_object_id());
-    if (!in_array($__lp_slug, ['hostess-eventi', 'models-aziende', 'attori-produzioni'], true)) {
+    if (!in_array($__lp_slug, ['hostess-eventi', 'models-aziende', 'attori-produzioni', 'casting-produzioni'], true)) {
         wp_dequeue_style('toa-google-reviews');
     }
     // jquery-migrate: nessun codice legacy sulla LP
