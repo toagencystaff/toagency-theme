@@ -8,6 +8,22 @@
  * Icona WhatsApp SVG inline (no Font Awesome).
  * Su mobile si posiziona sopra .sticky-cta-mobile (footer) per non sovrapporsi.
  */
+
+// FIX 2026-09-01 marco — bottone NASCOSTO sui singoli annunci di casting (stessa
+// logica di $sl_is_casting in single.php): porta a scrivere su WhatsApp invece di candidarsi.
+if ( is_singular( 'post' ) ) {
+    $wa_is_casting = false;
+    foreach ( (array) get_the_category() as $__wa_cat ) {
+        if ( stripos( $__wa_cat->slug, 'casting' ) !== false || stripos( $__wa_cat->name, 'casting' ) !== false ) {
+            $wa_is_casting = true;
+            break;
+        }
+    }
+    if ( $wa_is_casting ) {
+        return;
+    }
+}
+
 $wa_number = '393517899225';
 
 $wa_texts = array(
