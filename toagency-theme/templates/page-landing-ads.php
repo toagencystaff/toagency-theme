@@ -420,6 +420,14 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
        'en'=>['q'=>'What if someone drops out at the last minute?','a'=>'We replace them immediately. At night, on Sundays, on Christmas Day. Availability is part of the service.'],
        'fr'=>['q'=>'Que se passe-t-il si une personne se désiste ?','a'=>'Nous la remplaçons immédiatement. La nuit, le dimanche, à Noël. La disponibilité fait partie du service.'],
        'es'=>['q'=>'¿Qué pasa si alguien no se presenta?','a'=>'Lo sustituimos de inmediato. De noche, en domingo, en Navidad. La disponibilidad forma parte del servicio.']],
+      ['it'=>['q'=>"C'è un numero minimo di persone?",'a'=>'No. Lavoriamo anche per una sola hostess, così come per team completi su più giornate.'],
+       'en'=>['q'=>'Is there a minimum number of people?','a'=>'No. We work for a single hostess just as we do for full teams over several days.'],
+       'fr'=>['q'=>"Y a-t-il un nombre minimum de personnes ?",'a'=>"Non. Nous travaillons aussi bien pour une seule hôtesse que pour des équipes complètes sur plusieurs jours."],
+       'es'=>['q'=>'¿Hay un número mínimo de personas?','a'=>'No. Trabajamos tanto para una sola azafata como para equipos completos durante varios días.']],
+      ['it'=>['q'=>'Come funziona il pagamento?','a'=>'Le condizioni si concordano caso per caso, in base a durata e dimensione del progetto. Con pagamento anticipato applichiamo in genere uno sconto.'],
+       'en'=>['q'=>'How does payment work?','a'=>'Terms are agreed case by case, based on the length and size of the project. We usually offer a discount for advance payment.'],
+       'fr'=>['q'=>'Comment se passe le paiement ?','a'=>"Les conditions sont convenues au cas par cas, selon la durée et l'ampleur du projet. En cas de paiement anticipé, nous appliquons généralement une remise."],
+       'es'=>['q'=>'¿Cómo funciona el pago?','a'=>'Las condiciones se acuerdan caso por caso, según la duración y el tamaño del proyecto. Con pago anticipado solemos aplicar un descuento.']],
     ];
     foreach ($__faq as $__f): $__c = $__f[$lang] ?? $__f['it']; ?>
     <details class="toa-ads-faq-item">
