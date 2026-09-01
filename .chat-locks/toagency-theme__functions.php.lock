@@ -1,0 +1,6 @@
+STATO=CLOSED
+CHAT=TEMA LP-HOSTESS-EVENTI
+INIZIO=2026-08-31 17:01:55
+UPDATE=2026-09-01 16:38:10
+SHA1_ATTESO=4343c9b31514a8682ac2cc1a4e09aeca55d04a41
+NOTA=LIVE prod 02/09 (commit e815f6ce2, health check 5/5). Fix bug: CSS google-reviews escludeva tutte le landing tranne hostess-eventi (G/stelle giganti su models-aziende/attori-produzioni). Verificato live: G 40px, stelle 20px, entrambe le pagine.
