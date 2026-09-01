@@ -1,6 +1,6 @@
-STATO=CLOSED
+STATO=OPEN
 CHAT=TEMA LP-HOSTESS-EVENTI
 INIZIO=2026-08-31 17:01:55
-UPDATE=2026-09-01 17:34:51
-SHA1_ATTESO=1b45fb51eadaa3973d3b4c577b9c0b8314df7d2f
-NOTA=LIVE prod 02/09: 4 landing (hostess-eventi COMPLETA 6/6; models-aziende/attori-produzioni/casting-produzioni con fascia+recensioni+come-funziona+ruoli-testo, 4 lingue, verificato senza regressioni). Bug G-gigante (CSS mancante) trovato e risolto due volte (prima su models/attori, poi su casting-produzioni). IN CODA su 3 landing, bloccato su Marco: foto (gallery+ruoli) e risposte a 4 domande FAQ — MAI ricevute nonostante un prompt di passaggio le dicesse "già scritte" in file inesistenti (segnalato a Marco).
+UPDATE=2026-09-01 17:49:02
+SHA1_ATTESO=57fe968ab376abcf8fc827fa8105eafc88ad6808
+NOTA=Aggiunte FAQ (diritti immagine/compenso/tempi/minorenni) su models-aziende+attori-produzioni+casting-produzioni, confermate da Marco, 4 lingue. Commit fcec961c3, in deploy. Resta solo foto (gallery+ruoli) in coda.
