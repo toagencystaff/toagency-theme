@@ -460,9 +460,28 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
        'fr'=>['q'=>'Comment se passe le paiement ?','a'=>"Les conditions sont convenues au cas par cas, selon la durée et l'ampleur du projet. En cas de paiement anticipé, nous appliquons généralement une remise."],
        'es'=>['q'=>'¿Cómo funciona el pago?','a'=>'Las condiciones se acuerdan caso por caso, según la duración y el tamaño del proyecto. Con pago anticipado solemos aplicar un descuento.']],
     ],
-    'models-aziende'     => [], // in coda: aspetta risposte di Marco (diritti immagine, compenso, tempi, minorenni)
-    'attori-produzioni'  => [], // in coda: aspetta risposte di Marco (diritti immagine, compenso, tempi, minorenni)
-    'casting-produzioni' => [], // in coda: aspetta risposte di Marco (diritti immagine, compenso, tempi, minorenni) — NON riuso automatico anche se stesso dominio di attori-produzioni
+    'models-aziende'     => null, // placeholder sotto
+    'attori-produzioni'  => null,
+    'casting-produzioni' => null,
+  ];
+  // FIX 2026-09-02 marco — FAQ confermate da Marco 31/08 (diritti immagine, compenso, tempi, minorenni), stesse 4 su models-aziende/attori-produzioni/casting-produzioni
+  $__faq_map['models-aziende'] = $__faq_map['attori-produzioni'] = $__faq_map['casting-produzioni'] = [
+    ['it'=>['q'=>'Come funzionano i diritti di immagine?','a'=>"Si definiscono insieme prima della conferma e sono scritti nel preventivo: durata dell'utilizzo, territorio e mezzi (social, web, stampa, TV, affissione). Sai esattamente cosa stai acquistando, senza sorprese a campagna avviata."],
+     'en'=>['q'=>'How do image rights work?','a'=>"They are agreed before confirmation and written into the quote: usage period, territory and media (social, web, print, TV, outdoor). You know exactly what you are buying, with no surprises once the campaign is live."],
+     'fr'=>['q'=>"Comment fonctionnent les droits à l'image ?",'a'=>"Ils sont définis ensemble avant la confirmation et inscrits dans le devis : durée d'utilisation, territoire et supports (réseaux sociaux, web, presse, TV, affichage). Vous savez exactement ce que vous achetez, sans surprise une fois la campagne lancée."],
+     'es'=>['q'=>'¿Cómo funcionan los derechos de imagen?','a'=>'Se definen juntos antes de la confirmación y quedan por escrito en el presupuesto: duración del uso, territorio y medios (redes sociales, web, prensa, TV, exterior). Sabes exactamente qué estás comprando, sin sorpresas una vez lanzada la campaña.']],
+    ['it'=>['q'=>'Come viene calcolato il compenso?','a'=>'Dipende dal progetto: pesano il tipo di produzione, le giornate, il profilo richiesto e l\'utilizzo previsto delle immagini. Raccontaci cosa ti serve e ti mandiamo un preventivo dettagliato, voce per voce.'],
+     'en'=>['q'=>'How is the fee calculated?','a'=>"It depends on the project: type of production, number of days, profile required and intended use of the images. Tell us what you need and we'll send a detailed quote, item by item."],
+     'fr'=>['q'=>'Comment est calculée la rémunération ?','a'=>'Cela dépend du projet : type de production, nombre de journées, profil recherché et utilisation prévue des images. Dites-nous ce dont vous avez besoin et nous vous envoyons un devis détaillé, poste par poste.'],
+     'es'=>['q'=>'¿Cómo se calcula el caché?','a'=>'Depende del proyecto: tipo de producción, número de jornadas, perfil requerido y uso previsto de las imágenes. Cuéntanos qué necesitas y te enviamos un presupuesto detallado, partida por partida.']],
+    ['it'=>['q'=>'In quanto tempo ricevo i profili?','a'=>'I profili dal nostro database arrivano subito, insieme al preventivo. Se servono self-tape o provini su misura, i tempi dipendono dalla richiesta: te li indichiamo quando ti mandiamo la selezione.'],
+     'en'=>['q'=>'How soon do I get the profiles?','a'=>"Profiles from our database come straight away, along with the quote. If you need self-tapes or custom auditions, timing depends on the brief — we'll tell you when we send the selection."],
+     'fr'=>['q'=>'Sous quel délai vais-je recevoir les profils ?','a'=>'Les profils de notre base arrivent immédiatement, avec le devis. Si des self-tapes ou des essais sur mesure sont nécessaires, les délais dépendent de la demande : nous vous les indiquons en envoyant la sélection.'],
+     'es'=>['q'=>'¿En cuánto tiempo recibo los perfiles?','a'=>'Los perfiles de nuestra base llegan de inmediato, junto al presupuesto. Si necesitas self-tapes o pruebas a medida, los plazos dependen de la petición: te los indicamos al enviarte la selección.']],
+    ['it'=>['q'=>'Lavorate con talent minorenni?','a'=>"Sì. Raccogliamo il consenso firmato dei genitori per ogni minore coinvolto. Gli adempimenti verso l'Ispettorato Territoriale del Lavoro restano in capo alla produzione committente."],
+     'en'=>['q'=>'Do you work with underage talent?','a'=>'Yes. We collect signed parental consent for every minor involved. Filings with the Labour Inspectorate remain the responsibility of the commissioning production.'],
+     'fr'=>['q'=>'Travaillez-vous avec des talents mineurs ?','a'=>"Oui. Nous recueillons le consentement signé des parents pour chaque mineur concerné. Les démarches auprès de l'Inspection du travail restent à la charge de la production commanditaire."],
+     'es'=>['q'=>'¿Trabajáis con talentos menores de edad?','a'=>'Sí. Recogemos el consentimiento firmado de los padres para cada menor implicado. Los trámites ante la Inspección de Trabajo quedan a cargo de la producción contratante.']],
   ];
   ?>
 
