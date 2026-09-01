@@ -323,7 +323,7 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
 
   <?php
   // FIX 2026-09-02 marco — sezioni extra generalizzate a più landing (era solo hostess-eventi); dati per-chiave, un solo blocco HTML per tutte
-  $__extra_keys = ['hostess-eventi', 'models-aziende', 'attori-produzioni'];
+  $__extra_keys = ['hostess-eventi', 'models-aziende', 'attori-produzioni', 'casting-produzioni'];
   $__how_map = [
     'hostess-eventi' => [
       ['it'=>['t'=>"Raccontaci l'evento",'d'=>'Data, città, quante persone, quali lingue, cosa devono fare. Bastano due righe.'],
@@ -367,11 +367,26 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
        'fr'=>['t'=>'Nous nous occupons du reste','d'=>'Contrats, autorisations et rémunérations sont à notre charge. Un seul interlocuteur, une seule facture.'],
        'es'=>['t'=>'Del resto nos ocupamos nosotros','d'=>'Contratos, autorizaciones y honorarios corren por nuestra cuenta. Un solo interlocutor, una sola factura.']],
     ],
+    'casting-produzioni' => [ // FIX 2026-09-02 marco — testo diverso da attori-produzioni (stesso dominio, pagina "casting completo" più ampia): evita doppioni SEO
+      ['it'=>['t'=>'Raccontaci la produzione','d'=>'Tipo di produzione, ruoli cercati (modelli, attori, comparse...), location, tempistiche. Bastano due righe.'],
+       'en'=>['t'=>'Tell us about your production','d'=>"Type of production, roles you're casting (models, actors, extras...), location, timeline. A couple of lines is enough."],
+       'fr'=>['t'=>'Parlez-nous de votre production','d'=>'Type de production, rôles recherchés (mannequins, acteurs, figurants...), lieu, calendrier. Deux lignes suffisent.'],
+       'es'=>['t'=>'Cuéntanos tu producción','d'=>'Tipo de producción, papeles buscados (modelos, actores, figurantes...), localización, plazos. Bastan dos líneas.']],
+      ['it'=>['t'=>'Ricevi il cast in 24 ore','d'=>'Ti mandiamo una selezione di profili con foto e provini, insieme al preventivo. Scegli tu chi vuoi.'],
+       'en'=>['t'=>'Get your cast within 24 hours','d'=>'We send you a shortlist of profiles with photos and audition tapes, along with the quote. You pick who you want.'],
+       'fr'=>['t'=>'Recevez le casting sous 24 heures','d'=>'Nous vous envoyons une sélection de profils avec photos et bandes d\'essai, ainsi que le devis. C\'est vous qui choisissez.'],
+       'es'=>['t'=>'Recibe el reparto en 24 horas','d'=>'Te enviamos una selección de perfiles con fotos y pruebas, junto al presupuesto. Eliges tú a quién quieres.']],
+      ['it'=>['t'=>'Al resto pensiamo noi','d'=>'Contratti, liberatorie e compensi sono a carico nostro. Un solo referente, una sola fattura.'],
+       'en'=>['t'=>'We handle the rest','d'=>'Contracts, releases and fees are on us. One contact, one invoice.'],
+       'fr'=>['t'=>'Nous nous occupons du reste','d'=>'Contrats, autorisations et rémunérations sont à notre charge. Un seul interlocuteur, une seule facture.'],
+       'es'=>['t'=>'Del resto nos ocupamos nosotros','d'=>'Contratos, autorizaciones y honorarios corren por nuestra cuenta. Un solo interlocutor, una sola factura.']],
+    ],
   ];
   $__gallery_map = [
-    'hostess-eventi'    => ['g01','g06','g11','g16','g21','g26','g31','g36'],
-    'models-aziende'    => [], // in coda: aspetta foto shooting da Marco
-    'attori-produzioni' => [], // in coda: aspetta foto set/produzione da Marco
+    'hostess-eventi'     => ['g01','g06','g11','g16','g21','g26','g31','g36'],
+    'models-aziende'     => [], // in coda: aspetta foto shooting da Marco
+    'attori-produzioni'  => [], // in coda: aspetta foto set/produzione da Marco
+    'casting-produzioni' => [], // in coda: aspetta foto produzione da Marco
   ];
   // FIX 2026-08-31 marco — etichette al plurale/generico: sono ruoli offerti, non una persona (niente nome proprio a fianco)
   $__roles_map = [
@@ -402,6 +417,12 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
       ['label'=>['it'=>'Comparse','en'=>'Extras','fr'=>'Figurants','es'=>'Extras']],
       ['label'=>['it'=>'Figuranti Speciali','en'=>'Featured Extras','fr'=>'Figurants spéciaux','es'=>'Extras especiales']],
       ['label'=>['it'=>'Bambini Attori','en'=>'Child Actors','fr'=>'Enfants acteurs','es'=>'Niños actores']],
+    ],
+    'casting-produzioni' => [ // FIX 2026-09-02 marco — mix modelli+attori (posizionamento "casting completo" della pagina), diverso da attori-produzioni; solo etichetta, niente foto
+      ['label'=>['it'=>'Modelli','en'=>'Models','fr'=>'Mannequins','es'=>'Modelos']],
+      ['label'=>['it'=>'Attori','en'=>'Actors','fr'=>'Acteurs','es'=>'Actores']],
+      ['label'=>['it'=>'Comparse','en'=>'Extras','fr'=>'Figurants','es'=>'Figurantes']],
+      ['label'=>['it'=>'Figuranti','en'=>'Background Talent','fr'=>'Silhouettes','es'=>'Comparsas']],
     ],
   ];
   $__faq_map = [
@@ -439,8 +460,9 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
        'fr'=>['q'=>'Comment se passe le paiement ?','a'=>"Les conditions sont convenues au cas par cas, selon la durée et l'ampleur du projet. En cas de paiement anticipé, nous appliquons généralement une remise."],
        'es'=>['q'=>'¿Cómo funciona el pago?','a'=>'Las condiciones se acuerdan caso por caso, según la duración y el tamaño del proyecto. Con pago anticipado solemos aplicar un descuento.']],
     ],
-    'models-aziende'    => [], // in coda: aspetta risposte di Marco (diritti immagine, compenso, tempi, minorenni)
-    'attori-produzioni' => [], // in coda: aspetta risposte di Marco (diritti immagine, compenso, tempi, minorenni)
+    'models-aziende'     => [], // in coda: aspetta risposte di Marco (diritti immagine, compenso, tempi, minorenni)
+    'attori-produzioni'  => [], // in coda: aspetta risposte di Marco (diritti immagine, compenso, tempi, minorenni)
+    'casting-produzioni' => [], // in coda: aspetta risposte di Marco (diritti immagine, compenso, tempi, minorenni) — NON riuso automatico anche se stesso dominio di attori-produzioni
   ];
   ?>
 
