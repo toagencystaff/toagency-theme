@@ -1,6 +1,6 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=TEMA LP-HOSTESS-EVENTI
 INIZIO=2026-08-31 17:01:55
-UPDATE=2026-09-01 17:49:02
+UPDATE=2026-09-01 17:53:28
 SHA1_ATTESO=57fe968ab376abcf8fc827fa8105eafc88ad6808
-NOTA=Aggiunte FAQ (diritti immagine/compenso/tempi/minorenni) su models-aziende+attori-produzioni+casting-produzioni, confermate da Marco, 4 lingue. Commit fcec961c3, in deploy. Resta solo foto (gallery+ruoli) in coda.
+NOTA=LIVE prod 02/09: hostess-eventi COMPLETA (6/6). models-aziende + attori-produzioni + casting-produzioni: fascia+recensioni+come-funziona+FAQ(4, confermate da Marco)+ruoli-testo, 4 lingue, verificato live senza regressioni. RESTA SOLO: foto gallery+ruoli (Marco ha scelto di partire senza, in attesa che le mandi). Nessun altro blocco.
