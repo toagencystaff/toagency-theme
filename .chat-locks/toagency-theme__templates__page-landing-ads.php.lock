@@ -1,6 +1,6 @@
-STATO=CLOSED
+STATO=OPEN
 CHAT=TEMA LP-HOSTESS-EVENTI
 INIZIO=2026-08-31 17:01:55
-UPDATE=2026-09-01 16:16:55
-SHA1_ATTESO=7c770c8aa7556c877bca178a3ed289510711ae4c
-NOTA=LIVE prod 01/09: hostess-eventi (6/6 punti, coda vuota) + models-aziende/attori-produzioni (fascia brand, recensioni Google, Come funziona, ruoli-solo-testo, 4 lingue, health check 5/5, nessuna regressione su hostess-eventi). IN CODA su models-aziende/attori-produzioni, bloccato su Marco: 1) foto per gallery+ruoli (ha scelto di partire senza), 2) risposte a 4 domande FAQ (diritti immagine, struttura compenso, tempi selezione, minorenni) — non si inventano, sono impegni contrattuali.
+UPDATE=2026-09-01 17:28:06
+SHA1_ATTESO=1b45fb51eadaa3973d3b4c577b9c0b8314df7d2f
+NOTA=Aggiunta casting-produzioni (4a landing, scoperta da audit Ads 01/09): stessa struttura, contenuto differenziato da attori-produzioni (no doppioni SEO). Commit 93b6943a7, in deploy.
