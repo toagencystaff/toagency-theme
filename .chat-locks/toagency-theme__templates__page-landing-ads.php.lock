@@ -1,6 +1,6 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=TEMA LP-HOSTESS-EVENTI
 INIZIO=2026-08-31 17:01:55
-UPDATE=2026-09-01 16:06:50
+UPDATE=2026-09-01 16:16:55
 SHA1_ATTESO=7c770c8aa7556c877bca178a3ed289510711ae4c
-NOTA=hostess-eventi CHIUSA e live (v. nota precedente). In corso: replica struttura su models-aziende + attori-produzioni (richiesta chat ADS REVIEW SETTIMANALE, campagna Models&Casting budget alzato 5->8e/g). Commit e32972c6f: fascia brand+recensioni+Come funziona+ruoli(solo testo) su entrambe, 4 lingue. In coda: foto gallery+ruoli (aspetta Marco) e FAQ (aspetta risposte Marco su diritti immagine/compenso/tempi/minorenni).
+NOTA=LIVE prod 01/09: hostess-eventi (6/6 punti, coda vuota) + models-aziende/attori-produzioni (fascia brand, recensioni Google, Come funziona, ruoli-solo-testo, 4 lingue, health check 5/5, nessuna regressione su hostess-eventi). IN CODA su models-aziende/attori-produzioni, bloccato su Marco: 1) foto per gallery+ruoli (ha scelto di partire senza), 2) risposte a 4 domande FAQ (diritti immagine, struttura compenso, tempi selezione, minorenni) — non si inventano, sono impegni contrattuali.
