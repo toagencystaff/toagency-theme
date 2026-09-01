@@ -248,6 +248,26 @@ body.toa-ads-lp .toa-ads-roles-grid{display:flex;flex-wrap:wrap;justify-content:
 body.toa-ads-lp .toa-ads-role-card{width:90px}
 body.toa-ads-lp .toa-ads-role-card img{width:90px;height:120px;object-fit:cover;border-radius:8px;display:block}
 body.toa-ads-lp .toa-ads-role-card span{display:block;margin-top:6px;font-size:11px;color:#ccc!important;font-weight:600;letter-spacing:.3px}
+/* FIX 2026-09-01 marco — "Come funziona" 3 passaggi */
+body.toa-ads-lp .toa-ads-how{padding:34px 0 0;text-align:center}
+body.toa-ads-lp .toa-ads-how-lab{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#777!important;margin:0 0 20px}
+body.toa-ads-lp .toa-ads-how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:900px;margin:0 auto;text-align:left}
+body.toa-ads-lp .toa-ads-how-step{padding:16px 16px 14px;border:1px solid #2a2a2a;border-radius:10px;background:rgba(255,255,255,.02)}
+body.toa-ads-lp .toa-ads-how-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#c2f24e;color:#0a0a0a!important;font-weight:800;font-size:12.5px;margin:0 0 10px}
+body.toa-ads-lp .toa-ads-how-step h3{font-size:14.5px;font-weight:800;color:#fff!important;margin:0 0 6px;line-height:1.3}
+body.toa-ads-lp .toa-ads-how-step p{font-size:13px;line-height:1.5;color:#a9a9a9!important;margin:0}
+/* FIX 2026-09-01 marco — FAQ, <details> nativo, niente JS */
+body.toa-ads-lp .toa-ads-faq{padding:34px 0 0;text-align:center;max-width:760px;margin:0 auto}
+body.toa-ads-lp .toa-ads-faq-lab{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#777!important;margin:0 0 16px}
+body.toa-ads-lp .toa-ads-faq-item{text-align:left;border-bottom:1px solid #232323;padding:14px 2px}
+body.toa-ads-lp .toa-ads-faq-item summary{cursor:pointer;font-size:14.5px;font-weight:700;color:#fff!important;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px}
+body.toa-ads-lp .toa-ads-faq-item summary::-webkit-details-marker{display:none}
+body.toa-ads-lp .toa-ads-faq-item summary::after{content:"+";color:#c2f24e!important;font-size:18px;font-weight:400;flex:0 0 auto}
+body.toa-ads-lp .toa-ads-faq-item[open] summary::after{content:"–"}
+body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a9a9!important;margin:10px 0 0}
+@media(max-width:768px){
+  body.toa-ads-lp .toa-ads-how-grid{grid-template-columns:1fr}
+}
 @media(max-width:880px){
   body.toa-ads-lp .toa-ads-grid{grid-template-columns:1fr;gap:28px}
   body.toa-ads-lp .toa-ads-h1{font-size:28px}
@@ -300,6 +320,36 @@ body.toa-ads-lp .toa-ads-role-card span{display:block;margin-top:6px;font-size:1
   </div>
 
   <?php if ($key === 'hostess-eventi'): ?>
+
+  <!-- FIX 2026-09-01 marco — "Come funziona" 3 passaggi, copy da chat Gogle ADS -->
+  <section class="toa-ads-how">
+    <div class="toa-ads-how-lab"><?php echo _ht(['it'=>'Come funziona','en'=>'How it works','fr'=>'Comment ça marche','es'=>'Cómo funciona']); ?></div>
+    <div class="toa-ads-how-grid">
+      <?php
+      $__how = [
+        ['it'=>['t'=>"Raccontaci l'evento",'d'=>'Data, città, quante persone, quali lingue, cosa devono fare. Bastano due righe.'],
+         'en'=>['t'=>'Tell us about your event','d'=>'Date, city, how many people, which languages, what they need to do. A couple of lines is enough.'],
+         'fr'=>['t'=>'Parlez-nous de votre événement','d'=>'Date, ville, combien de personnes, quelles langues, quelles missions. Deux lignes suffisent.'],
+         'es'=>['t'=>'Cuéntanos tu evento','d'=>'Fecha, ciudad, cuántas personas, qué idiomas, qué tienen que hacer. Bastan dos líneas.']],
+        ['it'=>['t'=>'Ricevi i profili in 24 ore','d'=>'Ti mandiamo una rosa con foto, esperienza e lingue parlate, insieme al preventivo. Scegli tu chi vuoi in squadra.'],
+         'en'=>['t'=>'Get profiles within 24 hours','d'=>'We send you a shortlist with photos, experience and languages, along with the quote. You pick your team.'],
+         'fr'=>['t'=>'Recevez les profils sous 24 heures','d'=>'Nous vous envoyons une sélection avec photos, expérience et langues parlées, ainsi que le devis. C\'est vous qui choisissez votre équipe.'],
+         'es'=>['t'=>'Recibe los perfiles en 24 horas','d'=>'Te enviamos una selección con fotos, experiencia e idiomas, junto al presupuesto. Eliges tú a tu equipo.']],
+        ['it'=>['t'=>'Al resto pensiamo noi','d'=>'Contratti, compensi e coordinamento sul posto sono a carico nostro. Un solo referente, una sola fattura.'],
+         'en'=>['t'=>'We handle the rest','d'=>'Contracts, fees and on-site coordination are on us. One contact, one invoice.'],
+         'fr'=>['t'=>'Nous nous occupons du reste','d'=>'Contrats, rémunérations et coordination sur place sont à notre charge. Un seul interlocuteur, une seule facture.'],
+         'es'=>['t'=>'Del resto nos ocupamos nosotros','d'=>'Contratos, honorarios y coordinación in situ corren por nuestra cuenta. Un solo interlocutor, una sola factura.']],
+      ];
+      foreach ($__how as $__i => $__s): $__c = $__s[$lang] ?? $__s['it']; ?>
+      <div class="toa-ads-how-step">
+        <span class="toa-ads-how-num"><?php echo $__i + 1; ?></span>
+        <h3><?php echo esc_html($__c['t']); ?></h3>
+        <p><?php echo esc_html($__c['d']); ?></p>
+      </div>
+      <?php endforeach; ?>
+    </div>
+  </section>
+
   <?php toa_component('brand-ticker', array('lang' => $lang)); ?>
   <?php toa_component('google-reviews'); ?>
   <!-- FIX 2026-08-31 marco — mini-gallery foto reali (8 su 37, riuso assets/gallery esistenti, no upload nuovo) -->
@@ -339,6 +389,44 @@ body.toa-ads-lp .toa-ads-role-card span{display:block;margin-top:6px;font-size:1
       </div>
       <?php endforeach; ?>
     </div>
+  </section>
+
+  <!-- FIX 2026-09-01 marco — FAQ, copy da chat Gogle ADS -->
+  <section class="toa-ads-faq">
+    <div class="toa-ads-faq-lab"><?php echo _ht(['it'=>'Domande frequenti','en'=>'FAQ','fr'=>'Questions fréquentes','es'=>'Preguntas frecuentes']); ?></div>
+    <?php
+    $__faq = [
+      ['it'=>['q'=>'In quanto tempo ricevo il preventivo?','a'=>'Entro 24 ore lavorative, insieme ai profili disponibili. Gratuito e senza impegno.'],
+       'en'=>['q'=>'How soon will I get a quote?','a'=>'Within 24 working hours, together with the available profiles. Free, no commitment.'],
+       'fr'=>['q'=>'Sous quel délai vais-je recevoir le devis ?','a'=>'Sous 24 heures ouvrées, avec les profils disponibles. Gratuit et sans engagement.'],
+       'es'=>['q'=>'¿En cuánto tiempo recibo el presupuesto?','a'=>'En 24 horas laborables, junto con los perfiles disponibles. Gratis y sin compromiso.']],
+      ['it'=>['q'=>'Quali zone coprite?','a'=>"Tutta Italia. Lavoriamo anche all'estero: Cannes, Parigi, Madrid, Monaco, Amsterdam."],
+       'en'=>['q'=>'Which areas do you cover?','a'=>'All of Italy. We also work abroad: Cannes, Paris, Madrid, Monaco, Amsterdam.'],
+       'fr'=>['q'=>'Quelles zones couvrez-vous ?','a'=>"Toute l'Italie. Nous travaillons aussi à l'étranger : Cannes, Paris, Madrid, Monaco, Amsterdam."],
+       'es'=>['q'=>'¿Qué zonas cubrís?','a'=>'Toda Italia. También trabajamos en el extranjero: Cannes, París, Madrid, Mónaco, Ámsterdam.']],
+      ['it'=>['q'=>'Quanto costa una hostess?','a'=>'Si parte da 139 € per una giornata piena; mezza giornata costa meno. Il prezzo dipende da città, durata, lingue e mansioni. Se hai già un budget, dicci la cifra: con oltre 20.000 profili costruiamo la squadra dentro quella.'],
+       'en'=>['q'=>'How much does a hostess cost?','a'=>'From €139 for a full day; half days cost less. The final price depends on city, duration, languages and duties. If you already have a budget, tell us the figure: with over 20,000 profiles we build the team within it.'],
+       'fr'=>['q'=>'Combien coûte une hôtesse ?','a'=>"À partir de 139 € pour une journée complète ; une demi-journée coûte moins. Le prix dépend de la ville, de la durée, des langues et des missions. Si vous avez déjà un budget, indiquez-nous le montant : avec plus de 20 000 profils, nous constituons l'équipe dans cette limite."],
+       'es'=>['q'=>'¿Cuánto cuesta una azafata?','a'=>'Desde 139 € por una jornada completa; media jornada cuesta menos. El precio depende de la ciudad, la duración, los idiomas y las funciones. Si ya tienes un presupuesto, dinos la cifra: con más de 20.000 perfiles formamos el equipo dentro de esa cantidad.']],
+      ['it'=>['q'=>'Con quanto preavviso devo prenotare?','a'=>'Nessun preavviso minimo. Ci attiviamo in qualsiasi momento, anche last minute.'],
+       'en'=>['q'=>'How far in advance do I need to book?','a'=>'No minimum notice. We can step in at any time, including last minute.'],
+       'fr'=>['q'=>"Combien de temps à l'avance faut-il réserver ?",'a'=>"Aucun délai minimum. Nous intervenons à tout moment, y compris en dernière minute."],
+       'es'=>['q'=>'¿Con cuánta antelación hay que reservar?','a'=>'Sin antelación mínima. Nos activamos en cualquier momento, incluso a última hora.']],
+      ['it'=>['q'=>'Il personale parla lingue straniere?','a'=>'Sì. Selezioniamo hostess, steward e interpreti multilingue in base alle lingue che ti servono.'],
+       'en'=>['q'=>'Does your staff speak foreign languages?','a'=>'Yes. We select multilingual hostesses, stewards and interpreters based on the languages you need.'],
+       'fr'=>['q'=>'Votre personnel parle-t-il des langues étrangères ?','a'=>"Oui. Nous sélectionnons hôtesses, stewards et interprètes multilingues selon les langues dont vous avez besoin."],
+       'es'=>['q'=>'¿El personal habla idiomas extranjeros?','a'=>'Sí. Seleccionamos azafatas, azafatos e intérpretes multilingües según los idiomas que necesites.']],
+      ['it'=>['q'=>'Cosa succede se una persona dà forfait?','a'=>'La sostituiamo subito. Di notte, di domenica, a Natale. La reperibilità fa parte del servizio.'],
+       'en'=>['q'=>'What if someone drops out at the last minute?','a'=>'We replace them immediately. At night, on Sundays, on Christmas Day. Availability is part of the service.'],
+       'fr'=>['q'=>'Que se passe-t-il si une personne se désiste ?','a'=>'Nous la remplaçons immédiatement. La nuit, le dimanche, à Noël. La disponibilité fait partie du service.'],
+       'es'=>['q'=>'¿Qué pasa si alguien no se presenta?','a'=>'Lo sustituimos de inmediato. De noche, en domingo, en Navidad. La disponibilidad forma parte del servicio.']],
+    ];
+    foreach ($__faq as $__f): $__c = $__f[$lang] ?? $__f['it']; ?>
+    <details class="toa-ads-faq-item">
+      <summary><?php echo esc_html($__c['q']); ?></summary>
+      <p><?php echo esc_html($__c['a']); ?></p>
+    </details>
+    <?php endforeach; ?>
   </section>
   <?php endif; ?>
 
