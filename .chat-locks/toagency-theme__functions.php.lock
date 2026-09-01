@@ -1,6 +1,6 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=TEMA LP-HOSTESS-EVENTI
 INIZIO=2026-08-31 17:01:55
-UPDATE=2026-09-01 17:30:53
+UPDATE=2026-09-01 17:34:51
 SHA1_ATTESO=299d8448998ad4bea1236b975b44cd1ee922a729
-NOTA=FIX 02/09 (commit 0d5af4b18): stesso bug G-gigante, mancava casting-produzioni nella whitelist CSS google-reviews. Trovato in verifica preview prima del deploy prod, mai andato live. In deploy.
+NOTA=LIVE prod 02/09 (commit 0d5af4b18, health check 5/5). Whitelist CSS google-reviews estesa a 4 landing (hostess-eventi, models-aziende, attori-produzioni, casting-produzioni).
