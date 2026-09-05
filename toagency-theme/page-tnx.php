@@ -10,7 +10,13 @@
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Richiesta Ricevuta | TOAgency</title>
+    <?php // FIX 2026-09-05 marco (TEMA THANKYOU MULTILINGUA) — title era hardcoded IT su /en//fr//es/tnx/ ?>
+    <title><?php echo _ht(array(
+        'it' => 'Richiesta Ricevuta | TOAgency',
+        'en' => 'Request Received | TOAgency',
+        'fr' => 'Demande Reçue | TOAgency',
+        'es' => 'Solicitud Recibida | TOAgency',
+    )); ?></title>
     <?php wp_head(); ?>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -318,9 +324,11 @@
 <!-- 2026-06-04 marco — evento conversione lead per GTM (container GTM-K75MWH8L).
      /tnx/ si raggiunge solo dopo submit form OK. Wire del tag Google Ads (AW-624589019 + label)
      su trigger Custom Event "lead_conversion" lato GTM. -->
+<!-- FIX 2026-09-05 marco (TEMA THANKYOU MULTILINGUA) — aggiunta lead_lang: prima l'evento era
+     identico per IT/EN/FR/ES e GTM sparava sempre la stessa label (conversioni EN/ES/FR a zero). -->
 <script>
   window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event: 'lead_conversion' });
+  window.dataLayer.push({ event: 'lead_conversion', lead_lang: <?php echo json_encode(toa_current_lang()); ?> });
 </script>
 <div class="tnx-wrap">
 
@@ -400,11 +408,28 @@
     <!-- FOOTER -->
     <footer class="tnx-footer">
         <?php /* FIX 2026-08-22 marco — denominazione titolare corretta: ditta individuale TOA di Leonardi Marco */ ?>
-        <div>TOAGENCY è un marchio di TOA di Leonardi Marco — Via Cavour 21, 10123 Torino (Italy) — P.IVA 11800210012</div>
+        <?php /* FIX 2026-09-05 marco (TEMA THANKYOU MULTILINGUA) — footer era hardcoded IT su /en//fr//es/tnx/.
+                Cookie Policy resta solo in IT: nessuna traduzione WPML esiste per quella pagina (verificato
+                via hreflang 05/09/2026) — da creare lato contenuti se serve, non è un fix di tema. */ ?>
+        <div><?php echo _ht(array(
+            'it' => 'TOAGENCY è un marchio di TOA di Leonardi Marco — Via Cavour 21, 10123 Torino (Italy) — P.IVA 11800210012',
+            'en' => 'TOAGENCY is a trademark of TOA di Leonardi Marco — Via Cavour 21, 10123 Torino (Italy) — VAT IT11800210012',
+            'fr' => 'TOAGENCY est une marque de TOA di Leonardi Marco — Via Cavour 21, 10123 Torino (Italie) — TVA IT11800210012',
+            'es' => 'TOAGENCY es una marca de TOA di Leonardi Marco — Via Cavour 21, 10123 Torino (Italia) — IVA IT11800210012',
+        )); ?></div>
         <div>
-            <a href="<?php echo esc_url(home_url('/privacy-policy-3/')); ?>">Privacy Policy</a>
-            <a href="<?php echo esc_url(home_url('/cookie-policy-ue/')); ?>">Cookie Policy</a>
-            <a href="<?php echo esc_url(home_url('/terms-and-conditions/')); ?>">Termini e Condizioni</a>
+            <a href="<?php echo esc_url( toa_privacy_url() ); ?>"><?php echo _ht(array(
+                'it' => 'Privacy Policy', 'en' => 'Privacy Policy',
+                'fr' => 'Politique de confidentialité', 'es' => 'Política de privacidad',
+            )); ?></a>
+            <a href="<?php echo esc_url(home_url('/cookie-policy-ue/')); ?>"><?php echo _ht(array(
+                'it' => 'Cookie Policy', 'en' => 'Cookie Policy',
+                'fr' => 'Politique de cookies', 'es' => 'Política de cookies',
+            )); ?></a>
+            <a href="<?php echo esc_url( apply_filters('wpml_permalink', home_url('/terms-and-conditions/'), toa_current_lang()) ); ?>"><?php echo _ht(array(
+                'it' => 'Termini e Condizioni', 'en' => 'Terms and Conditions',
+                'fr' => 'Conditions Générales', 'es' => 'Términos y Condiciones',
+            )); ?></a>
         </div>
     </footer>
 
