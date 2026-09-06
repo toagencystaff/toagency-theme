@@ -155,6 +155,12 @@ $T = [
     'btn_upload'        => ['it'=>'Carica foto','en'=>'Upload photo','fr'=>'Charger photo','es'=>'Subir foto'],
     'btn_uploading'     => ['it'=>'Caricamento…','en'=>'Uploading…','fr'=>'Chargement…','es'=>'Subiendo…'],
     'choose_file'       => ['it'=>'Scegli file','en'=>'Choose file','fr'=>'Choisir fichier','es'=>'Elegir archivo'],
+    'touch_hint'        => [
+        'it'=>'Tocca 🗑 su una foto per eliminarla, ↔ per spostarla in un altro album.',
+        'en'=>'Tap 🗑 on a photo to delete it, or ↔ to move it to another album.',
+        'fr'=>'Touche 🗑 sur une photo pour la supprimer, ↔ pour la déplacer dans un autre album.',
+        'es'=>'Toca 🗑 en una foto para eliminarla, o ↔ para moverla a otro álbum.',
+    ],
     'no_photos'         => ['it'=>'Nessuna foto in questo album.','en'=>'No photos in this album.','fr'=>'Aucune photo.','es'=>'Sin fotos.'],
     'pending_badge'     => ['it'=>'In attesa di approvazione','en'=>'Pending approval','fr'=>'En attente','es'=>'Pendiente'],
     'rejected_badge'    => ['it'=>'Rifiutata','en'=>'Rejected','fr'=>'Refusée','es'=>'Rechazada'],
@@ -332,6 +338,14 @@ $token_get = $_GET['t']    ?? '';
 .tse-move-menu { display:none; position:absolute; bottom:34px; right:0; background:#1a1a1e; border:1px solid #3a3a42; border-radius:6px; overflow:hidden; min-width:100px; z-index:3; }
 .tse-move-menu button { display:block; width:100%; background:none; border:none; color:#d1d5db; font-size:12px; padding:7px 12px; text-align:left; cursor:pointer; }
 .tse-move-menu button:hover { background:#2a2a2e; color:#c8ff00; }
+/* FIX 2026-09-06 — TOUCH: senza :hover i bottoni 🗑/↔ erano invisibili su telefono */
+.tse-touch-hint { display:none; font-size:12px; color:#9ca3af; margin:0 0 16px; line-height:1.45; padding:8px 10px; background:#0a0a0a; border-radius:6px; border-left:3px solid #c8ff00; }
+@media (hover: none) {
+    .tse-thumb-actions { opacity:1; }
+    .tse-thumb-btn { width:34px; height:34px; font-size:16px; }
+    .tse-move-menu { bottom:42px; }
+    .tse-touch-hint { display:block; }
+}
 /* badge OBSOLETO (S8.B copriva burn-in data scatto) — nascosto ovunque */
 .tse-album-thumb-badge { display:none !important; }
 .tse-album-count { text-align:center; font-size:12px; color:#9ca3af; margin:8px auto 4px; padding:6px 10px; background:rgba(255,179,0,.08); border:1px solid rgba(255,179,0,.25); border-radius:6px; display:inline-block; }
@@ -740,6 +754,7 @@ $token_get = $_GET['t']    ?? '';
             </div>
 
             <div id="tse-album-grid" class="tse-album-grid" style="margin-top:18px;"></div>
+            <div class="tse-touch-hint"><?= esc_html($_t($T['touch_hint'])) ?></div>
         </div>
     </div>
 </section>

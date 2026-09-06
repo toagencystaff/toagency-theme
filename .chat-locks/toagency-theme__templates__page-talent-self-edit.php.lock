@@ -1,6 +1,6 @@
-STATO=CLOSED
-CHAT=TEMA TALENT-SELFEDIT-BUGFIX
-INIZIO=2026-08-26 15:44:57
-UPDATE=2026-08-26 15:48:10
-SHA1_ATTESO=a757beedb1c34f22130dd433a619f143189e45a8
-NOTA=LIVE prod 26/08 15:48 (commit 6cca010a3), health check OK. Verificato codice sorgente; conferma visiva "Bambino/a" nascosto e data_nascita dal CRM ancora da fare con link vero. Coda vuota
+STATO=OPEN
+CHAT=TEMA TALENT-SELFEDIT-FOTO-MOBILE
+INIZIO=2026-09-06 16:12:17
+UPDATE=2026-09-06 16:18:00
+SHA1_ATTESO=ef45362e72604c9dafc09ded00a79c06a03ca044
+NOTA=Fix touch: bottoni 🗑/↔ sempre visibili su mobile (@media hover:none) + hint testuale 4 lingue. Commit fatto, da deployare in preview.
