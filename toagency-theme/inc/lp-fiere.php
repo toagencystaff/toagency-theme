@@ -14,6 +14,9 @@
  * e una lista di figure sua. E' la correzione chiesta in revisione: otto pagine identiche
  * salvo quattro variabili sono deboli proprio dove Google Ads guarda (pertinenza e utilita').
  *
+ * NOMI: dove il nome vuole l'articolo ("le ATP Finals", "il Salone Nautico") il campo
+ * 'nome' e' per lingua: l'articolo italiano incollato nel nome usciva anche in inglese.
+ *
  * CHIAVE
  * Si usa il meta _toa_ads_key della pagina, MAI lo slug: lo slug e' un indirizzo pubblico,
  * puo' prendere un suffisso -2 o essere modificato per sbaglio. Vedi page-landing-ads.php
@@ -62,7 +65,10 @@ function toa_lp_fiere_ruoli() {
 
 /* ------------------------------------------------------------------
  * 2) TESTO COMUNE — scritto una volta sola, in 4 lingue.
- * Segnaposto: {NOME} {CITTA} {VENUE} {SPAZIO} {DATE}
+ * Segnaposto: {NOME} {CITTA} {LUOGO} {SPAZIO} {DATE}
+ * {LUOGO} contiene GIA' la preposizione giusta per ogni lingua ("a Veronafiere",
+ * "at Veronafiere", "al Waterfront"...): in italiano e francese la preposizione
+ * cambia col nome del luogo, non si puo' mettere nel modello.
  * ------------------------------------------------------------------ */
 function toa_lp_fiere_comune() {
     return [
@@ -74,17 +80,17 @@ function toa_lp_fiere_comune() {
         ],
         // sottotitolo con le date: usato finche' la fiera non e' passata
         'sub' => [
-            'it' => 'Personale selezionato per il tuo {SPAZIO} a {VENUE}, {DATE}. Ti mandiamo i profili in 24 ore, con foto e lingue parlate.',
-            'en' => 'Selected staff for your {SPAZIO} at {VENUE}, {DATE}. We send you the profiles within 24 hours, with photos and languages spoken.',
-            'fr' => 'Personnel sélectionné pour votre {SPAZIO} à {VENUE}, {DATE}. Nous vous envoyons les profils sous 24 heures, avec photos et langues parlées.',
-            'es' => 'Personal seleccionado para tu {SPAZIO} en {VENUE}, {DATE}. Te enviamos los perfiles en 24 horas, con fotos e idiomas hablados.',
+            'it' => 'Personale selezionato per il tuo {SPAZIO} {LUOGO}, {DATE}. Ti mandiamo i profili in 24 ore, con foto e lingue parlate.',
+            'en' => 'Selected staff for your {SPAZIO} {LUOGO}, {DATE}. We send you the profiles within 24 hours, with photos and languages spoken.',
+            'fr' => 'Personnel sélectionné pour votre {SPAZIO} {LUOGO}, {DATE}. Nous vous envoyons les profils sous 24 heures, avec photos et langues parlées.',
+            'es' => 'Personal seleccionado para tu {SPAZIO} {LUOGO}, {DATE}. Te enviamos los perfiles en 24 horas, con fotos e idiomas hablados.',
         ],
         // sottotitolo neutro: subentra da solo il giorno dopo la fine della fiera
         'sub_scaduta' => [
-            'it' => 'Personale selezionato per il tuo {SPAZIO} a {VENUE}. Ti mandiamo i profili in 24 ore, con foto e lingue parlate.',
-            'en' => 'Selected staff for your {SPAZIO} at {VENUE}. We send you the profiles within 24 hours, with photos and languages spoken.',
-            'fr' => 'Personnel sélectionné pour votre {SPAZIO} à {VENUE}. Nous vous envoyons les profils sous 24 heures, avec photos et langues parlées.',
-            'es' => 'Personal seleccionado para tu {SPAZIO} en {VENUE}. Te enviamos los perfiles en 24 horas, con fotos e idiomas hablados.',
+            'it' => 'Personale selezionato per il tuo {SPAZIO} {LUOGO}. Ti mandiamo i profili in 24 ore, con foto e lingue parlate.',
+            'en' => 'Selected staff for your {SPAZIO} {LUOGO}. We send you the profiles within 24 hours, with photos and languages spoken.',
+            'fr' => 'Personnel sélectionné pour votre {SPAZIO} {LUOGO}. Nous vous envoyons les profils sous 24 heures, avec photos et langues parlées.',
+            'es' => 'Personal seleccionado para tu {SPAZIO} {LUOGO}. Te enviamos los perfiles en 24 horas, con fotos e idiomas hablados.',
         ],
         // i due bullet uguali per tutte
         'bul_fissi' => [
@@ -112,7 +118,7 @@ function toa_lp_fiere_comune() {
 
 /* ------------------------------------------------------------------
  * 3) LE FIERE — una riga per evento.
- * Campi obbligatori: nome, citta, venue, spazio, inizio, fine, bul, blocco, ruoli.
+ * Campi obbligatori: nome, citta, luogo, spazio, inizio, fine, bul, blocco, ruoli.
  * Date in formato Y-m-d. 'spazio' e' la parola che entra nel sottotitolo
  * ("il tuo stand" per le fiere, "il tuo evento" dove gli stand non ci sono).
  * ------------------------------------------------------------------ */
@@ -123,7 +129,7 @@ function toa_lp_fiere_data() {
     'marmomac-2026' => [
         'nome'   => 'Marmomac 2026',
         'citta'  => ['it'=>'Verona','en'=>'Verona','fr'=>'Vérone','es'=>'Verona'],
-        'venue'  => 'Veronafiere',
+        'luogo'  => ['it'=>'a Veronafiere','en'=>'at Veronafiere','fr'=>'à Veronafiere','es'=>'en Veronafiere'],
         'spazio' => ['it'=>'stand','en'=>'stand','fr'=>'stand','es'=>'stand'],
         'inizio' => '2026-09-22',
         'fine'   => '2026-09-25',
@@ -144,9 +150,9 @@ function toa_lp_fiere_data() {
 
     /* ---- 2. MILANO FASHION WEEK donna SS27 — Milano, 22-28 settembre 2026 ---- */
     'milano-fashion-week-2026' => [
-        'nome'   => 'la Milano Fashion Week 2026',
+        'nome'   => ['it'=>'la Milano Fashion Week 2026','en'=>'Milano Fashion Week 2026','fr'=>'la Milano Fashion Week 2026','es'=>'la Milano Fashion Week 2026'],
         'citta'  => ['it'=>'Milano','en'=>'Milan','fr'=>'Milan','es'=>'Milán'],
-        'venue'  => 'Milano',
+        'luogo'  => ['it'=>'a Milano','en'=>'in Milan','fr'=>'à Milan','es'=>'en Milán'],
         'spazio' => ['it'=>'evento','en'=>'event','fr'=>'événement','es'=>'evento'],
         'inizio' => '2026-09-22',
         'fine'   => '2026-09-28',
@@ -167,9 +173,9 @@ function toa_lp_fiere_data() {
 
     /* ---- 3. SALONE NAUTICO 66° — Genova, 1-6 ottobre 2026 ---- */
     'salone-nautico-2026' => [
-        'nome'   => 'il Salone Nautico 2026',
+        'nome'   => ['it'=>'il Salone Nautico 2026','en'=>'the Genoa Boat Show 2026','fr'=>'le Salon Nautique de Gênes 2026','es'=>'el Salón Náutico de Génova 2026'],
         'citta'  => ['it'=>'Genova','en'=>'Genoa','fr'=>'Gênes','es'=>'Génova'],
-        'venue'  => ['it'=>'Genova, Waterfront di Levante','en'=>'Genoa, Waterfront di Levante','fr'=>'Gênes, Waterfront di Levante','es'=>'Génova, Waterfront di Levante'],
+        'luogo'  => ['it'=>'al Waterfront di Levante, a Genova','en'=>'at the Waterfront di Levante in Genoa','fr'=>'au Waterfront di Levante, à Gênes','es'=>'en el Waterfront di Levante, en Génova'],
         'spazio' => ['it'=>'stand','en'=>'stand','fr'=>'stand','es'=>'stand'],
         'inizio' => '2026-10-01',
         'fine'   => '2026-10-06',
@@ -192,7 +198,7 @@ function toa_lp_fiere_data() {
     'ttg-rimini-2026' => [
         'nome'   => 'TTG Travel Experience 2026',
         'citta'  => ['it'=>'Rimini','en'=>'Rimini','fr'=>'Rimini','es'=>'Rímini'],
-        'venue'  => ['it'=>'Rimini Expo Centre','en'=>'Rimini Expo Centre','fr'=>'Rimini Expo Centre','es'=>'Rimini Expo Centre'],
+        'luogo'  => ['it'=>'al Rimini Expo Centre','en'=>'at the Rimini Expo Centre','fr'=>'au Rimini Expo Centre','es'=>'en el Rimini Expo Centre'],
         'spazio' => ['it'=>'stand','en'=>'stand','fr'=>'stand','es'=>'stand'],
         'inizio' => '2026-10-14',
         'fine'   => '2026-10-16',
@@ -215,7 +221,7 @@ function toa_lp_fiere_data() {
     'cibus-tec-2026' => [
         'nome'   => 'Cibus Tec 2026',
         'citta'  => ['it'=>'Parma','en'=>'Parma','fr'=>'Parme','es'=>'Parma'],
-        'venue'  => ['it'=>'Fiere di Parma','en'=>'Fiere di Parma','fr'=>'Fiere di Parma','es'=>'Fiere di Parma'],
+        'luogo'  => ['it'=>'alle Fiere di Parma','en'=>'at Fiere di Parma','fr'=>'à Fiere di Parma','es'=>'en Fiere di Parma'],
         'spazio' => ['it'=>'stand','en'=>'stand','fr'=>'stand','es'=>'stand'],
         'inizio' => '2026-10-27',
         'fine'   => '2026-10-30',
@@ -238,7 +244,7 @@ function toa_lp_fiere_data() {
     'fieracavalli-2026' => [
         'nome'   => 'Fieracavalli 2026',
         'citta'  => ['it'=>'Verona','en'=>'Verona','fr'=>'Vérone','es'=>'Verona'],
-        'venue'  => 'Veronafiere',
+        'luogo'  => ['it'=>'a Veronafiere','en'=>'at Veronafiere','fr'=>'à Veronafiere','es'=>'en Veronafiere'],
         'spazio' => ['it'=>'stand','en'=>'stand','fr'=>'stand','es'=>'stand'],
         'inizio' => '2026-11-05',
         'fine'   => '2026-11-08',
@@ -261,7 +267,7 @@ function toa_lp_fiere_data() {
     'eima-2026' => [
         'nome'   => 'EIMA International 2026',
         'citta'  => ['it'=>'Bologna','en'=>'Bologna','fr'=>'Bologne','es'=>'Bolonia'],
-        'venue'  => ['it'=>'BolognaFiere','en'=>'BolognaFiere','fr'=>'BolognaFiere','es'=>'BolognaFiere'],
+        'luogo'  => ['it'=>'a BolognaFiere','en'=>'at BolognaFiere','fr'=>'à BolognaFiere','es'=>'en BolognaFiere'],
         'spazio' => ['it'=>'stand','en'=>'stand','fr'=>'stand','es'=>'stand'],
         'inizio' => '2026-11-10',
         'fine'   => '2026-11-14',
@@ -282,9 +288,9 @@ function toa_lp_fiere_data() {
 
     /* ---- 8. NITTO ATP FINALS — Torino, 15-22 novembre 2026 ---- */
     'atp-finals-torino-2026' => [
-        'nome'   => 'le Nitto ATP Finals 2026',
+        'nome'   => ['it'=>'le Nitto ATP Finals 2026','en'=>'the Nitto ATP Finals 2026','fr'=>'les Nitto ATP Finals 2026','es'=>'las Nitto ATP Finals 2026'],
         'citta'  => ['it'=>'Torino','en'=>'Turin','fr'=>'Turin','es'=>'Turín'],
-        'venue'  => ['it'=>'Torino','en'=>'Turin','fr'=>'Turin','es'=>'Turín'],
+        'luogo'  => ['it'=>'a Torino','en'=>'in Turin','fr'=>'à Turin','es'=>'en Turín'],
         'spazio' => ['it'=>'evento','en'=>'event','fr'=>'événement','es'=>'evento'],
         'inizio' => '2026-11-15',
         'fine'   => '2026-11-22',
@@ -366,7 +372,7 @@ function toa_lp_fiera_copy($key, $lang) {
     if (!in_array($lang, ['it','en','fr','es'], true)) $lang = 'it';
 
     // controllo campi obbligatori: se ne manca uno, meglio la landing generica
-    foreach (['nome','citta','venue','spazio','inizio','fine','bul','blocco','ruoli'] as $campo) {
+    foreach (['nome','citta','luogo','spazio','inizio','fine','bul','blocco','ruoli'] as $campo) {
         if (empty($f[$campo])) return null;
     }
 
@@ -380,7 +386,7 @@ function toa_lp_fiera_copy($key, $lang) {
     $com   = toa_lp_fiere_comune();
     $nome  = $L($f['nome']);
     $citta = $L($f['citta']);
-    $venue = $L($f['venue']);
+    $luogo = $L($f['luogo']);
     $spaz  = $L($f['spazio']);
 
     // ciclo di vita: dopo la fine della fiera niente piu' date a video
@@ -392,7 +398,7 @@ function toa_lp_fiera_copy($key, $lang) {
     $sost = [
         '{NOME}'   => $nome,
         '{CITTA}'  => $citta,
-        '{VENUE}'  => $venue,
+        '{LUOGO}'  => $luogo,
         '{SPAZIO}' => $spaz,
         '{DATE}'   => $date,
     ];
