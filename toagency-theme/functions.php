@@ -1273,8 +1273,21 @@ add_action('wp_enqueue_scripts', function() {
     wp_dequeue_style('wpml-legacy-horizontal-list-0');
     wp_dequeue_style('wpml-menu-item-0');
     // Google Reviews: trust ★ è hardcoded, widget assente — TRANNE le landing con recensioni vere (FIX 2026-09-02 marco, era solo hostess-eventi: bug, G/stelle giganti senza CSS su models-aziende/attori-produzioni)
-    $__lp_slug = get_post_field('post_name', get_queried_object_id());
-    if (!in_array($__lp_slug, ['hostess-eventi', 'models-aziende', 'attori-produzioni', 'casting-produzioni'], true)) {
+    // 2026-09-08 marco (TEMA LP-FIERE-QUALITY-SCORE) — la lista scritta a mano si dimenticava
+    // le landing nuove: senza questo CSS il logo Google e le stelle escono GIGANTI (bug gia'
+    // visto il 02/09). Ora le fiere si riconoscono da sole da inc/lp-fiere.php, quindi ogni
+    // fiera aggiunta in futuro e' coperta senza toccare questa riga.
+    // Si legge la chiave come fa il template: meta _toa_ads_key prima, slug solo come ripiego.
+    $__lp_id  = get_queried_object_id();
+    $__lp_key = get_post_meta($__lp_id, '_toa_ads_key', true);
+    if (!$__lp_key) { $__lp_key = get_post_field('post_name', $__lp_id); }
+    $__lp_con_recensioni = ['hostess-eventi', 'models-aziende', 'attori-produzioni', 'casting-produzioni'];
+    $__lp_e_fiera = false;
+    if (function_exists('toa_lp_fiere_data')) {
+        $__fiere_tutte = toa_lp_fiere_data();
+        $__lp_e_fiera  = isset($__fiere_tutte[$__lp_key]);
+    }
+    if (!in_array($__lp_key, $__lp_con_recensioni, true) && !$__lp_e_fiera) {
         wp_dequeue_style('toa-google-reviews');
     }
     // jquery-migrate: nessun codice legacy sulla LP
