@@ -173,7 +173,7 @@ function toa_lp_fiere_data() {
 
     /* ---- 3. SALONE NAUTICO 66° — Genova, 1-6 ottobre 2026 ---- */
     'salone-nautico-2026' => [
-        'nome'   => ['it'=>'il Salone Nautico 2026','en'=>'the Genoa Boat Show 2026','fr'=>'le Salon Nautique de Gênes 2026','es'=>'el Salón Náutico de Génova 2026'],
+        'nome'   => ['it'=>'il Salone Nautico 2026','en'=>'the Salone Nautico 2026','fr'=>'le Salon Nautique 2026','es'=>'el Salón Náutico 2026'], // niente citta' nel nome: l'h1 la aggiunge gia' dopo la virgola
         'citta'  => ['it'=>'Genova','en'=>'Genoa','fr'=>'Gênes','es'=>'Génova'],
         'luogo'  => ['it'=>'al Waterfront di Levante, a Genova','en'=>'at the Waterfront di Levante in Genoa','fr'=>'au Waterfront di Levante, à Gênes','es'=>'en el Waterfront di Levante, en Génova'],
         'spazio' => ['it'=>'stand','en'=>'stand','fr'=>'stand','es'=>'stand'],
@@ -332,6 +332,14 @@ function toa_lp_fiera_date($inizio, $fine, $lang) {
 
     $g1 = (int) date('j', $t1); $m1 = (int) date('n', $t1);
     $g2 = (int) date('j', $t2); $m2 = (int) date('n', $t2);
+    // il primo del mese si scrive "1er" in francese e "1°" in italiano
+    $ord = function ($g) use ($lang) {
+        if ($g !== 1) return (string) $g;
+        if ($lang === 'fr') return '1er';
+        if ($lang === 'it') return '1°';
+        return '1';
+    };
+    $g1 = $ord($g1); $g2 = $ord($g2);
     $anno = date('Y', $t2);
     $M1 = $mesi[$lang][$m1 - 1];
     $M2 = $mesi[$lang][$m2 - 1];
