@@ -359,9 +359,12 @@ function toa_lp_fiera_date($inizio, $fine, $lang) {
                 ? "del {$g1} al {$g2} de {$M2} de {$anno}"
                 : "del {$g1} de {$M1} al {$g2} de {$M2} de {$anno}";
         default:
+            // italiano: davanti a 8 e 11 la preposizione si apostrofa (dall'8, all'11)
+            $dal = in_array($g1, ['8','11'], true) ? "dall'{$g1}" : "dal {$g1}";
+            $al  = in_array($g2, ['8','11'], true) ? "all'{$g2}"  : "al {$g2}";
             return $stesso_mese
-                ? "dal {$g1} al {$g2} {$M2} {$anno}"
-                : "dal {$g1} {$M1} al {$g2} {$M2} {$anno}";
+                ? "{$dal} {$al} {$M2} {$anno}"
+                : "{$dal} {$M1} {$al} {$M2} {$anno}";
     }
 }
 
