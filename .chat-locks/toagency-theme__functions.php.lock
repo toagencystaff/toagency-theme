@@ -1,6 +1,6 @@
-STATO=CLOSED
-CHAT=TEMA LP-HOSTESS-EVENTI
-INIZIO=2026-08-31 17:01:55
-UPDATE=2026-09-01 17:34:51
-SHA1_ATTESO=299d8448998ad4bea1236b975b44cd1ee922a729
-NOTA=LIVE prod 02/09 (commit 0d5af4b18, health check 5/5). Whitelist CSS google-reviews estesa a 4 landing (hostess-eventi, models-aziende, attori-produzioni, casting-produzioni).
+STATO=OPEN
+CHAT=TEMA LP-FIERE-QUALITY-SCORE
+INIZIO=2026-09-08 17:07:15
+UPDATE=2026-09-08 17:08:05
+SHA1_ATTESO=c118a1e27812027f5602ffcaddee4d50393ffb24
+NOTA=Patch scritta e php -l OK. Font Google non bloccanti sulla sola LP Ads. In attesa di deploy prod.

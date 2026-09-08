@@ -1280,6 +1280,28 @@ add_action('wp_enqueue_scripts', function() {
 }, 100); // prio 100 = dopo che i plugin hanno accodato
 // === END 2026-07-22 marco — LP Ads dequeue ===
 
+// === BEGIN 2026-09-08 marco — LP Ads: font Google non bloccanti (TEMA LP-FIERE-QUALITY-SCORE) ===
+// PageSpeed mobile 08/09/2026 su /lp/hostess-eventi/: Performance 62, LCP 6,6s (a luglio 89 / 3,0s).
+// Audit dominante: "Render-blocking requests, risparmio stimato 3.250 ms". Verificato nel DOM live:
+// dei 5 CSS bloccanti in <head> l'unico su dominio esterno e' 'toagency-fonts' (fonts.googleapis.com,
+// 6 famiglie: Anton, EB Garamond, Instrument Sans, Montserrat 11 pesi, Oswald, Playfair Display).
+// Di quelle 6 servono al TESTO solo Instrument Sans (--font-body) e Playfair Display (--font-display):
+// Anton/EB Garamond/Montserrat/Oswald servono SOLO alle classi .b-* del brand-ticker (main.css 406-428),
+// che sulla LP sta a riga 510 del template, sotto la piega.
+// FIX: sulla sola LP il foglio si carica con media="print" (il browser non lo considera bloccante) e
+// passa a "all" all'onload. L'URL ha gia' display=swap, quindi il testo era gia' disegnato col fallback
+// e sostituito dopo: cambia QUANDO arriva il CSS, non COME appare la pagina. Il preconnect a
+// googleapis/gstatic c'e' gia' (riga ~818). <noscript> = fallback senza JS.
+// ROLLBACK: cancellare questo blocco, nient'altro.
+add_filter('style_loader_tag', function ($tag, $handle, $href) {
+    if ($handle !== 'toagency-fonts') return $tag;
+    if (!is_page_template('templates/page-landing-ads.php')) return $tag;
+    $u = esc_url($href);
+    return '<link rel="stylesheet" id="toagency-fonts-css" href="' . $u . '" media="print" onload="this.media=\'all\';this.onload=null;">' . "\n"
+         . '<noscript><link rel="stylesheet" href="' . $u . '" media="all"></noscript>' . "\n";
+}, 10, 3);
+// === END 2026-09-08 marco — LP Ads font non bloccanti ===
+
 // === BEGIN 2026-08-22 marco — informativa privacy interna nei form ===
 // I form del sito linkavano https://www.iubenda.com/privacy-policy/58462877,
 // che iubenda ha DISATTIVATO ("questa Privacy Policy non è più attiva"):
