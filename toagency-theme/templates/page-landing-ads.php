@@ -263,7 +263,9 @@ body.toa-ads-lp .toa-ads-role-card{width:90px}
 body.toa-ads-lp .toa-ads-role-card img{width:90px;height:120px;object-fit:cover;border-radius:8px;display:block}
 body.toa-ads-lp .toa-ads-role-card span{display:block;margin-top:6px;font-size:11px;color:#ccc!important;font-weight:600;letter-spacing:.3px}
 /* FIX 2026-09-02 marco — ruolo senza foto (in coda): pill di solo testo, stesso posto della card */
-body.toa-ads-lp .toa-ads-role-pill{display:inline-block;padding:10px 18px;border:1px solid #2a2a2a;border-radius:20px;font-size:13px;color:#eee!important;font-weight:600;background:rgba(255,255,255,.02)}
+/* FIX 2026-09-08 marco — align-self:center: la griglia e' flex, senza questo una pill finita
+   accanto a una card si stirava a tutta altezza e sembrava un riquadro vuoto (visto sulle fiere) */
+body.toa-ads-lp .toa-ads-role-pill{display:inline-block;align-self:center;padding:10px 18px;border:1px solid #2a2a2a;border-radius:20px;font-size:13px;color:#eee!important;font-weight:600;background:rgba(255,255,255,.02)}
 /* FIX 2026-09-01 marco — "Come funziona" 3 passaggi */
 body.toa-ads-lp .toa-ads-how{padding:34px 0 0;text-align:center}
 body.toa-ads-lp .toa-ads-how-lab{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#777!important;margin:0 0 20px}

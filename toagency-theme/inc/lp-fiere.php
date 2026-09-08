@@ -423,11 +423,17 @@ function toa_lp_fiera_copy($key, $lang) {
     $bullets[] = $riempi($com['bul_geo'][$lang]);
 
     // figure: dai nomi alle definizioni complete, scartando quelle sconosciute
+    // Le voci CON foto prima, quelle di solo testo IN CODA: e' la convenzione delle altre
+    // landing (FIX 2026-09-02). Mescolarle lasciava una pill allungata come un box vuoto
+    // in mezzo alle card, perche' la griglia e' flex e gli elementi si stirano.
     $catalogo = toa_lp_fiere_ruoli();
-    $ruoli = [];
+    $con_foto = []; $senza_foto = [];
     foreach ($f['ruoli'] as $nome_ruolo) {
-        if (isset($catalogo[$nome_ruolo])) $ruoli[] = $catalogo[$nome_ruolo];
+        if (!isset($catalogo[$nome_ruolo])) continue;
+        if (!empty($catalogo[$nome_ruolo]['img'])) { $con_foto[]   = $catalogo[$nome_ruolo]; }
+        else                                       { $senza_foto[] = $catalogo[$nome_ruolo]; }
     }
+    $ruoli = array_merge($con_foto, $senza_foto);
 
     return [
         'h1'      => $riempi($com['h1'][$lang]),
