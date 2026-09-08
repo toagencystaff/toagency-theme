@@ -1,6 +1,6 @@
 STATO=OPEN
 CHAT=TEMA LP-FIERE-QUALITY-SCORE
-INIZIO=2026-09-08 17:07:15
-UPDATE=2026-09-08 17:08:05
+INIZIO=2026-09-08 18:19:42
+UPDATE=2026-09-08 18:19:42
 SHA1_ATTESO=c118a1e27812027f5602ffcaddee4d50393ffb24
-NOTA=Patch scritta e php -l OK. Font Google non bloccanti sulla sola LP Ads. In attesa di deploy prod.
+NOTA=Aggancio landing fiera (inc/lp-fiere.php). In lavorazione.

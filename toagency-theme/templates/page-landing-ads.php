@@ -189,6 +189,20 @@ $sub = $c['sub'][$lang] ?? $c['sub']['it'];
 $bullets = $c['bul'][$lang] ?? $c['bul']['it'];
 $eyebrow = $eyebrow_l[$lang] ?? $eyebrow_l['it'];
 $serv = isset($c['serv']) ? ($c['serv'][$lang] ?? $c['serv']['it']) : '';
+
+// FIX 2026-09-08 marco — landing fiera (TEMA LP-FIERE-QUALITY-SCORE).
+// I dati stanno in inc/lp-fiere.php, non qui: le fiere cambiano ogni anno e sono 8.
+// Se $key non e' una fiera, o se la sua configurazione e' incompleta, toa_lp_fiera_copy()
+// torna null e la pagina resta esattamente quella di prima. Le 9 landing esistenti non
+// passano nemmeno da questo if.
+$__fiera = function_exists('toa_lp_fiera_copy') ? toa_lp_fiera_copy($key, $lang) : null;
+if ($__fiera) {
+    $h1              = $__fiera['h1'];
+    $sub             = $__fiera['sub'];
+    $bullets         = $__fiera['bul'];
+    $serv            = $__fiera['serv'];
+    $default_service = 'fiera-salone'; // preseleziona il servizio nel form preventivo
+}
 ?><!DOCTYPE html>
 <html lang="<?php echo esc_attr($lang); ?>">
 <head>
@@ -275,6 +289,10 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
   body.toa-ads-lp .toa-ads-h1{font-size:28px}
   body.toa-ads-lp .toa-ads-sub{font-size:16px;margin-bottom:18px}
 }
+/* FIX 2026-09-08 marco — landing fiera: paragrafo su misura sotto l'hero */
+.toa-ads-fiera-note{max-width:820px;margin:34px auto 0;padding:20px 22px;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:rgba(255,255,255,.03)}
+.toa-ads-fiera-note p{margin:0;color:#d8d8d8;font-size:1rem;line-height:1.65}
+@media(max-width:768px){.toa-ads-fiera-note{margin-top:26px;padding:16px}}
 </style>
 </head>
 <body class="toa-ads-lp">
@@ -484,6 +502,23 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
      'es'=>['q'=>'¿Trabajáis con talentos menores de edad?','a'=>'Sí. Recogemos el consentimiento firmado de los padres para cada menor implicado. Los trámites ante la Inspección de Trabajo quedan a cargo de la producción contratante.']],
   ];
   ?>
+
+  <?php
+  // FIX 2026-09-08 marco — landing fiera: "come funziona" e FAQ sono quelle di hostess-eventi
+  // (valgono uguali per tutte le fiere), le figure invece sono quelle scelte per QUESTA fiera.
+  if ($__fiera) {
+    $__extra_keys[]    = $key;
+    $__how_map[$key]   = $__how_map['hostess-eventi'];
+    $__faq_map[$key]   = $__faq_map['hostess-eventi'];
+    $__roles_map[$key] = $__fiera['ruoli'];
+  }
+  ?>
+
+  <?php if (!empty($__fiera['blocco'])): ?>
+  <section class="toa-ads-fiera-note">
+    <p><?php echo esc_html($__fiera['blocco']); ?></p>
+  </section>
+  <?php endif; ?>
 
   <?php if (in_array($key, $__extra_keys, true)):
     $__how     = $__how_map[$key] ?? [];

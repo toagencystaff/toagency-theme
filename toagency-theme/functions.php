@@ -838,6 +838,8 @@ function _t_raw($strings) {
 require_once get_template_directory() . '/inc/schema.php';
 // 2026-08-25 marco — short-link dei filtri talent/crew database (chat TEMA LINK-FILTRI-CORTI)
 require_once get_template_directory() . '/inc/toa-shortlink.php';
+// 2026-09-08 marco — landing Ads dedicate a fiere ed eventi (TEMA LP-FIERE-QUALITY-SCORE)
+require_once get_template_directory() . '/inc/lp-fiere.php';
 
 // === FIX 2026-05-30 marco — google-reviews CSS ===
 add_action('wp_enqueue_scripts', function() {

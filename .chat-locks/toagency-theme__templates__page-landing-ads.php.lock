@@ -1,6 +1,6 @@
-STATO=CLOSED
-CHAT=TEMA LP-HOSTESS-EVENTI
-INIZIO=2026-08-31 17:01:55
-UPDATE=2026-09-01 17:53:28
+STATO=OPEN
+CHAT=TEMA LP-FIERE-QUALITY-SCORE
+INIZIO=2026-09-08 18:19:42
+UPDATE=2026-09-08 18:19:42
 SHA1_ATTESO=57fe968ab376abcf8fc827fa8105eafc88ad6808
-NOTA=LIVE prod 02/09: hostess-eventi COMPLETA (6/6). models-aziende + attori-produzioni + casting-produzioni: fascia+recensioni+come-funziona+FAQ(4, confermate da Marco)+ruoli-testo, 4 lingue, verificato live senza regressioni. RESTA SOLO: foto gallery+ruoli (Marco ha scelto di partire senza, in attesa che le mandi). Nessun altro blocco.
+NOTA=Aggancio landing fiera (inc/lp-fiere.php). In lavorazione.
