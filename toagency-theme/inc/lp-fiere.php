@@ -168,7 +168,7 @@ function toa_lp_fiere_data() {
             'fr'=>'Pendant la Fashion Week, Milan change de rythme : défilés, showrooms, press days et soirées se chevauchent sur une même semaine, souvent le même après-midi. Il faut du personnel capable de gérer listes, accréditations et invités presse sans se laisser déborder. Nous sélectionnons des profils qui ont déjà vécu cette semaine-là.',
             'es'=>'Durante la Fashion Week Milán cambia de ritmo: desfiles, showrooms, press days y fiestas se solapan en la misma semana, a menudo en la misma tarde. Hace falta personal capaz de gestionar listas, acreditaciones e invitados de prensa sin desbordarse. Seleccionamos perfiles que ya han vivido esa semana.',
         ],
-        'ruoli' => ['accoglienza','steward','showroom','modelli','multilingue','promoter','foto'],
+        'ruoli' => ['accoglienza','steward','promoter','foto'],
     ],
 
     /* ---- 3. SALONE NAUTICO 66° — Genova, 1-6 ottobre 2026 ---- */
