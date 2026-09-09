@@ -306,7 +306,7 @@ function toa_lp_fiere_data() {
             'fr'=>'Aux ATP Finals, il n\'y a pas de stands : il y a des espaces hospitality, des lounges sponsors et des activations en ville, huit jours d\'affilée. Il faut du personnel habitué au public corporate et aux invités internationaux, avec un vrai niveau d\'anglais et une présence soignée. Nous sommes une agence de Turin : ici, la coordination se fait à notre porte.',
             'es'=>'En las ATP Finals no hay stands feriales: hay zonas de hospitality, lounges de patrocinadores y activaciones por la ciudad, ocho días seguidos. Hace falta personal acostumbrado al público corporativo y a los invitados internacionales, con un inglés real y una presencia cuidada. Somos una agencia de Turín: aquí la coordinación la tenemos al lado de casa.',
         ],
-        'ruoli' => ['accoglienza','steward','promoter','foto'],
+        'ruoli' => ['hostess','accoglienza','steward','promoter','foto'],
     ],
 
     ];
