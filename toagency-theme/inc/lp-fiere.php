@@ -145,7 +145,7 @@ function toa_lp_fiere_data() {
             'fr'=>'Marmomac attire à Vérone des acheteurs du Moyen-Orient, d\'Amérique du Nord et d\'Asie. Sur un stand, accueillir ne suffit pas : il faut des personnes qui comprennent le sujet du client et savent en parler en plusieurs langues. Nous sélectionnons des profils ayant déjà travaillé sur des salons techniques et industriels, pas seulement sur des événements mode.',
             'es'=>'Marmomac lleva a Verona compradores de Oriente Medio, Norteamérica y Asia. En un stand no basta con recibir: hace falta gente que entienda de qué habla el cliente y sepa hacerlo en varios idiomas. Seleccionamos perfiles que ya han trabajado en ferias técnicas e industriales, no solo en eventos de moda.',
         ],
-        'ruoli' => ['hostess','interprete','steward','promoter','modelli','speaker','foto'],
+        'ruoli' => ['hostess','interprete','steward','promoter','foto'],
     ],
 
     /* ---- 2. MILANO FASHION WEEK donna SS27 — Milano, 22-28 settembre 2026 ---- */
@@ -191,7 +191,7 @@ function toa_lp_fiere_data() {
             'fr'=>'Le Salon Nautique de Gênes se déroule en grande partie en extérieur, le long des quais et des pontons, et dure six jours. Il faut du personnel habitué au plein air, aux longues journées et à un public mixte : propriétaires, familles et professionnels, souvent au même stand au même moment. Ce n\'est pas un salon de pavillon.',
             'es'=>'El Salón Náutico de Génova se desarrolla en gran parte al aire libre, entre muelles y pantalanes, y dura seis días. Hace falta personal acostumbrado a estar fuera, a turnos largos y a un público mixto: armadores, familias y profesionales, a menudo en el mismo stand a la vez. No es una feria de pabellón.',
         ],
-        'ruoli' => ['hostess','steward','promoter','multilingue','modelli','foto'],
+        'ruoli' => ['hostess','steward','promoter','foto'],
     ],
 
     /* ---- 4. TTG TRAVEL EXPERIENCE — Rimini, 14-16 ottobre 2026 ---- */
@@ -214,7 +214,7 @@ function toa_lp_fiere_data() {
             'fr'=>'À TTG, le stand est avant tout un comptoir de rendez-vous : trois jours de réunions programmées avec tour-opérateurs, agences et destinations. Il faut des personnes capables de tenir un agenda serré, d\'accueillir le bon acheteur au bon moment et de ne manquer aucun rendez-vous. Plus d\'organisation que d\'image.',
             'es'=>'En TTG el stand es sobre todo un mostrador de citas: tres días de reuniones programadas con turoperadores, agencias y destinos. Hace falta gente capaz de gestionar una agenda apretada, recibir al comprador adecuado en el momento adecuado y no perder ni una cita. Más organización que imagen.',
         ],
-        'ruoli' => ['hostess','multilingue','steward','promoter','interprete','foto'],
+        'ruoli' => ['hostess','steward','promoter','interprete','foto'],
     ],
 
     /* ---- 5. CIBUS TEC — Parma, 27-30 ottobre 2026 ---- */
@@ -237,7 +237,7 @@ function toa_lp_fiere_data() {
             'fr'=>'Cibus Tec est un salon d\'équipements et de technologies pour l\'agroalimentaire : sur le stand, des machines tournent et des techniciens parlent à des techniciens. Le personnel doit accueillir, qualifier et orienter, en laissant les échanges techniques à vos ingénieurs. Nous formons le personnel sur votre produit avant l\'ouverture, et nous lui demandons de ne pas simuler des compétences qu\'il n\'a pas.',
             'es'=>'Cibus Tec es una feria de instalaciones y tecnología para la alimentación: en el stand hay máquinas funcionando y técnicos hablando con técnicos. El personal debe recibir, cualificar y derivar, dejando las conversaciones técnicas a vuestros ingenieros. Formamos al personal sobre vuestro producto antes de la apertura, y le pedimos que no finja competencias que no tiene.',
         ],
-        'ruoli' => ['hostess','steward','promoter','interprete','multilingue','foto'],
+        'ruoli' => ['hostess','steward','promoter','interprete','foto'],
     ],
 
     /* ---- 6. FIERACAVALLI 128a — Verona, 5-8 novembre 2026 ---- */
@@ -260,7 +260,7 @@ function toa_lp_fiere_data() {
             'fr'=>'Fieracavalli mêle business et événement grand public : halls d\'exposition le jour, spectacles le soir, et un public de passionnés qui vient en famille. Le personnel doit tenir quatre journées très fréquentées et être à l\'aise près des animaux — ce n\'est pas évident, et nous le vérifions avant de vous proposer quelqu\'un.',
             'es'=>'Fieracavalli mezcla negocio y evento popular: pabellones de día, espectáculos por la noche y un público de aficionados que viene en familia. El personal debe aguantar cuatro días muy concurridos y sentirse cómodo cerca de los animales — algo que no se da por hecho y que verificamos antes de proponeros a nadie.',
         ],
-        'ruoli' => ['hostess','steward','promoter','multilingue','modelli','foto'],
+        'ruoli' => ['hostess','steward','promoter','foto'],
     ],
 
     /* ---- 7. EIMA INTERNATIONAL — Bologna, 10-14 novembre 2026 ---- */
@@ -283,7 +283,7 @@ function toa_lp_fiere_data() {
             'fr'=>'EIMA dure cinq jours et amène à Bologne des délégations d\'importateurs d\'Afrique, d\'Amérique du Sud et d\'Europe de l\'Est. Les stands sont vastes, souvent avec des engins exposés : il faut du personnel qui tienne la distance, sache orienter le visiteur dans un grand espace et diriger le bon interlocuteur vers le bon commercial.',
             'es'=>'EIMA dura cinco días y lleva a Bolonia delegaciones de importadores de África, Sudamérica y Europa del Este. Los stands son grandes, a menudo con maquinaria expuesta: hace falta personal que aguante la distancia, sepa orientar al visitante en un espacio amplio y derivar al adecuado al comercial adecuado.',
         ],
-        'ruoli' => ['hostess','interprete','steward','promoter','multilingue','foto'],
+        'ruoli' => ['hostess','interprete','steward','promoter','foto'],
     ],
 
     /* ---- 8. NITTO ATP FINALS — Torino, 15-22 novembre 2026 ---- */
@@ -306,7 +306,7 @@ function toa_lp_fiere_data() {
             'fr'=>'Aux ATP Finals, il n\'y a pas de stands : il y a des espaces hospitality, des lounges sponsors et des activations en ville, huit jours d\'affilée. Il faut du personnel habitué au public corporate et aux invités internationaux, avec un vrai niveau d\'anglais et une présence soignée. Nous sommes une agence de Turin : ici, la coordination se fait à notre porte.',
             'es'=>'En las ATP Finals no hay stands feriales: hay zonas de hospitality, lounges de patrocinadores y activaciones por la ciudad, ocho días seguidos. Hace falta personal acostumbrado al público corporativo y a los invitados internacionales, con un inglés real y una presencia cuidada. Somos una agencia de Turín: aquí la coordinación la tenemos al lado de casa.',
         ],
-        'ruoli' => ['hospitality','accoglienza','steward','multilingue','promoter','modelli','foto'],
+        'ruoli' => ['accoglienza','steward','promoter','foto'],
     ],
 
     ];
