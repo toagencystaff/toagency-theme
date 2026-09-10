@@ -1,6 +1,6 @@
-STATO=CLOSED
-CHAT=TEMA LP-FIERE-QUALITY-SCORE
-INIZIO=2026-09-08 17:07:15
-UPDATE=2026-09-08 18:57:40
+STATO=OPEN
+CHAT=COWORK OG-LOCALE-WPML
+INIZIO=2026-09-10 16:09:06
+UPDATE=2026-09-10 16:09:06
 SHA1_ATTESO=b73523aab8420d72ce1db88d0e3d4f55a7c38efd
-NOTA=LIVE prod 08/09 18:56 (commit 066c5519f). 8 landing fiera 2026 (Marmomac, Milano Fashion Week, Salone Nautico, TTG, Cibus Tec, Fieracavalli, EIMA, ATP Finals). Dati e testi 4 lingue in inc/lp-fiere.php; chiave = meta _toa_ads_key; date che spariscono da sole a fiera finita. Verificate 8 pagine x 4 lingue = 32 controlli, 0 KO. Include anche il fix font non bloccanti (PSI 62->86) e il fix CSS google-reviews che ora riconosce le fiere da solo.
+NOTA=Fix og_locale sempre it_IT su pagine EN/FR/ES (bug trovato 10/09, richiamo permessi/servizi)
