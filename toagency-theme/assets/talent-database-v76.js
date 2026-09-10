@@ -1863,7 +1863,15 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         msSet('lingua', params.getAll('lingua'));
         if (params.get('automunito') === '1' && f.automunito) f.automunito.checked = true;
         // 2026-08-11 marco — deep-link province: venivano SCRITTE in URL (?province=BO) ma mai rilette al load
-        var provs = params.getAll('province');
+        // 2026-09-10 marco — #TALENTDB-MULTI-PROVINCIA: accetta anche liste separate da virgola in un
+        // solo parametro (?province=Firenze,Prato,Pistoia), oltre ai parametri ripetuti gia' supportati.
+        var provs = [];
+        params.getAll('province').forEach(function (raw) {
+            raw.split(',').forEach(function (p) {
+                p = p.trim();
+                if (p) provs.push(p);
+            });
+        });
         if (provs.length) { TD.selectedProvinces = provs.slice(); TD.geoExpanded = false; }
         var provincia = params.get('provincia');
         if (provincia) {
