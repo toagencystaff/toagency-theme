@@ -1378,3 +1378,27 @@ add_action('init', function() {
     }
 });
 // === END FIX 2026-08-30 marco — REST META LANDING GEO ===
+
+// === BEGIN FIX 2026-09-10 marco (chat COWORK OG-LOCALE-WPML) — og:locale sempre it_IT su pagine EN/FR/ES ===
+// Bug: Yoast genera il meta og:locale dalla lingua "di sistema" di WordPress, che WPML
+// non aggiorna per-pagina come fa per canonical/hreflang. Risultato: le pagine EN/FR/ES
+// mostrano og:locale=it_IT (sbagliato solo per l'anteprima social/WhatsApp/Facebook/LinkedIn,
+// NON influenza indicizzazione Google né canonical, che restano corretti).
+// Fix: agganciamo il filtro nativo Yoast 'wpseo_locale' alla lingua corrente WPML.
+add_filter('wpseo_locale', function ($locale) {
+    if (!function_exists('apply_filters')) {
+        return $locale;
+    }
+    $current_lang = apply_filters('wpml_current_language', null);
+    $map = [
+        'it' => 'it_IT',
+        'en' => 'en_US',
+        'fr' => 'fr_FR',
+        'es' => 'es_ES',
+    ];
+    if ($current_lang && isset($map[$current_lang])) {
+        return $map[$current_lang];
+    }
+    return $locale;
+}, 20);
+// === END FIX 2026-09-10 marco — og:locale WPML ===
