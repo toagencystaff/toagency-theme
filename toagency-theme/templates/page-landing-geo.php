@@ -75,6 +75,19 @@ if (have_posts()) the_post(); // setup postdata per the_title()/the_content()
           <li><a href="<?php echo home_url('/b2bservices/'); ?>"><?php echo _ht(['it'=>'Servizi B2B','en'=>'B2B Services','fr'=>'Services B2B','es'=>'Servicios B2B']); ?></a></li>
         </ul>
 
+        <!-- ALTRI SERVIZI EVENTO — FIX 2026-09-10 marco (richiamo su tutte le landing fiera/geo) -->
+        <p class="toa-landing-extra-services">
+          <?php echo _ht([
+            'it'=>"Oltre a hostess e interpreti, per il tuo stand possiamo fornire anche fotografi e videomaker, bartender e camerieri, DJ, runner e molte altre figure — e se serve ci occupiamo anche delle pratiche e dei permessi legati all'evento.",
+            'en'=>"Beyond hostesses and interpreters, for your stand we can also provide photographers and videographers, bartenders and waiters, DJs, runners and many other roles — and if needed, we can also handle event-related permits and paperwork.",
+            'fr'=>"Au-delà des hôtesses et interprètes, pour votre stand nous pouvons aussi fournir photographes et vidéastes, barmen et serveurs, DJ, runners et bien d'autres profils — et si besoin, nous nous occupons aussi des démarches et autorisations liées à l'événement.",
+            'es'=>"Además de azafatas e intérpretes, para tu stand también podemos ofrecer fotógrafos y videógrafos, camareros y bartenders, DJ, runners y muchos otros perfiles — y si es necesario, también nos ocupamos de los trámites y permisos relacionados con el evento.",
+          ]); ?>
+          <a href="<?php echo esc_url( apply_filters('wpml_permalink', home_url('/hostess-steward/'), $__l) ); ?>">
+            <?php echo _ht(['it'=>'Scopri tutti i servizi','en'=>'Discover all our services','fr'=>'Découvrez tous nos services','es'=>'Descubre todos nuestros servicios']); ?> &rarr;
+          </a>
+        </p>
+
         <?php if (!empty($events_arr)): ?>
         <h3><?php echo _ht(['it'=>'Fiere ed eventi','en'=>'Fairs & events','fr'=>'Foires & événements','es'=>'Ferias y eventos']); ?></h3>
         <ul class="toa-landing-links">
