@@ -661,7 +661,7 @@ toa_component('header');
         // (es. una traduzione francese taggata per errore "Francia", con l'originale italiano che
         // non lo è) — falso positivo. Per questo controlliamo la lingua post per post con l'API WPML,
         // tenendo SOLO i post che sono davvero l'originale italiano.
-        function toa_casting_region_post_ids($slugs, $target_lang) {
+        function toa_casting_region_post_ids($slugs, $target_lang, $debug = false) {
             $candidates = new WP_Query(array(
                 'post_type'      => 'post',
                 'posts_per_page' => -1,
@@ -674,9 +674,13 @@ toa_component('header');
                 ),
             ));
             $ids = array();
+            $debug_rows = array();
             foreach ($candidates->posts as $post_id) {
                 $lang_details = apply_filters('wpml_post_language_details', null, $post_id);
                 $post_lang    = (is_array($lang_details) && !empty($lang_details['language_code'])) ? $lang_details['language_code'] : null;
+                if ($debug) {
+                    $debug_rows[] = $post_id . ':' . ($post_lang ? $post_lang : '?') . ':' . get_the_title($post_id);
+                }
                 if ($post_lang !== 'it') {
                     continue; // tiene solo l'originale italiano, mai una traduzione
                 }
@@ -685,7 +689,11 @@ toa_component('header');
                     $ids[] = (int) $translated_id;
                 }
             }
-            return array_values(array_unique($ids));
+            $ids = array_values(array_unique($ids));
+            if ($debug) {
+                echo "\n<!-- TOA_DEBUG slugs=" . esc_html(implode(',', (array) $slugs)) . " target_lang=" . esc_html($target_lang) . " raw_count=" . count($candidates->posts) . "\nraw: " . esc_html(implode(' | ', $debug_rows)) . "\nfinal_ids: " . esc_html(implode(',', $ids)) . " -->\n";
+            }
+            return $ids;
         }
     }
     if (!function_exists('toa_casting_render_card')) {
@@ -763,7 +771,7 @@ toa_component('header');
     // PATCH 2026-09-11 marco — blocco "paese di casa" (FR/ES), solo home (nessun filtro) e pagina 1
     $show_home_block = $home_country && !$current_region && !$current_lingua && $paged == 1;
     if ($show_home_block) {
-        $home_ids = toa_casting_region_post_ids($region_mapping[$home_country], $lang);
+        $home_ids = toa_casting_region_post_ids($region_mapping[$home_country], $lang, isset($_GET['toa_debug']));
         $home_query = new WP_Query(array(
             'post_type'      => 'post',
             'posts_per_page' => -1,
@@ -801,7 +809,7 @@ toa_component('header');
     // PATCH 2026-09-11 marco — filtro regione/paese: gli ID si risolvono SEMPRE dall'originale
     // italiano (vedi helper sopra), così i vecchi link ?regione=... funzionano uguali in ogni lingua.
     if ($current_region && isset($region_mapping[$current_region])) {
-        $matched_ids = toa_casting_region_post_ids($region_mapping[$current_region], $lang);
+        $matched_ids = toa_casting_region_post_ids($region_mapping[$current_region], $lang, isset($_GET['toa_debug']));
         $args['post__in'] = !empty($matched_ids) ? $matched_ids : array(0); // array(0) = nessun risultato
 
         if ($current_lingua) {
