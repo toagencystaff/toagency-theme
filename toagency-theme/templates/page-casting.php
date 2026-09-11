@@ -50,6 +50,20 @@ $t = array(
     'filter_lingua_es'    => array('it' => '🇪🇸 Spagnolo',   'en' => '🇪🇸 Spanish',    'fr' => '🇪🇸 Espagnol',   'es' => '🇪🇸 Español'),
     'filter_lingua_de'    => array('it' => '🇩🇪 Tedesco',    'en' => '🇩🇪 German',     'fr' => '🇩🇪 Allemand',   'es' => '🇩🇪 Alemán'),
     'filter_lingua_multi' => array('it' => '🌐 Multilingua', 'en' => '🌐 Multilingual','fr' => '🌐 Multilingue', 'es' => '🌐 Multilingüe'),
+    // PATCH 2026-09-11 marco — menu paese-di-casa per lingua (TEMA-CASTING-PAESE-LINGUA)
+    'filter_svizzera'            => array('it' => 'Svizzera', 'en' => 'Switzerland', 'fr' => 'Suisse', 'es' => 'Suiza'),
+    'filter_tutti_paesi'         => array('it' => 'Tutti i casting', 'en' => 'All castings', 'fr' => 'Tous les castings', 'es' => 'Todos los castings'),
+    'filter_international_group'=> array('it' => 'Internazionale', 'en' => 'International', 'fr' => 'International', 'es' => 'Internacional'),
+    'home_country_title'         => array('it' => '', 'en' => '', 'fr' => 'Castings en France', 'es' => 'Castings en España'),
+    'home_country_empty'         => array('it' => '', 'en' => '', 'fr' => 'Aucun casting en France en ce moment.', 'es' => 'No hay castings en España en este momento.'),
+    'home_rest_title'            => array('it' => '', 'en' => '', 'fr' => 'En Italie et à l\'international', 'es' => 'En Italia y en el extranjero'),
+    // PATCH 2026-09-11 marco — badge paese sul card, letto SEMPRE dall'originale italiano (punto 5)
+    'badge_paese_italia'         => array('it' => '🇮🇹 Italia', 'en' => '🇮🇹 Italy', 'fr' => '🇮🇹 Italie', 'es' => '🇮🇹 Italia'),
+    'badge_paese_francia'        => array('it' => '🇫🇷 Francia', 'en' => '🇫🇷 France', 'fr' => '🇫🇷 France', 'es' => '🇫🇷 Francia'),
+    'badge_paese_spagna'         => array('it' => '🇪🇸 Spagna', 'en' => '🇪🇸 Spain', 'fr' => '🇪🇸 Espagne', 'es' => '🇪🇸 España'),
+    'badge_paese_svizzera'       => array('it' => '🇨🇭 Svizzera', 'en' => '🇨🇭 Switzerland', 'fr' => '🇨🇭 Suisse', 'es' => '🇨🇭 Suiza'),
+    'badge_paese_uk'             => array('it' => '🇬🇧 Regno Unito', 'en' => '🇬🇧 United Kingdom', 'fr' => '🇬🇧 Royaume-Uni', 'es' => '🇬🇧 Reino Unido'),
+    'badge_paese_internazionale' => array('it' => '🌍 Internazionale', 'en' => '🌍 International', 'fr' => '🌍 International', 'es' => '🌍 Internacional'),
 );
 
 toa_component('header');
@@ -215,6 +229,21 @@ toa_component('header');
     font-size: 14px;
     border: 1px solid rgba(255,255,255,0.15);
     line-height: 1.2;
+}
+/* PATCH 2026-09-11 marco — titoli dei due blocchi (paese di casa / resto) FR-ES home */
+.casting-block-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin: 32px 20px 16px;
+}
+.casting-block-empty {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    margin: 0 20px 24px;
 }
 /* === CASTING CARDS REDESIGN === */
 .casting-grid {
@@ -464,8 +493,25 @@ toa_component('header');
     $valid_lingue   = array('it','en','fr','es','de','multi');
     if (!in_array($current_lingua, $valid_lingue, true)) $current_lingua = '';
     $base_url = get_permalink();
+
+    // PATCH 2026-09-11 marco — paese "di casa" per lingua di visualizzazione (TEMA-CASTING-PAESE-LINGUA)
+    // IT e EN non hanno un paese in evidenza: IT vede il menu regioni di sempre, EN vede la lista piatta.
+    $home_country_by_lang = array('fr' => 'francia', 'es' => 'spagna');
+    $home_country = isset($home_country_by_lang[$lang]) ? $home_country_by_lang[$lang] : '';
+
+    // Etichette paese riusate sia dal menu (FR/ES/EN) sia, più sotto, dal badge sulle card.
+    $country_menu_labels = array(
+        'italia'         => '🇮🇹 ' . $_t($t['filter_all']),
+        'francia'        => '🇫🇷 ' . $_t($t['filter_francia']),
+        'spagna'         => '🇪🇸 ' . $_t($t['filter_spagna']),
+        'svizzera'       => '🇨🇭 ' . $_t($t['filter_svizzera']),
+        'uk'             => '🇬🇧 ' . $_t($t['filter_uk']),
+        'internazionale' => '🌍 ' . $_t($t['filter_altri']),
+    );
     ?>
     <div class="region-filter-container">
+    <?php if ($lang === 'it') : ?>
+        <!-- IT: menu regioni italiane invariato -->
         <select id="regionFilter" onchange="window.location.href=this.value">
             <option value="<?php echo $base_url . ($current_lingua ? '?lingua=' . $current_lingua : ''); ?>" <?php echo !$current_region ? 'selected' : ''; ?>><?php echo $_t($t['filter_all']); ?></option>
             <optgroup label="<?php echo esc_attr($_t($t['filter_nord'])); ?>">
@@ -496,6 +542,27 @@ toa_component('header');
                 <option value="<?php echo $base_url; ?>?regione=internazionale<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'internazionale' ? 'selected' : ''; ?>><?php echo $_t($t['filter_altri']); ?></option>
             </optgroup>
         </select>
+    <?php elseif ($home_country) : ?>
+        <!-- FR/ES: paese di casa in evidenza, poi gruppo "International" senza regioni italiane -->
+        <?php $other_countries = array_diff(array_keys($country_menu_labels), array($home_country)); ?>
+        <select id="regionFilter" onchange="window.location.href=this.value">
+            <option value="<?php echo $base_url . ($current_lingua ? '?lingua=' . $current_lingua : ''); ?>" <?php echo !$current_region ? 'selected' : ''; ?>><?php echo $_t($t['filter_tutti_paesi']); ?></option>
+            <option value="<?php echo $base_url; ?>?regione=<?php echo $home_country; ?><?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region === $home_country ? 'selected' : ''; ?> style="font-weight:700;color:var(--accent);"><?php echo $country_menu_labels[$home_country]; ?></option>
+            <optgroup label="<?php echo esc_attr($_t($t['filter_international_group'])); ?>">
+                <?php foreach ($other_countries as $slug) : ?>
+                <option value="<?php echo $base_url; ?>?regione=<?php echo $slug; ?><?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region === $slug ? 'selected' : ''; ?>><?php echo $country_menu_labels[$slug]; ?></option>
+                <?php endforeach; ?>
+            </optgroup>
+        </select>
+    <?php else : ?>
+        <!-- EN (e altre lingue future): lista piatta di paesi, nessuno in evidenza, niente regioni italiane -->
+        <select id="regionFilter" onchange="window.location.href=this.value">
+            <option value="<?php echo $base_url . ($current_lingua ? '?lingua=' . $current_lingua : ''); ?>" <?php echo !$current_region ? 'selected' : ''; ?>><?php echo $_t($t['filter_tutti_paesi']); ?></option>
+            <?php foreach ($country_menu_labels as $slug => $label) : ?>
+                <option value="<?php echo $base_url; ?>?regione=<?php echo $slug; ?><?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region === $slug ? 'selected' : ''; ?>><?php echo $label; ?></option>
+            <?php endforeach; ?>
+        </select>
+    <?php endif; ?>
     </div>
 
     <!-- PATCH 2026-05-22 marco — filtro lingua pill buttons -->
@@ -521,7 +588,6 @@ toa_component('header');
     </div>
 
     <!-- GRIGLIA CASTING -->
-    <div class="casting-grid">
     <?php
     // PAGINAZIONE
     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
@@ -545,8 +611,11 @@ toa_component('header');
         'sardegna'       => array('sardegna', 'tutta-italia'),
         'francia'        => array('francia'),
         'spagna'         => array('spagna'),
+        'svizzera'       => array('svizzera'),
         'uk'             => array('regno-unito', 'uk'),
-        'internazionale' => array('internazionale', 'estero')
+        'internazionale' => array('internazionale', 'estero'),
+        // PATCH 2026-09-11 marco — voce aggregata "Italia" per i menu FR/ES/EN (tutte le regioni)
+        'italia'         => array('lombardia', 'piemonte', 'liguria', 'valle-daosta', 'veneto', 'trentino-alto-adige', 'fvg', 'emilia-romagna', 'lazio', 'toscana', 'marche', 'umbria', 'abruzzo', 'campania', 'puglia', 'molise', 'basilicata', 'calabria', 'sicilia', 'sardegna', 'tutta-italia'),
     );
 
     // PATCH 2026-05-22 marco — mappa flag per badge sul card
@@ -559,83 +628,75 @@ toa_component('header');
         'lingua-multi' => '🌐',
     );
 
-    // PREPARA LA QUERY
-    $args = array(
-        'posts_per_page' => 12,
-        'paged'          => $paged,
-        'orderby'        => 'date',
-        'order'          => 'DESC'
-    );
-
-    // PATCH 2026-05-22 marco — costruisce tax_query combinando regione + lingua
-    $tax_parts = array(
-        'relation' => 'AND',
-        array('taxonomy' => 'category', 'field' => 'slug', 'terms' => 'casting'),
-    );
-    if ($current_region && isset($region_mapping[$current_region])) {
-        $tax_parts[] = array(
-            'taxonomy' => 'category',
-            'field'    => 'slug',
-            'terms'    => $region_mapping[$current_region],
-            'operator' => 'IN',
-        );
+    // PATCH 2026-09-11 marco — helper WPML: il "paese" di un casting si legge SEMPRE dall'originale
+    // italiano (mai dalla traduzione), perché WPML spesso non sincronizza la categoria paese sulle
+    // traduzioni. Usato sia dal filtro (sotto) sia dal badge sulla card. Vedi TEMA-CASTING-PAESE-LINGUA punto 5.
+    if (!function_exists('toa_casting_country_slug')) {
+        function toa_casting_country_slug($post_id) {
+            $it_id = apply_filters('wpml_object_id', $post_id, 'post', true, 'it');
+            $cats  = wp_get_post_categories($it_id ? $it_id : $post_id, array('fields' => 'slugs'));
+            $map = array(
+                'francia'        => 'francia',
+                'spagna'         => 'spagna',
+                'svizzera'       => 'svizzera',
+                'regno-unito'    => 'uk',
+                'uk'             => 'uk',
+                'internazionale' => 'internazionale',
+                'estero'         => 'internazionale',
+            );
+            foreach ($map as $slug => $country) {
+                if (in_array($slug, $cats, true)) {
+                    return $country;
+                }
+            }
+            return 'italia';
+        }
     }
-    if ($current_lingua) {
-        $tax_parts[] = array(
-            'taxonomy' => 'category',
-            'field'    => 'slug',
-            'terms'    => 'lingua-' . $current_lingua,
-        );
+    if (!function_exists('toa_casting_region_post_ids')) {
+        // Dati gli slug regione/paese, torna gli ID dei casting nella lingua $target_lang,
+        // risalendo SEMPRE dalla categoria dell'originale italiano (stessa ragione sopra) —
+        // così i vecchi link ?regione=... continuano a dare lo stesso risultato in ogni lingua.
+        function toa_casting_region_post_ids($slugs, $target_lang) {
+            $it_query = new WP_Query(array(
+                'post_type'      => 'post',
+                'posts_per_page' => -1,
+                'fields'         => 'ids',
+                'lang'           => 'it',
+                'tax_query'      => array(
+                    'relation' => 'AND',
+                    array('taxonomy' => 'category', 'field' => 'slug', 'terms' => 'casting'),
+                    array('taxonomy' => 'category', 'field' => 'slug', 'terms' => $slugs, 'operator' => 'IN'),
+                ),
+            ));
+            $ids = array();
+            foreach ($it_query->posts as $it_id) {
+                $translated_id = apply_filters('wpml_object_id', $it_id, 'post', false, $target_lang);
+                if ($translated_id) {
+                    $ids[] = (int) $translated_id;
+                }
+            }
+            return $ids;
+        }
     }
-    if (count($tax_parts) > 2 || $current_lingua) {
-        // usa tax_query quando c'è almeno un filtro extra oltre a "casting"
-        $args['tax_query'] = $tax_parts;
-    } else {
-        // senza filtri: query semplice per categoria casting
-        $args['category_name'] = 'casting';
-    }
-
-    $casting_query = new WP_Query($args);
-
-    // LOOP CASTING
-    if ($casting_query->have_posts()) :
-        while ($casting_query->have_posts()) : $casting_query->the_post();
-
-            // Estrai dati dal contenuto
+    if (!function_exists('toa_casting_render_card')) {
+        // Markup di UNA card casting. Estratta in funzione perché serve in due punti:
+        // la griglia principale e il blocco "paese di casa" (FR/ES) qui sotto.
+        function toa_casting_render_card($t, $_t, $lingua_flag_map) {
             $content = get_the_content();
             $titolo  = get_the_title();
 
-            // Estrai codice
-            $codice = '';
-            if (preg_match('/^([A-Z]{2,3}-[A-Z]{2}-\d{3})/i', $titolo, $matches)) {
-                $codice = $matches[1];
-            }
-
-            // Estrai città
-            $citta = 'Italia';
-            if (preg_match('/Dove:<\/strong>\s*<span[^>]*>([^<]+)<\/span>/i', $content, $matches)) {
-                $citta = trim(strip_tags($matches[1]));
-            }
-
-            // Estrai date
             $quando = '';
             if (preg_match('/Quando:<\/strong>\s*<span[^>]*>([^<]+)<\/span>/i', $content, $matches)) {
                 $quando = trim(strip_tags($matches[1]));
             }
-
-            // Estrai budget
             $budget = '';
             if (preg_match('/budget:<\/strong>\s*<span[^>]*>€\s*([^<]+)<\/span>/i', $content, $matches)) {
                 $budget = trim($matches[1]);
             }
-
-            // Estrai profilo ricercato
             $profilo = '';
             if (preg_match('/Genere:<\/strong>\s*([^<]+)/i', $content, $matches)) {
                 $profilo = trim(strip_tags($matches[1]));
             }
-
-            // Titolo pulito (rimuovi codice es. IT-TO-001)
             $titolo_pulito = preg_replace('/^[A-Z]{2,3}-[A-Z]{2}-\\d{3}\\s*[-\xe2\x80\x93\xe2\x80\x94]?\\s*/i', '', $titolo);
             $titolo_pulito = trim($titolo_pulito) ?: $titolo;
 
@@ -648,7 +709,11 @@ toa_component('header');
                     break;
                 }
             }
-    ?>
+
+            // PATCH 2026-09-11 marco — badge paese (non più città), letto dall'originale IT
+            $paese_slug  = toa_casting_country_slug(get_the_ID());
+            $paese_badge = $_t($t['badge_paese_' . $paese_slug]);
+            ?>
             <!-- CARD CASTING -->
             <a href="<?php the_permalink(); ?>" class="casting-item">
                 <div class="casting-thumb">
@@ -657,7 +722,7 @@ toa_component('header');
                     <?php else : ?>
                         <div class="casting-thumb-placeholder">TOAGENCY</div>
                     <?php endif; ?>
-                    <span class="casting-badge"><?php echo esc_html($citta); ?></span>
+                    <span class="casting-badge"><?php echo esc_html($paese_badge); ?></span>
                     <?php if ($lingua_badge) : ?>
                         <span class="casting-badge-lingua"><?php echo $lingua_badge; ?></span>
                     <?php endif; ?>
@@ -681,7 +746,77 @@ toa_component('header');
                     </div>
                 </div>
             </a>
-    <?php endwhile; ?>
+            <?php
+        }
+    }
+
+    // PATCH 2026-09-11 marco — blocco "paese di casa" (FR/ES), solo home (nessun filtro) e pagina 1
+    $show_home_block = $home_country && !$current_region && !$current_lingua && $paged == 1;
+    if ($show_home_block) {
+        $home_ids = toa_casting_region_post_ids($region_mapping[$home_country], $lang);
+        $home_query = new WP_Query(array(
+            'post_type'      => 'post',
+            'posts_per_page' => -1,
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+            'post__in'       => !empty($home_ids) ? $home_ids : array(0),
+            'date_query'     => array(array('after' => '60 days ago')),
+        ));
+        ?>
+        <h2 class="casting-block-title"><?php echo esc_html($_t($t['home_country_title'])); ?></h2>
+        <?php if ($home_query->have_posts()) : ?>
+            <div class="casting-grid casting-grid-home">
+            <?php while ($home_query->have_posts()) : $home_query->the_post();
+                toa_casting_render_card($t, $_t, $lingua_flag_map);
+            endwhile; ?>
+            </div>
+        <?php else : ?>
+            <p class="casting-block-empty"><?php echo esc_html($_t($t['home_country_empty'])); ?></p>
+        <?php endif;
+        wp_reset_postdata();
+        ?>
+        <h2 class="casting-block-title"><?php echo esc_html($_t($t['home_rest_title'])); ?></h2>
+    <?php } ?>
+
+    <div class="casting-grid">
+    <?php
+    // PREPARA LA QUERY
+    $args = array(
+        'posts_per_page' => 12,
+        'paged'          => $paged,
+        'orderby'        => 'date',
+        'order'          => 'DESC'
+    );
+
+    // PATCH 2026-09-11 marco — filtro regione/paese: gli ID si risolvono SEMPRE dall'originale
+    // italiano (vedi helper sopra), così i vecchi link ?regione=... funzionano uguali in ogni lingua.
+    if ($current_region && isset($region_mapping[$current_region])) {
+        $matched_ids = toa_casting_region_post_ids($region_mapping[$current_region], $lang);
+        $args['post__in'] = !empty($matched_ids) ? $matched_ids : array(0); // array(0) = nessun risultato
+
+        if ($current_lingua) {
+            $args['tax_query'] = array(
+                array('taxonomy' => 'category', 'field' => 'slug', 'terms' => 'lingua-' . $current_lingua),
+            );
+        }
+    } elseif ($current_lingua) {
+        $args['tax_query'] = array(
+            'relation' => 'AND',
+            array('taxonomy' => 'category', 'field' => 'slug', 'terms' => 'casting'),
+            array('taxonomy' => 'category', 'field' => 'slug', 'terms' => 'lingua-' . $current_lingua),
+        );
+    } else {
+        // nessun filtro: query semplice per categoria casting (comportamento invariato)
+        $args['category_name'] = 'casting';
+    }
+
+    $casting_query = new WP_Query($args);
+
+    // LOOP CASTING
+    if ($casting_query->have_posts()) :
+        while ($casting_query->have_posts()) : $casting_query->the_post();
+            toa_casting_render_card($t, $_t, $lingua_flag_map);
+        endwhile; ?>
 
     <?php else : ?>
         <!-- NESSUN CASTING -->

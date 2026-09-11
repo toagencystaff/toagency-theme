@@ -1,6 +1,6 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=TEMA TALENT-SELFEDIT-FOTO-MOBILE
 INIZIO=2026-09-06 16:12:17
-UPDATE=2026-09-11 11:40:00
+UPDATE=2026-09-11 11:44:00
 SHA1_ATTESO=ed99d8cafe58e6732161e487c55352ed42548ffa
-NOTA=Fix pronto, non ancora deployato: assets/talent-self-edit.js showError() ora nasconde anche tse-video-section (unica sezione fuori da #tse-form senza display:none di partenza). File in questione e' talent-self-edit.js (non il template PHP), ma il lock resta su questo nome per continuita' col task foto-mobile. In attesa OK Marco + deploy preview poi prod.
+NOTA=Fix "link scaduto mostra solo video" LIVE PROD 11/09 11:42 (commit bd2c98482). showError() in assets/talent-self-edit.js ora nasconde anche tse-video-section. Verificato live in preview E in prod (videoSectionDisplay:none, statusText corretto). Coda vuota.
