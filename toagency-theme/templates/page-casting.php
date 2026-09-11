@@ -656,12 +656,17 @@ toa_component('header');
         // Dati gli slug regione/paese, torna gli ID dei casting nella lingua $target_lang,
         // risalendo SEMPRE dalla categoria dell'originale italiano (stessa ragione sopra) —
         // così i vecchi link ?regione=... continuano a dare lo stesso risultato in ogni lingua.
+        // FIX 2026-09-11 marco — il parametro 'lang' di WPML su WP_Query non è affidabile qui: senza
+        // filtro esplicito, la query può includere una TRADUZIONE con categorie diverse dall'originale
+        // (es. una traduzione francese taggata per errore "Francia", con l'originale italiano che
+        // non lo è) — falso positivo. Per questo controlliamo la lingua post per post con l'API WPML,
+        // tenendo SOLO i post che sono davvero l'originale italiano.
         function toa_casting_region_post_ids($slugs, $target_lang) {
-            $it_query = new WP_Query(array(
+            $candidates = new WP_Query(array(
                 'post_type'      => 'post',
                 'posts_per_page' => -1,
                 'fields'         => 'ids',
-                'lang'           => 'it',
+                'lang'           => 'all', // niente auto-filtro lingua: filtriamo noi sotto, post per post
                 'tax_query'      => array(
                     'relation' => 'AND',
                     array('taxonomy' => 'category', 'field' => 'slug', 'terms' => 'casting'),
@@ -669,13 +674,18 @@ toa_component('header');
                 ),
             ));
             $ids = array();
-            foreach ($it_query->posts as $it_id) {
-                $translated_id = apply_filters('wpml_object_id', $it_id, 'post', false, $target_lang);
+            foreach ($candidates->posts as $post_id) {
+                $lang_details = apply_filters('wpml_post_language_details', null, $post_id);
+                $post_lang    = (is_array($lang_details) && !empty($lang_details['language_code'])) ? $lang_details['language_code'] : null;
+                if ($post_lang !== 'it') {
+                    continue; // tiene solo l'originale italiano, mai una traduzione
+                }
+                $translated_id = apply_filters('wpml_object_id', $post_id, 'post', false, $target_lang);
                 if ($translated_id) {
                     $ids[] = (int) $translated_id;
                 }
             }
-            return $ids;
+            return array_values(array_unique($ids));
         }
     }
     if (!function_exists('toa_casting_render_card')) {
