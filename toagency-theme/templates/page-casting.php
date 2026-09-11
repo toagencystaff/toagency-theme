@@ -662,6 +662,27 @@ toa_component('header');
         // non lo è) — falso positivo. Per questo controlliamo la lingua post per post con l'API WPML,
         // tenendo SOLO i post che sono davvero l'originale italiano.
         function toa_casting_region_post_ids($slugs, $target_lang, $debug = false) {
+            // FIX 2026-09-11-bis marco — WPML traduce anche gli SLUG delle categorie nel tax_query
+            // in base alla lingua della pagina corrente (es. su /fr/ 'casting' punta al termine
+            // francese "Casting", non piu' all'originale italiano): risolviamo gli ID reali
+            // forzando il contesto italiano PRIMA di interrogare, cosi' la query trova sempre
+            // le categorie giuste indipendentemente da quale pagina/lingua la richiama.
+            $wpml_lang_attuale = apply_filters('wpml_current_language', null);
+            do_action('wpml_switch_language', 'it');
+            $casting_term = get_term_by('slug', 'casting', 'category');
+            $slug_term_ids = array();
+            foreach ((array) $slugs as $uno_slug) {
+                $termine = get_term_by('slug', $uno_slug, 'category');
+                if ($termine) {
+                    $slug_term_ids[] = $termine->term_id;
+                }
+            }
+            do_action('wpml_switch_language', $wpml_lang_attuale);
+
+            if (!$casting_term || empty($slug_term_ids)) {
+                return array();
+            }
+
             $candidates = new WP_Query(array(
                 'post_type'      => 'post',
                 'posts_per_page' => -1,
@@ -669,8 +690,8 @@ toa_component('header');
                 'lang'           => 'all', // niente auto-filtro lingua: filtriamo noi sotto, post per post
                 'tax_query'      => array(
                     'relation' => 'AND',
-                    array('taxonomy' => 'category', 'field' => 'slug', 'terms' => 'casting'),
-                    array('taxonomy' => 'category', 'field' => 'slug', 'terms' => $slugs, 'operator' => 'IN'),
+                    array('taxonomy' => 'category', 'field' => 'term_id', 'terms' => $casting_term->term_id),
+                    array('taxonomy' => 'category', 'field' => 'term_id', 'terms' => $slug_term_ids, 'operator' => 'IN'),
                 ),
             ));
             $ids = array();
