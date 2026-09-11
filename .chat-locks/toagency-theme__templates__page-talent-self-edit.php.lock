@@ -1,6 +1,6 @@
-STATO=CLOSED
+STATO=OPEN
 CHAT=TEMA TALENT-SELFEDIT-FOTO-MOBILE
 INIZIO=2026-09-06 16:12:17
-UPDATE=2026-09-07 14:56:00
-SHA1_ATTESO=ef45362e72604c9dafc09ded00a79c06a03ca044
-NOTA=LIVE PROD 07/09 14:54 (commit ec8b95dea + a734ab253). Bottoni 🗑/↔ sempre visibili su touch (@media hover:none), 34x34, hint testuale 4 lingue sotto la griglia. Verificato live in prod con emulazione mobile 375px (opacity 1, hint block, cookie preview spento). Manca solo conferma visiva di Marco con un link talent vero. Coda vuota.
+UPDATE=2026-09-11 11:40:00
+SHA1_ATTESO=ed99d8cafe58e6732161e487c55352ed42548ffa
+NOTA=Fix pronto, non ancora deployato: assets/talent-self-edit.js showError() ora nasconde anche tse-video-section (unica sezione fuori da #tse-form senza display:none di partenza). File in questione e' talent-self-edit.js (non il template PHP), ma il lock resta su questo nome per continuita' col task foto-mobile. In attesa OK Marco + deploy preview poi prod.

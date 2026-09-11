@@ -253,6 +253,9 @@
         $('tse-status').textContent = msg;
         $('tse-status').classList.add('error');
         $('tse-form').classList.remove('visible');
+        // FIX 2026-09-11 marco — con link non valido restava visibile solo la sezione video
+        // (unica fuori da #tse-form, senza display:none di partenza): nasconderla col resto.
+        var vs = $('tse-video-section'); if (vs) vs.style.display = 'none';
     }
 
     // FIX 2026-07-16 marco — barra % completezza profilo (talent-profilo-stato.php)
