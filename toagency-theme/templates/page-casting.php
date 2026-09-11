@@ -679,10 +679,23 @@ toa_component('header');
             }
             do_action('wpml_switch_language', $wpml_lang_attuale);
 
+            if ($debug) {
+                error_log('TOA_DEBUG_RESOLVE wpml_lang_attuale=' . var_export($wpml_lang_attuale, true));
+            }
+            $toa_debug_resolve = 'wpml_lang=' . ($wpml_lang_attuale ? $wpml_lang_attuale : '(vuoto)')
+                . ' casting_term_id=' . ($casting_term ? $casting_term->term_id : '(non trovato)')
+                . ' slug_term_ids=' . implode(',', $slug_term_ids);
+
             if (!$casting_term || empty($slug_term_ids)) {
+                if ($debug) {
+                    echo "\n<!-- TOA_DEBUG_RESOLVE " . esc_html($toa_debug_resolve) . " -->\n";
+                }
                 return array();
             }
 
+            if ($debug) {
+                echo "\n<!-- TOA_DEBUG_RESOLVE " . esc_html($toa_debug_resolve) . " -->\n";
+            }
             $candidates = new WP_Query(array(
                 'post_type'       => 'post',
                 'posts_per_page'  => -1,
