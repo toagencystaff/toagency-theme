@@ -684,11 +684,15 @@ toa_component('header');
             }
 
             $candidates = new WP_Query(array(
-                'post_type'      => 'post',
-                'posts_per_page' => -1,
-                'fields'         => 'ids',
-                'lang'           => 'all', // niente auto-filtro lingua: filtriamo noi sotto, post per post
-                'tax_query'      => array(
+                'post_type'       => 'post',
+                'posts_per_page'  => -1,
+                'fields'          => 'ids',
+                'lang'            => 'all', // niente auto-filtro lingua: filtriamo noi sotto, post per post
+                'suppress_filters'=> true, // FIX 2026-09-11-ter: WPML riscrive anche gli ID di categoria
+                                            // nel tax_query in base alla lingua della pagina corrente
+                                            // (li abbiamo gia' risolti noi in italiano sopra) — va disattivato
+                                            // del tutto, altrimenti la sostituzione avviene comunque qui dentro
+                'tax_query'       => array(
                     'relation' => 'AND',
                     array('taxonomy' => 'category', 'field' => 'term_id', 'terms' => $casting_term->term_id),
                     array('taxonomy' => 'category', 'field' => 'term_id', 'terms' => $slug_term_ids, 'operator' => 'IN'),
