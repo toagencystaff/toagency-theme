@@ -841,6 +841,11 @@ toa_component('header');
     if ($current_region && isset($region_mapping[$current_region])) {
         $matched_ids = toa_casting_region_post_ids($region_mapping[$current_region], $lang, isset($_GET['toa_debug']));
         $args['post__in'] = !empty($matched_ids) ? $matched_ids : array(0); // array(0) = nessun risultato
+        // FIX 2026-09-12 marco — con 'post__in' gia' esatto (risolto sopra, per lingua), il filtro
+        // automatico di WPML sulla query interferisce di nuovo (aggiunge un post estraneo ai
+        // risultati): lo disattiviamo qui, gli ID sono gia' quelli giusti per questa lingua.
+        $args['lang']              = 'all';
+        $args['suppress_filters']  = true;
 
         if ($current_lingua) {
             $args['tax_query'] = array(
