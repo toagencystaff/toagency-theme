@@ -859,6 +859,13 @@ toa_component('header');
     }
 
     $casting_query = new WP_Query($args);
+    if (isset($_GET['toa_debug'])) {
+        $found_ids = array();
+        foreach ($casting_query->posts as $p) {
+            $found_ids[] = is_object($p) ? $p->ID : $p;
+        }
+        echo "\n<!-- TOA_DEBUG_MAINQ post_in=" . esc_html(implode(',', isset($args['post__in']) ? $args['post__in'] : array())) . "\nfound_ids=" . esc_html(implode(',', $found_ids)) . "\nfound_count=" . esc_html($casting_query->found_posts) . "\nsql=" . esc_html($casting_query->request) . " -->\n";
+    }
 
     // LOOP CASTING
     if ($casting_query->have_posts()) :
