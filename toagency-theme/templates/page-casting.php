@@ -842,30 +842,38 @@ toa_component('header');
         'order'          => 'DESC'
     );
 
-    // PATCH 2026-09-11 marco — filtro regione/paese: gli ID si risolvono SEMPRE dall'originale
-    // italiano (vedi helper sopra), così i vecchi link ?regione=... funzionano uguali in ogni lingua.
+    // PATCH 2026-09-12-sexies marco — BYPASS TOTALE per il filtro regione/paese.
+    // Qualcosa (mai identificato con certezza: cache/plugin) continuava ad aggiungere un post
+    // estraneo ai risultati di WP_Query per questo filtro, ignorando ogni contromisura provata
+    // (lang=all, suppress_filters, cache_results=false, posts_pre_query forzato, SQL sempre
+    // diverso). Gli ID giusti (toa_casting_region_post_ids, verificati) sono affidabili: qui
+    // evitiamo del tutto WP_Query per elencarli, prendendo i post uno per uno per ID e
+    // paginando noi stessi — un singolo get_post() per ID non passa da nessun filtro di lista.
+    $manual_mode      = false;
+    $manual_posts     = array();
+    $manual_max_pages = 1;
+
     if ($current_region && isset($region_mapping[$current_region])) {
         $matched_ids = toa_casting_region_post_ids($region_mapping[$current_region], $lang, isset($_GET['toa_debug']));
-        $args['post__in'] = !empty($matched_ids) ? $matched_ids : array(0); // array(0) = nessun risultato
-        // FIX 2026-09-12 marco — con 'post__in' gia' esatto (risolto sopra, per lingua), il filtro
-        // automatico di WPML sulla query interferisce di nuovo (aggiunge un post estraneo ai
-        // risultati): lo disattiviamo qui, gli ID sono gia' quelli giusti per questa lingua.
-        $args['lang']              = 'all';
-        $args['suppress_filters']  = true;
-        $args['cache_results']     = false; // FIX 2026-09-12-bis: una cache oggetti (Memcached/Redis
-                                             // SiteGround) restituiva risultati vecchi per questa
-                                             // combinazione di filtri, mai invalidata dal deploy/purge
-        // FIX 2026-09-12-quinquies marco — anche con tutto disattivato, i risultati restavano
-        // vecchi: sospetto una cache lato server che riconosce la query dal testo SQL identico
-        // ad ogni richiesta. Aggiungendo un ID finto sempre diverso nella clausola
-        // 'post__not_in' il testo SQL cambia ogni volta (nessun effetto sul risultato: quell'ID
-        // non esiste), cosi' quella cache non puo' piu' riconoscere/riusare la query.
-        $args['post__not_in'] = array(-1 * random_int(100000, 999999));
 
         if ($current_lingua) {
-            $args['tax_query'] = array(
-                array('taxonomy' => 'category', 'field' => 'slug', 'terms' => 'lingua-' . $current_lingua),
-            );
+            $matched_ids = array_values(array_filter($matched_ids, function ($pid) use ($current_lingua) {
+                $cats = wp_get_post_categories($pid, array('fields' => 'slugs'));
+                return in_array('lingua-' . $current_lingua, $cats, true);
+            }));
+        }
+
+        $manual_posts_all = array_values(array_filter(array_map('get_post', $matched_ids)));
+        usort($manual_posts_all, function ($a, $b) {
+            return strtotime($b->post_date) <=> strtotime($a->post_date);
+        });
+
+        $manual_mode      = true;
+        $manual_max_pages = max(1, (int) ceil(count($manual_posts_all) / 12));
+        $manual_posts     = array_slice($manual_posts_all, ($paged - 1) * 12, 12);
+
+        if (isset($_GET['toa_debug'])) {
+            echo "\n<!-- TOA_DEBUG_MAINQ modalita=manuale matched_ids=" . esc_html(implode(',', $matched_ids)) . " totale=" . esc_html(count($manual_posts_all)) . " pagina_ids=" . esc_html(implode(',', wp_list_pluck($manual_posts, 'ID'))) . " -->\n";
         }
     } elseif ($current_lingua) {
         $args['tax_query'] = array(
@@ -878,24 +886,31 @@ toa_component('header');
         $args['category_name'] = 'casting';
     }
 
-    // FIX 2026-09-12-ter marco — un plugin di cache (posts_pre_query) puo' restituire risultati
-    // vecchi ignorando 'cache_results'/'suppress_filters': forziamo qui l'esecuzione reale.
-    add_filter('posts_pre_query', '__return_null', 9999);
-    $casting_query = new WP_Query($args);
-    remove_filter('posts_pre_query', '__return_null', 9999);
-    if (isset($_GET['toa_debug'])) {
-        $found_ids = array();
-        foreach ($casting_query->posts as $p) {
-            $found_ids[] = is_object($p) ? $p->ID : $p;
-        }
-        echo "\n<!-- TOA_DEBUG_MAINQ post_in=" . esc_html(implode(',', isset($args['post__in']) ? $args['post__in'] : array())) . "\nfound_ids=" . esc_html(implode(',', $found_ids)) . "\nfound_count=" . esc_html($casting_query->found_posts) . "\nsql=" . esc_html($casting_query->request) . " -->\n";
+    if (!$manual_mode) {
+        $casting_query = new WP_Query($args);
     }
 
     // LOOP CASTING
-    if ($casting_query->have_posts()) :
+    if ($manual_mode) :
+        if (!empty($manual_posts)) :
+            global $post;
+            foreach ($manual_posts as $post) :
+                setup_postdata($post);
+                toa_casting_render_card($t, $_t, $lingua_flag_map);
+            endforeach;
+            wp_reset_postdata();
+        else : ?>
+            <!-- NESSUN CASTING -->
+            <div class="no-casting">
+                <p><?php echo $_t($t['no_casting_zona']); ?></p>
+                <p><a href="<?php echo $base_url; ?>"><?php echo $_t($t['vedi_tutti']); ?></a></p>
+            </div>
+        <?php endif;
+    elseif ($casting_query->have_posts()) :
         while ($casting_query->have_posts()) : $casting_query->the_post();
             toa_casting_render_card($t, $_t, $lingua_flag_map);
-        endwhile; ?>
+        endwhile;
+        wp_reset_postdata(); ?>
 
     <?php else : ?>
         <!-- NESSUN CASTING -->
@@ -913,13 +928,15 @@ toa_component('header');
                 <p><a href="<?php echo $base_url; ?>"><?php echo $_t($t['vedi_tutti']); ?></a></p>
             <?php endif; ?>
         </div>
-    <?php endif;
-    wp_reset_postdata();
+    <?php
+        wp_reset_postdata();
+    endif;
     ?>
     </div>
 
     <!-- PAGINAZIONE -->
-    <?php if ($casting_query->max_num_pages > 1) : ?>
+    <?php $toa_display_max_pages = $manual_mode ? $manual_max_pages : $casting_query->max_num_pages; ?>
+    <?php if ($toa_display_max_pages > 1) : ?>
     <div class="casting-pagination">
         <?php
         // PATCH 2026-05-22 marco — paginazione preserva regione + lingua
@@ -927,7 +944,7 @@ toa_component('header');
         if ($current_region) $qs_pagina[] = 'regione=' . $current_region;
         if ($current_lingua) $qs_pagina[] = 'lingua=' . $current_lingua;
         $pagination_args = array(
-            'total'     => $casting_query->max_num_pages,
+            'total'     => $toa_display_max_pages,
             'current'   => $paged,
             'prev_text' => $_t($t['prev']),
             'next_text' => $_t($t['next']),
