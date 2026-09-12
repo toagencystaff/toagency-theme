@@ -703,14 +703,10 @@ toa_component('header');
             ));
 
             $ids = array();
-            $debug_rows = array();
             foreach ($candidate_ids as $post_id) {
                 $post_id      = (int) $post_id;
                 $lang_details = apply_filters('wpml_post_language_details', null, $post_id);
                 $post_lang    = (is_array($lang_details) && !empty($lang_details['language_code'])) ? $lang_details['language_code'] : null;
-                if ($debug) {
-                    $debug_rows[] = $post_id . ':' . ($post_lang ? $post_lang : '?') . ':' . get_the_title($post_id);
-                }
                 if ($post_lang !== 'it') {
                     continue; // tiene solo l'originale italiano, mai una traduzione
                 }
@@ -720,9 +716,6 @@ toa_component('header');
                 }
             }
             $ids = array_values(array_unique($ids));
-            if ($debug) {
-                echo "\n<!-- TOA_DEBUG slugs=" . esc_html(implode(',', $slugs)) . " target_lang=" . esc_html($target_lang) . " casting_tt_id=" . esc_html($casting_tt_id) . " slug_tt_ids=" . esc_html(implode(',', $slug_tt_ids)) . " raw_count=" . count($candidate_ids) . "\nraw: " . esc_html(implode(' | ', $debug_rows)) . "\nfinal_ids: " . esc_html(implode(',', $ids)) . " -->\n";
-            }
             return $ids;
         }
     }
@@ -803,7 +796,7 @@ toa_component('header');
     // (vedi nota piu' sotto): niente WP_Query nemmeno qui, post per post via get_post().
     $show_home_block = $home_country && !$current_region && !$current_lingua && $paged == 1;
     if ($show_home_block) {
-        $home_ids = toa_casting_region_post_ids($region_mapping[$home_country], $lang, isset($_GET['toa_debug']));
+        $home_ids = toa_casting_region_post_ids($region_mapping[$home_country], $lang);
         $home_posts_all = array_values(array_filter(array_map('get_post', $home_ids)));
         $sessanta_giorni_fa = strtotime('-60 days');
         $home_posts_all = array_values(array_filter($home_posts_all, function ($p) use ($sessanta_giorni_fa) {
@@ -851,7 +844,7 @@ toa_component('header');
     $manual_max_pages = 1;
 
     if ($current_region && isset($region_mapping[$current_region])) {
-        $matched_ids = toa_casting_region_post_ids($region_mapping[$current_region], $lang, isset($_GET['toa_debug']));
+        $matched_ids = toa_casting_region_post_ids($region_mapping[$current_region], $lang);
 
         if ($current_lingua) {
             $matched_ids = array_values(array_filter($matched_ids, function ($pid) use ($current_lingua) {
@@ -868,10 +861,6 @@ toa_component('header');
         $manual_mode      = true;
         $manual_max_pages = max(1, (int) ceil(count($manual_posts_all) / 12));
         $manual_posts     = array_slice($manual_posts_all, ($paged - 1) * 12, 12);
-
-        if (isset($_GET['toa_debug'])) {
-            echo "\n<!-- TOA_DEBUG_MAINQ modalita=manuale matched_ids=" . esc_html(implode(',', $matched_ids)) . " totale=" . esc_html(count($manual_posts_all)) . " pagina_ids=" . esc_html(implode(',', wp_list_pluck($manual_posts, 'ID'))) . " -->\n";
-        }
     } elseif ($current_lingua) {
         $args['tax_query'] = array(
             'relation' => 'AND',
