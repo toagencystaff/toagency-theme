@@ -54,9 +54,9 @@ $t = array(
     'filter_svizzera'            => array('it' => 'Svizzera', 'en' => 'Switzerland', 'fr' => 'Suisse', 'es' => 'Suiza'),
     'filter_tutti_paesi'         => array('it' => 'Tutti i casting', 'en' => 'All castings', 'fr' => 'Tous les castings', 'es' => 'Todos los castings'),
     'filter_international_group'=> array('it' => 'Internazionale', 'en' => 'International', 'fr' => 'International', 'es' => 'Internacional'),
-    'home_country_title'         => array('it' => '', 'en' => '', 'fr' => 'Castings en France', 'es' => 'Castings en España'),
-    'home_country_empty'         => array('it' => '', 'en' => '', 'fr' => 'Aucun casting en France en ce moment.', 'es' => 'No hay castings en España en este momento.'),
-    'home_rest_title'            => array('it' => '', 'en' => '', 'fr' => 'À l\'international', 'es' => 'En el extranjero'),
+    'home_country_title'         => array('it' => '', 'en' => 'Castings in the UK', 'fr' => 'Castings en France', 'es' => 'Castings en España'),
+    'home_country_empty'         => array('it' => '', 'en' => 'No active castings in the UK at the moment.', 'fr' => 'Aucun casting en France en ce moment.', 'es' => 'No hay castings en España en este momento.'),
+    'home_rest_title'            => array('it' => '', 'en' => 'Internationally', 'fr' => 'À l\'international', 'es' => 'En el extranjero'),
     // PATCH 2026-09-11 marco — badge paese sul card, letto SEMPRE dall'originale italiano (punto 5)
     'badge_paese_italia'         => array('it' => '🇮🇹 Italia', 'en' => '🇮🇹 Italy', 'fr' => '🇮🇹 Italie', 'es' => '🇮🇹 Italia'),
     'badge_paese_francia'        => array('it' => '🇫🇷 Francia', 'en' => '🇫🇷 France', 'fr' => '🇫🇷 France', 'es' => '🇫🇷 Francia'),
@@ -495,8 +495,9 @@ toa_component('header');
     $base_url = get_permalink();
 
     // PATCH 2026-09-11 marco — paese "di casa" per lingua di visualizzazione (TEMA-CASTING-PAESE-LINGUA)
-    // IT e EN non hanno un paese in evidenza: IT vede il menu regioni di sempre, EN vede la lista piatta.
-    $home_country_by_lang = array('fr' => 'francia', 'es' => 'spagna');
+    // PATCH 2026-09-12 marco — aggiunto UK per l'inglese: ogni lingua ha il proprio paese di casa
+    // in evidenza (idem per tutte), tranne IT che vede il menu regioni italiane di sempre.
+    $home_country_by_lang = array('fr' => 'francia', 'es' => 'spagna', 'en' => 'uk');
     $home_country = isset($home_country_by_lang[$lang]) ? $home_country_by_lang[$lang] : '';
 
     // Etichette paese riusate sia dal menu (FR/ES/EN) sia, più sotto, dal badge sulle card.
