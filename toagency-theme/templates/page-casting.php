@@ -799,30 +799,27 @@ toa_component('header');
     }
 
     // PATCH 2026-09-11 marco — blocco "paese di casa" (FR/ES), solo home (nessun filtro) e pagina 1
+    // PATCH 2026-09-12-sexies marco — stesso bypass totale di WP_Query del filtro principale
+    // (vedi nota piu' sotto): niente WP_Query nemmeno qui, post per post via get_post().
     $show_home_block = $home_country && !$current_region && !$current_lingua && $paged == 1;
     if ($show_home_block) {
         $home_ids = toa_casting_region_post_ids($region_mapping[$home_country], $lang, isset($_GET['toa_debug']));
-        add_filter('posts_pre_query', '__return_null', 9999);
-        $home_query = new WP_Query(array(
-            'post_type'       => 'post',
-            'posts_per_page'  => -1,
-            'orderby'         => 'date',
-            'order'           => 'DESC',
-            'post__in'        => !empty($home_ids) ? $home_ids : array(0),
-            'date_query'      => array(array('after' => '60 days ago')),
-            'lang'            => 'all',
-            'suppress_filters'=> true,
-            'cache_results'   => false, // vedi nota sulla query principale piu' sotto
-            'post__not_in'    => array(-1 * random_int(100000, 999999)), // vedi nota sopra
-        ));
-        remove_filter('posts_pre_query', '__return_null', 9999);
+        $home_posts_all = array_values(array_filter(array_map('get_post', $home_ids)));
+        $sessanta_giorni_fa = strtotime('-60 days');
+        $home_posts_all = array_values(array_filter($home_posts_all, function ($p) use ($sessanta_giorni_fa) {
+            return strtotime($p->post_date) >= $sessanta_giorni_fa;
+        }));
+        usort($home_posts_all, function ($a, $b) {
+            return strtotime($b->post_date) <=> strtotime($a->post_date);
+        });
         ?>
         <h2 class="casting-block-title"><?php echo esc_html($_t($t['home_country_title'])); ?></h2>
-        <?php if ($home_query->have_posts()) : ?>
+        <?php if (!empty($home_posts_all)) : ?>
             <div class="casting-grid casting-grid-home">
-            <?php while ($home_query->have_posts()) : $home_query->the_post();
+            <?php global $post; foreach ($home_posts_all as $post) :
+                setup_postdata($post);
                 toa_casting_render_card($t, $_t, $lingua_flag_map);
-            endwhile; ?>
+            endforeach; ?>
             </div>
         <?php else : ?>
             <p class="casting-block-empty"><?php echo esc_html($_t($t['home_country_empty'])); ?></p>
