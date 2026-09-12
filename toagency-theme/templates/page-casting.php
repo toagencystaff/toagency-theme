@@ -813,6 +813,7 @@ toa_component('header');
             'lang'            => 'all',
             'suppress_filters'=> true,
             'cache_results'   => false, // vedi nota sulla query principale piu' sotto
+            'post__not_in'    => array(-1 * random_int(100000, 999999)), // vedi nota sopra
         ));
         remove_filter('posts_pre_query', '__return_null', 9999);
         ?>
@@ -854,6 +855,12 @@ toa_component('header');
         $args['cache_results']     = false; // FIX 2026-09-12-bis: una cache oggetti (Memcached/Redis
                                              // SiteGround) restituiva risultati vecchi per questa
                                              // combinazione di filtri, mai invalidata dal deploy/purge
+        // FIX 2026-09-12-quinquies marco — anche con tutto disattivato, i risultati restavano
+        // vecchi: sospetto una cache lato server che riconosce la query dal testo SQL identico
+        // ad ogni richiesta. Aggiungendo un ID finto sempre diverso nella clausola
+        // 'post__not_in' il testo SQL cambia ogni volta (nessun effetto sul risultato: quell'ID
+        // non esiste), cosi' quella cache non puo' piu' riconoscere/riusare la query.
+        $args['post__not_in'] = array(-1 * random_int(100000, 999999));
 
         if ($current_lingua) {
             $args['tax_query'] = array(
