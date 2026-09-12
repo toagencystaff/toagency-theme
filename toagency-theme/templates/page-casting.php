@@ -56,7 +56,7 @@ $t = array(
     'filter_international_group'=> array('it' => 'Internazionale', 'en' => 'International', 'fr' => 'International', 'es' => 'Internacional'),
     'home_country_title'         => array('it' => '', 'en' => '', 'fr' => 'Castings en France', 'es' => 'Castings en España'),
     'home_country_empty'         => array('it' => '', 'en' => '', 'fr' => 'Aucun casting en France en ce moment.', 'es' => 'No hay castings en España en este momento.'),
-    'home_rest_title'            => array('it' => '', 'en' => '', 'fr' => 'En Italie et à l\'international', 'es' => 'En Italia y en el extranjero'),
+    'home_rest_title'            => array('it' => '', 'en' => '', 'fr' => 'À l\'international', 'es' => 'En el extranjero'),
     // PATCH 2026-09-11 marco — badge paese sul card, letto SEMPRE dall'originale italiano (punto 5)
     'badge_paese_italia'         => array('it' => '🇮🇹 Italia', 'en' => '🇮🇹 Italy', 'fr' => '🇮🇹 Italie', 'es' => '🇮🇹 Italia'),
     'badge_paese_francia'        => array('it' => '🇫🇷 Francia', 'en' => '🇫🇷 France', 'fr' => '🇫🇷 France', 'es' => '🇫🇷 Francia'),
