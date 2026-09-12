@@ -802,6 +802,7 @@ toa_component('header');
     $show_home_block = $home_country && !$current_region && !$current_lingua && $paged == 1;
     if ($show_home_block) {
         $home_ids = toa_casting_region_post_ids($region_mapping[$home_country], $lang, isset($_GET['toa_debug']));
+        add_filter('posts_pre_query', '__return_null', 9999);
         $home_query = new WP_Query(array(
             'post_type'       => 'post',
             'posts_per_page'  => -1,
@@ -813,6 +814,7 @@ toa_component('header');
             'suppress_filters'=> true,
             'cache_results'   => false, // vedi nota sulla query principale piu' sotto
         ));
+        remove_filter('posts_pre_query', '__return_null', 9999);
         ?>
         <h2 class="casting-block-title"><?php echo esc_html($_t($t['home_country_title'])); ?></h2>
         <?php if ($home_query->have_posts()) : ?>
@@ -869,7 +871,11 @@ toa_component('header');
         $args['category_name'] = 'casting';
     }
 
+    // FIX 2026-09-12-ter marco — un plugin di cache (posts_pre_query) puo' restituire risultati
+    // vecchi ignorando 'cache_results'/'suppress_filters': forziamo qui l'esecuzione reale.
+    add_filter('posts_pre_query', '__return_null', 9999);
     $casting_query = new WP_Query($args);
+    remove_filter('posts_pre_query', '__return_null', 9999);
     if (isset($_GET['toa_debug'])) {
         $found_ids = array();
         foreach ($casting_query->posts as $p) {
