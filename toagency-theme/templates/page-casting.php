@@ -803,12 +803,15 @@ toa_component('header');
     if ($show_home_block) {
         $home_ids = toa_casting_region_post_ids($region_mapping[$home_country], $lang, isset($_GET['toa_debug']));
         $home_query = new WP_Query(array(
-            'post_type'      => 'post',
-            'posts_per_page' => -1,
-            'orderby'        => 'date',
-            'order'          => 'DESC',
-            'post__in'       => !empty($home_ids) ? $home_ids : array(0),
-            'date_query'     => array(array('after' => '60 days ago')),
+            'post_type'       => 'post',
+            'posts_per_page'  => -1,
+            'orderby'         => 'date',
+            'order'           => 'DESC',
+            'post__in'        => !empty($home_ids) ? $home_ids : array(0),
+            'date_query'      => array(array('after' => '60 days ago')),
+            'lang'            => 'all',
+            'suppress_filters'=> true,
+            'cache_results'   => false, // vedi nota sulla query principale piu' sotto
         ));
         ?>
         <h2 class="casting-block-title"><?php echo esc_html($_t($t['home_country_title'])); ?></h2>
@@ -846,6 +849,9 @@ toa_component('header');
         // risultati): lo disattiviamo qui, gli ID sono gia' quelli giusti per questa lingua.
         $args['lang']              = 'all';
         $args['suppress_filters']  = true;
+        $args['cache_results']     = false; // FIX 2026-09-12-bis: una cache oggetti (Memcached/Redis
+                                             // SiteGround) restituiva risultati vecchi per questa
+                                             // combinazione di filtri, mai invalidata dal deploy/purge
 
         if ($current_lingua) {
             $args['tax_query'] = array(
