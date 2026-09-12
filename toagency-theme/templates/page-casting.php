@@ -662,58 +662,50 @@ toa_component('header');
         // non lo è) — falso positivo. Per questo controlliamo la lingua post per post con l'API WPML,
         // tenendo SOLO i post che sono davvero l'originale italiano.
         function toa_casting_region_post_ids($slugs, $target_lang, $debug = false) {
-            // FIX 2026-09-11-bis marco — WPML traduce anche gli SLUG delle categorie nel tax_query
-            // in base alla lingua della pagina corrente (es. su /fr/ 'casting' punta al termine
-            // francese "Casting", non piu' all'originale italiano): risolviamo gli ID reali
-            // forzando il contesto italiano PRIMA di interrogare, cosi' la query trova sempre
-            // le categorie giuste indipendentemente da quale pagina/lingua la richiama.
-            $wpml_lang_attuale = apply_filters('wpml_current_language', null);
-            do_action('wpml_switch_language', 'it');
-            $casting_term = get_term_by('slug', 'casting', 'category');
-            $slug_term_ids = array();
-            foreach ((array) $slugs as $uno_slug) {
-                $termine = get_term_by('slug', $uno_slug, 'category');
-                if ($termine) {
-                    $slug_term_ids[] = $termine->term_id;
-                }
-            }
-            do_action('wpml_switch_language', $wpml_lang_attuale);
+            // FIX 2026-09-11-quater marco — via WP_Query/tax_query, WPML si reinserisce SEMPRE
+            // (anche con 'lang'=>'all' e 'suppress_filters'=>true) e filtra i risultati in base
+            // alla lingua della pagina corrente. Unica strada robusta: leggere le relazioni
+            // categoria->post DIRETTAMENTE dal database, senza passare da WP_Query, poi
+            // controllare la lingua di ogni post uno per uno con l'API ufficiale WPML.
+            global $wpdb;
+            $slugs = (array) $slugs;
 
-            if ($debug) {
-                error_log('TOA_DEBUG_RESOLVE wpml_lang_attuale=' . var_export($wpml_lang_attuale, true));
-            }
-            $toa_debug_resolve = 'wpml_lang=' . ($wpml_lang_attuale ? $wpml_lang_attuale : '(vuoto)')
-                . ' casting_term_id=' . ($casting_term ? $casting_term->term_id : '(non trovato)')
-                . ' slug_term_ids=' . implode(',', $slug_term_ids);
-
-            if (!$casting_term || empty($slug_term_ids)) {
-                if ($debug) {
-                    echo "\n<!-- TOA_DEBUG_RESOLVE " . esc_html($toa_debug_resolve) . " -->\n";
-                }
+            $casting_tt_id = $wpdb->get_var($wpdb->prepare(
+                "SELECT tt.term_taxonomy_id FROM {$wpdb->term_taxonomy} tt
+                 INNER JOIN {$wpdb->terms} t ON t.term_id = tt.term_id
+                 WHERE tt.taxonomy = 'category' AND t.slug = %s LIMIT 1",
+                'casting'
+            ));
+            if (!$casting_tt_id) {
                 return array();
             }
 
-            if ($debug) {
-                echo "\n<!-- TOA_DEBUG_RESOLVE " . esc_html($toa_debug_resolve) . " -->\n";
-            }
-            $candidates = new WP_Query(array(
-                'post_type'       => 'post',
-                'posts_per_page'  => -1,
-                'fields'          => 'ids',
-                'lang'            => 'all', // niente auto-filtro lingua: filtriamo noi sotto, post per post
-                'suppress_filters'=> true, // FIX 2026-09-11-ter: WPML riscrive anche gli ID di categoria
-                                            // nel tax_query in base alla lingua della pagina corrente
-                                            // (li abbiamo gia' risolti noi in italiano sopra) — va disattivato
-                                            // del tutto, altrimenti la sostituzione avviene comunque qui dentro
-                'tax_query'       => array(
-                    'relation' => 'AND',
-                    array('taxonomy' => 'category', 'field' => 'term_id', 'terms' => $casting_term->term_id),
-                    array('taxonomy' => 'category', 'field' => 'term_id', 'terms' => $slug_term_ids, 'operator' => 'IN'),
-                ),
+            $slug_placeholders = implode(',', array_fill(0, count($slugs), '%s'));
+            $slug_tt_ids = $wpdb->get_col($wpdb->prepare(
+                "SELECT tt.term_taxonomy_id FROM {$wpdb->term_taxonomy} tt
+                 INNER JOIN {$wpdb->terms} t ON t.term_id = tt.term_id
+                 WHERE tt.taxonomy = 'category' AND t.slug IN ($slug_placeholders)",
+                $slugs
             ));
+            if (empty($slug_tt_ids)) {
+                return array();
+            }
+            $slug_tt_ids_sql = implode(',', array_map('intval', $slug_tt_ids));
+
+            $candidate_ids = $wpdb->get_col($wpdb->prepare(
+                "SELECT tr1.object_id FROM {$wpdb->term_relationships} tr1
+                 INNER JOIN {$wpdb->term_relationships} tr2 ON tr1.object_id = tr2.object_id
+                 INNER JOIN {$wpdb->posts} p ON p.ID = tr1.object_id
+                 WHERE tr1.term_taxonomy_id = %d
+                 AND tr2.term_taxonomy_id IN ($slug_tt_ids_sql)
+                 AND p.post_type = 'post' AND p.post_status = 'publish'",
+                $casting_tt_id
+            ));
+
             $ids = array();
             $debug_rows = array();
-            foreach ($candidates->posts as $post_id) {
+            foreach ($candidate_ids as $post_id) {
+                $post_id      = (int) $post_id;
                 $lang_details = apply_filters('wpml_post_language_details', null, $post_id);
                 $post_lang    = (is_array($lang_details) && !empty($lang_details['language_code'])) ? $lang_details['language_code'] : null;
                 if ($debug) {
@@ -729,7 +721,7 @@ toa_component('header');
             }
             $ids = array_values(array_unique($ids));
             if ($debug) {
-                echo "\n<!-- TOA_DEBUG slugs=" . esc_html(implode(',', (array) $slugs)) . " target_lang=" . esc_html($target_lang) . " raw_count=" . count($candidates->posts) . "\nraw: " . esc_html(implode(' | ', $debug_rows)) . "\nfinal_ids: " . esc_html(implode(',', $ids)) . " -->\n";
+                echo "\n<!-- TOA_DEBUG slugs=" . esc_html(implode(',', $slugs)) . " target_lang=" . esc_html($target_lang) . " casting_tt_id=" . esc_html($casting_tt_id) . " slug_tt_ids=" . esc_html(implode(',', $slug_tt_ids)) . " raw_count=" . count($candidate_ids) . "\nraw: " . esc_html(implode(' | ', $debug_rows)) . "\nfinal_ids: " . esc_html(implode(',', $ids)) . " -->\n";
             }
             return $ids;
         }
