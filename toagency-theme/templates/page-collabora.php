@@ -77,6 +77,14 @@ toa_component('header');
         <div class="section-eyebrow"><?php echo $_t($t['path_eyebrow']); ?></div>
         <h2 class="section-heading"><?php echo $_t($t['path_heading']); ?></h2>
     </div>
+    <div class="container" style="margin-bottom:30px"><!-- FIX 2026-09-14 marco: spostato sopra le card, prima era sotto e nessuno lo vedeva -->
+        <!-- FIX 2026-08-17 (TEMA COLLABORA RESTYLING) — tolto style inline viola/lavanda fuori palette,
+             ora usa .alert-box di main.css (dark+lime, gia' scritta apposta per questa pagina) -->
+        <div class="alert-box" style="text-align:center">
+            <p style="font-size:1.1rem;font-weight:700;margin:0 0 14px;color:var(--white-pure)"><?php echo $_t($t['edit_q']); ?></p>
+            <a href="https://toagency.it/crm_toagency/recupera-link.php?lang=<?php echo $lang; ?>" class="btn-hero btn-hero-primary" style="padding:16px 32px;font-size:0.95rem"><?php echo $_t($t['edit_btn']); ?></a>
+        </div>
+    </div>
     <div class="features-grid">
         <div class="feature-card">
             <h3 class="feature-title"><?php echo $_t($t['talent_title']); ?></h3>
@@ -93,14 +101,6 @@ toa_component('header');
             <div style="margin-top:24px">
                 <a href="<?php echo $_t($t['cta_crew_url']); ?>" class="btn-hero btn-hero-primary" style="padding:12px 20px;font-size:0.75rem"><?php echo $_t($t['registrati']); ?></a>
             </div>
-        </div>
-    </div>
-    <div class="container" style="margin-top:30px"><!-- FIX 2026-06-18 marco -->
-        <!-- FIX 2026-08-17 (TEMA COLLABORA RESTYLING) — tolto style inline viola/lavanda fuori palette,
-             ora usa .alert-box di main.css (dark+lime, gia' scritta apposta per questa pagina) -->
-        <div class="alert-box" style="text-align:center">
-            <p style="font-size:1.1rem;font-weight:700;margin:0 0 14px;color:var(--white-pure)"><?php echo $_t($t['edit_q']); ?></p>
-            <a href="https://toagency.it/crm_toagency/recupera-link.php?lang=<?php echo $lang; ?>" class="btn-hero btn-hero-primary" style="padding:16px 32px;font-size:0.95rem"><?php echo $_t($t['edit_btn']); ?></a>
         </div>
     </div>
 </section>
