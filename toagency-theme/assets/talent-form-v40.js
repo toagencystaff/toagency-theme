@@ -2238,6 +2238,19 @@
                 stepToGo = 3;
                 break;
             case 'email_exists':
+                // FIX 2026-09-14 marco (caso Battenti: fratelli, stessa email genitore) —
+                // per un minore offri anche "e' un altro mio figlio" (force_create), il backend
+                // decide se accettarlo; per un adulto comportamento identico a prima.
+                stepToGo = 1;
+                if (isMinore()) {
+                    hideRecover();
+                    showDupBox(res.existing_id, '', true);
+                } else {
+                    errorMsg = tmsg(MSG.emailExists);
+                    hideDupBox();
+                    showRecover();
+                }
+                break;
             case 'name_exists': // FIX 2026-06-25 marco — anche nome+cognome già presente
                 errorMsg = tmsg(MSG.emailExists);
                 stepToGo = 1;
@@ -2355,23 +2368,41 @@
 
     // FIX 2026-06-28 marco — box doppione nome+cognome+dob (4 opzioni)
     var _dupExistingId = 0;
-    function showDupBox(existingId, emailMasked) {
+    function showDupBox(existingId, emailMasked, isEmailCase) {
         _dupExistingId = existingId || 0;
         var box      = document.getElementById('toaTalentDupBox');
         var viewLink = document.getElementById('toaDupViewLink');
         var resendOk = document.getElementById('toaDupResendOk');
         var resendBtn= document.getElementById('toaDupResendBtn');
+        // FIX 2026-09-14 marco (caso Battenti) — messaggio/bottone diversi per il caso email condivisa (minori)
+        var msgDef      = document.getElementById('toaDupBoxMsgDefault');
+        var msgEmail    = document.getElementById('toaDupBoxMsgEmail');
+        var forceBtn    = document.getElementById('toaDupForceBtn');
+        var forceBtnMin = document.getElementById('toaDupForceBtnMinore');
         if (viewLink && existingId) {
             viewLink.href = '/talent-profile.php?id=' + existingId + '&pk=toa_prev_k26x';
         }
         if (resendOk)  { resendOk.style.display  = 'none'; }
         if (resendBtn) { resendBtn.style.display  = 'block'; resendBtn.disabled = false; }
+        if (msgDef)      msgDef.style.display      = isEmailCase ? 'none'  : 'block';
+        if (msgEmail)    msgEmail.style.display    = isEmailCase ? 'block' : 'none';
+        if (forceBtn)    forceBtn.style.display    = isEmailCase ? 'none'  : 'block';
+        if (forceBtnMin) forceBtnMin.style.display = isEmailCase ? 'block' : 'none';
         if (box) { box.style.display = 'block'; box.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
     }
     function hideDupBox() {
         var box = document.getElementById('toaTalentDupBox');
         if (box) box.style.display = 'none';
         _dupExistingId = 0;
+        // FIX 2026-09-14 marco (caso Battenti) — reset al default cosi' non resta appeso lo stato "email minori"
+        var msgDef      = document.getElementById('toaDupBoxMsgDefault');
+        var msgEmail    = document.getElementById('toaDupBoxMsgEmail');
+        var forceBtn    = document.getElementById('toaDupForceBtn');
+        var forceBtnMin = document.getElementById('toaDupForceBtnMinore');
+        if (msgDef)      msgDef.style.display      = 'block';
+        if (msgEmail)    msgEmail.style.display    = 'none';
+        if (forceBtn)    forceBtn.style.display    = 'block';
+        if (forceBtnMin) forceBtnMin.style.display = 'none';
     }
     // Wiring bottoni dup box (eseguito una sola volta al caricamento)
     (function() {
@@ -2406,6 +2437,19 @@
                 hideDupBox();
                 hideRecover();
                 // Avanza allo step successivo (step 1 già validato)
+                var activeEl = form.querySelector('.toa-talent-step.active');
+                var cur = activeEl ? parseInt(activeEl.dataset.step) : 1;
+                showStep(cur + 1);
+            });
+        }
+        // FIX 2026-09-14 marco (caso Battenti) — stesso comportamento di forceBtn, bottone diverso
+        var forceBtnMin = document.getElementById('toaDupForceBtnMinore');
+        if (forceBtnMin) {
+            forceBtnMin.addEventListener('click', function() {
+                var fc = document.getElementById('toaForceCreate');
+                if (fc) fc.value = '1';
+                hideDupBox();
+                hideRecover();
                 var activeEl = form.querySelector('.toa-talent-step.active');
                 var cur = activeEl ? parseInt(activeEl.dataset.step) : 1;
                 showStep(cur + 1);

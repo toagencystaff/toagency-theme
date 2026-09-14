@@ -431,12 +431,21 @@ $theme_uri = get_stylesheet_directory_uri();
 
         <!-- FIX 2026-06-28 marco — box doppione nome+cognome+dob (4 opzioni) -->
         <div id="toaTalentDupBox" style="display:none;margin:0 0 20px;padding:18px 20px;background:#fff8e1;border:1.5px solid #f5c518;border-radius:12px;">
-            <p style="margin:0 0 14px;font-weight:700;font-size:.97rem;color:#7a5a00;">
+            <p id="toaDupBoxMsgDefault" style="margin:0 0 14px;font-weight:700;font-size:.97rem;color:#7a5a00;">
                 ⚠️ <?php echo _ht_talent(array(
                     'it'=>'Esiste già una scheda con questi dati.',
                     'en'=>'A profile with this name and date already exists.',
                     'fr'=>'Une fiche avec ces données existe déjà.',
                     'es'=>'Ya existe una ficha con estos datos.',
+                )); ?>
+            </p>
+            <!-- FIX 2026-09-14 marco (caso Battenti: fratelli, stessa email genitore) -->
+            <p id="toaDupBoxMsgEmail" style="display:none;margin:0 0 14px;font-weight:700;font-size:.97rem;color:#7a5a00;">
+                ⚠️ <?php echo _ht_talent(array(
+                    'it'=>'Questa email è già collegata a un altro profilo.',
+                    'en'=>'This email is already linked to another profile.',
+                    'fr'=>'Cette adresse e-mail est déjà liée à une autre fiche.',
+                    'es'=>'Este correo ya está vinculado a otra ficha.',
                 )); ?>
             </p>
             <div style="display:flex;flex-direction:column;gap:10px;">
@@ -470,6 +479,15 @@ $theme_uri = get_stylesheet_directory_uri();
                         'en'=>'I\'m a different person, continue',
                         'fr'=>'Je suis une autre personne, continuer',
                         'es'=>'Soy otra persona, continuar',
+                    )); ?>
+                </button>
+                <!-- FIX 2026-09-14 marco (caso Battenti: fratelli, stessa email genitore) -->
+                <button type="button" id="toaDupForceBtnMinore" style="display:none;width:100%;padding:11px 16px;background:#fff;border:1.5px solid #d0d0d0;border-radius:8px;font-weight:600;font-size:.9rem;color:#555;cursor:pointer;text-align:left;">
+                    🙋 <?php echo _ht_talent(array(
+                        'it'=>'È un altro mio figlio/a, procedi',
+                        'en'=>'It\'s another child of mine, continue',
+                        'fr'=>'C\'est un autre de mes enfants, continuer',
+                        'es'=>'Es otro hijo/a mío/a, continuar',
                     )); ?>
                 </button>
             </div>
