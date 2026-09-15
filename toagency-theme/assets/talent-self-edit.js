@@ -289,6 +289,48 @@
             .catch(function () {});
     }
 
+    // FIX 2026-09-15 marco — card di stato prima del form pesante (Step 2 pagina-stato, chat CRM-MINORI-EMAIL-BATTENTI)
+    function renderStatusCard(d) {
+        var rows = [];
+        if (d.visibile_pubblico) {
+            rows.push('<div class="tse-status-row tse-status-ok"><span class="tse-status-dot tse-status-dot-ok"></span>' + escapeHtml(STR.statusPublic || '') + '</div>');
+        } else {
+            rows.push('<div class="tse-status-row tse-status-review"><span class="tse-status-dot tse-status-dot-review"></span>' + escapeHtml(STR.statusReview || '') + '</div>');
+        }
+        var nFoto = parseInt(d.foto_in_attesa, 10) || 0;
+        if (nFoto > 0) {
+            var txt = (STR.statusPhotosPending || '').replace('{n}', nFoto);
+            rows.push('<div class="tse-status-row tse-status-pending"><span class="tse-status-dot tse-status-dot-pending"></span>' + escapeHtml(txt) + '</div>');
+        }
+        var pct = (d.completezza && d.completezza.percent !== undefined) ? Math.max(0, Math.min(100, parseInt(d.completezza.percent, 10) || 0)) : 0;
+        rows.push('<div class="tse-status-row tse-status-info">' + escapeHtml(STR.complLabel || 'Profilo completo') + ': ' + pct + '%</div>');
+        var box = $('tse-statuscard-rows');
+        if (box) box.innerHTML = rows.join('');
+    }
+
+    function talentShowForm() {
+        var card = $('tse-statuscard');
+        if (card) card.style.display = 'none';
+        var st = $('tse-status');
+        if (st) { st.style.display = 'block'; st.textContent = STR.loading || 'Caricamento…'; st.classList.remove('error'); }
+        loadData();
+    }
+
+    // Prima cosa che si vede: card leggera (stato pubblico, foto in attesa, % completezza) invece del form pesante.
+    // Se qualcosa va storto qui, si cade sempre sul comportamento di prima (form diretto) — mai un vicolo cieco.
+    function loadStatusCard() {
+        if (!UUID || !TOKEN) { showError(STR.invalidLink || 'Link non valido'); return; }
+        fetch(API_STATO + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN) + '&_=' + Date.now(), { credentials:'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+                if (!d || !d.success) { loadData(); return; }
+                renderStatusCard(d);
+                var st = $('tse-status'); if (st) st.style.display = 'none';
+                var card = $('tse-statuscard'); if (card) card.style.display = 'block';
+            })
+            .catch(function () { loadData(); });
+    }
+
     // FIX 2026-07-16 TEMA — chip multi-select (etnia/ruoli/lingue) + limite max
     function setChips(groupId, values) {
         var g = $(groupId); if (!g) return;
@@ -993,5 +1035,5 @@
             });
         }
     });
-    document.addEventListener('DOMContentLoaded', loadData);
+    document.addEventListener('DOMContentLoaded', loadStatusCard);
 })();

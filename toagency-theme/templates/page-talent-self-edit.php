@@ -125,6 +125,11 @@ $T = [
     'guida_ruolo_intro'    => ['it'=>'Album consigliati per il tuo profilo','en'=>'Recommended albums for your profile','fr'=>'Albums recommandés pour ton profil','es'=>'Álbumes recomendados para tu perfil'],
     'guida_ruolo_polaroid' => ['it'=>'Le Polaroid sono obbligatorie per tutti.','en'=>'Polaroids are required for everyone.','fr'=>'Les Polaroids sont obligatoires pour tous.','es'=>'Las Polaroids son obligatorias para todos.'],
     'compl_label'          => ['it'=>'Profilo completo','en'=>'Profile complete','fr'=>'Profil complété','es'=>'Perfil completo'],
+    // FIX 2026-09-15 marco — card di stato prima del form (Step 2 pagina-stato, chat CRM-MINORI-EMAIL-BATTENTI)
+    'statuscard_public'         => ['it'=>'Scheda attiva e pubblica','en'=>'Profile active and public','fr'=>'Fiche active et publique','es'=>'Ficha activa y pública'],
+    'statuscard_review'         => ['it'=>'Scheda in revisione, non ancora online','en'=>'Profile under review, not live yet','fr'=>'Fiche en cours de vérification, pas encore en ligne','es'=>'Ficha en revisión, aún no está en línea'],
+    'statuscard_photos_pending' => ['it'=>'{n} foto in attesa di approvazione','en'=>'{n} photo(s) awaiting approval','fr'=>'{n} photo(s) en attente de validation','es'=>'{n} foto(s) pendientes de aprobación'],
+    'btn_modifica_scheda'       => ['it'=>'Modifica la tua scheda','en'=>'Edit your profile','fr'=>'Modifier ta fiche','es'=>'Editar tu ficha'],
     'mancano_titolo'                 => ['it'=>'Da completare','en'=>'To complete','fr'=>'À compléter','es'=>'Por completar'],
     'mancano_telefono'               => ['it'=>'Telefono','en'=>'Phone','fr'=>'Téléphone','es'=>'Teléfono'],
     'mancano_data_nascita'           => ['it'=>'Data di nascita','en'=>'Date of birth','fr'=>'Date de naissance','es'=>'Fecha de nacimiento'],
@@ -291,6 +296,15 @@ $token_get = $_GET['t']    ?? '';
 .tse-manca-title { font-size:11px; color:#9ca3af; text-transform:uppercase; letter-spacing:.5px; font-weight:700; margin-bottom:8px; }
 .tse-manca-chips { display:flex; flex-wrap:wrap; gap:6px; }
 .tse-manca-chip { display:inline-block; font-size:11px; color:#ffb300; background:rgba(255,179,0,.10); border:1px solid rgba(255,179,0,.30); border-radius:99px; padding:4px 10px; }
+/* FIX 2026-09-15 marco — card di stato (Step 2 pagina-stato): prima cosa che il talent vede, prima del form pesante */
+.tse-statuscard { margin:0 0 24px; padding:20px; background:#0f0f12; border:1px solid #2a2a2e; border-radius:10px; }
+.tse-status-row { display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:8px; margin-bottom:8px; font-size:13px; font-weight:600; }
+.tse-status-ok { background:rgba(200,255,0,.08); border:1px solid rgba(200,255,0,.3); color:#c8ff00; }
+.tse-status-review, .tse-status-pending { background:rgba(255,179,0,.08); border:1px solid rgba(255,179,0,.35); color:#ffb300; }
+.tse-status-info { background:rgba(255,255,255,.04); border:1px solid #2a2a2e; color:#9ca3af; font-weight:400; }
+.tse-status-dot { width:8px; height:8px; border-radius:50%; flex:0 0 auto; }
+.tse-status-dot-ok { background:#c8ff00; }
+.tse-status-dot-review, .tse-status-dot-pending { background:#ffb300; }
 .tse-chips { display:flex; flex-wrap:wrap; gap:8px; }
 .tse-chip { display:inline-flex; align-items:center; gap:6px; font-size:13px; color:#e5e7eb; background:#1a1a1e; border:1px solid #2a2a2e; border-radius:99px; padding:7px 12px; cursor:pointer; user-select:none; }
 .tse-chip input { accent-color:#c8ff00; margin:0; }
@@ -416,6 +430,12 @@ $token_get = $_GET['t']    ?? '';
     <div class="tse-container">
         <div id="tse-status" class="tse-status"><?= esc_html($_t($T['loading'])) ?></div>
         <div id="tse-pending" class="tse-pending-notice" style="display:none;"></div>
+
+        <!-- FIX 2026-09-15 marco — card di stato (Step 2 pagina-stato): prima cosa visibile, prima del form pesante -->
+        <div id="tse-statuscard" class="tse-statuscard" style="display:none;">
+            <div id="tse-statuscard-rows"></div>
+            <button type="button" class="tse-btn-save" style="margin-top:6px;" onclick="talentShowForm()"><?= esc_html($_t($T['btn_modifica_scheda'])) ?></button>
+        </div>
 
         <div id="tse-photo-alert" class="tse-photo-alert" onclick="document.getElementById('tse-foto-section').scrollIntoView({behavior:'smooth'})">
             <div class="tse-photo-alert-title">📸 Manca la tua foto Polaroid!</div>
@@ -816,6 +836,9 @@ window.talentEditConfig = {
             <?php endforeach; ?>
         },
         complLabel:          <?= json_encode($_t($T['compl_label'])) ?>,
+        statusPublic:        <?= json_encode($_t($T['statuscard_public'])) ?>,
+        statusReview:        <?= json_encode($_t($T['statuscard_review'])) ?>,
+        statusPhotosPending: <?= json_encode($_t($T['statuscard_photos_pending'])) ?>,
         mancanoTitolo:       <?= json_encode($_t($T['mancano_titolo'])) ?>,
         mancanoLabels: {
             telefono:               <?= json_encode($_t($T['mancano_telefono'])) ?>,

@@ -1,6 +1,7 @@
-STATO=CLOSED
-CHAT=TEMA TALENT-SELFEDIT-FOTO-MOBILE
-INIZIO=2026-09-06 16:12:17
-UPDATE=2026-09-11 11:44:00
-SHA1_ATTESO=ed99d8cafe58e6732161e487c55352ed42548ffa
-NOTA=Fix "link scaduto mostra solo video" LIVE PROD 11/09 11:42 (commit bd2c98482). showError() in assets/talent-self-edit.js ora nasconde anche tse-video-section. Verificato live in preview E in prod (videoSectionDisplay:none, statusText corretto). Coda vuota.
+STATO=OPEN
+CHAT=CRM-MINORI-EMAIL-BATTENTI
+FILE=toagency-theme/templates/page-talent-self-edit.php
+INIZIO=2026-09-15 20:41:26
+UPDATE=2026-09-15 20:41:26
+SHA1_ATTESO=ef45362e72604c9dafc09ded00a79c06a03ca044
+NOTE=Card di stato prima del form (Step 2 pagina-stato): mostra visibile_pubblico/foto_in_attesa/completezza, form pesante gated dietro click Modifica.

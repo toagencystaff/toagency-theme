@@ -1,6 +1,7 @@
-STATO=CLOSED
-CHAT=TEMA TALENT-SELFEDIT-BUGFIX
-INIZIO=2026-08-26 15:44:57
-UPDATE=2026-08-26 15:48:10
-SHA1_ATTESO=b007f8ced505f22429e579b3a6b19edc55e8556f
-NOTA=LIVE prod 26/08 15:48 (commit 6cca010a3), health check OK. Coda vuota
+STATO=OPEN
+CHAT=CRM-MINORI-EMAIL-BATTENTI
+FILE=toagency-theme/assets/talent-self-edit.js
+INIZIO=2026-09-15 20:41:26
+UPDATE=2026-09-15 20:41:26
+SHA1_ATTESO=ed99d8cafe58e6732161e487c55352ed42548ffa
+NOTE=Card di stato prima del form (Step 2 pagina-stato): stesso motivo del lock su page-talent-self-edit.php.
