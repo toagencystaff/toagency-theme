@@ -8,6 +8,16 @@
 <footer class="footer">
   <?php /* FIX 2026-08-22 marco — denominazione titolare corretta: ditta individuale TOA di Leonardi Marco (la vecchia dicitura indicava una società inesistente) */ ?>
   <p>TOAGENCY è un marchio di TOA di Leonardi Marco &mdash; Via Cavour 21, 10123 Torino (Italy) &mdash; P.IVA 11800210012</p>
+  <?php
+  // FIX 2026-09-15 marco — footer: link "hai gia' una scheda" (Opzione 3, sito-wide — stessa richiesta del box su Collabora/talent-database)
+  $toa_footer_recover_lang = defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : 'it';
+  ?>
+  <p class="toa-footer-recover">
+    <?php echo _ht(['it'=>'Hai già una scheda con noi?','en'=>'Already have a profile with us?','fr'=>'Tu as déjà une fiche chez nous ?','es'=>'¿Ya tienes una ficha con nosotros?']); ?>
+    <a href="https://toagency.it/crm_toagency/recupera-link.php?lang=<?php echo esc_attr($toa_footer_recover_lang); ?>" style="color:#c8ff00;text-decoration:underline;">
+        <?php echo _ht(['it'=>'Recuperala qui','en'=>'Recover it here','fr'=>'Récupère-la ici','es'=>'Recúperala aquí']); ?>
+    </a>
+  </p>
   <div class="footer-links">
     <?php
     $toa_lang = defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : 'it';
