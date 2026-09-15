@@ -68,6 +68,14 @@ $T = array(
     'results_count_s'=> array('it'=>'talent trovato','en'=>'talent found','fr'=>'talent trouvé','es'=>'talent encontrado'),
     'results_count_p'=> array('it'=>'talent trovati','en'=>'talents found','fr'=>'talents trouvés','es'=>'talents encontrados'),
     'results_empty'  => array('it'=>'Nessun talent corrisponde ai filtri.','en'=>'No talent matches your filters.','fr'=>'Aucun talent.','es'=>'Ningún talent.'),
+    // FIX 2026-09-15 marco — chi cerca il proprio nome e non si trova (scheda non ancora pubblica) deve sapere che puo' recuperarla
+    'results_empty_hint' => array(
+        'it'=>'Hai già una scheda con noi (magari non ancora pubblicata)?',
+        'en'=>'Already have a profile with us (maybe not published yet)?',
+        'fr'=>'Tu as déjà une fiche chez nous (peut-être pas encore publiée) ?',
+        'es'=>'¿Ya tienes una ficha con nosotros (quizás aún no publicada)?',
+    ),
+    'results_empty_link' => array('it'=>'Recuperala qui','en'=>'Recover it here','fr'=>'Récupère-la ici','es'=>'Recúperala aquí'),
     'results_more'   => array('it'=>'Carica altri','en'=>'Load more','fr'=>'Charger plus','es'=>'Cargar más'),
 
     'btn_add'        => array('it'=>'+ Aggiungi alla selezione','en'=>'+ Add to selection','fr'=>'+ Ajouter','es'=>'+ Añadir'),
@@ -591,6 +599,13 @@ $hub_sections = array(
             <div class="toa-tdb-grid" id="tdbGrid" aria-live="polite"></div>
             <div class="toa-tdb-grid-empty" id="tdbGridEmpty" hidden>
                 <p><?php echo esc_html($_t($T['results_empty'])); ?></p>
+                <!-- FIX 2026-09-15 marco — chi cerca il proprio nome e non si trova pensa di non essere registrato: suggerisco il recupero scheda -->
+                <p style="margin-top:14px;font-size:.85rem;">
+                    <?php echo esc_html($_t($T['results_empty_hint'])); ?>
+                    <a href="https://toagency.it/crm_toagency/recupera-link.php?lang=<?php echo esc_attr($__l); ?>" style="color:#c8ff00;text-decoration:underline;font-weight:700;">
+                        <?php echo esc_html($_t($T['results_empty_link'])); ?>
+                    </a>
+                </p>
             </div>
             <div class="toa-tdb-loadmore-wrap">
                 <button type="button" class="toa-tdb-btn toa-tdb-btn-primary" id="tdbLoadMore" hidden><?php echo esc_html($_t($T['results_more'])); ?></button>
