@@ -52,6 +52,11 @@ add_filter( 'wpseo_schema_organization', function ( $data ) {
         'telephone'         => '+39 351 789 9225',
         'availableLanguage' => [ 'Italian', 'English', 'French', 'Spanish' ],
     ] ];
+    // 2026-09-16 marco -- sameAs profili social ufficiali (chat TEMA SEO-AI)
+    $data['sameAs'] = [
+        'https://www.facebook.com/toagency/',
+        'https://www.instagram.com/toagency/',
+    ];
     return $data;
 } );
 
