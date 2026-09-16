@@ -1,6 +1,6 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=TEMA TICKET-79-80
 INIZIO=2026-09-16 11:30:42
-UPDATE=2026-09-16 11:30:42
+UPDATE=2026-09-16 11:42:52
 SHA1_ATTESO=4a5b603605e8d19184908db1351da7ebed8c373f
-NOTA=Rilevato lock OPEN di TEMA SEO-AI (dalle 10:08, mai chiuso) -- Marco ha confermato che quella chat ha finito. Verificato sha1 reale = sha1 atteso in quel lock (277ee77d1...), nessuna deriva. Preso in carico: aggiunti 5 brand (NM LAB, DAN JOHN, GARNIER, SEPHORA, VILLA CRESPI) alle due liste b2 (righe ~967 e ~1033, striscia CRO hostess-live) per ticket #79. php -l OK. In attesa di deploy da Marco.
+NOTA=Ticket #79 DEPLOY=FATTO — preview+prod verificati live (commit cabdc674c). 5 brand aggiunti a entrambe le liste b2. Preso in carico da lock orfano di TEMA SEO-AI (confermato da Marco come finito, sha1 verificato senza deriva). Lock chiuso.

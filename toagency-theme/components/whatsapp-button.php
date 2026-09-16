@@ -24,7 +24,7 @@ if ( is_singular( 'post' ) ) {
     }
 }
 
-$wa_number = '393517899225';
+$wa_number = '393518468516';
 
 $wa_texts = array(
     'it' => 'Ciao TOAgency, vorrei informazioni su [servizio]',
