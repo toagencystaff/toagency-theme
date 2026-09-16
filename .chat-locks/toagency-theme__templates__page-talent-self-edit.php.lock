@@ -1,7 +1,7 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=CRM-MINORI-EMAIL-BATTENTI
 FILE=toagency-theme/templates/page-talent-self-edit.php
-INIZIO=2026-09-15 20:41:26
-UPDATE=2026-09-15 20:41:26
-SHA1_ATTESO=ef45362e72604c9dafc09ded00a79c06a03ca044
-NOTE=Card di stato prima del form (Step 2 pagina-stato): mostra visibile_pubblico/foto_in_attesa/completezza, form pesante gated dietro click Modifica.
+SHA1_ATTESO=8ffaaa0d2cf0e6f3483c86902ce8e7b091a5542f
+UPDATE=2026-09-16 06:44:20
+DEPLOY=FATTO — preview+prod verificati live (commit f06b004e5)
+NOTE=Card di stato prima del form self-edit. Chiuso.

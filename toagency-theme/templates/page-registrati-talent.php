@@ -635,6 +635,49 @@ $theme_uri = get_stylesheet_directory_uri();
                     </label>
                     <div class="toa-talent-error-msg"></div>
                 </div>
+
+                <!-- NEW 2026-09-16 marco (chat CRM-MINORI-EMAIL-BATTENTI) — 16-17: dati genitore
+                     facoltativi ma consigliati. "name" con suffisso _1617 apposta: non deve MAI
+                     coincidere con quello dei campi obbligatori della sezione 0-15 qui sopra,
+                     altrimenti in submit vincerebbe l'ultimo dei due e si perderebbe un valore. -->
+                <div class="toa-talent-field" style="margin-top:14px;">
+                    <p class="toa-talent-field-hint" style="margin-bottom:10px;">
+                        <?php echo _ht_talent(array(
+                            'it'=>'Facoltativo ma consigliato: lasciaci anche il contatto di un genitore o tutore, utile in caso di necessità.',
+                            'en'=>'Optional but recommended: also leave us a parent/guardian contact, useful if needed.',
+                            'fr'=>'Facultatif mais recommandé : laisse-nous aussi le contact d\'un parent/tuteur, utile en cas de besoin.',
+                            'es'=>'Opcional pero recomendado: déjanos también el contacto de un padre/tutor, útil si hace falta.',
+                        )); ?>
+                    </p>
+                    <div class="toa-talent-field-row">
+                        <div class="toa-talent-field">
+                            <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Nome genitore/tutore','en'=>'Parent/guardian name','fr'=>'Nom parent/tuteur','es'=>'Nombre padre/tutor')); ?></label>
+                            <input type="text" name="genitore1_nome_1617" class="toa-talent-input" autocomplete="off">
+                        </div>
+                        <div class="toa-talent-field">
+                            <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Email genitore/tutore','en'=>'Parent/guardian email','fr'=>'Email parent/tuteur','es'=>'Email padre/tutor')); ?></label>
+                            <input type="email" name="genitore1_email_1617" class="toa-talent-input" autocomplete="off">
+                        </div>
+                        <div class="toa-talent-field">
+                            <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Telefono genitore/tutore','en'=>'Parent/guardian phone','fr'=>'Téléphone parent/tuteur','es'=>'Teléfono padre/tutor')); ?></label>
+                            <input type="tel" name="genitore1_telefono_1617" class="toa-talent-input" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="toa-talent-field-row">
+                        <div class="toa-talent-field">
+                            <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Nome secondo genitore/tutore (facoltativo)','en'=>'Second parent/guardian name (optional)','fr'=>'Nom second parent/tuteur (facultatif)','es'=>'Nombre segundo padre/tutor (opcional)')); ?></label>
+                            <input type="text" name="genitore2_nome_1617" class="toa-talent-input" autocomplete="off">
+                        </div>
+                        <div class="toa-talent-field">
+                            <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Email secondo genitore/tutore','en'=>'Second parent/guardian email','fr'=>'Email second parent/tuteur','es'=>'Email segundo padre/tutor')); ?></label>
+                            <input type="email" name="genitore2_email_1617" class="toa-talent-input" autocomplete="off">
+                        </div>
+                        <div class="toa-talent-field">
+                            <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Telefono secondo genitore/tutore','en'=>'Second parent/guardian phone','fr'=>'Téléphone second parent/tuteur','es'=>'Teléfono segundo padre/tutor')); ?></label>
+                            <input type="tel" name="genitore2_telefono_1617" class="toa-talent-input" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- DOVE VIVI (nazione + provincia + comune) — residenza tutta nello Step 1 (13/07) -->

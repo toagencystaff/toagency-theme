@@ -121,11 +121,21 @@ $misura_fianchi = rt_int($_POST['misura_fianchi'] ?? 0);
 $instagram = rt_clean($_POST['instagram'] ?? '');
 $tiktok    = rt_clean($_POST['tiktok'] ?? '');
 
-// Genitore (se minore)
+// Genitore (se minore) — 0-15: campo unico obbligatorio "genitore1_*" (form dedicato).
+// 16-17: campi FACOLTATIVI con "name" diversi ("_1617"), per non collidere con gli input
+// (nascosti ma presenti nel DOM) della sezione 0-15 — altrimenti due <input> con lo stesso
+// "name" nello stesso form si sovrascriverebbero a vicenda in $_POST.
 $genitore1_nome      = rt_clean($_POST['genitore1_nome'] ?? '');
 $genitore1_email     = rt_email($_POST['genitore1_email'] ?? '');
 $genitore1_telefono  = rt_clean($_POST['genitore1_telefono'] ?? '');
 $genitore1_relazione = rt_clean($_POST['genitore1_relazione'] ?? 'genitore');
+// NEW 2026-09-16 marco (chat CRM-MINORI-EMAIL-BATTENTI) — 16-17, entrambi facoltativi
+$genitore1_nome_1617     = rt_clean($_POST['genitore1_nome_1617'] ?? '');
+$genitore1_email_1617    = rt_email($_POST['genitore1_email_1617'] ?? '');
+$genitore1_telefono_1617 = rt_clean($_POST['genitore1_telefono_1617'] ?? '');
+$genitore2_nome_1617     = rt_clean($_POST['genitore2_nome_1617'] ?? '');
+$genitore2_email_1617    = rt_email($_POST['genitore2_email_1617'] ?? '');
+$genitore2_telefono_1617 = rt_clean($_POST['genitore2_telefono_1617'] ?? '');
 
 // Consensi
 $gdpr_consent       = rt_bool($_POST['gdpr_consent'] ?? '0');
@@ -187,11 +197,18 @@ if ($is_bambino) {
         $genitore1_relazione = 'genitore';
     }
 } elseif ($is_minore) {
-    // 16-17: checkbox conferma genitore obbligatorio
+    // 16-17: checkbox conferma genitore obbligatorio; dati genitore facoltativi (presi dai
+    // campi "_1617", mai da quelli "genitore1_*" che qui il form nemmeno mostra).
     if (!$parent_confirm_checkbox) {
         rt_fail('missing_parent_confirm', 'La conferma del genitore è obbligatoria per i minorenni 16-17');
     }
+    $genitore1_nome     = $genitore1_nome_1617;
+    $genitore1_email    = $genitore1_email_1617;
+    $genitore1_telefono = $genitore1_telefono_1617;
 }
+$genitore2_nome     = $is_minore ? $genitore2_nome_1617     : '';
+$genitore2_email    = $is_minore ? $genitore2_email_1617    : '';
+$genitore2_telefono = $is_minore ? $genitore2_telefono_1617 : '';
 
 // Sanitize valori controllati
 if (!in_array($occhi, $OCCHI_ALLOWED, true)) $occhi = '';
@@ -316,12 +333,16 @@ $insert_data = [
     'dati_contrattuali_completi'   => 0,
     'eliminato'                    => 0,
 
-    // Minorenne / genitore
+    // Minorenne / genitore — 0-15: genitore1 obbligatorio (validato sopra). 16-17: genitore1/2
+    // facoltativi, salvati se compilati (non piu' azzerati a null solo perche' non e' 0-15).
     'minorenne'                => $is_minore ? 1 : 0,
-    'genitore1_nome'           => $is_bambino ? $genitore1_nome : null,
-    'genitore1_email'          => $is_bambino ? $genitore1_email : null,
-    'genitore1_telefono'       => $is_bambino ? $genitore1_telefono : null,
-    'genitore1_relazione'      => $is_bambino ? $genitore1_relazione : null,
+    'genitore1_nome'           => $is_minore ? $genitore1_nome : null,
+    'genitore1_email'          => $is_minore ? $genitore1_email : null,
+    'genitore1_telefono'       => $is_minore ? $genitore1_telefono : null,
+    'genitore1_relazione'      => $is_minore ? $genitore1_relazione : null,
+    'genitore2_nome'           => $is_minore ? $genitore2_nome : null,
+    'genitore2_email'          => $is_minore ? $genitore2_email : null,
+    'genitore2_telefono'       => $is_minore ? $genitore2_telefono : null,
     'genitore_token_hash'      => null,
     'genitore_token_expires'   => null,
     'genitore_verificato'      => 0,
