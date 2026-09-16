@@ -840,6 +840,8 @@ require_once get_template_directory() . '/inc/schema.php';
 require_once get_template_directory() . '/inc/toa-shortlink.php';
 // 2026-09-08 marco — landing Ads dedicate a fiere ed eventi (TEMA LP-FIERE-QUALITY-SCORE)
 require_once get_template_directory() . '/inc/lp-fiere.php';
+// 2026-09-16 marco -- llms.txt virtuale per crawler AI (chat TEMA SEO-AI)
+require_once get_template_directory() . '/inc/llms-txt.php';
 
 // === FIX 2026-05-30 marco — google-reviews CSS ===
 add_action('wp_enqueue_scripts', function() {

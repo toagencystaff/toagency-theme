@@ -1,6 +1,6 @@
 STATO=OPEN
-CHAT=COWORK OG-LOCALE-WPML
-INIZIO=2026-09-10 16:09:06
-UPDATE=2026-09-10 16:09:06
-SHA1_ATTESO=b73523aab8420d72ce1db88d0e3d4f55a7c38efd
-NOTA=Fix og_locale sempre it_IT su pagine EN/FR/ES (bug trovato 10/09, richiamo permessi/servizi)
+CHAT=TEMA SEO-AI
+INIZIO=2026-09-16 10:08:59
+UPDATE=2026-09-16 10:08:59
+SHA1_ATTESO=277ee77d1d7f1ac611beb7e31eef80f263956143
+NOTA=Aggiunto require inc/llms-txt.php (llms.txt virtuale per crawler AI). Lock precedente (COWORK OG-LOCALE-WPML, 10/09) era rimasto aperto per dimenticanza: fix og_locale gia' committato (e8ca31d56) e verificato live oggi 16/09 su 46 pagine -- chiuso e sostituito da questo.
