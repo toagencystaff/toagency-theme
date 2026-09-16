@@ -451,6 +451,11 @@ img { max-width: 100%; height: auto; display: block; }
 .b-inter{font-size:1.1rem;font-weight:700;font-family:'Helvetica Neue',Arial,sans-serif}
 .b-torino{font-size:1.1rem;font-weight:700;font-family:'Times New Roman',Georgia,serif}
 .b-coin{font-size:1.35rem;font-weight:500;font-family:'Montserrat',sans-serif;letter-spacing:3px;text-transform:uppercase}
+.b-nmlab{font-size:1.15rem;font-weight:600;font-family:'Montserrat',sans-serif;letter-spacing:2px;text-transform:uppercase}
+.b-danjohn{font-size:1.3rem;font-weight:700;font-family:'Oswald',sans-serif;font-style:italic;text-transform:uppercase;letter-spacing:1px}
+.b-garnier{font-size:1.3rem;font-weight:800;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:1px}
+.b-sephora{font-size:1.4rem;font-weight:900;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:-.5px}
+.b-villacrespi{font-size:1.3rem;font-weight:600;font-family:'Playfair Display',Georgia,serif;font-style:italic;letter-spacing:1px}
 .b-revlon{font-size:1.2rem;font-weight:600;font-family:'Playfair Display',Georgia,serif;letter-spacing:2px;text-transform:uppercase}
 .b-algida{font-size:1.2rem;font-weight:800;font-family:'Helvetica',Arial,sans-serif}
 .b-mizuno{font-size:1.25rem;font-weight:700;font-family:'Montserrat',sans-serif;font-style:italic;text-transform:uppercase}

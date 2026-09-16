@@ -1,6 +1,6 @@
 STATO=OPEN
-CHAT=TEMA SEO-AI
-INIZIO=2026-09-16 10:08:59
-UPDATE=2026-09-16 10:08:59
-SHA1_ATTESO=277ee77d1d7f1ac611beb7e31eef80f263956143
-NOTA=Aggiunto require inc/llms-txt.php (llms.txt virtuale per crawler AI). Lock precedente (COWORK OG-LOCALE-WPML, 10/09) era rimasto aperto per dimenticanza: fix og_locale gia' committato (e8ca31d56) e verificato live oggi 16/09 su 46 pagine -- chiuso e sostituito da questo.
+CHAT=TEMA TICKET-79-80
+INIZIO=2026-09-16 11:30:42
+UPDATE=2026-09-16 11:30:42
+SHA1_ATTESO=4a5b603605e8d19184908db1351da7ebed8c373f
+NOTA=Rilevato lock OPEN di TEMA SEO-AI (dalle 10:08, mai chiuso) -- Marco ha confermato che quella chat ha finito. Verificato sha1 reale = sha1 atteso in quel lock (277ee77d1...), nessuna deriva. Preso in carico: aggiunti 5 brand (NM LAB, DAN JOHN, GARNIER, SEPHORA, VILLA CRESPI) alle due liste b2 (righe ~967 e ~1033, striscia CRO hostess-live) per ticket #79. php -l OK. In attesa di deploy da Marco.

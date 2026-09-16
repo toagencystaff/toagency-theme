@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     {t:'VIRGIN ACTIVE',c:'b-virgin'},{t:'WRANGLER',c:'b-wrangler'},
     {t:'FIORUCCI',c:'b-fiorucci'},{t:'TORINO FC',c:'b-torino'},{t:'ALGIDA',c:'b-algida'},
     {t:'MIZUNO',c:'b-mizuno'},{t:'KINGS LEAGUE',c:'b-kingsleague'},
-    {t:'AIA',c:'b-aia'},{t:'REVLON',c:'b-revlon'},{t:'COIN',c:'b-coin'}
+    {t:'AIA',c:'b-aia'},{t:'REVLON',c:'b-revlon'},{t:'COIN',c:'b-coin'},{t:'NM LAB',c:'b-nmlab'},{t:'DAN JOHN',c:'b-danjohn'},{t:'GARNIER',c:'b-garnier'},{t:'SEPHORA',c:'b-sephora'},{t:'VILLA CRESPI',c:'b-villacrespi'}
   ];
 
   function buildTicker(brands, elId) {

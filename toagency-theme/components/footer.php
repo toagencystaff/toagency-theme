@@ -39,6 +39,7 @@
     <a href="https://toagency.it/cookie-policy-ue/" target="_blank">Cookie Policy</a>
     <a href="<?php echo home_url('/terms-and-conditions/'); ?>"><?php echo esc_html($toa_terms_label); ?></a>
     <a href="<?php echo esc_url(home_url('/blog/')); ?>">Blog</a>
+    <a href="#" onclick="toaOpenReportModal(); return false;"><?php echo _ht(['it'=>'Segnala un problema','en'=>'Report a problem','fr'=>'Signaler un problème','es'=>'Informar un problema']); ?></a>
   </div>
 
   <!-- BEGIN FIX 2026-05-31 marco — landing-links footer -->
@@ -98,5 +99,6 @@
 
 <?php wp_footer(); ?>
 <?php toa_component('whatsapp-button'); ?>
+<?php toa_component('report-problem-modal'); ?>
 </body>
 </html>
