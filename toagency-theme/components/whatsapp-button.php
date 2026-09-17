@@ -27,10 +27,10 @@ if ( is_singular( 'post' ) ) {
 $wa_number = '393518468516';
 
 $wa_texts = array(
-    'it' => 'Ciao TOAgency, vorrei informazioni su [servizio]',
-    'en' => "Hi TOAgency, I'd like information about [service]",
-    'fr' => 'Bonjour TOAgency, je voudrais des informations sur [service]',
-    'es' => 'Hola TOAgency, me gustaría información sobre [servicio]',
+    'it' => 'Ciao, vengo dal sito TOAgency',
+    'en' => "Hi, I'm visiting from the TOAgency website",
+    'fr' => 'Bonjour, je viens du site TOAgency',
+    'es' => 'Hola, vengo del sitio web de TOAgency',
 );
 
 $wa_aria = array(
