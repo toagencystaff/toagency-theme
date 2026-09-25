@@ -278,6 +278,7 @@ toa_component('header');
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center 15%; /* FIX 2026-09-25 marco: teste tagliate */
     transition: transform 0.5s cubic-bezier(.2,.8,.3,1);
 }
 .casting-item:hover .casting-thumb img {

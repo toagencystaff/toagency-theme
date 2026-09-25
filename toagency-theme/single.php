@@ -34,7 +34,8 @@ toa_component('header');
         position: relative;
         width: 100%;
         overflow: hidden;
-        max-height: 560px;
+        max-height: calc(560px + var(--toa-nav-h, 88px)); /* FIX 2026-09-25 marco */
+        padding-top: var(--toa-nav-h, 88px); /* FIX 2026-09-25 marco: l'immagine parte SOTTO il menu fisso (88px), cosi non copre la testa */
         background: #000;
     }
 
@@ -42,6 +43,7 @@ toa_component('header');
         width: 100%;
         height: 560px;
         object-fit: cover;
+        object-position: center 15%; /* FIX 2026-09-25 marco: teste tagliate, si privilegia la parte alta */
         display: block;
     }
 
@@ -278,6 +280,7 @@ toa_component('header');
         width: 80px;
         height: 60px;
         object-fit: cover;
+        object-position: center 15%; /* FIX 2026-09-25 marco */
         border-radius: 6px;
         flex-shrink: 0;
         display: block;

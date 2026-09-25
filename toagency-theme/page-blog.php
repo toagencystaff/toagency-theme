@@ -95,6 +95,7 @@ toa_component('header');
         width: 100%;
         height: 100%;
         object-fit: cover;
+        object-position: center 15%; /* FIX 2026-09-25 marco: teste tagliate nelle miniature */
         display: block;
         transition: transform 0.4s ease;
     }
