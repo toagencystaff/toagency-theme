@@ -315,6 +315,7 @@
         if (st) { st.style.display = 'block'; st.textContent = STR.loading || 'Caricamento…'; st.classList.remove('error'); }
         loadData();
     }
+    window.talentShowForm = talentShowForm; // fix 2026-09-25 — mancava, bottone 'Modifica la tua scheda' non funzionava (ticket #291, trovato in autoverifica)
 
     // Prima cosa che si vede: card leggera (stato pubblico, foto in attesa, % completezza) invece del form pesante.
     // Se qualcosa va storto qui, si cade sempre sul comportamento di prima (form diretto) — mai un vicolo cieco.

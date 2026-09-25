@@ -1,7 +1,6 @@
-STATO=CLOSED
-CHAT=CRM-MINORI-EMAIL-BATTENTI
+STATO=OPEN
+CHAT=TEMA-SEZIONI-RUOLO
 FILE=toagency-theme/assets/talent-self-edit.js
-SHA1_ATTESO=60c3a39efbffc12ddde76fda3305bd0ae05a376a
-UPDATE=2026-09-16 06:44:20
-DEPLOY=FATTO — preview+prod verificati live (commit f06b004e5)
-NOTE=renderStatusCard/talentShowForm/loadStatusCard. Chiuso.
+SHA1_ATTESO=5ea3f3a37a4bc6019a7649fc42233e315cac7e57
+UPDATE=2026-09-25 13:31:44
+NOTE=fix window.talentShowForm mancante (bottone rotto dal 15/09), trovato in autoverifica ticket #291
