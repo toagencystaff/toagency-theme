@@ -1,6 +1,6 @@
 STATO=CLOSED
 CHAT=TEMA-SEZIONI-RUOLO
 FILE=toagency-theme/assets/talent-self-edit.js
-SHA1_ATTESO=5ea3f3a37a4bc6019a7649fc42233e315cac7e57
-UPDATE=2026-09-25 13:31:44
-NOTE=fix window.talentShowForm mancante (bottone rotto dal 15/09), trovato in autoverifica ticket #291
+SHA1_ATTESO=2a753644f8abc6b2b1de8fc2f08812cc89049cb3
+UPDATE=2026-09-25 13:59:27
+NOTE=aggiunti creator/ugc_creator/influencer a ROLE_ALBUMS (mancavano, ticket #291)

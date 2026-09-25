@@ -108,7 +108,7 @@
     }
 
     // FIX 2026-07-16 marco — guida album consigliati per ruolo (talent.ruoli dal load)
-    var ROLE_ALBUMS = { model:['portfolio','dettaglio'], actor:['portfolio'], hostess:['eventi'] };
+    var ROLE_ALBUMS = { model:['portfolio','dettaglio'], actor:['portfolio'], hostess:['eventi'], creator:['dettaglio','casual'], ugc_creator:['dettaglio','casual'], influencer:['dettaglio','casual'] }; // 2026-09-25 aggiunti creator/ugc_creator/influencer (mancavano, ticket #291)
     function renderRuoloGuida(ruoli) {
         var box = $('tse-ruolo-guida');
         if (!box) return;
