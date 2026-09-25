@@ -681,6 +681,9 @@ $token_get = $_GET['t']    ?? '';
                 </div>
             </div>
 
+            <!-- 2026-09-25 TEMA ticket #291 — sotto-schede per ruolo (Creator/Attore/Modella...) dal CRM -->
+            <div id="tse-profili-ruolo" data-api="https://toagency.it/crm_toagency/actions/talent-profilo-ruolo.php"></div>
+
             <!-- Honeypot -->
             <div style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
                 <label>Non compilare<input type="text" id="f-honeypot" tabindex="-1" autocomplete="off"></label>
@@ -873,5 +876,11 @@ $tse_js_path = get_stylesheet_directory() . '/assets/talent-self-edit.js';
 $tse_js_ver  = file_exists($tse_js_path) ? filemtime($tse_js_path) : '2.1';
 ?>
 <script src="<?= esc_url($theme_uri . '/assets/talent-self-edit.js') ?>?v=<?= $tse_js_ver ?>" defer></script>
+
+<?php
+$tse_rp_js_path = get_stylesheet_directory() . '/assets/talent-profilo-ruolo.js';
+$tse_rp_js_ver  = file_exists($tse_rp_js_path) ? filemtime($tse_rp_js_path) : '1';
+?>
+<script src="<?= esc_url($theme_uri . '/assets/talent-profilo-ruolo.js') ?>?v=<?= $tse_rp_js_ver ?>" defer></script>
 
 <?php toa_component('footer'); ?>
