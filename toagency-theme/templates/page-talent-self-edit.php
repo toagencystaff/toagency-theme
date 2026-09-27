@@ -85,6 +85,7 @@ $T = [
     'opt_select'   => ['it'=>'—','en'=>'—','fr'=>'—','es'=>'—'],
     'section_profilo' => ['it'=>'Profilo professionale','en'=>'Professional profile','fr'=>'Profil professionnel','es'=>'Perfil profesional'],
     'field_occhi'     => ['it'=>'Colore occhi *','en'=>'Eye color *','fr'=>'Couleur des yeux *','es'=>'Color de ojos *'],
+    'field_sesso'     => ['it'=>'Sesso *','en'=>'Gender *','fr'=>'Genre *','es'=>'Género *'],
     'field_etnia'     => ['it'=>'Etnia * (max 2)','en'=>'Ethnicity * (max 2)','fr'=>'Ethnie * (max 2)','es'=>'Etnia * (máx 2)'],
     'field_ruoli'     => ['it'=>'Ruoli * (uno o più)','en'=>'Roles * (one or more)','fr'=>'Rôles * (un ou plusieurs)','es'=>'Roles * (uno o más)'],
     'field_lingue'    => ['it'=>'Lingue parlate','en'=>'Spoken languages','fr'=>'Langues parlées','es'=>'Idiomas'],
@@ -210,6 +211,66 @@ $T = [
     'verita_casual'    => ['it'=>'Confermo che questa foto è mia e rappresenta il mio aspetto attuale','en'=>'I confirm this photo is mine and represents my current appearance','fr'=>'Je confirme que cette photo est la mienne et représente mon apparence actuelle','es'=>'Confirmo que esta foto es mía y representa mi apariencia actual'],
 ];
 
+// FIX 2026-09-22 marco (chat CRM - EVENTS DATABASE) — album: STESSA definizione della registrazione
+// (nomi, a cosa servono, ruoli). File condiviso: templates/_talent-albums.php
+require_once __DIR__ . '/_talent-albums.php';
+$SE_ALBUM_DEFS = array();
+foreach ($TALENT_ALBUM as $__al) {
+    if ($__al['code'] === 'ugc') continue; // UGC = video: ha la sua sezione video
+    $SE_ALBUM_DEFS[] = array(
+        'code'   => $__al['code'],
+        'roles'  => $__al['roles'],
+        'label'  => $_t($__al['label']),
+        'quante' => isset($__al['quante']) ? $_t($__al['quante']) : '',
+        'hint'   => isset($__al['hint'])   ? $_t($__al['hint'])   : '',
+    );
+}
+$T2 = [
+    'btn_foto'     => ['it'=>'📸 Le mie foto','en'=>'📸 My photos','fr'=>'📸 Mes photos','es'=>'📸 Mis fotos'],
+    'foto_sub'     => ['it'=>'Ogni album ha uno scopo: apri l\'album giusto, leggi a cosa serve e poi carica. Gli album utili per il tuo profilo hanno il pallino verde. Ogni foto viene verificata dallo staff prima di essere pubblicata.','en'=>'Each album has a purpose: open the right album, read what it is for, then upload. Albums useful for your profile have a green dot. Every photo is checked by our staff before it goes live.','fr'=>'Chaque album a un but : ouvre le bon album, lis à quoi il sert, puis charge. Les albums utiles pour ton profil ont un point vert. Chaque photo est vérifiée par l\'équipe avant publication.','es'=>'Cada álbum tiene un fin: abre el álbum correcto, lee para qué sirve y luego sube. Los álbumes útiles para tu perfil tienen un punto verde. Cada foto la revisa el equipo antes de publicarla.'],
+    'del'          => ['it'=>'Elimina','en'=>'Delete','fr'=>'Supprimer','es'=>'Eliminar'],
+    'move'         => ['it'=>'Sposta','en'=>'Move','fr'=>'Déplacer','es'=>'Mover'],
+    'confirm_del'  => ['it'=>'Eliminare questa foto? Non si può annullare.','en'=>'Delete this photo? This cannot be undone.','fr'=>'Supprimer cette photo ? C\'est définitif.','es'=>'¿Eliminar esta foto? No se puede deshacer.'],
+    'del_error'    => ['it'=>'Non siamo riusciti a eliminare la foto. Riprova tra poco o scrivici su WhatsApp.','en'=>'We could not delete the photo. Try again shortly or message us on WhatsApp.','fr'=>'Impossible de supprimer la photo. Réessaie plus tard ou écris-nous sur WhatsApp.','es'=>'No hemos podido eliminar la foto. Inténtalo más tarde o escríbenos por WhatsApp.'],
+    'add_photo'    => ['it'=>'+ Aggiungi foto in questo album','en'=>'+ Add photos to this album','fr'=>'+ Ajouter des photos à cet album','es'=>'+ Añadir fotos a este álbum'],
+    'close_upload' => ['it'=>'Chiudi','en'=>'Close','fr'=>'Fermer','es'=>'Cerrar'],
+    'state_pending'=> ['it'=>'In verifica','en'=>'Under review','fr'=>'En vérification','es'=>'En revisión'],
+    'state_rejected'=> ['it'=>'Rifiutata','en'=>'Rejected','fr'=>'Refusée','es'=>'Rechazada'],
+    'princ_badge'  => ['it'=>'⭐ Foto principale','en'=>'⭐ Main photo','fr'=>'⭐ Photo principale','es'=>'⭐ Foto principal'],
+    'set_princ'    => ['it'=>'⭐ Metti principale','en'=>'⭐ Make main','fr'=>'⭐ Mettre principale','es'=>'⭐ Poner principal'],
+    'cover_ev_badge'=> ['it'=>'⭐ Copertina eventi','en'=>'⭐ Events cover','fr'=>'⭐ Couverture événements','es'=>'⭐ Portada eventos'],
+    'set_cover_ev' => ['it'=>'⭐ Usa come copertina','en'=>'⭐ Use as cover','fr'=>'⭐ Mettre en couverture','es'=>'⭐ Usar de portada'],
+    'no_del_princ' => ['it'=>'Questa è la foto che vedono i clienti. Prima scegline un\'altra con "Metti principale", poi potrai eliminarla.','en'=>'This is the photo clients see. First choose another one with "Make main", then you can delete it.','fr'=>'C\'est la photo que voient les clients. Choisis d\'abord une autre avec "Mettre principale", puis tu pourras la supprimer.','es'=>'Esta es la foto que ven los clientes. Primero elige otra con "Poner principal" y luego podrás eliminarla.'],
+    'princ_pending'=> ['it'=>'Questa foto è ancora in verifica: potrai metterla come principale appena lo staff l\'avrà approvata.','en'=>'This photo is still under review: you can make it your main photo once our staff approves it.','fr'=>'Cette photo est encore en vérification : tu pourras la mettre en principale dès que l\'équipe l\'aura validée.','es'=>'Esta foto aún está en revisión: podrás ponerla como principal cuando el equipo la apruebe.'],
+    'princ_ok'     => ['it'=>'Fatto: questa è ora la foto che vedono i clienti.','en'=>'Done: this is now the photo clients see.','fr'=>'C\'est fait : c\'est maintenant la photo que voient les clients.','es'=>'Hecho: ahora es la foto que ven los clientes.'],
+    'princ_missing'=> ['it'=>'La foto che vedono oggi i clienti non è in nessuno di questi album. Se vuoi cambiarla, tocca "⭐ Metti principale" sotto una foto approvata.','en'=>'The photo clients see today is not in any of these albums. To change it, tap "⭐ Make main" under an approved photo.','fr'=>'La photo que voient aujourd\'hui les clients n\'est dans aucun de ces albums. Pour la changer, touche "⭐ Mettre principale" sous une photo validée.','es'=>'La foto que ven hoy los clientes no está en ninguno de estos álbumes. Para cambiarla, toca "⭐ Poner principal" bajo una foto aprobada.'],
+    'touch_hint2'  => ['it'=>'Sotto ogni foto trovi Elimina e Sposta. Tocca la foto per vederla grande.','en'=>'Under each photo you find Delete and Move. Tap the photo to see it bigger.','fr'=>'Sous chaque photo : Supprimer et Déplacer. Touche la photo pour l\'agrandir.','es'=>'Debajo de cada foto tienes Eliminar y Mover. Toca la foto para verla grande.'],
+    // ─── FIX 2026-09-22 marco (CRM - EVENTS DATABASE, Fase 2) — sezione Hostess & Eventi ───
+    'ev_title'     => ['it'=>'Hostess & Eventi','en'=>'Hostess & Events','fr'=>'Hôtesses & Événements','es'=>'Azafatas & Eventos'],
+    'ev_rules'     => ['it'=>'Per lavorare a fiere, congressi ed eventi ci servono foto nell\'album Fiere e eventi: tailleur o camicia elegante, trucco leggero, sguardo in camera. Vanno bene anche un selfie o una foto col telefono, basta che sia luminosa e nitida. Se fai eventi sportivi, motori o ombrellina (tipo EICMA), aggiungi anche una foto in stile sportivo.','en'=>'To work at trade fairs, conferences and events we need photos in the Trade fairs & events album: suit or smart shirt, light makeup, looking at the camera. A selfie or phone photo is fine too, as long as it is bright and sharp. If you do sports, motor-show or umbrella-girl events (like EICMA), add a sporty photo too.','fr'=>'Pour travailler sur des salons, congrès et événements, il nous faut des photos dans l\'album Salons et événements : tailleur ou chemise élégante, maquillage léger, regard vers l\'objectif. Un selfie ou une photo au téléphone convient aussi, si elle est lumineuse et nette. Si tu fais des événements sportifs, moteurs ou ombrelle (type EICMA), ajoute aussi une photo en style sportif.','es'=>'Para trabajar en ferias, congresos y eventos necesitamos fotos en el álbum Ferias y eventos: traje o camisa elegante, maquillaje ligero, mirada a cámara. También vale un selfie o una foto con el móvil, si es luminosa y nítida. Si haces eventos deportivos, de motor o de paraguas (tipo EICMA), añade también una foto deportiva.'],
+    'ev_open_album'=> ['it'=>'📸 Apri l\'album Fiere e eventi','en'=>'📸 Open the Trade fairs & events album','fr'=>'📸 Ouvrir l\'album Salons et événements','es'=>'📸 Abrir el álbum Ferias y eventos'],
+    'ev_nofoto'    => ['it'=>'Non hai ancora foto nell\'album Fiere e eventi: senza, facciamo fatica a proporti per gli eventi.','en'=>'You have no photos in the Trade fairs & events album yet: without them we can hardly propose you for events.','fr'=>'Tu n\'as pas encore de photos dans l\'album Salons et événements : sans elles, on peut difficilement te proposer pour des événements.','es'=>'Aún no tienes fotos en el álbum Ferias y eventos: sin ellas nos cuesta proponerte para eventos.'],
+    'ev_cta'       => ['it'=>'Vuoi lavorare anche a fiere ed eventi come hostess o steward?','en'=>'Do you also want to work at fairs and events as a hostess or steward?','fr'=>'Tu veux aussi travailler sur des salons et événements comme hôtesse ou steward ?','es'=>'¿Quieres trabajar también en ferias y eventos como azafata o steward?'],
+    'ev_cta_btn'   => ['it'=>'+ Aggiungi Hostess/Steward','en'=>'+ Add Hostess/Steward','fr'=>'+ Ajouter Hôtesse/Steward','es'=>'+ Añadir Azafata/Steward'],
+    'ev_tipi'      => ['it'=>'Eventi che hai già fatto','en'=>'Events you have already done','fr'=>'Événements que tu as déjà faits','es'=>'Eventos que ya has hecho'],
+    'ev_anni'      => ['it'=>'Esperienza come hostess/steward','en'=>'Experience as hostess/steward','fr'=>'Expérience comme hôtesse/steward','es'=>'Experiencia como azafata/steward'],
+    'ev_cert'      => ['it'=>'Certificati','en'=>'Certificates','fr'=>'Certificats','es'=>'Certificados'],
+    'ev_cert_altro'=> ['it'=>'Altri certificati o corsi (facoltativo)','en'=>'Other certificates or courses (optional)','fr'=>'Autres certificats ou formations (facultatif)','es'=>'Otros certificados o cursos (opcional)'],
+    'ev_stile_el'  => ['it'=>'👔 Elegante','en'=>'👔 Smart','fr'=>'👔 Élégant','es'=>'👔 Elegante'],
+    'ev_stile_sp'  => ['it'=>'🏁 Sportivo','en'=>'🏁 Sporty','fr'=>'🏁 Sportif','es'=>'🏁 Deportivo'],
+];
+$EV_TIPI = [
+    'fiere'=>['it'=>'Fiere','en'=>'Trade fairs','fr'=>'Salons','es'=>'Ferias'],
+    'congressi'=>['it'=>'Congressi','en'=>'Conferences','fr'=>'Congrès','es'=>'Congresos'],
+    'sport_motori'=>['it'=>'Sport e motori','en'=>'Sports & motor shows','fr'=>'Sport et moteurs','es'=>'Deporte y motor'],
+    'promo'=>['it'=>'Promo e sampling','en'=>'Promo & sampling','fr'=>'Promo et sampling','es'=>'Promo y sampling'],
+    'gala'=>['it'=>'Gala e cene','en'=>'Galas & dinners','fr'=>'Galas et dîners','es'=>'Galas y cenas'],
+    'accoglienza'=>['it'=>'Accoglienza e reception','en'=>'Welcome & reception','fr'=>'Accueil et réception','es'=>'Recepción'],
+    'sfilate_showroom'=>['it'=>'Sfilate e showroom','en'=>'Fashion shows & showrooms','fr'=>'Défilés et showrooms','es'=>'Desfiles y showrooms'],
+];
+$EV_ANNI = ['0'=>['it'=>'Nessuna, sto iniziando','en'=>'None yet, just starting','fr'=>'Aucune, je commence','es'=>'Ninguna, estoy empezando'],'1'=>['it'=>'1 anno','en'=>'1 year','fr'=>'1 an','es'=>'1 año'],'2-3'=>['it'=>'2-3 anni','en'=>'2-3 years','fr'=>'2-3 ans','es'=>'2-3 años'],'4+'=>['it'=>'4 anni o più','en'=>'4+ years','fr'=>'4 ans ou plus','es'=>'4 años o más']];
+$EV_CERT = ['haccp'=>['it'=>'HACCP','en'=>'HACCP','fr'=>'HACCP','es'=>'HACCP'],'primo_soccorso'=>['it'=>'Primo soccorso','en'=>'First aid','fr'=>'Premiers secours','es'=>'Primeros auxilios'],'sicurezza'=>['it'=>'Sicurezza sul lavoro','en'=>'Workplace safety','fr'=>'Sécurité au travail','es'=>'Seguridad laboral'],'antincendio'=>['it'=>'Antincendio','en'=>'Fire safety','fr'=>'Incendie','es'=>'Antiincendios']];
+
 // Enum coerenti con S4 (DB normalizzato) + form registrazione (S4 + page-registrati-talent.php)
 // FIX 2026-06-28 marco — valori canonici post-pulizia DB (con distinzione Chiaro/Scuro)
 $CAPELLI_OPTS = [
@@ -230,6 +291,13 @@ $OCCHI_OPTS = [
     'marroni' => ['it'=>'Marroni','en'=>'Brown','fr'=>'Marron','es'=>'Marrones'],
     'neri'    => ['it'=>'Neri','en'=>'Black','fr'=>'Noirs','es'=>'Negros'],
     'grigi'   => ['it'=>'Grigi','en'=>'Gray','fr'=>'Gris','es'=>'Grises'],
+];
+// FEATURE 2026-09-19 marco — sesso finalmente editabile da self-edit (fix loop infinito + whitelist
+// backend gia' pronti il 19/9; mancava solo questo campo nel form). Valori canonici da lib/sesso.php.
+$SESSO_OPTS = [
+    'maschio' => ['it'=>'Maschio','en'=>'Male','fr'=>'Homme','es'=>'Hombre'],
+    'femmina' => ['it'=>'Femmina','en'=>'Female','fr'=>'Femme','es'=>'Mujer'],
+    'altro'   => ['it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro'],
 ];
 $ETNIA_OPTS = [
     'caucasica'    => ['it'=>'Caucasica','en'=>'Caucasian','fr'=>'Caucasienne','es'=>'Caucásica'],
@@ -417,6 +485,35 @@ $token_get = $_GET['t']    ?? '';
 .tse-live-new { color:#c8ff00; font-weight:700; }
 .tse-live-btn { width:100%; background:#c8ff00; color:#0a0a0a; border:none; padding:13px; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; }
 .tse-live-btn:hover { opacity:.9; }
+/* FIX 2026-09-22 marco (CRM - EVENTS DATABASE) — foto semplici: Elimina/Sposta SCRITTI sotto ogni foto, sempre visibili */
+.tse-album-thumb { aspect-ratio:auto; overflow:visible; min-width:0; } /* min-width:0 = la griglia non sborda dalla colonna */
+.tse-thumb-img img { max-width:100%; }
+.tse-album-thumb:hover { transform:none; }
+.tse-thumb-img { position:relative; aspect-ratio:1/1; overflow:hidden; border-radius:4px; background:#1a1a1e; }
+.tse-thumb-img img { width:100%; height:100%; object-fit:cover; display:block; }
+.tse-album-thumb .tse-thumb-actions { position:relative; bottom:auto; right:auto; opacity:1; display:grid; grid-template-columns:minmax(0,1fr); gap:4px; padding:5px 0 1px; } /* uno sotto l'altro: su telefono affiancati non ci stanno */
+.tse-album-thumb .tse-thumb-btn { width:100%; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; height:auto; min-height:32px; font-size:12px; font-weight:700; border-radius:6px; padding:6px 2px; background:#26262b; color:#e5e7eb; border:1px solid #34343a; }
+.tse-album-thumb .tse-thumb-del { background:#3a1a1a; color:#fca5a5; border-color:#5b2323; }
+.tse-album-thumb .tse-move-menu { bottom:42px; left:0; right:0; min-width:0; }
+.tse-thumb-state { position:absolute; left:4px; top:4px; font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; background:rgba(0,0,0,.78); color:#FFB300; }
+.tse-thumb-state.rej { color:#fca5a5; }
+.tse-ev-section { border:2px solid #ff8a3d !important; background:linear-gradient(180deg,rgba(255,138,61,.10),rgba(255,138,61,0) 55%) !important; }
+.tse-ev-section .tse-section-title { color:#ff8a3d; font-size:14px; }
+.tse-ev-rules { font-size:13px; color:#e5e7eb; line-height:1.55; margin:0 0 10px; }
+.tse-ev-nofoto { font-size:13px; color:#fca5a5; background:rgba(239,68,68,.10); border:1px solid rgba(239,68,68,.35); border-radius:6px; padding:8px 10px; margin:0 0 10px; }
+.tse-ev-open, .tse-ev-cta-btn { width:100%; background:#ff8a3d; color:#111; border:none; border-radius:8px; padding:12px; font-size:14px; font-weight:800; cursor:pointer; margin:0 0 16px; }
+.tse-ev-cta { display:grid; gap:10px; font-size:13px; color:#e5e7eb; margin:0 0 14px; }
+.tse-ev-cta[hidden], #tse-ev-hostess[hidden], .tse-ev-nofoto[hidden] { display:none; }
+.tse-album-thumb .tse-thumb-stile { background:#1d2433; color:#bfdbfe; border-color:#2c3a55; }
+.tse-thumb-princ { position:absolute; left:4px; bottom:4px; right:4px; font-size:10px; font-weight:800; padding:3px 6px; border-radius:4px; background:#c8ff00; color:#0a0a0a; text-align:center; }
+.tse-album-thumb .tse-thumb-star { background:#2a2410; color:#ffd08a; border-color:#4a3d14; }
+.tse-album-tab .tse-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#c8ff00; margin-right:6px; vertical-align:middle; }
+.tse-album-tab.active .tse-dot { background:#0a0a0a; }
+.tse-add-photo-btn { width:100%; background:#c8ff00; color:#0a0a0a; border:none; padding:12px; border-radius:8px; font-size:14px; font-weight:800; cursor:pointer; margin:0 0 12px; }
+.tse-upload-close { background:none; border:1px solid #3a3a42; color:#9ca3af; border-radius:6px; padding:6px 12px; font-size:12px; cursor:pointer; float:right; }
+.tse-btn-foto { background:#c8ff00 !important; color:#0a0a0a !important; }
+.tse-statuscard .tse-btn-save + .tse-btn-save { background:#1a1a1e; color:#e5e7eb; border:1px solid #3a3a42; }
+.tse-touch-hint { display:block; }
 </style>
 
 <section class="tse-wrap">
@@ -434,7 +531,8 @@ $token_get = $_GET['t']    ?? '';
         <!-- FIX 2026-09-15 marco — card di stato (Step 2 pagina-stato): prima cosa visibile, prima del form pesante -->
         <div id="tse-statuscard" class="tse-statuscard" style="display:none;">
             <div id="tse-statuscard-rows"></div>
-            <button type="button" class="tse-btn-save" style="margin-top:6px;" onclick="talentShowForm()"><?= esc_html($_t($T['btn_modifica_scheda'])) ?></button>
+            <button type="button" class="tse-btn-save tse-btn-foto" style="margin-top:6px;" onclick="talentShowForm('foto')"><?= esc_html($_t($T2['btn_foto'])) ?></button><!-- FIX 2026-09-22 marco -->
+            <button type="button" class="tse-btn-save" style="margin-top:8px;" onclick="talentShowForm()"><?= esc_html($_t($T['btn_modifica_scheda'])) ?></button>
         </div>
 
         <div id="tse-photo-alert" class="tse-photo-alert" onclick="document.getElementById('tse-foto-section').scrollIntoView({behavior:'smooth'})">
@@ -445,6 +543,61 @@ $token_get = $_GET['t']    ?? '';
         <div id="tse-polaroid-scadute" class="tse-pol-scadute" onclick="document.getElementById('tse-foto-section').scrollIntoView({behavior:'smooth'})">
             <div class="tse-pol-scadute-title">⏳ <?= esc_html($_t($T['polscad_title'])) ?></div>
             <div class="tse-pol-scadute-sub"><?= esc_html($_t($T['polscad_sub'])) ?></div>
+        </div>
+
+        <!-- ─── S8.A — Sezione album foto ─── -->
+        <div id="tse-foto-section" class="tse-section" style="display:none; margin:0 0 20px;">
+            <div class="tse-section-title">📸 <?= esc_html($_t($T['section_foto'])) ?></div>
+            <p style="font-size:12px; color:#9ca3af; margin:0 0 8px; line-height:1.45;"><?= esc_html($_t($T2['foto_sub'])) ?></p>
+            <p style="font-size:12px; color:#f5b942; margin:0 0 14px; line-height:1.45;"><?= esc_html($_t($T['no_watermark_warning'])) ?></p>
+            <div id="tse-ruolo-guida" class="tse-album-desc" style="display:none; border-left-color:#c8ff00;"></div>
+
+            <!-- FIX 2026-09-22 marco — linguette dagli album condivisi con la registrazione (ordine per ruolo lo fa il JS) -->
+            <div class="tse-album-tabs" id="tse-album-tabs">
+                <?php foreach ($SE_ALBUM_DEFS as $__i => $__ad): ?>
+                <button type="button" class="tse-album-tab<?= $__i === 0 ? ' active' : '' ?>" data-album="<?= esc_attr($__ad['code']) ?>" onclick="talentAlbumSwitch('<?= esc_attr($__ad['code']) ?>')"><?= esc_html($__ad['label']) ?></button>
+                <?php endforeach; ?>
+            </div>
+
+            <div id="tse-album-desc" class="tse-album-desc"></div>
+
+            <!-- FIX 2026-06-28 marco — upload-box sopra la griglia (era troppo lontano da scrollare) -->
+            <button type="button" id="tse-add-photo" class="tse-add-photo-btn" onclick="talentToggleUpload(true)"><?= esc_html($_t($T2['add_photo'])) ?></button><!-- FIX 2026-09-22 marco -->
+            <div class="tse-upload-box" id="tse-upload-box" hidden>
+                <button type="button" class="tse-upload-close" onclick="talentToggleUpload(false)"><?= esc_html($_t($T2['close_upload'])) ?></button>
+                <div class="tse-upload-field" id="tse-data-scatto-wrap">
+                    <label class="tse-label" id="tse-data-scatto-label"><?= esc_html($_t($T['field_data_scatto'])) ?></label>
+                    <input type="month" id="tse-data-scatto" class="tse-input"
+                           max="<?= esc_attr(date('Y-m')) ?>">
+                    <div id="tse-data-scatto-hint" style="font-size:11px; color:#6b7280; margin-top:4px;"><?= esc_html($_t($T['hint_data_scatto'])) ?></div>
+                </div>
+
+                <details class="tse-legal-disclaimer">
+                    <summary><?= esc_html($_t($T['legal_summary'])) ?></summary>
+                    <div class="tse-legal-text"><?= esc_html($_t($T['legal_text'])) ?></div>
+                </details>
+
+                <label class="tse-legal-checkbox">
+                    <input type="checkbox" id="tse-legal-ok">
+                    <span><?= esc_html($_t($T['legal_consent'])) ?></span>
+                </label>
+                <label class="tse-legal-checkbox">
+                    <input type="checkbox" id="tse-verita-ok">
+                    <span id="tse-verita-text"></span>
+                </label>
+
+                <div class="tse-upload-row" style="margin-top:10px;">
+                    <input type="file" id="tse-file-input" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="talentFileChosen(this)">
+                    <button type="button" class="tse-upload-btn-file" onclick="document.getElementById('tse-file-input').click()"><?= esc_html($_t($T['choose_file'])) ?></button>
+                    <span id="tse-upload-fname" class="tse-upload-fname">—</span>
+                    <button type="button" id="tse-upload-go" class="tse-upload-btn-go" onclick="talentUploadGo()"><?= esc_html($_t($T['btn_upload'])) ?></button>
+                </div>
+                <div id="tse-upload-status" class="tse-upload-status"></div>
+            </div>
+
+            <div id="tse-princ-note" class="tse-album-desc" hidden><?= esc_html($_t($T2['princ_missing'])) ?></div><!-- FIX 2026-09-22 marco -->
+            <div id="tse-album-grid" class="tse-album-grid" style="margin-top:18px;"></div>
+            <div class="tse-touch-hint"><?= esc_html($_t($T2['touch_hint2'])) ?></div>
         </div>
 
         <form id="tse-form" class="tse-form" autocomplete="on">
@@ -594,6 +747,13 @@ $token_get = $_GET['t']    ?? '';
                     </select>
                 </div>
                 <div class="tse-field">
+                    <label class="tse-label"><?= esc_html($_t($T['field_sesso'])) ?></label>
+                    <select id="f-sesso" class="tse-select">
+                        <option value=""><?= esc_html($_t($T['opt_select'])) ?></option>
+                        <?php foreach ($SESSO_OPTS as $k=>$v): ?><option value="<?= esc_attr($k) ?>"><?= esc_html($_t($v)) ?></option><?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="tse-field">
                     <label class="tse-label"><?= esc_html($_t($T['field_occhi'])) ?></label>
                     <select id="f-occhi" class="tse-select">
                         <option value=""><?= esc_html($_t($T['opt_select'])) ?></option>
@@ -615,6 +775,33 @@ $token_get = $_GET['t']    ?? '';
                     <label class="tse-label"><?= esc_html($_t($T['field_ruoli'])) ?></label>
                     <div class="tse-chips" id="f-ruoli" data-group="ruoli">
                         <?php foreach ($RUOLI_OPTS as $k=>$v): ?><label class="tse-chip<?= $k === 'bambino' ? ' tse-chip-auto' : '' ?>"><input type="checkbox" value="<?= esc_attr($k) ?>"><?= esc_html($_t($v)) ?></label><?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FIX 2026-09-22 marco (CRM - EVENTS DATABASE, Fase 2) — sezione Hostess & Eventi ben in vista -->
+            <div class="tse-section tse-ev-section" id="tse-ev-section">
+                <div class="tse-section-title">🎉 <?= esc_html($_t($T2['ev_title'])) ?></div>
+                <div id="tse-ev-cta" class="tse-ev-cta" hidden>
+                    <span><?= esc_html($_t($T2['ev_cta'])) ?></span>
+                    <button type="button" class="tse-ev-cta-btn" onclick="talentAddHostess()"><?= esc_html($_t($T2['ev_cta_btn'])) ?></button>
+                </div>
+                <div id="tse-ev-hostess" hidden>
+                    <p class="tse-ev-rules"><?= esc_html($_t($T2['ev_rules'])) ?></p>
+                    <p id="tse-ev-nofoto" class="tse-ev-nofoto" hidden><?= esc_html($_t($T2['ev_nofoto'])) ?></p>
+                    <button type="button" class="tse-ev-open" onclick="talentOpenEventi()"><?= esc_html($_t($T2['ev_open_album'])) ?></button>
+                    <div class="tse-field">
+                        <label class="tse-label"><?= esc_html($_t($T2['ev_tipi'])) ?></label>
+                        <div class="tse-chips" id="f-ev-tipi"><?php foreach ($EV_TIPI as $k=>$v): ?><label class="tse-chip"><input type="checkbox" value="<?= esc_attr($k) ?>"><?= esc_html($_t($v)) ?></label><?php endforeach; ?></div>
+                    </div>
+                    <div class="tse-field">
+                        <label class="tse-label"><?= esc_html($_t($T2['ev_anni'])) ?></label>
+                        <select id="f-ev-anni" class="tse-select"><option value="">—</option><?php foreach ($EV_ANNI as $k=>$v): ?><option value="<?= esc_attr($k) ?>"><?= esc_html($_t($v)) ?></option><?php endforeach; ?></select>
+                    </div>
+                    <div class="tse-field">
+                        <label class="tse-label"><?= esc_html($_t($T2['ev_cert'])) ?></label>
+                        <div class="tse-chips" id="f-ev-cert"><?php foreach ($EV_CERT as $k=>$v): ?><label class="tse-chip"><input type="checkbox" value="<?= esc_attr($k) ?>"><?= esc_html($_t($v)) ?></label><?php endforeach; ?></div>
+                        <input type="text" id="f-ev-certaltro" class="tse-input" maxlength="120" placeholder="<?= esc_attr($_t($T2['ev_cert_altro'])) ?>" style="margin-top:8px;">
                     </div>
                 </div>
                 <div class="tse-field">
@@ -649,6 +836,9 @@ $token_get = $_GET['t']    ?? '';
                 </script>
             </div>
 
+            <!-- FEATURE 2026-09-23 marco (CRM - RUOLI MULTI-SCHEDA, Fase 3) — una sezione per ogni ruolo del talent (attore, comparsa, modello): la disegna assets/talent-profilo-ruolo.js leggendo il catalogo dal CRM; si salva col pulsante Salva della pagina -->
+            <div id="tse-profili-ruolo" data-api="/crm_toagency/actions/talent-profilo-ruolo.php"></div>
+
             <!-- FIX 2026-08-08 marco — sezione Indirizzo: prima il Paese (come in registrazione), poi comune/città in base al paese scelto -->
             <div class="tse-section">
                 <div class="tse-section-title">📍 <?= esc_html($_t(['it'=>'Indirizzo','en'=>'Location','fr'=>'Localisation','es'=>'Ubicación'])) ?></div>
@@ -681,9 +871,6 @@ $token_get = $_GET['t']    ?? '';
                 </div>
             </div>
 
-            <!-- 2026-09-25 TEMA ticket #291 — sotto-schede per ruolo (Creator/Attore/Modella...) dal CRM -->
-            <div id="tse-profili-ruolo" data-api="https://toagency.it/crm_toagency/actions/talent-profilo-ruolo.php"></div>
-
             <!-- Honeypot -->
             <div style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
                 <label>Non compilare<input type="text" id="f-honeypot" tabindex="-1" autocomplete="off"></label>
@@ -708,6 +895,13 @@ $token_get = $_GET['t']    ?? '';
             <div class="tse-section-title">🎥 <?= esc_html($_t(['it'=>'Video di presentazione','en'=>'Intro video','fr'=>'Vidéo de présentation','es'=>'Vídeo de presentación'])) ?></div>
             <p style="font-size:12px; color:#9ca3af; margin:0 0 8px; line-height:1.45;"><?= esc_html($_t(['it'=>'Facoltativo per tutti, ma molto utile per attori/attrici (self-tape) e creator (mostra come sei davanti alla camera). Basta anche un video girato con il telefono, bassa risoluzione ok · max 50MB.','en'=>'Optional for everyone, but great for actors (self-tape) and creators (shows how you come across on camera). A simple phone video is fine, low res ok · max 50MB.','fr'=>'Facultatif pour tous, mais très utile pour les acteurs/actrices (self-tape) et les créateurs de contenu (montre comment tu es à l’écran). Une simple vidéo au téléphone suffit, basse résolution ok · max 50 Mo.','es'=>'Opcional para todos, pero muy útil para actores/actrices (self-tape) y creadores de contenido (muestra cómo te desenvuelves en cámara). Basta un vídeo con el móvil, baja resolución ok · máx 50MB.'])) ?></p>
             <p style="font-size:12px; color:#f5b942; margin:0 0 12px; line-height:1.45;"><?= esc_html($_t($T['no_watermark_warning'])) ?></p>
+            <!-- FIX 2026-09-23 marco ticket-239: come si carica il video, in 4 lingue (stesse parole delle schede di Amelia #204/#205) -->
+            <ol id="tse-video-howto" style="font-size:12px; color:#cbd5e1; margin:0 0 6px; padding-left:18px; line-height:1.6;">
+                <li><?= esc_html($_t(['it'=>'Spunta la casella dei diritti.','en'=>'Tick the rights box.','fr'=>'Coche la case des droits.','es'=>'Marca la casilla de derechos.'])) ?></li>
+                <li><?= esc_html($_t(['it'=>'Scegli il video: MP4 consigliato, max 50 MB.','en'=>'Choose the video: MP4 recommended, max 50 MB.','fr'=>'Choisis la vidéo : MP4 recommandé, max 50 Mo.','es'=>'Elige el vídeo: MP4 recomendado, máx. 50 MB.'])) ?></li>
+                <li><?= esc_html($_t(['it'=>'Premi «Carica video» e aspetta la spunta verde ✓.','en'=>'Press «Upload video» and wait for the green ✓.','fr'=>'Appuie sur «Charger la vidéo» et attends la coche verte ✓.','es'=>'Pulsa «Subir vídeo» y espera la marca verde ✓.'])) ?></li>
+            </ol>
+            <p style="font-size:12px; color:#9ca3af; margin:0 0 12px; line-height:1.45;"><?= esc_html($_t(['it'=>'Se qualcosa non va, scrivi ad Amelia nella chat.','en'=>'If anything goes wrong, write to Amelia in the chat.','fr'=>'Si quelque chose ne va pas, écris à Amelia dans le chat.','es'=>'Si algo no va bien, escribe a Amelia en el chat.'])) ?></p>
             <div class="tse-upload-box">
                 <label class="tse-legal-checkbox">
                     <input type="checkbox" id="tse-video-legal">
@@ -727,58 +921,6 @@ $token_get = $_GET['t']    ?? '';
             </div>
         </div>
 
-        <!-- ─── S8.A — Sezione album foto ─── -->
-        <div id="tse-foto-section" class="tse-section" style="display:none; margin-top:20px;">
-            <div class="tse-section-title">📸 <?= esc_html($_t($T['section_foto'])) ?></div>
-            <p style="font-size:12px; color:#9ca3af; margin:0 0 8px; line-height:1.45;"><?= esc_html($_t($T['foto_subtitle'])) ?></p>
-            <p style="font-size:12px; color:#f5b942; margin:0 0 14px; line-height:1.45;"><?= esc_html($_t($T['no_watermark_warning'])) ?></p>
-            <div id="tse-ruolo-guida" class="tse-album-desc" style="display:none; border-left-color:#c8ff00;"></div>
-
-            <div class="tse-album-tabs">
-                <button type="button" class="tse-album-tab active" data-album="polaroid" onclick="talentAlbumSwitch('polaroid')"><?= esc_html($_t($T['tab_polaroid'])) ?></button>
-                <button type="button" class="tse-album-tab" data-album="dettaglio" onclick="talentAlbumSwitch('dettaglio')"><?= esc_html($_t($T['tab_dettaglio'])) ?></button>
-                <button type="button" class="tse-album-tab" data-album="portfolio" onclick="talentAlbumSwitch('portfolio')"><?= esc_html($_t($T['tab_portfolio'])) ?></button>
-                <button type="button" class="tse-album-tab" data-album="eventi" onclick="talentAlbumSwitch('eventi')"><?= esc_html($_t($T['tab_eventi'])) ?></button>
-                <button type="button" class="tse-album-tab" data-album="casual" onclick="talentAlbumSwitch('casual')"><?= esc_html($_t($T['tab_casual'])) ?></button>
-            </div>
-
-            <div id="tse-album-desc" class="tse-album-desc"></div>
-
-            <!-- FIX 2026-06-28 marco — upload-box sopra la griglia (era troppo lontano da scrollare) -->
-            <div class="tse-upload-box">
-                <div class="tse-upload-field" id="tse-data-scatto-wrap">
-                    <label class="tse-label" id="tse-data-scatto-label"><?= esc_html($_t($T['field_data_scatto'])) ?></label>
-                    <input type="month" id="tse-data-scatto" class="tse-input"
-                           max="<?= esc_attr(date('Y-m')) ?>">
-                    <div id="tse-data-scatto-hint" style="font-size:11px; color:#6b7280; margin-top:4px;"><?= esc_html($_t($T['hint_data_scatto'])) ?></div>
-                </div>
-
-                <details class="tse-legal-disclaimer">
-                    <summary><?= esc_html($_t($T['legal_summary'])) ?></summary>
-                    <div class="tse-legal-text"><?= esc_html($_t($T['legal_text'])) ?></div>
-                </details>
-
-                <label class="tse-legal-checkbox">
-                    <input type="checkbox" id="tse-legal-ok">
-                    <span><?= esc_html($_t($T['legal_consent'])) ?></span>
-                </label>
-                <label class="tse-legal-checkbox">
-                    <input type="checkbox" id="tse-verita-ok">
-                    <span id="tse-verita-text"></span>
-                </label>
-
-                <div class="tse-upload-row" style="margin-top:10px;">
-                    <input type="file" id="tse-file-input" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="talentFileChosen(this)">
-                    <button type="button" class="tse-upload-btn-file" onclick="document.getElementById('tse-file-input').click()"><?= esc_html($_t($T['choose_file'])) ?></button>
-                    <span id="tse-upload-fname" class="tse-upload-fname">—</span>
-                    <button type="button" id="tse-upload-go" class="tse-upload-btn-go" onclick="talentUploadGo()"><?= esc_html($_t($T['btn_upload'])) ?></button>
-                </div>
-                <div id="tse-upload-status" class="tse-upload-status"></div>
-            </div>
-
-            <div id="tse-album-grid" class="tse-album-grid" style="margin-top:18px;"></div>
-            <div class="tse-touch-hint"><?= esc_html($_t($T['touch_hint'])) ?></div>
-        </div>
     </div>
 </section>
 
@@ -796,6 +938,7 @@ window.talentEditConfig = {
     apiMediaUp:  '/crm_toagency/actions/talent-media-upload.php',
     apiVideo:    '/crm_toagency/actions/talent-self-edit-video.php',
     apiStato:    '/crm_toagency/actions/talent-profilo-stato.php',
+    apiSetCover: '/crm_toagency/actions/talent-media-set-cover.php', /* FIX 2026-09-22 marco */
     provinceJsonUrl: <?= json_encode($theme_uri . '/assets/data/province-italia.json') ?>, /* FIX 2026-07-01 marco — tendina provincia self-edit */
     comuneApiUrl: '/crm_toagency/actions/cerca-comune.php', /* FIX 2026-07-01 marco — ricerca comune self-edit */
     uuid:    <?= json_encode($uuid_get) ?>,
@@ -821,6 +964,22 @@ window.talentEditConfig = {
         noPhotos:    <?= json_encode($_t($T['no_photos'])) ?>,
         pendingBadge: <?= json_encode($_t($T['pending_badge'])) ?>,
         rejectedBadge:<?= json_encode($_t($T['rejected_badge'])) ?>,
+        albumDefs: <?= json_encode($SE_ALBUM_DEFS, JSON_UNESCAPED_UNICODE) ?>, /* FIX 2026-09-22 marco — album condivisi */
+        delLabel:    <?= json_encode($_t($T2['del'])) ?>,
+        princBadge:  <?= json_encode($_t($T2['princ_badge'])) ?>,
+        stileEl:     <?= json_encode($_t($T2['ev_stile_el'])) ?>,
+        stileSp:     <?= json_encode($_t($T2['ev_stile_sp'])) ?>,
+        setPrinc:    <?= json_encode($_t($T2['set_princ'])) ?>,
+        coverEvBadge:<?= json_encode($_t($T2['cover_ev_badge'])) ?>,
+        setCoverEv:  <?= json_encode($_t($T2['set_cover_ev'])) ?>,
+        noDelPrinc:  <?= json_encode($_t($T2['no_del_princ'])) ?>,
+        princPending:<?= json_encode($_t($T2['princ_pending'])) ?>,
+        princOk:     <?= json_encode($_t($T2['princ_ok'])) ?>,
+        moveLabel:   <?= json_encode($_t($T2['move'])) ?>,
+        confirmDel:  <?= json_encode($_t($T2['confirm_del'])) ?>,
+        delError:    <?= json_encode($_t($T2['del_error'])) ?>,
+        statePending:  <?= json_encode($_t($T2['state_pending'])) ?>,
+        stateRejected: <?= json_encode($_t($T2['state_rejected'])) ?>,
         albumLabels: {
             polaroid:  <?= json_encode($_t($T['tab_polaroid'])) ?>,
             dettaglio: <?= json_encode($_t($T['tab_dettaglio'])) ?>,
@@ -842,6 +1001,33 @@ window.talentEditConfig = {
         statusPublic:        <?= json_encode($_t($T['statuscard_public'])) ?>,
         statusReview:        <?= json_encode($_t($T['statuscard_review'])) ?>,
         statusPhotosPending: <?= json_encode($_t($T['statuscard_photos_pending'])) ?>,
+        // FIX 2026-09-23 marco ticket-239: messaggi del caricamento video nelle 4 lingue (prima erano solo italiano dentro il JS)
+        video: {
+            chooseFirst: <?= json_encode($_t(['it'=>'Scegli prima un video','en'=>'Choose a video first','fr'=>"Choisis d'abord une vidéo",'es'=>'Elige primero un vídeo'])) ?>,
+            consent: <?= json_encode($_t(['it'=>'Spunta il consenso per caricare','en'=>'Tick the consent box to upload','fr'=>'Coche la case de consentement pour charger','es'=>'Marca la casilla de consentimiento para subir'])) ?>,
+            tooBig: <?= json_encode($_t(['it'=>'Video oltre 50MB: esporta a 720p o usa WhatsApp','en'=>'Video over 50MB: export at 720p or use WhatsApp','fr'=>'Vidéo de plus de 50 Mo : exporte en 720p ou utilise WhatsApp','es'=>'Vídeo de más de 50MB: expórtalo a 720p o usa WhatsApp'])) ?>,
+            loading: <?= json_encode($_t(['it'=>'Caricamento…','en'=>'Uploading…','fr'=>'Chargement…','es'=>'Subiendo…'])) ?>,
+            network: <?= json_encode($_t(['it'=>'Errore di rete: collegati al Wi-Fi, resta su questa pagina e riprova. Se non ci riesci, scrivi ad Amelia nella chat.','en'=>'Network error: connect to Wi-Fi, stay on this page and try again. If it still fails, write to Amelia in the chat.','fr'=>'Erreur réseau : connecte-toi au Wi-Fi, reste sur cette page et réessaie. Si ça ne marche toujours pas, écris à Amelia dans le chat.','es'=>'Error de red: conéctate al Wi-Fi, quédate en esta página e inténtalo de nuevo. Si sigue fallando, escribe a Amelia en el chat.'])) ?>,
+            generic: <?= json_encode($_t(['it'=>'Non è stato possibile caricare il video. Riprova; se non ci riesci scrivi ad Amelia nella chat.','en'=>'The video could not be uploaded. Try again; if it still fails, write to Amelia in the chat.','fr'=>"La vidéo n'a pas pu être chargée. Réessaie ; si ça ne marche pas, écris à Amelia dans le chat.",'es'=>'No se pudo subir el vídeo. Inténtalo de nuevo; si no funciona, escribe a Amelia en el chat.'])) ?>,
+            okBase: <?= json_encode($_t(['it'=>'Video caricato','en'=>'Video uploaded','fr'=>'Vidéo chargée','es'=>'Vídeo subido'])) ?>,
+            okPending: <?= json_encode($_t(['it'=>' In attesa di approvazione dello staff.','en'=>' Waiting for staff approval.','fr'=>' En attente de validation par notre équipe.','es'=>' Pendiente de aprobación del equipo.'])) ?>,
+            err: {
+                legal_required: <?= json_encode($_t(['it'=>'Spunta il consenso per caricare','en'=>'Tick the consent box to upload','fr'=>'Coche la case de consentement pour charger','es'=>'Marca la casilla de consentimiento para subir'])) ?>,
+                cap_album: <?= json_encode($_t(['it'=>'Hai raggiunto il massimo di {n} video per questa sezione. Elimina un video già caricato o scrivi ad Amelia nella chat.','en'=>'You have reached the maximum of {n} videos for this section. Delete an uploaded video or write to Amelia in the chat.','fr'=>'Tu as atteint le maximum de {n} vidéos pour cette section. Supprime une vidéo déjà chargée ou écris à Amelia dans le chat.','es'=>'Has llegado al máximo de {n} vídeos en esta sección. Elimina un vídeo ya subido o escribe a Amelia en el chat.'])) ?>,
+                cap_tot: <?= json_encode($_t(['it'=>'Hai raggiunto il massimo di {n} video totali. Elimina un video già caricato o scrivi ad Amelia nella chat.','en'=>'You have reached the maximum of {n} videos in total. Delete an uploaded video or write to Amelia in the chat.','fr'=>'Tu as atteint le maximum de {n} vidéos au total. Supprime une vidéo déjà chargée ou écris à Amelia dans le chat.','es'=>'Has llegado al máximo de {n} vídeos en total. Elimina un vídeo ya subido o escribe a Amelia en el chat.'])) ?>,
+                rate_limited: <?= json_encode($_t(['it'=>'Troppi upload ravvicinati. Riprova tra qualche minuto.','en'=>'Too many uploads in a row. Try again in a few minutes.','fr'=>'Trop de chargements rapprochés. Réessaie dans quelques minutes.','es'=>'Demasiadas subidas seguidas. Inténtalo de nuevo en unos minutos.'])) ?>,
+                rate_limited_ip: <?= json_encode($_t(['it'=>'Troppi video caricati da questa rete oggi. Riprova domani o scrivi ad Amelia nella chat.','en'=>'Too many videos uploaded from this network today. Try again tomorrow or write to Amelia in the chat.','fr'=>"Trop de vidéos chargées depuis ce réseau aujourd'hui. Réessaie demain ou écris à Amelia dans le chat.",'es'=>'Demasiados vídeos subidos desde esta red hoy. Inténtalo mañana o escribe a Amelia en el chat.'])) ?>,
+                no_file: <?= json_encode($_t(['it'=>'Nessun video ricevuto. Scegli il file e riprova.','en'=>'No video received. Choose the file and try again.','fr'=>'Aucune vidéo reçue. Choisis le fichier et réessaie.','es'=>'No se recibió ningún vídeo. Elige el archivo e inténtalo de nuevo.'])) ?>,
+                too_big: <?= json_encode($_t(['it'=>'Video oltre 50MB: esporta a 720p o usa WhatsApp','en'=>'Video over 50MB: export at 720p or use WhatsApp','fr'=>'Vidéo de plus de 50 Mo : exporte en 720p ou utilise WhatsApp','es'=>'Vídeo de más de 50MB: expórtalo a 720p o usa WhatsApp'])) ?>,
+                upload_partial: <?= json_encode($_t(['it'=>'Upload interrotto. Riprova con una connessione stabile (meglio il Wi-Fi).','en'=>'Upload interrupted. Try again with a stable connection (Wi-Fi is best).','fr'=>'Chargement interrompu. Réessaie avec une connexion stable (le Wi-Fi est idéal).','es'=>'Subida interrumpida. Inténtalo de nuevo con una conexión estable (mejor Wi-Fi).'])) ?>,
+                upload_error: <?= json_encode($_t(['it'=>'Errore durante il caricamento. Riprova; se non ci riesci scrivi ad Amelia nella chat.','en'=>'Error while uploading. Try again; if it still fails, write to Amelia in the chat.','fr'=>'Erreur pendant le chargement. Réessaie ; si ça ne marche pas, écris à Amelia dans le chat.','es'=>'Error al subir. Inténtalo de nuevo; si no funciona, escribe a Amelia en el chat.'])) ?>,
+                too_small: <?= json_encode($_t(['it'=>'File non valido (troppo piccolo). Scegli un altro video.','en'=>'Invalid file (too small). Choose another video.','fr'=>'Fichier non valide (trop petit). Choisis une autre vidéo.','es'=>'Archivo no válido (demasiado pequeño). Elige otro vídeo.'])) ?>,
+                invalid_ext: <?= json_encode($_t(['it'=>'Formato non supportato. Usa MP4 (consigliato), MOV o WEBM.','en'=>'Unsupported format. Use MP4 (recommended), MOV or WEBM.','fr'=>'Format non pris en charge. Utilise MP4 (conseillé), MOV ou WEBM.','es'=>'Formato no compatible. Usa MP4 (recomendado), MOV o WEBM.'])) ?>,
+                invalid_file: <?= json_encode($_t(['it'=>'Il file non sembra un video valido. Usa MP4 (consigliato), MOV o WEBM.','en'=>'The file does not look like a valid video. Use MP4 (recommended), MOV or WEBM.','fr'=>'Le fichier ne semble pas être une vidéo valide. Utilise MP4 (conseillé), MOV ou WEBM.','es'=>'El archivo no parece un vídeo válido. Usa MP4 (recomendado), MOV o WEBM.'])) ?>,
+                talent_non_importato: <?= json_encode($_t(['it'=>'Il tuo profilo non è ancora abilitato ai video. Scrivi ad Amelia nella chat.','en'=>'Your profile is not enabled for videos yet. Write to Amelia in the chat.','fr'=>"Ton profil n'est pas encore activé pour les vidéos. Écris à Amelia dans le chat.",'es'=>'Tu perfil aún no está habilitado para vídeos. Escribe a Amelia en el chat.'])) ?>,
+                invalid_link: <?= json_encode($_t(['it'=>'Link della scheda non valido o scaduto. Apri di nuovo il link che ti abbiamo mandato per email.','en'=>'Profile link invalid or expired. Open the link we emailed you again.','fr'=>"Lien de la fiche invalide ou expiré. Ouvre de nouveau le lien que nous t'avons envoyé par e-mail.",'es'=>'Enlace de la ficha no válido o caducado. Abre de nuevo el enlace que te enviamos por correo.'])) ?>,
+            },
+        },
         mancanoTitolo:       <?= json_encode($_t($T['mancano_titolo'])) ?>,
         mancanoLabels: {
             telefono:               <?= json_encode($_t($T['mancano_telefono'])) ?>,
@@ -876,11 +1062,7 @@ $tse_js_path = get_stylesheet_directory() . '/assets/talent-self-edit.js';
 $tse_js_ver  = file_exists($tse_js_path) ? filemtime($tse_js_path) : '2.1';
 ?>
 <script src="<?= esc_url($theme_uri . '/assets/talent-self-edit.js') ?>?v=<?= $tse_js_ver ?>" defer></script>
-
-<?php
-$tse_rp_js_path = get_stylesheet_directory() . '/assets/talent-profilo-ruolo.js';
-$tse_rp_js_ver  = file_exists($tse_rp_js_path) ? filemtime($tse_rp_js_path) : '1';
-?>
-<script src="<?= esc_url($theme_uri . '/assets/talent-profilo-ruolo.js') ?>?v=<?= $tse_rp_js_ver ?>" defer></script>
+<?php $tpr_js = get_stylesheet_directory() . '/assets/talent-profilo-ruolo.js'; $tpr_ver = file_exists($tpr_js) ? filemtime($tpr_js) : '1'; /* FIX 2026-09-23 marco: versione = data del file, niente bump a mano */ ?>
+<script src="<?= esc_url($theme_uri . '/assets/talent-profilo-ruolo.js') ?>?v=<?= $tpr_ver ?>" defer></script><!-- FEATURE 2026-09-23 marco (RUOLI MULTI-SCHEDA) -->
 
 <?php toa_component('footer'); ?>

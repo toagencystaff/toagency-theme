@@ -1,7 +1,6 @@
-STATO=CLOSED
-CHAT=CRM-MINORI-EMAIL-BATTENTI
+STATO=OPEN
+CHAT=CRM Fix Ticket Aperti
 FILE=toagency-theme/templates/page-talent-self-edit.php
-SHA1_ATTESO=8ffaaa0d2cf0e6f3483c86902ce8e7b091a5542f
-UPDATE=2026-09-16 06:44:20
-DEPLOY=FATTO — preview+prod verificati live (commit f06b004e5)
-NOTE=Card di stato prima del form self-edit. Chiuso.
+SHA1_ATTESO=c3bfc1b3ea68b7dd794a92331d0944d955187007
+UPDATE=2026-09-27 17:52:51
+NOTE=ticket #291 #295: ripristino 22-23/09 (bozza CRM 2985fc7d/599badb9) + fix 25/09 del tema

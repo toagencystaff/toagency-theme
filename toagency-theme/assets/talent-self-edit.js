@@ -23,12 +23,19 @@
     // FIX 2026-06-28 marco — aggiunti comune + provincia
     // 2026-08-08 TEMA — 'telefono' tolto da qui: gestito a parte (prefisso internazionale + numero)
     // 2026-08-08 TEMA — aggiunto 'paese_residenza': senza, la tendina Paese non veniva mai salvata (bug trovato in revisione)
-    var FIELDS = ['instagram','tiktok','altezza','taglia','scarpe','capelli','occhi',
-                  'comune_residenza','provincia_domicilio','paese_residenza'];
+    var FIELDS = ['instagram','tiktok','altezza','taglia','scarpe','capelli','occhi','sesso',
+                  'comune_residenza','provincia_domicilio','paese_residenza']; // 'sesso' aggiunto 2026-09-19 marco
     // 2026-08-08 TEMA — nuovo album 'casual' (foto random tipo smartphone/vacanza, non rientrano negli altri)
-    var ALBUMS = ['polaroid','dettaglio','portfolio','eventi','casual'];
+    // FIX 2026-09-22 marco (CRM - EVENTS DATABASE) — album dalla definizione UNICA condivisa con la registrazione
+    // (templates/_talent-albums.php): stessi nomi e spiegazioni, + Portfolio attore (prima invisibile al talent).
+    var ALBUM_DEFS = (STR.albumDefs && STR.albumDefs.length) ? STR.albumDefs : null;
+    var ALBUMS = ALBUM_DEFS ? ALBUM_DEFS.map(function (a) { return a.code; }) : ['polaroid','dettaglio','portfolio','eventi','casual'];
     var currentAlbum = 'polaroid';
-    var albumsData = { polaroid:[], dettaglio:[], portfolio:[], eventi:[], casual:[] };
+    var albumsData = {}; ALBUMS.forEach(function (a) { albumsData[a] = []; });
+    function albumDef(code) { if (!ALBUM_DEFS) return null; for (var i = 0; i < ALBUM_DEFS.length; i++) if (ALBUM_DEFS[i].code === code) return ALBUM_DEFS[i]; return null; }
+    var mediaInfo = { ha_principale: false, principale_in_album: false }; // FIX 2026-09-22 marco
+    var ALBUM_PRINCIPALE_OK = ['portfolio','portfolio_cinema','polaroid','eventi']; // come lib/talent_cover.php
+    function albumLabel(code) { var d = albumDef(code); return d ? d.label : ((STR.albumLabels || {})[code] || code); }
     var paeseResidenza = '';
     // 2026-08-08 TEMA — livello + certificazioni per lingua (sostituisce "mostra ai clienti", ora decisa dallo staff)
     var LINGUE_LIVELLI = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'nativo'];
@@ -108,7 +115,29 @@
     }
 
     // FIX 2026-07-16 marco — guida album consigliati per ruolo (talent.ruoli dal load)
-    var ROLE_ALBUMS = { model:['portfolio','dettaglio'], actor:['portfolio'], hostess:['eventi'], creator:['dettaglio','casual'], ugc_creator:['dettaglio','casual'], influencer:['dettaglio','casual'] }; // 2026-09-25 aggiunti creator/ugc_creator/influencer (mancavano, ticket #291)
+    var ROLE_ALBUMS = { model:['portfolio','dettaglio'], actor:['portfolio'], hostess:['eventi'], creator:['dettaglio','casual'], ugc_creator:['dettaglio','casual'], influencer:['dettaglio','casual'] }; // 2026-09-25 aggiunti creator/ugc_creator/influencer (ticket #291); 27/09 riportato sulla versione 23/09 (ticket #295)
+    if (ALBUM_DEFS) { // FIX 2026-09-22 marco — mappa ruolo->album presa dalla definizione condivisa
+        ROLE_ALBUMS = {};
+        ALBUM_DEFS.forEach(function (a) {
+            if (!a.roles || a.roles === '*') return;
+            a.roles.split(',').forEach(function (r) { r = r.trim(); (ROLE_ALBUMS[r] = ROLE_ALBUMS[r] || []).push(a.code); });
+        });
+    }
+    // FIX 2026-09-22 marco — linguette: prima gli album utili al ruolo (pallino verde), poi gli altri
+    function _tseOrderTabs(want) {
+        var box = $('tse-album-tabs'); if (!box) return;
+        var tabs = Array.prototype.slice.call(box.querySelectorAll('.tse-album-tab'));
+        tabs.sort(function (a, b) {
+            var ia = want.indexOf(a.getAttribute('data-album')), ib = want.indexOf(b.getAttribute('data-album'));
+            return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+        });
+        tabs.forEach(function (t) {
+            if (want.indexOf(t.getAttribute('data-album')) > -1 && !t.querySelector('.tse-dot')) {
+                var dot = document.createElement('span'); dot.className = 'tse-dot'; t.insertBefore(dot, t.firstChild);
+            }
+            box.appendChild(t);
+        });
+    }
     function renderRuoloGuida(ruoli) {
         var box = $('tse-ruolo-guida');
         if (!box) return;
@@ -118,7 +147,8 @@
         ruoli.forEach(function (r) {
             (ROLE_ALBUMS[r] || []).forEach(function (a) { if (want.indexOf(a) < 0) want.push(a); });
         });
-        var labels = want.map(function (a) { return L[a] || a; });
+        _tseOrderTabs(want); // FIX 2026-09-22 marco
+        var labels = want.map(function (a) { return albumLabel(a); });
         box.textContent = (STR.guidaRuoloIntro || 'Album consigliati') + ': ' + labels.join(', ') + '. ' + (STR.guidaPolaroidObblig || '');
         box.style.display = 'block';
     }
@@ -308,14 +338,16 @@
         if (box) box.innerHTML = rows.join('');
     }
 
-    function talentShowForm() {
+    var _tseGoFoto = false; // FIX 2026-09-22 marco — bottone "Le mie foto" della card di stato
+    function talentShowForm(target) {
+        _tseGoFoto = (target === 'foto');
         var card = $('tse-statuscard');
         if (card) card.style.display = 'none';
         var st = $('tse-status');
         if (st) { st.style.display = 'block'; st.textContent = STR.loading || 'Caricamento…'; st.classList.remove('error'); }
         loadData();
     }
-    window.talentShowForm = talentShowForm; // fix 2026-09-25 — mancava, bottone 'Modifica la tua scheda' non funzionava (ticket #291, trovato in autoverifica)
+    window.talentShowForm = talentShowForm; // FIX 2026-09-18 marco (bug reale) - mancava export su window, onclick bottone morto
 
     // Prima cosa che si vede: card leggera (stato pubblico, foto in attesa, % completezza) invece del form pesante.
     // Se qualcosa va storto qui, si cade sempre sul comportamento di prima (form diretto) — mai un vicolo cieco.
@@ -365,6 +397,7 @@
         .then(function (r) { return r.json(); })
         .then(function (d) {
             if (!d.success) { showError(STR.invalidLink || 'Link non valido'); return; }
+            if (d.redirect_to) { var __rsep = d.redirect_to.indexOf('?') > -1 ? '&' : '?'; window.location.href = d.redirect_to + __rsep + 'lang=' + encodeURIComponent(cfg.lang || 'it'); return; } // FIX 2026-09-19 marco - redirect verso completa-scheda.php non portava lang, pagina tornava italiano
             $('tse-uuid-display').textContent = '#' + (d.uuid_short || UUID.substring(0,8));
             $('tse-name-display').innerHTML = 'Stai modificando il profilo di <strong>' +
                 escapeHtml(d.talent.nome || '—') + '</strong>';
@@ -457,6 +490,17 @@
                 if (cbBambino) cbBambino.checked = (eta < 18);
             })();
             setChips('f-lingue', d.talent.lingue);
+            // FIX 2026-09-22 marco (Fase 2) — profilo eventi
+            (function () {
+                var ep = d.talent.eventi_profilo || {};
+                setChips('f-ev-tipi', ep.tipi || []);
+                setChips('f-ev-cert', ep.certificati || []);
+                if ($('f-ev-anni')) $('f-ev-anni').value = ep.anni || '';
+                if ($('f-ev-certaltro')) $('f-ev-certaltro').value = ep.cert_altro || '';
+                _tseEvMinore = (function () { var dn = d.talent.data_nascita; if (!dn) return false; var b = new Date(dn); if (isNaN(b)) return false; var o = new Date(); var e = o.getFullYear() - b.getFullYear(); var m = o.getMonth() - b.getMonth(); if (m < 0 || (m === 0 && o.getDate() < b.getDate())) e--; return e < 18; })();
+                _tseEvRefresh();
+                var fr = $('f-ruoli'); if (fr) fr.addEventListener('change', _tseEvRefresh);
+            })();
             // 2026-08-08 TEMA — livello+certificazioni per lingua (sostituisce lingue_pubbliche, tolta dal form talent)
             lingueDettaglioData = (d.talent.lingue_dettaglio && typeof d.talent.lingue_dettaglio === 'object') ? d.talent.lingue_dettaglio : {};
             renderLingueDettaglio();
@@ -528,6 +572,12 @@
         })();
         payload.patente = ($('f-patente') && $('f-patente').checked) ? 1 : 0;
         payload.automunito = ($('f-automunito') && $('f-automunito').checked) ? 1 : 0;
+        // FIX 2026-09-22 marco (Fase 2) — profilo eventi: si manda solo per hostess/steward o se compilato
+        (function () {
+            var ep = { tipi: getChips('f-ev-tipi'), anni: ($('f-ev-anni') ? $('f-ev-anni').value : ''), certificati: getChips('f-ev-cert'), cert_altro: ($('f-ev-certaltro') ? $('f-ev-certaltro').value.trim() : '') };
+            var pieno = ep.tipi.length || ep.anni || ep.certificati.length || ep.cert_altro;
+            if (_tseIsHostess() || pieno) payload.eventi_profilo = ep;
+        })();
 
         fetch(API_SAVE, {
             method: 'POST',
@@ -569,11 +619,20 @@
         .then(function (d) {
             if (!d.ok) return;
             ALBUMS.forEach(function (a) { albumsData[a] = d.albums[a] || []; });
+            mediaInfo.ha_principale = !!d.ha_principale; mediaInfo.principale_in_album = !!d.principale_in_album; // FIX 2026-09-22 marco
+            // FIX 2026-09-22 marco — minorenni: niente album Fiere e eventi (hostess/steward vietati ai minori), come in registrazione
+            if (d.minore) {
+                var _te = document.querySelector('.tse-album-tab[data-album="eventi"]');
+                if (_te) _te.style.display = 'none';
+                if (currentAlbum === 'eventi') currentAlbum = 'polaroid';
+            }
             // FIX 2026-05-26 marco — photo alert se nessuna polaroid
             var pa = $('tse-photo-alert');
             if (pa) pa.style.display = albumsData['polaroid'].length === 0 ? 'block' : 'none';
             $('tse-foto-section').style.display = 'block';
             renderAlbum(currentAlbum);
+            _tseEvRefresh(); // FIX 2026-09-22 marco (Fase 2)
+            if (_tseGoFoto) { _tseGoFoto = false; $('tse-foto-section').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
         })
         .catch(function (err) { console.error('[tse] media load:', err); });
     }
@@ -586,11 +645,13 @@
             tabs[i].classList.toggle('active', tabs[i].getAttribute('data-album') === album);
         }
         // Descrizione album
-        var desc = (STR.albumDesc && STR.albumDesc[album]) || '';
+        // FIX 2026-09-22 marco — spiegazione dall'album condiviso (a cosa serve + quante foto)
+        var _ad = albumDef(album);
+        var desc = _ad ? ((_ad.hint || '') + (_ad.quante ? ' ' + _ad.quante : '')) : ((STR.albumDesc && STR.albumDesc[album]) || '');
         $('tse-album-desc').textContent = desc;
 
         // Veridicità testo per album
-        var v = (STR.verita && STR.verita[album]) || '';
+        var v = (STR.verita && (STR.verita[album] || (album === 'portfolio_cinema' ? STR.verita.portfolio : ''))) || ''; // FIX 2026-09-22 marco
         $('tse-verita-text').textContent = v;
 
         // FIX 2026-06-27 marco — data scatto su TUTTI gli album (obbligatoria polaroid, facoltativa le altre)
@@ -618,91 +679,114 @@
             resetUploadForm();
             return;
         }
-        // FIX 2026-06-28 marco — album labels per il menu sposta
-        var ALBUM_LABELS = (STR.albumLabels && Object.keys(STR.albumLabels).length) ? STR.albumLabels :
-            { polaroid:'Polaroid', dettaglio:'Dettaglio', portfolio:'Portfolio', eventi:'Eventi', casual:'Casual' };
-
+        // FIX 2026-09-22 marco (CRM - EVENTS DATABASE) — foto semplici:
+        //  - "Elimina" e "Sposta" SCRITTI sotto ogni foto, sempre visibili (prima: iconcine sopra la foto)
+        //  - doppioni (stessa foto su 2 righe, tipico da candidatura) mostrati UNA volta; Elimina/Sposta agiscono su tutte le copie
         grid.innerHTML = '';
+        var _seen = {}, _shown = [];
         items.forEach(function (it) {
-            var stateClass = '';
-            var title = 'Click per ingrandire';
-            if (it.motivo_rifiuto) {
-                stateClass = 'rejected';
-                title = 'Rifiutata — click per ingrandire';
-            } else if (!it.approvato_staff) {
-                stateClass = 'pending';
-                title = 'In attesa di approvazione — click per ingrandire';
-            }
+            if (_seen[it.url]) { _seen[it.url].dupIds.push(it.id); return; }
+            it.dupIds = [it.id]; _seen[it.url] = it; _shown.push(it);
+        });
+        _shown.forEach(function (it) {
+            var stateClass = '', stateTxt = '';
+            if (it.motivo_rifiuto) { stateClass = 'rejected'; stateTxt = STR.stateRejected || 'Rifiutata'; }
+            else if (!it.approvato_staff) { stateClass = 'pending'; stateTxt = STR.statePending || 'In verifica'; }
             var thumb = document.createElement('div');
             thumb.className = 'tse-album-thumb' + (stateClass ? ' ' + stateClass : '');
-            thumb.title = title;
             thumb.setAttribute('data-id', it.id); // FIX 2026-07-10 marco — drag&drop riordino
-            // Lightbox al click sull'immagine
-            (function (url) {
-                thumb.addEventListener('click', function (e) {
-                    if (!e.target.closest('.tse-thumb-actions')) talentShowLightbox(url);
-                });
-            })(it.url);
+            var box = document.createElement('div');
+            box.className = 'tse-thumb-img';
             var img = document.createElement('img');
-            img.src = it.url;
-            img.alt = '';
-            img.loading = 'lazy';
-            thumb.appendChild(img);
+            img.src = it.url; img.alt = ''; img.loading = 'lazy';
+            box.appendChild(img);
+            if (it.principale || (currentAlbum === 'eventi' && it.is_cover)) { // FIX 2026-09-22 marco
+                var bdg = document.createElement('span');
+                bdg.className = 'tse-thumb-princ';
+                bdg.textContent = it.principale ? (STR.princBadge || '⭐ Foto principale') : (STR.coverEvBadge || '⭐ Copertina');
+                box.appendChild(bdg);
+            }
+            if (stateTxt) {
+                var st = document.createElement('span');
+                st.className = 'tse-thumb-state' + (stateClass === 'rejected' ? ' rej' : '');
+                st.textContent = stateTxt;
+                box.appendChild(st);
+            }
+            (function (url) { box.addEventListener('click', function () { talentShowLightbox(url); }); })(it.url);
+            thumb.appendChild(box);
 
-            // FIX 2026-06-28 marco — bottoni elimina + sposta album
-            (function (mediaId, albumTipo) {
+            (function (ids, isPrinc, item) {
                 var acts = document.createElement('div');
                 acts.className = 'tse-thumb-actions';
-
-                // Bottone elimina
                 var delBtn = document.createElement('button');
                 delBtn.type = 'button';
                 delBtn.className = 'tse-thumb-btn tse-thumb-del';
-                delBtn.title = 'Elimina foto';
-                delBtn.textContent = '🗑';
+                delBtn.textContent = STR.delLabel || 'Elimina';
                 delBtn.addEventListener('click', function (e) {
                     e.stopPropagation();
-                    if (!confirm('Eliminare questa foto? L\'azione non è reversibile.')) return;
-                    talentMediaDelete(mediaId);
+                    if (isPrinc) { alert(STR.noDelPrinc || 'Questa è la foto che vedono i clienti: prima scegline un\'altra come principale.'); return; } // FIX 2026-09-22 marco
+                    if (!confirm(STR.confirmDel || 'Eliminare questa foto?')) return;
+                    talentMediaDelete(ids);
                 });
                 acts.appendChild(delBtn);
 
-                // Bottone sposta (dropdown album)
                 var moveBtn = document.createElement('button');
                 moveBtn.type = 'button';
                 moveBtn.className = 'tse-thumb-btn tse-thumb-move';
-                moveBtn.title = 'Sposta in un altro album';
-                moveBtn.textContent = '↔';
+                moveBtn.textContent = STR.moveLabel || 'Sposta';
                 var moveMenu = document.createElement('div');
                 moveMenu.className = 'tse-move-menu';
                 ALBUMS.forEach(function (alb) {
-                    if (alb === albumTipo) return;
+                    if (alb === currentAlbum) return;
                     var opt = document.createElement('button');
                     opt.type = 'button';
-                    opt.textContent = ALBUM_LABELS[alb] || alb;
+                    opt.textContent = albumLabel(alb);
                     opt.addEventListener('click', function (e) {
                         e.stopPropagation();
                         moveMenu.style.display = 'none';
-                        talentMediaMove(mediaId, alb);
+                        ids.forEach(function (id) { talentMediaMove(id, alb); });
                     });
                     moveMenu.appendChild(opt);
                 });
                 moveBtn.addEventListener('click', function (e) {
                     e.stopPropagation();
                     var open = moveMenu.style.display === 'block';
-                    // chiudi tutti i menu aperti
                     document.querySelectorAll('.tse-move-menu').forEach(function (m) { m.style.display = 'none'; });
                     moveMenu.style.display = open ? 'none' : 'block';
                 });
                 acts.appendChild(moveBtn);
                 acts.appendChild(moveMenu);
+                // FIX 2026-09-22 marco — il talent sceglie la foto che vedono i clienti e il primo piano eventi
+                if (currentAlbum === 'eventi') { // FIX 2026-09-22 marco (Fase 2) — etichetta Elegante/Sportivo
+                    var stBtn = document.createElement('button');
+                    stBtn.type = 'button'; stBtn.className = 'tse-thumb-btn tse-thumb-stile';
+                    var sp = (item.stile === 'sportivo');
+                    stBtn.textContent = sp ? (STR.stileSp || 'Sportivo') : (STR.stileEl || 'Elegante');
+                    stBtn.addEventListener('click', function (e) { e.stopPropagation(); talentSetStile(ids[0], sp ? 'elegante' : 'sportivo'); });
+                    acts.appendChild(stBtn);
+                }
+                if (currentAlbum === 'eventi' && !item.is_cover) {
+                    var cvBtn = document.createElement('button');
+                    cvBtn.type = 'button'; cvBtn.className = 'tse-thumb-btn tse-thumb-star';
+                    cvBtn.textContent = STR.setCoverEv || '⭐ Copertina';
+                    cvBtn.addEventListener('click', function (e) { e.stopPropagation(); talentSetCover(ids[0], 'eventi'); });
+                    acts.appendChild(cvBtn);
+                } else if (currentAlbum !== 'eventi' && !isPrinc && ALBUM_PRINCIPALE_OK.indexOf(currentAlbum) > -1 && item.approvato_staff && !item.motivo_rifiuto) {
+                    var prBtn = document.createElement('button');
+                    prBtn.type = 'button'; prBtn.className = 'tse-thumb-btn tse-thumb-star';
+                    prBtn.textContent = STR.setPrinc || '⭐ Principale';
+                    prBtn.addEventListener('click', function (e) { e.stopPropagation(); talentSetCover(ids[0], 'principale'); });
+                    acts.appendChild(prBtn);
+                }
                 thumb.appendChild(acts);
-            })(it.id, currentAlbum);
+            })(it.dupIds.slice(), !!it.principale, it);
 
             grid.appendChild(thumb);
         });
 
         _tseInitSort(grid, album); // FIX 2026-07-10 marco — drag&drop riordino foto
+        var _pn = $('tse-princ-note'); // FIX 2026-09-22 marco
+        if (_pn) { _pn.hidden = !(mediaInfo.ha_principale && !mediaInfo.principale_in_album); }
 
         // Contatore pending/rejected sotto la griglia
         var pendingCount = items.filter(function (i) { return !i.motivo_rifiuto && !i.approvato_staff; }).length;
@@ -733,6 +817,14 @@
         $('tse-upload-status').textContent = '';
         $('tse-upload-status').className = 'tse-upload-status';
     }
+
+    // FIX 2026-09-22 marco — il pannello di caricamento si apre solo quando serve
+    window.talentToggleUpload = function (open) {
+        var box = $('tse-upload-box'), btn = $('tse-add-photo');
+        if (box) box.hidden = !open;
+        if (btn) btn.hidden = !!open;
+        if (open && box) box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    };
 
     window.talentAlbumSwitch = function (album) {
         if (ALBUMS.indexOf(album) < 0) return;
@@ -862,23 +954,100 @@
     }
 
     // FIX 2026-06-28 marco — elimina foto dal self-edit
-    function talentMediaDelete(mediaId) {
-        fetch('/crm_toagency/actions/talent-media-delete.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ uuid: UUID, t: TOKEN, media_id: mediaId })
+    // FIX 2026-09-22 marco — accetta piu' id (copie della stessa foto) e messaggio d'errore nella lingua del talent
+    function talentMediaDelete(mediaIds) {
+        var ids = Array.isArray(mediaIds) ? mediaIds : [mediaIds];
+        var fallite = 0, bloccataPrinc = false;
+        var chain = Promise.resolve();
+        ids.forEach(function (mediaId) {
+            chain = chain.then(function () {
+                return fetch('/crm_toagency/actions/talent-media-delete.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ uuid: UUID, t: TOKEN, media_id: mediaId })
+                })
+                .then(function (r) { return r.json(); })
+                .then(function (d) {
+                    if (d && d.ok) {
+                        albumsData[currentAlbum] = (albumsData[currentAlbum] || []).filter(function (m) { return m.id !== mediaId; });
+                    } else if (d && d.error === 'is_principale') { bloccataPrinc = true; }
+                    else { fallite++; console.warn('[tse] delete', mediaId, d && d.error); }
+                })
+                .catch(function () { fallite++; });
+            });
+        });
+        chain.then(function () {
+            renderAlbum(currentAlbum);
+            if (bloccataPrinc) alert(STR.noDelPrinc || 'Questa è la foto che vedono i clienti: prima scegline un\'altra.');
+            else if (fallite) alert(STR.delError || 'Errore durante l\'eliminazione, riprova.');
+        });
+    }
+
+    // FIX 2026-09-22 marco (Fase 2) — sezione Hostess & Eventi
+    var _tseEvMinore = false;
+    function _tseIsHostess() { var g = $('f-ruoli'); var cb = g ? g.querySelector('input[value="hostess"]') : null; return !!(cb && cb.checked); }
+    function _tseEvRefresh() {
+        var sec = $('tse-ev-section'); if (!sec) return;
+        var host = _tseIsHostess();
+        var cta = $('tse-ev-cta'), body = $('tse-ev-hostess'), nf = $('tse-ev-nofoto');
+        if (cta) cta.hidden = host || _tseEvMinore;
+        if (body) body.hidden = !host || _tseEvMinore;
+        if (nf) nf.hidden = !host || ((albumsData.eventi || []).length > 0);
+    }
+    window.talentAddHostess = function () {
+        var g = $('f-ruoli'); var cb = g ? g.querySelector('input[value="hostess"]') : null;
+        if (cb && !cb.checked) { cb.checked = true; cb.dispatchEvent(new Event('change', { bubbles: true })); }
+        _tseEvRefresh();
+        var sec = $('tse-ev-section'); if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    window.talentOpenEventi = function () {
+        if (ALBUMS.indexOf('eventi') < 0) return;
+        renderAlbum('eventi');
+        var fs = $('tse-foto-section'); if (fs) fs.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    function talentSetStile(mediaId, valore) {
+        fetch(cfg.apiSetCover || '/crm_toagency/actions/talent-media-set-cover.php', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ uuid: UUID, t: TOKEN, media_id: mediaId, target: 'stile', valore: valore })
         })
         .then(function (r) { return r.json(); })
         .then(function (d) {
-            if (d.ok) {
-                // Rimuovi dalla cache locale e ricarica la griglia
-                albumsData[currentAlbum] = (albumsData[currentAlbum] || []).filter(function (m) { return m.id !== mediaId; });
+            if (d && d.ok) {
+                (albumsData.eventi || []).forEach(function (m) { if (m.id === mediaId) { m.stile = valore; m.is_cover = 0; } });
                 renderAlbum(currentAlbum);
+            } else { alert(STR.delError || 'Errore, riprova.'); }
+        })
+        .catch(function () { alert(STR.delError || 'Errore di rete, riprova.'); });
+    }
+
+    // FIX 2026-09-22 marco (CRM - EVENTS DATABASE) — foto principale / copertina eventi scelta dal talent
+    function talentSetCover(mediaId, target) {
+        fetch(cfg.apiSetCover || '/crm_toagency/actions/talent-media-set-cover.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ uuid: UUID, t: TOKEN, media_id: mediaId, target: target })
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+            if (d && d.ok) {
+                var list = albumsData[currentAlbum] || [];
+                var chosen = list.filter(function (m) { return m.id === mediaId; })[0];
+                if (target === 'principale') {
+                    ALBUMS.forEach(function (a) { (albumsData[a] || []).forEach(function (m) { m.principale = !!(chosen && m.url === chosen.url); }); });
+                    mediaInfo.ha_principale = true; mediaInfo.principale_in_album = true;
+                    alert(STR.princOk || 'Fatto: questa è ora la foto che vedono i clienti.');
+                } else {
+                    var stSel = (chosen && chosen.stile === 'sportivo') ? 'sportivo' : 'elegante';
+                    list.forEach(function (m) { var st = (m.stile === 'sportivo') ? 'sportivo' : 'elegante'; if (st === stSel) m.is_cover = (m.id === mediaId) ? 1 : 0; });
+                }
+                renderAlbum(currentAlbum);
+            } else if (d && d.error === 'not_approved_yet') {
+                alert(STR.princPending || 'Questa foto è ancora in verifica.');
             } else {
-                alert('Errore durante l\'eliminazione: ' + (d.error || '?'));
+                alert(STR.delError || 'Errore, riprova.');
             }
         })
-        .catch(function () { alert('Errore di rete, riprova.'); });
+        .catch(function () { alert(STR.delError || 'Errore di rete, riprova.'); });
     }
 
     // FIX 2026-06-28 marco — sposta foto tra album
@@ -945,6 +1114,7 @@
             animation: 150,
             draggable: '.tse-album-thumb',
             filter: '.tse-thumb-actions',     // i bottoni elimina/sposta non avviano il drag
+            preventOnFilter: false,           // FIX 2026-09-22 marco — CAUSA "non riesco a cancellare le foto" su telefono: col default (true) Sortable blocca il tocco sui bottoni e il click non parte
             delay: 150, delayOnTouchOnly: true, // su touch serve una pressione, così lo scroll resta libero
             onEnd: function () { _tseSaveOrder(currentAlbum); }
         });
@@ -970,6 +1140,24 @@
     }
     function escapeAttr(s) { return escapeHtml(s); }
 
+    // FIX 2026-09-23 marco ticket-239: messaggi del caricamento video nelle 4 lingue. I testi arrivano dal PHP (STR.video, via $_t);
+    // il server manda solo il codice d'errore (res.error). Se STR.video manca, restano i testi italiani di riserva.
+    var VSTR = STR.video || {};
+    function tseVideoT(key, fallback) { return VSTR[key] || fallback || ''; }
+    function tseVideoErr(res) {
+        var code = (res && res.error) || '';
+        var E = VSTR.err || {};
+        var map = { too_big_server: 'too_big', invalid_mime: 'invalid_file', not_a_video: 'invalid_file', invalid_token: 'invalid_link', not_found: 'invalid_link', deleted: 'invalid_link', method_not_allowed: 'invalid_link' };
+        var key = map[code] || code;
+        if (code === 'cap_raggiunto') {
+            var msg = String((res && res.message) || '');
+            var n = (msg.match(/\d+/) || [''])[0];
+            var tpl = E[/total/i.test(msg) ? 'cap_tot' : 'cap_album'] || '';
+            if (tpl) return tpl.replace('{n}', n);
+        }
+        if (E[key]) return E[key];
+        return (VSTR.generic || (res && res.message) || 'Errore upload') + (code ? ' (' + code + ')' : '');
+    }
     function tseWaVideoLink() {
         var nome = (talentNome + ' ' + talentCognome).trim();
         var msg = 'Ciao, sono ' + (nome || 'un talent') + ', vi invio il mio video di presentazione per la scheda TOAgency';
@@ -989,31 +1177,32 @@
     };
     window.talentVideoGo = function () {
         var st = $('tse-video-status'), legal = $('tse-video-legal');
-        if (!videoFile) { st.textContent = 'Scegli prima un video'; st.className = 'tse-upload-status err'; return; }
-        if (!legal || !legal.checked) { st.textContent = 'Spunta il consenso per caricare'; st.className = 'tse-upload-status err'; return; }
-        if (videoFile.size > 50 * 1024 * 1024) { st.textContent = 'Video oltre 50MB: esporta a 720p o usa WhatsApp'; st.className = 'tse-upload-status err'; tseVideoShowHeavy(); return; }
+        if (!videoFile) { st.textContent = tseVideoT('chooseFirst', 'Scegli prima un video'); st.className = 'tse-upload-status err'; return; }
+        if (!legal || !legal.checked) { st.textContent = tseVideoT('consent', 'Spunta il consenso per caricare'); st.className = 'tse-upload-status err'; return; }
+        if (videoFile.size > 50 * 1024 * 1024) { st.textContent = tseVideoT('tooBig', 'Video oltre 50MB: esporta a 720p o usa WhatsApp'); st.className = 'tse-upload-status err'; tseVideoShowHeavy(); return; }
         var btn = $('tse-video-go'); if (btn) btn.disabled = true;
-        st.textContent = 'Caricamento…'; st.className = 'tse-upload-status loading';
+        st.textContent = tseVideoT('loading', 'Caricamento…'); st.className = 'tse-upload-status loading';
         var fd = new FormData();
         fd.append('uuid', UUID); fd.append('t', TOKEN); fd.append('video', videoFile);
         fd.append('dichiarazione_legale', '1'); fd.append('context', 'self_edit');
         fetch(API_VIDEO, { method: 'POST', body: fd, credentials: 'same-origin' })
-            .then(function (r) { return r.json(); })
+            .then(function (r) { var http = r.status; return r.json().catch(function () { return { ok: false, error: (http === 413 ? 'too_big' : 'network') }; }); })
             .then(function (res) {
                 if (res.ok) {
-                    st.textContent = '✓ ' + (res.message || 'Video caricato, in attesa di approvazione dello staff.');
+                    var mb = (String(res.message || '').match(/\(([\d.,]+) MB\)/) || [])[1];
+                    st.textContent = '✓ ' + tseVideoT('okBase', 'Video caricato') + (mb ? ' (' + mb + ' MB).' : '.') + (res.pending_review ? tseVideoT('okPending', ' In attesa di approvazione dello staff.') : '');
                     st.className = 'tse-upload-status ok';
                     videoFile = null;
                     var fn = $('tse-video-fname'); if (fn) fn.textContent = '—';
                     var vi = $('tse-video-input'); if (vi) vi.value = '';
                     var h = $('tse-video-heavy'); if (h) h.style.display = 'none';
                 } else {
-                    st.textContent = '✗ ' + (res.message || res.error || 'Errore upload');
+                    st.textContent = '✗ ' + (res.error === 'network' ? tseVideoT('network', 'Errore di rete') : tseVideoErr(res));
                     st.className = 'tse-upload-status err';
                     if (res.error === 'too_big' || res.error === 'too_big_server') tseVideoShowHeavy();
                 }
             })
-            .catch(function () { st.textContent = '✗ Errore di rete'; st.className = 'tse-upload-status err'; })
+            .catch(function () { st.textContent = '✗ ' + tseVideoT('network', 'Errore di rete'); st.className = 'tse-upload-status err'; })
             .finally(function () { var b = $('tse-video-go'); if (b) b.disabled = false; });
     };
 
