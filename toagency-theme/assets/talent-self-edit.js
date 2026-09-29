@@ -43,6 +43,26 @@
 
     function $(id) { return document.getElementById(id); }
 
+    // 2026-09-29 ticket #369 — il load CRM manda lingue_dettaglio.per_lingua[lg] {livello, cert, certificazioni}
+    // (vecchia forma piatta {lg:{...}} ancora accettata). Livello -> MAIUSCOLO (nativo minuscolo); cert dedotto dal testo se manca.
+    function normalizzaLingueDettaglio(src) {
+        var out = {};
+        if (!src || typeof src !== 'object') return out;
+        var map = (src.per_lingua && typeof src.per_lingua === 'object') ? src.per_lingua : src;
+        Object.keys(map).forEach(function (code) {
+            var v = map[code];
+            if (!v || typeof v !== 'object') return;
+            var liv = String(v.livello || '').trim();
+            liv = (liv.toLowerCase() === 'nativo') ? 'nativo' : liv.toUpperCase();
+            if (LINGUE_LIVELLI.indexOf(liv) === -1) liv = '';
+            var testo = String(v.certificazioni || '').trim();
+            var cert = String(v.cert || '').toLowerCase();
+            if (cert !== 'si' && cert !== 'no') cert = testo ? 'si' : '';
+            out[code] = { livello: liv, cert: cert, certificazioni: testo, altro_testo: v.altro_testo || '' };
+        });
+        return out;
+    }
+
     // 2026-08-08 TEMA — ridisegna le righe livello+certificazioni per le lingue attualmente selezionate,
     // preservando i valori già inseriti anche se l'utente spunta/despunta altre lingue nel frattempo.
     function renderLingueDettaglio() {
@@ -54,9 +74,11 @@
             var code = row.getAttribute('data-lang');
             var liv = row.querySelector('.tse-ld-livello');
             var cert = row.querySelector('.tse-ld-cert');
+            var certSel = row.querySelector('.tse-ld-certsel'); // 2026-09-29 ticket #369
             var altroTxt = row.querySelector('.tse-ld-altro');
             lingueDettaglioData[code] = {
                 livello: liv ? liv.value : '',
+                cert: certSel ? certSel.value : '',
                 certificazioni: cert ? cert.value.trim() : '',
                 altro_testo: altroTxt ? altroTxt.value.trim() : ''
             };
@@ -77,25 +99,44 @@
 
             var sel = document.createElement('select');
             sel.className = 'tse-select tse-ld-livello';
-            sel.style.cssText = 'max-width:150px;';
+            sel.style.cssText = 'max-width:210px;';
             var optEmpty = document.createElement('option');
             optEmpty.value = ''; optEmpty.textContent = STR.livelloSelect || '—';
             sel.appendChild(optEmpty);
             LINGUE_LIVELLI.forEach(function (lv) {
                 var o = document.createElement('option');
                 o.value = lv;
-                o.textContent = (lv === 'nativo') ? (STR.livelloNativo || 'Madrelingua') : lv;
+                // 2026-09-29 ticket #369 — etichetta comprensibile, mai il codice CEFR
+                o.textContent = (STR.livelliLabel && STR.livelliLabel[lv]) || ((lv === 'nativo') ? (STR.livelloNativo || 'Madrelingua') : lv);
                 if (d.livello === lv) o.selected = true;
                 sel.appendChild(o);
             });
             row.appendChild(sel);
 
+            // 2026-09-29 ticket #369 — scelta separata: '' (Certificato?) / no / si; il testo compare solo con 'si'
+            var certSel = document.createElement('select');
+            certSel.className = 'tse-select tse-ld-certsel';
+            certSel.style.cssText = 'max-width:210px;';
+            [['', STR.certVuoto || 'Certificato?'], ['no', STR.certNo || 'Nessun certificato'], ['si', STR.certSi || 'Sì, ho un certificato']].forEach(function (p) {
+                var o = document.createElement('option');
+                o.value = p[0]; o.textContent = p[1];
+                if ((d.cert || '') === p[0]) o.selected = true;
+                certSel.appendChild(o);
+            });
+            row.appendChild(certSel);
+
             var cert = document.createElement('input');
             cert.type = 'text';
             cert.className = 'tse-input tse-ld-cert';
-            cert.placeholder = STR.certPlaceholder || 'Certificazione (facoltativo)';
+            cert.placeholder = STR.certPlaceholder || 'Quale certificato? (es. IELTS 7)';
             cert.style.cssText = 'flex:1;min-width:150px;';
             cert.value = d.certificazioni || '';
+            cert.style.display = (certSel.value === 'si') ? '' : 'none';
+            certSel.addEventListener('change', function () {
+                cert.style.display = (certSel.value === 'si') ? '' : 'none';
+                cert.classList.remove('tse-missing');
+                if (certSel.value === 'si') cert.focus();
+            });
             row.appendChild(cert);
 
             // 2026-08-08 TEMA — "Altro": serve sapere QUALE lingua è (può essere più di una, testo libero).
@@ -502,7 +543,7 @@
                 var fr = $('f-ruoli'); if (fr) fr.addEventListener('change', _tseEvRefresh);
             })();
             // 2026-08-08 TEMA — livello+certificazioni per lingua (sostituisce lingue_pubbliche, tolta dal form talent)
-            lingueDettaglioData = (d.talent.lingue_dettaglio && typeof d.talent.lingue_dettaglio === 'object') ? d.talent.lingue_dettaglio : {};
+            lingueDettaglioData = normalizzaLingueDettaglio(d.talent.lingue_dettaglio);
             renderLingueDettaglio();
             var _pat = $('f-patente'); if (_pat) _pat.checked = (d.talent.patente == 1 || d.talent.patente === true);
             // 2026-08-04 TEMA — automunito
@@ -555,21 +596,35 @@
         payload.ruoli   = getChips('f-ruoli');
         payload.lingue  = getChips('f-lingue');
         // 2026-08-08 TEMA — livello+certificazioni solo per le lingue attualmente selezionate
+        var _certErr = null;
         (function () {
             var det = {};
+            var _lbl = STR.lingueLabels || {};
             document.querySelectorAll('#tse-lingue-dettaglio [data-lang]').forEach(function (row) {
                 var code = row.getAttribute('data-lang');
                 var liv = row.querySelector('.tse-ld-livello');
                 var cert = row.querySelector('.tse-ld-cert');
+                var certSel = row.querySelector('.tse-ld-certsel');
                 var altroTxt = row.querySelector('.tse-ld-altro');
+                // 2026-09-29 ticket #369 — manda {livello, cert, certificazioni}; il testo parte solo con cert='si'
+                var c = certSel ? certSel.value : '';
+                var txt = (c === 'si' && cert) ? cert.value.trim() : '';
+                if (c === 'si' && !txt && !_certErr) { _certErr = (_lbl[code] || code) + ': ' + (STR.errCert || 'Indica quale certificato hai, oppure scegli "Nessun certificato".'); if (cert) cert.classList.add('tse-missing'); if (cert) cert.scrollIntoView({ block: 'center' }); }
                 det[code] = {
                     livello: liv ? liv.value : '',
-                    certificazioni: cert ? cert.value.trim() : '',
+                    cert: c,
+                    certificazioni: txt,
                     altro_testo: altroTxt ? altroTxt.value.trim() : ''
                 };
             });
             payload.lingue_dettaglio = det;
         })();
+        if (_certErr) { // 2026-09-29 ticket #369 — cert=si senza testo: niente invio
+            showResult('err', _certErr);
+            btn.disabled = false;
+            btn.textContent = STR.save || 'Invia';
+            return;
+        }
         payload.patente = ($('f-patente') && $('f-patente').checked) ? 1 : 0;
         payload.automunito = ($('f-automunito') && $('f-automunito').checked) ? 1 : 0;
         // FIX 2026-09-22 marco (Fase 2) — profilo eventi: si manda solo per hostess/steward o se compilato

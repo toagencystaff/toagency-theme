@@ -90,10 +90,21 @@ $T = [
     'field_ruoli'     => ['it'=>'Ruoli * (uno o più)','en'=>'Roles * (one or more)','fr'=>'Rôles * (un ou plusieurs)','es'=>'Roles * (uno o más)'],
     'field_lingue'    => ['it'=>'Lingue parlate','en'=>'Spoken languages','fr'=>'Langues parlées','es'=>'Idiomas'],
     // FIX 2026-08-08 marco — tolta "mostra ai clienti" (decide lo staff, non il talent); aggiunto livello+certificazioni per lingua
-    'lingue_dettaglio_hint' => ['it'=>'Per ogni lingua scelta, indica il livello e — se ce l\'hai — una certificazione.','en'=>'For each language you pick, add the level and — if you have one — a certificate.','fr'=>'Pour chaque langue choisie, indique le niveau et — si tu en as une — une certification.','es'=>'Para cada idioma elegido, indica el nivel y — si la tienes — una certificación.'],
+    'lingue_dettaglio_hint' => ['it'=>'Per ogni lingua scelta, indica il livello e se hai un certificato.','en'=>'For each language you pick, add your level and whether you have a certificate.','fr'=>'Pour chaque langue choisie, indique ton niveau et si tu as un certificat.','es'=>'Para cada idioma elegido, indica tu nivel y si tienes un certificado.'],
     'livello_select'  => ['it'=>'Livello…','en'=>'Level…','fr'=>'Niveau…','es'=>'Nivel…'],
     'livello_nativo'  => ['it'=>'Madrelingua','en'=>'Native','fr'=>'Langue maternelle','es'=>'Nativo'],
-    'cert_placeholder'=> ['it'=>'Certificazione (facoltativo)','en'=>'Certificate (optional)','fr'=>'Certification (facultatif)','es'=>'Certificación (opcional)'],
+    // FIX 2026-09-29 ticket #369 — livelli con etichette (mai codici CEFR al talent) + certificato si/no, come il modulo candidatura (fonte CRM: lib/lingue_talent.php)
+    'cert_placeholder'=> ['it'=>'Quale certificato? (es. IELTS 7)','en'=>'Which certificate? (e.g. IELTS 7)','fr'=>'Quel certificat ? (ex. IELTS 7)','es'=>'¿Qué certificado? (p. ej. IELTS 7)'],
+    'livelli_label'   => [
+        'it'=>['A1'=>'Base','A2'=>'Elementare','B1'=>'Intermedio','B2'=>'Buono','C1'=>'Fluente','C2'=>'Eccellente','nativo'=>'Madrelingua / bilingue'],
+        'en'=>['A1'=>'Basic','A2'=>'Elementary','B1'=>'Intermediate','B2'=>'Good','C1'=>'Fluent','C2'=>'Excellent','nativo'=>'Native / bilingual'],
+        'fr'=>['A1'=>'Notions','A2'=>'Élémentaire','B1'=>'Intermédiaire','B2'=>'Bon','C1'=>'Courant','C2'=>'Excellent','nativo'=>'Langue maternelle / bilingue'],
+        'es'=>['A1'=>'Básico','A2'=>'Elemental','B1'=>'Intermedio','B2'=>'Bueno','C1'=>'Fluido','C2'=>'Excelente','nativo'=>'Nativo / bilingüe'],
+    ],
+    'cert_vuoto'      => ['it'=>'Certificato?','en'=>'Certificate?','fr'=>'Certificat ?','es'=>'¿Certificado?'],
+    'cert_no'         => ['it'=>'Nessun certificato','en'=>'No certificate','fr'=>'Aucun certificat','es'=>'Sin certificado'],
+    'cert_si'         => ['it'=>'Sì, ho un certificato','en'=>'Yes, I have a certificate','fr'=>'Oui, j\'ai un certificat','es'=>'Sí, tengo un certificado'],
+    'err_cert'        => ['it'=>'Indica quale certificato hai, oppure scegli "Nessun certificato".','en'=>'Say which certificate you have, or pick "No certificate".','fr'=>'Indique quel certificat tu as, ou choisis « Aucun certificat ».','es'=>'Indica qué certificado tienes, o elige «Sin certificado».'],
     'altro_lingua_placeholder' => ['it'=>'Quali lingue? (es: Rumeno B2, Polacco A2)','en'=>'Which languages? (e.g. Romanian B2, Polish A2)','fr'=>'Quelles langues ? (ex : Roumain B2, Polonais A2)','es'=>'¿Qué idiomas? (ej: Rumano B2, Polaco A2)'],
     // FIX 2026-08-08 marco — paese di residenza, come in registrazione (prima paese poi comune/città)
     'field_paese_residenza' => ['it'=>'Paese di residenza','en'=>'Country of residence','fr'=>'Pays de résidence','es'=>'País de residencia'],
@@ -992,6 +1003,11 @@ window.talentEditConfig = {
         livelloSelect:   <?= json_encode($_t($T['livello_select'])) ?>,
         livelloNativo:   <?= json_encode($_t($T['livello_nativo'])) ?>,
         certPlaceholder: <?= json_encode($_t($T['cert_placeholder'])) ?>,
+        livelliLabel:    <?= json_encode($_t($T['livelli_label'])) ?>,
+        certVuoto:       <?= json_encode($_t($T['cert_vuoto'])) ?>,
+        certNo:          <?= json_encode($_t($T['cert_no'])) ?>,
+        certSi:          <?= json_encode($_t($T['cert_si'])) ?>,
+        errCert:         <?= json_encode($_t($T['err_cert'])) ?>,
         altroLinguaPlaceholder: <?= json_encode($_t($T['altro_lingua_placeholder'])) ?>,
         lingueLabels: {
             <?php foreach ($LINGUE_OPTS as $k=>$v): ?><?= json_encode($k) ?>: <?= json_encode($_t($v)) ?>,

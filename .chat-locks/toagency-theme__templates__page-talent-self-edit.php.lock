@@ -1,7 +1,8 @@
 STATO=CLOSED
-CHAT=CRM Fix Ticket Aperti
+CHAT=TEMA LINGUE-SELFEDIT
 FILE=toagency-theme/templates/page-talent-self-edit.php
-SHA1_ATTESO=844c6d314e5f23f0d39aaba1b99304e0cfccd5d0
-UPDATE=2026-09-27 17:57:05
-NOTE=ticket #291 #295: ripristino 22-23/09 (bozza CRM 2985fc7d/599badb9) + fix 25/09 del tema
-DEPLOY=FATTO prod d7c2cc34f 17:56
+SHA1_ATTESO=ad80f826267d2446819838877fbc047870c5ead4
+INIZIO=2026-09-29 15:00:00
+UPDATE=2026-09-29 15:01:37
+NOTE=ticket #369: livelli con etichette 4 lingue + select certificato si/no + blocco err_cert
+DEPLOY=DA FARE (Marco lancia deploy.sh, blocco in chat)
