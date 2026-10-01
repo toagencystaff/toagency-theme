@@ -407,7 +407,24 @@ toa_component('header');
     <!-- CONTENUTO -->
     <div class="toa-sl-content-area">
         <div class="toa-sl-content">
-            <?php the_content(); ?>
+            <?php
+            // FIX 2026-10-01 ticket #412 — il link "Candidati" e' scritto nel testo del casting (generato dal CRM) senza lang:
+            // la candidatura si apriva in italiano anche da /es/ /fr/ /en/. Qui aggiungiamo lang=<lingua pagina> a ogni link
+            // a candidatura.php / candidatura-crew.php che non ce l'ha gia' (vale per tutti i casting, anche gia' pubblicati).
+            $toa_content = apply_filters('the_content', get_the_content());
+            $toa_lang = toa_current_lang();
+            $toa_content = preg_replace_callback(
+                '#href=(["\'])([^"\']*candidatura(?:-crew)?\.php[^"\']*)\1#i',
+                function ($m) use ($toa_lang) {
+                    $url = $m[2];
+                    if (preg_match('#[?&](?:amp;)?lang=#i', $url)) { return $m[0]; }
+                    $sep = (strpos($url, '?') === false) ? '?' : '&amp;';
+                    return 'href=' . $m[1] . $url . $sep . 'lang=' . $toa_lang . $m[1];
+                },
+                $toa_content
+            );
+            echo $toa_content;
+            ?>
         </div>
 
         <!-- SHARE -->
