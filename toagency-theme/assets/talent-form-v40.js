@@ -2307,20 +2307,28 @@
             talentVideoFile = (input.files && input.files[0]) ? input.files[0] : null;
             if (nameEl) nameEl.textContent = talentVideoFile ? talentVideoFile.name : '—';
             if (status) { status.textContent = ''; status.style.color = ''; }
-            if (talentVideoFile && talentVideoFile.size > 50 * 1024 * 1024) showHeavy();
-            else if (heavy) heavy.style.display = 'none';
+            // FIX 2026-10-02 marco ticket-442: il peso si controlla DOPO la riduzione nel browser (goBtn), non alla scelta del file
+            if (heavy) heavy.style.display = 'none';
         };
         if (goBtn) goBtn.onclick = function () {
             var legal = document.getElementById('toaTalentVideoLegal');
             if (!talentVideoFile) { status.textContent = 'Scegli prima un video'; status.style.color = '#ef4444'; return; }
             if (!legal || !legal.checked) { status.textContent = 'Spunta il consenso per caricare'; status.style.color = '#ef4444'; return; }
-            if (talentVideoFile.size > 50 * 1024 * 1024) { status.textContent = 'Video oltre 50MB: esporta a 720p o usa WhatsApp'; status.style.color = '#ef4444'; showHeavy(); return; }
             goBtn.disabled = true; status.textContent = 'Caricamento…'; status.style.color = '#c8ff00';
-            var fd = new FormData();
-            fd.append('uuid', talentUuidAfterRegister); fd.append('t', talentTokenAfterRegister);
-            fd.append('video', talentVideoFile); fd.append('dichiarazione_legale', '1'); fd.append('context', 'registrazione');
-            fetch('/crm_toagency/actions/talent-self-edit-video.php', { method: 'POST', body: fd, credentials: 'same-origin' })
-                .then(function (r) { return r.json(); })
+            // FIX 2026-10-02 marco ticket-442: riduco il video NEL BROWSER prima di inviarlo (assets/toa-video-reduce.js: MP4 H.264, max 720 px, ~1,5 Mbit/s).
+            // Se il browser non puo', toaVideoRiduci restituisce l'originale e decide il tetto di peso (50 MB). Testo di stato nelle 4 lingue da data-reducing.
+            var daInviare = window.toaVideoRiduci
+                ? window.toaVideoRiduci(talentVideoFile, function (t) { status.textContent = t; }, status.getAttribute('data-reducing') || 'Riduco il video… {p}%')
+                : Promise.resolve(talentVideoFile);
+            daInviare.then(function (vf) {
+                if (vf.size > 50 * 1024 * 1024) return { ok: false, error: 'too_big', message: 'Video oltre 50MB: esporta a 720p o usa WhatsApp' };
+                status.textContent = 'Caricamento…'; status.style.color = '#c8ff00';
+                var fd = new FormData();
+                fd.append('uuid', talentUuidAfterRegister); fd.append('t', talentTokenAfterRegister);
+                fd.append('video', vf); fd.append('dichiarazione_legale', '1'); fd.append('context', 'registrazione');
+                return fetch('/crm_toagency/actions/talent-self-edit-video.php', { method: 'POST', body: fd, credentials: 'same-origin' })
+                    .then(function (r) { return r.json(); });
+            })
                 .then(function (res) {
                     if (res.ok) { status.textContent = '✓ ' + (res.message || 'Video caricato, in attesa di approvazione.'); status.style.color = '#c8ff00'; talentVideoFile = null; if (nameEl) nameEl.textContent = '—'; if (input) input.value = ''; if (heavy) heavy.style.display = 'none'; }
                     else { status.textContent = '✗ ' + (res.message || res.error || 'Errore'); status.style.color = '#ef4444'; if (res.error === 'too_big' || res.error === 'too_big_server') showHeavy(); }

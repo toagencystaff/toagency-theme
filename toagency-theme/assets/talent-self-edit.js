@@ -1227,21 +1227,29 @@
         var fn = $('tse-video-fname'); if (fn) fn.textContent = videoFile ? videoFile.name : '—';
         var st = $('tse-video-status'); if (st) { st.textContent = ''; st.className = 'tse-upload-status'; }
         var h = $('tse-video-heavy');
-        if (videoFile && videoFile.size > 50 * 1024 * 1024) tseVideoShowHeavy();
-        else if (h) h.style.display = 'none';
+        // FIX 2026-10-02 marco ticket-442: il peso si controlla DOPO la riduzione nel browser (talentVideoGo), non alla scelta del file
+        if (h) h.style.display = 'none';
     };
     window.talentVideoGo = function () {
         var st = $('tse-video-status'), legal = $('tse-video-legal');
         if (!videoFile) { st.textContent = tseVideoT('chooseFirst', 'Scegli prima un video'); st.className = 'tse-upload-status err'; return; }
         if (!legal || !legal.checked) { st.textContent = tseVideoT('consent', 'Spunta il consenso per caricare'); st.className = 'tse-upload-status err'; return; }
-        if (videoFile.size > 50 * 1024 * 1024) { st.textContent = tseVideoT('tooBig', 'Video oltre 50MB: esporta a 720p o usa WhatsApp'); st.className = 'tse-upload-status err'; tseVideoShowHeavy(); return; }
         var btn = $('tse-video-go'); if (btn) btn.disabled = true;
         st.textContent = tseVideoT('loading', 'Caricamento…'); st.className = 'tse-upload-status loading';
-        var fd = new FormData();
-        fd.append('uuid', UUID); fd.append('t', TOKEN); fd.append('video', videoFile);
-        fd.append('dichiarazione_legale', '1'); fd.append('context', 'self_edit');
-        fetch(API_VIDEO, { method: 'POST', body: fd, credentials: 'same-origin' })
-            .then(function (r) { var http = r.status; return r.json().catch(function () { return { ok: false, error: (http === 413 ? 'too_big' : 'network') }; }); })
+        // FIX 2026-10-02 marco ticket-442: prima di inviare riduco il video NEL BROWSER (assets/toa-video-reduce.js: MP4 H.264, max 720 px, ~1,5 Mbit/s).
+        // Se il browser non puo' la riduzione, toaVideoRiduci restituisce l'originale e decide il tetto di peso (50 MB).
+        var daInviare = window.toaVideoRiduci
+            ? window.toaVideoRiduci(videoFile, function (t) { st.textContent = t; }, tseVideoT('reducing', 'Riduco il video… {p}% (resta su questa pagina)'))
+            : Promise.resolve(videoFile);
+        daInviare.then(function (vf) {
+            if (vf.size > 50 * 1024 * 1024) return { ok: false, error: 'too_big' }; // mostra 'tooBig' + WhatsApp (gestito sotto)
+            st.textContent = tseVideoT('loading', 'Caricamento…'); st.className = 'tse-upload-status loading';
+            var fd = new FormData();
+            fd.append('uuid', UUID); fd.append('t', TOKEN); fd.append('video', vf);
+            fd.append('dichiarazione_legale', '1'); fd.append('context', 'self_edit');
+            return fetch(API_VIDEO, { method: 'POST', body: fd, credentials: 'same-origin' })
+                .then(function (r) { var http = r.status; return r.json().catch(function () { return { ok: false, error: (http === 413 ? 'too_big' : 'network') }; }); });
+        })
             .then(function (res) {
                 if (res.ok) {
                     var mb = (String(res.message || '').match(/\(([\d.,]+) MB\)/) || [])[1];

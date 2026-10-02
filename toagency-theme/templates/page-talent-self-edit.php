@@ -1026,6 +1026,7 @@ window.talentEditConfig = {
             network: <?= json_encode($_t(['it'=>'Errore di rete: collegati al Wi-Fi, resta su questa pagina e riprova. Se non ci riesci, scrivi ad Amelia nella chat.','en'=>'Network error: connect to Wi-Fi, stay on this page and try again. If it still fails, write to Amelia in the chat.','fr'=>'Erreur réseau : connecte-toi au Wi-Fi, reste sur cette page et réessaie. Si ça ne marche toujours pas, écris à Amelia dans le chat.','es'=>'Error de red: conéctate al Wi-Fi, quédate en esta página e inténtalo de nuevo. Si sigue fallando, escribe a Amelia en el chat.'])) ?>,
             generic: <?= json_encode($_t(['it'=>'Non è stato possibile caricare il video. Riprova; se non ci riesci scrivi ad Amelia nella chat.','en'=>'The video could not be uploaded. Try again; if it still fails, write to Amelia in the chat.','fr'=>"La vidéo n'a pas pu être chargée. Réessaie ; si ça ne marche pas, écris à Amelia dans le chat.",'es'=>'No se pudo subir el vídeo. Inténtalo de nuevo; si no funciona, escribe a Amelia en el chat.'])) ?>,
             okBase: <?= json_encode($_t(['it'=>'Video caricato','en'=>'Video uploaded','fr'=>'Vidéo chargée','es'=>'Vídeo subido'])) ?>,
+            reducing: <?= json_encode($_t(['it'=>'Riduco il video per renderlo più leggero… {p}% (resta su questa pagina)','en'=>'Making your video lighter… {p}% (please stay on this page)','fr'=>'Je rends ta vidéo plus légère… {p} % (reste sur cette page)','es'=>'Aligerando tu vídeo… {p}% (quédate en esta página)'])) ?>, <?php /* ticket #442 (02/10/2026) */ ?>
             okPending: <?= json_encode($_t(['it'=>' In attesa di approvazione dello staff.','en'=>' Waiting for staff approval.','fr'=>' En attente de validation par notre équipe.','es'=>' Pendiente de aprobación del equipo.'])) ?>,
             err: {
                 legal_required: <?= json_encode($_t(['it'=>'Spunta il consenso per caricare','en'=>'Tick the consent box to upload','fr'=>'Coche la case de consentement pour charger','es'=>'Marca la casilla de consentimiento para subir'])) ?>,
@@ -1077,6 +1078,8 @@ window.talentEditConfig = {
 $tse_js_path = get_stylesheet_directory() . '/assets/talent-self-edit.js';
 $tse_js_ver  = file_exists($tse_js_path) ? filemtime($tse_js_path) : '2.1';
 ?>
+<?php $tvr_js = get_stylesheet_directory() . '/assets/toa-video-reduce.js'; $tvr_ver = file_exists($tvr_js) ? filemtime($tvr_js) : '1'; /* ticket #442 (02/10/2026): riduzione video nel browser, versione = data del file */ ?>
+<script src="<?= esc_url($theme_uri . '/assets/toa-video-reduce.js') ?>?v=<?= $tvr_ver ?>" defer></script>
 <script src="<?= esc_url($theme_uri . '/assets/talent-self-edit.js') ?>?v=<?= $tse_js_ver ?>" defer></script>
 <?php $tpr_js = get_stylesheet_directory() . '/assets/talent-profilo-ruolo.js'; $tpr_ver = file_exists($tpr_js) ? filemtime($tpr_js) : '1'; /* FIX 2026-09-23 marco: versione = data del file, niente bump a mano */ ?>
 <script src="<?= esc_url($theme_uri . '/assets/talent-profilo-ruolo.js') ?>?v=<?= $tpr_ver ?>" defer></script><!-- FEATURE 2026-09-23 marco (RUOLI MULTI-SCHEDA) -->
