@@ -1,8 +1,7 @@
-STATO=CLOSED
-CHAT=TEMA LINGUE-SELFEDIT
+STATO=OPEN
+CHAT=TEMA CRM Video Self-Edit
 FILE=toagency-theme/assets/talent-self-edit.js
-SHA1_ATTESO=fc7f2cdd7dac3dc24245dc420f5a41672d6d92a7
-INIZIO=2026-09-29 15:00:00
-UPDATE=2026-09-29 15:04:07
-NOTE=ticket #369: livelli con etichette 4 lingue + select certificato si/no + blocco err_cert
-DEPLOY=FATTO prod 7a5abf7c1 15:02
+INIZIO=2026-10-02 17:50:28
+UPDATE=2026-10-02 17:52:42
+SHA1_ATTESO=674ceec96b6b938ef23bcebdcc4160b7d88c6b68
+NOTE=ticket #442: commit a8ee45af2, deploy in attesa (poi CLOSED)
