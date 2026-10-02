@@ -2316,12 +2316,12 @@
             if (!legal || !legal.checked) { status.textContent = 'Spunta il consenso per caricare'; status.style.color = '#ef4444'; return; }
             goBtn.disabled = true; status.textContent = 'Caricamento…'; status.style.color = '#c8ff00';
             // FIX 2026-10-02 marco ticket-442: riduco il video NEL BROWSER prima di inviarlo (assets/toa-video-reduce.js: MP4 H.264, max 720 px, ~1,5 Mbit/s).
-            // Se il browser non puo', toaVideoRiduci restituisce l'originale e decide il tetto di peso (50 MB). Testo di stato nelle 4 lingue da data-reducing.
+            // Se il browser non puo', toaVideoRiduci restituisce l'originale e decide il tetto di peso (30 MB). Testo di stato nelle 4 lingue da data-reducing.
             var daInviare = window.toaVideoRiduci
                 ? window.toaVideoRiduci(talentVideoFile, function (t) { status.textContent = t; }, status.getAttribute('data-reducing') || 'Riduco il video… {p}%')
                 : Promise.resolve(talentVideoFile);
             daInviare.then(function (vf) {
-                if (vf.size > 50 * 1024 * 1024) return { ok: false, error: 'too_big', message: 'Video oltre 50MB: esporta a 720p o usa WhatsApp' };
+                if (vf.size > 30 * 1024 * 1024) return { ok: false, error: 'too_big', message: 'Video oltre 30MB: accorcialo o mandacelo su WhatsApp' };
                 status.textContent = 'Caricamento…'; status.style.color = '#c8ff00';
                 var fd = new FormData();
                 fd.append('uuid', talentUuidAfterRegister); fd.append('t', talentTokenAfterRegister);

@@ -1237,12 +1237,12 @@
         var btn = $('tse-video-go'); if (btn) btn.disabled = true;
         st.textContent = tseVideoT('loading', 'Caricamento…'); st.className = 'tse-upload-status loading';
         // FIX 2026-10-02 marco ticket-442: prima di inviare riduco il video NEL BROWSER (assets/toa-video-reduce.js: MP4 H.264, max 720 px, ~1,5 Mbit/s).
-        // Se il browser non puo' la riduzione, toaVideoRiduci restituisce l'originale e decide il tetto di peso (50 MB).
+        // Se il browser non puo' la riduzione, toaVideoRiduci restituisce l'originale e decide il tetto di peso (30 MB).
         var daInviare = window.toaVideoRiduci
             ? window.toaVideoRiduci(videoFile, function (t) { st.textContent = t; }, tseVideoT('reducing', 'Riduco il video… {p}% (resta su questa pagina)'))
             : Promise.resolve(videoFile);
         daInviare.then(function (vf) {
-            if (vf.size > 50 * 1024 * 1024) return { ok: false, error: 'too_big' }; // mostra 'tooBig' + WhatsApp (gestito sotto)
+            if (vf.size > 30 * 1024 * 1024) return { ok: false, error: 'too_big' }; // mostra 'tooBig' + WhatsApp (gestito sotto)
             st.textContent = tseVideoT('loading', 'Caricamento…'); st.className = 'tse-upload-status loading';
             var fd = new FormData();
             fd.append('uuid', UUID); fd.append('t', TOKEN); fd.append('video', vf);
