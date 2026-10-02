@@ -14,7 +14,7 @@
     var API_MEDIA_LS = cfg.apiMediaList;
     var API_MEDIA_UP = cfg.apiMediaUp;
     var API_VIDEO = cfg.apiVideo || '/crm_toagency/actions/talent-self-edit-video.php';
-    var talentNome = '', talentCognome = '', videoFile = null;
+    var talentNome = '', talentCognome = '', videoFile = null, videoFileDet = null; // FIX 2026-10-02 marco #451: +videoFileDet (box Video dettagli)
     var API_STATO    = cfg.apiStato;
     var UUID  = cfg.uuid  || '';
     var TOKEN = cfg.token || '';
@@ -516,6 +516,7 @@
             // FIX 2026-07-16 TEMA — precompila profilo professionale
             setChips('f-etnia',  d.talent.etnia);
             setChips('f-ruoli',  d.talent.ruoli);
+            _tseVideoDetRefresh(); // FIX 2026-10-02 marco #451: box Video dettagli solo per model
             // TEMA 26/08 — "Bambino/a" non si sceglie a mano: si calcola da data_nascita (<18 anni).
             // Se data_nascita non arriva dal CRM non tocchiamo lo stato (niente da calcolare).
             (function () {
@@ -541,6 +542,7 @@
                 _tseEvMinore = (function () { var dn = d.talent.data_nascita; if (!dn) return false; var b = new Date(dn); if (isNaN(b)) return false; var o = new Date(); var e = o.getFullYear() - b.getFullYear(); var m = o.getMonth() - b.getMonth(); if (m < 0 || (m === 0 && o.getDate() < b.getDate())) e--; return e < 18; })();
                 _tseEvRefresh();
                 var fr = $('f-ruoli'); if (fr) fr.addEventListener('change', _tseEvRefresh);
+                if (fr) fr.addEventListener('change', _tseVideoDetRefresh); // FIX 2026-10-02 marco #451
             })();
             // 2026-08-08 TEMA — livello+certificazioni per lingua (sostituisce lingue_pubbliche, tolta dal form talent)
             lingueDettaglioData = normalizzaLingueDettaglio(d.talent.lingue_dettaglio);
@@ -1218,35 +1220,48 @@
         var msg = 'Ciao, sono ' + (nome || 'un talent') + ', vi invio il mio video di presentazione per la scheda TOAgency';
         return 'https://wa.me/393518468516?text=' + encodeURIComponent(msg);
     }
-    function tseVideoShowHeavy() {
-        var h = $('tse-video-heavy'); if (h) h.style.display = 'block';
-        var wa = $('tse-video-wa'); if (wa) wa.href = tseWaVideoLink();
+    // FIX 2026-10-02 marco #451: due box video con lo stesso codice. key vuota = video di presentazione (ids tse-video-*);
+    // key 'det' = «Video dettagli» (ids tse-videodet-*, album_tipo video_dettaglio, solo ruolo model).
+    function tseVidEl(key, name) { return $((key === 'det' ? 'tse-videodet-' : 'tse-video-') + name); }
+    function tseVideoShowHeavy(key) {
+        var h = tseVidEl(key, 'heavy'); if (h) h.style.display = 'block';
+        var wa = tseVidEl(key, 'wa'); if (wa) wa.href = tseWaVideoLink();
     }
-    window.talentVideoChosen = function (input) {
-        videoFile = (input.files && input.files[0]) ? input.files[0] : null;
-        var fn = $('tse-video-fname'); if (fn) fn.textContent = videoFile ? videoFile.name : '—';
-        var st = $('tse-video-status'); if (st) { st.textContent = ''; st.className = 'tse-upload-status'; }
-        var h = $('tse-video-heavy');
+    // Il box «Video dettagli» si vede solo se tra i ruoli c'e' «model» (stessa regola dell'album Dettagli).
+    function _tseVideoDetRefresh() {
+        var s = $('tse-videodet-section'); if (!s) return;
+        var g = $('f-ruoli'); var cb = g ? g.querySelector('input[value="model"]') : null;
+        s.style.display = (cb && cb.checked) ? 'block' : 'none';
+    }
+    window.talentVideoChosen = function (input, key) {
+        var f = (input.files && input.files[0]) ? input.files[0] : null;
+        if (key === 'det') videoFileDet = f; else videoFile = f;
+        var fn = tseVidEl(key, 'fname'); if (fn) fn.textContent = f ? f.name : '—';
+        var st = tseVidEl(key, 'status'); if (st) { st.textContent = ''; st.className = 'tse-upload-status'; }
+        var h = tseVidEl(key, 'heavy');
         // FIX 2026-10-02 marco ticket-442: il peso si controlla DOPO la riduzione nel browser (talentVideoGo), non alla scelta del file
         if (h) h.style.display = 'none';
     };
-    window.talentVideoGo = function () {
-        var st = $('tse-video-status'), legal = $('tse-video-legal');
-        if (!videoFile) { st.textContent = tseVideoT('chooseFirst', 'Scegli prima un video'); st.className = 'tse-upload-status err'; return; }
+    window.talentVideoGo = function (key) {
+        var det = (key === 'det');
+        var file = det ? videoFileDet : videoFile;
+        var st = tseVidEl(key, 'status'), legal = tseVidEl(key, 'legal');
+        if (!file) { st.textContent = tseVideoT('chooseFirst', 'Scegli prima un video'); st.className = 'tse-upload-status err'; return; }
         if (!legal || !legal.checked) { st.textContent = tseVideoT('consent', 'Spunta il consenso per caricare'); st.className = 'tse-upload-status err'; return; }
-        var btn = $('tse-video-go'); if (btn) btn.disabled = true;
+        var btn = tseVidEl(key, 'go'); if (btn) btn.disabled = true;
         st.textContent = tseVideoT('loading', 'Caricamento…'); st.className = 'tse-upload-status loading';
         // FIX 2026-10-02 marco ticket-442: prima di inviare riduco il video NEL BROWSER (assets/toa-video-reduce.js: MP4 H.264, max 720 px, ~1,5 Mbit/s).
         // Se il browser non puo' la riduzione, toaVideoRiduci restituisce l'originale e decide il tetto di peso (30 MB).
         var daInviare = window.toaVideoRiduci
-            ? window.toaVideoRiduci(videoFile, function (t) { st.textContent = t; }, tseVideoT('reducing', 'Riduco il video… {p}% (resta su questa pagina)'))
-            : Promise.resolve(videoFile);
+            ? window.toaVideoRiduci(file, function (t) { st.textContent = t; }, tseVideoT('reducing', 'Riduco il video… {p}% (resta su questa pagina)'))
+            : Promise.resolve(file);
         daInviare.then(function (vf) {
-            if (vf.size > 30 * 1024 * 1024) return { ok: false, error: 'too_big' }; // mostra 'tooBig' + WhatsApp (gestito sotto)
+            if (vf.size > 30 * 1024 * 1024) return { ok: false, error: 'too_big' }; // mostra 'tooBig' + guida per accorciare (gestito sotto)
             st.textContent = tseVideoT('loading', 'Caricamento…'); st.className = 'tse-upload-status loading';
             var fd = new FormData();
             fd.append('uuid', UUID); fd.append('t', TOKEN); fd.append('video', vf);
             fd.append('dichiarazione_legale', '1'); fd.append('context', 'self_edit');
+            if (det) fd.append('album_tipo', 'video_dettaglio'); // FIX 2026-10-02 marco #451
             return fetch(API_VIDEO, { method: 'POST', body: fd, credentials: 'same-origin' })
                 .then(function (r) { var http = r.status; return r.json().catch(function () { return { ok: false, error: (http === 413 ? 'too_big' : 'network') }; }); });
         })
@@ -1255,18 +1270,18 @@
                     var mb = (String(res.message || '').match(/\(([\d.,]+) MB\)/) || [])[1];
                     st.textContent = '✓ ' + tseVideoT('okBase', 'Video caricato') + (mb ? ' (' + mb + ' MB).' : '.') + (res.pending_review ? tseVideoT('okPending', ' In attesa di approvazione dello staff.') : '');
                     st.className = 'tse-upload-status ok';
-                    videoFile = null;
-                    var fn = $('tse-video-fname'); if (fn) fn.textContent = '—';
-                    var vi = $('tse-video-input'); if (vi) vi.value = '';
-                    var h = $('tse-video-heavy'); if (h) h.style.display = 'none';
+                    if (det) videoFileDet = null; else videoFile = null;
+                    var fn = tseVidEl(key, 'fname'); if (fn) fn.textContent = '—';
+                    var vi = tseVidEl(key, 'input'); if (vi) vi.value = '';
+                    var h = tseVidEl(key, 'heavy'); if (h) h.style.display = 'none';
                 } else {
                     st.textContent = '✗ ' + (res.error === 'network' ? tseVideoT('network', 'Errore di rete') : tseVideoErr(res));
                     st.className = 'tse-upload-status err';
-                    if (res.error === 'too_big' || res.error === 'too_big_server') tseVideoShowHeavy();
+                    if (res.error === 'too_big' || res.error === 'too_big_server') tseVideoShowHeavy(key);
                 }
             })
             .catch(function () { st.textContent = '✗ ' + tseVideoT('network', 'Errore di rete'); st.className = 'tse-upload-status err'; })
-            .finally(function () { var b = $('tse-video-go'); if (b) b.disabled = false; });
+            .finally(function () { var b = tseVidEl(key, 'go'); if (b) b.disabled = false; });
     };
 
     document.addEventListener('DOMContentLoaded', function () { initChipMax('f-etnia'); });

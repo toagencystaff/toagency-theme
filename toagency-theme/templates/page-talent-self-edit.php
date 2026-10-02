@@ -931,6 +931,29 @@ $token_get = $_GET['t']    ?? '';
             </div>
         </div>
 
+        <!-- FIX 2026-10-02 marco (ticket #451) — Video dettagli: SOLO ruolo model (lo mostra/nasconde talent-self-edit.js), album video_dettaglio, max 3.
+             Stesse regole del video di presentazione: max 30 MB, riduzione nel browser, in attesa di approvazione. -->
+        <div id="tse-videodet-section" class="tse-section" style="margin-top:20px; display:none;">
+            <div class="tse-section-title">🔍 <?= esc_html($_t(['it'=>'Video dettagli','en'=>'Detail videos','fr'=>'Vidéos de détail','es'=>'Vídeos de detalle'])) ?></div>
+            <p style="font-size:12px; color:#9ca3af; margin:0 0 12px; line-height:1.45;"><?= esc_html($_t(['it'=>'Brevi video dei tuoi dettagli (mani, occhi, profilo, sorriso…), anche girati con il telefono. Fino a 3 video · max 30 MB ciascuno.','en'=>'Short videos of your details (hands, eyes, profile, smile…), phone footage is fine. Up to 3 videos · max 30 MB each.','fr'=>'Courtes vidéos de tes détails (mains, yeux, profil, sourire…), même filmées au téléphone. Jusqu’à 3 vidéos · max 30 Mo chacune.','es'=>'Vídeos cortos de tus detalles (manos, ojos, perfil, sonrisa…), vale grabarlos con el móvil. Hasta 3 vídeos · máx. 30 MB cada uno.'])) ?></p>
+            <div class="tse-upload-box">
+                <label class="tse-legal-checkbox">
+                    <input type="checkbox" id="tse-videodet-legal">
+                    <span><?= esc_html($_t(['it'=>'Ho i diritti e autorizzo la pubblicazione.','en'=>'I own the rights and allow publication.','fr'=>'Je détiens les droits et autorise la publication.','es'=>'Tengo los derechos y autorizo la publicación.'])) ?></span>
+                </label>
+                <div class="tse-upload-row" style="margin-top:10px;">
+                    <input type="file" id="tse-videodet-input" accept="video/mp4,video/quicktime,video/webm" style="display:none;" onchange="talentVideoChosen(this,'det')">
+                    <button type="button" class="tse-upload-btn-file" onclick="document.getElementById('tse-videodet-input').click()">🔍 <?= esc_html($_t(['it'=>'Scegli video','en'=>'Choose video','fr'=>'Choisir la vidéo','es'=>'Elegir vídeo'])) ?></button>
+                    <span id="tse-videodet-fname" class="tse-upload-fname">—</span>
+                    <button type="button" id="tse-videodet-go" class="tse-upload-btn-go" onclick="talentVideoGo('det')"><?= esc_html($_t(['it'=>'Carica video','en'=>'Upload video','fr'=>'Charger la vidéo','es'=>'Subir vídeo'])) ?></button>
+                </div>
+                <div id="tse-videodet-status" class="tse-upload-status"></div>
+                <div id="tse-videodet-heavy" style="display:none; margin-top:12px; padding:12px; background:#0a0a0a; border:1px solid #2a2a2e; border-radius:8px;">
+                    <div style="font-size:12px; color:#cbd5e1; line-height:1.6;"><?= esc_html($_t(['it'=>'Come accorciarlo: apri il video nella Galleria (iPhone: Foto), tocca Modifica, trascina i bordi per tagliare l’inizio e la fine, salva e ricaricalo. Se non ci riesci, scrivi ad Amelia nella chat.','en'=>'How to shorten it: open the video in your phone gallery (iPhone: Photos), tap Edit, drag the edges to trim the start and end, save and upload it again. Stuck? Write to Amelia in the chat.','fr'=>'Comment la raccourcir : ouvre la vidéo dans ta galerie (iPhone : Photos), touche Modifier, fais glisser les bords pour couper le début et la fin, enregistre et recharge-la. Besoin d’aide ? Écris à Amelia dans le chat.','es'=>'Cómo acortarlo: abre el vídeo en la galería del móvil (iPhone: Fotos), toca Editar, arrastra los bordes para recortar el principio y el final, guárdalo y vuelve a subirlo. ¿No lo consigues? Escribe a Amelia en el chat.'])) ?></div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </section>
 

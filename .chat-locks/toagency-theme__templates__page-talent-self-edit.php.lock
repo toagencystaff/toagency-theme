@@ -1,7 +1,7 @@
 STATO=OPEN
-CHAT=TEMA CRM Video Self-Edit
+CHAT=CRM Video dettagli talent (ticket 451)
 FILE=toagency-theme/templates/page-talent-self-edit.php
-INIZIO=2026-10-02 17:50:28
-UPDATE=2026-10-02 19:43:09
-SHA1_ATTESO=e70cf106d8ef0ccd2364bee4e828048f060f6ac4
-NOTE=ticket 442: tetto video 50->30 MB nei testi e nei controlli
+INIZIO=2026-10-02T23:11:43+0200
+UPDATE=2026-10-02T23:14:33+0200
+SHA1_ATTESO=3f76323b8fd41466f08a1172fa85da16035d7349
+NOTE=#451 box Video dettagli per model, 4 lingue
