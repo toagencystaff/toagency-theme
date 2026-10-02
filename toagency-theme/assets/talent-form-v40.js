@@ -2321,7 +2321,7 @@
                 ? window.toaVideoRiduci(talentVideoFile, function (t) { status.textContent = t; }, status.getAttribute('data-reducing') || 'Riduco il video… {p}%')
                 : Promise.resolve(talentVideoFile);
             daInviare.then(function (vf) {
-                if (vf.size > 30 * 1024 * 1024) return { ok: false, error: 'too_big', message: 'Video oltre 30MB: accorcialo o mandacelo su WhatsApp' };
+                if (vf.size > 30 * 1024 * 1024) return { ok: false, error: 'too_big', message: status.getAttribute('data-toobig') || 'Video oltre 30MB: accorcialo e riprova' };
                 status.textContent = 'Caricamento…'; status.style.color = '#c8ff00';
                 var fd = new FormData();
                 fd.append('uuid', talentUuidAfterRegister); fd.append('t', talentTokenAfterRegister);
