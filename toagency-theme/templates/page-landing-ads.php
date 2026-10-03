@@ -129,7 +129,7 @@ $COPY = [
       'fr'=>['Plus de 20 000 profils vérifiés en base','Plus de 15 ans d\'expérience, depuis 2009','Hôtesses et personnel multilingue','Actifs partout en France et en Italie'],
       'es'=>['Más de 20.000 perfiles verificados en la base de datos','Más de 15 años de experiencia, desde 2009','Azafatas y personal multilingüe','Operativos en toda Italia'],
     ],
-    'serv' => ['it'=>'Hostess e steward per fiere e stand; promoter per attività promozionali e GDO; staff per congressi ed eventi corporate. Gestione completa: contratti, compensi e coordinamento sul posto.','en'=>'Hostesses and stewards for trade fairs and stands; promoters for promotional activities and retail; staff for congresses and corporate events. Full management: contracts, fees and on-site coordination.','fr'=>'Hôtesses et stewards pour salons et stands ; promoteurs pour activités promotionnelles et grande distribution ; personnel pour congrès et événements corporate. Gestion complète : contrats, rémunérations et coordination sur place.','es'=>'Azafatas y stewards para ferias y stands; promotores para actividades promocionales y retail; personal para congresos y eventos corporativos. Gestión completa: contratos, honorarios y coordinación in situ.'],
+    'serv' => ['it'=>'Hostess e steward per fiere e stand; promoter per attività promozionali e GDO; staff per congressi ed eventi corporate. Gestione completa: contratti, compensi e coordinamento sul posto.','en'=>'Hostesses and stewards for trade fairs and stands; promoters for promotional activities and retail; staff for congresses and corporate events. Full management: contracts, fees and on-site coordination.','fr'=>'Hôtesses et stewards pour salons et stands ; promoteurs pour activités promotionnelles et grande distribution ; personnel pour congrès et événements corporate. Un seul interlocuteur, une seule facture.','es'=>'Azafatas y stewards para ferias y stands; promotores para actividades promocionales y retail; personal para congresos y eventos corporativos. Gestión completa: contratos, honorarios y coordinación in situ.'],
   ],
   'attori-produzioni' => [
     'h1'  => ['it'=>'Agenzia di attori e comparse per produzioni, spot e cinema','en'=>'Actors and extras agency for productions, commercials and film','fr'=>'Agence d\'acteurs et figurants pour productions, spots et cinéma','es'=>'Agencia de actores y figurantes para producciones, spots y cine'],
@@ -356,7 +356,7 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
        'es'=>['t'=>'Recibe los perfiles en 24 horas','d'=>'Te enviamos una selección con fotos, experiencia e idiomas, junto al presupuesto. Eliges tú a tu equipo.']],
       ['it'=>['t'=>'Al resto pensiamo noi','d'=>'Contratti, compensi e coordinamento sul posto sono a carico nostro. Un solo referente, una sola fattura.'],
        'en'=>['t'=>'We handle the rest','d'=>'Contracts, fees and on-site coordination are on us. One contact, one invoice.'],
-       'fr'=>['t'=>'Nous nous occupons du reste','d'=>'Contrats, rémunérations et coordination sur place sont à notre charge. Un seul interlocuteur, une seule facture.'],
+       'fr'=>['t'=>'Un seul interlocuteur','d'=>'Vous échangez avec un seul interlocuteur et recevez une seule facture.'],
        'es'=>['t'=>'Del resto nos ocupamos nosotros','d'=>'Contratos, honorarios y coordinación in situ corren por nuestra cuenta. Un solo interlocutor, una sola factura.']],
     ],
     'models-aziende' => [
@@ -529,6 +529,8 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
     // FIX 2026-10-03 (TEMA LP-FRANCIA) — su /fr/ niente tessera "Runners" finche' Marco non conferma (richiesta ADS FRANCIA)
     if ($lang === 'fr') { $__roles = array_values(array_filter($__roles, function($__x){ return ($__x['img'] ?? '') !== 'runner.jpg'; })); }
     $__faq     = $__faq_map[$key] ?? [];
+    // FIX 2026-10-03 (TEMA LP-FRANCIA) — su /fr/ sospese 2 FAQ (rimpiazzo immediato, nessun preavviso minimo) finche' Marco non conferma che valgono per la Francia (richiesta ADS FRANCIA)
+    if ($lang === 'fr') { $__faq = array_values(array_filter($__faq, function($__i){ return !in_array($__i['fr']['q'] ?? '', ['Que se passe-t-il si une personne se désiste ?', "Combien de temps à l'avance faut-il réserver ?"], true); })); }
   ?>
 
   <?php if ($__how): ?>
