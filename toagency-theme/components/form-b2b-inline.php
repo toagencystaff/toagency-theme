@@ -95,7 +95,7 @@ $hq_js = array(
   if (!form) return;
   var ENDPOINT = 'https://toagency.it/crm_toagency/actions/lead-from-website.php';
   var TOKEN    = 'toa_lead_2026_x7k9m2p4q8w1';
-  var THANKYOU = '<?php /* FIX 2026-10-03 (TEMA LP-FRANCIA) — thank-you nella lingua della pagina: prefisso da toa_current_lang() (vale anche con ?lang=), base dall'opzione home (non filtrata da WPML: niente doppio /fr/fr/) */ $__tnx_l = function_exists('toa_current_lang') ? toa_current_lang() : 'it'; echo esc_url(untrailingslashit(get_option('home')) . ($__tnx_l !== 'it' ? '/' . $__tnx_l : '') . '/tnx/'); ?>';
+  var THANKYOU = '<?php /* FIX 2026-10-03 (TEMA LP-FRANCIA) — thank-you nella lingua della pagina: prefisso da toa_current_lang() (vale anche con ?lang=), solo scheme+host dall'opzione home (che sotto /fr/ contiene gia' /fr: niente doppio /fr/fr/) */ $__tnx_l = function_exists('toa_current_lang') ? toa_current_lang() : 'it'; $__tnx_o = wp_parse_url(get_option('home')); echo esc_url($__tnx_o['scheme'] . '://' . $__tnx_o['host'] . ($__tnx_l !== 'it' ? '/' . $__tnx_l : '') . '/tnx/'); ?>';
   var STR = {
     sending: '<?php echo esc_js(_ht($hq_js['sending'])); ?>',
     submit:  '<?php echo esc_js(_ht($hq_js['submit'])); ?>',
