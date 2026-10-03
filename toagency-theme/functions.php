@@ -1325,7 +1325,8 @@ add_filter('style_loader_tag', function ($tag, $handle, $href) {
 // il consenso raccolto rimandava a un'informativa inesistente.
 // Fonte unica dell'URL corretto, per lingua. Usata da tutti i form del sito.
 function toa_privacy_url() {
-    $lang = defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : 'it';
+    // FIX 2026-10-03 (TEMA LP-FRANCIA) — toa_current_lang() rispetta anche ?lang= (landing /lp/ non tradotte in WPML)
+    $lang = function_exists('toa_current_lang') ? toa_current_lang() : (defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : 'it');
     $map = array(
         'en' => 'https://toagency.it/en/gdpr-privacy-policy/',
         'fr' => 'https://toagency.it/fr/gdpr-privacy-policy/',

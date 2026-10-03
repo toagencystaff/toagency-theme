@@ -1,7 +1,8 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=CRM Video dettagli talent (ticket 451)
 FILE=toagency-theme/templates/page-talent-self-edit.php
-INIZIO=2026-10-02T23:11:43+0200
-UPDATE=2026-10-02T23:14:33+0200
+UPDATE=2026-10-02T23:24:04+0200
 SHA1_ATTESO=3f76323b8fd41466f08a1172fa85da16035d7349
-NOTE=#451 box Video dettagli per model, 4 lingue
+DEPLOY=FATTO (preview+prod 2026-10-02, git 22dc98e0f)
+NOTE=#451 box Video dettagli solo model, 4 lingue
+CHIUSO=2026-10-02T23:24:04+0200

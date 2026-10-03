@@ -7,7 +7,7 @@
  * Campi: azienda(company), nome(contact), email, telefono(phone), servizio(event_type), messaggio(message).
  * i18n via _ht() (helper locale a page-home.php). IDs prefissati "hq" per non collidere con #leadForm di /form-b2b/.
  */
-$hq_heading = array('it'=>'Chiedi un preventivo gratuito','en'=>'Request a free quote','fr'=>'Demande un devis gratuit','es'=>'Solicita un presupuesto gratuito');
+$hq_heading = array('it'=>'Chiedi un preventivo gratuito','en'=>'Request a free quote','fr'=>'Demandez un devis gratuit','es'=>'Solicita un presupuesto gratuito');
 $hq_sub     = array('it'=>'Risposta entro 24 ore lavorative','en'=>'Response within 24 working hours','fr'=>'Réponse sous 24 heures ouvrées','es'=>'Respuesta en 24 horas laborables');
 
 $hq_services = array(
@@ -95,7 +95,7 @@ $hq_js = array(
   if (!form) return;
   var ENDPOINT = 'https://toagency.it/crm_toagency/actions/lead-from-website.php';
   var TOKEN    = 'toa_lead_2026_x7k9m2p4q8w1';
-  var THANKYOU = '<?php echo esc_url(home_url('/tnx/')); ?>';
+  var THANKYOU = '<?php /* FIX 2026-10-03 (TEMA LP-FRANCIA) — thank-you nella lingua della pagina: prefisso da toa_current_lang() (vale anche con ?lang=), base dall'opzione home (non filtrata da WPML: niente doppio /fr/fr/) */ $__tnx_l = function_exists('toa_current_lang') ? toa_current_lang() : 'it'; echo esc_url(untrailingslashit(get_option('home')) . ($__tnx_l !== 'it' ? '/' . $__tnx_l : '') . '/tnx/'); ?>';
   var STR = {
     sending: '<?php echo esc_js(_ht($hq_js['sending'])); ?>',
     submit:  '<?php echo esc_js(_ht($hq_js['submit'])); ?>',

@@ -159,7 +159,7 @@ $eyebrow_l = ['it'=>'AGENZIA CASTING B2B · DAL 2009','en'=>'B2B CASTING AGENCY 
 $call_l    = ['it'=>'Chiama','en'=>'Call','fr'=>'Appeler','es'=>'Llamar'];
 $email_l   = ['it'=>'Email','en'=>'Email','fr'=>'Email','es'=>'Email'];
 $db_l      = ['it'=>'Visita il nostro database','en'=>'Browse our talent database','fr'=>'Voir notre base de talents','es'=>'Explora nuestra base de talentos'];
-$DB_URL    = 'https://toagency.it/talent-database/'; // FIX 2026-06-20 marco — era toadatabase.it (sito vecchio)
+$DB_URL    = 'https://toagency.it' . ($lang !== 'it' ? '/' . $lang : '') . '/talent-database/'; // FIX 2026-06-20 marco — era toadatabase.it (sito vecchio) · FIX 2026-10-03 (TEMA LP-FRANCIA) — nella lingua della pagina
 
 // FIX 2026-06-24 marco — form protagonista + WhatsApp taggato (lead qualificabile)
 $formhead_l   = ['it'=>'Ricevi una selezione di profili e un preventivo gratuito in 24h','en'=>'Get a shortlist of profiles and a free quote within 24h','fr'=>'Recevez une sélection de profils et un devis gratuit sous 24h','es'=>'Recibe una selección de perfiles y un presupuesto gratuito en 24h'];
@@ -180,7 +180,7 @@ $WA_HREF  = $WA . '?text=' . rawurlencode($wa_text);
 // FIX 2026-06-24 marco — filtro self-exit talent (no gate, form intatto)
 $b2bonly_l    = ['it'=>'Servizio per aziende, agenzie e produzioni — non per candidature.','en'=>'A service for companies, agencies and productions — not for job applications.','fr'=>'Un service pour entreprises, agences et productions — pas pour les candidatures.','es'=>'Un servicio para empresas, agencias y producciones — no para candidaturas.'];
 $talentexit_l = ['it'=>'Sei un talent in cerca di lavoro? Registrati qui','en'=>'Are you a talent looking for work? Register here','fr'=>'Vous êtes un talent à la recherche de travail ? Inscrivez-vous ici','es'=>'¿Eres un talento que busca trabajo? Regístrate aquí'];
-$REG_TALENT   = 'https://toagency.it/registrati-talent/';
+$REG_TALENT   = 'https://toagency.it' . (['it'=>'/registrati-talent/','en'=>'/en/register-talent/','fr'=>'/fr/inscription-talent/','es'=>'/es/registrate-como-talent/'][$lang] ?? '/registrati-talent/'); // FIX 2026-10-03 (TEMA LP-FRANCIA) — stessi URL di page-collabora.php, nella lingua della pagina
 $trust_l = ['it'=>'4,7/5 · 346 recensioni Google · dal 2009 · 20.000+ profili verificati','en'=>'4.7/5 · 346 Google reviews · since 2009 · 20,000+ verified profiles','fr'=>'4,7/5 · 346 avis Google · depuis 2009 · 20 000+ profils vérifiés','es'=>'4,7/5 · 346 reseñas Google · desde 2009 · 20.000+ perfiles verificados'];
 
 $c   = $COPY[$key] ?? $COPY['casting-italia'];
