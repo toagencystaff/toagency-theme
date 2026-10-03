@@ -122,11 +122,11 @@ $COPY = [
   ],
   'hostess-eventi' => [
     'h1'  => ['it'=>'Agenzia hostess, steward e promoter per fiere ed eventi','en'=>'Hostess, steward and promoter agency for trade fairs and events','fr'=>'Agence d\'hôtesses, stewards et promoteurs pour salons et événements','es'=>'Agencia de azafatas, stewards y promotores para ferias y eventos'],
-    'sub' => ['it'=>'Personale selezionato per fiere, congressi ed eventi aziendali in tutta Italia. Team completi in 24 ore.','en'=>'Selected staff for trade fairs, congresses and corporate events throughout Italy. Full teams within 24 hours.','fr'=>'Personnel sélectionné pour salons, congrès et événements d\'entreprise dans toute l\'Italie. Équipes complètes sous 24 heures.','es'=>'Personal seleccionado para ferias, congresos y eventos corporativos en toda Italia. Equipos completos en 24 horas.'],
+    'sub' => ['it'=>'Personale selezionato per fiere, congressi ed eventi aziendali in tutta Italia. Team completi in 24 ore.','en'=>'Selected staff for trade fairs, congresses and corporate events throughout Italy. Full teams within 24 hours.','fr'=>'Personnel sélectionné pour salons, congrès et événements d\'entreprise partout en France. Devis gratuit sous 24 heures.','es'=>'Personal seleccionado para ferias, congresos y eventos corporativos en toda Italia. Equipos completos en 24 horas.'],
     'bul' => [
       'it'=>['20.000+ profili verificati nel database','15+ anni di esperienza, dal 2009','Hostess e staff multilingue','Operativi in tutta Italia'],
       'en'=>['20,000+ verified profiles in our database','15+ years of experience, since 2009','Multilingual hostesses and staff','Active throughout Italy'],
-      'fr'=>['Plus de 20 000 profils vérifiés en base','Plus de 15 ans d\'expérience, depuis 2009','Hôtesses et personnel multilingue','Actifs dans toute l\'Italie'],
+      'fr'=>['Plus de 20 000 profils vérifiés en base','Plus de 15 ans d\'expérience, depuis 2009','Hôtesses et personnel multilingue','Actifs partout en France et en Italie'],
       'es'=>['Más de 20.000 perfiles verificados en la base de datos','Más de 15 años de experiencia, desde 2009','Azafatas y personal multilingüe','Operativos en toda Italia'],
     ],
     'serv' => ['it'=>'Hostess e steward per fiere e stand; promoter per attività promozionali e GDO; staff per congressi ed eventi corporate. Gestione completa: contratti, compensi e coordinamento sul posto.','en'=>'Hostesses and stewards for trade fairs and stands; promoters for promotional activities and retail; staff for congresses and corporate events. Full management: contracts, fees and on-site coordination.','fr'=>'Hôtesses et stewards pour salons et stands ; promoteurs pour activités promotionnelles et grande distribution ; personnel pour congrès et événements corporate. Gestion complète : contrats, rémunérations et coordination sur place.','es'=>'Azafatas y stewards para ferias y stands; promotores para actividades promocionales y retail; personal para congresos y eventos corporativos. Gestión completa: contratos, honorarios y coordinación in situ.'],
@@ -453,7 +453,7 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
        'es'=>['q'=>'¿En cuánto tiempo recibo el presupuesto?','a'=>'En 24 horas laborables, junto con los perfiles disponibles. Gratis y sin compromiso.']],
       ['it'=>['q'=>'Quali zone coprite?','a'=>"Tutta Italia. Lavoriamo anche all'estero: Cannes, Parigi, Madrid, Monaco, Amsterdam."],
        'en'=>['q'=>'Which areas do you cover?','a'=>'All of Italy. We also work abroad: Cannes, Paris, Madrid, Monaco, Amsterdam.'],
-       'fr'=>['q'=>'Quelles zones couvrez-vous ?','a'=>"Toute l'Italie. Nous travaillons aussi à l'étranger : Cannes, Paris, Madrid, Monaco, Amsterdam."],
+       'fr'=>['q'=>'Quelles zones couvrez-vous ?','a'=>"Partout en France, ainsi que dans toute l'Italie. Nous intervenons aussi à l'étranger : Madrid, Monaco, Amsterdam."],
        'es'=>['q'=>'¿Qué zonas cubrís?','a'=>'Toda Italia. También trabajamos en el extranjero: Cannes, París, Madrid, Mónaco, Ámsterdam.']],
       ['it'=>['q'=>'Quanto costa una hostess?','a'=>'Si parte da 139 € per una giornata piena; mezza giornata costa meno. Il prezzo dipende da città, durata, lingue e mansioni. Se hai già un budget, dicci la cifra: con oltre 20.000 profili costruiamo la squadra dentro quella.'],
        'en'=>['q'=>'How much does a hostess cost?','a'=>'From €139 for a full day; half days cost less. The final price depends on city, duration, languages and duties. If you already have a budget, tell us the figure: with over 20,000 profiles we build the team within it.'],
@@ -526,6 +526,8 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
     $__how     = $__how_map[$key] ?? [];
     $__gallery = $__gallery_map[$key] ?? [];
     $__roles   = $__roles_map[$key] ?? [];
+    // FIX 2026-10-03 (TEMA LP-FRANCIA) — su /fr/ niente tessera "Runners" finche' Marco non conferma (richiesta ADS FRANCIA)
+    if ($lang === 'fr') { $__roles = array_values(array_filter($__roles, function($__x){ return ($__x['img'] ?? '') !== 'runner.jpg'; })); }
     $__faq     = $__faq_map[$key] ?? [];
   ?>
 
@@ -546,6 +548,7 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
 
   <?php toa_component('brand-ticker', array('lang' => $lang)); ?>
   <?php toa_component('google-reviews'); ?>
+  <?php if ($lang === 'fr'): /* FIX 2026-10-03 (TEMA LP-FRANCIA) — recensioni mostrate tradotte */ ?><p style="text-align:center;font-size:12px;color:#6b7280;margin:8px 16px 0">Avis traduits de l'italien.</p><?php endif; ?>
 
   <?php if ($__gallery): ?>
   <section class="toa-ads-gallery">

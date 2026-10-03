@@ -1,6 +1,6 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=TEMA LP-FRANCIA
 INIZIO=2026-10-03 14:33:41
-UPDATE=2026-10-03 15:16:18
+UPDATE=2026-10-03 15:23:04
 SHA1_ATTESO=54d41f86626e102aa47c0ee0f4ad56c40b1a8ebd
-NOTA=LP francese hostess-eventi: thank-you /fr/tnx/, link lingua, privacy da toa_current_lang. Modifiche locali, non ancora committate/deployate.
+NOTA=LIVE prod 03/10 (commit 4ba8d7755 + fix doppio /fr/fr). Form LP -> /{lang}/tnx/, link talent/db/privacy in lingua. /fr/lp/hostess-eventi/ creata come traduzione WPML (ID 275255, genitore 275253) con _scripts/crea-lp-fr.sh.
