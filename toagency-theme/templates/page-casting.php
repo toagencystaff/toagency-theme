@@ -19,6 +19,8 @@ $t = array(
     ),
     'wa_desc' => array('it' => 'Entra nella Community', 'en' => 'Join the Community', 'fr' => 'Rejoignez la Communaut&eacute;', 'es' => '&Uacute;nete a la Comunidad'),
     'ig_desc' => array('it' => 'Segui il Canale Broadcast', 'en' => 'Follow the Broadcast Channel', 'fr' => 'Suivez le Canal Broadcast', 'es' => 'Sigue el Canal Broadcast'),
+    // PATCH 2026-10-05 marco — ticket #497: canale Telegram della zona (link dinamico CRM, 4 lingue)
+    'tg_desc' => array('it' => 'Il canale della tua zona', 'en' => 'The channel for your area', 'fr' => 'Le canal de votre r&eacute;gion', 'es' => 'El canal de tu zona'),
     'fb_desc' => array('it' => 'Unisciti al Gruppo', 'en' => 'Join the Group', 'fr' => 'Rejoignez le Groupe', 'es' => '&Uacute;nete al Grupo'),
     'filter_all' => array('it' => 'Tutta Italia', 'en' => 'All Italy', 'fr' => 'Toute l\'Italie', 'es' => 'Toda Italia'),
     'filter_nord' => array('it' => 'Nord Italia', 'en' => 'Northern Italy', 'fr' => 'Italie du Nord', 'es' => 'Norte de Italia'),
@@ -478,6 +480,12 @@ toa_component('header');
             <a href="https://www.instagram.com/toagency/" class="social-btn" target="_blank">
                 <span class="social-btn-name">Instagram</span>
                 <span class="social-btn-desc"><?php echo $_t($t['ig_desc']); ?></span>
+            </a>
+            <?php // PATCH 2026-10-05 marco — ticket #497: Telegram, pagina CRM mostra prima i canali del paese e sotto tutti gli altri
+            $tg_iso = array('it'=>'IT','en'=>'GB','fr'=>'FR','es'=>'ES'); ?>
+            <a href="https://toagency.it/crm_toagency/onboarding-community.php?lang=<?php echo esc_attr($lang); ?>&amp;paese=<?php echo isset($tg_iso[$lang]) ? $tg_iso[$lang] : 'IT'; ?>" class="social-btn" target="_blank" rel="noopener">
+                <span class="social-btn-name">Telegram</span>
+                <span class="social-btn-desc"><?php echo $_t($t['tg_desc']); ?></span>
             </a>
             <a href="https://www.facebook.com/groups/hostessmodelscastingcalls" class="social-btn" target="_blank">
                 <span class="social-btn-name">Facebook</span>

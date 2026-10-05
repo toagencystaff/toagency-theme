@@ -1,6 +1,6 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=TEMA LP-FRANCIA
 INIZIO=2026-10-03 16:05:32
-UPDATE=2026-10-03 16:10:13
+UPDATE=2026-10-03 16:19:51
 SHA1_ATTESO=78e1116c631d838e38339f14f1947e5b31a15751
-NOTA=Round 2 LP FR: FAQ zone, recensioni, Runners FR, message match (richiesta ADS FRANCIA)
+NOTA=LIVE prod 03/10 round 2+3 LP FR: zone Francia, nota recensioni, Runners fuori su /fr/, promesse contratti/paghe tolte, 2 FAQ FR sospese. Rollback ~/backups-frontend/toa-theme-pre-deploy-20261003-161905.tar.gz
