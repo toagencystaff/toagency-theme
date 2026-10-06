@@ -342,7 +342,7 @@ $TALENT_ALBUM_GUIDA = array(
 );
 
 // Numero WhatsApp agenzia (lo stesso usato in tutto il tema).
-$TALENT_WA_NUM = '393517899225';
+$TALENT_WA_NUM = '393518468516';
 
 $theme_uri = get_stylesheet_directory_uri();
 ?>
@@ -1494,10 +1494,10 @@ $theme_uri = get_stylesheet_directory_uri();
                         <?php if (in_array($code, array('portfolio','portfolio_cinema','dettaglio'), true)): ?>
                             <?php // 2026-08-14 — prima del pulsante: non andartene senza aver caricato quello che hai ?>
                             <p class="toa-alb-wa-intro"><?php echo _ht_talent_raw(array(
-                                'it'=>'<strong>Non hai foto professionali?</strong> Carica quelle che hai in <strong>Pola</strong> e <strong>Altre foto</strong> e finisci la scheda. Per farle con un fotografo dell\'agenzia scrivici al <strong>+39 351 789 9225</strong>.',
-                                'en'=>'<strong>No professional photos?</strong> Upload the ones you have in <strong>Polaroids</strong> and <strong>Other photos</strong> and finish your profile. To shoot them with an agency photographer message us at <strong>+39 351 789 9225</strong>.',
-                                'fr'=>'<strong>Pas de photos professionnelles ?</strong> Charge celles que tu as dans <strong>Polas</strong> et <strong>Autres photos</strong> et termine ta fiche. Pour les faire avec un photographe de l\'agence écris-nous au <strong>+39 351 789 9225</strong>.',
-                                'es'=>'<strong>¿No tienes fotos profesionales?</strong> Sube las que tienes en <strong>Polas</strong> y <strong>Otras fotos</strong> y termina la ficha. Para hacerlas con un fotógrafo de la agencia escríbenos al <strong>+39 351 789 9225</strong>.',
+                                'it'=>'<strong>Non hai foto professionali?</strong> Carica quelle che hai in <strong>Pola</strong> e <strong>Altre foto</strong> e finisci la scheda. Per farle con un fotografo dell\'agenzia scrivici al <strong>+39 351 846 8516</strong>.',
+                                'en'=>'<strong>No professional photos?</strong> Upload the ones you have in <strong>Polaroids</strong> and <strong>Other photos</strong> and finish your profile. To shoot them with an agency photographer message us at <strong>+39 351 846 8516</strong>.',
+                                'fr'=>'<strong>Pas de photos professionnelles ?</strong> Charge celles que tu as dans <strong>Polas</strong> et <strong>Autres photos</strong> et termine ta fiche. Pour les faire avec un photographe de l\'agence écris-nous au <strong>+39 351 846 8516</strong>.',
+                                'es'=>'<strong>¿No tienes fotos profesionales?</strong> Sube las que tienes en <strong>Polas</strong> y <strong>Otras fotos</strong> y termina la ficha. Para hacerlas con un fotógrafo de la agencia escríbenos al <strong>+39 351 846 8516</strong>.',
                             )); ?></p>
                             <a class="toa-alb-wa" data-wa="1" data-moda="<?php echo esc_attr($wa_moda); ?>" data-cinema="<?php echo esc_attr($wa_cinema); ?>" data-num="<?php echo esc_attr($TALENT_WA_NUM); ?>" href="https://wa.me/<?php echo esc_attr($TALENT_WA_NUM); ?>?text=<?php echo rawurlencode($wa_moda); ?>" target="_blank" rel="noopener"><?php echo esc_html($wa_label); ?></a>
                         <?php endif; ?>
