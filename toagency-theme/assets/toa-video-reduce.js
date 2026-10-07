@@ -37,6 +37,7 @@
     // Vale la pena ridurlo? (peso o dimensioni oltre il necessario)
     function serve(f, m) {
         if (f.size > SOGLIA_MB * 1048576) return true;
+        if (f.size > 15 * 1048576) return true; // FIX 2026-10-07 marco ticket-560: sopra 15 MB si prova SEMPRE a ridurre (un 720p a 2 Mbit/s restava a 20-25 MB); il ridotto si tiene solo se piu' leggero
         if (!m || !m.w || !m.h) return f.size > SENZA_META_MB * 1048576;
         var bps = m.sec ? (f.size * 8 / m.sec) : 0;
         return Math.min(m.w, m.h) > ALTEZZA || bps > BPS * 1.5;
