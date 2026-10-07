@@ -457,6 +457,41 @@ toa_component('header');
         </div>
     </div><!-- .toa-sl-content-area -->
 
+    <!-- BEGIN FIX 2026-10-07 marco — link contestuali hostess/steward (SEO, 4 lingue) -->
+    <?php if ( ! $sl_is_casting ) :
+        $toa_hl = toa_current_lang();
+        $toa_hl_pages = array(
+            array( 'agenzia-hostess-milano', array('it'=>'Agenzia hostess a Milano','en'=>'Hostess agency in Milan','fr'=>'Agence d\'hôtesses à Milan','es'=>'Agencia de azafatas en Milán') ),
+            array( 'agenzia-hostess-roma',   array('it'=>'Agenzia hostess a Roma','en'=>'Hostess agency in Rome','fr'=>'Agence d\'hôtesses à Rome','es'=>'Agencia de azafatas en Roma') ),
+            array( 'agenzia-hostess-torino', array('it'=>'Agenzia hostess a Torino','en'=>'Hostess agency in Turin','fr'=>'Agence d\'hôtesses à Turin','es'=>'Agencia de azafatas en Turín') ),
+            array( 'hostess-steward',        array('it'=>'Hostess e steward per fiere ed eventi','en'=>'Hostesses and stewards for trade fairs and events','fr'=>'Hôtesses et stewards pour salons et événements','es'=>'Azafatas y stewards para ferias y eventos') ),
+        );
+        $toa_hl_links = array();
+        foreach ( $toa_hl_pages as $__p ) {
+            $__pg = get_page_by_path( $__p[0] );
+            if ( ! $__pg ) { continue; }
+            $__id = $__pg->ID;
+            if ( has_filter( 'wpml_object_id' ) ) {
+                $__tr = apply_filters( 'wpml_object_id', $__id, 'page', true, $toa_hl );
+                if ( $__tr ) { $__id = $__tr; }
+            }
+            $toa_hl_links[] = '<a href="' . esc_url( get_permalink( $__id ) ) . '">' . esc_html( $__p[1][ $toa_hl ] ?? $__p[1]['it'] ) . '</a>';
+        }
+        if ( $toa_hl_links ) : ?>
+        <aside class="toa-sl-hostlinks" aria-label="<?php echo esc_attr( _ht(['it'=>'Hostess e steward','en'=>'Hostesses and stewards','fr'=>'Hôtesses et stewards','es'=>'Azafatas y stewards']) ); ?>">
+            <style>
+                .toa-sl-hostlinks{max-width:760px;margin:40px auto 0;padding:24px 28px;border:1px solid #2a2a2a;background:#111;color:#ddd}
+                .toa-sl-hostlinks strong{display:block;color:#fff;font-size:18px;margin-bottom:12px}
+                .toa-sl-hostlinks a{display:inline-block;margin:0 16px 8px 0;color:#fff;text-decoration:underline}
+                @media(max-width:768px){.toa-sl-hostlinks{margin:32px 16px 0;padding:20px}}
+            </style>
+            <strong><?php echo _ht(['it'=>'Ti servono hostess o steward?','en'=>'Need hostesses or stewards?','fr'=>'Besoin d\'hôtesses ou de stewards ?','es'=>'¿Necesitas azafatas o stewards?']); ?></strong>
+            <?php echo implode( ' ', $toa_hl_links ); ?>
+        </aside>
+        <?php endif;
+    endif; ?>
+    <!-- END FIX 2026-10-07 marco — link contestuali hostess/steward -->
+
     <!-- LEGGI ANCHE -->
     <?php
     $sl_rel_args = array(
