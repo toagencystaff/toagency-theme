@@ -33,6 +33,7 @@ $t = array(
     'ufficio_op' => array('it' => 'Ufficio operativo', 'en' => 'Operational office', 'fr' => 'Bureau op&eacute;rationnel', 'es' => 'Oficina operativa'),
     'sede_attiva' => array('it' => 'Sede operativa attiva', 'en' => 'Active operational office', 'fr' => 'Bureau op&eacute;rationnel actif', 'es' => 'Oficina operativa activa'),
     'casting_tm' => array('it' => 'Casting (talent e crew)', 'en' => 'Casting (talent &amp; crew)', 'fr' => 'Casting (talents &amp; crew)', 'es' => 'Casting (talentos y crew)'),
+    'biz_b2b' => array('it' => 'Business (solo aziende e clienti B2B)', 'en' => 'Business (companies and B2B clients only)', 'fr' => 'Business (entreprises et clients B2B uniquement)', 'es' => 'Business (solo empresas y clientes B2B)'),
     'solo_wa' => array('it' => 'solo WhatsApp', 'en' => 'WhatsApp only', 'fr' => 'WhatsApp uniquement', 'es' => 'solo WhatsApp'),
     'c_fr' => array('it' => 'Francia', 'en' => 'France', 'fr' => 'France', 'es' => 'Francia'),
     'c_es' => array('it' => 'Spagna', 'en' => 'Spain', 'fr' => 'Espagne', 'es' => 'Espa&ntilde;a'),
@@ -54,7 +55,7 @@ toa_component('header');
         <div class="feature-card">
             <h3 class="feature-title">Email</h3>
             <p class="feature-text">
-                <strong>Business:</strong> <a href="mailto:business@toagency.it" style="color:var(--accent)">business@toagency.it</a><br>
+                <strong><?php echo $_t($t['biz_b2b']); ?>:</strong> <a href="mailto:business@toagency.it" style="color:var(--accent)">business@toagency.it</a><br>
                 <strong>Info:</strong> <a href="mailto:info@toagency.it" style="color:var(--accent)">info@toagency.it</a><br>
                 <strong><?php echo $_t($t['amministrazione']); ?>:</strong> <a href="mailto:accountant@toagency.it" style="color:var(--accent)">accountant@toagency.it</a><br>
                 <strong><?php echo $_t($t['casting_tm']); ?>:</strong> <a href="mailto:casting@toagency.it" style="color:var(--accent)">casting@toagency.it</a><br>
@@ -66,8 +67,8 @@ toa_component('header');
         <div class="feature-card">
             <h3 class="feature-title"><?php echo $_t($t['telefono']); ?></h3>
             <p class="feature-text">
-                <strong>Business:</strong> <a href="tel:+393517899225" style="color:var(--accent)">+39 351 789 9225</a><br>
-                <strong><?php echo $_t($t['casting_tm']); ?>:</strong> <a href="https://wa.me/393518468516" target="_blank" style="color:var(--accent)">+39 351 846 8516</a> (<?php echo $_t($t['solo_wa']); ?>)
+                <span style="display:block;margin-bottom:12px"><strong><?php echo $_t($t['biz_b2b']); ?>:</strong><br><a href="tel:+393517899225" style="color:var(--accent)">+39 351 789 9225</a></span>
+                <span style="display:block"><strong><?php echo $_t($t['casting_tm']); ?>:</strong><br><a href="https://wa.me/393518468516" target="_blank" style="color:var(--accent)">+39 351 846 8516</a> (<?php echo $_t($t['solo_wa']); ?>)</span>
             </p>
         </div>
         <div class="feature-card">
