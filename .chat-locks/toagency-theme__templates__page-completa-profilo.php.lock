@@ -1,5 +1,7 @@
-STATO=CLOSED
-CHAT=TEMA TALENT-LINGUE-AUTO
-INIZIO=2026-08-04 20:05:00
-UPDATE=2026-08-04 20:22:00
-SHA1_ATTESO=1fa58c5db8a19a95d3c99da38f0aeba64442e2d7
+STATO=OPEN
+CHAT=CRM tickets collaboratori 2
+FILE=toagency-theme/templates/page-completa-profilo.php
+INIZIO=2026-10-09T19:01:25+0200
+UPDATE=2026-10-09T19:01:25+0200
+SHA1_ATTESO=6fe9fc8397dd2fcefc73c2d87767acf68229ec4e
+NOTE=#466 cambio album non azzera piu il form upload foto; messaggi upload nelle 4 lingue

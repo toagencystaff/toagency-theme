@@ -84,6 +84,10 @@ $T = [
         'fr'=>'Remplis les champs obligatoires (*).','es'=>'Completa los campos obligatorios (*).',
     ],
     'error_prefix' => ['it'=>'Errore: ','en'=>'Error: ','fr'=>'Erreur: ','es'=>'Error: '],
+    /* FIX 2026-10-09 marco (#466) — messaggi upload foto nelle 4 lingue */
+    'up_need_file'   => ['it'=>'Prima scegli il file da caricare.','en'=>'First choose the file to upload.','fr'=>'Choisissez d\'abord le fichier à envoyer.','es'=>'Primero elige el archivo que quieres subir.'],
+    'up_need_accept' => ['it'=>'Spunta le due caselle (disclaimer e veridicità) prima di caricare.','en'=>'Tick both boxes (disclaimer and truthfulness) before uploading.','fr'=>'Cochez les deux cases (avertissement et véracité) avant d\'envoyer.','es'=>'Marca las dos casillas (aviso legal y veracidad) antes de subir.'],
+    'up_need_date'   => ['it'=>'Per le polaroid serve la data dello scatto.','en'=>'The shot date is required for polaroids.','fr'=>'La date de la prise de vue est obligatoire pour les polaroïds.','es'=>'La fecha de la foto es obligatoria para las polaroids.'],
     'etnia_max'    => ['it'=>'Massimo 2 etnie.','en'=>'Max 2 ethnicities.','fr'=>'Max 2 ethnies.','es'=>'Máx 2 etnias.'],
     // ── F4 2026-07-07 marco — sezione upload foto multi-album (portata da talent-self-edit) ──
     'section_foto'   => ['it'=>'Le tue foto','en'=>'Your photos','fr'=>'Tes photos','es'=>'Tus fotos'],
@@ -476,6 +480,9 @@ window.completaProfiloConfig = {
         successMsg:  <?= json_encode($_t($T['success_msg'])) ?>,
         errRequired: <?= json_encode($_t($T['err_required'])) ?>,
         errorPrefix: <?= json_encode($_t($T['error_prefix'])) ?>,
+        upNeedFile:   <?= json_encode($_t($T['up_need_file'])) ?>,
+        upNeedAccept: <?= json_encode($_t($T['up_need_accept'])) ?>,
+        upNeedDate:   <?= json_encode($_t($T['up_need_date'])) ?>,
         etniaMax:    <?= json_encode($_t($T['etnia_max'])) ?>,
         /* F4 2026-07-07 marco — stringhe sezione foto */
         uploading:   <?= json_encode($_t($T['btn_uploading'])) ?>,

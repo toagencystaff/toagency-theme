@@ -302,8 +302,7 @@
 
         if (!items.length) {
             grid.innerHTML = '<div class="cp-alb-empty">' + escapeHtml(S.noPhotos || 'Nessuna foto') + '</div>';
-            resetUploadForm();
-            return;
+            return; // FIX 2026-10-09 marco (#466): cambiare album NON azzera piu' file/spunte/data gia' scelti
         }
 
         items.forEach(function (it) {
@@ -355,7 +354,6 @@
             info.textContent = parts.join(' · ');
             grid.appendChild(info);
         }
-        resetUploadForm();
     }
 
     function resetUploadForm() {
@@ -380,24 +378,27 @@
         if (st) { st.textContent = ''; st.className = 'cp-up-status'; }
     };
 
+    // #466: su telefono il messaggio d'errore stava fuori schermo -> sembrava che il pulsante non facesse nulla
+    function upShow(el) { try { el.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (e) {} }
+
     window.completaProfiloUploadGo = function () {
         var btn       = document.getElementById('cp-up-go');
         var status    = document.getElementById('cp-up-status');
         var fileInput = document.getElementById('cp-file-input');
         var file = fileInput && fileInput.files[0];
-        if (!file) { if (status) { status.textContent = 'Seleziona un file'; status.className = 'cp-up-status err'; } return; }
+        if (!file) { if (status) { status.textContent = S.upNeedFile || 'Seleziona un file'; status.className = 'cp-up-status err'; upShow(status); } return; }
 
         var legalOk  = document.getElementById('cp-legal-ok');
         var veritaOk = document.getElementById('cp-verita-ok');
         if (!legalOk || !legalOk.checked || !veritaOk || !veritaOk.checked) {
-            if (status) { status.textContent = 'Devi accettare disclaimer + veridicità'; status.className = 'cp-up-status err'; }
+            if (status) { status.textContent = S.upNeedAccept || 'Devi accettare disclaimer + veridicità'; status.className = 'cp-up-status err'; upShow(status); }
             return;
         }
 
         var dsEl = document.getElementById('cp-data-scatto');
         var dataScatto = dsEl ? dsEl.value : '';
         if (currentAlbum === 'polaroid' && !dataScatto) {
-            if (status) { status.textContent = 'Data scatto obbligatoria per polaroid'; status.className = 'cp-up-status err'; }
+            if (status) { status.textContent = S.upNeedDate || 'Data scatto obbligatoria per polaroid'; status.className = 'cp-up-status err'; upShow(status); }
             return;
         }
 
@@ -418,7 +419,7 @@
         .then(function (d) {
             if (d && d.ok) {
                 if (status) { status.textContent = '✓ ' + (d.message || 'Foto caricata'); status.className = 'cp-up-status ok'; }
-                setTimeout(loadMedia, 600);
+                setTimeout(function () { loadMedia(); resetUploadForm(); }, 600); // #466: il form si svuota solo dopo un caricamento riuscito
             } else {
                 if (status) { status.textContent = (S.errorPrefix || 'Errore: ') + ((d && (d.message || d.error)) || 'upload'); status.className = 'cp-up-status err'; }
             }

@@ -1,8 +1,7 @@
-STATO=CLOSED
-CHAT=CRM Video dettagli talent (ticket 451)
+STATO=OPEN
+CHAT=CRM tickets collaboratori 2
 FILE=toagency-theme/assets/talent-self-edit.js
-UPDATE=2026-10-02T23:24:04+0200
-SHA1_ATTESO=ff3da6ab488d29127e388014cabfc0ea127d0fa6
-DEPLOY=FATTO (preview+prod 2026-10-02, git 22dc98e0f)
-NOTE=#451 box Video dettagli solo model, 4 lingue
-CHIUSO=2026-10-02T23:24:04+0200
+INIZIO=2026-10-09T19:01:25+0200
+UPDATE=2026-10-09T19:01:25+0200
+SHA1_ATTESO=a57366c6ae945139d1586e26caf2959d4574e7f4
+NOTE=#466 cambio album non azzera piu il form upload foto; messaggi upload nelle 4 lingue

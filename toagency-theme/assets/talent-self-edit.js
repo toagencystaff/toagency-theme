@@ -733,8 +733,7 @@
 
         if (!items.length) {
             grid.innerHTML = '<div class="tse-album-empty">' + escapeHtml(STR.noPhotos || 'Nessuna foto') + '</div>';
-            resetUploadForm();
-            return;
+            return; // FIX 2026-10-09 marco (#466): cambiare album NON azzera piu' file/spunte/data gia' scelti
         }
         // FIX 2026-09-22 marco (CRM - EVENTS DATABASE) — foto semplici:
         //  - "Elimina" e "Sposta" SCRITTI sotto ogni foto, sempre visibili (prima: iconcine sopra la foto)
@@ -861,8 +860,6 @@
             grid.parentElement.insertBefore(wrap, grid.nextSibling);
         }
 
-        // Reset upload area
-        resetUploadForm();
     }
 
     function resetUploadForm() {
@@ -895,20 +892,24 @@
         $('tse-upload-status').className = 'tse-upload-status';
     };
 
+    // #466: su telefono il messaggio d'errore stava fuori schermo -> sembrava che il pulsante non facesse nulla
+    function upShow(el) { try { el.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (e) {} }
+
     window.talentUploadGo = function () {
         var btn = $('tse-upload-go');
         var status = $('tse-upload-status');
         var file = $('tse-file-input').files[0];
-        if (!file) { status.textContent = 'Seleziona un file'; status.className = 'tse-upload-status err'; return; }
+        if (!file) { status.textContent = STR.upNeedFile || 'Seleziona un file'; status.className = 'tse-upload-status err'; upShow(status); return; }
         if (!$('tse-legal-ok').checked || !$('tse-verita-ok').checked) {
-            status.textContent = 'Devi accettare disclaimer + veridicità';
+            status.textContent = STR.upNeedAccept || 'Devi accettare disclaimer + veridicità';
             status.className = 'tse-upload-status err';
+            upShow(status);
             return;
         }
         // FIX 2026-06-27 marco — data scatto letta per tutti gli album; obbligatoria solo polaroid
         var dataScatto = $('tse-data-scatto').value;
         if (currentAlbum === 'polaroid' && !dataScatto) {
-            status.textContent = 'Data scatto obbligatoria per polaroid'; status.className = 'tse-upload-status err'; return;
+            status.textContent = STR.upNeedDate || 'Data scatto obbligatoria per polaroid'; status.className = 'tse-upload-status err'; upShow(status); return;
         }
 
         var fd = new FormData();
@@ -931,7 +932,7 @@
             if (d.ok) {
                 status.textContent = '✓ ' + (d.message || 'Foto caricata');
                 status.className = 'tse-upload-status ok';
-                setTimeout(loadMedia, 600);
+                setTimeout(function () { loadMedia(); resetUploadForm(); }, 600); // #466: il form si svuota solo dopo un caricamento riuscito
                 setTimeout(loadCompletezza, 900);
             } else {
                 status.textContent = (STR.errorPrefix || 'Errore: ') + (d.message || d.error || 'upload');
