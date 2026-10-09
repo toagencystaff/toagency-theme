@@ -35,7 +35,7 @@
     var STR   = cfg.strings || {};
 
     // FIX 2026-07-01 marco — aggiunti comune + provincia (geo self-edit crew)
-    var FIELDS = ['telefono','email','bio','instagram','tiktok','sito_web','comune_residenza','provincia_domicilio','livello','anno_inizio_attivita','data_nascita','anno_partita_iva'];
+    var FIELDS = ['telefono','email','bio','instagram','tiktok','sito_web','comune_residenza','provincia_domicilio','livello','anno_inizio_attivita','data_nascita','anno_partita_iva','tariffa_giornaliera','tariffa_note','link_audio']; // 2026-10-09 #586: tariffa, nota, audio
 
     function $(id) { return document.getElementById(id); }
 
@@ -436,6 +436,19 @@
                 if (el) el.value = d.crew[f] || '';
             });
 
+            // 2026-10-09 #586 — audio: in evidenza per i DJ; per gli altri facoltativo e in fondo al form
+            var aw = $('f-link_audio-wrap');
+            if (aw) {
+                if (d.mostra_link_audio) {
+                    aw.classList.add('crew-edit-audio-dj');
+                    var iv = $('f-link_audio-invite'); if (iv) iv.style.display = 'block';
+                } else {
+                    var act = document.querySelector('.crew-edit-actions');
+                    if (act && act.parentNode) act.parentNode.insertBefore(aw, act);
+                    var op = $('f-link_audio-opt'); if (op) op.style.display = 'inline';
+                }
+            }
+
             // Età + P.IVA (2026-07-23)
             var dn = $('f-data_nascita');
             if (dn && d.crew.data_nascita) dn.value = String(d.crew.data_nascita).substring(0, 10);
@@ -541,7 +554,7 @@
                     setTimeout(loadData, 1200);
                 }
             } else {
-                showResult('err', (STR.errorPrefix || 'Errore: ') + (d.message || d.error || 'unknown'));
+                showResult('err', (STR.errMap && STR.errMap[d.error]) ? STR.errMap[d.error] : (STR.errorPrefix || 'Errore: ') + (d.message || d.error || 'unknown')); // 2026-10-09 #586: errori tariffa/audio in chiaro
             }
         })
         .catch(function (err) {

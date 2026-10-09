@@ -148,6 +148,7 @@ $token_get = $_GET['t']    ?? '';
 .crew-edit-input:focus, .crew-edit-textarea:focus { outline:none; border-color:#c8ff00; }
 .crew-edit-textarea { resize:vertical; min-height:90px; }
 .crew-edit-hint { font-size:11px; color:#6b7280; margin-top:4px; }
+.crew-edit-audio-dj { border:1px solid #c8ff00; border-radius:10px; padding:12px; }  /* 2026-10-09 #586: audio in evidenza per i DJ */
 .crew-edit-readonly-name { background:#1a1a1e; border:1px solid #2a2a2e; padding:10px 13px; border-radius:6px; color:#9ca3af; font-size:13px; margin-bottom:12px; }
 .crew-edit-readonly-name strong { color:#fff; }
 
@@ -374,6 +375,22 @@ $token_get = $_GET['t']    ?? '';
                 <input type="url" id="f-sito_web" class="crew-edit-input" placeholder="https://..." maxlength="500">
             </div>
 
+            <!-- 2026-10-09 marco (#586/#498) — tariffa giornaliera, nota sulla tariffa, link audio (backend: crew-self-edit-save/load) -->
+            <div class="crew-edit-field">
+                <label class="crew-edit-label"><?= esc_html($_t(['it'=>'Tariffa giornaliera (€)','en'=>'Day rate (€)','fr'=>'Cachet journalier (€)','es'=>'Tarifa diaria (€)'])) ?></label>
+                <input type="text" id="f-tariffa_giornaliera" class="crew-edit-input" inputmode="decimal" maxlength="12" placeholder="<?= esc_attr($_t(['it'=>'es. 300','en'=>'e.g. 300','fr'=>'ex. 300','es'=>'p. ej. 300'])) ?>">
+            </div>
+            <div class="crew-edit-field">
+                <label class="crew-edit-label"><?= esc_html($_t(['it'=>'Nota sulla tariffa','en'=>'Rate note','fr'=>'Précisions sur le tarif','es'=>'Nota sobre la tarifa'])) ?></label>
+                <input type="text" id="f-tariffa_note" class="crew-edit-input" maxlength="150" placeholder="<?= esc_attr($_t(['it'=>'es. + spese, trasferta esclusa','en'=>'e.g. + expenses, travel not included','fr'=>'ex. + frais, déplacement non inclus','es'=>'p. ej. + gastos, desplazamiento no incluido'])) ?>">
+            </div>
+            <div class="crew-edit-field" id="f-link_audio-wrap">
+                <label class="crew-edit-label"><?= esc_html($_t(['it'=>'Link alle tue tracce audio','en'=>'Links to your audio tracks','fr'=>'Liens vers tes morceaux','es'=>'Enlaces a tus pistas de audio'])) ?><span id="f-link_audio-opt" style="display:none;font-weight:400;color:#6b7280;"> (<?= esc_html($_t(['it'=>'facoltativo','en'=>'optional','fr'=>'facultatif','es'=>'opcional'])) ?>)</span></label>
+                <div class="crew-edit-hint" id="f-link_audio-invite" style="display:none;margin:0 0 8px;color:#c8ff00;"><?= esc_html($_t(['it'=>'🎧 Aggiungi qualche traccia o mix: ci aiuta a proporti ai clienti.','en'=>'🎧 Add a few tracks or mixes: it helps us present you to clients.','fr'=>'🎧 Ajoute quelques morceaux ou mixes : ça nous aide à te présenter aux clients.','es'=>'🎧 Añade algunas pistas o mezclas: nos ayuda a presentarte a los clientes.'])) ?></div>
+                <textarea id="f-link_audio" class="crew-edit-textarea" rows="3" maxlength="1500" placeholder="https://soundcloud.com/..."></textarea>
+                <div class="crew-edit-hint"><?= esc_html($_t(['it'=>'Un link per riga, massimo 5 (SoundCloud, Mixcloud, Spotify, YouTube).','en'=>'One link per line, up to 5 (SoundCloud, Mixcloud, Spotify, YouTube).','fr'=>'Un lien par ligne, 5 maximum (SoundCloud, Mixcloud, Spotify, YouTube).','es'=>'Un enlace por línea, máximo 5 (SoundCloud, Mixcloud, Spotify, YouTube).'])) ?></div>
+            </div>
+
             <!-- FIX 2026-07-01 marco — geo crew self-edit: comune (ricerca) + provincia (tendina), no testo libero -->
             <div class="crew-edit-field" style="position:relative;">
                 <label class="crew-edit-label"><?= esc_html($_t(['it'=>'Comune / Città','en'=>'City','fr'=>'Ville','es'=>'Ciudad'])) ?></label>
@@ -436,9 +453,14 @@ window.crewEditConfig = {
         temiLabel:    <?= json_encode($_t($T['temi_label'])) ?>,
         temiHint:     <?= json_encode($_t($T['temi_hint'])) ?>,
         ruoliAnniPh:  <?= json_encode($_t($T['ruoli_anni_ph'])) ?>,
+        errMap: {
+            invalid_tariffa:     <?= json_encode($_t(['it'=>'La tariffa non è valida: scrivi solo un numero, per esempio 300.','en'=>'The rate isn’t valid: enter a number only, for example 300.','fr'=>'Le tarif n’est pas valide : écris uniquement un nombre, par exemple 300.','es'=>'La tarifa no es válida: escribe solo un número, por ejemplo 300.'])) ?>,
+            invalid_link_audio:  <?= json_encode($_t(['it'=>'Uno dei link audio non è valido: scrivi indirizzi completi che iniziano con https://, uno per riga.','en'=>'One of the audio links isn’t valid: enter full addresses starting with https://, one per line.','fr'=>'Un des liens audio n’est pas valide : écris des adresses complètes commençant par https://, une par ligne.','es'=>'Uno de los enlaces de audio no es válido: escribe direcciones completas que empiecen por https://, una por línea.'])) ?>,
+            too_many_link_audio: <?= json_encode($_t(['it'=>'Puoi inserire al massimo 5 link audio.','en'=>'You can add up to 5 audio links.','fr'=>'Tu peux ajouter 5 liens audio au maximum.','es'=>'Puedes añadir como máximo 5 enlaces de audio.'])) ?>,
+        },
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20260802ruoli1" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20261009tariffa1" defer></script>
 
 <?php toa_component('footer'); ?>
