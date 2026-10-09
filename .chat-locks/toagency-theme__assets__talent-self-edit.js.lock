@@ -1,7 +1,8 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=CRM tickets collaboratori 2
 FILE=toagency-theme/assets/talent-self-edit.js
-INIZIO=2026-10-09T19:01:25+0200
-UPDATE=2026-10-09T19:01:25+0200
+UPDATE=2026-10-09T19:03:17+0200
 SHA1_ATTESO=a57366c6ae945139d1586e26caf2959d4574e7f4
-NOTE=#466 cambio album non azzera piu il form upload foto; messaggi upload nelle 4 lingue
+DEPLOY=FATTO preview+prod 09/10, git b96ec938f
+NOTE=#466 cambio album non azzera piu il form upload foto
+CHIUSO=2026-10-09T19:03:17+0200

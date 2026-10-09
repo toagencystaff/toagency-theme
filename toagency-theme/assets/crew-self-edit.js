@@ -20,6 +20,8 @@
     var API_UPLOAD_PORTFOLIO = cfg.apiUploadPortfolio || '/crm_toagency/actions/crew-self-edit-upload-portfolio.php';
     var API_CONSENSO = cfg.apiConsenso || '/crm_toagency/actions/crew-self-edit-consenso.php';
     var API_COVER = cfg.apiCover || '/crm_toagency/actions/crew-self-edit-cover.php';
+    var API_ALBUM = cfg.apiAlbum || '/crm_toagency/actions/crew-self-edit-album.php'; // 2026-10-09 #427 — foto per ruolo
+    var albumRoles = [];
     // 2026-07-26 — Specializzazioni per ruolo (album_temi): tassonomia da crew-temi.php, salvataggio su crew-self-edit-temi.php
     var API_TEMI_TAXONOMY = cfg.apiTemiTaxonomy || '/crm_toagency/actions/crew-temi.php';
     var API_TEMI_SAVE = cfg.apiTemiSave || '/crm_toagency/actions/crew-self-edit-temi.php';
@@ -170,7 +172,7 @@
         var cur = (tipo === 'video') ? portCounts.video : portCounts.foto;
         var list = Array.prototype.slice.call(files), i = 0;
         function next() {
-            if (i >= list.length) return;
+            if (i >= list.length) { if (tipo === 'foto') refreshAlbumPicker(); return; }
             if (cur != null && cur >= max) {
                 statusEl.textContent = '✗ Limite raggiunto (' + max + ')';
                 statusEl.className = 'crew-edit-foto-status err';
@@ -339,6 +341,62 @@
         .catch(function () { if (st) { st.textContent = '✗ Errore di rete'; st.className = 'crew-edit-foto-status err'; } });
     }
 
+    // 2026-10-09 #427 — Foto per ruolo: il crew smista le proprie foto negli album dei suoi ruoli
+    // (endpoint crew-self-edit-album.php, salvataggio immediato a ogni spunta).
+    function renderAlbumPicker(roles, photos) {
+        var field = $('f-album-field'), grid = $('f-album-grid');
+        if (!field || !grid) return;
+        albumRoles = roles || [];
+        var foto = (photos || []).filter(function (p) { return p.tipo === 'foto'; });
+        if (!albumRoles.length || !foto.length) { field.style.display = 'none'; return; }
+        field.style.display = 'block';
+        grid.innerHTML = foto.map(function (p) {
+            var chips = albumRoles.map(function (r) {
+                var on = (p.albums || []).indexOf(r) !== -1;
+                return '<label class="crew-edit-temi-chip' + (on ? ' checked' : '') + '"><input type="checkbox" data-ruolo="' + escapeHtml(r) + '"' + (on ? ' checked' : '') + '> ' + escapeHtml(prettyRoleCode(r)) + '</label>';
+            }).join('');
+            return '<div class="crew-edit-album-item" data-id="' + escapeHtml(String(p.id)) + '">'
+                 + '<div class="crew-edit-album-thumb"><img src="' + escapeHtml(p.url) + '" loading="lazy" alt="">'
+                 + (p.approvata ? '' : '<span class="crew-edit-album-pend">' + escapeHtml(STR.albumPending || 'In attesa') + '</span>') + '</div>'
+                 + '<div class="crew-edit-temi-chips">' + chips + '</div></div>';
+        }).join('');
+        grid.querySelectorAll('.crew-edit-album-item').forEach(function (item) {
+            item.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+                cb.addEventListener('change', function () {
+                    var st = $('f-album-status');
+                    var sel = [];
+                    item.querySelectorAll('input[type="checkbox"]').forEach(function (c) { if (c.checked) sel.push(c.getAttribute('data-ruolo')); });
+                    if (st) { st.textContent = STR.saving || 'Salvataggio…'; st.className = 'crew-edit-foto-status loading'; }
+                    fetch(API_ALBUM, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ uuid: UUID, t: TOKEN, media_id: parseInt(item.getAttribute('data-id'), 10), albums: sel }),
+                        credentials: 'same-origin'
+                    })
+                    .then(function (r) { return r.json(); })
+                    .then(function (res) {
+                        if (res.success) {
+                            cb.parentNode.classList.toggle('checked', cb.checked);
+                            if (st) { st.textContent = '✓ ' + (STR.albumSaved || 'Salvato'); st.className = 'crew-edit-foto-status ok'; }
+                        } else { throw new Error('save'); }
+                    })
+                    .catch(function () {
+                        cb.checked = !cb.checked; // annulla la spunta: non e' stata salvata
+                        if (st) { st.textContent = '✗ ' + (STR.albumErr || 'Non salvato, riprova'); st.className = 'crew-edit-foto-status err'; }
+                    });
+                });
+            });
+        });
+    }
+
+    // Dopo un upload di foto: rilegge dal server e ridisegna la lista (le nuove foto compaiono subito)
+    function refreshAlbumPicker() {
+        fetch(API_LOAD + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN) + '&_=' + Date.now(), { credentials: 'same-origin', cache: 'no-store' })
+            .then(function (r) { return r.json(); })
+            .then(function (d) { if (d && d.success) renderAlbumPicker(albumRoles, d.portfolio_album || []); })
+            .catch(function () {});
+    }
+
     // 2026-08-02 — Livello/esperienza per ruolo (task #18). Contratto CRM (chat CRM CREW-RUOLI-AI):
     // ruoli_dati = { "<codice_ruolo>": {livello, anni, bio} } (bio non editabile qui, solo staff).
     // Se il crew ha 1 solo ruolo, restano i campi singoli f-livello/f-anno_inizio_attivita (nessuna UI in più).
@@ -469,6 +527,9 @@
             var crewRoles = d.categorie || (d.crew && d.crew.categorie) || [];
             var existingTemi = d.album_temi || (d.crew && d.crew.album_temi) || {};
             setupTemiPicker(crewRoles, existingTemi);
+
+            // 2026-10-09 #427 — Foto per ruolo
+            renderAlbumPicker(crewRoles, d.portfolio_album || []);
 
             // 2026-08-02 — Livello/esperienza per ruolo (task #18), solo se il crew ha 2+ ruoli
             setupRuoliPicker(crewRoles, d.ruoli_dati || (d.crew && d.crew.ruoli_dati) || {});

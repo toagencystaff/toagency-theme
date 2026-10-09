@@ -191,6 +191,14 @@ $token_get = $_GET['t']    ?? '';
 .crew-edit-cover-focal-btn { flex:1; background:#1a1a1e; color:#d1d5db; border:1px solid #2a2a2e; border-radius:6px; padding:8px; font-size:12px; cursor:pointer; font-weight:600; }
 .crew-edit-cover-focal-btn.selected { background:#c8ff00; color:#0a0a0a; border-color:#c8ff00; }
 @media (max-width:520px) { .crew-edit-cover-grid { grid-template-columns:repeat(3,1fr); } }
+/* 2026-10-09 #427 — Foto per ruolo */
+.crew-edit-album-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:12px; text-align:left; }
+.crew-edit-album-item { background:#0f0f12; border:1px solid #2a2a2e; border-radius:8px; padding:8px; }
+.crew-edit-album-thumb { position:relative; aspect-ratio:4/3; border-radius:6px; overflow:hidden; background:#0a0a0a; margin-bottom:8px; }
+.crew-edit-album-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+.crew-edit-album-pend { position:absolute; left:6px; top:6px; background:rgba(0,0,0,.7); color:#c8ff00; font-size:11px; padding:2px 8px; border-radius:999px; }
+.crew-edit-album-item .crew-edit-temi-chip { padding:5px 10px; font-size:12px; }
+@media (max-width:520px) { .crew-edit-album-grid { grid-template-columns:1fr; } }
 /* 2026-07-26 — Specializzazioni per ruolo (temi) */
 .crew-edit-temi-group { margin-top:14px; }
 .crew-edit-temi-role { font-size:12px; font-weight:700; color:#c8ff00; text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px; }
@@ -294,6 +302,14 @@ $token_get = $_GET['t']    ?? '';
                     <button type="button" class="crew-edit-cover-focal-btn" data-focal="50% 100%"><?= esc_html($_t(['it'=>'Basso','en'=>'Bottom','fr'=>'Bas','es'=>'Abajo'])) ?></button>
                 </div>
                 <div class="crew-edit-foto-status" id="f-cover-status"></div>
+            </div>
+
+            <!-- 2026-10-09 #427 — Foto per ruolo (smistamento negli album dei ruoli), popolata via JS da portfolio_album -->
+            <div class="crew-edit-foto-field" id="f-album-field" style="display:none;">
+                <label class="crew-edit-foto-label">🗂️ <?= esc_html($_t(['it'=>'Foto per ruolo','en'=>'Photos by role','fr'=>'Photos par rôle','es'=>'Fotos por rol'])) ?></label>
+                <div class="crew-edit-foto-hint"><?= esc_html($_t(['it'=>'Per ogni foto scegli in quale dei tuoi ruoli mostrarla. Puoi sceglierne più di uno. Se non ne scegli nessuno, la foto resta nella galleria generale.','en'=>'For each photo, choose which of your roles it should appear under. You can pick more than one. If you pick none, the photo stays in your general gallery.','fr'=>'Pour chaque photo, choisis dans quel(s) rôle(s) l’afficher. Tu peux en choisir plusieurs. Si tu n’en choisis aucun, la photo reste dans la galerie générale.','es'=>'Para cada foto, elige en qué rol (o roles) mostrarla. Puedes elegir más de uno. Si no eliges ninguno, la foto queda en la galería general.'])) ?></div>
+                <div class="crew-edit-album-grid" id="f-album-grid"></div>
+                <div class="crew-edit-foto-status" id="f-album-status"></div>
             </div>
 
             <!-- 2026-07-26 — Specializzazioni per ruolo (album_temi), popolata via JS da crew-temi.php + ruoli del crew -->
@@ -427,6 +443,7 @@ window.crewEditConfig = {
     apiUploadPortfolio: '/crm_toagency/actions/crew-self-edit-upload-portfolio.php',
     apiConsenso: '/crm_toagency/actions/crew-self-edit-consenso.php',
     apiCover: '/crm_toagency/actions/crew-self-edit-cover.php', /* 2026-07-26 — cover picker */
+    apiAlbum: '/crm_toagency/actions/crew-self-edit-album.php', /* 2026-10-09 #427 — foto per ruolo */
     apiTemiTaxonomy: '/crm_toagency/actions/crew-temi.php', /* 2026-07-26 — tassonomia temi per ruolo */
     apiTemiSave: '/crm_toagency/actions/crew-self-edit-temi.php', /* 2026-07-26 — salvataggio temi */
     provinceJsonUrl: <?= json_encode($theme_uri . '/assets/data/province-italia.json') ?>, /* FIX 2026-07-01 marco — tendina provincia crew */
@@ -450,6 +467,9 @@ window.crewEditConfig = {
         errorPrefix:  <?= json_encode($_t($T['error_generic'])) ?>,
         fotoOk:       <?= json_encode($_t(['it'=>'Foto caricata, in attesa di approvazione','en'=>'Photo uploaded, awaiting staff approval','fr'=>'Photo envoyée, en attente de validation','es'=>'Foto subida, pendiente de aprobación'])) ?>,
         fotoErr:      <?= json_encode($_t(['it'=>'Errore nel caricamento della foto','en'=>'Photo upload error','fr'=>'Erreur lors de l’envoi de la photo','es'=>'Error al subir la foto'])) ?>,
+        albumSaved:   <?= json_encode($_t(['it'=>'Salvato','en'=>'Saved','fr'=>'Enregistré','es'=>'Guardado'])) ?>,
+        albumErr:     <?= json_encode($_t(['it'=>'Non salvato, riprova.','en'=>'Not saved, please try again.','fr'=>'Non enregistré, réessaie.','es'=>'No guardado, inténtalo de nuevo.'])) ?>,
+        albumPending: <?= json_encode($_t(['it'=>'In attesa','en'=>'Pending','fr'=>'En attente','es'=>'Pendiente'])) ?>,
         temiLabel:    <?= json_encode($_t($T['temi_label'])) ?>,
         temiHint:     <?= json_encode($_t($T['temi_hint'])) ?>,
         ruoliAnniPh:  <?= json_encode($_t($T['ruoli_anni_ph'])) ?>,
@@ -461,6 +481,6 @@ window.crewEditConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20261009tariffa1" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20261009album1" defer></script>
 
 <?php toa_component('footer'); ?>
