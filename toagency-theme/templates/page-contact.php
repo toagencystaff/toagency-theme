@@ -35,10 +35,27 @@ $t = array(
     'casting_tm' => array('it' => 'Casting (talent e crew)', 'en' => 'Casting (talent &amp; crew)', 'fr' => 'Casting (talents &amp; crew)', 'es' => 'Casting (talentos y crew)'),
     'biz_b2b' => array('it' => 'Business (solo aziende e clienti B2B)', 'en' => 'Business (companies and B2B clients only)', 'fr' => 'Business (entreprises et clients B2B uniquement)', 'es' => 'Business (solo empresas y clientes B2B)'),
     'solo_wa' => array('it' => 'solo WhatsApp', 'en' => 'WhatsApp only', 'fr' => 'WhatsApp uniquement', 'es' => 'solo WhatsApp'),
+    'c_it' => array('it' => 'Italia', 'en' => 'Italy', 'fr' => 'Italie', 'es' => 'Italia'),
     'c_fr' => array('it' => 'Francia', 'en' => 'France', 'fr' => 'France', 'es' => 'Francia'),
     'c_es' => array('it' => 'Spagna', 'en' => 'Spain', 'fr' => 'Espagne', 'es' => 'Espa&ntilde;a'),
+    'g_b2b' => array('it' => 'Sei un\'azienda? Chiedi un preventivo', 'en' => 'Are you a company? Request a quote', 'fr' => 'Vous &ecirc;tes une entreprise ? Demandez un devis', 'es' => '&iquest;Eres una empresa? Pide presupuesto'),
+    'g_work' => array('it' => 'Vuoi lavorare con noi? (talent e crew)', 'en' => 'Want to work with us? (talent &amp; crew)', 'fr' => 'Vous voulez travailler avec nous ? (talents &amp; crew)', 'es' => '&iquest;Quieres trabajar con nosotros? (talentos y crew)'),
+    'g_admin' => array('it' => 'Fatture e pagamenti (solo clienti)', 'en' => 'Invoices and payments (clients only)', 'fr' => 'Factures et paiements (clients uniquement)', 'es' => 'Facturas y pagos (solo clientes)'),
+    'scrivi' => array('it' => 'Scrivi email', 'en' => 'Send email', 'fr' => 'Envoyer un email', 'es' => 'Enviar email'),
+    'prima_reg' => array('it' => 'Prima registrati qui', 'en' => 'Register here first', 'fr' => 'Inscrivez-vous d\'abord ici', 'es' => 'Primero reg&iacute;strate aqu&iacute;'),
+    's_b2b' => array('it' => 'Richiesta preventivo', 'en' => 'Quote request', 'fr' => 'Demande de devis', 'es' => 'Solicitud de presupuesto'),
+    'b_b2b' => array('it' => "Azienda:\nCittà e data dell'evento:\nCosa cerchi e quante persone:\n", 'en' => "Company:\nCity and event date:\nWhat you need and how many people:\n", 'fr' => "Entreprise :\nVille et date de l'événement :\nCe que vous cherchez et combien de personnes :\n", 'es' => "Empresa:\nCiudad y fecha del evento:\nQué buscas y cuántas personas:\n"),
+    's_work' => array('it' => 'Candidatura', 'en' => 'Application', 'fr' => 'Candidature', 'es' => 'Candidatura'),
+    'b_work' => array('it' => "Nome e cognome:\nCittà:\nTalent o crew (ruolo):\nInstagram o portfolio:\n", 'en' => "Full name:\nCity:\nTalent or crew (role):\nInstagram or portfolio:\n", 'fr' => "Nom et prénom :\nVille :\nTalent ou crew (rôle) :\nInstagram ou portfolio :\n", 'es' => "Nombre y apellidos:\nCiudad:\nTalento o crew (rol):\nInstagram o portfolio:\n"),
+    's_admin' => array('it' => 'Fatture e pagamenti', 'en' => 'Invoices and payments', 'fr' => 'Factures et paiements', 'es' => 'Facturas y pagos'),
+    'b_admin' => array('it' => "Azienda:\nCodice lavoro:\nRichiesta:\n", 'en' => "Company:\nJob code:\nRequest:\n", 'fr' => "Entreprise :\nCode du job :\nDemande :\n", 'es' => "Empresa:\nCódigo del trabajo:\nSolicitud:\n"),
     'copertura' => array('it' => 'Copertura', 'en' => 'Coverage', 'fr' => 'Couverture', 'es' => 'Cobertura'),
 );
+
+$mt = function($to, $k) use ($_t, $t) {
+    return 'mailto:' . $to . '?subject=' . rawurlencode($_t($t['s_' . $k])) . '&amp;body=' . rawurlencode($_t($t['b_' . $k]));
+};
+$btn_style = 'padding:10px 16px;font-size:.7rem;margin:0 8px 8px 0';
 
 toa_component('header');
 ?>
@@ -54,14 +71,21 @@ toa_component('header');
     <div class="features-grid">
         <div class="feature-card">
             <h3 class="feature-title">Email</h3>
+            <p class="feature-text" style="margin-bottom:6px"><strong><?php echo $_t($t['g_b2b']); ?></strong></p>
+            <p class="feature-text" style="margin-bottom:22px">
+                <a class="btn-hero btn-hero-secondary" style="<?php echo $btn_style; ?>" href="<?php echo $mt('business@toagency.it', 'b2b'); ?>" title="business@toagency.it"><?php echo $_t($t['c_it']); ?></a>
+                <a class="btn-hero btn-hero-secondary" style="<?php echo $btn_style; ?>" href="<?php echo $mt('france@toagency.it', 'b2b'); ?>" title="france@toagency.it"><?php echo $_t($t['c_fr']); ?></a>
+                <a class="btn-hero btn-hero-secondary" style="<?php echo $btn_style; ?>" href="<?php echo $mt('espana@toagency.it', 'b2b'); ?>" title="espana@toagency.it"><?php echo $_t($t['c_es']); ?></a>
+                <a class="btn-hero btn-hero-secondary" style="<?php echo $btn_style; ?>" href="<?php echo $mt('uk@toagency.it', 'b2b'); ?>" title="uk@toagency.it">UK</a>
+            </p>
+            <p class="feature-text" style="margin-bottom:6px"><strong><?php echo $_t($t['g_work']); ?></strong></p>
+            <p class="feature-text" style="margin-bottom:22px">
+                <a class="btn-hero btn-hero-secondary" style="<?php echo $btn_style; ?>" href="<?php echo $mt('casting@toagency.it', 'work'); ?>"><?php echo $_t($t['scrivi']); ?></a>
+                <a href="<?php echo home_url('/collabora/'); ?>" style="color:var(--accent)"><?php echo $_t($t['prima_reg']); ?></a>
+            </p>
+            <p class="feature-text" style="margin-bottom:6px"><strong><?php echo $_t($t['g_admin']); ?></strong></p>
             <p class="feature-text">
-                <strong><?php echo $_t($t['biz_b2b']); ?>:</strong> <a href="mailto:business@toagency.it" style="color:var(--accent)">business@toagency.it</a><br>
-                <strong>Info:</strong> <a href="mailto:info@toagency.it" style="color:var(--accent)">info@toagency.it</a><br>
-                <strong><?php echo $_t($t['amministrazione']); ?>:</strong> <a href="mailto:accountant@toagency.it" style="color:var(--accent)">accountant@toagency.it</a><br>
-                <strong><?php echo $_t($t['casting_tm']); ?>:</strong> <a href="mailto:casting@toagency.it" style="color:var(--accent)">casting@toagency.it</a><br>
-                <strong><?php echo $_t($t['c_fr']); ?>:</strong> <a href="mailto:france@toagency.it" style="color:var(--accent)">france@toagency.it</a><br>
-                <strong><?php echo $_t($t['c_es']); ?>:</strong> <a href="mailto:espana@toagency.it" style="color:var(--accent)">espana@toagency.it</a><br>
-                <strong>UK:</strong> <a href="mailto:uk@toagency.it" style="color:var(--accent)">uk@toagency.it</a>
+                <a class="btn-hero btn-hero-secondary" style="<?php echo $btn_style; ?>" href="<?php echo $mt('accountant@toagency.it', 'admin'); ?>"><?php echo $_t($t['scrivi']); ?></a>
             </p>
         </div>
         <div class="feature-card">
