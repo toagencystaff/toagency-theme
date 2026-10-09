@@ -32,6 +32,10 @@ $t = array(
     'sede_legale' => array('it' => 'Sede legale', 'en' => 'Registered office', 'fr' => 'Si&egrave;ge social', 'es' => 'Sede legal'),
     'ufficio_op' => array('it' => 'Ufficio operativo', 'en' => 'Operational office', 'fr' => 'Bureau op&eacute;rationnel', 'es' => 'Oficina operativa'),
     'sede_attiva' => array('it' => 'Sede operativa attiva', 'en' => 'Active operational office', 'fr' => 'Bureau op&eacute;rationnel actif', 'es' => 'Oficina operativa activa'),
+    'casting_tm' => array('it' => 'Casting (talent e crew)', 'en' => 'Casting (talent &amp; crew)', 'fr' => 'Casting (talents &amp; crew)', 'es' => 'Casting (talentos y crew)'),
+    'solo_wa' => array('it' => 'solo WhatsApp', 'en' => 'WhatsApp only', 'fr' => 'WhatsApp uniquement', 'es' => 'solo WhatsApp'),
+    'c_fr' => array('it' => 'Francia', 'en' => 'France', 'fr' => 'France', 'es' => 'Francia'),
+    'c_es' => array('it' => 'Spagna', 'en' => 'Spain', 'fr' => 'Espagne', 'es' => 'Espa&ntilde;a'),
     'copertura' => array('it' => 'Copertura', 'en' => 'Coverage', 'fr' => 'Couverture', 'es' => 'Cobertura'),
 );
 
@@ -52,15 +56,18 @@ toa_component('header');
             <p class="feature-text">
                 <strong>Business:</strong> <a href="mailto:business@toagency.it" style="color:var(--accent)">business@toagency.it</a><br>
                 <strong>Info:</strong> <a href="mailto:info@toagency.it" style="color:var(--accent)">info@toagency.it</a><br>
-                <strong><?php echo $_t($t['amministrazione']); ?>:</strong> <a href="mailto:accountant@toagency.it" style="color:var(--accent)">accountant@toagency.it</a>
+                <strong><?php echo $_t($t['amministrazione']); ?>:</strong> <a href="mailto:accountant@toagency.it" style="color:var(--accent)">accountant@toagency.it</a><br>
+                <strong><?php echo $_t($t['casting_tm']); ?>:</strong> <a href="mailto:casting@toagency.it" style="color:var(--accent)">casting@toagency.it</a><br>
+                <strong><?php echo $_t($t['c_fr']); ?>:</strong> <a href="mailto:france@toagency.it" style="color:var(--accent)">france@toagency.it</a><br>
+                <strong><?php echo $_t($t['c_es']); ?>:</strong> <a href="mailto:espana@toagency.it" style="color:var(--accent)">espana@toagency.it</a><br>
+                <strong>UK:</strong> <a href="mailto:uk@toagency.it" style="color:var(--accent)">uk@toagency.it</a>
             </p>
         </div>
         <div class="feature-card">
             <h3 class="feature-title"><?php echo $_t($t['telefono']); ?></h3>
             <p class="feature-text">
-                <strong>Italia:</strong> <a href="tel:+393517899225" style="color:var(--accent)">+39 351 789 9225</a><br>
-                <strong>Francia:</strong> <a href="tel:+33616133368" style="color:var(--accent)">+33 6 16 13 33 68</a><br>
-                <strong>WhatsApp:</strong> <a href="https://wa.me/393517899225" style="color:var(--accent)">+39 351 789 9225</a>
+                <strong>Business:</strong> <a href="tel:+393517899225" style="color:var(--accent)">+39 351 789 9225</a><br>
+                <strong><?php echo $_t($t['casting_tm']); ?>:</strong> <a href="https://wa.me/393518468516" target="_blank" style="color:var(--accent)">+39 351 846 8516</a> (<?php echo $_t($t['solo_wa']); ?>)
             </p>
         </div>
         <div class="feature-card">
@@ -105,11 +112,11 @@ toa_component('header');
         </div>
         <div class="coverage-country">
             <h4>Francia</h4>
-            <p>12 rue Grecourt, 37000 Tours<br>Tel: +33 6 16 13 33 68<br>france@toagency.it</p>
+            <p>12 rue Grecourt, 37000 Tours<br>france@toagency.it</p>
         </div>
         <div class="coverage-country">
             <h4>Espa&ntilde;a — Madrid</h4>
-            <p><?php echo $_t($t['sede_attiva']); ?><br><?php echo $_t($t['copertura']); ?>: Madrid, Barcelona, Valencia<br>spain@toagency.it</p>
+            <p><?php echo $_t($t['sede_attiva']); ?><br><?php echo $_t($t['copertura']); ?>: Madrid, Barcelona, Valencia<br>espana@toagency.it</p>
         </div>
         <div class="coverage-country">
             <h4>UK — London</h4>
