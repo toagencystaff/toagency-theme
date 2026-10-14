@@ -422,7 +422,7 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
       ['img'=>'dj.jpg',       'label'=>['it'=>'DJ','en'=>'DJs','fr'=>'DJs','es'=>'DJs']],
       ['img'=>'fotografa.jpg','label'=>['it'=>'Fotografi','en'=>'Photographers','fr'=>'Photographes','es'=>'Fotógrafos']],
       ['img'=>'videomaker.jpg','label'=>['it'=>'Videomaker','en'=>'Videomakers','fr'=>'Vidéastes','es'=>'Videomakers']],
-      ['img'=>'runner.jpg',   'label'=>['it'=>'Runner','en'=>'Runners','fr'=>'Runners','es'=>'Runners']],
+      ['img'=>'runner.jpg',   'label'=>['it'=>'Runner','en'=>'Runners','fr'=>'Coursiers','es'=>'Runners']],
     ],
     'models-aziende' => [ // FIX 2026-09-02 marco — solo etichetta, niente foto (in coda: aspetta foto da Marco)
       ['label'=>['it'=>'Modelle','en'=>'Female Models','fr'=>'Mannequins femmes','es'=>'Modelos mujeres']],
@@ -457,7 +457,7 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
        'es'=>['q'=>'¿Qué zonas cubrís?','a'=>'Toda Italia. También trabajamos en el extranjero: Cannes, París, Madrid, Mónaco, Ámsterdam.']],
       ['it'=>['q'=>'Quanto costa una hostess?','a'=>'Si parte da 139 € per una giornata piena; mezza giornata costa meno. Il prezzo dipende da città, durata, lingue e mansioni. Se hai già un budget, dicci la cifra: con oltre 20.000 profili costruiamo la squadra dentro quella.'],
        'en'=>['q'=>'How much does a hostess cost?','a'=>'From €139 for a full day; half days cost less. The final price depends on city, duration, languages and duties. If you already have a budget, tell us the figure: with over 20,000 profiles we build the team within it.'],
-       'fr'=>['q'=>'Combien coûte une hôtesse ?','a'=>"À partir de 139 € pour une journée complète ; une demi-journée coûte moins. Le prix dépend de la ville, de la durée, des langues et des missions. Si vous avez déjà un budget, indiquez-nous le montant : avec plus de 20 000 profils, nous constituons l'équipe dans cette limite."],
+       'fr'=>['q'=>'Combien coûte une hôtesse ?','a'=>"Le prix dépend de la ville, de la durée, des langues et des missions. Indiquez-nous vos dates et votre budget : avec plus de 20 000 profils, nous constituons l'équipe dans cette limite et vous envoyons un devis gratuit sous 24 heures."],
        'es'=>['q'=>'¿Cuánto cuesta una azafata?','a'=>'Desde 139 € por una jornada completa; media jornada cuesta menos. El precio depende de la ciudad, la duración, los idiomas y las funciones. Si ya tienes un presupuesto, dinos la cifra: con más de 20.000 perfiles formamos el equipo dentro de esa cantidad.']],
       ['it'=>['q'=>'Con quanto preavviso devo prenotare?','a'=>'Nessun preavviso minimo. Ci attiviamo in qualsiasi momento, anche last minute.'],
        'en'=>['q'=>'How far in advance do I need to book?','a'=>'No minimum notice. We can step in at any time, including last minute.'],
@@ -526,8 +526,6 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
     $__how     = $__how_map[$key] ?? [];
     $__gallery = $__gallery_map[$key] ?? [];
     $__roles   = $__roles_map[$key] ?? [];
-    // FIX 2026-10-03 (TEMA LP-FRANCIA) — su /fr/ niente tessera "Runners" finche' Marco non conferma (richiesta ADS FRANCIA)
-    if ($lang === 'fr') { $__roles = array_values(array_filter($__roles, function($__x){ return ($__x['img'] ?? '') !== 'runner.jpg'; })); }
     $__faq     = $__faq_map[$key] ?? [];
     // FIX 2026-10-03 (TEMA LP-FRANCIA) — su /fr/ sospese 2 FAQ (rimpiazzo immediato, nessun preavviso minimo) finche' Marco non conferma che valgono per la Francia (richiesta ADS FRANCIA)
     if ($lang === 'fr') { $__faq = array_values(array_filter($__faq, function($__i){ return !in_array($__i['fr']['q'] ?? '', ['Que se passe-t-il si une personne se désiste ?', "Combien de temps à l'avance faut-il réserver ?"], true); })); }

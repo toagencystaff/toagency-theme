@@ -1,8 +1,7 @@
 STATO=CLOSED
-CHAT=CRM tickets collaboratori 2
+CHAT=TEMA MISURE-DATA
 FILE=toagency-theme/templates/page-talent-self-edit.php
-UPDATE=2026-10-09T19:03:17+0200
-SHA1_ATTESO=d9d5cbba406509349c4108616a188bc8e723e5a2
-DEPLOY=FATTO preview+prod 09/10, git b96ec938f
-NOTE=#466 cambio album non azzera piu il form upload foto
-CHIUSO=2026-10-09T19:03:17+0200
+INIZIO=2026-10-14 15:55:00
+UPDATE=2026-10-14 16:24:54
+SHA1_ATTESO=c3b9e4dfb680606dfc1b9cdb6741101e1a83dcd2
+NOTE=ticket #628 online preview+prod 14/10 16:24, commit e59762359
