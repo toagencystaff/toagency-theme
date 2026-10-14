@@ -94,6 +94,8 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         modal_chest:     { it: 'Seno',      en: 'Chest',       fr: 'Poitrine',    es: 'Pecho' },
         modal_waist:     { it: 'Vita',      en: 'Waist',       fr: 'Taille',      es: 'Cintura' },
         modal_hips:      { it: 'Fianchi',   en: 'Hips',        fr: 'Hanches',     es: 'Caderas' },
+        // 2026-10-14 marco — ticket #628: data in cui sono state prese le misure (mostrata solo se presente)
+        modal_measured_on: { it: 'Misure prese il', en: 'Measured on', fr: 'Mesures prises le', es: 'Medidas tomadas el' },
         // 2026-08-11 marco — HOSTESS EVENTI
         modal_langs:     { it: 'Lingue',    en: 'Languages',   fr: 'Langues',     es: 'Idiomas' },
         modal_car:       { it: 'Automunito', en: 'Own car',    fr: 'Véhiculé',    es: 'Con coche' },
@@ -1092,6 +1094,16 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
 
     // Popola la scheda dettaglio del modal (galleria + righe monospace key/value).
     // 2026-07-08 marco — +creator{} e video[] (sezioni Creator/Video, anti-bypass, dati masticati dall'endpoint)
+    // 2026-10-14 marco — ticket #628: AAAA-MM-GG / AAAA-MM / GG/MM/AAAA → "MM/AAAA"; valori vuoti o 0000-00-00 → null
+    function fmtMeasuredOn(v) {
+        if (!v) return null;
+        var m = String(v).trim().match(/^(\d{4})-(\d{2})(?:-\d{2})?/) , y, mo;
+        if (m) { y = m[1]; mo = m[2]; }
+        else { m = String(v).trim().match(/^\d{1,2}\/(\d{1,2})\/(\d{4})/); if (!m) return null; mo = ('0' + m[1]).slice(-2); y = m[2]; }
+        if (y === '0000' || mo === '00' || +mo > 12) return null;
+        return mo + '/' + y;
+    }
+
     function renderDetailModal(t, media, creator, videoList) {
         var nameEl2 = $('#tdbModalName');
         if (nameEl2) nameEl2.textContent = t.nome || '—';
@@ -1131,6 +1143,8 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
             addRow(i18n('modal_chest'), t.misura_petto   ? t.misura_petto   + ' cm' : null);
             addRow(i18n('modal_waist'), t.misura_vita    ? t.misura_vita    + ' cm' : null);
             addRow(i18n('modal_hips'),  t.misura_fianchi ? t.misura_fianchi + ' cm' : null);
+            // 2026-10-14 marco — ticket #628: "misure prese il MM/AAAA" (misure_rilevate_il); se manca non mostro nulla
+            if (t.misura_petto || t.misura_vita || t.misura_fianchi) addRow(i18n('modal_measured_on'), fmtMeasuredOn(t.misure_rilevate_il));
         }
         // FIX 2026-06-26 marco — minore: avviso tutela + CTA in cima alla scheda dettaglio
         if (t.is_minor) rows.unshift('<div class="toa-tdb-detail-minor"><p>' + escapeHtml(i18n('minor_explain')) + '</p><button type="button" class="toa-tdb-card-minreq" data-modal-minreq="1">' + escapeHtml(i18n('minor_cta')) + '</button></div>');

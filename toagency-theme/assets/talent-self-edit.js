@@ -485,6 +485,7 @@
                 }
             });
             var _pr = $('f-misure-prese'); if (_pr) _pr.value = d.talent.misure_prese_il || '';
+            window.__tseOrigPVF = { petto: String(_M.petto || ''), vita: String(_M.vita || ''), fianchi: String(_M.fianchi || '') }; // 2026-10-14 marco (#628)
             var _tg = $('f-mis-toggle');
             if (_anyExtra && _tg && !_tg.checked) { _tg.checked = true; _tg.dispatchEvent(new Event('change')); }
             document.querySelectorAll('.tse-mis, #f-altezza, #f-scarpe').forEach(function (el) { el.dispatchEvent(new Event('input')); });
@@ -601,6 +602,20 @@
         payload.misure = _mis;
         var _preseEl = $('f-misure-prese');
         if (_preseEl && _preseEl.value) payload.misure_prese_il = _preseEl.value;
+        // 2026-10-14 marco (#628) — se cambiano seno/vita/fianchi la data è obbligatoria, non futura, max 12 mesi
+        var _misErr = null;
+        (function () {
+            var o = window.__tseOrigPVF || {}, changed = false;
+            ['petto', 'vita', 'fianchi'].forEach(function (k) { if (String(_mis[k] || '') !== String(o[k] || '')) changed = true; });
+            if (!changed) return;
+            var v = _preseEl ? _preseEl.value : '';
+            var n = new Date(), cur = n.getFullYear() * 12 + n.getMonth();
+            var m = /^(\d{4})-(\d{2})$/.exec(v || '');
+            if (!m) { _misErr = STR.errMisManca; return; }
+            var val = (+m[1]) * 12 + (+m[2]) - 1;
+            if (val > cur) _misErr = STR.errMisFutura; else if (cur - val > 12) _misErr = STR.errMisVecchia;
+        })();
+        if (_misErr) { showResult('err', _misErr); if (_preseEl) _preseEl.focus(); btn.disabled = false; btn.textContent = STR.save || 'Invia'; return; }
         payload.etnia   = getChips('f-etnia');
         payload.ruoli   = getChips('f-ruoli');
         if (window.TOARuoliSE) { var _rs = window.TOARuoliSE.staffPayload(); if (_rs) payload.ruoli_staff = _rs; } // FIX 2026-10-14 marco (#622)

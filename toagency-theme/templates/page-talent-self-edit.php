@@ -64,6 +64,13 @@ $T = [
     'misure_intro'     => ['it'=>'Le tue misure (facoltative). Se le conosci inseriscile, altrimenti salta pure: puoi aggiungerle in qualsiasi momento tornando qui. Puoi prenderle con un metro da sarta, farti aiutare, o passare in una merceria.','en'=>'Your measurements (optional). Add them if you know them, otherwise skip: you can add them anytime by coming back here. Take them with a soft tape measure, ask for help, or drop by a haberdashery.','fr'=>'Tes mesures (facultatif). Ajoute-les si tu les connais, sinon passe : tu peux les ajouter à tout moment en revenant ici. Prends-les avec un mètre de couturière, fais-toi aider, ou passe en mercerie.','es'=>'Tus medidas (opcional). Añádelas si las conoces, si no, sáltalas: puedes añadirlas cuando quieras volviendo aquí. Tómalas con una cinta métrica de costura, pide ayuda o pásate por una mercería.'],
     'misure_toggle'    => ['it'=>'So anche le altre misure','en'=>'I also know the other measurements','fr'=>'Je connais aussi les autres mesures','es'=>'También conozco las otras medidas'],
     'misure_prese'     => ['it'=>'Misure prese il (mese/anno)','en'=>'Measurements taken on (month/year)','fr'=>'Mesures prises le (mois/année)','es'=>'Medidas tomadas el (mes/año)'],
+    // 2026-10-14 marco (#628) — data misure obbligatoria quando cambiano seno/vita/fianchi
+    'misure_data_hint' => ['it'=>'Obbligatoria se cambi seno, vita o fianchi: non più vecchie di 12 mesi.','en'=>'Required if you change chest, waist or hips: no older than 12 months.','fr'=>'Obligatoire si tu modifies poitrine, taille ou hanches : pas plus de 12 mois.','es'=>'Obligatoria si cambias pecho, cintura o caderas: no más de 12 meses.'],
+    'misure_guida'     => ['it'=>'Come prenderle bene (guida)','en'=>'How to measure (guide)','fr'=>'Comment bien les prendre (guide)','es'=>'Cómo tomarlas bien (guía)'],
+    'misure_merceria'  => ['it'=>'Non hai un metro? In merceria te le prendono in un minuto.','en'=>'No tape measure? A haberdashery shop will measure you in a minute.','fr'=>'Pas de mètre ruban ? En mercerie, on te mesure en une minute.','es'=>'¿Sin cinta métrica? En una mercería te miden en un minuto.'],
+    'err_misure_manca' => ['it'=>'Hai cambiato seno, vita o fianchi: indica quando hai preso le misure.','en'=>'You changed chest, waist or hips: please say when you took the measurements.','fr'=>'Tu as modifié poitrine, taille ou hanches : indique quand tu as pris les mesures.','es'=>'Has cambiado pecho, cintura o caderas: indica cuándo tomaste las medidas.'],
+    'err_misure_futura'=> ['it'=>'La data delle misure non può essere nel futuro.','en'=>'The measurement date cannot be in the future.','fr'=>'La date des mesures ne peut pas être dans le futur.','es'=>'La fecha de las medidas no puede ser futura.'],
+    'err_misure_vecchia'=>['it'=>'Le misure devono essere state prese negli ultimi 12 mesi: rimisurati e aggiorna la data.','en'=>'Measurements must be from the last 12 months: measure again and update the date.','fr'=>'Les mesures doivent dater de moins de 12 mois : mesure-toi à nouveau et mets la date à jour.','es'=>'Las medidas deben ser de los últimos 12 meses: vuelve a medirte y actualiza la fecha.'],
     'misure_legenda'   => ['it'=>'Dove si prende ogni misura','en'=>'Where each measurement is taken','fr'=>'Où prendre chaque mesure','es'=>'Dónde se toma cada medida'],
     'misure_nota_dopo' => ['it'=>'Non le sai? Salva lo stesso e aggiungile quando vuoi tornando qui col tuo link.','en'=>'Not sure of them? Save anyway and add them anytime by coming back here with your link.','fr'=>'Tu ne les connais pas ? Enregistre quand même et ajoute-les quand tu veux en revenant ici avec ton lien.','es'=>'¿No las sabes? Guarda igualmente y añádelas cuando quieras volviendo aquí con tu enlace.'],
     'conv_hint'        => ['it'=>'Salviamo sempre in cm (scarpa EU).','en'=>'We always store in cm (1 in = 2.54 cm). Shoe EU.','fr'=>'Toujours enregistré en cm. Pointure EU.','es'=>'Guardamos siempre en cm. Talla de zapato EU.'],
@@ -755,8 +762,9 @@ $token_get = $_GET['t']    ?? '';
                 </div>
                 </div>
                 <div id="tse-mis-prese" style="display:none;margin-top:6px;">
-                    <label class="tse-label"><?= esc_html($_t($T['misure_prese'])) ?></label>
-                    <input type="month" id="f-misure-prese" class="tse-input">
+                    <label class="tse-label"><?= esc_html($_t($T['misure_prese'])) ?> *</label>
+                    <input type="month" id="f-misure-prese" class="tse-input" max="<?= esc_attr(wp_date('Y-m')) ?>" min="<?= esc_attr(wp_date('Y-m', strtotime('-12 months'))) ?>">
+                    <p style="font-size:11px;color:#6b7280;margin:6px 0 0;"><?= esc_html($_t($T['misure_data_hint'])) ?> <?= esc_html($_t($T['misure_merceria'])) ?> <a href="https://toagency.it/crm_toagency/guida-misure.php?lang=<?= esc_attr($__l) ?>" target="_blank" rel="noopener" style="color:#c8ff00;"><?= esc_html($_t($T['misure_guida'])) ?></a></p>
                 </div>
                 <p style="font-size:11px;color:#6b7280;margin:8px 0 0;"><?= esc_html($_t($T['conv_hint'])) ?></p>
                 <details style="margin-top:12px;">
@@ -1074,6 +1082,9 @@ window.talentEditConfig = {
         certNo:          <?= json_encode($_t($T['cert_no'])) ?>,
         certSi:          <?= json_encode($_t($T['cert_si'])) ?>,
         errCert:         <?= json_encode($_t($T['err_cert'])) ?>,
+        errMisManca:     <?= json_encode($_t($T['err_misure_manca'])) ?>,
+        errMisFutura:    <?= json_encode($_t($T['err_misure_futura'])) ?>,
+        errMisVecchia:   <?= json_encode($_t($T['err_misure_vecchia'])) ?>,
         altroLinguaPlaceholder: <?= json_encode($_t($T['altro_lingua_placeholder'])) ?>,
         lingueLabels: {
             <?php foreach ($LINGUE_OPTS as $k=>$v): ?><?= json_encode($k) ?>: <?= json_encode($_t($v)) ?>,
