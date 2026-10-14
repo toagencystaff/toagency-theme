@@ -58,9 +58,11 @@ $CREW_CATEGORIES = [
     ['code'=>'video_editing',      'label'=>['it'=>'Video Editing','en'=>'Video Editing','fr'=>'Montage vidéo','es'=>'Edición de vídeo']],
     ['code'=>'social_media',       'label'=>['it'=>'Social Media Manager','en'=>'Social Media Manager','fr'=>'Social Media Manager','es'=>'Social Media Manager']],
     ['code'=>'content_creator',    'label'=>['it'=>'Content Creator','en'=>'Content Creator','fr'=>'Créateur de contenu','es'=>'Creador de contenido']],
-    ['code'=>'fashion_journalist', 'label'=>['it'=>'Fashion Journalist','en'=>'Fashion Journalist','fr'=>'Journaliste mode','es'=>'Periodista de moda']],
+    // FIX 2026-10-14 marco: tolto il filtro Fashion Journalist (non e' un ruolo TOAgency)
     ['code'=>'art_director',       'label'=>['it'=>'Art Director','en'=>'Art Director','fr'=>'Directeur artistique','es'=>'Director de arte']],
     ['code'=>'dj',                 'label'=>['it'=>'DJ','en'=>'DJ','fr'=>'DJ','es'=>'DJ']],
+    ['code'=>'cantante',           'label'=>['it'=>'Cantante','en'=>'Singer','fr'=>'Chanteur','es'=>'Cantante']], // NUOVO 2026-10-14 marco
+    ['code'=>'intrattenitore',     'label'=>['it'=>'Intrattenitore / Cabaret','en'=>'Entertainer','fr'=>'Animateur','es'=>'Animador']], // NUOVO 2026-10-14 marco
     ['code'=>'security',           'label'=>['it'=>'Security','en'=>'Security','fr'=>'Sécurité','es'=>'Seguridad']],
     ['code'=>'tecnico_luci',       'label'=>['it'=>'Tecnico Luci','en'=>'Lighting Tech','fr'=>'Tech. lumière','es'=>'Téc. iluminación']],
     ['code'=>'tecnico_suono',      'label'=>['it'=>'Tecnico Suono','en'=>'Sound Tech','fr'=>'Tech. son','es'=>'Téc. sonido']],

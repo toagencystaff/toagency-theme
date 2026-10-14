@@ -22,7 +22,7 @@ function _ht_crew_raw($strings) {
 }
 
 // FIX 2026-10-14 marco (ticket #622): solo i ruoli REALI del CRM (lib/ruoli_prove.php, decisione Marco 13/10):
-// tolti "Parrucchiere" (doppione di Hairstylist) e "Altro"; fashion_journalist -> copywriter (codice CRM);
+// tolti "Parrucchiere" (doppione di Hairstylist) e "Altro"; tolto anche Fashion journalist/Copywriter (Marco 14/10: non e' un ruolo TOAgency);
 // aggiunti cameriere, barman, autista, interprete. Nomi e icone li mette toa-ruoli.js dal CRM: le etichette
 // qui sotto si vedono solo se il CRM non risponde. min_age: staff eventi e tecnici 18+ (lib/ruoli.php).
 $CREW_CATEGORIES = array(
@@ -37,7 +37,8 @@ $CREW_CATEGORIES = array(
     array('code'=>'postproduzione','min_age'=>16,'label'=>array('it'=>'Postproduzione','en'=>'Photo Post-Production','fr'=>'Post-production','es'=>'Postproducción')),
     array('code'=>'video_editing','min_age'=>16,'label'=>array('it'=>'Video Editing','en'=>'Video Editing','fr'=>'Montage vidéo','es'=>'Edición de vídeo')),
     array('code'=>'social_media','min_age'=>16,'label'=>array('it'=>'Social Media Manager','en'=>'Social Media Manager','fr'=>'Community manager','es'=>'Social Media Manager')),
-    array('code'=>'copywriter','min_age'=>16,'label'=>array('it'=>'Fashion Journalist / Copywriter','en'=>'Fashion Journalist / Copywriter','fr'=>'Journaliste mode / Rédacteur','es'=>'Periodista de moda / Copywriter')),
+    array('code'=>'cantante','min_age'=>16,'label'=>array('it'=>'Cantante','en'=>'Singer','fr'=>'Chanteur / Chanteuse','es'=>'Cantante')), // NUOVO 2026-10-14 marco
+    array('code'=>'intrattenitore','min_age'=>16,'label'=>array('it'=>'Intrattenitore / Cabaret','en'=>'Entertainer / Comedian','fr'=>'Animateur / Humoriste','es'=>'Animador / Cómico')), // NUOVO 2026-10-14 marco
     array('code'=>'dj','min_age'=>16,'label'=>array('it'=>'DJ','en'=>'DJ','fr'=>'DJ','es'=>'DJ')),
     array('code'=>'tecnico_luci','min_age'=>18,'label'=>array('it'=>'Tecnico Luci','en'=>'Lighting Technician','fr'=>'Technicien lumière','es'=>'Técnico iluminación')),
     array('code'=>'tecnico_suono','min_age'=>18,'label'=>array('it'=>'Tecnico Audio','en'=>'Sound Technician','fr'=>'Technicien son','es'=>'Técnico de sonido')),
