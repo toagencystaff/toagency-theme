@@ -665,7 +665,7 @@ document.getElementById('studentForm').addEventListener('submit', async function
     saveFailedLead(payload);
     if (confirm(SP.error)) {
       window.open(
-        'https://wa.me/393517899225?text=' + encodeURIComponent(SP.wa + payload.full_name + ', Progetto: ' + payload.project_title),
+        (window.toaWaUrl||String)('https://wa.me/393517899225?text=' + encodeURIComponent(SP.wa + payload.full_name + ', Progetto: ' + payload.project_title)),
         '_blank'
       );
     }

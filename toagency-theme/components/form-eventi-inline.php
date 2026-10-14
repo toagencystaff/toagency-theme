@@ -172,7 +172,7 @@ $fe_js = array(
       window.location.href = THANKYOU;
     } else {
       if (confirm(STR.error)) {
-        window.open('https://wa.me/393517899225?text=' + encodeURIComponent(STR.wa + payload.company + ' — ' + payload.event_type), '_blank');
+        window.open((window.toaWaUrl||String)('https://wa.me/393517899225?text=' + encodeURIComponent(STR.wa + payload.company + ' — ' + payload.event_type)), '_blank');
       }
       btn.disabled = false;
       spinner.style.display = 'none';

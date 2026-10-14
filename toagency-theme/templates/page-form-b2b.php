@@ -386,7 +386,7 @@ document.getElementById('leadForm').addEventListener('submit', async function(e)
   } else {
     saveFailedLead(payload);
     if (confirm(b2bStrings.errorMsg)) {
-      window.open('https://wa.me/393517899225?text=' + encodeURIComponent(b2bStrings.waMessage + payload.company + ', Progetto: ' + payload.event_type), '_blank');
+      window.open((window.toaWaUrl||String)('https://wa.me/393517899225?text=' + encodeURIComponent(b2bStrings.waMessage + payload.company + ', Progetto: ' + payload.event_type)), '_blank');
     }
     btn.disabled = false;
     btnText.textContent = b2bStrings.submitBtn;

@@ -1204,7 +1204,7 @@ add_action('wp_footer', function() {
             catch(ex){ await new Promise(function(rs){setTimeout(rs,1000*(i+1));}); }
           }
           if(ok){ window.location.href=THANKYOU; }
-          else{ if(confirm(ft.error)){ window.open('https://wa.me/393517899225?text='+encodeURIComponent(ft.wa+payload.company+' — '+payload.event_type),'_blank'); } btn.disabled=false; if(sp)sp.style.display='none'; txt.textContent=ft.submit; }
+          else{ if(confirm(ft.error)){ window.open((window.toaWaUrl||String)('https://wa.me/393517899225?text='+encodeURIComponent(ft.wa+payload.company+' — '+payload.event_type)),'_blank'); } btn.disabled=false; if(sp)sp.style.display='none'; txt.textContent=ft.submit; }
         });
       }
     })();
@@ -1405,3 +1405,98 @@ add_filter('wpseo_locale', function ($locale) {
     return $locale;
 }, 20);
 // === END FIX 2026-09-10 marco — og:locale WPML ===
+
+// === BEGIN 2026-10-14 ticket #625 [TEMA WA-TRACCIAMENTO] — bottoni WhatsApp: codice rif. TOA-xxxxx + invio dati click (gclid/UTM) al CRM ===
+// Script globale (tutte le pagine, anche landing Ads che chiamano wp_footer): intercetta ogni link wa.me verso i nostri 2 numeri,
+// aggiunge ' (rif. TOA-XXXXX)' in coda al testo gia' precompilato e manda i dati del click a actions/wa-click.php (CRM).
+// Espone window.toaWaUrl(url) per i window.open dei form e window.toaAttr globale (cookie first-touch toa_ft sin dall'atterraggio).
+add_action('wp_footer', function() { ?>
+<script>
+/* #625 — tracciamento WhatsApp: codice rif. TOA-xxxxx + invio dati click (gclid/UTM) al CRM.
+   Globale su tutte le pagine (anche landing Ads): crea il cookie first-touch toa_ft all'atterraggio. */
+(function(){
+  var WA_CLICK_URL = 'https://toagency.it/crm_toagency/actions/wa-click.php';
+  var NUM = {'393518468516':'casting','393517899225':'aziende'};
+  var AL = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  var GREET = {it:'Ciao, vengo dal sito TOAgency',en:"Hi, I'm visiting from the TOAgency website",fr:'Bonjour, je viens du site TOAgency',es:'Hola, vengo del sitio web de TOAgency'};
+
+  // Attribuzione: stessa logica di /form-b2b/ (gclid/UTM last-touch, landing/referrer first-touch, cookie 90gg)
+  window.toaAttr = window.toaAttr || function() {
+    try {
+      var qs = new URLSearchParams(location.search);
+      var keys = ['gclid','gbraid','wbraid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'];
+      var now = {};
+      keys.forEach(function(k){ var val = qs.get(k); if (val) now[k] = val.slice(0,255); });
+      var ck = (document.cookie.split('; ').filter(function(c){ return c.indexOf('toa_ft=') === 0; })[0] || '');
+      var ft = null;
+      if (ck) { try { ft = JSON.parse(decodeURIComponent(ck.split('=')[1])); } catch(e) {} }
+      if (!ft) {
+        ft = Object.assign({}, now);
+        ft.landing_page = location.href.slice(0,500);
+        ft.referrer = (document.referrer || '').slice(0,500);
+        ft.first_touch_at = new Date().toISOString().slice(0,19).replace('T',' ');
+        var d = new Date(); d.setDate(d.getDate() + 90);
+        document.cookie = 'toa_ft=' + encodeURIComponent(JSON.stringify(ft)) + '; expires=' + d.toUTCString() + '; path=/; SameSite=Lax';
+      }
+      Object.keys(now).forEach(function(k){ ft[k] = now[k]; });
+      return ft;
+    } catch(e) { return {}; }
+  };
+  try { window.toaAttr(); } catch(e) {}
+
+  function newRif() {
+    var b = [], i, s = 'TOA-';
+    try { var u = new Uint8Array(5); (window.crypto || window.msCrypto).getRandomValues(u); for (i = 0; i < 5; i++) b.push(u[i]); }
+    catch(e) { b = []; for (i = 0; i < 5; i++) b.push(Math.floor(Math.random() * 256)); }
+    for (i = 0; i < 5; i++) s += AL.charAt(b[i] & 31);
+    return s;
+  }
+
+  function send(o) {
+    try {
+      var s = JSON.stringify(o);
+      if (navigator.sendBeacon) { navigator.sendBeacon(WA_CLICK_URL, s); }
+      else if (window.fetch) { fetch(WA_CLICK_URL, {method:'POST', body:s, keepalive:true, headers:{'Content-Type':'text/plain'}}).catch(function(){}); }
+    } catch(e) {}
+  }
+
+  // Riceve un link wa.me verso i nostri numeri e restituisce lo stesso link col codice in coda al testo
+  // (+ beacon al CRM). Link verso altri numeri o non-WhatsApp: restituiti identici.
+  window.toaWaUrl = function(url) {
+    try {
+      var m = /^https?:\/\/wa\.me\/(393518468516|393517899225)(?:[\/?#]|$)/i.exec(url || '');
+      if (!m) return url;
+      var hi = url.indexOf('#'), hash = hi > -1 ? url.slice(hi) : '', rest = hi > -1 ? url.slice(0, hi) : url;
+      var qi = rest.indexOf('?'), base = qi > -1 ? rest.slice(0, qi) : rest, query = qi > -1 ? rest.slice(qi + 1) : '';
+      var text = new URLSearchParams(query).get('text') || '';
+      text = text.replace(/\s*\(rif\. TOA-[A-Z0-9]{5}\)\s*$/, '');
+      if (!text) { var l = (document.documentElement.lang || 'it').slice(0,2).toLowerCase(); text = GREET[l] || GREET.it; }
+      var rif = newRif();
+      var o = {};
+      var at = (typeof window.toaAttr === 'function') ? window.toaAttr() : {};
+      Object.keys(at).forEach(function(k){ o[k] = at[k]; });
+      var fb = new URLSearchParams(location.search).get('fbclid');
+      if (fb) o.fbclid = fb.slice(0,255);
+      o.rif = rif; o.numero = NUM[m[1]]; o.pagina = location.href.slice(0,500);
+      send(o);
+      window.toaLastRif = rif;
+      return base + '?text=' + encodeURIComponent(text + ' (rif. ' + rif + ')') + hash;
+    } catch(e) { return url; }
+  };
+
+  function onClick(e) {
+    try {
+      var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+      if (!a) return;
+      var h = a.getAttribute('href');
+      if (!h || h.indexOf('wa.me/') < 0) return;
+      var n = window.toaWaUrl(h);
+      if (n !== h) a.setAttribute('href', n);
+    } catch(x) {}
+  }
+  document.addEventListener('click', onClick, true);
+  document.addEventListener('auxclick', onClick, true);
+})();
+</script>
+<?php }, 1);
+// === END 2026-10-14 ticket #625 ===
