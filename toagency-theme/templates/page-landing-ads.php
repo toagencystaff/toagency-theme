@@ -163,7 +163,7 @@ $DB_URL    = 'https://toagency.it' . ($lang !== 'it' ? '/' . $lang : '') . '/tal
 
 // FIX 2026-06-24 marco — form protagonista + WhatsApp taggato (lead qualificabile)
 $formhead_l   = ['it'=>'Ricevi una selezione di profili e un preventivo gratuito in 24h','en'=>'Get a shortlist of profiles and a free quote within 24h','fr'=>'Recevez une sélection de profils et un devis gratuit sous 24h','es'=>'Recibe una selección de perfiles y un presupuesto gratuito en 24h'];
-$contacthint_l= ['it'=>'Preferisci sentirci subito?','en'=>'Prefer to talk now?','fr'=>'Vous préférez nous contacter tout de suite ?','es'=>'¿Prefieres contactarnos ya?'];
+$contacthint_l= ['it'=>'Preferisci sentirci subito?','en'=>'Prefer to talk now?','fr'=>'Vous préférez nous écrire ?','es'=>'¿Prefieres contactarnos ya?'];
 // FIX 2026-07-10 marco — WhatsApp card pari peso al form, con etichetta B2B integrata (evitare click di talent)
 $wabig_l      = ['it'=>'Preferisci scriverci subito?','en'=>'Prefer to message us right away?','fr'=>'Vous préférez nous écrire tout de suite ?','es'=>'¿Prefieres escribirnos ahora mismo?'];
 // Messaggio WhatsApp precompilato per landing → l'utente arriva già contestualizzato (B2B vs talent)
@@ -329,7 +329,12 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
 
       <p class="toa-ads-contacthint"><?php echo _ht($contacthint_l); ?></p>
       <div class="toa-ads-contact">
+        <?php /* FIX 2026-10-14 (TEMA LP-FRANCIA) — su /fr/ niente numero di telefono: solo email france@ o form (richiesta Marco) */ ?>
+        <?php if ($lang === 'fr'): ?>
+        <a class="toa-ads-btn toa-ads-btn--call" href="mailto:france@toagency.it" onclick="toaLpTrack('email')">✉️ france@toagency.it</a>
+        <?php else: ?>
         <a class="toa-ads-btn toa-ads-btn--call" href="tel:<?php echo esc_attr($TEL_RAW); ?>" onclick="toaLpTrack('call')">📞 <?php echo _ht($call_l); ?> <?php echo esc_html($TEL_DISP); ?></a>
+        <?php endif; ?>
         <?php if ($lang !== 'fr'): ?>
         <a class="toa-ads-btn" href="<?php echo esc_url($WA_HREF); ?>" target="_blank" rel="noopener" onclick="toaLpTrack('whatsapp')">WhatsApp</a>
         <?php endif; ?>
