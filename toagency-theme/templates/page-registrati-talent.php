@@ -378,10 +378,10 @@ $theme_uri = get_stylesheet_directory_uri();
     <!-- Banner registrazione minore -->
     <div class="toa-talent-info-banner toa-talent-banner-secondary">
         👨‍👩‍👧 <?php echo wp_kses(_ht_talent_raw(array(
-            'it'=>'<strong>Minorenni:</strong> sotto i 16 anni compila un genitore. Tra i 16 e i 17 serve la sua conferma.',
-            'en'=>'<strong>Minors:</strong> under 16 a parent fills the form. Between 16 and 17 the parent must confirm.',
-            'fr'=>'<strong>Mineurs :</strong> avant 16 ans c\'est un parent qui remplit. Entre 16 et 17 ans il doit confirmer.',
-            'es'=>'<strong>Menores:</strong> antes de los 16 rellena un padre. Entre 16 y 17 hace falta su confirmación.',
+            'it'=>'<strong>Minorenni:</strong> sotto i 16 anni compila un genitore. Tra i 16 e i 17 serve la sua conferma. Se compili per un figlio o una figlia, nome, cognome e data di nascita sono i suoi, non i tuoi.', // TICKET-633
+            'en'=>'<strong>Minors:</strong> under 16 a parent fills the form. Between 16 and 17 the parent must confirm. If you are filling in for your child, first name, last name and date of birth are theirs, not yours.',
+            'fr'=>'<strong>Mineurs :</strong> avant 16 ans c\'est un parent qui remplit. Entre 16 et 17 ans il doit confirmer. Si tu remplis pour ton enfant, prénom, nom et date de naissance sont les siens, pas les tiens.',
+            'es'=>'<strong>Menores:</strong> antes de los 16 rellena un padre. Entre 16 y 17 hace falta su confirmación. Si rellenas por tu hijo o hija, nombre, apellido y fecha de nacimiento son los suyos, no los tuyos.',
         )), array('strong'=>array(),'b'=>array(),'em'=>array(),'i'=>array(),'br'=>array())); ?>
     </div>
 
@@ -525,10 +525,10 @@ $theme_uri = get_stylesheet_directory_uri();
                        value="<?php echo esc_attr($prefill_email); ?>">
                 <div class="toa-talent-error-msg"></div>
                 <p class="toa-talent-field-hint"><?php echo _ht_talent(array(
-                    'it'=>'Email del talent (se maggiorenne) o del genitore (se minore).',
-                    'en'=>'Email of the talent (if adult) or parent (if minor).',
-                    'fr'=>'Email du talent (si majeur) ou du parent (si mineur).',
-                    'es'=>'Email del talent (si es adulto) o del padre (si es menor).',
+                    'it'=>'Email del talent. Se è minorenne, quella del genitore.',
+                    'en'=>'Talent’s email. If they are a minor, the parent’s.',
+                    'fr'=>'Email du talent. S’il est mineur, celle du parent.',
+                    'es'=>'Email del talent. Si es menor, la del padre o la madre.',
                 )); ?></p>
             </div>
 
@@ -570,6 +570,12 @@ $theme_uri = get_stylesheet_directory_uri();
             <!-- Sezione genitore 0-15 (genitore compila il form) -->
             <div class="toa-talent-genitore" id="toaTalentGenitore015">
                 <h4>👨‍👩‍👧 <?php echo _ht_talent(array('it'=>'Dati del genitore / tutore legale','en'=>'Parent / legal guardian data','fr'=>'Données du parent','es'=>'Datos del padre/tutor')); ?></h4>
+                <p><?php echo wp_kses(_ht_talent_raw(array( // TICKET-633
+                    'it'=>'<strong>Sopra vanno i dati di tuo figlio/a</strong> (nome, cognome, data di nascita). Qui sotto i tuoi, da genitore.',
+                    'en'=>'<strong>Above goes your child’s details</strong> (first name, last name, date of birth). Below, yours as a parent.',
+                    'fr'=>'<strong>Au-dessus, les données de ton enfant</strong> (prénom, nom, date de naissance). Ici, les tiennes, en tant que parent.',
+                    'es'=>'<strong>Arriba van los datos de tu hijo/a</strong> (nombre, apellido, fecha de nacimiento). Aquí abajo, los tuyos, como padre o madre.',
+                )), array('strong'=>array(),'b'=>array(),'em'=>array(),'i'=>array(),'br'=>array())); ?></p>
                 <p><?php echo _ht_talent(array(
                     'it'=>'Sotto i 16 anni: servono i dati del genitore o tutore che compila e autorizza.',
                     'en'=>'Under 16: we need the details of the parent or guardian filling in and authorising.',
