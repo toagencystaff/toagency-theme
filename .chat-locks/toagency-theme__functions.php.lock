@@ -1,7 +1,7 @@
-STATO=CLOSED
-CHAT=TEMA WA-TRACCIAMENTO
+STATO=OPEN
+CHAT=TEMA EVENTS
 FILE=toagency-theme/functions.php
-INIZIO=2026-10-14 11:10:19
-UPDATE=2026-10-14 11:10:19
+INIZIO=2026-10-14 19:25:37
+UPDATE=2026-10-14 19:25:37
 SHA1_ATTESO=f64b25a5f822813dcf07fcefb400a89d138c4328
-NOTA=Ticket #625 LIVE prod 14/10 (commit eee275baa), verificato dal vivo. Lock chiuso.
+NOTA=Ticket #637 TOA Events: registrazione template / arg leadsrc

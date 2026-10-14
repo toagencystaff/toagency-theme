@@ -8,6 +8,8 @@
  * redirect /tnx/?ls=... (lead_source per report GA4 futuri, come da parere chat ADS).
  * Stesso endpoint CRM + stessa cattura gclid/UTM del form B2B.
  */
+// 2026-10-14 (#637 TOA Events): sorgente lead personalizzabile con arg 'leadsrc' (default invariato per /hostess-steward/)
+$fe_leadsrc = (isset($leadsrc) && $leadsrc) ? $leadsrc : 'Pagina Servizi Eventi';
 $fe_heading = array('it'=>'Richiedi un preventivo gratuito','en'=>'Request a free quote','fr'=>'Demande un devis gratuit','es'=>'Solicita un presupuesto gratuito');
 $fe_sub     = array('it'=>'Raccontaci il tuo evento — ti ricontattiamo subito, prezzi trasparenti.','en'=>'Tell us about your event — we get back to you right away, transparent prices.','fr'=>'Parlez-nous de votre événement — on vous recontacte tout de suite, prix transparents.','es'=>'Cuéntanos tu evento — te contactamos enseguida, precios transparentes.');
 
@@ -91,7 +93,7 @@ $fe_js = array(
   if (!form) return;
   var ENDPOINT = 'https://toagency.it/crm_toagency/actions/lead-from-website.php';
   var TOKEN    = 'toa_lead_2026_x7k9m2p4q8w1';
-  var LEADSRC  = 'Pagina Servizi Eventi';
+  var LEADSRC  = '<?php echo esc_js($fe_leadsrc); ?>';
   var THANKYOU = '<?php echo esc_url(home_url('/tnx/')); ?>' + '?ls=' + encodeURIComponent(LEADSRC);
   var STR = {
     sending: '<?php echo esc_js(_ht($fe_js['sending'])); ?>',
