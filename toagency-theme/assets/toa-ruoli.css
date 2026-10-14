@@ -1,0 +1,100 @@
+/* toa-ruoli.css — ticket #622 (14/10/2026 marco, chat CRM Tema ruoli talent)
+   «Cosa sai fare?» a icone + «I tuoi lavori» con lo stato di ogni lavoro.
+   Pagine scure (registrazione talent/crew, modifica profilo talent). Mobile prima: 3 colonne, 2 sotto i 360px. */
+.toa-rt-gt { font-size:13px; font-weight:800; color:#cbd5e1; margin:16px 0 8px; letter-spacing:.2px; }
+.toa-rt-gt:first-child { margin-top:4px; }
+.toa-rt-grid { display:grid !important; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+@media (min-width:640px) { .toa-rt-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+@media (max-width:359px) { .toa-rt-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+label.toa-rt, .toa-rt-grid > label.toa-rt {
+    position:relative; display:flex !important; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+    min-height:84px; padding:12px 4px 10px !important; margin:0 !important; border:2px solid rgba(255,255,255,.14) !important;
+    border-radius:14px !important; background:rgba(255,255,255,.03) !important; color:#e5e7eb !important;
+    font-size:13px !important; font-weight:700 !important; line-height:1.2; text-align:center; cursor:pointer;
+    -webkit-tap-highlight-color:transparent; user-select:none; transition:border-color .15s, background .15s;
+}
+label.toa-rt input { position:absolute !important; opacity:0 !important; width:1px !important; height:1px !important; margin:0 !important; pointer-events:none; }
+label.toa-rt .toa-rt-ic { display:flex; align-items:center; justify-content:center; width:30px; height:30px; color:#fff; }
+label.toa-rt .toa-rt-ic svg { width:28px; height:28px; }
+label.toa-rt .toa-rt-n { display:block; word-break:break-word; hyphens:auto; }
+label.toa-rt .toa-rt-ck { position:absolute; top:6px; right:6px; width:20px; height:20px; border-radius:99px; background:#c8ff00; color:#0a0a0a;
+    font-size:12px; font-weight:900; line-height:20px; text-align:center; display:none; }
+label.toa-rt .toa-rt-ck::after { content:'✓'; }
+label.toa-rt.disabled { opacity:.35; pointer-events:none; }
+label.toa-rt:hover { border-color:rgba(200,255,0,.45) !important; }
+label.toa-rt:focus-within { outline:2px solid #c8ff00; outline-offset:2px; }
+label.toa-rt.checked, label.toa-rt.is-on, label.toa-rt:has(input:checked) { border-color:#c8ff00 !important; background:rgba(200,255,0,.10) !important; color:#fff !important; }
+label.toa-rt.checked .toa-rt-ck, label.toa-rt.is-on .toa-rt-ck, label.toa-rt:has(input:checked) .toa-rt-ck { display:block; }
+label.toa-rt.tse-chip-auto { display:none !important; }
+.toa-rt-lead { font-size:14px; color:#cbd5e1; margin:0 0 10px; line-height:1.45; }
+
+/* «Cosa ti chiederemo» (registrazione) */
+.toa-rt-prove { margin:14px 0 0; padding:12px 14px; border:1px solid rgba(200,255,0,.35); border-radius:12px; background:rgba(200,255,0,.05); }
+.toa-rt-prove-t { font-size:13px; font-weight:800; color:#c8ff00; margin:0 0 6px; }
+.toa-rt-prove ul { list-style:none; margin:0; padding:0; }
+.toa-rt-prove li { display:flex; gap:8px; align-items:flex-start; font-size:13.5px; line-height:1.4; color:#e5e7eb; margin:6px 0; }
+.toa-rt-prove li svg { width:18px; height:18px; flex:0 0 18px; margin-top:1px; color:#c8ff00; }
+.toa-rt-prove-n { font-size:12px; color:#9ca3af; margin:8px 0 0; }
+.toa-rt-ok { margin:12px 0 0; padding:10px 12px; border-radius:10px; background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.45); color:#bbf7d0; font-size:14px; font-weight:700; text-align:left; }
+
+/* «I tuoi lavori» (modifica profilo talent) */
+.toa-lav-info { display:flex; gap:8px; align-items:flex-start; background:rgba(59,130,246,.10); border:1px solid rgba(59,130,246,.35); border-radius:12px; padding:10px 12px; font-size:14px; line-height:1.45; color:#dbeafe; margin:0 0 12px; }
+.toa-lav-info svg { flex:0 0 20px; width:20px; height:20px; margin-top:1px; }
+.toa-lav-warn { display:block; gap:8px; align-items:flex-start; background:rgba(245,158,11,.12); border:2px solid #f59e0b; border-radius:12px; padding:12px; font-size:15px; line-height:1.45; color:#fde68a; margin:0 0 12px; }
+.toa-lav-card { border:3px solid #3a3a42; border-radius:16px; padding:12px; margin:0 0 10px; background:#0b0b0e; }
+.toa-lav-card.ok { border-color:#22c55e; } .toa-lav-card.manca { border-color:#f59e0b; } .toa-lav-card.pausa { border-color:#ef4444; }
+.toa-lav-h { display:flex; gap:10px; align-items:center; }
+.toa-lav-h .toa-rt-ic { flex:0 0 34px; width:34px; height:34px; display:flex; align-items:center; justify-content:center; }
+.toa-lav-card.ok .toa-rt-ic { color:#22c55e; } .toa-lav-card.manca .toa-rt-ic { color:#f59e0b; } .toa-lav-card.pausa .toa-rt-ic { color:#ef4444; }
+.toa-lav-h .toa-rt-ic svg { width:32px; height:32px; }
+.toa-lav-nome { font-size:17px; font-weight:800; color:#fff; line-height:1.2; }
+.toa-lav-st { display:flex; gap:4px; align-items:center; font-size:14px; font-weight:800; margin-top:2px; }
+.toa-lav-st svg { width:16px; height:16px; }
+.toa-lav-card.ok .toa-lav-st { color:#22c55e; } .toa-lav-card.manca .toa-lav-st { color:#f59e0b; } .toa-lav-card.pausa .toa-lav-st { color:#ef4444; }
+.toa-lav-p { margin:8px 0 6px; font-size:15px; line-height:1.4; color:#e5e7eb; }
+.toa-lav-dots { display:flex; align-items:center; gap:6px; }
+.toa-lav-dots i { width:20px; height:20px; border-radius:99px; background:#2a2a2e; display:inline-block; }
+.toa-lav-dots i.on { background:#22c55e; }
+.toa-lav-dots span { font-size:13px; color:#9ca3af; margin-left:4px; }
+.toa-lav-go { display:flex; gap:6px; align-items:center; justify-content:center; width:100%; margin-top:10px; padding:13px 12px; border:0; border-radius:12px;
+    background:#c8ff00; color:#0a0a0a; font-size:16px; font-weight:800; cursor:pointer; text-decoration:none; font-family:inherit; }
+.toa-lav-go svg { width:20px; height:20px; }
+.toa-lav-btn { display:block; width:100%; margin:6px 0 0; padding:12px; border-radius:12px; border:1px solid #3a3a42; background:#141418; color:#fff; font-size:15px; font-weight:700; cursor:pointer; font-family:inherit; }
+.toa-lav-crew { display:block; margin:4px 0 10px; color:#c8ff00; font-weight:700; font-size:14px; text-decoration:underline; }
+.toa-lav-scelta { margin-top:14px; padding-top:12px; border-top:1px solid #2a2a2e; }
+.toa-lav-scelta h3 { font-size:20px; margin:0 0 4px; color:#fff; }
+.toa-lav-salva { margin-top:14px !important; }
+.toa-lav-msg { font-size:13px; color:#fbbf24; margin-top:8px; min-height:1em; }
+.toa-noruoli #tse-foto-section, .toa-noruoli #tse-photo-alert, .toa-noruoli #tse-polaroid-scadute { display:none !important; }
+
+/* Album: solo quelli che servono + «Mostra altri album» */
+.tse-album-tab[hidden] { display:none !important; }
+.toa-rt-more { background:none; border:0; color:#c8ff00; text-decoration:underline; font-size:13px; font-weight:700; padding:6px 8px; cursor:pointer; font-family:inherit; }
+
+/* Guida Pola */
+.toa-pola { border:1px solid rgba(59,130,246,.45); background:rgba(59,130,246,.08); border-radius:12px; padding:12px 14px; margin:10px 0 12px; color:#e5e7eb; font-size:14px; line-height:1.45; }
+.toa-pola-pics { display:flex; justify-content:space-around; gap:8px; margin:10px 0 6px; }
+.toa-pola-pics div { text-align:center; font-size:12.5px; font-weight:700; color:#e5e7eb; }
+.toa-pola-pics svg { display:block; margin:0 auto 4px; width:62px; height:82px; }
+.toa-pola-tips { list-style:none; margin:6px 0 0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:4px 10px; }
+.toa-pola-tips li { display:flex; gap:6px; align-items:center; font-size:13.5px; }
+.toa-pola-tips svg { width:18px; height:18px; flex:0 0 18px; color:#93c5fd; }
+
+/* Finestra «album di un altro lavoro» */
+.toa-rt-modal { position:fixed; inset:0; z-index:10000; background:rgba(0,0,0,.7); display:flex; align-items:center; justify-content:center; padding:16px; }
+.toa-rt-modal-box { background:#141418; border:1px solid #3a3a42; border-radius:16px; padding:18px; max-width:420px; width:100%; color:#fff; }
+.toa-rt-modal-box b { display:block; font-size:17px; margin:0 0 6px; }
+.toa-rt-modal-box p { font-size:14px; color:#cbd5e1; margin:0 0 14px; line-height:1.45; }
+.toa-rt-modal-box button { display:block; width:100%; margin:0 0 8px; padding:12px; border-radius:12px; border:1px solid #3a3a42; background:#1f1f24; color:#fff; font-size:15px; font-weight:700; cursor:pointer; font-family:inherit; }
+.toa-rt-modal-box button.p { background:#c8ff00; color:#0a0a0a; border-color:#c8ff00; }
+
+/* Profilo pronto (verde) */
+.toa-pronto { margin:0 0 8px; padding:10px 12px; border-radius:10px; background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.5); color:#bbf7d0; font-weight:700; font-size:14px; }
+
+/* Invito crew → talent */
+.toa-rt-invito { margin:14px 0 4px; padding:12px; border:1px solid rgba(200,255,0,.4); border-radius:12px; background:rgba(200,255,0,.06); text-align:left; }
+.toa-rt-invito p { margin:0 0 8px; font-size:14px; color:#e5e7eb; line-height:1.45; }
+.toa-rt-invito a { display:inline-block; background:#c8ff00; color:#0a0a0a; font-weight:800; padding:10px 14px; border-radius:10px; text-decoration:none; font-size:14px; }
+
+/* hidden vince sempre sugli stili sopra (display:flex/block) */
+#tse-lavori [hidden], .toa-rt-prove[hidden], .toa-rt-ok[hidden], .toa-pola[hidden], .toa-pronto[hidden], .toa-rt-more[hidden], #toaTalentRuoliCrew[hidden], .tse-album-tab[hidden] { display:none !important; }

@@ -1761,6 +1761,8 @@
                 if (i) i.checked = !!sel; // assicura sincronizzazione
                 if (sel) rolesSelected++;
             });
+            // FIX 2026-10-14 marco (ticket #622): basta un lavoro fra talent e creativi/tecnici/staff eventi (ruoli_staff[])
+            rolesSelected += scope.querySelectorAll('#toaTalentRuoliCrew input[name="ruoli_staff[]"]:checked').length;
             if (!rolesSelected) {
                 var ruoliErr = ruoliImmagineBox ? ruoliImmagineBox.querySelector('.toa-talent-error-msg') : null;
                 if (ruoliErr) { ruoliErr.textContent = tmsg(MSG.pickRole); ruoliErr.classList.add('show'); }
@@ -1919,6 +1921,7 @@
     var talentIdAfterRegister = null;
     var talentUuidAfterRegister = null;
     var talentTokenAfterRegister = null;
+    var regCrewEsito = ''; // FIX 2026-10-14 marco (ticket #622)
     // FIX 2026-06-25 marco — se l'upload foto profilo fallisce, qui salviamo id+token
     // così il prossimo "Invia" riprova SOLO l'upload (niente secondo profilo / niente email_exists).
     var pendingUpload = null;
@@ -2177,6 +2180,7 @@
                 talentIdAfterRegister = res.talent_id;
                 talentUuidAfterRegister = res.uuid;
                 talentTokenAfterRegister = res.token_profilo;
+                regCrewEsito = res.crew || ''; // FIX 2026-10-14 marco (ticket #622): scheda crew collegata creata|aggiornata|invariata|saltata
                 var isMinore = (res.is_minore === true);
                 // Avvia upload sequenziale dei file caricati.
                 // NB: return → la .finally() attende il completamento upload
@@ -2353,6 +2357,7 @@
                 cta.style.display = 'none';
             }
         }
+        if (window.TOARuoliReg) window.TOARuoliReg.successo(regCrewEsito); // FIX 2026-10-14 marco (ticket #622)
         if (successModal) {
             successModal.classList.add('show');
             document.body.style.overflow = 'hidden';
@@ -2474,7 +2479,7 @@
         if (profileThumb) profileThumb.innerHTML = '';
         if (photosThumbs) photosThumbs.innerHTML = '';
         updateCounters();
-        document.querySelectorAll('.toa-talent-category-chip.checked').forEach(function(c){ c.classList.remove('checked'); });
+        document.querySelectorAll('.toa-talent-category-chip.checked, .toa-rt.checked').forEach(function(c){ c.classList.remove('checked'); }); // FIX 2026-10-14 marco (#622): anche le piastrelle staff
         if (genitoreBox015) genitoreBox015.classList.remove('show');
         if (genitoreBox1617) genitoreBox1617.classList.remove('show');
         if (misureBox) misureBox.style.display = 'none';

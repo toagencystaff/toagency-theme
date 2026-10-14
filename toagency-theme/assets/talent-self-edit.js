@@ -332,7 +332,7 @@
     // FIX 2026-07-16 marco — barra % completezza profilo (talent-profilo-stato.php)
     function loadCompletezza() {
         if (!API_STATO) return;
-        fetch(API_STATO + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN) + '&_=' + Date.now(), { credentials:'same-origin' })
+        fetch(API_STATO + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN) + '&lang=' + encodeURIComponent(cfg.lang || 'it') + '&_=' + Date.now(), { credentials:'same-origin' })
             .then(function (r) { return r.json(); })
             .then(function (d) {
                 if (!d || !d.success || !d.completezza) return;
@@ -341,6 +341,7 @@
                 if (fill) fill.style.width = p + '%';
                 if (pct)  pct.textContent = p + '%';
                 if (box)  box.style.display = 'block';
+                if (window.TOARuoliSE) { window.TOARuoliSE.pronto(d.presentabile); if (d.ruoli_stato) window.TOARuoliSE.setStato(d.ruoli_stato); } // FIX 2026-10-14 marco (#622)
                 var pol = d.completezza.polaroid || {};
                 var pscad = $('tse-polaroid-scadute');
                 if (pscad) pscad.style.display = pol.scadute ? 'block' : 'none';
@@ -374,6 +375,11 @@
             rows.push('<div class="tse-status-row tse-status-pending"><span class="tse-status-dot tse-status-dot-pending"></span>' + escapeHtml(txt) + '</div>');
         }
         var pct = (d.completezza && d.completezza.percent !== undefined) ? Math.max(0, Math.min(100, parseInt(d.completezza.percent, 10) || 0)) : 0;
+        // FIX 2026-10-14 marco (ticket #622): profilo già proponibile (>= 3 foto + dati principali) = riga verde; mai «non possiamo presentarti»
+        if (window.TOARuoliSE && d.presentabile && d.presentabile.ok) {
+            rows.push('<div class="tse-status-row tse-status-ok"><span class="tse-status-dot tse-status-dot-ok"></span>' + escapeHtml(window.TOARuoliSE.rigaPronto()) + '</div>');
+            rows.push('<div class="tse-status-row tse-status-info">' + escapeHtml(window.TOARuoliSE.rigaCompl(pct)) + '</div>');
+        } else
         rows.push('<div class="tse-status-row tse-status-info">' + escapeHtml(STR.complLabel || 'Profilo completo') + ': ' + pct + '%</div>');
         var box = $('tse-statuscard-rows');
         if (box) box.innerHTML = rows.join('');
@@ -394,7 +400,7 @@
     // Se qualcosa va storto qui, si cade sempre sul comportamento di prima (form diretto) — mai un vicolo cieco.
     function loadStatusCard() {
         if (!UUID || !TOKEN) { showError(STR.invalidLink || 'Link non valido'); return; }
-        fetch(API_STATO + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN) + '&_=' + Date.now(), { credentials:'same-origin' })
+        fetch(API_STATO + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN) + '&lang=' + encodeURIComponent(cfg.lang || 'it') + '&_=' + Date.now(), { credentials:'same-origin' })
             .then(function (r) { return r.json(); })
             .then(function (d) {
                 if (!d || !d.success) { loadData(); return; }
@@ -431,7 +437,7 @@
 
     function loadData() {
         if (!UUID || !TOKEN) { showError(STR.invalidLink || 'Link non valido'); return; }
-        fetch(API_LOAD + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN), {
+        fetch(API_LOAD + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN) + '&lang=' + encodeURIComponent(cfg.lang || 'it'), { // FIX 2026-10-14 marco (#622): lingua per i ruoli
             method: 'GET',
             credentials: 'same-origin'
         })
@@ -531,6 +537,7 @@
                 var cbBambino = document.querySelector('#f-ruoli input[value="bambino"]');
                 if (cbBambino) cbBambino.checked = (eta < 18);
             })();
+            if (window.TOARuoliSE) window.TOARuoliSE.init(d); // FIX 2026-10-14 marco (ticket #622): «I tuoi lavori» + scelta ruoli a icone
             setChips('f-lingue', d.talent.lingue);
             // FIX 2026-09-22 marco (Fase 2) — profilo eventi
             (function () {
@@ -596,6 +603,7 @@
         if (_preseEl && _preseEl.value) payload.misure_prese_il = _preseEl.value;
         payload.etnia   = getChips('f-etnia');
         payload.ruoli   = getChips('f-ruoli');
+        if (window.TOARuoliSE) { var _rs = window.TOARuoliSE.staffPayload(); if (_rs) payload.ruoli_staff = _rs; } // FIX 2026-10-14 marco (#622)
         payload.lingue  = getChips('f-lingue');
         // 2026-08-08 TEMA — livello+certificazioni solo per le lingue attualmente selezionate
         var _certErr = null;
@@ -688,6 +696,7 @@
             if (pa) pa.style.display = albumsData['polaroid'].length === 0 ? 'block' : 'none';
             $('tse-foto-section').style.display = 'block';
             renderAlbum(currentAlbum);
+            if (window.TOARuoliSE) window.TOARuoliSE.onMedia(albumsData); // FIX 2026-10-14 marco (#622): solo gli album che servono
             _tseEvRefresh(); // FIX 2026-09-22 marco (Fase 2)
             if (_tseGoFoto) { _tseGoFoto = false; $('tse-foto-section').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
         })
@@ -701,6 +710,7 @@
         for (var i=0; i<tabs.length; i++) {
             tabs[i].classList.toggle('active', tabs[i].getAttribute('data-album') === album);
         }
+        if (window.TOARuoliSE) window.TOARuoliSE.onAlbum(album); // FIX 2026-10-14 marco (#622): guida Pola + album visibili
         // Descrizione album
         // FIX 2026-09-22 marco — spiegazione dall'album condiviso (a cosa serve + quante foto)
         var _ad = albumDef(album);
@@ -911,6 +921,8 @@
         if (currentAlbum === 'polaroid' && !dataScatto) {
             status.textContent = STR.upNeedDate || 'Data scatto obbligatoria per polaroid'; status.className = 'tse-upload-status err'; upShow(status); return;
         }
+        // FIX 2026-10-14 marco (ticket #622): album di un lavoro non scelto → aggiungi il lavoro / metti in Altre foto / annulla
+        if (window.TOARuoliSE && window.TOARuoliSE.fermaUpload(currentAlbum)) return;
 
         var fd = new FormData();
         fd.append('uuid', UUID);

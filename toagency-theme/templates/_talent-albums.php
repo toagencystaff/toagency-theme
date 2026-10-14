@@ -26,7 +26,8 @@ $TALENT_ALBUM = array(
             'fr'=>'⭐ <strong>L\'album le plus important. Et tu le fais tout seul :</strong> téléphone, mur clair, lumière de fenêtre. Gratuit, en cinq minutes.',
             'es'=>'⭐ <strong>El álbum más importante. Y te lo haces tú:</strong> móvil, pared clara, luz de ventana. Gratis, en cinco minutos.',
         ),
-        'label' => array('it'=>'Pola e presentazione','en'=>'Polaroids','fr'=>'Polas','es'=>'Polas'),
+        // FIX 2026-10-14 marco (ticket #622): il nome dice subito cosa sono (molti pensavano servisse la macchina Polaroid). Stesso nome nella mail del CRM (lib/step1_mail.php)
+        'label' => array('it'=>'Pola (foto semplici col telefono)','en'=>'Polas (simple phone photos)','fr'=>'Polas (photos simples au téléphone)','es'=>'Polas (fotos sencillas con el móvil)'),
         'quante' => array(
             'it'=>'Da 3 a 8 foto: primo piano, mezzo busto, figura intera, profilo. Sempre senza filtri.',
             'en'=>'3 to 8 photos: close-up, chest-up, full length, profile. Always without filters.',

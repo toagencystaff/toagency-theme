@@ -125,7 +125,7 @@ $TALENT_ALBUM = array(
             'fr'=>'⭐ <strong>L\'album le plus important. Et tu le fais tout seul :</strong> téléphone, mur clair, lumière de fenêtre. Gratuit, en cinq minutes.',
             'es'=>'⭐ <strong>El álbum más importante. Y te lo haces tú:</strong> móvil, pared clara, luz de ventana. Gratis, en cinco minutos.',
         ),
-        'label' => array('it'=>'Pola e presentazione','en'=>'Polaroids','fr'=>'Polas','es'=>'Polas'),
+        'label' => array('it'=>'Pola (foto semplici col telefono)','en'=>'Polas (simple phone photos)','fr'=>'Polas (photos simples au téléphone)','es'=>'Polas (fotos sencillas con el móvil)'), // FIX 2026-10-14 marco (ticket #622)
         'quante' => array(
             'it'=>'Da 3 a 8 foto: primo piano, mezzo busto, figura intera, profilo. Sempre senza filtri.',
             'en'=>'3 to 8 photos: close-up, chest-up, full length, profile. Always without filters.',
@@ -348,6 +348,7 @@ $theme_uri = get_stylesheet_directory_uri();
 ?>
 <!-- TOA-TALENT-FORM-V1 -->
 <link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/talent-form.css'); ?>?v=1.2">
+<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/toa-ruoli.css'); ?>?v=20261014r1"><!-- ticket #622 -->
 <script>
     window.toaThemeUri = "<?php echo esc_js($theme_uri); ?>";
     window.toaTalentLang = "<?php echo esc_js($__l); ?>";
@@ -1024,37 +1025,28 @@ $theme_uri = get_stylesheet_directory_uri();
 
         <!-- ═════ STEP 3 — Cosa fai ═════ -->
         <div class="toa-talent-step" data-step="3">
-            <h3><?php echo _ht_talent(array('it'=>'Cosa fai','en'=>'What you do','fr'=>'Ce que tu fais','es'=>'Qué haces')); ?></h3>
-            <p class="toa-talent-step-help"><?php echo _ht_talent(array('it'=>'Scegli i ruoli e compila le caratteristiche fisiche. Le categorie 18+ richiedono la maggiore età.','en'=>'Pick your roles and fill in your physical features. The 18+ categories require you to be of age.','fr'=>'Choisis tes rôles et remplis tes caractéristiques physiques. Les catégories 18+ exigent la majorité.','es'=>'Elige tus roles y rellena tus características físicas. Las categorías 18+ exigen ser mayor de edad.')); ?></p>
+            <?php // FIX 2026-10-14 marco (ticket #622): «Cosa sai fare?» a icone, ruoli e testi dal CRM (assets/toa-ruoli.js) ?>
+            <h3><?php echo _ht_talent(array('it'=>'Cosa sai fare?','en'=>'What can you do?','fr'=>'Qu’est-ce que tu sais faire ?','es'=>'¿Qué sabes hacer?')); ?></h3>
+            <p class="toa-talent-step-help"><?php echo _ht_talent(array('it'=>'Tocca tutti i lavori che sai fare: puoi sceglierne quanti vuoi. Poi le tue caratteristiche fisiche.','en'=>'Tap every job you can do: pick as many as you like. Then your physical features.','fr'=>'Touche tous les métiers que tu sais faire : autant que tu veux. Puis tes caractéristiques physiques.','es'=>'Toca todos los trabajos que sabes hacer: los que quieras. Luego tus características físicas.')); ?></p>
 
             <!-- Tipo talent forzato a immagine (backstage → form crew) -->
             <input type="hidden" name="tipo_talent" value="immagine">
 
             <!-- Ruoli (sempre visibile, nessun vincolo età) -->
+            <!-- FIX 2026-10-14 marco (ticket #622): piastrelle con icona. I ruoli talent restano qui (ruoli_immagine[]);
+                 creativi, tecnici e staff eventi li aggiunge toa-ruoli.js dal CRM (ruoli_staff[] → scheda crew collegata, mai ai minorenni).
+                 Le etichette qui sotto servono solo se il CRM non risponde. -->
             <div class="toa-talent-field" id="toaTalentRuoliImmagine">
-                <label class="toa-talent-label"><?php echo _ht_talent(array('it'=>'Ruoli (selezione multipla)','en'=>'Roles','fr'=>'Rôles','es'=>'Roles')); ?> <span class="req">*</span></label>
-                <div class="toa-talent-categories" id="toaTalentCategoriesImmagine">
+                <div class="toa-rt-gt" data-gt="camera"><?php echo _ht_talent(array('it'=>'Davanti alla camera','en'=>'In front of the camera','fr'=>'Devant la caméra','es'=>'Delante de la cámara')); ?></div>
+                <div class="toa-talent-categories toa-rt-grid" id="toaTalentCategoriesImmagine">
                     <?php foreach ($TALENT_RUOLI_IMMAGINE as $r): ?>
-                        <label class="toa-talent-category-chip" data-code="<?php echo esc_attr($r['code']); ?>">
-                            <input type="checkbox" name="ruoli_immagine[]" value="<?php echo esc_attr($r['code']); ?>">
-                            <?php echo esc_html(_ht_talent_raw($r['label'])); ?>
+                        <label class="toa-talent-category-chip toa-rt" data-code="<?php echo esc_attr($r['code']); ?>">
+                            <input type="checkbox" name="ruoli_immagine[]" value="<?php echo esc_attr($r['code']); ?>"><span class="toa-rt-ic"></span><span class="toa-rt-n"><?php echo esc_html(_ht_talent_raw($r['label'])); ?></span><span class="toa-rt-ck" aria-hidden="true"></span>
                         </label>
                     <?php endforeach; ?>
                 </div>
-                <?php // 2026-08-14 (TEMA REGISTRAZIONE TALENT): "UGC Creator" è gergo, una riga per capirlo al volo ?>
-                <?php // 2026-08-15 — invito ad aggiungere ruoli: le domande in più arrivano solo per quelli scelti ?>
-                <p class="toa-alb-altriruoli"><?php echo _ht_talent_raw(array(
-                    'it'=>'<strong>Puoi sceglierne più di uno:</strong> più ruoli, più lavori. Ti chiediamo solo quello che serve ai ruoli che scegli.',
-                    'en'=>'<strong>You can pick more than one:</strong> more roles, more jobs. We only ask for what the roles you pick actually need.',
-                    'fr'=>'<strong>Tu peux en cocher plusieurs :</strong> plus de rôles, plus de missions. On ne demande que ce qui sert aux rôles choisis.',
-                    'es'=>'<strong>Puedes marcar más de uno:</strong> más roles, más trabajos. Solo te pedimos lo que hace falta para los roles que elijas.',
-                )); ?></p>
-                <small class="toa-talent-form-hint" style="display:block;margin-top:8px;color:#9ca3af;font-size:0.78rem;line-height:1.5;"><?php echo _ht_talent(array(
-                    'it'=>'UGC Creator = giri contenuti per i brand. Influencer = pubblichi sui tuoi canali, col tuo pubblico.',
-                    'en'=>'UGC Creator = you shoot content for brands. Influencer = you post on your own channels, to your own audience.',
-                    'fr'=>'Créateur UGC = tu tournes des contenus pour les marques. Influenceur = tu publies sur tes canaux, avec ton public.',
-                    'es'=>'Creador UGC = grabas contenidos para marcas. Influencer = publicas en tus canales, con tu público.',
-                )); ?></small>
+                <div id="toaTalentRuoliCrew"></div>
+                <div class="toa-rt-prove" id="toaTalentRuoliProve" hidden></div>
                 <div class="toa-talent-error-msg"></div>
             </div>
 
@@ -1683,6 +1675,7 @@ $theme_uri = get_stylesheet_directory_uri();
                 'es'=>'Nuestro equipo revisará el perfil y te contactará para oportunidades.',
             )); ?>
         </div>
+        <p class="toa-rt-ok" id="toaTalentCrewOk" hidden></p><!-- FIX 2026-10-14 marco (ticket #622): lavori da staff/crew registrati -->
         <!-- FIX 2026-06-25 marco — CTA primaria step-2: completa il profilo (href popolato dal JS con uuid+token) -->
         <a id="toaTalentCompleteCta" href="#" rel="noopener"
            style="display:none;margin:1rem 0 .5rem;background:#6c63ff;color:#fff;border-radius:8px;padding:.85rem 1.2rem;font-weight:800;text-decoration:none;text-align:center;font-size:1rem;">
@@ -1747,7 +1740,8 @@ $theme_uri = get_stylesheet_directory_uri();
 
 <?php $tvr_js = get_stylesheet_directory() . '/assets/toa-video-reduce.js'; $tvr_ver = file_exists($tvr_js) ? filemtime($tvr_js) : '1'; /* ticket #442 (02/10/2026): riduzione video nel browser */ ?>
 <script src="<?php echo esc_url($theme_uri . '/assets/toa-video-reduce.js'); ?>?v=<?php echo $tvr_ver; ?>" defer></script>
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20261002vid1" defer></script><!-- 2026-08-26 (TEMA-AREE-GEOGRAFICHE): bump v — tendina città grandi per i paesi senza elenco comuni (residenza+domicilio), città pubblica in *_provincia e posto preciso privato in *_city_name; 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/toa-ruoli.js'); ?>?v=20261014r1" defer></script><!-- ticket #622: ruoli a icone dal CRM -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20261014r1" defer></script><!-- 2026-08-26 (TEMA-AREE-GEOGRAFICHE): bump v — tendina città grandi per i paesi senza elenco comuni (residenza+domicilio), città pubblica in *_provincia e posto preciso privato in *_city_name; 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT

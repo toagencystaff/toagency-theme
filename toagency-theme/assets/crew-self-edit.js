@@ -22,6 +22,8 @@
     var API_COVER = cfg.apiCover || '/crm_toagency/actions/crew-self-edit-cover.php';
     var API_ALBUM = cfg.apiAlbum || '/crm_toagency/actions/crew-self-edit-album.php'; // 2026-10-09 #427 — foto per ruolo
     var albumRoles = [];
+    // FIX 2026-10-14 marco (ticket #622): arrivo da «Carica la prova» del profilo talent → i file caricati vanno nell'album di quel ruolo
+    var ALBUM_PROVA = (function () { try { var a = (new URLSearchParams(window.location.search).get('album') || '').toLowerCase(); return /^[a-z_]{2,40}$/.test(a) ? a : ''; } catch (e) { return ''; } })();
     // 2026-07-26 — Specializzazioni per ruolo (album_temi): tassonomia da crew-temi.php, salvataggio su crew-self-edit-temi.php
     var API_TEMI_TAXONOMY = cfg.apiTemiTaxonomy || '/crm_toagency/actions/crew-temi.php';
     var API_TEMI_SAVE = cfg.apiTemiSave || '/crm_toagency/actions/crew-self-edit-temi.php';
@@ -185,6 +187,7 @@
             fd.append('uuid', UUID); fd.append('t', TOKEN); fd.append('tipo', tipo);
             fd.append('file', file);
             fd.append('dichiarazione_legale', '1'); fd.append('veridicita', '1');
+            if (ALBUM_PROVA) fd.append('album_ruolo', ALBUM_PROVA); // FIX 2026-10-14 marco (#622)
             fetch(API_UPLOAD_PORTFOLIO, { method: 'POST', body: fd, credentials: 'same-origin' })
                 .then(function (r) { return r.json(); })
                 .then(function (res) {
@@ -530,6 +533,7 @@
 
             // 2026-10-09 #427 — Foto per ruolo
             renderAlbumPicker(crewRoles, d.portfolio_album || []);
+            if (ALBUM_PROVA && window.TOARuoliCrewSE) window.TOARuoliCrewSE.banner(ALBUM_PROVA); // FIX 2026-10-14 marco (#622)
 
             // 2026-08-02 — Livello/esperienza per ruolo (task #18), solo se il crew ha 2+ ruoli
             setupRuoliPicker(crewRoles, d.ruoli_dati || (d.crew && d.crew.ruoli_dati) || {});
@@ -611,6 +615,7 @@
                     showResult('err', STR.noChanges || 'Nessuna modifica');
                 } else {
                     showResult('ok', (STR.successMsg || 'Modifiche inviate') + ' (' + d.changes_count + ')');
+                    var _inv = $('crew-invito-talent'); if (_inv) _inv.hidden = false; // FIX 2026-10-14 marco (#622): Crew → Talent
                     // Re-load per vedere nuovo stato pending
                     setTimeout(loadData, 1200);
                 }

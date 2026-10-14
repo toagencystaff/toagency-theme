@@ -273,6 +273,8 @@ $token_get = $_GET['t']    ?? '';
 
             <!-- 2026-07-23 — Galleria portfolio (foto + video) self-service -->
             <div class="crew-edit-foto-field">
+                <!-- FIX 2026-10-14 marco (ticket #622): arrivo da «Carica la prova» (&album=CODICE): quale ruolo si sta dimostrando -->
+                <div id="f-prova-ruolo" class="toa-lav-card manca" style="margin:0 0 12px;" hidden></div>
                 <label class="crew-edit-foto-label">🖼️ <?= esc_html($_t(['it'=>'Galleria (foto e video dei tuoi lavori)','en'=>'Gallery (your work photos & videos)','fr'=>'Galerie (photos et vidéos)','es'=>'Galería (fotos y vídeos)'])) ?></label>
                 <div class="crew-edit-foto-hint"><?= esc_html($_t(['it'=>'Spunta i due consensi legali qui sopra prima di caricare. Approvazione staff entro 24h.','en'=>'Tick the two legal consents above before uploading. Staff approval within 24h.','fr'=>'Coche les deux consentements ci-dessus avant de charger.','es'=>'Marca los dos consentimientos antes de subir.'])) ?></div>
                 <div style="margin-top:10px;">
@@ -431,6 +433,16 @@ $token_get = $_GET['t']    ?? '';
             </div>
 
             <div id="crew-edit-result"></div>
+            <?php // FIX 2026-10-14 marco (ticket #622): Crew → Talent, compare dopo un salvataggio riuscito
+            $__reg_talent = array('it'=>'/registrati-talent/','en'=>'/en/register-talent/','fr'=>'/fr/inscription-talent/','es'=>'/es/registrate-como-talent/'); // stessi URL di page-landing-ads.php ?>
+            <div class="toa-rt-invito" id="crew-invito-talent" hidden>
+                <p><?= esc_html($_t([
+                    'it'=>'Ti interessa anche lavorare come hostess o steward, comparsa, modello o attore?',
+                    'en'=>'Would you also like to work as a host or hostess, extra, model or actor?',
+                    'fr'=>'Tu aimerais aussi travailler comme hôte ou hôtesse, figurant, mannequin ou acteur ?',
+                    'es'=>'¿Te interesa también trabajar como azafata o azafato, extra, modelo o actor?'])) ?></p>
+                <a href="<?= esc_url($__reg_talent[$__l] ?? $__reg_talent['it']) ?>"><?= esc_html($_t(['it'=>'Iscriviti anche come talent →','en'=>'Sign up as talent too →','fr'=>'Inscris-toi aussi comme talent →','es'=>'Inscríbete también como talent →'])) ?></a>
+            </div>
         </form>
     </div>
 </section>
@@ -481,6 +493,8 @@ window.crewEditConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20261009album1" defer></script>
+<link rel="stylesheet" href="<?= esc_url($theme_uri . '/assets/toa-ruoli.css') ?>?v=20261014r1"><!-- ticket #622 -->
+<script src="<?= esc_url($theme_uri . '/assets/toa-ruoli.js') ?>?v=20261014r1" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20261014r1" defer></script>
 
 <?php toa_component('footer'); ?>

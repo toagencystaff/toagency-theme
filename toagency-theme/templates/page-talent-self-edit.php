@@ -560,6 +560,32 @@ $token_get = $_GET['t']    ?? '';
             <div class="tse-pol-scadute-sub"><?= esc_html($_t($T['polscad_sub'])) ?></div>
         </div>
 
+        <!-- FIX 2026-10-14 marco (ticket #622) — «I tuoi lavori»: stato di ogni lavoro (Fatto / Manca la prova / In pausa)
+             e scelta dei lavori a icone. Dati dal CRM (ruoli_catalogo, ruoli_stato, crew); testi e logica in assets/toa-ruoli.js -->
+        <div id="tse-lavori" class="tse-section" style="display:none; margin:0 0 20px;">
+            <div class="tse-section-title"><?= esc_html($_t(['it'=>'I tuoi lavori','en'=>'Your jobs','fr'=>'Tes métiers','es'=>'Tus trabajos'])) ?></div>
+            <div id="tse-lavori-info" class="toa-lav-info"></div>
+            <div id="tse-lavori-vuoto" class="toa-lav-warn" hidden><?= $_t([
+                'it'=>'<b>Prima dicci che lavori sai fare:</b> così ti chiediamo solo le foto che servono.',
+                'en'=>'<b>First tell us which jobs you can do:</b> that way we only ask for the photos you need.',
+                'fr'=>'<b>Dis-nous d’abord quels métiers tu sais faire :</b> on ne te demandera que les photos utiles.',
+                'es'=>'<b>Primero dinos qué trabajos sabes hacer:</b> así solo te pedimos las fotos que hacen falta.']) ?></div>
+            <div id="tse-lavori-stato"></div>
+            <a id="tse-lavori-crew" class="toa-lav-crew" href="#" hidden></a>
+            <button type="button" id="tse-lavori-apri" class="toa-lav-btn"></button>
+            <div id="tse-lavori-scelta" class="toa-lav-scelta" hidden>
+                <h3><?= esc_html($_t(['it'=>'Cosa sai fare?','en'=>'What can you do?','fr'=>'Qu’est-ce que tu sais faire ?','es'=>'¿Qué sabes hacer?'])) ?></h3>
+                <p id="tse-lavori-lead" class="toa-rt-lead"></p>
+                <div class="toa-rt-gt" data-gt="camera"><?= esc_html($_t(['it'=>'Davanti alla camera','en'=>'In front of the camera','fr'=>'Devant la caméra','es'=>'Delante de la cámara'])) ?></div>
+                <div class="tse-chips toa-rt-grid" id="f-ruoli" data-group="ruoli">
+                    <?php foreach ($RUOLI_OPTS as $k=>$v): ?><label class="tse-chip<?= $k === 'bambino' ? ' tse-chip-auto' : '' ?>"><input type="checkbox" value="<?= esc_attr($k) ?>"><?= esc_html($_t($v)) ?></label><?php endforeach; ?>
+                </div>
+                <div id="f-ruoli-staff"></div>
+                <button type="button" id="tse-lavori-salva" class="toa-lav-go toa-lav-salva"></button>
+                <div id="tse-lavori-msg" class="toa-lav-msg"></div>
+            </div>
+        </div>
+
         <!-- ─── S8.A — Sezione album foto ─── -->
         <div id="tse-foto-section" class="tse-section" style="display:none; margin:0 0 20px;">
             <div class="tse-section-title">📸 <?= esc_html($_t($T['section_foto'])) ?></div>
@@ -575,6 +601,25 @@ $token_get = $_GET['t']    ?? '';
             </div>
 
             <div id="tse-album-desc" class="tse-album-desc"></div>
+            <!-- FIX 2026-10-14 marco (ticket #622) — guida Pola sempre visibile nell'album Pola: sagome disegnate, mai foto di persone vere -->
+            <div id="tse-pola-guida" class="toa-pola" hidden>
+                <div><?= $_t([
+                    'it'=>'<b>Non serve una macchina Polaroid.</b> Bastano 3 foto fatte col telefono.',
+                    'en'=>'<b>You don’t need a Polaroid camera.</b> 3 photos taken with your phone are enough.',
+                    'fr'=>'<b>Pas besoin d’un appareil Polaroid.</b> 3 photos prises au téléphone suffisent.',
+                    'es'=>'<b>No hace falta una cámara Polaroid.</b> Bastan 3 fotos hechas con el móvil.']) ?></div>
+                <div class="toa-pola-pics">
+                    <div><svg viewBox="0 0 60 80" aria-hidden="true"><rect x="1" y="1" width="58" height="78" rx="8" fill="#1f2937" stroke="#475569"/><circle cx="30" cy="34" r="14" fill="#94a3b8"/><rect x="14" y="52" width="32" height="26" rx="10" fill="#94a3b8"/></svg>1. <?= esc_html($_t(['it'=>'Viso di fronte','en'=>'Face, front','fr'=>'Visage de face','es'=>'Cara de frente'])) ?></div>
+                    <div><svg viewBox="0 0 60 80" aria-hidden="true"><rect x="1" y="1" width="58" height="78" rx="8" fill="#1f2937" stroke="#475569"/><path d="M24 22 q16 -2 18 12 q2 6 -4 8 l0 4 q-6 4 -12 2 z" fill="#94a3b8"/><rect x="18" y="52" width="26" height="26" rx="10" fill="#94a3b8"/></svg>2. <?= esc_html($_t(['it'=>'Viso di profilo','en'=>'Face, side','fr'=>'Visage de profil','es'=>'Cara de perfil'])) ?></div>
+                    <div><svg viewBox="0 0 60 80" aria-hidden="true"><rect x="1" y="1" width="58" height="78" rx="8" fill="#1f2937" stroke="#475569"/><circle cx="30" cy="14" r="7" fill="#94a3b8"/><rect x="22" y="22" width="16" height="28" rx="5" fill="#94a3b8"/><rect x="23" y="50" width="6" height="26" rx="3" fill="#94a3b8"/><rect x="31" y="50" width="6" height="26" rx="3" fill="#94a3b8"/></svg>3. <?= esc_html($_t(['it'=>'Tutto il corpo','en'=>'Full body','fr'=>'Corps entier','es'=>'Cuerpo entero'])) ?></div>
+                </div>
+                <ul class="toa-pola-tips">
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"/></svg><?= esc_html($_t(['it'=>'Vicino a una finestra','en'=>'Near a window','fr'=>'Près d’une fenêtre','es'=>'Junto a una ventana'])) ?></li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"/></svg><?= esc_html($_t(['it'=>'Muro chiaro dietro','en'=>'Plain light wall','fr'=>'Mur clair derrière','es'=>'Pared clara detrás'])) ?></li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/><path d="M5.7 5.7l12.6 12.6"/></svg><?= esc_html($_t(['it'=>'Niente trucco pesante','en'=>'No heavy make-up','fr'=>'Pas de maquillage chargé','es'=>'Sin maquillaje fuerte'])) ?></li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h12v2.172a2 2 0 0 1 -.586 1.414l-3.914 3.914m-.5 3.5v4l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227"/><path d="M3 3l18 18"/></svg><?= esc_html($_t(['it'=>'Niente filtri','en'=>'No filters','fr'=>'Pas de filtres','es'=>'Sin filtros'])) ?></li>
+                </ul>
+            </div>
 
             <!-- FIX 2026-06-28 marco — upload-box sopra la griglia (era troppo lontano da scrollare) -->
             <button type="button" id="tse-add-photo" class="tse-add-photo-btn" onclick="talentToggleUpload(true)"><?= esc_html($_t($T2['add_photo'])) ?></button><!-- FIX 2026-09-22 marco -->
@@ -618,6 +663,7 @@ $token_get = $_GET['t']    ?? '';
         <form id="tse-form" class="tse-form" autocomplete="on">
             <div class="tse-name-display" id="tse-name-display"></div>
             <div id="tse-completezza" class="tse-completezza" style="display:none;">
+                <div id="tse-pronto" class="toa-pronto" hidden></div><!-- FIX 2026-10-14 marco (ticket #622) -->
                 <div class="tse-compl-row">
                     <span class="tse-compl-label" id="tse-compl-label"><?= esc_html($_t($T['compl_label'])) ?></span>
                     <span class="tse-compl-pct" id="tse-compl-pct">0%</span>
@@ -783,16 +829,7 @@ $token_get = $_GET['t']    ?? '';
                 </div>
             </div>
 
-            <!-- 2026-07-16 TEMA — Profilo professionale (consolidato da completa-profilo) -->
-            <div class="tse-section">
-                <div class="tse-section-title">🎬 <?= esc_html($_t($T['section_profilo'])) ?></div>
-                <div class="tse-field">
-                    <label class="tse-label"><?= esc_html($_t($T['field_ruoli'])) ?></label>
-                    <div class="tse-chips" id="f-ruoli" data-group="ruoli">
-                        <?php foreach ($RUOLI_OPTS as $k=>$v): ?><label class="tse-chip<?= $k === 'bambino' ? ' tse-chip-auto' : '' ?>"><input type="checkbox" value="<?= esc_attr($k) ?>"><?= esc_html($_t($v)) ?></label><?php endforeach; ?>
-                    </div>
-                </div>
-            </div>
+            <?php /* FIX 2026-10-14 marco (ticket #622): la scelta dei ruoli (#f-ruoli) è salita in cima, nel blocco «I tuoi lavori» */ ?>
 
             <!-- FIX 2026-09-22 marco (CRM - EVENTS DATABASE, Fase 2) — sezione Hostess & Eventi ben in vista -->
             <div class="tse-section tse-ev-section" id="tse-ev-section">
@@ -1109,6 +1146,9 @@ $tse_js_ver  = file_exists($tse_js_path) ? filemtime($tse_js_path) : '2.1';
 ?>
 <?php $tvr_js = get_stylesheet_directory() . '/assets/toa-video-reduce.js'; $tvr_ver = file_exists($tvr_js) ? filemtime($tvr_js) : '1'; /* ticket #442 (02/10/2026): riduzione video nel browser, versione = data del file */ ?>
 <script src="<?= esc_url($theme_uri . '/assets/toa-video-reduce.js') ?>?v=<?= $tvr_ver ?>" defer></script>
+<?php $trl_js = get_stylesheet_directory() . '/assets/toa-ruoli.js'; $trl_ver = file_exists($trl_js) ? filemtime($trl_js) : '1'; $trl_css = get_stylesheet_directory() . '/assets/toa-ruoli.css'; $trl_cver = file_exists($trl_css) ? filemtime($trl_css) : '1'; /* ticket #622: ruoli a icone + «I tuoi lavori» */ ?>
+<link rel="stylesheet" href="<?= esc_url($theme_uri . '/assets/toa-ruoli.css') ?>?v=<?= $trl_cver ?>">
+<script src="<?= esc_url($theme_uri . '/assets/toa-ruoli.js') ?>?v=<?= $trl_ver ?>" defer></script>
 <script src="<?= esc_url($theme_uri . '/assets/talent-self-edit.js') ?>?v=<?= $tse_js_ver ?>" defer></script>
 <?php $tpr_js = get_stylesheet_directory() . '/assets/talent-profilo-ruolo.js'; $tpr_ver = file_exists($tpr_js) ? filemtime($tpr_js) : '1'; /* FIX 2026-09-23 marco: versione = data del file, niente bump a mano */ ?>
 <script src="<?= esc_url($theme_uri . '/assets/talent-profilo-ruolo.js') ?>?v=<?= $tpr_ver ?>" defer></script><!-- FEATURE 2026-09-23 marco (RUOLI MULTI-SCHEDA) -->

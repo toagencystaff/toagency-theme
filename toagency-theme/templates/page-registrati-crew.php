@@ -21,26 +21,32 @@ function _ht_crew_raw($strings) {
     return isset($strings[$__l]) ? $strings[$__l] : $strings['it'];
 }
 
+// FIX 2026-10-14 marco (ticket #622): solo i ruoli REALI del CRM (lib/ruoli_prove.php, decisione Marco 13/10):
+// tolti "Parrucchiere" (doppione di Hairstylist) e "Altro"; fashion_journalist -> copywriter (codice CRM);
+// aggiunti cameriere, barman, autista, interprete. Nomi e icone li mette toa-ruoli.js dal CRM: le etichette
+// qui sotto si vedono solo se il CRM non risponde. min_age: staff eventi e tecnici 18+ (lib/ruoli.php).
 $CREW_CATEGORIES = array(
     array('code'=>'fotografo','min_age'=>16,'label'=>array('it'=>'Fotografo','en'=>'Photographer','fr'=>'Photographe','es'=>'Fotógrafo')),
     array('code'=>'videomaker','min_age'=>16,'label'=>array('it'=>'Videomaker','en'=>'Videomaker','fr'=>'Vidéaste','es'=>'Videomaker')),
     array('code'=>'makeup_artist','min_age'=>16,'label'=>array('it'=>'Make-Up Artist','en'=>'Make-Up Artist','fr'=>'Maquilleur','es'=>'Maquillador')),
-    array('code'=>'hairstylist','min_age'=>16,'label'=>array('it'=>'Hairstylist','en'=>'Hairstylist','fr'=>'Coiffeur','es'=>'Peluquero')),
-    array('code'=>'parrucchiere','min_age'=>16,'label'=>array('it'=>'Parrucchiere','en'=>'Hairdresser','fr'=>'Coiffeur','es'=>'Peluquero')),
+    array('code'=>'hairstylist','min_age'=>16,'label'=>array('it'=>'Parrucchiere / Hairstylist','en'=>'Hairstylist','fr'=>'Coiffeur','es'=>'Peluquero')),
     array('code'=>'stylist','min_age'=>16,'label'=>array('it'=>'Stylist','en'=>'Stylist','fr'=>'Styliste','es'=>'Estilista')),
     array('code'=>'fashion_designer','min_age'=>16,'label'=>array('it'=>'Fashion Designer','en'=>'Fashion Designer','fr'=>'Créateur de mode','es'=>'Diseñador de moda')),
+    array('code'=>'content_creator','min_age'=>16,'label'=>array('it'=>'Content Creator','en'=>'Content Creator','fr'=>'Créateur de contenu','es'=>'Creador de contenido')),
+    array('code'=>'art_director','min_age'=>16,'label'=>array('it'=>'Art Director','en'=>'Art Director','fr'=>'Directeur artistique','es'=>'Director de arte')),
     array('code'=>'postproduzione','min_age'=>16,'label'=>array('it'=>'Postproduzione','en'=>'Photo Post-Production','fr'=>'Post-production','es'=>'Postproducción')),
     array('code'=>'video_editing','min_age'=>16,'label'=>array('it'=>'Video Editing','en'=>'Video Editing','fr'=>'Montage vidéo','es'=>'Edición de vídeo')),
-    array('code'=>'social_media','min_age'=>16,'label'=>array('it'=>'Social Media Manager','en'=>'Social Media Manager','fr'=>'Social Media Manager','es'=>'Social Media Manager')),
-    array('code'=>'content_creator','min_age'=>16,'label'=>array('it'=>'Content Creator','en'=>'Content Creator','fr'=>'Créateur de contenu','es'=>'Creador de contenido')),
-    array('code'=>'fashion_journalist','min_age'=>16,'label'=>array('it'=>'Fashion Journalist','en'=>'Fashion Journalist','fr'=>'Journaliste mode','es'=>'Periodista de moda')),
-    array('code'=>'art_director','min_age'=>16,'label'=>array('it'=>'Art Director','en'=>'Art Director','fr'=>'Directeur artistique','es'=>'Director de arte')),
+    array('code'=>'social_media','min_age'=>16,'label'=>array('it'=>'Social Media Manager','en'=>'Social Media Manager','fr'=>'Community manager','es'=>'Social Media Manager')),
+    array('code'=>'copywriter','min_age'=>16,'label'=>array('it'=>'Fashion Journalist / Copywriter','en'=>'Fashion Journalist / Copywriter','fr'=>'Journaliste mode / Rédacteur','es'=>'Periodista de moda / Copywriter')),
     array('code'=>'dj','min_age'=>16,'label'=>array('it'=>'DJ','en'=>'DJ','fr'=>'DJ','es'=>'DJ')),
-    array('code'=>'security','min_age'=>18,'label'=>array('it'=>'Security / Bodyguard','en'=>'Security / Bodyguard','fr'=>'Sécurité','es'=>'Seguridad')),
     array('code'=>'tecnico_luci','min_age'=>18,'label'=>array('it'=>'Tecnico Luci','en'=>'Lighting Technician','fr'=>'Technicien lumière','es'=>'Técnico iluminación')),
-    array('code'=>'tecnico_suono','min_age'=>18,'label'=>array('it'=>'Tecnico Suono','en'=>'Sound Technician','fr'=>'Technicien son','es'=>'Técnico sonido')),
+    array('code'=>'tecnico_suono','min_age'=>18,'label'=>array('it'=>'Tecnico Audio','en'=>'Sound Technician','fr'=>'Technicien son','es'=>'Técnico de sonido')),
+    array('code'=>'cameriere','min_age'=>18,'label'=>array('it'=>'Cameriere/a','en'=>'Waiter','fr'=>'Serveur','es'=>'Camarero')),
+    array('code'=>'bartender','min_age'=>18,'label'=>array('it'=>'Barman/Barlady','en'=>'Bartender','fr'=>'Barman','es'=>'Barman')),
     array('code'=>'runner','min_age'=>18,'label'=>array('it'=>'Runner','en'=>'Runner','fr'=>'Runner','es'=>'Runner')),
-    array('code'=>'altro','min_age'=>16,'label'=>array('it'=>'Altro','en'=>'Other','fr'=>'Autre','es'=>'Otro')),
+    array('code'=>'autista','min_age'=>18,'label'=>array('it'=>'Autista','en'=>'Driver','fr'=>'Chauffeur','es'=>'Conductor')),
+    array('code'=>'security','min_age'=>18,'label'=>array('it'=>'Steward di sicurezza','en'=>'Door & access steward','fr'=>'Agent de contrôle d\'accès','es'=>'Control de accesos')),
+    array('code'=>'interprete','min_age'=>18,'label'=>array('it'=>'Interprete','en'=>'Interpreter','fr'=>'Interprète','es'=>'Intérprete')),
 );
 
 $LIVELLI = array(
@@ -54,6 +60,7 @@ $theme_uri = get_stylesheet_directory_uri();
 ?>
 <!-- TOA-CREW-FORM-V3 -->
 <link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/crew-form.css'); ?>?v=3.0">
+<link rel="stylesheet" href="<?php echo esc_url($theme_uri . '/assets/toa-ruoli.css'); ?>?v=20261014r1"><!-- ticket #622 -->
 <script>window.toaThemeUri = "<?php echo esc_js($theme_uri); ?>";</script>
 
 <section class="toa-crew-wrap">
@@ -355,8 +362,8 @@ $theme_uri = get_stylesheet_directory_uri();
 
         <!-- ═════ STEP 3 — Cosa fai ═════ -->
         <div class="toa-crew-step" data-step="3">
-            <h3><?php echo _ht_crew(array('it'=>'Cosa fai','en'=>'What you do','fr'=>'Ce que tu fais','es'=>'Qué haces')); ?></h3>
-            <p class="toa-crew-step-help"><?php echo _ht_crew(array('it'=>'Scegli categorie e dati professionali. Le categorie con badge "18+" richiedono la maggiore età.','en'=>'Choose categories and pro info.','fr'=>'Catégories et infos pro.','es'=>'Categorías e info profesional.')); ?></p>
+            <h3><?php echo _ht_crew(array('it'=>'Cosa sai fare?','en'=>'What can you do?','fr'=>'Qu’est-ce que tu sais faire ?','es'=>'¿Qué sabes hacer?')); /* FIX 2026-10-14 marco (#622) */ ?></h3>
+            <p class="toa-crew-step-help"><?php echo _ht_crew(array('it'=>'Tocca tutti i lavori che sai fare: puoi sceglierne quanti vuoi.','en'=>'Tap every job you can do: pick as many as you like.','fr'=>'Touche tous les métiers que tu sais faire : autant que tu veux.','es'=>'Toca todos los trabajos que sabes hacer: los que quieras.')); ?></p>
 
             <div class="toa-crew-field">
                 <label class="toa-crew-label"><?php echo _ht_crew(array('it'=>'Categorie','en'=>'Categories','fr'=>'Catégories','es'=>'Categorías')); ?> <span class="req">*</span></label>
@@ -653,10 +660,22 @@ $theme_uri = get_stylesheet_directory_uri();
                 'es'=>'Nuestro equipo revisará tu perfil y te contactará para oportunidades.',
             )); ?>
         </div>
+        <?php // FIX 2026-10-14 marco (ticket #622): Crew → Talent, un percorso non esclude l'altro
+        $__reg_talent = array('it'=>'/registrati-talent/','en'=>'/en/register-talent/','fr'=>'/fr/inscription-talent/','es'=>'/es/registrate-como-talent/'); // stessi URL di page-landing-ads.php ?>
+        <div class="toa-rt-invito">
+            <p><?php echo _ht_crew(array(
+                'it'=>'Ti interessa anche lavorare come hostess o steward, comparsa, modello o attore?',
+                'en'=>'Would you also like to work as a host or hostess, extra, model or actor?',
+                'fr'=>'Tu aimerais aussi travailler comme hôte ou hôtesse, figurant, mannequin ou acteur ?',
+                'es'=>'¿Te interesa también trabajar como azafata o azafato, extra, modelo o actor?',
+            )); ?></p>
+            <a href="<?php echo esc_url($__reg_talent[$__l] ?? $__reg_talent['it']); ?>"><?php echo _ht_crew(array('it'=>'Iscriviti anche come talent →','en'=>'Sign up as talent too →','fr'=>'Inscris-toi aussi comme talent →','es'=>'Inscríbete también como talent →')); ?></a>
+        </div>
         <button type="button" class="toa-crew-success-close" id="toaCrewSuccessClose"><?php echo _ht_crew(array('it'=>'Chiudi','en'=>'Close','fr'=>'Fermer','es'=>'Cerrar')); ?></button>
     </div>
 </div>
 
+<script src="<?php echo esc_url($theme_uri . '/assets/toa-ruoli.js'); ?>?v=20261014r1" defer></script><!-- ticket #622: ruoli a icone dal CRM -->
 <script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.5-20260826aree2" defer></script><!-- 2026-08-26 (TEMA-AREE-GEOGRAFICHE): tendina città grandi paesi esteri, residenza+domicilio; TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
 
 <!-- ══════════════════════════════════════════════
