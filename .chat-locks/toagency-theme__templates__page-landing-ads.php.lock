@@ -1,7 +1,7 @@
-STATO=CLOSED
+STATO=OPEN
 CHAT=TEMA LP-FRANCIA
 FILE=toagency-theme/templates/page-landing-ads.php
-INIZIO=2026-10-14 19:01:08
-UPDATE=2026-10-14 19:23:58
-SHA1_ATTESO=1bbb653e00b5bfc5f7caa5fa1ef67c79e39b0a22
-NOTA=TEMA LP-FRANCIA round 4 LIVE prod 14/10: Coursiers su /fr/, FAQ prezzo FR senza cifra. Verificato dal vivo. Lock chiuso.
+INIZIO=2026-10-14 20:37:10
+UPDATE=2026-10-14 20:37:10
+SHA1_ATTESO=b93f5c311136b4d71c5426cdc2eb5408344a2961
+NOTA=Round 5: via WhatsApp solo da /fr/ (richiesta Marco).

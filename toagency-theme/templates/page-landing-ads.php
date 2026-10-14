@@ -176,6 +176,8 @@ $wa_label = [
 $wa_tmpl  = ['it'=>'Ciao TOAgency, scrivo dalla pagina %s. Ho un progetto e sono interessato a ...','en'=>'Hi TOAgency, I\'m writing from the %s page. I have a project and I\'m interested in ...','fr'=>'Bonjour TOAgency, je vous écris depuis la page %s. J\'ai un projet et je suis intéressé par ...','es'=>'Hola TOAgency, escribo desde la página %s. Tengo un proyecto y estoy interesado en ...'];
 $wa_text  = sprintf($wa_tmpl[$lang] ?? $wa_tmpl['it'], $wa_label[$wa_type][$lang] ?? $wa_label[$wa_type]['it']);
 $WA_HREF  = $WA . '?text=' . rawurlencode($wa_text);
+// FIX 2026-10-14 (TEMA LP-FRANCIA) — su /fr/ niente WhatsApp (richiesta Marco): nascosti card + bottone e fallback errore form
+if ($lang === 'fr') { $GLOBALS['toa_no_wa'] = true; }
 
 // FIX 2026-06-24 marco — filtro self-exit talent (no gate, form intatto)
 $b2bonly_l    = ['it'=>'Servizio per aziende, agenzie e produzioni — non per candidature.','en'=>'A service for companies, agencies and productions — not for job applications.','fr'=>'Un service pour entreprises, agences et productions — pas pour les candidatures.','es'=>'Un servicio para empresas, agencias y producciones — no para candidaturas.'];
@@ -317,16 +319,20 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
       <?php if ($serv): ?><p class="toa-ads-serv"><?php echo esc_html($serv); ?></p><?php endif; ?>
 
       <!-- FIX 2026-07-10 marco — card WhatsApp pari peso al form, etichetta B2B integrata -->
+      <?php if ($lang !== 'fr'): ?>
       <div class="toa-ads-wacard">
         <p class="toa-ads-wacard-head"><?php echo _ht($wabig_l); ?></p>
         <p class="toa-ads-wacard-b2b"><?php echo _ht($b2bonly_l); ?></p>
         <a class="toa-ads-btn--wabig" href="<?php echo esc_url($WA_HREF); ?>" target="_blank" rel="noopener" onclick="toaLpTrack('whatsapp')">WhatsApp &rarr;</a>
       </div>
+      <?php endif; ?>
 
       <p class="toa-ads-contacthint"><?php echo _ht($contacthint_l); ?></p>
       <div class="toa-ads-contact">
         <a class="toa-ads-btn toa-ads-btn--call" href="tel:<?php echo esc_attr($TEL_RAW); ?>" onclick="toaLpTrack('call')">📞 <?php echo _ht($call_l); ?> <?php echo esc_html($TEL_DISP); ?></a>
+        <?php if ($lang !== 'fr'): ?>
         <a class="toa-ads-btn" href="<?php echo esc_url($WA_HREF); ?>" target="_blank" rel="noopener" onclick="toaLpTrack('whatsapp')">WhatsApp</a>
+        <?php endif; ?>
       </div>
     </div>
 

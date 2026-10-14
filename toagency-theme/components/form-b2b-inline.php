@@ -30,6 +30,7 @@ $hq_js = array(
   'microcopy' => array('it'=>'Ti ricontattiamo subito','en'=>'We\'ll get back to you right away','fr'=>'On vous recontacte tout de suite','es'=>'Te contactamos enseguida'),
   'privacy' => array('it'=>'Devi accettare la privacy policy per continuare.','en'=>'You must accept the privacy policy to continue.','fr'=>'Vous devez accepter la politique de confidentialité pour continuer.','es'=>'Debes aceptar la política de privacidad para continuar.'),
   'error'   => array('it'=>'Invio non riuscito. Vuoi scriverci su WhatsApp?','en'=>'Sending failed. Do you want to message us on WhatsApp?','fr'=>'Échec de l\'envoi. Voulez-vous nous écrire sur WhatsApp ?','es'=>'Error en el envío. ¿Quieres escribirnos por WhatsApp?'),
+  'error_nowa' => array('it'=>'Invio non riuscito. Riprova tra un attimo.','en'=>'Sending failed. Please try again in a moment.','fr'=>'Échec de l\'envoi. Veuillez réessayer dans un instant.','es'=>'Error en el envío. Inténtalo de nuevo en un momento.'),
   'wa'      => array('it'=>'Ciao TOAgency, richiesta preventivo da: ','en'=>'Hi TOAgency, quote request from: ','fr'=>'Bonjour TOAgency, demande de devis de : ','es'=>'Hola TOAgency, solicitud de presupuesto de: '),
 );
 ?>
@@ -101,6 +102,8 @@ $hq_js = array(
     submit:  '<?php echo esc_js(_ht($hq_js['submit'])); ?>',
     privacy: '<?php echo esc_js(_ht($hq_js['privacy'])); ?>',
     error:   '<?php echo esc_js(_ht($hq_js['error'])); ?>',
+    error_nowa: '<?php echo esc_js(_ht($hq_js['error_nowa'])); ?>',
+    nowa:    <?php echo !empty($GLOBALS['toa_no_wa']) ? 'true' : 'false'; ?>,
     wa:      '<?php echo esc_js(_ht($hq_js['wa'])); ?>'
   };
   function v(id){ var el = document.getElementById(id); return el ? el.value.trim() : ''; }
@@ -176,7 +179,7 @@ $hq_js = array(
     if (result.success) {
       window.location.href = THANKYOU;
     } else {
-      if (confirm(STR.error)) {
+      if (STR.nowa) { alert(STR.error_nowa); } else if (confirm(STR.error)) {
         window.open((window.toaWaUrl||String)('https://wa.me/393517899225?text=' + encodeURIComponent(STR.wa + payload.company + ' — ' + payload.event_type)), '_blank');
       }
       btn.disabled = false;

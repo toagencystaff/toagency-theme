@@ -1,7 +1,7 @@
-STATO=CLOSED
-CHAT=TEMA WA-TRACCIAMENTO
+STATO=OPEN
+CHAT=TEMA LP-FRANCIA
 FILE=toagency-theme/components/form-b2b-inline.php
-INIZIO=2026-10-14 11:10:19
-UPDATE=2026-10-14 11:10:19
-SHA1_ATTESO=e9d6c2ee23b799a55517b2ae49c5ce9008010a18
-NOTA=Ticket #625 LIVE prod 14/10 (commit eee275baa), verificato dal vivo. Lock chiuso.
+INIZIO=2026-10-14 20:37:10
+UPDATE=2026-10-14 20:37:10
+SHA1_ATTESO=6334c763ce837a21ae8ba7271e679d8122284ba6
+NOTA=Round 5: via WhatsApp solo da /fr/ (richiesta Marco).
