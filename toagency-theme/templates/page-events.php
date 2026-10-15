@@ -106,20 +106,18 @@ toa_component('header');
 .toa-ev-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 18%;opacity:0;transition:opacity .35s ease}
 .toa-ev-stage img.on{opacity:1}
 .toa-ev-stage:after{content:"";position:absolute;left:0;right:0;bottom:0;height:40%;background:linear-gradient(transparent,rgba(0,0,0,.85));pointer-events:none}
-.toa-ev-cap{position:absolute;left:16px;right:16px;bottom:30px;z-index:2;color:#fff}
+.toa-ev-cap{position:absolute;left:16px;right:16px;bottom:18px;z-index:2;color:#fff}
 .toa-ev-cap small{display:block;color:var(--accent,#c8ff00);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
 .toa-ev-cap b{display:block;font-family:var(--font-display);font-size:1.6rem;font-weight:800;line-height:1.1}
-.toa-ev-dots{position:absolute;left:16px;right:16px;bottom:12px;z-index:2;display:flex;gap:3px}
-.toa-ev-dots i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.28)}
-.toa-ev-dots i.on{background:var(--accent,#c8ff00)}
 .toa-ev-grp{margin-bottom:20px}
 .toa-ev-grp h3{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0 0 9px;font-family:var(--font-display);font-size:.8rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-4)}
 .toa-ev-grp h3 a{color:var(--accent,#c8ff00);text-decoration:none;font-size:.72rem;white-space:nowrap}
 .toa-ev-chips{display:flex;flex-wrap:wrap;gap:7px}
 .toa-ev-chip{display:inline-block;padding:7px 13px;border:1px solid rgba(150,150,150,.35);border-radius:999px;font:inherit;font-size:.85rem;font-weight:600;color:inherit;background:transparent;transition:background .2s,color .2s,transform .2s,box-shadow .2s}
-button.toa-ev-chip{cursor:pointer;font-family:inherit;text-transform:none;letter-spacing:0;line-height:1.25;margin:0;box-shadow:none;-webkit-appearance:none;appearance:none}
+[data-i].toa-ev-chip{cursor:pointer}
 .toa-ev-chip{line-height:1.25;text-transform:none;letter-spacing:0}
-button.toa-ev-chip.on,.toa-ev-chip.on{background:var(--accent,#c8ff00);color:#0a0a0a;border-color:var(--accent,#c8ff00);transform:scale(1.06);box-shadow:0 0 20px rgba(200,255,0,.4)}
+[data-i].toa-ev-chip:focus-visible{outline:2px solid var(--accent,#c8ff00);outline-offset:2px}
+.toa-ev-chip.on{background:var(--accent,#c8ff00);color:#0a0a0a;border-color:var(--accent,#c8ff00);transform:scale(1.06);box-shadow:0 0 20px rgba(200,255,0,.4)}
 .toa-ev-foot{margin:6px 0 0;font-size:.78rem;color:var(--gray-4);border-left:2px solid var(--accent);padding-left:10px;line-height:1.5}
 @media(max-width:760px){.toa-ev-wrap{grid-template-columns:1fr;gap:20px}.toa-ev-stage{aspect-ratio:4/5;max-width:420px;width:100%;margin:0 auto}}
 /* Garanzie compatte */
@@ -161,7 +159,6 @@ button.toa-ev-chip.on,.toa-ev-chip.on{background:var(--accent,#c8ff00);color:#0a
                 <img src="/wp-content/themes/toagency-theme/assets/staff/<?php echo esc_attr($rl['p']); ?>.jpg" alt="<?php echo esc_attr($_t($rl['n'])); ?>" data-role="<?php echo esc_attr($_t($rl['n'])); ?>" data-grp="<?php echo esc_attr($_t($sv['title'])); ?>"<?php echo $ev_i ? ' loading="lazy"' : ''; ?>>
                 <?php $ev_i++; endforeach; endforeach; ?>
                 <div class="toa-ev-cap"><small></small><b></b></div>
-                <div class="toa-ev-dots"></div>
             </div>
             <?php endif; ?>
             <div class="toa-ev-list">
@@ -171,7 +168,7 @@ button.toa-ev-chip.on,.toa-ev-chip.on{background:var(--accent,#c8ff00);color:#0a
                     <div class="toa-ev-chips">
                         <?php foreach ($sv['roles'] as $rl):
                             if ($rl['p'] && file_exists($ev_dir . $rl['p'] . '.jpg')): ?>
-                        <button type="button" class="toa-ev-chip" data-i="<?php echo $ev_n++; ?>"><?php echo $_t($rl['n']); ?></button>
+                        <span class="toa-ev-chip" role="button" tabindex="0" data-i="<?php echo $ev_n++; ?>"><?php echo $_t($rl['n']); ?></span>
                         <?php else: ?>
                         <span class="toa-ev-chip"><?php echo $_t($rl['n']); ?></span>
                         <?php endif; endforeach; ?>
@@ -187,22 +184,23 @@ button.toa-ev-chip.on,.toa-ev-chip.on{background:var(--accent,#c8ff00);color:#0a
 <script>
 (function(){
   var st=document.getElementById('evStage'); if(!st) return;
-  var imgs=st.querySelectorAll('img'), chips=document.querySelectorAll('button.toa-ev-chip'), dots=st.querySelector('.toa-ev-dots');
-  var cs=st.querySelector('.toa-ev-cap small'), cb=st.querySelector('.toa-ev-cap b'), n=imgs.length, cur=-1, timer=null, paused=false, visible=true;
+  var imgs=st.querySelectorAll('img'), chips=document.querySelectorAll('.toa-ev-chip[data-i]');
+  var cs=st.querySelector('.toa-ev-cap small'), cb=st.querySelector('.toa-ev-cap b'), n=imgs.length, cur=-1, pos=0, timer=null, paused=false, visible=true, order=[];
   if(!n) return;
-  for(var d=0; d<n; d++) dots.appendChild(document.createElement('i'));
+  for(var o=0; o<n; o++) order.push(o);
+  for(var k=n-1; k>0; k--){ var j=Math.floor(Math.random()*(k+1)), t=order[k]; order[k]=order[j]; order[j]=t; } // ordine casuale a ogni visita
   function go(i, manual){
-    if(cur>=0){ imgs[cur].classList.remove('on'); if(chips[cur]) chips[cur].classList.remove('on'); dots.children[cur].classList.remove('on'); }
-    cur=i; imgs[i].classList.add('on'); if(chips[i]) chips[i].classList.add('on'); dots.children[i].classList.add('on');
+    if(cur>=0){ imgs[cur].classList.remove('on'); if(chips[cur]) chips[cur].classList.remove('on'); }
+    cur=i; pos=order.indexOf(i); imgs[i].classList.add('on'); if(chips[i]) chips[i].classList.add('on');
     cs.textContent=imgs[i].getAttribute('data-grp'); cb.textContent=imgs[i].getAttribute('data-role');
     if(manual){ start(); }
   }
-  function tick(){ if(!paused && visible) go((cur+1)%n); }
+  function tick(){ if(!paused && visible) go(order[(pos+1)%n]); }
   function start(){ clearInterval(timer); if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches) timer=setInterval(tick,1800); }
-  for(var c=0; c<chips.length; c++){ (function(i){ chips[i].addEventListener('click',function(){ go(i,true); if(window.innerWidth<=760 && st.scrollIntoView) st.scrollIntoView({behavior:'smooth',block:'center'}); }); })(c); }
+  for(var c=0; c<chips.length; c++){ (function(i){ var pick=function(){ go(i,true); if(window.innerWidth<=760 && st.scrollIntoView) st.scrollIntoView({behavior:'smooth',block:'center'}); }; chips[i].addEventListener('click',pick); chips[i].addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } }); })(c); }
   st.addEventListener('mouseenter',function(){paused=true;}); st.addEventListener('mouseleave',function(){paused=false;});
   if('IntersectionObserver' in window){ new IntersectionObserver(function(e){ visible=e[0].isIntersecting; },{threshold:0.1}).observe(st); }
-  go(0); start();
+  go(order[0]); start();
 })();
 </script>
 <?php endif; ?>
