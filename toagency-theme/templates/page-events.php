@@ -34,6 +34,13 @@ $t = array(
     'serv_eyebrow' => array('it'=>"Servizi",'en'=>"Services",'fr'=>"Services",'es'=>"Servicios"),
     'serv_heading' => array('it'=>"Tutto quello che serve al tuo evento",'en'=>"Everything your event needs",'fr'=>"Tout ce dont votre événement a besoin",'es'=>"Todo lo que necesita tu evento"),
     'serv_cta' => array('it'=>"Chiedi un preventivo",'en'=>"Ask for a quote",'fr'=>"Demander un devis",'es'=>"Pedir presupuesto"),
+    'serv_foot' => array(
+        'it' => "Interpreti su richiesta. Security e mansioni tecniche solo con personale in regola con i requisiti di legge. Il trasporto di merci è eseguito solo da partner con licenza di autotrasporto per conto terzi. Foto illustrative.",
+        'en' => "Interpreters on request. Security and technical roles only with staff who meet the legal requirements. Goods are transported only by partners holding a for-hire road haulage licence. Illustrative photos.",
+        'fr' => "Interprètes sur demande. Sécurité et missions techniques uniquement avec du personnel en règle avec les exigences légales. Le transport de marchandises est assuré uniquement par des partenaires titulaires d'une licence de transport pour compte d'autrui. Photos illustratives.",
+        'es' => "Intérpretes bajo petición. Seguridad y tareas técnicas solo con personal que cumple los requisitos legales. El transporte de mercancías lo realizan únicamente partners con licencia de transporte por cuenta ajena. Fotos ilustrativas.",
+    ),
+    'serv_more' => array('it'=>"Scopri le figure",'en'=>"See the roles",'fr'=>"Voir les profils",'es'=>"Ver los perfiles"),
     'serv_other' => array(
         'it' => "Non trovi quello che cerchi? Scrivici: ti diciamo come possiamo aiutarti.",
         'en' => "Can't see what you need? Write to us and we'll tell you how we can help.",
@@ -65,105 +72,14 @@ $t = array(
     ),
 );
 
-// Servizi: ordine deciso da Marco (14/10/2026): Staff, Fiere, Foto e video, Crew tecnica, Logistica.
-$services = array(
-  array(
-    'title' => array('it'=>"Event Staff",'en'=>"Event Staff",'fr'=>"Personnel événementiel",'es'=>"Personal para eventos"),
-    'text'  => array(
-        'it'=>"Accoglienza, accrediti, promozione e coordinamento: le persone che stanno davanti ai tuoi ospiti, guidate da un unico referente.",
-        'en'=>"Front-of-house, accreditation, promotion and coordination: the people your guests meet first, led by a single point of contact.",
-        'fr'=>"Accueil, accréditations, promotion et coordination : les personnes qui accueillent vos invités, pilotées par un seul interlocuteur.",
-        'es'=>"Recepción, acreditaciones, promoción y coordinación: las personas que reciben a tus invitados, dirigidas por un único interlocutor."),
-    'chips' => array(
-        array('it'=>"Hostess",'en'=>"Hostesses",'fr'=>"Hôtesses",'es'=>"Azafatas"),
-        array('it'=>"Steward",'en'=>"Stewards",'fr'=>"Stewards",'es'=>"Stewards"),
-        array('it'=>"Promoter",'en'=>"Promoters",'fr'=>"Promoteurs",'es'=>"Promotores"),
-        array('it'=>"Receptionist",'en'=>"Receptionists",'fr'=>"Réceptionnistes",'es'=>"Recepcionistas"),
-        array('it'=>"Addetti agli accrediti",'en'=>"Accreditation staff",'fr'=>"Agents d'accréditation",'es'=>"Personal de acreditaciones"),
-        array('it'=>"Coordinatori e team leader",'en'=>"Coordinators and team leaders",'fr'=>"Coordinateurs et chefs d'équipe",'es'=>"Coordinadores y jefes de equipo"),
-        array('it'=>"Brand ambassador",'en'=>"Brand ambassadors",'fr'=>"Ambassadeurs de marque",'es'=>"Embajadores de marca"),
-        array('it'=>"Interpreti",'en'=>"Interpreters",'fr'=>"Interprètes",'es'=>"Intérpretes"),
-    ),
-    'note'  => array(
-        'it'=>"Interpreti su richiesta, in base a lingua e disponibilità.",
-        'en'=>"Interpreters on request, depending on language and availability.",
-        'fr'=>"Interprètes sur demande, selon la langue et la disponibilité.",
-        'es'=>"Intérpretes bajo petición, según idioma y disponibilidad."),
-  ),
-  array(
-    'title' => array('it'=>"Fiere e saloni",'en'=>"Trade shows",'fr'=>"Salons professionnels",'es'=>"Ferias y salones"),
-    'text'  => array(
-        'it'=>"Personale per stand e padiglioni: accoglienza dei visitatori, assistenza agli espositori e supporto allo stand, anche multilingue.",
-        'en'=>"Staff for booths and exhibition halls: visitor reception, exhibitor assistance and stand support, including multilingual staff.",
-        'fr'=>"Du personnel pour stands et halls d'exposition : accueil des visiteurs, assistance aux exposants et soutien sur le stand, y compris multilingue.",
-        'es'=>"Personal para stands y pabellones: recepción de visitantes, asistencia a expositores y apoyo en el stand, también multilingüe."),
-    'chips' => array(
-        array('it'=>"Hostess di fiera",'en'=>"Trade show hostesses",'fr'=>"Hôtesses de salon",'es'=>"Azafatas de feria"),
-        array('it'=>"Personale di stand",'en'=>"Booth staff",'fr'=>"Personnel de stand",'es'=>"Personal de stand"),
-        array('it'=>"Assistenza espositori",'en'=>"Exhibitor assistance",'fr'=>"Assistance exposants",'es'=>"Asistencia a expositores"),
-        array('it'=>"Supporto stand",'en'=>"Stand support",'fr'=>"Soutien sur le stand",'es'=>"Apoyo en el stand"),
-        array('it'=>"Staff multilingue",'en'=>"Multilingual staff",'fr'=>"Personnel multilingue",'es'=>"Personal multilingüe"),
-    ),
-    'note'  => null,
-  ),
-  array(
-    'title' => array('it'=>"Foto e video",'en'=>"Photo and video",'fr'=>"Photo et vidéo",'es'=>"Foto y vídeo"),
-    'text'  => array(
-        'it'=>"Fotografi, videomaker e content creator per raccontare l'evento: foto, video, backstage e contenuti per i social.",
-        'en'=>"Photographers, videographers and content creators to capture your event: photo, video, backstage and social media content.",
-        'fr'=>"Photographes, vidéastes et créateurs de contenu pour raconter votre événement : photo, vidéo, coulisses et contenus pour les réseaux sociaux.",
-        'es'=>"Fotógrafos, videógrafos y creadores de contenido para contar tu evento: foto, vídeo, backstage y contenidos para redes sociales."),
-    'chips' => array(
-        array('it'=>"Fotografi",'en'=>"Photographers",'fr'=>"Photographes",'es'=>"Fotógrafos"),
-        array('it'=>"Videomaker",'en'=>"Videographers",'fr'=>"Vidéastes",'es'=>"Videógrafos"),
-        array('it'=>"Content creator",'en'=>"Content creators",'fr'=>"Créateurs de contenu",'es'=>"Creadores de contenido"),
-        array('it'=>"Backstage",'en'=>"Backstage",'fr'=>"Coulisses",'es'=>"Backstage"),
-        array('it'=>"Contenuti social",'en'=>"Social content",'fr'=>"Contenus réseaux sociaux",'es'=>"Contenidos para redes"),
-    ),
-    'note'  => null,
-  ),
-  array(
-    'title' => array('it'=>"Crew tecnica",'en'=>"Technical crew",'fr'=>"Équipes techniques",'es'=>"Equipo técnico"),
-    'text'  => array(
-        'it'=>"Squadre di supporto alla produzione, dal backstage all'allestimento: movimentazione dei materiali, assistenza e supporto tecnico.",
-        'en'=>"Production support teams, from backstage to set-up: materials handling, assistance and technical support.",
-        'fr'=>"Équipes de soutien à la production, des coulisses au montage : manutention du matériel, assistance et support technique.",
-        'es'=>"Equipos de apoyo a la producción, del backstage al montaje: movimiento de materiales, asistencia y soporte técnico."),
-    'chips' => array(
-        array('it'=>"Runner",'en'=>"Runners",'fr'=>"Runners",'es'=>"Runners"),
-        array('it'=>"Assistenti di produzione",'en'=>"Production assistants",'fr'=>"Assistants de production",'es'=>"Asistentes de producción"),
-        array('it'=>"Backstage",'en'=>"Backstage",'fr'=>"Coulisses",'es'=>"Backstage"),
-        array('it'=>"Movimentazione materiali",'en'=>"Materials handling",'fr'=>"Manutention",'es'=>"Movimiento de materiales"),
-        array('it'=>"Allestimenti",'en'=>"Set-up crew",'fr'=>"Montage et installation",'es'=>"Montajes"),
-        array('it'=>"Assistenti tecnici",'en'=>"Technical assistants",'fr'=>"Assistants techniques",'es'=>"Asistentes técnicos"),
-        array('it'=>"Security",'en'=>"Security",'fr'=>"Sécurité",'es'=>"Seguridad"),
-    ),
-    'note'  => array(
-        'it'=>"Mansioni tecniche e security solo con personale in regola con le qualifiche e i requisiti di legge.",
-        'en'=>"Technical roles and security are only assigned to staff who meet the required qualifications and legal requirements.",
-        'fr'=>"Les missions techniques et la sécurité sont confiées uniquement à du personnel en règle avec les qualifications et les exigences légales.",
-        'es'=>"Las tareas técnicas y de seguridad solo se asignan a personal que cumple las cualificaciones y los requisitos legales."),
-  ),
-  array(
-    'title' => array('it'=>"Logistica e trasporti",'en'=>"Logistics and transport",'fr'=>"Logistique et transport",'es'=>"Logística y transporte"),
-    'text'  => array(
-        'it'=>"Ritiri, consegne, trasporto e deposito per il tuo evento, organizzati da noi insieme ai partner del settore.",
-        'en'=>"Pick-ups, deliveries, transport and storage for your event, organised by us together with industry partners.",
-        'fr'=>"Enlèvements, livraisons, transport et stockage pour votre événement, organisés par nos soins avec des partenaires du secteur.",
-        'es'=>"Recogidas, entregas, transporte y almacenaje para tu evento, organizados por nosotros junto con partners del sector."),
-    'chips' => array(
-        array('it'=>"Ritiri",'en'=>"Pick-ups",'fr'=>"Enlèvements",'es'=>"Recogidas"),
-        array('it'=>"Consegne",'en'=>"Deliveries",'fr'=>"Livraisons",'es'=>"Entregas"),
-        array('it'=>"Trasporto",'en'=>"Transport",'fr'=>"Transport",'es'=>"Transporte"),
-        array('it'=>"Deposito",'en'=>"Storage",'fr'=>"Stockage",'es'=>"Almacenaje"),
-    ),
-    'note'  => array(
-        'it'=>"Il trasporto di merci è eseguito solo da partner con licenza di autotrasporto per conto terzi.",
-        'en'=>"Goods are transported only by partners holding a for-hire road haulage licence.",
-        'fr'=>"Le transport de marchandises est assuré uniquement par des partenaires titulaires d'une licence de transport routier pour compte d'autrui.",
-        'es'=>"El transporte de mercancías lo realizan únicamente partners con licencia de transporte por carretera por cuenta ajena."),
-  ),
-);
+// Dati servizi e figure: components/events-data.php (unica fonte, usata anche dalle sottopagine)
+$data     = include get_template_directory() . '/components/events-data.php';
+$ev_pages = get_option('toa_events_pages', array());
+$ev_url   = function($k) use ($ev_pages, $lang) {
+    return (isset($ev_pages[$k][$lang]) && get_post_status((int) $ev_pages[$k][$lang]) === 'publish') ? get_permalink((int) $ev_pages[$k][$lang]) : ''; // solo pagine pubblicate
+};
+$ev_dir = get_template_directory() . '/assets/staff/';
+$ev_i = 0; // indice foto nella rotazione
 
 toa_component('header');
 ?>
@@ -174,15 +90,6 @@ toa_component('header');
     'subtitle'   => $_t($t['hero_subtitle']),
 )); ?>
 
-<!-- Hero CTA centrato -->
-<div class="container hero-cta-wrap">
-    <a href="#preventivo" class="toa-hero-cta">
-        <span><?php echo $_t($t['hero_cta']); ?></span>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
-    <p style="font-size:0.9rem;color:var(--gray-4);margin-top:16px;font-weight:600"><?php echo $_t($t['hero_line']); ?></p>
-</div>
-
 <style>
 .toa-hero-cta{display:inline-flex;align-items:center;gap:10px;padding:16px 38px;background:var(--accent,#c8ff00);color:#0a0a0a;font-size:.95rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border-radius:999px;box-shadow:0 8px 30px rgba(200,255,0,.35),0 2px 8px rgba(0,0,0,.15);transition:transform .25s ease,box-shadow .25s ease}
 .toa-hero-cta svg{transition:transform .25s ease}
@@ -191,17 +98,29 @@ toa_component('header');
 @media(max-width:600px){.toa-hero-cta{padding:16px 30px;font-size:.95rem}}
 .hero-cta-wrap{margin-top:16px;margin-bottom:28px;text-align:center}
 @media(max-width:768px){.hero-cta-wrap{margin-top:18px;margin-bottom:20px}}
-/* Card servizi */
-.toa-ev-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:28px}
-.toa-ev-card{border:1px solid rgba(150,150,150,.3);border-radius:14px;padding:26px;display:flex;flex-direction:column;gap:12px}
-.toa-ev-num{font-family:var(--font-display);font-size:.8rem;font-weight:800;letter-spacing:1.5px;color:var(--accent)}
-.toa-ev-card h3{font-family:var(--font-display);font-size:1.25rem;font-weight:800;text-transform:uppercase;margin:0}
-.toa-ev-card p{margin:0;color:var(--gray-4);font-size:.95rem;line-height:1.6}
-.toa-ev-chips{display:flex;flex-wrap:wrap;gap:6px}
-.toa-ev-chips span{display:inline-block;padding:6px 13px;border:1px solid rgba(150,150,150,.35);border-radius:999px;font-size:.8rem;font-weight:600}
-.toa-ev-card p.toa-ev-note{font-size:.82rem;border-left:2px solid var(--accent);padding-left:10px}
-.toa-ev-card a.toa-ev-link{margin-top:auto;padding-top:6px;color:var(--accent);font-size:.82rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase;text-decoration:none}
-.toa-ev-other{text-align:center;margin:30px auto 0;max-width:640px;color:var(--gray-4);font-size:.95rem}
+/* Figure: foto che scorrono + elenco completo (#637) */
+.toa-ev-show{padding:6px 0 4px}
+.toa-ev-wrap{display:grid;grid-template-columns:minmax(0,340px) 1fr;gap:30px;align-items:start}
+.toa-ev-wrap.nostage{grid-template-columns:1fr}
+.toa-ev-stage{position:relative;aspect-ratio:3/4;border-radius:16px;overflow:hidden;background:#111;border:1px solid rgba(255,255,255,.08)}
+.toa-ev-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 18%;opacity:0;transition:opacity .35s ease}
+.toa-ev-stage img.on{opacity:1}
+.toa-ev-stage:after{content:"";position:absolute;left:0;right:0;bottom:0;height:40%;background:linear-gradient(transparent,rgba(0,0,0,.85));pointer-events:none}
+.toa-ev-cap{position:absolute;left:16px;right:16px;bottom:30px;z-index:2;color:#fff}
+.toa-ev-cap small{display:block;color:var(--accent,#c8ff00);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+.toa-ev-cap b{display:block;font-family:var(--font-display);font-size:1.6rem;font-weight:800;line-height:1.1}
+.toa-ev-dots{position:absolute;left:16px;right:16px;bottom:12px;z-index:2;display:flex;gap:3px}
+.toa-ev-dots i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.28)}
+.toa-ev-dots i.on{background:var(--accent,#c8ff00)}
+.toa-ev-grp{margin-bottom:20px}
+.toa-ev-grp h3{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0 0 9px;font-family:var(--font-display);font-size:.8rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-4)}
+.toa-ev-grp h3 a{color:var(--accent,#c8ff00);text-decoration:none;font-size:.72rem;white-space:nowrap}
+.toa-ev-chips{display:flex;flex-wrap:wrap;gap:7px}
+.toa-ev-chip{display:inline-block;padding:7px 13px;border:1px solid rgba(150,150,150,.35);border-radius:999px;font:inherit;font-size:.85rem;font-weight:600;color:inherit;background:transparent;transition:background .2s,color .2s,transform .2s,box-shadow .2s}
+button.toa-ev-chip{cursor:pointer}
+.toa-ev-chip.on{background:var(--accent,#c8ff00);color:#0a0a0a;border-color:var(--accent,#c8ff00);transform:scale(1.06);box-shadow:0 0 20px rgba(200,255,0,.4)}
+.toa-ev-foot{margin:6px 0 0;font-size:.78rem;color:var(--gray-4);border-left:2px solid var(--accent);padding-left:10px;line-height:1.5}
+@media(max-width:760px){.toa-ev-wrap{grid-template-columns:1fr;gap:20px}.toa-ev-stage{aspect-ratio:4/5;max-width:420px;width:100%;margin:0 auto}}
 /* Garanzie compatte */
 .features-grid .feature-card{padding:18px 26px!important}
 .features-grid .feature-number{font-size:1.55rem!important;line-height:1!important;margin-bottom:6px!important}
@@ -225,34 +144,82 @@ toa_component('header');
 @media(max-width:768px){.toa-gallery .grid{gap:5px}.toa-gallery .grid img{width:calc(20% - 5px)}}
 </style>
 
+<!-- Figure: foto che scorrono + elenco completo (#637) -->
+<section class="toa-ev-show" id="servizi">
+    <div class="container">
+        <?php
+        // foto presenti su disco, nell'ordine dei servizi
+        $ev_has = false;
+        foreach ($data as $sv) { foreach ($sv['roles'] as $rl) { if ($rl['p'] && file_exists($ev_dir . $rl['p'] . '.jpg')) { $ev_has = true; break 2; } } }
+        ?>
+        <div class="toa-ev-wrap<?php echo $ev_has ? '' : ' nostage'; ?>">
+            <?php if ($ev_has): ?>
+            <div class="toa-ev-stage" id="evStage">
+                <?php foreach ($data as $sv): foreach ($sv['roles'] as $rl):
+                    if (!$rl['p'] || !file_exists($ev_dir . $rl['p'] . '.jpg')) continue; ?>
+                <img src="/wp-content/themes/toagency-theme/assets/staff/<?php echo esc_attr($rl['p']); ?>.jpg" alt="<?php echo esc_attr($_t($rl['n'])); ?>" data-role="<?php echo esc_attr($_t($rl['n'])); ?>" data-grp="<?php echo esc_attr($_t($sv['title'])); ?>"<?php echo $ev_i ? ' loading="lazy"' : ''; ?>>
+                <?php $ev_i++; endforeach; endforeach; ?>
+                <div class="toa-ev-cap"><small></small><b></b></div>
+                <div class="toa-ev-dots"></div>
+            </div>
+            <?php endif; ?>
+            <div class="toa-ev-list">
+                <?php $ev_n = 0; foreach ($data as $k => $sv): $su = $ev_url($k); ?>
+                <div class="toa-ev-grp">
+                    <h3><span><?php echo $_t($sv['title']); ?></span><?php if ($su): ?><a href="<?php echo esc_url($su); ?>"><?php echo $_t($t['serv_more']); ?> &rarr;</a><?php endif; ?></h3>
+                    <div class="toa-ev-chips">
+                        <?php foreach ($sv['roles'] as $rl):
+                            if ($rl['p'] && file_exists($ev_dir . $rl['p'] . '.jpg')): ?>
+                        <button type="button" class="toa-ev-chip" data-i="<?php echo $ev_n++; ?>"><?php echo $_t($rl['n']); ?></button>
+                        <?php else: ?>
+                        <span class="toa-ev-chip"><?php echo $_t($rl['n']); ?></span>
+                        <?php endif; endforeach; ?>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+                <p class="toa-ev-foot"><?php echo $_t($t['serv_foot']); ?></p>
+            </div>
+        </div>
+    </div>
+</section>
+<?php if ($ev_has): ?>
+<script>
+(function(){
+  var st=document.getElementById('evStage'); if(!st) return;
+  var imgs=st.querySelectorAll('img'), chips=document.querySelectorAll('button.toa-ev-chip'), dots=st.querySelector('.toa-ev-dots');
+  var cs=st.querySelector('.toa-ev-cap small'), cb=st.querySelector('.toa-ev-cap b'), n=imgs.length, cur=-1, timer=null, paused=false, visible=true;
+  if(!n) return;
+  for(var d=0; d<n; d++) dots.appendChild(document.createElement('i'));
+  function go(i, manual){
+    if(cur>=0){ imgs[cur].classList.remove('on'); if(chips[cur]) chips[cur].classList.remove('on'); dots.children[cur].classList.remove('on'); }
+    cur=i; imgs[i].classList.add('on'); if(chips[i]) chips[i].classList.add('on'); dots.children[i].classList.add('on');
+    cs.textContent=imgs[i].getAttribute('data-grp'); cb.textContent=imgs[i].getAttribute('data-role');
+    if(manual){ start(); }
+  }
+  function tick(){ if(!paused && visible) go((cur+1)%n); }
+  function start(){ clearInterval(timer); if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches) timer=setInterval(tick,1800); }
+  for(var c=0; c<chips.length; c++){ (function(i){ chips[i].addEventListener('click',function(){ go(i,true); if(window.innerWidth<=760 && st.scrollIntoView) st.scrollIntoView({behavior:'smooth',block:'center'}); }); })(c); }
+  st.addEventListener('mouseenter',function(){paused=true;}); st.addEventListener('mouseleave',function(){paused=false;});
+  if('IntersectionObserver' in window){ new IntersectionObserver(function(e){ visible=e[0].isIntersecting; },{threshold:0.1}).observe(st); }
+  go(0); start();
+})();
+</script>
+<?php endif; ?>
+
+<!-- Hero CTA centrato -->
+<div class="container hero-cta-wrap">
+    <a href="#preventivo" class="toa-hero-cta">
+        <span><?php echo $_t($t['hero_cta']); ?></span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <p style="font-size:0.9rem;color:var(--gray-4);margin-top:16px;font-weight:600"><?php echo $_t($t['hero_line']); ?></p>
+</div>
+
 <!-- Solo aziende: anti-candidature -->
 <section style="padding:26px 0;background:var(--black);color:#fff;text-align:center">
     <div class="container">
         <p style="font-size:0.95rem;margin-bottom:10px;opacity:.85"><?php echo $_t($t['b2bonly']); ?></p>
         <a href="<?php echo home_url('/registrati-talent/'); ?>" style="display:inline-block;font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:0.85rem;color:var(--accent);text-decoration:none"><?php echo $_t($t['talentexit']); ?> &rarr;</a>
-    </div>
-</section>
-
-<!-- Servizi -->
-<section class="why-section">
-    <div class="container">
-        <div class="section-eyebrow"><?php echo $_t($t['serv_eyebrow']); ?></div>
-        <h2 class="section-heading"><?php echo $_t($t['serv_heading']); ?></h2>
-        <div class="toa-ev-grid">
-            <?php foreach ($services as $i => $s): ?>
-            <div class="toa-ev-card">
-                <div class="toa-ev-num"><?php echo sprintf('%02d', $i + 1); ?></div>
-                <h3><?php echo $_t($s['title']); ?></h3>
-                <p><?php echo $_t($s['text']); ?></p>
-                <div class="toa-ev-chips">
-                    <?php foreach ($s['chips'] as $c): ?><span><?php echo $_t($c); ?></span><?php endforeach; ?>
-                </div>
-                <?php if (!empty($s['note'])): ?><p class="toa-ev-note"><?php echo $_t($s['note']); ?></p><?php endif; ?>
-                <a class="toa-ev-link" href="#preventivo"><?php echo $_t($t['serv_cta']); ?> &rarr;</a>
-            </div>
-            <?php endforeach; ?>
-        </div>
-        <p class="toa-ev-other"><?php echo $_t($t['serv_other']); ?></p>
     </div>
 </section>
 

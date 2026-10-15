@@ -415,6 +415,14 @@ $covMore = array('it'=>'Vedi altre citt&agrave;','en'=>'See more cities','fr'=>'
     <p class="coverage-note container"><?php echo $_t(array('it'=>'Non vedi la tua citt&agrave;? La copriamo lo stesso &mdash; operiamo ovunque in Italia e in Europa.','en'=>'Don\'t see your city? We cover it anyway &mdash; we operate everywhere in Italy and Europe.','fr'=>'Votre ville n\'est pas list&eacute;e&nbsp;? Nous la couvrons tout de m&ecirc;me &mdash; nous intervenons partout en Italie et en Europe.','es'=>'&iquest;No ves tu ciudad? La cubrimos igualmente &mdash; operamos en toda Italia y Europa.')); ?></p>
 </section>
 
+<!-- #637 link a TOA Events (crew tecnica, foto/video, logistica) -->
+<section style="padding:26px 0;background:var(--black);color:#fff;text-align:center">
+    <div class="container">
+        <p style="font-size:0.95rem;margin-bottom:10px;opacity:.85"><?php echo $_t(array('it'=>'Ti serve anche crew tecnica, foto e video o logistica?','en'=>'Need technical crew, photo and video or logistics too?','fr'=>'Besoin aussi d\'équipes techniques, de photo et vidéo ou de logistique&nbsp;?','es'=>'¿Necesitas también equipo técnico, foto y vídeo o logística?')); ?></p>
+        <a href="<?php echo $_t(array('it'=>home_url('/events/'),'en'=>home_url('/en/events/'),'fr'=>home_url('/fr/events/'),'es'=>home_url('/es/events/'))); ?>" style="display:inline-block;font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:0.85rem;color:var(--accent);text-decoration:none"><?php echo $_t(array('it'=>'Scopri TOA Events','en'=>'Discover TOA Events','fr'=>'Découvrir TOA Events','es'=>'Descubre TOA Events')); ?> &rarr;</a>
+    </div>
+</section>
+
 <?php toa_component('form-eventi-inline', array('lang' => $lang)); ?>
 
 <!-- Gallery (foto eventi, discreta) -->

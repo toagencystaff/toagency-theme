@@ -61,6 +61,7 @@
       <div class="toa-fll-col">
         <h4><?php echo _ht(['it'=>'Hostess & servizi','en'=>'Hostess & services','fr'=>'Hôtesses & services','es'=>'Azafatas & servicios']); ?></h4>
         <ul>
+          <li><a href="<?php echo _ht(['it'=>home_url('/events/'),'en'=>home_url('/en/events/'),'fr'=>home_url('/fr/events/'),'es'=>home_url('/es/events/')]); ?>">TOA Events</a></li>
           <li><a href="<?php echo home_url('/hostess-fiere/'); ?>"><?php echo _ht(['it'=>'Hostess Fiere','en'=>'Trade Show Hostess','fr'=>'Hôtesses Foires','es'=>'Azafatas Ferias']); ?></a></li>
           <li><a href="<?php echo home_url('/casting-modelle-over-50/'); ?>"><?php echo _ht(['it'=>'Modelle Over 50','en'=>'Mature Models','fr'=>'Mannequins 50+','es'=>'Modelos 50+']); ?></a></li>
           <li><a href="<?php echo home_url('/agenzia-comparse-milano/'); ?>"><?php echo _ht(['it'=>'Comparse Milano','en'=>'Extras Milan','fr'=>'Figurants Milan','es'=>'Extras Milán']); ?></a></li>

@@ -63,6 +63,7 @@ function toagency_page_templates($templates) {
     $templates['templates/page-collabora.php']      = 'Collabora (B2C)';
     $templates['templates/page-casting.php']        = 'Casting';
     $templates['templates/page-events.php']         = 'TOA Events'; // 2026-10-14 #637 divisione TOA Events
+    $templates['templates/page-events-service.php'] = 'TOA Events - Servizio'; // 2026-10-15 #637 sottopagine servizi
     return $templates;
 }
 add_filter('theme_page_templates', 'toagency_page_templates');

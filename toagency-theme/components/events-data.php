@@ -1,0 +1,119 @@
+<?php
+/**
+ * Dati TOA Events (#637, 15/10/2026) — IT/EN/FR/ES. Unica fonte per la pagina /events/ e le 6 sottopagine servizio.
+ * Ogni servizio: title (nome breve), lead (origine lead nel CRM), h1, intro, roles, note legale.
+ * Ogni figura: $r(nome 4 lingue, descrizione 4 lingue, 'nome-foto').
+ * FOTO: assets/staff/<nome-foto>.jpg (verticale 3:4, es. 1200x1600, volto in alto, sotto i 300 KB).
+ * Se il file non c'è, la figura compare lo stesso nell'elenco ma non entra nella rotazione delle foto.
+ * Per aggiungere una figura: una riga $r(...) nella lista roles del servizio.
+ * Vincoli: nessun prezzo, nessuna promessa di numeri/copertura; security e mansioni tecniche solo con personale in regola;
+ * trasporto merci solo con partner con licenza autotrasporto c/terzi.
+ */
+$L = function($it, $en, $fr, $es) { return array('it' => $it, 'en' => $en, 'fr' => $fr, 'es' => $es); };
+$r = function($n, $d, $p = '') { return array('n' => $n, 'd' => $d, 'p' => $p); };
+
+return array(
+
+'staff' => array(
+  'title' => $L("Event Staff", "Event Staff", "Personnel événementiel", "Personal para eventos"),
+  'lead'  => 'Staff',
+  'h1'    => $L("Staff per eventi: hostess, steward e promoter", "Event staff: hostesses, stewards and promoters", "Personnel événementiel : hôtesses, stewards et promoteurs", "Personal para eventos: azafatas, stewards y promotores"),
+  'intro' => $L("Le persone che stanno davanti ai tuoi ospiti: accoglienza, accrediti, promozione e coordinamento, guidate da un unico referente.", "The people your guests meet first: front-of-house, accreditation, promotion and coordination, led by a single point of contact.", "Les personnes qui accueillent vos invités : accueil, accréditations, promotion et coordination, pilotées par un seul interlocuteur.", "Las personas que reciben a tus invitados: recepción, acreditaciones, promoción y coordinación, dirigidas por un único interlocutor."),
+  'roles' => array(
+    $r($L("Hostess","Hostesses","Hôtesses","Azafatas"), $L("Accoglienza e orientamento degli ospiti per tutto l'evento.","Guest welcome and orientation throughout the event.","Accueil et orientation des invités pendant tout l'événement.","Recepción y orientación de los invitados durante todo el evento."), 'hostess'),
+    $r($L("Steward","Stewards","Stewards","Stewards"), $L("Gestione dei flussi di persone e indicazioni al pubblico.","People flow management and guidance for the audience.","Gestion des flux de personnes et orientation du public.","Gestión de los flujos de personas e indicaciones al público."), 'steward'),
+    $r($L("Promoter commerciali","Sales promoters","Promoteurs commerciaux","Promotores comerciales"), $L("Promozione di prodotti e brand a diretto contatto con il pubblico.","Product and brand promotion in direct contact with the public.","Promotion de produits et de marques au contact direct du public.","Promoción de productos y marcas en contacto directo con el público."), 'promoter'),
+    $r($L("Receptionist","Receptionists","Réceptionnistes","Recepcionistas"), $L("Reception e desk d'ingresso: registrazione ospiti e prima informazione.","Reception and entrance desk: guest registration and first-line information.","Accueil et desk d'entrée : enregistrement des invités et premières informations.","Recepción y mostrador de entrada: registro de invitados y primera información."), 'accoglienza'),
+    $r($L("Addetti agli accrediti","Accreditation staff","Agents d'accréditation","Personal de acreditaciones"), $L("Check-in, badge e liste ospiti per congressi ed eventi aziendali.","Check-in, badges and guest lists for conferences and corporate events.","Check-in, badges et listes d'invités pour congrès et événements d'entreprise.","Check-in, acreditaciones y listas de invitados para congresos y eventos de empresa."), 'accrediti'),
+    $r($L("Brand ambassador","Brand ambassadors","Ambassadeurs de marque","Embajadores de marca"), $L("Persone che rappresentano il tuo marchio, con il tono giusto per il tuo pubblico.","People who represent your brand with the right tone for your audience.","Des personnes qui représentent votre marque, avec le bon ton pour votre public.","Personas que representan tu marca con el tono adecuado para tu público."), 'brand-ambassador'),
+    $r($L("Coordinatori e team leader","Coordinators and team leaders","Coordinateurs et chefs d'équipe","Coordinadores y jefes de equipo"), $L("Un referente sul posto che guida il team e risponde a te.","An on-site lead who guides the team and reports to you.","Un responsable sur place qui dirige l'équipe et répond à vous.","Un responsable en el lugar que guía al equipo y responde ante ti."), 'coordinatore'),
+    $r($L("Interpreti","Interpreters","Interprètes","Intérpretes"), $L("Su richiesta, in base a lingua e disponibilità.","On request, depending on language and availability.","Sur demande, selon la langue et la disponibilité.","Bajo petición, según idioma y disponibilidad."), 'interprete'),
+  ),
+  'note'  => null,
+),
+
+'fiere' => array(
+  'title' => $L("Fiere e saloni", "Trade shows", "Salons professionnels", "Ferias y salones"),
+  'lead'  => 'Fiere',
+  'h1'    => $L("Personale per fiere e saloni", "Staff for trade shows and exhibitions", "Personnel pour salons et foires professionnels", "Personal para ferias y salones"),
+  'intro' => $L("Personale per stand e padiglioni: accoglienza dei visitatori, assistenza agli espositori e supporto allo stand, anche multilingue.", "Staff for booths and exhibition halls: visitor reception, exhibitor assistance and stand support, including multilingual staff.", "Du personnel pour stands et halls d'exposition : accueil des visiteurs, assistance aux exposants et soutien sur le stand, y compris multilingue.", "Personal para stands y pabellones: recepción de visitantes, asistencia a expositores y apoyo en el stand, también multilingüe."),
+  'roles' => array(
+    $r($L("Hostess di fiera","Trade show hostesses","Hôtesses de salon","Azafatas de feria"), $L("Accoglienza ai visitatori allo stand e in padiglione.","Visitor welcome at the booth and in the hall.","Accueil des visiteurs sur le stand et dans le hall.","Recepción de visitantes en el stand y en el pabellón."), 'hostess-fiera'),
+    $r($L("Standisti","Booth staff","Standistes","Personal de stand"), $L("Presidio dello stand: contatto con i visitatori e raccolta contatti.","Booth presence: talking to visitors and collecting leads.","Présence sur le stand : échange avec les visiteurs et collecte de contacts.","Presencia en el stand: trato con los visitantes y captación de contactos."), 'standista'),
+    $r($L("Assistenza espositori","Exhibitor assistance","Assistance exposants","Asistencia a expositores"), $L("Supporto operativo agli espositori durante la manifestazione.","Operational support for exhibitors during the show.","Soutien opérationnel aux exposants pendant le salon.","Apoyo operativo a los expositores durante la feria."), 'assistenza-espositori'),
+    $r($L("Staff multilingue","Multilingual staff","Personnel multilingue","Personal multilingüe"), $L("Per fiere internazionali: le lingue che servono, in base alla disponibilità.","For international shows: the languages you need, subject to availability.","Pour les salons internationaux : les langues dont vous avez besoin, selon les disponibilités.","Para ferias internacionales: los idiomas que necesitas, según disponibilidad."), 'multilingue'),
+  ),
+  'note'  => null,
+),
+
+'bar-spettacolo' => array(
+  'title' => $L("Bar, sala e spettacolo", "Bar, service and entertainment", "Bar, salle et spectacle", "Bar, sala y espectáculo"),
+  'lead'  => 'Bar sala spettacolo',
+  'h1'    => $L("Bar, sala e spettacolo per eventi", "Bar, service and entertainment for events", "Bar, salle et spectacle pour vos événements", "Bar, sala y espectáculo para eventos"),
+  'intro' => $L("Chi serve, chi intrattiene, chi presenta: barman, camerieri, DJ, presentatori e artisti per far vivere la serata ai tuoi ospiti.", "Those who serve, entertain and present: bartenders, waiters, DJs, hosts and performers to make the night unforgettable for your guests.", "Ceux qui servent, animent et présentent : barmans, serveurs, DJ, présentateurs et artistes pour faire vivre la soirée à vos invités.", "Quienes sirven, animan y presentan: bartenders, camareros, DJ, presentadores y artistas para que tus invitados vivan la noche."),
+  'roles' => array(
+    $r($L("Barman","Bartenders","Barmans","Bartenders"), $L("Servizio bar e cocktail per ricevimenti, aperitivi e serate.","Bar and cocktail service for receptions, aperitifs and parties.","Service de bar et de cocktails pour réceptions, apéritifs et soirées.","Servicio de bar y cócteles para recepciones, aperitivos y fiestas."), 'bartender'),
+    $r($L("Camerieri","Waiters","Serveurs","Camareros"), $L("Servizio in sala, buffet e catering con divisa e stile adatti all'evento.","Table, buffet and catering service with a look that suits the event.","Service en salle, buffet et traiteur, avec une tenue adaptée à l'événement.","Servicio en sala, buffet y catering con una imagen acorde al evento."), 'cameriera'),
+    $r($L("Sommelier","Sommeliers","Sommeliers","Sumilleres"), $L("Presentazione e servizio dei vini per degustazioni e cene.","Wine presentation and service for tastings and dinners.","Présentation et service des vins pour dégustations et dîners.","Presentación y servicio de vinos para catas y cenas."), 'sommelier'),
+    $r($L("Baristi","Baristas","Baristas","Baristas"), $L("Caffetteria e angoli caffè per convegni, fiere ed eventi aziendali.","Coffee service and coffee points for conferences, trade shows and corporate events.","Café et points café pour congrès, salons et événements d'entreprise.","Cafetería y puntos de café para congresos, ferias y eventos de empresa."), 'barista'),
+    $r($L("DJ","DJs","DJ","DJ"), $L("Musica e set per aperitivi, feste e serate aziendali.","Music and sets for aperitifs, parties and corporate nights.","Musique et sets pour apéritifs, fêtes et soirées d'entreprise.","Música y sets para aperitivos, fiestas y veladas de empresa."), 'dj'),
+    $r($L("Presentatori","Hosts and MCs","Présentateurs","Presentadores"), $L("Conduzione di serate, premiazioni, convention e lanci di prodotto.","Hosting of galas, award ceremonies, conventions and product launches.","Animation de soirées, remises de prix, conventions et lancements de produits.","Conducción de galas, premios, convenciones y lanzamientos de producto."), 'presentatore'),
+    $r($L("Musicisti live","Live musicians","Musiciens live","Músicos en vivo"), $L("Musica dal vivo, dal solista al gruppo, per ogni tipo di evento.","Live music, from solo acts to bands, for any kind of event.","Musique live, du soliste au groupe, pour tout type d'événement.","Música en directo, de solistas a grupos, para cualquier tipo de evento."), 'musicista'),
+    $r($L("Cantanti","Singers","Chanteurs","Cantantes"), $L("Voci per cerimonie, cene di gala e intrattenimento.","Vocalists for ceremonies, gala dinners and entertainment.","Voix pour cérémonies, dîners de gala et animations.","Voces para ceremonias, cenas de gala y espectáculos."), 'cantante'),
+    $r($L("Ballerini e performer","Dancers and performers","Danseurs et performeurs","Bailarines y performers"), $L("Show e performance per aprire la serata o creare scena.","Shows and performances to open the night or set the scene.","Shows et performances pour ouvrir la soirée ou créer l'ambiance.","Shows y actuaciones para abrir la noche o ambientar el evento."), 'ballerino'),
+    $r($L("Animatori","Entertainers","Animateurs","Animadores"), $L("Animazione per feste, eventi aziendali e giornate per le famiglie.","Entertainment for parties, corporate events and family days.","Animation pour fêtes, événements d'entreprise et journées en famille.","Animación para fiestas, eventos de empresa y jornadas familiares."), 'animatore'),
+    $r($L("Artisti","Artists","Artistes","Artistas"), $L("Artisti di strada, performer e figure speciali per sorprendere gli ospiti.","Street artists, performers and special acts to surprise your guests.","Artistes de rue, performeurs et numéros spéciaux pour surprendre vos invités.","Artistas de calle, performers y números especiales para sorprender a los invitados."), 'artista'),
+    $r($L("Truccabimbi","Face painters","Maquilleurs pour enfants","Pintacaras"), $L("Trucco e giochi per i più piccoli negli eventi per famiglie.","Face painting and games for the little ones at family events.","Maquillage et jeux pour les plus petits lors d'événements en famille.","Maquillaje y juegos para los más pequeños en eventos familiares."), 'truccabimbi'),
+  ),
+  'note'  => null,
+),
+
+'foto-video' => array(
+  'title' => $L("Foto e video", "Photo and video", "Photo et vidéo", "Foto y vídeo"),
+  'lead'  => 'Foto e video',
+  'h1'    => $L("Foto, video e immagine per eventi", "Photo, video and image for events", "Photo, vidéo et image pour vos événements", "Foto, vídeo e imagen para eventos"),
+  'intro' => $L("Chi racconta l'evento e chi cura l'immagine: fotografi, videomaker, content creator, modelli, make-up artist e hairstylist.", "Those who capture the event and look after its image: photographers, videographers, content creators, models, make-up artists and hairstylists.", "Ceux qui racontent l'événement et soignent son image : photographes, vidéastes, créateurs de contenu, mannequins, maquilleurs et coiffeurs.", "Quienes cuentan el evento y cuidan su imagen: fotógrafos, videógrafos, creadores de contenido, modelos, maquilladores y peluqueros."),
+  'roles' => array(
+    $r($L("Fotografi","Photographers","Photographes","Fotógrafos"), $L("Foto dell'evento, ritratti e immagini per comunicazione e social.","Event photos, portraits and images for communication and social media.","Photos de l'événement, portraits et images pour la communication et les réseaux.","Fotos del evento, retratos e imágenes para comunicación y redes."), 'fotografa'),
+    $r($L("Videomaker","Videographers","Vidéastes","Videógrafos"), $L("Riprese e montaggio di video, reel e aftermovie dell'evento.","Filming and editing of event videos, reels and aftermovies.","Tournage et montage de vidéos, reels et aftermovies de l'événement.","Grabación y edición de vídeos, reels y aftermovies del evento."), 'videomaker'),
+    $r($L("Content creator","Content creators","Créateurs de contenu","Creadores de contenido"), $L("Contenuti pensati per i social, dal backstage alle storie in tempo reale.","Content made for social media, from backstage to live stories.","Des contenus pensés pour les réseaux, des coulisses aux stories en direct.","Contenidos pensados para redes, del backstage a las stories en directo."), 'content-creator'),
+    $r($L("Modelli e modelle","Models","Mannequins","Modelos"), $L("Volti e figure per shooting, sfilate e presentazioni di prodotto.","Faces and figures for shoots, fashion shows and product presentations.","Des visages et silhouettes pour shootings, défilés et présentations de produits.","Rostros y figuras para sesiones, desfiles y presentaciones de producto."), 'modello'),
+    $r($L("Make-up artist","Make-up artists","Maquilleurs","Maquilladores"), $L("Trucco per shooting, sfilate e personale sul palco.","Make-up for shoots, fashion shows and people on stage.","Maquillage pour shootings, défilés et personnes sur scène.","Maquillaje para sesiones, desfiles y personas en el escenario."), 'makeup'),
+    $r($L("Hairstylist","Hairstylists","Coiffeurs","Peluqueros"), $L("Acconciature per set, sfilate ed eventi.","Hairstyling for sets, fashion shows and events.","Coiffure pour plateaux, défilés et événements.","Peinados para rodajes, desfiles y eventos."), 'hairstylist'),
+  ),
+  'note'  => null,
+),
+
+'crew' => array(
+  'title' => $L("Crew tecnica", "Technical crew", "Équipes techniques", "Equipo técnico"),
+  'lead'  => 'Crew tecnica',
+  'h1'    => $L("Crew tecnica e produzione per eventi", "Technical crew and production for events", "Équipes techniques et production pour événements", "Equipo técnico y producción para eventos"),
+  'intro' => $L("Squadre di supporto alla produzione, dal backstage all'allestimento: runner, tecnici, movimentazione dei materiali e sicurezza.", "Production support teams, from backstage to set-up: runners, technicians, materials handling and security.", "Équipes de soutien à la production, des coulisses au montage : runners, techniciens, manutention du matériel et sécurité.", "Equipos de apoyo a la producción, del backstage al montaje: runners, técnicos, movimiento de materiales y seguridad."),
+  'roles' => array(
+    $r($L("Runner","Runners","Runners","Runners"), $L("Commissioni, consegne e supporto veloce a produzione e staff.","Errands, deliveries and quick support for production and staff.","Courses, livraisons et soutien rapide à la production et à l'équipe.","Recados, entregas y apoyo rápido a producción y personal."), 'runner'),
+    $r($L("Tecnici audio, luci e video","Audio, lighting and video technicians","Techniciens son, lumière et vidéo","Técnicos de audio, luces y vídeo"), $L("Supporto tecnico a impianti e regia, con personale qualificato.","Technical support for sound, lighting and video systems, with qualified staff.","Soutien technique pour la sonorisation, l'éclairage et la vidéo, avec du personnel qualifié.","Apoyo técnico en sonido, iluminación y vídeo, con personal cualificado."), 'tecnico'),
+    $r($L("Assistenti di produzione","Production assistants","Assistants de production","Asistentes de producción"), $L("Organizzazione di tempi, materiali e persone sul set o in sala.","Organising schedules, materials and people on set or in the venue.","Organisation des horaires, du matériel et des personnes sur le plateau ou en salle.","Organización de tiempos, materiales y personas en el set o en la sala."), 'assistente-produzione'),
+    $r($L("Backstage","Backstage crew","Équipe coulisses","Equipo de backstage"), $L("Supporto dietro le quinte: camerini, ospiti e passaggi.","Support behind the scenes: dressing rooms, guests and cues.","Soutien en coulisses : loges, invités et passages.","Apoyo entre bastidores: camerinos, invitados y entradas."), 'backstage'),
+    $r($L("Allestitori","Set-up crew","Monteurs et installateurs","Montadores"), $L("Montaggio e smontaggio di stand, scenografie e arredi.","Assembly and dismantling of stands, sets and furniture.","Montage et démontage de stands, décors et mobilier.","Montaje y desmontaje de stands, escenografías y mobiliario."), 'allestitore'),
+    $r($L("Movimentazione materiali","Materials handling","Manutention du matériel","Movimiento de materiales"), $L("Carico, scarico e spostamento di materiali e allestimenti.","Loading, unloading and moving of materials and set-ups.","Chargement, déchargement et déplacement du matériel et des installations.","Carga, descarga y traslado de materiales y montajes."), 'movimentazione'),
+    $r($L("Security","Security","Sécurité","Seguridad"), $L("Controllo accessi e sicurezza, solo con personale in regola con i requisiti di legge.","Access control and security, only with staff who meet the legal requirements.","Contrôle d'accès et sécurité, uniquement avec du personnel en règle avec les exigences légales.","Control de accesos y seguridad, solo con personal que cumple los requisitos legales."), 'security'),
+    $r($L("Parcheggiatori","Valet parking","Voituriers","Aparcacoches"), $L("Gestione dei parcheggi e accoglienza auto per gli ospiti.","Parking management and car arrival service for guests.","Gestion du stationnement et accueil des véhicules des invités.","Gestión del aparcamiento y recepción de vehículos de los invitados."), 'parcheggiatore'),
+  ),
+  'note'  => $L("Mansioni tecniche e security solo con personale in regola con le qualifiche e i requisiti di legge.", "Technical roles and security are only assigned to staff who meet the required qualifications and legal requirements.", "Les missions techniques et la sécurité sont confiées uniquement à du personnel en règle avec les qualifications et les exigences légales.", "Las tareas técnicas y de seguridad solo se asignan a personal que cumple las cualificaciones y los requisitos legales."),
+),
+
+'logistica' => array(
+  'title' => $L("Logistica e trasporti", "Logistics and transport", "Logistique et transport", "Logística y transporte"),
+  'lead'  => 'Logistica',
+  'h1'    => $L("Logistica e trasporti per eventi", "Logistics and transport for events", "Logistique et transport pour événements", "Logística y transporte para eventos"),
+  'intro' => $L("Ritiri, consegne, trasporto e deposito per il tuo evento, organizzati da noi insieme ai partner del settore.", "Pick-ups, deliveries, transport and storage for your event, organised by us together with industry partners.", "Enlèvements, livraisons, transport et stockage pour votre événement, organisés par nos soins avec des partenaires du secteur.", "Recogidas, entregas, transporte y almacenaje para tu evento, organizados por nosotros junto con partners del sector."),
+  'roles' => array(
+    $r($L("Ritiri","Pick-ups","Enlèvements","Recogidas"), $L("Ritiro di materiali e allestimenti dove servono.","Pick-up of materials and set-ups wherever needed.","Enlèvement du matériel et des installations là où il le faut.","Recogida de materiales y montajes donde haga falta.")),
+    $r($L("Consegne","Deliveries","Livraisons","Entregas"), $L("Consegna puntuale in sede, anche su più tappe.","On-time delivery to the venue, including multiple stops.","Livraison ponctuelle sur le lieu de l'événement, même en plusieurs étapes.","Entrega puntual en el lugar del evento, también en varias paradas.")),
+    $r($L("Trasporti","Transport","Transport","Transporte"), $L("Trasporto di merci e allestimenti, solo tramite partner autorizzati.","Transport of goods and set-ups, only through authorised partners.","Transport de marchandises et d'installations, uniquement via des partenaires autorisés.","Transporte de mercancías y montajes, solo mediante partners autorizados.")),
+    $r($L("Deposito","Storage","Stockage","Almacenaje"), $L("Stoccaggio temporaneo di materiali prima e dopo l'evento.","Temporary storage of materials before and after the event.","Stockage temporaire du matériel avant et après l'événement.","Almacenaje temporal de materiales antes y después del evento.")),
+  ),
+  'note'  => $L("Il trasporto di merci è eseguito solo da partner con licenza di autotrasporto per conto terzi.", "Goods are transported only by partners holding a for-hire road haulage licence.", "Le transport de marchandises est assuré uniquement par des partenaires titulaires d'une licence de transport routier pour compte d'autrui.", "El transporte de mercancías lo realizan únicamente partners con licencia de transporte por carretera por cuenta ajena."),
+),
+
+);
