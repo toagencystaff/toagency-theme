@@ -117,8 +117,9 @@ toa_component('header');
 .toa-ev-grp h3 a{color:var(--accent,#c8ff00);text-decoration:none;font-size:.72rem;white-space:nowrap}
 .toa-ev-chips{display:flex;flex-wrap:wrap;gap:7px}
 .toa-ev-chip{display:inline-block;padding:7px 13px;border:1px solid rgba(150,150,150,.35);border-radius:999px;font:inherit;font-size:.85rem;font-weight:600;color:inherit;background:transparent;transition:background .2s,color .2s,transform .2s,box-shadow .2s}
-button.toa-ev-chip{cursor:pointer}
-.toa-ev-chip.on{background:var(--accent,#c8ff00);color:#0a0a0a;border-color:var(--accent,#c8ff00);transform:scale(1.06);box-shadow:0 0 20px rgba(200,255,0,.4)}
+button.toa-ev-chip{cursor:pointer;font-family:inherit;text-transform:none;letter-spacing:0;line-height:1.25;margin:0;box-shadow:none;-webkit-appearance:none;appearance:none}
+.toa-ev-chip{line-height:1.25;text-transform:none;letter-spacing:0}
+button.toa-ev-chip.on,.toa-ev-chip.on{background:var(--accent,#c8ff00);color:#0a0a0a;border-color:var(--accent,#c8ff00);transform:scale(1.06);box-shadow:0 0 20px rgba(200,255,0,.4)}
 .toa-ev-foot{margin:6px 0 0;font-size:.78rem;color:var(--gray-4);border-left:2px solid var(--accent);padding-left:10px;line-height:1.5}
 @media(max-width:760px){.toa-ev-wrap{grid-template-columns:1fr;gap:20px}.toa-ev-stage{aspect-ratio:4/5;max-width:420px;width:100%;margin:0 auto}}
 /* Garanzie compatte */
