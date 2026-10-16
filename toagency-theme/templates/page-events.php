@@ -63,12 +63,12 @@ $t = array(
     'how_step4' => array('it'=>"GESTIONE COMPLETA",'en'=>"FULL MANAGEMENT",'fr'=>"GESTION COMPLÈTE",'es'=>"GESTIÓN COMPLETA"),
     'how_tagline' => array('it'=>"Un solo referente • Un solo preventivo • Risposta rapida",'en'=>"One point of contact • One quote • Fast reply",'fr'=>"Un seul interlocuteur • Un seul devis • Réponse rapide",'es'=>"Un único interlocutor • Un único presupuesto • Respuesta rápida"),
     'cov_eyebrow' => array('it'=>"Dove operiamo",'en'=>"Where we operate",'fr'=>"Où nous intervenons",'es'=>"Dónde operamos"),
-    'cov_heading' => array('it'=>"Milano, Roma, Torino, Parigi",'en'=>"Milan, Rome, Turin, Paris",'fr'=>"Milan, Rome, Turin, Paris",'es'=>"Milán, Roma, Turín, París"),
+    'cov_heading' => array('it'=>"Milano, Roma, Costa Azzurra, Madrid, Barcellona, Londra…",'en'=>"Milan, Rome, French Riviera, Madrid, Barcelona, London…",'fr'=>"Milan, Rome, Côte d'Azur, Madrid, Barcelone, Londres…",'es'=>"Milán, Roma, Costa Azul, Madrid, Barcelona, Londres…"),
     'cov_sub' => array(
-        'it' => "E altre città su richiesta, in Italia e in Europa.",
-        'en' => "And other cities on request, across Italy and Europe.",
-        'fr' => "Et d'autres villes sur demande, en Italie et en Europe.",
-        'es' => "Y otras ciudades bajo petición, en Italia y en Europa.",
+        'it' => "E in ogni altra città: lavoriamo ovunque serva, anche dove non l'abbiamo scritto.",
+        'en' => "And every other city: we work wherever you need us, even where it isn't listed.",
+        'fr' => "Et dans toutes les autres villes : nous intervenons partout où vous en avez besoin, même si elle n'est pas citée.",
+        'es' => "Y en cualquier otra ciudad: trabajamos donde nos necesites, aunque no esté en la lista.",
     ),
 );
 
@@ -193,6 +193,7 @@ toa_component('header');
     if(cur>=0){ imgs[cur].classList.remove('on'); if(chips[cur]) chips[cur].classList.remove('on'); }
     cur=i; pos=order.indexOf(i); imgs[i].classList.add('on'); if(chips[i]) chips[i].classList.add('on');
     cs.textContent=imgs[i].getAttribute('data-grp'); cb.textContent=imgs[i].getAttribute('data-role');
+    var nx=imgs[order[(pos+1)%n]]; if(nx.loading==='lazy') nx.loading='eager'; // precarica la prossima: niente flash vuoto
     if(manual){ start(); }
   }
   function tick(){ if(!paused && visible) go(order[(pos+1)%n]); }
