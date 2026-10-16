@@ -150,14 +150,20 @@ toa_component('header');
         // foto presenti su disco, nell'ordine dei servizi
         $ev_has = false;
         foreach ($data as $sv) { foreach ($sv['roles'] as $rl) { if ($rl['p'] && file_exists($ev_dir . $rl['p'] . '.jpg')) { $ev_has = true; break 2; } } }
+        // una foto puo' valere per piu' ruoli: immagini uniche, ruoli che la condividono si accendono insieme
+        $ev_stage = array(); $ev_idx = array();
+        foreach ($data as $sv) { foreach ($sv['roles'] as $rl) {
+            $pk = $rl['p']; if (!$pk || !file_exists($ev_dir . $pk . '.jpg')) continue;
+            if (!isset($ev_idx[$pk])) { $ev_idx[$pk] = count($ev_stage); $ev_stage[] = array('p' => $pk, 'grp' => $_t($sv['title']), 'roles' => array()); }
+            $ev_stage[$ev_idx[$pk]]['roles'][] = $_t($rl['n']);
+        } }
         ?>
         <div class="toa-ev-wrap<?php echo $ev_has ? '' : ' nostage'; ?>">
             <?php if ($ev_has): ?>
             <div class="toa-ev-stage" id="evStage">
-                <?php foreach ($data as $sv): foreach ($sv['roles'] as $rl):
-                    if (!$rl['p'] || !file_exists($ev_dir . $rl['p'] . '.jpg')) continue; ?>
-                <img src="/wp-content/themes/toagency-theme/assets/staff/<?php echo esc_attr($rl['p']); ?>.jpg" alt="<?php echo esc_attr($_t($rl['n'])); ?>" data-role="<?php echo esc_attr($_t($rl['n'])); ?>" data-grp="<?php echo esc_attr($_t($sv['title'])); ?>"<?php echo $ev_i ? ' loading="lazy"' : ''; ?>>
-                <?php $ev_i++; endforeach; endforeach; ?>
+                <?php foreach ($ev_stage as $es): $es_n = implode(' · ', $es['roles']); ?>
+                <img src="/wp-content/themes/toagency-theme/assets/staff/<?php echo esc_attr($es['p']); ?>.jpg" alt="<?php echo esc_attr($es_n); ?>" data-role="<?php echo esc_attr($es_n); ?>" data-grp="<?php echo esc_attr($es['grp']); ?>"<?php echo $ev_i ? ' loading="lazy"' : ''; ?>>
+                <?php $ev_i++; endforeach; ?>
                 <div class="toa-ev-cap"><small></small><b></b></div>
             </div>
             <?php endif; ?>
@@ -168,7 +174,7 @@ toa_component('header');
                     <div class="toa-ev-chips">
                         <?php foreach ($sv['roles'] as $rl):
                             if ($rl['p'] && file_exists($ev_dir . $rl['p'] . '.jpg')): ?>
-                        <span class="toa-ev-chip" role="button" tabindex="0" data-i="<?php echo $ev_n++; ?>"><?php echo $_t($rl['n']); ?></span>
+                        <span class="toa-ev-chip" role="button" tabindex="0" data-i="<?php echo (int) $ev_idx[$rl['p']]; ?>"><?php echo $_t($rl['n']); ?></span>
                         <?php else: ?>
                         <span class="toa-ev-chip"><?php echo $_t($rl['n']); ?></span>
                         <?php endif; endforeach; ?>
@@ -189,16 +195,17 @@ toa_component('header');
   if(!n) return;
   for(var o=0; o<n; o++) order.push(o);
   for(var k=n-1; k>0; k--){ var j=Math.floor(Math.random()*(k+1)), t=order[k]; order[k]=order[j]; order[j]=t; } // ordine casuale a ogni visita
+  function lit(i,on){ for(var q=0;q<chips.length;q++){ if(+chips[q].getAttribute('data-i')===i) chips[q].classList.toggle('on',on); } }
   function go(i, manual){
-    if(cur>=0){ imgs[cur].classList.remove('on'); if(chips[cur]) chips[cur].classList.remove('on'); }
-    cur=i; pos=order.indexOf(i); imgs[i].classList.add('on'); if(chips[i]) chips[i].classList.add('on');
+    if(cur>=0){ imgs[cur].classList.remove('on'); lit(cur,false); }
+    cur=i; pos=order.indexOf(i); imgs[i].classList.add('on'); lit(i,true);
     cs.textContent=imgs[i].getAttribute('data-grp'); cb.textContent=imgs[i].getAttribute('data-role');
     var nx=imgs[order[(pos+1)%n]]; if(nx.loading==='lazy') nx.loading='eager'; // precarica la prossima: niente flash vuoto
     if(manual){ start(); }
   }
   function tick(){ if(!paused && visible) go(order[(pos+1)%n]); }
   function start(){ clearInterval(timer); if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches) timer=setInterval(tick,1800); }
-  for(var c=0; c<chips.length; c++){ (function(i){ var pick=function(){ go(i,true); if(window.innerWidth<=760 && st.scrollIntoView) st.scrollIntoView({behavior:'smooth',block:'center'}); }; chips[i].addEventListener('click',pick); chips[i].addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } }); })(c); }
+  for(var c=0; c<chips.length; c++){ (function(el){ var i=+el.getAttribute('data-i'); var pick=function(){ go(i,true); if(window.innerWidth<=760 && st.scrollIntoView) st.scrollIntoView({behavior:'smooth',block:'center'}); }; el.addEventListener('click',pick); el.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } }); })(chips[c]); }
   st.addEventListener('mouseenter',function(){paused=true;}); st.addEventListener('mouseleave',function(){paused=false;});
   if('IntersectionObserver' in window){ new IntersectionObserver(function(e){ visible=e[0].isIntersecting; },{threshold:0.1}).observe(st); }
   go(order[0]); start();
