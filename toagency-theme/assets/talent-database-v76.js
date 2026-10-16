@@ -1,5 +1,6 @@
 // FIX 2026-07-03 marco — codice talent a video: A687 invece di 9000687 (id>=9M), legacy invariati; solo display, DB intatto
-function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-9000000)):String(id);}
+// #657 — stessa regola di lib/codice_talent.php del CRM: se cambia, cambiare entrambi
+function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<9000000)return String(id);if(id>=88888802)return 'A'+(id-88888802+1705);return 'A'+(id-9000000);}
 /**
  * TOAgency — Talent Database (pagina pubblica)
  * v1.0 — 8 Maggio 2026
@@ -887,7 +888,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         var sel = TD.selectedIds.has(id) ? ' selected' : '';
         // 2026-08-11 marco — v76.2 COVER da album eventi (contratto CRM): URL già pronto con w=400, si usa
         // così com'è, senza aggiungere parametri; null/assente → foto profilo come prima (fallback pulito).
-        var fotoSrc = t.cover || (FOTO_URL + '?id=' + encodeURIComponent(id) + '&w=400'); // FIX 2026-06-25 marco — miniatura card (~80% peso in meno); modal/galleria restano full
+        var fotoSrc = t.cover || (t.foto ? t.foto + '&w=400' : FOTO_URL + '?id=' + encodeURIComponent(id) + '&w=400'); // #657: t.foto ha v=HASH (cache giusta) // FIX 2026-06-25 marco — miniatura card (~80% peso in meno); modal/galleria restano full
         // 2026-06-02 marco — BUG FIX foto bianche: le prime 12 card (above-the-fold) caricano la foto
         // SUBITO (src diretto, niente lazy) → nessuna dipendenza da lazySizes/observer per ciò che è già visibile.
         var eager = (parseInt(idx, 10) || 0) < 12;
@@ -1154,7 +1155,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
         // Galleria: usa media[] dall'API (res.media), fallback foto profilo
         var galleryMedia = (media && media.length > 0)
             ? media
-            : [{ tipo: 'foto', url: FOTO_URL + '?id=' + encodeURIComponent(t.id) }];
+            : [{ tipo: 'foto', url: t.foto || (FOTO_URL + '?id=' + encodeURIComponent(t.id)) }];
         renderGallery(galleryMedia);
         // FIX 2026-06-26 marco — minore: bottone "Richiedi info" anche sotto il lucchetto (colonna foto del modal)
         var galMain = document.querySelector('#tdbTalentModal .toa-tdb-gallery-main');
@@ -1492,7 +1493,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;return id>=9000000?('A'+(id-900
             if (t.is_minor) {
                 thumb = '<span class="toa-tdb-cartp-thumb toa-tdb-cartp-thumb--txt" title="' + escapeHtml(i18n('minor_label')) + '">🔒</span>';
             } else if (t.is_minor === 0) {
-                thumb = '<img class="toa-tdb-cartp-thumb" src="' + escapeHtml(FOTO_URL + '?id=' + encodeURIComponent(id) + '&w=400') + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">';
+                thumb = '<img class="toa-tdb-cartp-thumb" src="' + escapeHtml(t.foto ? t.foto + '&w=400' : FOTO_URL + '?id=' + encodeURIComponent(id) + '&w=400') + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">';
             } else {
                 // is_minor null = selezione salvata prima del pannello: per prudenza niente foto, solo iniziale
                 thumb = '<span class="toa-tdb-cartp-thumb toa-tdb-cartp-thumb--txt">' + initial + '</span>';
