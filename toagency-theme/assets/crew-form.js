@@ -317,12 +317,14 @@
                 opt.dataset.value = item.code;
                 opt.dataset.label = item.flag + ' ' + item.prefix;
                 opt.innerHTML = '<span class="flag">' + item.flag + '</span><span>' + item.prefix + '</span><span class="small-info">' + item.name + '</span>';
-                if (item.code === 'IT') {
+                // 2026-10-17 (ticket #665): +39 preselezionato SOLO nella pagina italiana, altrove nessun paese scelto
+                if (item.code === 'IT' && (!window.ToaContatti || ToaContatti.preselIT)) {
                     opt.classList.add('selected');
                     phonePrefixSelect.querySelector('input[type="hidden"]').value = 'IT';
                     phonePrefixSelect.querySelector('.toa-crew-customselect-label').textContent = item.flag + ' ' + item.prefix;
                 }
             });
+            if (window.ToaContatti) ToaContatti.dopoPrefissi(phonePrefixSelect, 'toa-crew');
         }).catch(function(){
             // fallback: solo IT
             populateSelect(phonePrefixSelect, [{code:'IT',prefix:'+39',name:'Italia',flag:'🇮🇹'}], function(opt,item){
@@ -335,6 +337,9 @@
             });
         });
     }
+
+    // 2026-10-17 (ticket #665): "Ripeti email" + "Ripeti numero" (controlli e testi nel CRM, contatti-check-js.php)
+    if (window.ToaContatti) ToaContatti.setup({ form: form, cls: 'toa-crew', prefixBox: 'toaCrewPhonePrefix' });
 
     // Nazioni (residenza + domicilio)
     function loadNations(targetSelect) {
@@ -748,6 +753,8 @@
             if (emailF && emailF.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailF.value)) {
                 showFieldError(emailF, 'Email non valida'); ok = false;
             }
+            // 2026-10-17 (ticket #665): coppie email/telefono + prefisso, regole dal CRM (TOA_CC)
+            if (window.ToaContatti && ToaContatti.verifica().length) ok = false;
             var age = calcAge(dob.value);
             if (dob.value && age < 16) { showFieldError(dob, 'Devi avere almeno 16 anni'); ok = false; }
         }
@@ -1122,6 +1129,7 @@
             case 'missing_dob':
             case 'age_too_low':
             case 'missing_parent_data':
+            case 'contatti_conferma': // #665: email/telefono ripetuti diversi o numero non valido (res.message già nella lingua)
                 stepToGo = 1;
                 break;
             case 'missing_nation':

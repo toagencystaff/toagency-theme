@@ -504,12 +504,14 @@
                 opt.dataset.value = item.code;
                 opt.dataset.label = item.flag + ' ' + item.prefix;
                 opt.innerHTML = '<span class="flag">' + item.flag + '</span><span>' + item.prefix + '</span><span class="small-info">' + item.name + '</span>';
-                if (item.code === 'IT') {
+                // 2026-10-17 (ticket #665): +39 preselezionato SOLO nella pagina italiana, altrove nessun paese scelto
+                if (item.code === 'IT' && (!window.ToaContatti || ToaContatti.preselIT)) {
                     opt.classList.add('selected');
                     phonePrefixSelect.querySelector('input[type="hidden"]').value = 'IT';
                     phonePrefixSelect.querySelector('.toa-talent-customselect-label').textContent = item.flag + ' ' + item.prefix;
                 }
             });
+            if (window.ToaContatti) ToaContatti.dopoPrefissi(phonePrefixSelect, 'toa-talent');
         }).catch(function(){
             // fallback: solo IT
             populateSelect(phonePrefixSelect, [{code:'IT',prefix:'+39',name:'Italia',flag:'🇮🇹'}], function(opt,item){
@@ -522,6 +524,9 @@
             });
         });
     }
+
+    // 2026-10-17 (ticket #665): "Ripeti email" + "Ripeti numero" (controlli e testi nel CRM, contatti-check-js.php)
+    if (window.ToaContatti) ToaContatti.setup({ form: form, cls: 'toa-talent', prefixBox: 'toaTalentPhonePrefix' });
 
     // Nazioni (residenza + domicilio)
     function loadNations(targetSelect) {
@@ -1587,6 +1592,8 @@
             if (emailF && emailF.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailF.value)) {
                 showFieldError(emailF, tmsg(MSG.emailInvalid)); ok = false;
             }
+            // 2026-10-17 (ticket #665): coppie email/telefono + prefisso, regole dal CRM (TOA_CC)
+            if (window.ToaContatti && ToaContatti.verifica().length) ok = false;
 
             // Sesso obbligatorio
             var sessoF = scope.querySelector('input[name="sesso"]');
@@ -1871,13 +1878,14 @@
             nome: _s1v('nome'), cognome: _s1v('cognome'), email: _s1v('email'),
             telefono: _s1v('telefono'), data_nascita: _s1v('data_nascita'),
             sesso: _s1v('sesso'), res_nation: _s1v('res_nation'), res_provincia: _s1v('res_provincia'),
-            tel_paese_code: _s1v('tel_paese_code') || 'IT', lang: htmlLang,
+            tel_paese_code: _s1v('tel_paese_code'), lang: htmlLang, // 2026-10-17 (#665): niente 'IT' di riserva, il prefisso lo sceglie la persona
             gdpr_consent: _s1cb('gdpr_consent') || '1',
             pubblicazione_immagini_consent: _s1cb('pubblicazione_immagini_consent'),
             disclaimer_consent: _s1cb('disclaimer_consent'),
             wa_consent: _s1cb('wa_consent'), sms_consent: _s1cb('sms_consent'),
             honeypot_url: _s1v('honeypot_url')
         };
+        if (window.ToaContatti) { var _cf = ToaContatti.conferme(); for (var _k in _cf) body[_k] = _cf[_k]; } // #665: email_conferma, telefono_conferma
         return fetch(STEP1_ENDPOINT, {
             method:'POST', headers:{'Content-Type':'application/json'},
             body: JSON.stringify(body), credentials:'same-origin'
@@ -2229,6 +2237,7 @@
             case 'missing_dob':
             case 'age_too_low':
             case 'missing_parent_data':
+            case 'contatti_conferma': // #665: il server ha trovato email/telefono ripetuti diversi o numero non valido (res.message già nella lingua)
                 stepToGo = 1;
                 break;
             case 'missing_nation':

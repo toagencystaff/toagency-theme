@@ -1747,7 +1747,8 @@ $theme_uri = get_stylesheet_directory_uri();
 <?php $tvr_js = get_stylesheet_directory() . '/assets/toa-video-reduce.js'; $tvr_ver = file_exists($tvr_js) ? filemtime($tvr_js) : '1'; /* ticket #442 (02/10/2026): riduzione video nel browser */ ?>
 <script src="<?php echo esc_url($theme_uri . '/assets/toa-video-reduce.js'); ?>?v=<?php echo $tvr_ver; ?>" defer></script>
 <script src="<?php echo esc_url($theme_uri . '/assets/toa-ruoli.js'); ?>?v=20261014r1" defer></script><!-- ticket #622: ruoli a icone dal CRM -->
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20261014r1" defer></script><!-- 2026-08-26 (TEMA-AREE-GEOGRAFICHE): bump v — tendina città grandi per i paesi senza elenco comuni (residenza+domicilio), città pubblica in *_provincia e posto preciso privato in *_city_name; 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/contatti-conferma.js'); ?>?v=20261017r1" defer></script><!-- 2026-10-17 (ticket #665): Ripeti email/telefono + prefisso senza paese predefinito -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20261017r1" defer></script><!-- 2026-08-26 (TEMA-AREE-GEOGRAFICHE): bump v — tendina città grandi per i paesi senza elenco comuni (residenza+domicilio), città pubblica in *_provincia e posto preciso privato in *_city_name; 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT
@@ -1859,7 +1860,7 @@ document.addEventListener('DOMContentLoaded', function() {
       setVal('instagram', p.instagram);
       setVal('telefono', p.telefono);
       var em = document.querySelector('#toaTalentForm [name="email"]');
-      if (em && p.email) { em.setAttribute('readonly','readonly'); em.style.opacity = '0.8'; }
+      if (em && p.email) { em.setAttribute('readonly','readonly'); em.style.opacity = '0.8'; if (window.ToaContatti) ToaContatti.emailPrecompilata(); /* #665: email già confermata dal link */ }
       var form2 = document.getElementById('toaTalentForm');
       if (form2) {
         var intro = document.createElement('div');

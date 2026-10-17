@@ -1160,6 +1160,8 @@ $tse_js_ver  = file_exists($tse_js_path) ? filemtime($tse_js_path) : '2.1';
 <?php $trl_js = get_stylesheet_directory() . '/assets/toa-ruoli.js'; $trl_ver = file_exists($trl_js) ? filemtime($trl_js) : '1'; $trl_css = get_stylesheet_directory() . '/assets/toa-ruoli.css'; $trl_cver = file_exists($trl_css) ? filemtime($trl_css) : '1'; /* ticket #622: ruoli a icone + «I tuoi lavori» */ ?>
 <link rel="stylesheet" href="<?= esc_url($theme_uri . '/assets/toa-ruoli.css') ?>?v=<?= $trl_cver ?>">
 <script src="<?= esc_url($theme_uri . '/assets/toa-ruoli.js') ?>?v=<?= $trl_ver ?>" defer></script>
+<?php $tcc_js = get_stylesheet_directory() . '/assets/contatti-conferma.js'; $tcc_ver = file_exists($tcc_js) ? filemtime($tcc_js) : '1'; /* ticket #665: Ripeti il numero quando cambia il telefono */ ?>
+<script src="<?= esc_url($theme_uri . '/assets/contatti-conferma.js') ?>?v=<?= $tcc_ver ?>" defer></script>
 <script src="<?= esc_url($theme_uri . '/assets/talent-self-edit.js') ?>?v=<?= $tse_js_ver ?>" defer></script>
 <?php $tpr_js = get_stylesheet_directory() . '/assets/talent-profilo-ruolo.js'; $tpr_ver = file_exists($tpr_js) ? filemtime($tpr_js) : '1'; /* FIX 2026-09-23 marco: versione = data del file, niente bump a mano */ ?>
 <script src="<?= esc_url($theme_uri . '/assets/talent-profilo-ruolo.js') ?>?v=<?= $tpr_ver ?>" defer></script><!-- FEATURE 2026-09-23 marco (RUOLI MULTI-SCHEDA) -->
