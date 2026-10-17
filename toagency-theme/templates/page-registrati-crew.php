@@ -677,7 +677,7 @@ $theme_uri = get_stylesheet_directory_uri();
 </div>
 
 <script src="<?php echo esc_url($theme_uri . '/assets/toa-ruoli.js'); ?>?v=20261014r1" defer></script><!-- ticket #622: ruoli a icone dal CRM -->
-<script src="<?php echo esc_url($theme_uri . '/assets/contatti-conferma.js'); ?>?v=20261017r1" defer></script><!-- 2026-10-17 (ticket #665): Ripeti email/telefono + prefisso senza paese predefinito -->
+<script src="<?php echo esc_url($theme_uri . '/assets/contatti-conferma.js'); ?>?v=20261017r2" defer></script><!-- 2026-10-17 (ticket #665): Ripeti email/telefono + prefisso senza paese predefinito -->
 <script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.5-20261017c1" defer></script><!-- 2026-08-26 (TEMA-AREE-GEOGRAFICHE): tendina città grandi paesi esteri, residenza+domicilio; TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
 
 <!-- ══════════════════════════════════════════════

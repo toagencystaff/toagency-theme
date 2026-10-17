@@ -471,6 +471,7 @@
                     if (pfxEl) pfxEl.value = '+39';
                     numEl.value = raw;
                 }
+                _tseTel.pfx = m ? m[1] : '+39'; // #665: prefisso salvato, da riapplicare se la tendina viene riempita dopo
                 tseTelRiparti(); // #665: il numero appena caricato è quello "originale"
             })();
 
@@ -577,7 +578,7 @@
 
     // ─── 2026-10-17 (ticket #665) — "Ripeti il numero" SOLO quando il talent cambia il telefono ───
     // Regole e testi dal CRM (TOA_CC, contatti-check-js.php). Se lo script non si carica, il campo non compare e si salva come prima.
-    var _tseTel = { orig: null, wrap: null, input: null, ok: false, started: false };
+    var _tseTel = { orig: null, wrap: null, input: null, ok: false, started: false, pfx: '' };
     function tseTelComposto() {
         var p = $('f-telefono-prefix'), n = $('f-telefono');
         var num = (n && n.value.trim()) || '';
@@ -601,6 +602,11 @@
         ToaContatti.loadCC(function (ok) {
             if (!ok || !window.TOA_CC) { console.warn('[contatti] script CRM non caricato: modifica profilo senza doppia digitazione'); return; }
             var T = window.TOA_CC.T || {};
+            // #665: tendina con tutti i Paesi nella lingua della pagina (elenco del CRM); value '+39', data-iso 'IT'
+            if (pfx && typeof window.TOA_CC.riempiPrefissi === 'function') {
+                window.TOA_CC.riempiPrefissi(pfx, '', null);
+                if (_tseTel.pfx) pfx.value = _tseTel.pfx;
+            }
             var f = ToaContatti.creaCampo('tse', tel, 'f-telefono2', 'telefono_conferma', T.lbl_tel2 || 'Tel', 'tel', T.ph_tel2 || '', 'off');
             if (!f) return;
             _tseTel.wrap = f.wrap; _tseTel.input = f.input; _tseTel.ok = true;
@@ -639,7 +645,11 @@
             var num = ($('f-telefono') && $('f-telefono').value.trim()) || '';
             payload.telefono = num ? (pfx + ' ' + num) : '';
             // #665: conferma solo se il numero è cambiato (il server la controlla solo allora)
-            if (_tseTel.ok && tseTelCambiato() && _tseTel.input) payload.telefono_conferma = _tseTel.input.value.trim() ? (pfx + ' ' + _tseTel.input.value.trim()) : '';
+            if (_tseTel.ok && tseTelCambiato() && _tseTel.input) {
+                payload.telefono_conferma = _tseTel.input.value.trim() ? (pfx + ' ' + _tseTel.input.value.trim()) : '';
+                var _po = $('f-telefono-prefix'), _opt = _po && _po.options[_po.selectedIndex];
+                if (_opt && _opt.getAttribute('data-iso')) payload.tel_paese_code = _opt.getAttribute('data-iso'); // distingue +1 USA/Canada
+            }
         })();
 
         // Misure (sotto-step 2, 15/07) — oggetto misure + data

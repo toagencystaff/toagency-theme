@@ -21,8 +21,7 @@
 
     // Testi minimi non presenti in TOA_CC.T (le etichette "Ripeti…" vengono da TOA_CC.T)
     var TX = {
-        prefisso: { it: 'Prefisso', en: 'Prefix', fr: 'Indicatif', es: 'Prefijo' },
-        altro:    { it: 'Altro',    en: 'Other',  fr: 'Autre',     es: 'Otro' }
+        prefisso: { it: 'Prefisso', en: 'Prefix', fr: 'Indicatif', es: 'Prefijo' }
     };
     function t(k) { return (TX[k] && (TX[k][LANG] || TX[k].en)) || ''; }
 
@@ -36,7 +35,7 @@
     function loadCC(cb) {
         if (w.TOA_CC) { cb(true); return; }
         var s = d.createElement('script');
-        s.src = '/crm_toagency/contatti-check-js.php?lang=' + LANG;
+        s.src = '/crm_toagency/contatti-check-js.php?lang=' + LANG + '&v=20261017b'; // v: evita la copia vecchia in cache (senza riempiPrefissi)
         s.onload = function () { cb(!!w.TOA_CC); };
         s.onerror = function () { cb(false); };
         d.head.appendChild(s);
@@ -68,38 +67,52 @@
         return { wrap: wrap, input: inp };
     }
 
-    // Prefisso: nessun paese predefinito fuori dall'italiano + voce «Altro»
+    // Prefisso: nessun paese predefinito fuori dall'italiano; elenco = quello del CRM (TOA_CC.riempiPrefissi,
+    // 197 Paesi nella lingua della pagina, stesso ordine di candidatura.php). Se non si carica resta l'elenco del tema.
     function dopoPrefissi(box, cls) {
         if (!box) return;
         var hid = q('input[type="hidden"]', box);
         var lbl = q('.' + cls + '-customselect-label', box);
         var optsBox = q('.' + cls + '-customselect-options', box);
         if (!hid || !optsBox) return;
-        if (!q('.' + cls + '-customselect-option[data-altro]', optsBox)) {
-            var o = d.createElement('div');
-            o.className = cls + '-customselect-option';
-            o.setAttribute('data-altro', '1');
-            o.dataset.value = '';
-            o.dataset.label = t('altro') + ' (+…)';
-            o.innerHTML = '<span class="flag">🌍</span><span>+…</span><span class="small-info">' + t('altro') + '</span>';
-            optsBox.insertBefore(o, optsBox.firstChild);
-        }
         if (!PRESEL_IT) {
-            // nessun paese scelto: l'utente deve sceglierlo
             optsBox.querySelectorAll('.selected').forEach(function (x) { x.classList.remove('selected'); });
             hid.value = '';
             if (lbl) lbl.textContent = t('prefisso');
         }
-        box.dataset.ccAltro = '';
-        if (!box._ccBound) {
-            box._ccBound = true;
-            box.addEventListener('toa:select', function (e) {
-                var isAltro = !!(e.detail && e.detail.label && e.detail.label.indexOf(t('altro')) === 0 && !e.detail.value);
-                box.dataset.ccAltro = isAltro ? '1' : '';
-                var tel = S.cfg && S.cfg.tel;
-                if (tel && isAltro) { tel.placeholder = '+244 …'; try { tel.focus(); } catch (x) {} }
+        loadCC(function (ok) {
+            if (!ok || !w.TOA_CC || typeof w.TOA_CC.riempiPrefissi !== 'function') return;
+            var tmp = d.createElement('select');
+            tmp.id = 'toaCcTmpPref'; tmp.style.display = 'none';
+            d.body.appendChild(tmp);
+            try { w.TOA_CC.riempiPrefissi(tmp, hid.value, null); } catch (e) { tmp.remove(); return; }
+            var frag = d.createDocumentFragment(), n = 0;
+            Array.prototype.forEach.call(tmp.options, function (o) {
+                if (o.disabled) {
+                    var sep = d.createElement('div');
+                    sep.style.cssText = 'height:1px;background:rgba(255,255,255,.15);margin:4px 8px;';
+                    frag.appendChild(sep);
+                    return;
+                }
+                var iso = o.getAttribute('data-iso') || '', dial = o.value, txt = o.textContent || '';
+                var flag = txt.split(' ')[0];
+                var nome = txt.substring(flag.length + 1 + dial.length + 1);
+                var div = d.createElement('div');
+                div.className = cls + '-customselect-option';
+                div.dataset.value = iso;
+                div.dataset.label = flag + ' ' + dial;
+                [['flag', flag], ['', dial], ['small-info', nome]].forEach(function (p) {
+                    var sp = d.createElement('span'); if (p[0]) sp.className = p[0]; sp.textContent = p[1]; div.appendChild(sp);
+                });
+                if (iso && iso === hid.value) {
+                    div.classList.add('selected');
+                    if (lbl) lbl.textContent = flag + ' ' + dial;
+                }
+                frag.appendChild(div); n++;
             });
-        }
+            tmp.remove();
+            if (n > 50) { optsBox.innerHTML = ''; optsBox.appendChild(frag); }
+        });
     }
 
     // Valore prefisso per TOA_CC: ISO ("FR"), "+39", oppure '' (numero col + davanti o nessuna scelta)
