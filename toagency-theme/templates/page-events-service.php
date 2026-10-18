@@ -26,6 +26,14 @@ $t = array(
     'line'     => array('it'=>"Raccontaci cosa ti serve per l'evento: ce ne occupiamo noi.",'en'=>"Tell us what your event needs: we'll take care of it.",'fr'=>"Dites-nous ce dont votre événement a besoin : nous nous en occupons.",'es'=>"Cuéntanos qué necesita tu evento: nos encargamos nosotros."),
     'b2bonly'  => array('it'=>"Servizio per aziende, agenzie e produzioni — non per candidature.",'en'=>"A service for companies, agencies and productions — not for job applications.",'fr'=>"Un service pour entreprises, agences et productions — pas pour les candidatures.",'es'=>"Un servicio para empresas, agencias y producciones — no para candidaturas."),
     'talentexit' => array('it'=>"Sei un talent in cerca di lavoro? Registrati qui",'en'=>"Are you a talent looking for work? Register here",'fr'=>"Vous êtes un talent à la recherche de travail ? Inscrivez-vous ici",'es'=>"¿Eres un talento que busca trabajo? Regístrate aquí"),
+    'cov_eyebrow' => array('it'=>"Dove operiamo",'en'=>"Where we operate",'fr'=>"Où nous intervenons",'es'=>"Dónde operamos"),
+    'cov_heading' => array('it'=>"Milano, Roma, Costa Azzurra, Madrid, Barcellona, Londra…",'en'=>"Milan, Rome, French Riviera, Madrid, Barcelona, London…",'fr'=>"Milan, Rome, Côte d'Azur, Madrid, Barcelone, Londres…",'es'=>"Milán, Roma, Costa Azul, Madrid, Barcelona, Londres…"),
+    'cov_sub' => array(
+        'it' => "E in ogni altra città: lavoriamo ovunque serva, anche dove non l'abbiamo scritto.",
+        'en' => "And every other city: we work wherever you need us, even where it isn't listed.",
+        'fr' => "Et dans toutes les autres villes : nous intervenons partout où vous en avez besoin, même si elle n'est pas citée.",
+        'es' => "Y en cualquier otra ciudad: trabajamos donde nos necesites, aunque no esté en la lista.",
+    ),
     'r_eyebrow'=> array('it'=>"Cosa proponiamo",'en'=>"What we offer",'fr'=>"Ce que nous proposons",'es'=>"Qué ofrecemos"),
     'r_heading'=> array('it'=>"Le figure che proponiamo",'en'=>"The roles we provide",'fr'=>"Les profils que nous proposons",'es'=>"Los perfiles que ofrecemos"),
     'o_eyebrow'=> array('it'=>"Altri servizi",'en'=>"More services",'fr'=>"Autres services",'es'=>"Otros servicios"),
@@ -132,6 +140,15 @@ toa_component('header');
             <?php endforeach; ?>
             <?php $hub = $url('hub'); if ($hub): ?><a class="hub" href="<?php echo esc_url($hub); ?>"><?php echo $_t($t['o_hub']); ?> &rarr;</a><?php endif; ?>
         </div>
+    </div>
+</section>
+
+<!-- Dove operiamo -->
+<section class="coverage-section">
+    <div class="container">
+        <div class="section-eyebrow"><?php echo $_t($t['cov_eyebrow']); ?></div>
+        <h2 class="section-heading" style="margin-bottom:12px"><?php echo $_t($t['cov_heading']); ?></h2>
+        <p style="font-size:0.95rem;color:var(--gray-4);max-width:640px;margin:0 0 20px"><?php echo $_t($t['cov_sub']); ?></p>
     </div>
 </section>
 
