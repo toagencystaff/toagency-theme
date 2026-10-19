@@ -38,6 +38,8 @@ $fe_js = array(
       <h2 class="section-heading"><?php echo _ht($fe_heading); ?></h2>
       <p class="inline-quote-sub"><?php echo _ht($fe_sub); ?></p>
 
+      <?php toa_component('b2b-intent-gate', array('form_id' => 'feForm')); /* #672: azienda / cerco lavoro */ ?>
+
       <form id="feForm" method="post" novalidate>
         <div class="iq-grid">
           <div class="iq-field">

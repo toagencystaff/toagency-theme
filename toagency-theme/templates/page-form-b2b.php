@@ -87,6 +87,8 @@ $b2bw_dir  = array('b2bw-a', 'b2bw-b');
     <h2 style="font-size:1.3rem;font-weight:700;text-transform:uppercase;text-align:center;margin-bottom:6px"><?php echo toa_t('form_b2b', 'form_heading'); ?></h2>
     <p style="font-size:0.85rem;opacity:0.5;text-align:center;margin-bottom:24px"><?php echo toa_t('form_b2b', 'form_subheading'); ?></p>
 
+    <?php toa_component('b2b-intent-gate', array('form_id' => 'leadForm')); /* #672: azienda / cerco lavoro */ ?>
+
     <form id="leadForm" method="post">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
         <div class="form-group">
@@ -397,6 +399,7 @@ document.getElementById('leadForm').addEventListener('submit', async function(e)
 window.addEventListener('beforeunload', function() {
   try {
     var saved = JSON.parse(localStorage.getItem('toa_form_b2b') || '{}');
+    if (window.toaIntent === 'lavoro') return; // #672: chi cerca lavoro non va mai al CRM
     if (saved.company && saved.email && saved.phone) {
       navigator.sendBeacon(CRM_ENDPOINT, JSON.stringify(Object.assign({}, saved, { source: 'Beacon Recovery', _token: CRM_TOKEN })));
     }
