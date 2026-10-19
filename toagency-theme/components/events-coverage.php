@@ -13,7 +13,7 @@ $ec_groups = array(
   'it' => array(
     array("Milano","Milan","Milan","Milán"),
     array("Roma","Rome","Rome","Roma"),
-    array("Torino","Turin","Turin","Turín",true),
+    array("Torino","Turin","Turin","Turín",true,'torino'),
     array("Genova","Genoa","Gênes","Génova"),
     array("Emilia-Romagna","Emilia-Romagna","Émilie-Romagne","Emilia-Romaña"),
     array("Veneto","Veneto","Vénétie","Véneto"),
@@ -54,12 +54,18 @@ $ec_first = array('it'=>'it','en'=>'en','fr'=>'fr','es'=>'es');
 $ec_order = array($ec_first[$ec_lang]);
 foreach (array('it','fr','es','en') as $g) { if (!in_array($g, $ec_order, true)) { $ec_order[] = $g; } }
 $ec_order[] = 'xx';
+$ec_pg = get_option('toa_events_cities', array());
 $ec_parts = array();
 foreach ($ec_order as $g) {
     $cities = array();
     foreach ($ec_groups[$g] as $c) {
         $name = esc_html($c[$ec_k]);
-        $cities[] = !empty($c[4]) ? '<strong style="color:var(--white,#fff)">' . $name . '</strong>' : $name;
+        $label = !empty($c[4]) ? '<strong style="color:var(--white,#fff)">' . $name . '</strong>' : $name;
+        // se la città ha una pagina TOA Events pubblicata (opzione toa_events_cities) il nome diventa un link
+        if (!empty($c[5]) && isset($ec_pg[$c[5]][$ec_lang]) && get_post_status((int) $ec_pg[$c[5]][$ec_lang]) === 'publish') {
+            $label = '<a href="' . esc_url(get_permalink((int) $ec_pg[$c[5]][$ec_lang])) . '" style="color:inherit;text-decoration:underline;text-underline-offset:3px">' . $label . '</a>';
+        }
+        $cities[] = $label;
     }
     $ec_parts[] = implode(', ', $cities);
 }
