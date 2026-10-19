@@ -1,7 +1,7 @@
-STATO=CLOSED
+STATO=OPEN
 CHAT=TEMA LP-FRANCIA
 FILE=toagency-theme/components/form-b2b-inline.php
-INIZIO=2026-10-14 20:37:10
-UPDATE=2026-10-14 20:44:36
-SHA1_ATTESO=6334c763ce837a21ae8ba7271e679d8122284ba6
-NOTA=TEMA LP-FRANCIA round 5 LIVE prod 14/10: via WhatsApp solo da /fr/. Verificato dal vivo. Lock chiuso.
+INIZIO=2026-10-15 10:28:07
+UPDATE=2026-10-15 10:28:07
+SHA1_ATTESO=60be1b1abc731065e16c68fe59d2923dc69c92bb
+NOTA=Round 7: pulizia /fr/ (telefono nello schema solo LP FR, remise, placeholder email, 24h).

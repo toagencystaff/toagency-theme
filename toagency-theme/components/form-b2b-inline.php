@@ -55,7 +55,7 @@ $hq_js = array(
         <div class="iq-grid">
           <div class="iq-field">
             <label class="iq-label" for="hq_email"><?php echo _ht(array('it'=>'Email','en'=>'Email','fr'=>'Email','es'=>'Email')); ?></label>
-            <input type="email" id="hq_email" name="email" required placeholder="email@azienda.it" class="iq-input">
+            <input type="email" id="hq_email" name="email" required placeholder="<?php echo esc_attr(_ht(array('it'=>'email@azienda.it','en'=>'email@company.com','fr'=>'email@entreprise.com','es'=>'email@empresa.com'))); ?>" class="iq-input">
           </div>
           <div class="iq-field">
             <label class="iq-label" for="hq_phone"><?php echo _ht(array('it'=>'Telefono','en'=>'Phone','fr'=>'Téléphone','es'=>'Teléfono')); ?></label>

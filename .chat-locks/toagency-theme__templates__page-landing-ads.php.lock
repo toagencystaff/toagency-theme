@@ -1,7 +1,7 @@
 STATO=OPEN
 CHAT=TEMA LP-FRANCIA
 FILE=toagency-theme/templates/page-landing-ads.php
-INIZIO=2026-10-14 21:56:03
-UPDATE=2026-10-14 21:56:03
-SHA1_ATTESO=a41c49b4d81ed115ef004e7e44731982481223e6
-NOTA=Round 6: /fr/ senza telefono, solo email france@ o form.
+INIZIO=2026-10-15 10:28:07
+UPDATE=2026-10-15 10:28:07
+SHA1_ATTESO=03c323b6ae53d370deef92736a21fc55a48f0c3f
+NOTA=Round 7: pulizia /fr/ (telefono nello schema solo LP FR, remise, placeholder email, 24h).

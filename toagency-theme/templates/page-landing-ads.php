@@ -126,7 +126,7 @@ $COPY = [
     'bul' => [
       'it'=>['20.000+ profili verificati nel database','15+ anni di esperienza, dal 2009','Hostess e staff multilingue','Operativi in tutta Italia'],
       'en'=>['20,000+ verified profiles in our database','15+ years of experience, since 2009','Multilingual hostesses and staff','Active throughout Italy'],
-      'fr'=>['Plus de 20 000 profils vérifiés en base','Plus de 15 ans d\'expérience, depuis 2009','Hôtesses et personnel multilingue','Actifs partout en France et en Italie'],
+      'fr'=>['Plus de 20 000 profils vérifiés en base','Plus de 15 ans d\'expérience','Hôtesses et personnel multilingue','Actifs partout en France et en Italie'],
       'es'=>['Más de 20.000 perfiles verificados en la base de datos','Más de 15 años de experiencia, desde 2009','Azafatas y personal multilingüe','Operativos en toda Italia'],
     ],
     'serv' => ['it'=>'Hostess e steward per fiere e stand; promoter per attività promozionali e GDO; staff per congressi ed eventi corporate. Gestione completa: contratti, compensi e coordinamento sul posto.','en'=>'Hostesses and stewards for trade fairs and stands; promoters for promotional activities and retail; staff for congresses and corporate events. Full management: contracts, fees and on-site coordination.','fr'=>'Hôtesses et stewards pour salons et stands ; promoteurs pour activités promotionnelles et grande distribution ; personnel pour congrès et événements corporate. Un seul interlocuteur, une seule facture.','es'=>'Azafatas y stewards para ferias y stands; promotores para actividades promocionales y retail; personal para congresos y eventos corporativos. Gestión completa: contratos, honorarios y coordinación in situ.'],
@@ -162,7 +162,7 @@ $db_l      = ['it'=>'Visita il nostro database','en'=>'Browse our talent databas
 $DB_URL    = 'https://toagency.it' . ($lang !== 'it' ? '/' . $lang : '') . '/talent-database/'; // FIX 2026-06-20 marco — era toadatabase.it (sito vecchio) · FIX 2026-10-03 (TEMA LP-FRANCIA) — nella lingua della pagina
 
 // FIX 2026-06-24 marco — form protagonista + WhatsApp taggato (lead qualificabile)
-$formhead_l   = ['it'=>'Ricevi una selezione di profili e un preventivo gratuito in 24h','en'=>'Get a shortlist of profiles and a free quote within 24h','fr'=>'Recevez une sélection de profils et un devis gratuit sous 24h','es'=>'Recibe una selección de perfiles y un presupuesto gratuito en 24h'];
+$formhead_l   = ['it'=>'Ricevi una selezione di profili e un preventivo gratuito in 24h','en'=>'Get a shortlist of profiles and a free quote within 24h','fr'=>'Recevez une sélection de profils et un devis gratuit sous 24 heures','es'=>'Recibe una selección de perfiles y un presupuesto gratuito en 24h'];
 $contacthint_l= ['it'=>'Preferisci sentirci subito?','en'=>'Prefer to talk now?','fr'=>'Vous préférez nous écrire ?','es'=>'¿Prefieres contactarnos ya?'];
 // FIX 2026-07-10 marco — WhatsApp card pari peso al form, con etichetta B2B integrata (evitare click di talent)
 $wabig_l      = ['it'=>'Preferisci scriverci subito?','en'=>'Prefer to message us right away?','fr'=>'Vous préférez nous écrire tout de suite ?','es'=>'¿Prefieres escribirnos ahora mismo?'];
@@ -488,7 +488,7 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
        'es'=>['q'=>'¿Hay un número mínimo de personas?','a'=>'No. Trabajamos tanto para una sola azafata como para equipos completos durante varios días.']],
       ['it'=>['q'=>'Come funziona il pagamento?','a'=>'Le condizioni si concordano caso per caso, in base a durata e dimensione del progetto. Con pagamento anticipato applichiamo in genere uno sconto.'],
        'en'=>['q'=>'How does payment work?','a'=>'Terms are agreed case by case, based on the length and size of the project. We usually offer a discount for advance payment.'],
-       'fr'=>['q'=>'Comment se passe le paiement ?','a'=>"Les conditions sont convenues au cas par cas, selon la durée et l'ampleur du projet. En cas de paiement anticipé, nous appliquons généralement une remise."],
+       'fr'=>['q'=>'Comment se passe le paiement ?','a'=>"Les conditions sont convenues au cas par cas, selon la durée et l'ampleur du projet."],
        'es'=>['q'=>'¿Cómo funciona el pago?','a'=>'Las condiciones se acuerdan caso por caso, según la duración y el tamaño del proyecto. Con pago anticipado solemos aplicar un descuento.']],
     ],
     'models-aziende'     => null, // placeholder sotto

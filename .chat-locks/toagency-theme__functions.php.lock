@@ -1,7 +1,7 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=TEMA EVENTS
 FILE=toagency-theme/functions.php
-INIZIO=2026-10-14 19:25:37
-UPDATE=2026-10-14 19:29:49
-SHA1_ATTESO=78d25f8d5c0079c0e93d2cf9235bc9a6b05d43be
-NOTA=Ticket #637 TOA Events: modifica fatta (registrazione template / arg leadsrc), in attesa deploy da DEPLOY_EVENTS_1014.sh
+INIZIO=2026-10-15 10:52:06
+UPDATE=2026-10-16 09:06:13
+SHA1_ATTESO=e4a36a0c9b87cbe039f03b47a0d17e22cfeb2e46
+NOTA=#637 registrazione template sottopagine TOA Events - chiuso, online (commit 5cfdaad52)

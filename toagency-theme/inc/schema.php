@@ -28,7 +28,9 @@ function _toa_schema_tpl() {
 // === 1) ORGANIZATION — arricchisce il nodo Yoast ===
 add_filter( 'wpseo_schema_organization', function ( $data ) {
     $data['@type']      = [ 'Organization', 'ProfessionalService' ];
-    $data['telephone']  = '+39 351 789 9225';
+    // 2026-10-15 (TEMA LP-FRANCIA) — sulla landing Ads FR niente numero di telefono (richiesta Marco): solo email france@
+    $__toa_nophone = ( _toa_schema_tpl() === 'page-landing-ads.php' && function_exists('toa_current_lang') && toa_current_lang() === 'fr' );
+    if ( ! $__toa_nophone ) { $data['telephone'] = '+39 351 789 9225'; }
     $data['email']      = 'info@toagency.it';
     $data['priceRange'] = '€€€';
     $data['address']    = [
@@ -46,12 +48,11 @@ add_filter( 'wpseo_schema_organization', function ( $data ) {
         [ '@type' => 'Country', 'name' => 'United Kingdom' ],
         [ '@type' => 'Country', 'name' => 'Germany' ],
     ];
-    $data['contactPoint'] = [ [
+    $data['contactPoint'] = [ array_merge( [
         '@type'             => 'ContactPoint',
         'contactType'       => 'customer service',
-        'telephone'         => '+39 351 789 9225',
         'availableLanguage' => [ 'Italian', 'English', 'French', 'Spanish' ],
-    ] ];
+    ], $__toa_nophone ? [ 'email' => 'france@toagency.it' ] : [ 'telephone' => '+39 351 789 9225' ] ) ];
     // 2026-09-16 marco -- sameAs profili social ufficiali (chat TEMA SEO-AI)
     $data['sameAs'] = [
         'https://www.facebook.com/toagency/',
