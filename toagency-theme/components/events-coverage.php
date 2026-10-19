@@ -23,6 +23,7 @@ $ec_groups = array(
   'fr' => array(
     array("Parigi","Paris","Paris","París",true),
     array("Costa Azzurra","French Riviera","Côte d'Azur","Costa Azul"),
+    array("Montecarlo","Monte Carlo","Monte-Carlo","Montecarlo"),
     array("Lione","Lyon","Lyon","Lyon"),
   ),
   'es' => array(
