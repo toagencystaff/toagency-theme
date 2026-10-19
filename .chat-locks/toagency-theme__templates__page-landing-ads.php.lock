@@ -1,7 +1,7 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=TEMA LP-FRANCIA
 FILE=toagency-theme/templates/page-landing-ads.php
 INIZIO=2026-10-15 10:28:07
-UPDATE=2026-10-15 10:28:07
+UPDATE=2026-10-19 11:58:24
 SHA1_ATTESO=03c323b6ae53d370deef92736a21fc55a48f0c3f
-NOTA=Round 7: pulizia /fr/ (telefono nello schema solo LP FR, remise, placeholder email, 24h).
+NOTA=Round 7 LIVE in prod 19/10 verificato (TEMA LP-FRANCIA).

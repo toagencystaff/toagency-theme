@@ -36,7 +36,7 @@
     $toa_terms_label = isset($toa_terms_labels[$toa_lang]) ? html_entity_decode($toa_terms_labels[$toa_lang]) : 'Termini e Condizioni';
     ?>
     <a href="<?php echo esc_url($toa_privacy_url); ?>" target="_blank">Privacy Policy</a>
-    <a href="https://toagency.it/cookie-policy-ue/" target="_blank">Cookie Policy</a>
+    <a href="<?php echo esc_url( apply_filters('wpml_permalink', 'https://toagency.it/cookie-policy-ue/', $toa_lang) ); ?>" target="_blank">Cookie Policy</a>
     <a href="<?php echo home_url('/terms-and-conditions/'); ?>"><?php echo esc_html($toa_terms_label); ?></a>
     <a href="<?php echo esc_url(home_url('/blog/')); ?>">Blog</a>
     <a href="#" onclick="toaOpenReportModal(); return false;"><?php echo _ht(['it'=>'Segnala un problema','en'=>'Report a problem','fr'=>'Signaler un problème','es'=>'Informar un problema']); ?></a>

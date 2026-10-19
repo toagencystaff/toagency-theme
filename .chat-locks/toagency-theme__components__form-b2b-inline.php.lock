@@ -1,7 +1,7 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=TEMA LP-FRANCIA
 FILE=toagency-theme/components/form-b2b-inline.php
 INIZIO=2026-10-15 10:28:07
-UPDATE=2026-10-15 10:28:07
+UPDATE=2026-10-19 11:58:24
 SHA1_ATTESO=60be1b1abc731065e16c68fe59d2923dc69c92bb
-NOTA=Round 7: pulizia /fr/ (telefono nello schema solo LP FR, remise, placeholder email, 24h).
+NOTA=Round 7 LIVE in prod 19/10 verificato (TEMA LP-FRANCIA).
