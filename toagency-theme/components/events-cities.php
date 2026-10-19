@@ -805,4 +805,139 @@ return array(
   ),
 ),
 
+'bologna' => array(
+  'slug'  => $L('bologna', 'bologna', 'bologne', 'bolonia'),
+  'name'  => $L('Bologna', 'Bologna', 'Bologne', 'Bolonia'),
+  'seo_title' => $L(
+    "Staff per eventi a Bologna: BolognaFiere, Cosmoprof, congressi | TOAgency",
+    "Event staff in Bologna: BolognaFiere, Cosmoprof, conferences | TOAgency",
+    "Personnel événementiel à Bologne : BolognaFiere, Cosmoprof, congrès | TOAgency",
+    "Personal para eventos en Bolonia: BolognaFiere, Cosmoprof, congresos | TOAgency"),
+  'seo_desc' => $L(
+    "Hostess, steward, bar, foto e video, crew e logistica per eventi a Bologna: BolognaFiere, Cosmoprof, congressi. TOA Events: un referente, un preventivo.",
+    "Hostesses, stewards, bar, photo and video, crew and logistics for events in Bologna: BolognaFiere, Cosmoprof, conferences. TOA Events: one contact, one quote.",
+    "Hôtesses, stewards, bar, photo et vidéo, équipes et logistique pour événements à Bologne : BolognaFiere, Cosmoprof, congrès. TOA Events : un seul interlocuteur.",
+    "Azafatas, stewards, bar, foto y vídeo, equipos y logística para eventos en Bolonia: BolognaFiere, Cosmoprof, congresos. TOA Events: un solo presupuesto."),
+  'h1'    => $L("Staff e servizi per eventi a Bologna", "Event staff and services in Bologna", "Personnel et services pour événements à Bologne", "Personal y servicios para eventos en Bolonia"),
+  'intro' => $L(
+    "Fiere, saloni internazionali e congressi: a Bologna e in tutta l'Emilia-Romagna, con un unico referente. Dalle hostess alla crew tecnica, un solo preventivo.",
+    "Trade shows, international exhibitions and conferences: in Bologna and across Emilia-Romagna, with a single point of contact. From hostesses to technical crew, one quote.",
+    "Salons, expositions internationales et congrès : à Bologne et dans toute l'Émilie-Romagne, avec un seul interlocuteur. Des hôtesses aux équipes techniques, un seul devis.",
+    "Ferias, salones internacionales y congresos: en Bolonia y en toda Emilia-Romaña, con un único interlocutor. De las azafatas al equipo técnico, un único presupuesto."),
+
+  // Tariffa di partenza (Italia: €129 a persona al giorno). Avviso IVA in tutte le lingue (regola di Marco 19/10/2026).
+  'price' => $L(
+    "Hostess, steward e promoter a partire da €129 a persona al giorno (+ IVA per i clienti italiani soggetti a IVA). Altri profili su preventivo.",
+    "Hostesses, stewards and promoters from €129 per person per day (VAT is charged only to Italian clients subject to VAT). Other profiles on request.",
+    "Hôtesses, stewards et promoteurs à partir de 129 € par personne et par jour (TVA facturée uniquement aux clients italiens assujettis). Autres profils sur demande.",
+    "Azafatas, stewards y promotores desde 129 € por persona y día (IVA solo para clientes italianos sujetos a IVA). Otros perfiles bajo petición."),
+
+  'v_eyebrow' => $L("Le sedi", "Venues", "Les lieux", "Las sedes"),
+  'v_heading' => $L("Dove lavoriamo a Bologna", "Where we work in Bologna", "Où nous intervenons à Bologne", "Dónde trabajamos en Bolonia"),
+  'v_sub'     => $L("Alcune sedi ed eventi della città, con le pagine di approfondimento.", "Some of the city's venues and events, with in-depth pages.", "Quelques lieux et événements de la ville, avec les pages détaillées.", "Algunas sedes y eventos de la ciudad, con sus páginas de detalle."),
+  'venues' => array(
+    array(
+      'n' => $L("BolognaFiere", "BolognaFiere", "BolognaFiere", "BolognaFiere"),
+      'd' => $L("Il quartiere fieristico dei grandi saloni professionali, da MECSPE a SAIE e MARCA: stand e padiglioni da presidiare, accoglienza dei buyer, staff multilingue.",
+                "The exhibition district of the big professional shows, from MECSPE to SAIE and MARCA: booths and halls to staff, buyer reception, multilingual staff.",
+                "Le quartier des grands salons professionnels, de MECSPE à SAIE et MARCA : stands et pavillons à animer, accueil des acheteurs, personnel multilingue.",
+                "El recinto de los grandes salones profesionales, de MECSPE a SAIE y MARCA: stands y pabellones que atender, recepción de compradores, personal multilingüe."),
+      'own' => 'fiere',
+      'l'   => $L("Personale per fiere e saloni", "Trade show staff", "Personnel pour salons", "Personal para ferias"),
+    ),
+    array(
+      'n' => $L("Cosmoprof Worldwide Bologna", "Cosmoprof Worldwide Bologna", "Cosmoprof Worldwide Bologna", "Cosmoprof Worldwide Bologna"),
+      'd' => $L("Il salone mondiale della bellezza: accoglienza allo stand, dimostrazioni di prodotto, staff multilingue per i buyer internazionali.",
+                "The world's beauty trade show: stand reception, product demonstrations, multilingual staff for international buyers.",
+                "Le salon mondial de la beauté : accueil sur le stand, démonstrations de produits, personnel multilingue pour les acheteurs internationaux.",
+                "El salón mundial de la belleza: recepción en el stand, demostraciones de producto, personal multilingüe para compradores internacionales."),
+      'link' => 'hostess-cosmoprof',
+      'l'    => $L("Hostess per Cosmoprof", "Hostesses for Cosmoprof", "Hôtesses pour Cosmoprof", "Azafatas para Cosmoprof"),
+    ),
+    array(
+      'n' => $L("Arte Fiera ed Exposanità", "Arte Fiera and Exposanità", "Arte Fiera et Exposanità", "Arte Fiera y Exposanità"),
+      'd' => $L("Arte, sanità e altri saloni di settore: accoglienza, informazioni al pubblico e supporto agli espositori.",
+                "Art, healthcare and other industry shows: reception, visitor information and exhibitor support.",
+                "Art, santé et autres salons sectoriels : accueil, information du public et soutien aux exposants.",
+                "Arte, sanidad y otros salones sectoriales: recepción, información al público y apoyo a los expositores."),
+    ),
+    array(
+      'n' => $L("Palazzo della Cultura e dei Congressi", "Palazzo della Cultura e dei Congressi", "Palazzo della Cultura e dei Congressi", "Palazzo della Cultura e dei Congressi"),
+      'd' => $L("Congressi e convention: registrazione, assistenza in sala, accoglienza dei delegati.",
+                "Conferences and conventions: registration, room assistance, delegate reception.",
+                "Congrès et conventions : enregistrement, assistance en salle, accueil des délégués.",
+                "Congresos y convenciones: registro, asistencia en sala, recepción de delegados."),
+      'own' => 'staff',
+      'l'   => $L("Staff per eventi e congressi", "Event and conference staff", "Personnel pour événements et congrès", "Personal para eventos y congresos"),
+    ),
+  ),
+
+  's_eyebrow' => $L("I servizi", "Services", "Les services", "Los servicios"),
+  's_heading' => $L("Tutto quello che serve per un evento a Bologna", "Everything you need for an event in Bologna", "Tout ce qu'il faut pour un événement à Bologne", "Todo lo que necesita un evento en Bolonia"),
+
+  'x_eyebrow' => $L("Approfondimenti", "More on Bologna", "Pour aller plus loin", "Más información"),
+  'x_hostess' => array(
+    'link' => 'agenzia-hostess-bologna',
+    'n'    => $L("Agenzia hostess a Bologna", "Hostess agency in Bologna", "Agence d'hôtesses à Bologne", "Agencia de azafatas en Bolonia"),
+    'd'    => $L("La pagina TOAgency dedicata a hostess e steward in città: servizi, eventi e domande frequenti.",
+                 "The TOAgency page dedicated to hostesses and stewards in the city: services, events and FAQ.",
+                 "La page TOAgency consacrée aux hôtesses et stewards de la ville : services, événements et questions fréquentes.",
+                 "La página de TOAgency dedicada a azafatas y stewards de la ciudad: servicios, eventos y preguntas frecuentes."),
+  ),
+
+  'f_eyebrow' => $L("Domande frequenti", "FAQ", "Questions fréquentes", "Preguntas frecuentes"),
+  'f_heading' => $L("Eventi a Bologna: le domande più comuni", "Events in Bologna: common questions", "Événements à Bologne : les questions courantes", "Eventos en Bolonia: las preguntas más comunes"),
+  'faq' => array(
+    array(
+      'q' => $L("Per quali eventi a Bologna fornite personale?", "Which events in Bologna do you provide staff for?", "Pour quels événements à Bologne fournissez-vous du personnel ?", "¿Para qué eventos en Bolonia proporcionáis personal?"),
+      'a' => $L("Per fiere e saloni, congressi e convention, eventi aziendali e presentazioni di prodotto. Dalla scelta delle figure alla gestione sul posto, ti segue un unico referente.",
+                "For trade shows and exhibitions, conferences and conventions, corporate events and product launches. From choosing the roles to running things on site, a single contact looks after you.",
+                "Pour les salons et expositions, congrès et conventions, événements d'entreprise et lancements de produit. Du choix des profils à la gestion sur place, un seul interlocuteur vous suit.",
+                "Para ferias y salones, congresos y convenciones, eventos corporativos y presentaciones de producto. Desde la elección de los perfiles hasta la gestión en el lugar, te acompaña un único interlocutor."),
+    ),
+    array(
+      'q' => $L("Quanto costa il personale per un evento a Bologna?", "How much does event staff cost in Bologna?", "Combien coûte le personnel pour un événement à Bologne ?", "¿Cuánto cuesta el personal para un evento en Bolonia?"),
+      'a' => $L("Hostess, steward, promoter e supporto fiera: a partire da €129 a persona al giorno (+ IVA per i clienti italiani soggetti a IVA). Per camerieri, barman e altri profili qualificati dipende da mansioni, durata e livello di autonomia richiesto, e con più budget la scelta di profili si allarga. Se hai un budget diverso, indicalo pure e vediamo se possiamo venirti incontro.",
+                "Hostesses, stewards, promoters and trade show support: from €129 per person per day (VAT is charged only to Italian clients subject to VAT). For waiters, bartenders and other qualified profiles it depends on the tasks, the duration and the autonomy required, and a bigger budget widens the choice of profiles. If your budget is different, just tell us and we'll see how we can accommodate you.",
+                "Hôtesses, stewards, promoteurs et renfort sur salon : à partir de 129 € par personne et par jour (TVA facturée uniquement aux clients italiens assujettis). Pour les serveurs, barmans et autres profils qualifiés, cela dépend des missions, de la durée et de l'autonomie demandée, et un budget plus important élargit le choix des profils. Si votre budget est différent, dites-le-nous et nous verrons comment vous accompagner.",
+                "Azafatas, stewards, promotores y apoyo en feria: desde 129 € por persona y día (IVA solo para clientes italianos sujetos a IVA). Para camareros, barmans y otros perfiles cualificados depende de las tareas, la duración y la autonomía requerida, y con más presupuesto se amplía la elección de perfiles. Si tu presupuesto es distinto, indícalo y vemos cómo ayudarte."),
+    ),
+    array(
+      'q' => $L("Coprite solo Bologna?", "Do you only cover Bologna?", "Intervenez-vous seulement à Bologne ?", "¿Cubrís solo Bolonia?"),
+      'a' => $L("No: copriamo Bologna e tutta l'Emilia-Romagna, con staff multilingue per i saloni internazionali. Se l'evento è altrove, formiamo la squadra giusta anche fuori Bologna.",
+                "No: we cover Bologna and all of Emilia-Romagna, with multilingual staff for the international shows. If your event is elsewhere, we build the right team outside Bologna too.",
+                "Non : nous couvrons Bologne et toute l'Émilie-Romagne, avec du personnel multilingue pour les salons internationaux. Si l'événement a lieu ailleurs, nous constituons l'équipe qu'il faut hors de Bologne aussi.",
+                "No: cubrimos Bolonia y toda Emilia-Romaña, con personal multilingüe para los salones internacionales. Si el evento es en otro lugar, formamos el equipo adecuado también fuera de Bolonia."),
+    ),
+    array(
+      'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
+      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
+                "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
+                "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
+                "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+    ),
+    array(
+      'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
+      'a' => $L("Sì, abbiamo staff multilingue per buyer, ospiti e stampa internazionali. Gli interpreti sono disponibili su richiesta, in base a lingua e disponibilità.",
+                "Yes, we have multilingual staff for international buyers, guests and press. Interpreters are available on request, depending on language and availability.",
+                "Oui, nous avons du personnel multilingue pour les acheteurs, invités et la presse internationale. Des interprètes sont disponibles sur demande, selon la langue et la disponibilité.",
+                "Sí, tenemos personal multilingüe para compradores, invitados y prensa internacionales. Los intérpretes están disponibles bajo petición, según el idioma y la disponibilidad."),
+    ),
+    array(
+      'q' => $L("Chi gestisce contratti e assicurazioni del personale?", "Who handles the staff's contracts and insurance?", "Qui gère les contrats et les assurances du personnel ?", "¿Quién gestiona los contratos y seguros del personal?"),
+      'a' => $L("Li gestiamo noi: contratti, compensi e assicurazione INAIL del personale, con una sola fattura per il cliente.",
+                "We do: staff contracts, fees and INAIL insurance, with a single invoice for the client.",
+                "C'est nous : contrats, rémunérations et assurance INAIL du personnel, avec une seule facture pour le client.",
+                "Nos encargamos nosotros: contratos, honorarios y seguro INAIL del personal, con una sola factura para el cliente."),
+    ),
+    array(
+      'q' => $L("Quanto tempo ci vuole per avere una proposta?", "How long does it take to get a proposal?", "Combien de temps faut-il pour recevoir une proposition ?", "¿Cuánto se tarda en recibir una propuesta?"),
+      'a' => $L("Rispondiamo in genere entro 24 ore lavorative. Più dettagli ci dai (date, sede, numero di persone), più la proposta è precisa.",
+                "We usually reply within 24 working hours. The more detail you give us (dates, venue, number of people), the more precise the proposal.",
+                "Nous répondons en général sous 24 heures ouvrées. Plus vous nous donnez de détails (dates, lieu, nombre de personnes), plus la proposition est précise.",
+                "Respondemos por lo general en 24 horas laborables. Cuantos más detalles nos des (fechas, sede, número de personas), más precisa será la propuesta."),
+    ),
+  ),
+),
+
 );

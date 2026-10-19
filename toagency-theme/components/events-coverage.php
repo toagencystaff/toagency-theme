@@ -15,6 +15,7 @@ $ec_groups = array(
     array("Roma","Rome","Rome","Roma",false,'roma'),
     array("Torino","Turin","Turin","Turín",true,'torino'),
     array("Genova","Genoa","Gênes","Génova"),
+    array("Bologna","Bologna","Bologne","Bolonia",false,'bologna'),
     array("Emilia-Romagna","Emilia-Romagna","Émilie-Romagne","Emilia-Romaña"),
     array("Veneto","Veneto","Vénétie","Véneto"),
     array("Toscana","Tuscany","Toscane","Toscana"),
