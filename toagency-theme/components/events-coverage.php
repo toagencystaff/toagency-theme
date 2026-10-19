@@ -11,7 +11,7 @@ $ec_k = $ec_i[$ec_lang];
 // ogni voce: array(it, en, fr, es, in_evidenza)
 $ec_groups = array(
   'it' => array(
-    array("Milano","Milan","Milan","Milán"),
+    array("Milano","Milan","Milan","Milán",false,'milano'),
     array("Roma","Rome","Rome","Roma"),
     array("Torino","Turin","Turin","Turín",true,'torino'),
     array("Genova","Genoa","Gênes","Génova"),
