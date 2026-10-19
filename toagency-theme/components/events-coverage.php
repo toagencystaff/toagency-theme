@@ -21,9 +21,9 @@ $ec_groups = array(
     array("Napoli","Naples","Naples","Nápoles"),
   ),
   'fr' => array(
-    array("Parigi","Paris","Paris","París",true),
-    array("Costa Azzurra","French Riviera","Côte d'Azur","Costa Azul"),
-    array("Montecarlo","Monte Carlo","Monte-Carlo","Montecarlo"),
+    array("Parigi","Paris","Paris","París",true,'parigi'),
+    array("Costa Azzurra","French Riviera","Côte d'Azur","Costa Azul",false,'costa-azzurra'),
+    array("Montecarlo","Monte Carlo","Monte-Carlo","Montecarlo",false,'montecarlo'),
     array("Lione","Lyon","Lyon","Lyon"),
   ),
   'es' => array(
