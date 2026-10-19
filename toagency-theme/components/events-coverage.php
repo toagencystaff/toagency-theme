@@ -12,7 +12,7 @@ $ec_k = $ec_i[$ec_lang];
 $ec_groups = array(
   'it' => array(
     array("Milano","Milan","Milan","Milán",false,'milano'),
-    array("Roma","Rome","Rome","Roma"),
+    array("Roma","Rome","Rome","Roma",false,'roma'),
     array("Torino","Turin","Turin","Turín",true,'torino'),
     array("Genova","Genoa","Gênes","Génova"),
     array("Emilia-Romagna","Emilia-Romagna","Émilie-Romagne","Emilia-Romaña"),

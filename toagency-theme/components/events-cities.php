@@ -298,4 +298,137 @@ return array(
   ),
 ),
 
+'roma' => array(
+  'slug'  => $L('roma', 'rome', 'rome', 'roma'),
+  'name'  => $L('Roma', 'Rome', 'Rome', 'Roma'),
+  'seo_title' => $L(
+    "Staff per eventi a Roma: congressi, fiere, eventi istituzionali | TOAgency",
+    "Event staff in Rome: conferences, trade shows, institutional events | TOAgency",
+    "Personnel événementiel à Rome : congrès, salons, événements institutionnels | TOAgency",
+    "Personal para eventos en Roma: congresos, ferias, eventos institucionales | TOAgency"),
+  'seo_desc' => $L(
+    "Hostess, steward, bar, foto e video, crew e logistica per eventi a Roma: Fiera di Roma, La Nuvola, sedi istituzionali. Un referente, un preventivo.",
+    "Hostesses, stewards, bar, photo and video, crew and logistics for events in Rome: Fiera di Roma, La Nuvola, institutional venues. One contact, one quote.",
+    "Hôtesses, stewards, bar, photo et vidéo, équipes et logistique pour événements à Rome : Fiera di Roma, La Nuvola, lieux institutionnels. Un seul interlocuteur.",
+    "Azafatas, stewards, bar, foto y vídeo, equipos y logística para eventos en Roma: Fiera di Roma, La Nuvola y sedes institucionales. Un solo interlocutor."),
+  'h1'    => $L("Staff e servizi per eventi a Roma", "Event staff and services in Rome", "Personnel et services pour événements à Rome", "Personal y servicios para eventos en Roma"),
+  'intro' => $L(
+    "Congressi, fiere ed eventi istituzionali: a Roma lavoriamo con personale sul posto, guidato da un unico referente. Dalle hostess alla crew tecnica, un solo preventivo.",
+    "Conferences, trade shows and institutional events: in Rome we work with staff on the ground, led by a single point of contact. From hostesses to technical crew, one quote.",
+    "Congrès, salons et événements institutionnels : à Rome nous travaillons avec du personnel sur place, dirigé par un seul interlocuteur. Des hôtesses aux équipes techniques, un seul devis.",
+    "Congresos, ferias y eventos institucionales: en Roma trabajamos con personal sobre el terreno, dirigido por un único interlocutor. De las azafatas al equipo técnico, un único presupuesto."),
+
+  // Tariffa di partenza (Italia: €129 + IVA a persona al giorno). IVA solo nel testo italiano.
+  'price' => $L(
+    "Hostess, steward e promoter a partire da €129 + IVA a persona al giorno. Altri profili su preventivo.",
+    "Hostesses, stewards and promoters from €129 per person per day. Other profiles on request.",
+    "Hôtesses, stewards et promoteurs à partir de 129 € par personne et par jour. Autres profils sur demande.",
+    "Azafatas, stewards y promotores desde 129 € por persona y día. Otros perfiles bajo petición."),
+
+  'v_eyebrow' => $L("Le sedi", "Venues", "Les lieux", "Las sedes"),
+  'v_heading' => $L("Dove lavoriamo a Roma", "Where we work in Rome", "Où nous intervenons à Rome", "Dónde trabajamos en Roma"),
+  'v_sub'     => $L("Alcune sedi della città, con le pagine di approfondimento.", "Some of the city's venues, with in-depth pages.", "Quelques lieux de la ville, avec les pages détaillées.", "Algunas sedes de la ciudad, con sus páginas de detalle."),
+  'venues' => array(
+    array(
+      'n' => $L("Fiera di Roma", "Fiera di Roma", "Fiera di Roma", "Fiera di Roma"),
+      'd' => $L("Il polo fieristico della Capitale: accoglienza, info point, gestione dello stand e supporto agli espositori, anche con personale multilingue.",
+                "The Capital's exhibition centre: reception, info points, stand management and exhibitor support, including multilingual staff.",
+                "Le parc des expositions de la capitale : accueil, points d'information, gestion du stand et soutien aux exposants, y compris avec du personnel multilingue.",
+                "El recinto ferial de la capital: recepción, puntos de información, gestión del stand y apoyo a los expositores, también con personal multilingüe."),
+      'own' => 'fiere',
+      'l'   => $L("Personale per fiere e saloni", "Trade show staff", "Personnel pour salons", "Personal para ferias"),
+    ),
+    array(
+      'n' => $L("Roma Convention Center La Nuvola", "Roma Convention Center La Nuvola", "Roma Convention Center La Nuvola", "Roma Convention Center La Nuvola"),
+      'd' => $L("Congressi internazionali all'EUR: registrazione dei delegati, assistenza in sala, accoglienza dei relatori.",
+                "International conferences at EUR: delegate registration, room assistance, speaker reception.",
+                "Congrès internationaux à l'EUR : enregistrement des délégués, assistance en salle, accueil des intervenants.",
+                "Congresos internacionales en el EUR: registro de delegados, asistencia en sala, recepción de ponentes."),
+      'own' => 'staff',
+      'l'   => $L("Staff per eventi e congressi", "Event and conference staff", "Personnel pour événements et congrès", "Personal para eventos y congresos"),
+    ),
+    array(
+      'n' => $L("Auditorium", "Auditorium", "Auditorium", "Auditorium"),
+      'd' => $L("Eventi culturali, concerti e presentazioni: accoglienza del pubblico e degli ospiti, assistenza in sala.",
+                "Cultural events, concerts and presentations: audience and guest reception, room assistance.",
+                "Événements culturels, concerts et présentations : accueil du public et des invités, assistance en salle.",
+                "Eventos culturales, conciertos y presentaciones: recepción del público y de los invitados, asistencia en sala."),
+    ),
+    array(
+      'n' => $L("Sedi di rappresentanza in centro", "Prestige venues in the city centre", "Lieux de prestige dans le centre", "Sedes de representación en el centro"),
+      'd' => $L("Eventi istituzionali e formali: accoglienza di rappresentanza, guardaroba, gestione di ospiti e delegazioni.",
+                "Institutional and formal events: formal reception, cloakroom, guest and delegation handling.",
+                "Événements institutionnels et officiels : accueil de représentation, vestiaire, gestion des invités et des délégations.",
+                "Eventos institucionales y formales: recepción de representación, guardarropa, gestión de invitados y delegaciones."),
+    ),
+  ),
+
+  's_eyebrow' => $L("I servizi", "Services", "Les services", "Los servicios"),
+  's_heading' => $L("Tutto quello che serve per un evento a Roma", "Everything you need for an event in Rome", "Tout ce qu'il faut pour un événement à Rome", "Todo lo que necesita un evento en Roma"),
+
+  'x_eyebrow' => $L("Approfondimenti", "More on Rome", "Pour aller plus loin", "Más información"),
+  'x_hostess' => array(
+    'link' => 'agenzia-hostess-roma',
+    'n'    => $L("Agenzia hostess a Roma", "Hostess agency in Rome", "Agence d'hôtesses à Rome", "Agencia de azafatas en Roma"),
+    'd'    => $L("La pagina TOAgency dedicata a hostess e steward in città: servizi, eventi e domande frequenti.",
+                 "The TOAgency page dedicated to hostesses and stewards in the city: services, events and FAQ.",
+                 "La page TOAgency consacrée aux hôtesses et stewards de la ville : services, événements et questions fréquentes.",
+                 "La página de TOAgency dedicada a azafatas y stewards de la ciudad: servicios, eventos y preguntas frecuentes."),
+  ),
+
+  'f_eyebrow' => $L("Domande frequenti", "FAQ", "Questions fréquentes", "Preguntas frecuentes"),
+  'f_heading' => $L("Eventi a Roma: le domande più comuni", "Events in Rome: common questions", "Événements à Rome : les questions courantes", "Eventos en Roma: las preguntas más comunes"),
+  'faq' => array(
+    array(
+      'q' => $L("Per quali eventi a Roma fornite personale?", "Which events in Rome do you provide staff for?", "Pour quels événements à Rome fournissez-vous du personnel ?", "¿Para qué eventos en Roma proporcionáis personal?"),
+      'a' => $L("Per congressi e convention, fiere, eventi istituzionali e di rappresentanza, eventi aziendali e presentazioni di prodotto. Dalla scelta delle figure alla gestione sul posto, ti segue un unico referente.",
+                "For conferences and conventions, trade shows, institutional and formal events, corporate events and product launches. From choosing the roles to running things on site, a single contact looks after you.",
+                "Pour les congrès et conventions, salons, événements institutionnels et de représentation, événements d'entreprise et lancements de produit. Du choix des profils à la gestion sur place, un seul interlocuteur vous suit.",
+                "Para congresos y convenciones, ferias, eventos institucionales y de representación, eventos corporativos y presentaciones de producto. Desde la elección de los perfiles hasta la gestión en el lugar, te acompaña un único interlocutor."),
+    ),
+    array(
+      'q' => $L("Quanto costa il personale per un evento a Roma?", "How much does event staff cost in Rome?", "Combien coûte le personnel pour un événement à Rome ?", "¿Cuánto cuesta el personal para un evento en Roma?"),
+      'a' => $L("Hostess, steward, promoter e supporto fiera: a partire da €129 + IVA a persona al giorno. Per camerieri, barman e altri profili qualificati dipende da mansioni, durata e livello di autonomia richiesto, e con più budget la scelta di profili si allarga. Se hai un budget diverso, indicalo pure e vediamo se possiamo venirti incontro.",
+                "Hostesses, stewards, promoters and trade show support: from €129 per person per day. For waiters, bartenders and other qualified profiles it depends on the tasks, the duration and the autonomy required, and a bigger budget widens the choice of profiles. If your budget is different, just tell us and we'll see how we can accommodate you.",
+                "Hôtesses, stewards, promoteurs et renfort sur salon : à partir de 129 € par personne et par jour. Pour les serveurs, barmans et autres profils qualifiés, cela dépend des missions, de la durée et de l'autonomie demandée, et un budget plus important élargit le choix des profils. Si votre budget est différent, dites-le-nous et nous verrons comment vous accompagner.",
+                "Azafatas, stewards, promotores y apoyo en feria: desde 129 € por persona y día. Para camareros, barmans y otros perfiles cualificados depende de las tareas, la duración y la autonomía requerida, y con más presupuesto se amplía la elección de perfiles. Si tu presupuesto es distinto, indícalo y vemos cómo ayudarte."),
+    ),
+    array(
+      'q' => $L("Il personale è di Roma?", "Is the staff based in Rome?", "Le personnel est-il basé à Rome ?", "¿El personal es de Roma?"),
+      'a' => $L("Lavoriamo con personale sul posto, a Roma e nel Lazio. Se l'evento è altrove, formiamo la squadra giusta anche fuori Roma.",
+                "We work with local staff in Rome and Lazio. If your event is elsewhere, we build the right team outside Rome too.",
+                "Nous travaillons avec du personnel sur place, à Rome et dans le Latium. Si l'événement a lieu ailleurs, nous constituons l'équipe qu'il faut hors de Rome aussi.",
+                "Trabajamos con personal local, en Roma y en el Lacio. Si el evento es en otro lugar, formamos el equipo adecuado también fuera de Roma."),
+    ),
+    array(
+      'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
+      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
+                "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
+                "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
+                "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+    ),
+    array(
+      'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
+      'a' => $L("Sì, abbiamo staff multilingue per congressi internazionali e delegazioni estere. Gli interpreti sono disponibili su richiesta, in base a lingua e disponibilità.",
+                "Yes, we have multilingual staff for international conferences and foreign delegations. Interpreters are available on request, depending on language and availability.",
+                "Oui, nous avons du personnel multilingue pour les congrès internationaux et les délégations étrangères. Des interprètes sont disponibles sur demande, selon la langue et la disponibilité.",
+                "Sí, tenemos personal multilingüe para congresos internacionales y delegaciones extranjeras. Los intérpretes están disponibles bajo petición, según el idioma y la disponibilidad."),
+    ),
+    array(
+      'q' => $L("Chi gestisce contratti e assicurazioni del personale?", "Who handles the staff's contracts and insurance?", "Qui gère les contrats et les assurances du personnel ?", "¿Quién gestiona los contratos y seguros del personal?"),
+      'a' => $L("Li gestiamo noi: contratti, compensi e assicurazione INAIL del personale, con una sola fattura per il cliente.",
+                "We do: staff contracts, fees and INAIL insurance, with a single invoice for the client.",
+                "C'est nous : contrats, rémunérations et assurance INAIL du personnel, avec une seule facture pour le client.",
+                "Nos encargamos nosotros: contratos, honorarios y seguro INAIL del personal, con una sola factura para el cliente."),
+    ),
+    array(
+      'q' => $L("Quanto tempo ci vuole per avere una proposta?", "How long does it take to get a proposal?", "Combien de temps faut-il pour recevoir une proposition ?", "¿Cuánto se tarda en recibir una propuesta?"),
+      'a' => $L("Rispondiamo in genere entro 24 ore lavorative. Più dettagli ci dai (date, sede, numero di persone), più la proposta è precisa.",
+                "We usually reply within 24 working hours. The more detail you give us (dates, venue, number of people), the more precise the proposal.",
+                "Nous répondons en général sous 24 heures ouvrées. Plus vous nous donnez de détails (dates, lieu, nombre de personnes), plus la proposition est précise.",
+                "Respondemos por lo general en 24 horas laborables. Cuantos más detalles nos des (fechas, sede, número de personas), más precisa será la propuesta."),
+    ),
+  ),
+),
+
 );
