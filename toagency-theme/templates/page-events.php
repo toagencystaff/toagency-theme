@@ -62,14 +62,6 @@ $t = array(
     'how_step3' => array('it'=>"PROPOSTA SU MISURA",'en'=>"TAILORED PROPOSAL",'fr'=>"PROPOSITION SUR MESURE",'es'=>"PROPUESTA A MEDIDA"),
     'how_step4' => array('it'=>"GESTIONE COMPLETA",'en'=>"FULL MANAGEMENT",'fr'=>"GESTION COMPLÈTE",'es'=>"GESTIÓN COMPLETA"),
     'how_tagline' => array('it'=>"Un solo referente • Un solo preventivo • Risposta rapida",'en'=>"One point of contact • One quote • Fast reply",'fr'=>"Un seul interlocuteur • Un seul devis • Réponse rapide",'es'=>"Un único interlocutor • Un único presupuesto • Respuesta rápida"),
-    'cov_eyebrow' => array('it'=>"Dove operiamo",'en'=>"Where we operate",'fr'=>"Où nous intervenons",'es'=>"Dónde operamos"),
-    'cov_heading' => array('it'=>"Milano, Roma, Costa Azzurra, Madrid, Barcellona, Londra…",'en'=>"Milan, Rome, French Riviera, Madrid, Barcelona, London…",'fr'=>"Milan, Rome, Côte d'Azur, Madrid, Barcelone, Londres…",'es'=>"Milán, Roma, Costa Azul, Madrid, Barcelona, Londres…"),
-    'cov_sub' => array(
-        'it' => "E in ogni altra città: lavoriamo ovunque serva, anche dove non l'abbiamo scritto.",
-        'en' => "And every other city: we work wherever you need us, even where it isn't listed.",
-        'fr' => "Et dans toutes les autres villes : nous intervenons partout où vous en avez besoin, même si elle n'est pas citée.",
-        'es' => "Y en cualquier otra ciudad: trabajamos donde nos necesites, aunque no esté en la lista.",
-    ),
 );
 
 // Dati servizi e figure: components/events-data.php (unica fonte, usata anche dalle sottopagine)
@@ -257,14 +249,7 @@ toa_component('header');
 
 <?php toa_component('google-reviews'); ?>
 
-<!-- Dove operiamo -->
-<section class="coverage-section">
-    <div class="container">
-        <div class="section-eyebrow"><?php echo $_t($t['cov_eyebrow']); ?></div>
-        <h2 class="section-heading" style="margin-bottom:12px"><?php echo $_t($t['cov_heading']); ?></h2>
-        <p style="font-size:0.95rem;color:var(--gray-4);max-width:640px;margin:0 0 20px"><?php echo $_t($t['cov_sub']); ?></p>
-    </div>
-</section>
+<?php toa_component('events-coverage', array('lang' => $lang)); ?>
 
 <?php toa_component('form-eventi-inline', array('lang' => $lang, 'leadsrc' => 'Pagina TOA Events')); ?>
 
