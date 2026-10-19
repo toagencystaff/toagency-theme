@@ -940,4 +940,296 @@ return array(
   ),
 ),
 
+'verona' => array(
+  'slug'  => $L("verona", "verona", "verone", "verona"),
+  'name'  => $L("Verona", "Verona", "Vérone", "Verona"),
+  'seo_title' => $L(
+        "Staff per eventi a Verona: Veronafiere, Vinitaly, congressi | TOAgency",
+        "Event staff in Verona: Veronafiere, Vinitaly, conferences | TOAgency",
+        "Personnel événementiel à Vérone : Veronafiere, Vinitaly, congrès | TOAgency",
+        "Personal para eventos en Verona: Veronafiere, Vinitaly, congresos | TOAgency"),
+  'seo_desc' => $L(
+        "Hostess, steward, bar, foto e video, crew e logistica per eventi a Verona: Veronafiere, Vinitaly, congressi. TOA Events: un referente, un preventivo.",
+        "Hostesses, stewards, bar, photo and video, crew and logistics for events in Verona: Veronafiere, Vinitaly, conferences. TOA Events: one contact, one quote.",
+        "Hôtesses, stewards, bar, photo et vidéo, équipes et logistique pour événements à Vérone : Veronafiere, Vinitaly. TOA Events : un seul interlocuteur.",
+        "Azafatas, stewards, bar, foto y vídeo, equipos y logística para eventos en Verona: Veronafiere, Vinitaly, congresos. TOA Events: un solo presupuesto."),
+  'h1'    => $L("Staff e servizi per eventi a Verona", "Event staff and services in Verona", "Personnel et services pour événements à Vérone", "Personal y servicios para eventos en Verona"),
+  'intro' => $L(
+        "Fiere, saloni internazionali e congressi: a Verona e in tutto il Veneto, con un unico referente. Dalle hostess alla crew tecnica, un solo preventivo.",
+        "Trade shows, international exhibitions and conferences: in Verona and across the Veneto region, with a single point of contact. From hostesses to technical crew, one quote.",
+        "Salons, expositions internationales et congrès : à Vérone et dans toute la Vénétie, avec un seul interlocuteur. Des hôtesses aux équipes techniques, un seul devis.",
+        "Ferias, salones internacionales y congresos: en Verona y en todo el Véneto, con un único interlocutor. De las azafatas al equipo técnico, un único presupuesto."),
+
+  // Tariffa di partenza (Italia: €129 a persona al giorno). Avviso IVA in tutte le lingue (regola di Marco 19/10/2026).
+  'price' => $L(
+        "Hostess, steward e promoter a partire da €129 a persona al giorno (+ IVA per i clienti italiani soggetti a IVA). Altri profili su preventivo.",
+        "Hostesses, stewards and promoters from €129 per person per day (VAT is charged only to Italian clients subject to VAT). Other profiles on request.",
+        "Hôtesses, stewards et promoteurs à partir de 129 € par personne et par jour (TVA facturée uniquement aux clients italiens assujettis). Autres profils sur demande.",
+        "Azafatas, stewards y promotores desde 129 € por persona y día (IVA solo para clientes italianos sujetos a IVA). Otros perfiles bajo petición."),
+
+  'v_eyebrow' => $L("Le sedi", "Venues", "Les lieux", "Las sedes"),
+  'v_heading' => $L("Dove lavoriamo a Verona", "Where we work in Verona", "Où nous intervenons à Vérone", "Dónde trabajamos en Verona"),
+  'v_sub'     => $L("Alcune sedi ed eventi della città, con le pagine di approfondimento.", "Some of the city's venues and events, with in-depth pages.", "Quelques lieux et événements de la ville, avec les pages détaillées.", "Algunas sedes y eventos de la ciudad, con sus páginas de detalle."),
+  'venues' => array(
+    array(
+      'n' => $L("Veronafiere", "Veronafiere", "Veronafiere", "Veronafiere"),
+      'd' => $L(
+        "Il quartiere fieristico di Vinitaly, Marmomac, Fieracavalli e Samoter: stand e padiglioni da presidiare, accoglienza dei buyer, staff multilingue.",
+        "The exhibition district of Vinitaly, Marmomac, Fieracavalli and Samoter: booths and halls to staff, buyer reception, multilingual staff.",
+        "Le quartier de Vinitaly, Marmomac, Fieracavalli et Samoter : stands et pavillons à animer, accueil des acheteurs, personnel multilingue.",
+        "El recinto de Vinitaly, Marmomac, Fieracavalli y Samoter: stands y pabellones que atender, recepción de compradores, personal multilingüe."),
+      'own' => 'fiere',
+      'l'   => $L("Personale per fiere e saloni", "Trade show staff", "Personnel pour salons", "Personal para ferias"),
+    ),
+    array(
+      'n' => $L("Vinitaly", "Vinitaly", "Vinitaly", "Vinitaly"),
+      'd' => $L(
+        "Il salone internazionale del vino: accoglienza allo stand, assistenza ai buyer internazionali, staff multilingue.",
+        "The international wine show: stand reception, support for international buyers, multilingual staff.",
+        "Le salon international du vin : accueil sur le stand, assistance aux acheteurs internationaux, personnel multilingue.",
+        "El salón internacional del vino: recepción en el stand, asistencia a compradores internacionales, personal multilingüe."),
+      'link' => 'hostess-vinitaly',
+      'l'   => $L("Hostess per Vinitaly", "Hostesses for Vinitaly", "Hôtesses pour Vinitaly", "Azafatas para Vinitaly"),
+    ),
+    array(
+      'n' => $L("Marmomac, Fieracavalli e Fieragricola", "Marmomac, Fieracavalli and Fieragricola", "Marmomac, Fieracavalli et Fieragricola", "Marmomac, Fieracavalli y Fieragricola"),
+      'd' => $L(
+        "Pietra naturale, cavalli e agricoltura: accoglienza, informazioni al pubblico e supporto agli espositori.",
+        "Natural stone, horses and agriculture: reception, visitor information and exhibitor support.",
+        "Pierre naturelle, chevaux et agriculture : accueil, information du public et soutien aux exposants.",
+        "Piedra natural, caballos y agricultura: recepción, información al público y apoyo a los expositores."),
+    ),
+    array(
+      'n' => $L("Congressi ed eventi aziendali", "Conferences and corporate events", "Congrès et événements d'entreprise", "Congresos y eventos corporativos"),
+      'd' => $L(
+        "Convention, presentazioni e serate aziendali: registrazione, assistenza in sala, accoglienza degli ospiti.",
+        "Conventions, presentations and corporate evenings: registration, room assistance, guest reception.",
+        "Conventions, présentations et soirées d'entreprise : enregistrement, assistance en salle, accueil des invités.",
+        "Convenciones, presentaciones y veladas corporativas: registro, asistencia en sala, recepción de invitados."),
+      'own' => 'staff',
+      'l'   => $L("Staff per eventi e congressi", "Event and conference staff", "Personnel pour événements et congrès", "Personal para eventos y congresos"),
+    ),
+  ),
+
+  's_eyebrow' => $L("I servizi", "Services", "Les services", "Los servicios"),
+  's_heading' => $L("Tutto quello che serve per un evento a Verona", "Everything you need for an event in Verona", "Tout ce qu'il faut pour un événement à Vérone", "Todo lo que necesita un evento en Verona"),
+
+  'x_eyebrow' => $L("Approfondimenti", "More on Verona", "Pour aller plus loin", "Más información"),
+  'x_hostess' => array(
+    'link' => 'agenzia-hostess-verona',
+    'n'    => $L("Agenzia hostess a Verona", "Hostess agency in Verona", "Agence d'hôtesses à Vérone", "Agencia de azafatas en Verona"),
+    'd'    => $L(
+        "La pagina TOAgency dedicata a hostess e steward in città: servizi, eventi e domande frequenti.",
+        "The TOAgency page dedicated to hostesses and stewards in the city: services, events and FAQ.",
+        "La page TOAgency consacrée aux hôtesses et stewards de la ville : services, événements et questions fréquentes.",
+        "La página de TOAgency dedicada a azafatas y stewards de la ciudad: servicios, eventos y preguntas frecuentes."),
+  ),
+
+  'f_eyebrow' => $L("Domande frequenti", "FAQ", "Questions fréquentes", "Preguntas frecuentes"),
+  'f_heading' => $L("Eventi a Verona: le domande più comuni", "Events in Verona: common questions", "Événements à Vérone : les questions courantes", "Eventos en Verona: las preguntas más comunes"),
+  'faq' => array(
+    array(
+      'q' => $L("Per quali eventi a Verona fornite personale?", "Which events in Verona do you provide staff for?", "Pour quels événements à Vérone fournissez-vous du personnel ?", "¿Para qué eventos en Verona proporcionáis personal?"),
+      'a' => $L(
+        "Per fiere e saloni, congressi e convention, eventi aziendali e presentazioni di prodotto. Dalla scelta delle figure alla gestione sul posto, ti segue un unico referente.",
+        "For trade shows and exhibitions, conferences and conventions, corporate events and product launches. From choosing the roles to running things on site, a single contact looks after you.",
+        "Pour les salons et expositions, congrès et conventions, événements d'entreprise et lancements de produit. Du choix des profils à la gestion sur place, un seul interlocuteur vous suit.",
+        "Para ferias y salones, congresos y convenciones, eventos corporativos y presentaciones de producto. Desde la elección de los perfiles hasta la gestión en el lugar, te acompaña un único interlocutor."),
+    ),
+    array(
+      'q' => $L("Quanto costa il personale per un evento a Verona?", "How much does event staff cost in Verona?", "Combien coûte le personnel pour un événement à Vérone ?", "¿Cuánto cuesta el personal para un evento en Verona?"),
+      'a' => $L(
+        "Hostess, steward, promoter e supporto fiera: a partire da €129 a persona al giorno (+ IVA per i clienti italiani soggetti a IVA). Per camerieri, barman e altri profili qualificati dipende da mansioni, durata e livello di autonomia richiesto, e con più budget la scelta di profili si allarga. Se hai un budget diverso, indicalo pure e vediamo se possiamo venirti incontro.",
+        "Hostesses, stewards, promoters and trade show support: from €129 per person per day (VAT is charged only to Italian clients subject to VAT). For waiters, bartenders and other qualified profiles it depends on the tasks, the duration and the autonomy required, and a bigger budget widens the choice of profiles. If your budget is different, just tell us and we'll see how we can accommodate you.",
+        "Hôtesses, stewards, promoteurs et renfort sur salon : à partir de 129 € par personne et par jour (TVA facturée uniquement aux clients italiens assujettis). Pour les serveurs, barmans et autres profils qualifiés, cela dépend des missions, de la durée et de l'autonomie demandée, et un budget plus important élargit le choix des profils. Si votre budget est différent, dites-le-nous et nous verrons comment vous accompagner.",
+        "Azafatas, stewards, promotores y apoyo en feria: desde 129 € por persona y día (IVA solo para clientes italianos sujetos a IVA). Para camareros, barmans y otros perfiles cualificados depende de las tareas, la duración y la autonomía requerida, y con más presupuesto se amplía la elección de perfiles. Si tu presupuesto es distinto, indícalo y vemos cómo ayudarte."),
+    ),
+    array(
+      'q' => $L("Coprite solo Verona?", "Do you only cover Verona?", "Intervenez-vous seulement à Vérone ?", "¿Cubrís solo Verona?"),
+      'a' => $L(
+        "No: copriamo Verona e tutto il Veneto, con staff multilingue per i saloni internazionali. Se l'evento è altrove, formiamo la squadra giusta anche fuori Verona.",
+        "No: we cover Verona and the whole Veneto region, with multilingual staff for the international shows. If your event is elsewhere, we build the right team outside Verona too.",
+        "Non : nous couvrons Vérone et toute la Vénétie, avec du personnel multilingue pour les salons internationaux. Si l'événement a lieu ailleurs, nous constituons l'équipe qu'il faut hors de Vérone aussi.",
+        "No: cubrimos Verona y todo el Véneto, con personal multilingüe para los salones internacionales. Si el evento es en otro lugar, formamos el equipo adecuado también fuera de Verona."),
+    ),
+    array(
+      'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
+      'a' => $L(
+        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
+        "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
+        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
+        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+    ),
+    array(
+      'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
+      'a' => $L(
+        "Sì, abbiamo staff multilingue per buyer, ospiti e stampa internazionali. Gli interpreti sono disponibili su richiesta, in base a lingua e disponibilità.",
+        "Yes, we have multilingual staff for international buyers, guests and press. Interpreters are available on request, depending on language and availability.",
+        "Oui, nous avons du personnel multilingue pour les acheteurs, invités et la presse internationale. Des interprètes sont disponibles sur demande, selon la langue et la disponibilité.",
+        "Sí, tenemos personal multilingüe para compradores, invitados y prensa internacionales. Los intérpretes están disponibles bajo petición, según el idioma y la disponibilidad."),
+    ),
+    array(
+      'q' => $L("Chi gestisce contratti e assicurazioni del personale?", "Who handles the staff's contracts and insurance?", "Qui gère les contrats et les assurances du personnel ?", "¿Quién gestiona los contratos y seguros del personal?"),
+      'a' => $L(
+        "Li gestiamo noi: contratti, compensi e assicurazione INAIL del personale, con una sola fattura per il cliente.",
+        "We do: staff contracts, fees and INAIL insurance, with a single invoice for the client.",
+        "C'est nous : contrats, rémunérations et assurance INAIL du personnel, avec une seule facture pour le client.",
+        "Nos encargamos nosotros: contratos, honorarios y seguro INAIL del personal, con una sola factura para el cliente."),
+    ),
+    array(
+      'q' => $L("Quanto tempo ci vuole per avere una proposta?", "How long does it take to get a proposal?", "Combien de temps faut-il pour recevoir une proposition ?", "¿Cuánto se tarda en recibir una propuesta?"),
+      'a' => $L(
+        "Rispondiamo in genere entro 24 ore lavorative. Più dettagli ci dai (date, sede, numero di persone), più la proposta è precisa.",
+        "We usually reply within 24 working hours. The more detail you give us (dates, venue, number of people), the more precise the proposal.",
+        "Nous répondons en général sous 24 heures ouvrées. Plus vous nous donnez de détails (dates, lieu, nombre de personnes), plus la proposition est précise.",
+        "Respondemos por lo general en 24 horas laborables. Cuantos más detalles nos des (fechas, sede, número de personas), más precisa será la propuesta."),
+    ),
+  ),
+),
+
+'rimini' => array(
+  'slug'  => $L("rimini", "rimini", "rimini", "rimini"),
+  'name'  => $L("Rimini", "Rimini", "Rimini", "Rímini"),
+  'seo_title' => $L(
+        "Staff per eventi a Rimini: Rimini Expo Centre, SIGEP, congressi | TOAgency",
+        "Event staff in Rimini: Rimini Expo Centre, SIGEP, conferences | TOAgency",
+        "Personnel événementiel à Rimini : Rimini Expo Centre, SIGEP, congrès | TOAgency",
+        "Personal para eventos en Rímini: Rimini Expo Centre, SIGEP, congresos | TOAgency"),
+  'seo_desc' => $L(
+        "Hostess, steward, bar, foto e video, crew e logistica per eventi a Rimini: Rimini Expo Centre, SIGEP, congressi. TOA Events: un referente, un preventivo.",
+        "Hostesses, stewards, bar, photo and video, crew and logistics for events in Rimini: Rimini Expo Centre, SIGEP, conferences. TOA Events: one contact, one quote.",
+        "Hôtesses, stewards, bar, photo et vidéo, équipes et logistique pour événements à Rimini : Rimini Expo Centre, SIGEP. TOA Events : un seul interlocuteur.",
+        "Azafatas, stewards, bar, foto y vídeo, equipos y logística para eventos en Rímini: Rimini Expo Centre, SIGEP, congresos. TOA Events: un solo presupuesto."),
+  'h1'    => $L("Staff e servizi per eventi a Rimini", "Event staff and services in Rimini", "Personnel et services pour événements à Rimini", "Personal y servicios para eventos en Rímini"),
+  'intro' => $L(
+        "Fiere, saloni internazionali e congressi: a Rimini e sulla Riviera Romagnola, con un unico referente. Dalle hostess alla crew tecnica, un solo preventivo.",
+        "Trade shows, international exhibitions and conferences: in Rimini and along the Romagna Riviera, with a single point of contact. From hostesses to technical crew, one quote.",
+        "Salons, expositions internationales et congrès : à Rimini et sur la Riviera romagnole, avec un seul interlocuteur. Des hôtesses aux équipes techniques, un seul devis.",
+        "Ferias, salones internacionales y congresos: en Rímini y en la Riviera romañola, con un único interlocutor. De las azafatas al equipo técnico, un único presupuesto."),
+
+  // Tariffa di partenza (Italia: €129 a persona al giorno). Avviso IVA in tutte le lingue (regola di Marco 19/10/2026).
+  'price' => $L(
+        "Hostess, steward e promoter a partire da €129 a persona al giorno (+ IVA per i clienti italiani soggetti a IVA). Altri profili su preventivo.",
+        "Hostesses, stewards and promoters from €129 per person per day (VAT is charged only to Italian clients subject to VAT). Other profiles on request.",
+        "Hôtesses, stewards et promoteurs à partir de 129 € par personne et par jour (TVA facturée uniquement aux clients italiens assujettis). Autres profils sur demande.",
+        "Azafatas, stewards y promotores desde 129 € por persona y día (IVA solo para clientes italianos sujetos a IVA). Otros perfiles bajo petición."),
+
+  'v_eyebrow' => $L("Le sedi", "Venues", "Les lieux", "Las sedes"),
+  'v_heading' => $L("Dove lavoriamo a Rimini", "Where we work in Rimini", "Où nous intervenons à Rimini", "Dónde trabajamos en Rímini"),
+  'v_sub'     => $L("Alcune sedi ed eventi della città, con le pagine di approfondimento.", "Some of the city's venues and events, with in-depth pages.", "Quelques lieux et événements de la ville, avec les pages détaillées.", "Algunas sedes y eventos de la ciudad, con sus páginas de detalle."),
+  'venues' => array(
+    array(
+      'n' => $L("Rimini Expo Centre", "Rimini Expo Centre", "Rimini Expo Centre", "Rimini Expo Centre"),
+      'd' => $L(
+        "Il quartiere fieristico di SIGEP World, Ecomondo, KEY e TTG Travel Experience: stand e padiglioni da presidiare, accoglienza dei buyer, staff multilingue.",
+        "The exhibition district of SIGEP World, Ecomondo, KEY and TTG Travel Experience: booths and halls to staff, buyer reception, multilingual staff.",
+        "Le parc des expositions de SIGEP World, Ecomondo, KEY et TTG Travel Experience : stands et pavillons à animer, accueil des acheteurs, personnel multilingue.",
+        "El recinto de SIGEP World, Ecomondo, KEY y TTG Travel Experience: stands y pabellones que atender, recepción de compradores, personal multilingüe."),
+      'own' => 'fiere',
+      'l'   => $L("Personale per fiere e saloni", "Trade show staff", "Personnel pour salons", "Personal para ferias"),
+    ),
+    array(
+      'n' => $L("SIGEP World e Macfrut", "SIGEP World and Macfrut", "SIGEP World et Macfrut", "SIGEP World y Macfrut"),
+      'd' => $L(
+        "Gelato, pasticceria, caffè e ortofrutta: accoglienza allo stand, assistenza ai buyer internazionali, staff multilingue.",
+        "Gelato, pastry, coffee and fresh produce: stand reception, support for international buyers, multilingual staff.",
+        "Glace, pâtisserie, café et fruits et légumes : accueil sur le stand, assistance aux acheteurs internationaux, personnel multilingue.",
+        "Helado, pastelería, café y frutas y hortalizas: recepción en el stand, asistencia a compradores internacionales, personal multilingüe."),
+    ),
+    array(
+      'n' => $L("RiminiWellness ed Expodental Meeting", "RiminiWellness and Expodental Meeting", "RiminiWellness et Expodental Meeting", "RiminiWellness y Expodental Meeting"),
+      'd' => $L(
+        "Fitness, benessere e salute dentale: accoglienza, informazioni al pubblico e supporto agli espositori.",
+        "Fitness, wellness and dental health: reception, visitor information and exhibitor support.",
+        "Fitness, bien-être et santé dentaire : accueil, information du public et soutien aux exposants.",
+        "Fitness, bienestar y salud dental: recepción, información al público y apoyo a los expositores."),
+    ),
+    array(
+      'n' => $L("Palacongressi di Rimini", "Palacongressi di Rimini", "Palacongressi di Rimini", "Palacongressi di Rimini"),
+      'd' => $L(
+        "Congressi e convention: registrazione, assistenza in sala, accoglienza dei delegati.",
+        "Conferences and conventions: registration, room assistance, delegate reception.",
+        "Congrès et conventions : enregistrement, assistance en salle, accueil des délégués.",
+        "Congresos y convenciones: registro, asistencia en sala, recepción de delegados."),
+      'own' => 'staff',
+      'l'   => $L("Staff per eventi e congressi", "Event and conference staff", "Personnel pour événements et congrès", "Personal para eventos y congresos"),
+    ),
+  ),
+
+  's_eyebrow' => $L("I servizi", "Services", "Les services", "Los servicios"),
+  's_heading' => $L("Tutto quello che serve per un evento a Rimini", "Everything you need for an event in Rimini", "Tout ce qu'il faut pour un événement à Rimini", "Todo lo que necesita un evento en Rímini"),
+
+  'x_eyebrow' => $L("Approfondimenti", "More on Rimini", "Pour aller plus loin", "Más información"),
+  'x_hostess' => array(
+    'link' => 'agenzia-hostess-rimini',
+    'n'    => $L("Agenzia hostess a Rimini", "Hostess agency in Rimini", "Agence d'hôtesses à Rimini", "Agencia de azafatas en Rímini"),
+    'd'    => $L(
+        "La pagina TOAgency dedicata a hostess e steward in città: servizi, eventi e domande frequenti.",
+        "The TOAgency page dedicated to hostesses and stewards in the city: services, events and FAQ.",
+        "La page TOAgency consacrée aux hôtesses et stewards de la ville : services, événements et questions fréquentes.",
+        "La página de TOAgency dedicada a azafatas y stewards de la ciudad: servicios, eventos y preguntas frecuentes."),
+  ),
+
+  'f_eyebrow' => $L("Domande frequenti", "FAQ", "Questions fréquentes", "Preguntas frecuentes"),
+  'f_heading' => $L("Eventi a Rimini: le domande più comuni", "Events in Rimini: common questions", "Événements à Rimini : les questions courantes", "Eventos en Rímini: las preguntas más comunes"),
+  'faq' => array(
+    array(
+      'q' => $L("Per quali eventi a Rimini fornite personale?", "Which events in Rimini do you provide staff for?", "Pour quels événements à Rimini fournissez-vous du personnel ?", "¿Para qué eventos en Rímini proporcionáis personal?"),
+      'a' => $L(
+        "Per fiere e saloni, congressi e convention, eventi aziendali e presentazioni di prodotto. Dalla scelta delle figure alla gestione sul posto, ti segue un unico referente.",
+        "For trade shows and exhibitions, conferences and conventions, corporate events and product launches. From choosing the roles to running things on site, a single contact looks after you.",
+        "Pour les salons et expositions, congrès et conventions, événements d'entreprise et lancements de produit. Du choix des profils à la gestion sur place, un seul interlocuteur vous suit.",
+        "Para ferias y salones, congresos y convenciones, eventos corporativos y presentaciones de producto. Desde la elección de los perfiles hasta la gestión en el lugar, te acompaña un único interlocutor."),
+    ),
+    array(
+      'q' => $L("Quanto costa il personale per un evento a Rimini?", "How much does event staff cost in Rimini?", "Combien coûte le personnel pour un événement à Rimini ?", "¿Cuánto cuesta el personal para un evento en Rímini?"),
+      'a' => $L(
+        "Hostess, steward, promoter e supporto fiera: a partire da €129 a persona al giorno (+ IVA per i clienti italiani soggetti a IVA). Per camerieri, barman e altri profili qualificati dipende da mansioni, durata e livello di autonomia richiesto, e con più budget la scelta di profili si allarga. Se hai un budget diverso, indicalo pure e vediamo se possiamo venirti incontro.",
+        "Hostesses, stewards, promoters and trade show support: from €129 per person per day (VAT is charged only to Italian clients subject to VAT). For waiters, bartenders and other qualified profiles it depends on the tasks, the duration and the autonomy required, and a bigger budget widens the choice of profiles. If your budget is different, just tell us and we'll see how we can accommodate you.",
+        "Hôtesses, stewards, promoteurs et renfort sur salon : à partir de 129 € par personne et par jour (TVA facturée uniquement aux clients italiens assujettis). Pour les serveurs, barmans et autres profils qualifiés, cela dépend des missions, de la durée et de l'autonomie demandée, et un budget plus important élargit le choix des profils. Si votre budget est différent, dites-le-nous et nous verrons comment vous accompagner.",
+        "Azafatas, stewards, promotores y apoyo en feria: desde 129 € por persona y día (IVA solo para clientes italianos sujetos a IVA). Para camareros, barmans y otros perfiles cualificados depende de las tareas, la duración y la autonomía requerida, y con más presupuesto se amplía la elección de perfiles. Si tu presupuesto es distinto, indícalo y vemos cómo ayudarte."),
+    ),
+    array(
+      'q' => $L("Coprite solo Rimini?", "Do you only cover Rimini?", "Intervenez-vous seulement à Rimini ?", "¿Cubrís solo Rímini?"),
+      'a' => $L(
+        "No: copriamo Rimini, la Riviera Romagnola e tutta l'Emilia-Romagna, con staff multilingue per i saloni internazionali. Se l'evento è altrove, formiamo la squadra giusta anche fuori Rimini.",
+        "No: we cover Rimini, the Romagna Riviera and all of Emilia-Romagna, with multilingual staff for the international shows. If your event is elsewhere, we build the right team outside Rimini too.",
+        "Non : nous couvrons Rimini, la Riviera romagnole et toute l'Émilie-Romagne, avec du personnel multilingue pour les salons internationaux. Si l'événement a lieu ailleurs, nous constituons l'équipe qu'il faut hors de Rimini aussi.",
+        "No: cubrimos Rímini, la Riviera romañola y toda Emilia-Romaña, con personal multilingüe para los salones internacionales. Si el evento es en otro lugar, formamos el equipo adecuado también fuera de Rímini."),
+    ),
+    array(
+      'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
+      'a' => $L(
+        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
+        "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
+        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
+        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+    ),
+    array(
+      'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
+      'a' => $L(
+        "Sì, abbiamo staff multilingue per buyer, ospiti e stampa internazionali. Gli interpreti sono disponibili su richiesta, in base a lingua e disponibilità.",
+        "Yes, we have multilingual staff for international buyers, guests and press. Interpreters are available on request, depending on language and availability.",
+        "Oui, nous avons du personnel multilingue pour les acheteurs, invités et la presse internationale. Des interprètes sont disponibles sur demande, selon la langue et la disponibilité.",
+        "Sí, tenemos personal multilingüe para compradores, invitados y prensa internacionales. Los intérpretes están disponibles bajo petición, según el idioma y la disponibilidad."),
+    ),
+    array(
+      'q' => $L("Chi gestisce contratti e assicurazioni del personale?", "Who handles the staff's contracts and insurance?", "Qui gère les contrats et les assurances du personnel ?", "¿Quién gestiona los contratos y seguros del personal?"),
+      'a' => $L(
+        "Li gestiamo noi: contratti, compensi e assicurazione INAIL del personale, con una sola fattura per il cliente.",
+        "We do: staff contracts, fees and INAIL insurance, with a single invoice for the client.",
+        "C'est nous : contrats, rémunérations et assurance INAIL du personnel, avec une seule facture pour le client.",
+        "Nos encargamos nosotros: contratos, honorarios y seguro INAIL del personal, con una sola factura para el cliente."),
+    ),
+    array(
+      'q' => $L("Quanto tempo ci vuole per avere una proposta?", "How long does it take to get a proposal?", "Combien de temps faut-il pour recevoir une proposition ?", "¿Cuánto se tarda en recibir una propuesta?"),
+      'a' => $L(
+        "Rispondiamo in genere entro 24 ore lavorative. Più dettagli ci dai (date, sede, numero di persone), più la proposta è precisa.",
+        "We usually reply within 24 working hours. The more detail you give us (dates, venue, number of people), the more precise the proposal.",
+        "Nous répondons en général sous 24 heures ouvrées. Plus vous nous donnez de détails (dates, lieu, nombre de personnes), plus la proposition est précise.",
+        "Respondemos por lo general en 24 horas laborables. Cuantos más detalles nos des (fechas, sede, número de personas), más precisa será la propuesta."),
+    ),
+  ),
+),
+
 );
