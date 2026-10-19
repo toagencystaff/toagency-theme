@@ -27,8 +27,8 @@ $ec_groups = array(
     array("Lione","Lyon","Lyon","Lyon"),
   ),
   'es' => array(
-    array("Madrid","Madrid","Madrid","Madrid"),
-    array("Barcellona","Barcelona","Barcelone","Barcelona"),
+    array("Madrid","Madrid","Madrid","Madrid",false,'madrid'),
+    array("Barcellona","Barcelona","Barcelone","Barcelona",false,'barcellona'),
     array("Valencia","Valencia","Valence","Valencia"),
     array("Andalusia","Andalusia","Andalousie","Andalucía"),
   ),
