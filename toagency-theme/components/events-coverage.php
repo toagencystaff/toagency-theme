@@ -28,12 +28,14 @@ $ec_groups = array(
     array("Parigi","Paris","Paris","París",true,'parigi'),
     array("Costa Azzurra","French Riviera","Côte d'Azur","Costa Azul",false,'costa-azzurra'),
     array("Montecarlo","Monte Carlo","Monte-Carlo","Montecarlo",false,'montecarlo'),
-    array("Lione","Lyon","Lyon","Lyon"),
+    array("Lione","Lyon","Lyon","Lyon",false,'lione'),
   ),
   'es' => array(
     array("Madrid","Madrid","Madrid","Madrid",false,'madrid'),
     array("Barcellona","Barcelona","Barcelone","Barcelona",false,'barcellona'),
-    array("Valencia","Valencia","Valence","Valencia"),
+    array("Valencia","Valencia","Valence","Valencia",false,'valencia'),
+    array("Siviglia","Seville","Séville","Sevilla",false,'siviglia'),
+    array("Bilbao","Bilbao","Bilbao","Bilbao",false,'bilbao'),
     array("Andalusia","Andalusia","Andalousie","Andalucía"),
   ),
   'en' => array(
