@@ -1,7 +1,7 @@
 STATO=CLOSED
-CHAT=TEMA EVENTS
+CHAT=TEMA EVENTS SECURITY
 FILE=toagency-theme/templates/page-hostess-eventi20.php
-INIZIO=2026-10-15 10:27:15
-UPDATE=2026-10-16 09:06:13
-SHA1_ATTESO=8b67d6e76f6a8e1ea4f86caddf8cf820283753d4
-NOTA=#637 fascia link TOA Events - chiuso, online (commit 5cfdaad52)
+INIZIO=2026-10-20 12:05:00
+UPDATE=2026-10-20 12:04:12
+SHA1_ATTESO=ea181a581d57d62386ade6b22ef2b12f0f6979af
+NOTA=#688 security due livelli - in attesa deploy

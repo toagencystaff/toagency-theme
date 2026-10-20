@@ -81,7 +81,7 @@ $groups = array(
     array('it'=>'Videomaker','en'=>'Videomakers','fr'=>'Vid&eacute;astes','es'=>'Videomakers'),
   )),
   array('cat'=>array('it'=>'Sicurezza & Logistica','en'=>'Security & Logistics','fr'=>'S&eacute;curit&eacute; & Logistique','es'=>'Seguridad & Log&iacute;stica'),'items'=>array(
-    array('it'=>'Security','en'=>'Security','fr'=>'S&eacute;curit&eacute;','es'=>'Seguridad'),
+    array('it'=>'Security con partner autorizzato','en'=>'Security via authorised partner','fr'=>'S&eacute;curit&eacute; via partenaire agr&eacute;&eacute;','es'=>'Seguridad con socio autorizado'),
     array('it'=>'Autisti / NCC','en'=>'Drivers / NCC','fr'=>'Chauffeurs','es'=>'Conductores'),
     array('it'=>'Runner','en'=>'Runners','fr'=>'Runners','es'=>'Runners'),
     array('it'=>'Parcheggiatori','en'=>'Valet parking','fr'=>'Voituriers','es'=>'Aparcacoches'),
@@ -99,7 +99,6 @@ $staff = array(
   array('img'=>$SP.'bartender.jpg','name'=>'Lukas','role'=>array('it'=>'Bartender','en'=>'Bartender','fr'=>'Barman','es'=>'Bartender')),
   array('img'=>$SP.'cameriera.jpg','name'=>'Chloe','role'=>array('it'=>'Cameriera','en'=>'Waiter','fr'=>'Serveuse','es'=>'Camarera')),
   array('img'=>$SP.'interprete.jpg','name'=>'Claire','role'=>array('it'=>'Interprete','en'=>'Interpreter','fr'=>'Interpr&egrave;te','es'=>'Int&eacute;rprete')),
-  array('img'=>$SP.'security.jpg','name'=>'David','role'=>array('it'=>'Security','en'=>'Security','fr'=>'S&eacute;curit&eacute;','es'=>'Seguridad')),
   array('img'=>$SP.'autista.jpg','name'=>'Paulo','role'=>array('it'=>'Autista','en'=>'Driver','fr'=>'Chauffeur','es'=>'Conductor')),
   array('img'=>$SP.'dj.jpg','name'=>'Max','role'=>array('it'=>'DJ','en'=>'DJ','fr'=>'DJ','es'=>'DJ')),
   array('img'=>$SP.'fotografa.jpg','name'=>'Mei','role'=>array('it'=>'Fotografa','en'=>'Photographer','fr'=>'Photographe','es'=>'Fot&oacute;grafa')),
@@ -219,7 +218,7 @@ toa_component('header');
         <div class="toa-cast-hd">
             <h2><?php echo $_t(array('it'=>'Alcune delle figure che forniamo','en'=>'Some of the staff we provide','fr'=>'Quelques profils que nous fournissons','es'=>'Algunos de los perfiles que ofrecemos')); ?></h2>
             <p><?php echo $_t(array('it'=>'Staff selezionato &middot; 20.000+ profili','en'=>'Selected staff &middot; 20,000+ profiles','fr'=>'Personnel s&eacute;lectionn&eacute; &middot; 20 000+ profils','es'=>'Personal seleccionado &middot; 20.000+ perfiles')); ?></p>
-            <p class="desc"><?php echo $_t(array('it'=>'Hostess, steward, bartender, security, DJ e molto altro: costruiamo lo staff su misura per il tuo evento, con un referente dedicato. Se serve, ci occupiamo anche delle pratiche e dei permessi legati all\'evento.','en'=>'Hostesses, stewards, bartenders, security, DJs and more: we build the staff tailored to your event, with a dedicated manager. If needed, we also handle event-related permits and paperwork.','fr'=>'H&ocirc;tesses, stewards, barmans, s&eacute;curit&eacute;, DJ et plus : nous construisons le personnel sur mesure. Si besoin, nous nous occupons aussi des d&eacute;marches et autorisations li&eacute;es &agrave; l\'&eacute;v&eacute;nement.','es'=>'Azafatas, stewards, bartenders, seguridad, DJ y m&aacute;s: creamos el personal a medida. Si es necesario, tambi&eacute;n nos ocupamos de los tr&aacute;mites y permisos relacionados con el evento.')); ?></p>
+            <p class="desc"><?php echo $_t(array('it'=>'Hostess, steward, bartender, DJ e molto altro: costruiamo lo staff su misura per il tuo evento, con un referente dedicato. Se serve, ci occupiamo anche delle pratiche e dei permessi legati all\'evento.','en'=>'Hostesses, stewards, bartenders, DJs and more: we build the staff tailored to your event, with a dedicated manager. If needed, we also handle event-related permits and paperwork.','fr'=>'H&ocirc;tesses, stewards, barmans, DJ et plus : nous construisons le personnel sur mesure. Si besoin, nous nous occupons aussi des d&eacute;marches et autorisations li&eacute;es &agrave; l\'&eacute;v&eacute;nement.','es'=>'Azafatas, stewards, bartenders, DJ y m&aacute;s: creamos el personal a medida. Si es necesario, tambi&eacute;n nos ocupamos de los tr&aacute;mites y permisos relacionados con el evento.')); ?></p>
         </div>
         <div class="toa-cast-grid">
             <?php foreach ($staff as $p): ?>
