@@ -125,10 +125,10 @@ return array(
     ),
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
-      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
-                "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
-                "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
-                "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.",
+                "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.",
+                "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.",
+                "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -269,10 +269,10 @@ return array(
     ),
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
-      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
-                "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
-                "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
-                "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.",
+                "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.",
+                "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.",
+                "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -402,10 +402,10 @@ return array(
     ),
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
-      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
-                "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
-                "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
-                "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.",
+                "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.",
+                "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.",
+                "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -490,7 +490,7 @@ return array(
     ),
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
-      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.", "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.", "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.", "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.", "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.", "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.", "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -566,7 +566,7 @@ return array(
     ),
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
-      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.", "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.", "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.", "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.", "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.", "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.", "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -642,7 +642,7 @@ return array(
     ),
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
-      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.", "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.", "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.", "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.", "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.", "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.", "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -714,7 +714,7 @@ return array(
     ),
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
-      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.", "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.", "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.", "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.", "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.", "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.", "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -788,7 +788,7 @@ return array(
     ),
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
-      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.", "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.", "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.", "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.", "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.", "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.", "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -911,10 +911,10 @@ return array(
     ),
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
-      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
-                "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
-                "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
-                "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+      'a' => $L("Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.",
+                "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.",
+                "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.",
+                "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -1055,10 +1055,10 @@ return array(
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
       'a' => $L(
-        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
-        "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
-        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
-        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.",
+        "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.",
+        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.",
+        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -1200,10 +1200,10 @@ return array(
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
       'a' => $L(
-        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
-        "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
-        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
-        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.",
+        "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.",
+        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.",
+        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -1345,10 +1345,10 @@ return array(
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
       'a' => $L(
-        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
-        "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
-        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
-        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.",
+        "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.",
+        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.",
+        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -1490,10 +1490,10 @@ return array(
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
       'a' => $L(
-        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
-        "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
-        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
-        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.",
+        "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.",
+        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.",
+        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -1635,10 +1635,10 @@ return array(
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
       'a' => $L(
-        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
-        "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
-        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
-        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.",
+        "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.",
+        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.",
+        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -1780,10 +1780,10 @@ return array(
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
       'a' => $L(
-        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
-        "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
-        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
-        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.",
+        "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.",
+        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.",
+        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -1926,10 +1926,10 @@ return array(
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
       'a' => $L(
-        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
-        "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
-        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
-        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.",
+        "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.",
+        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.",
+        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -2064,10 +2064,10 @@ return array(
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
       'a' => $L(
-        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
-        "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
-        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
-        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.",
+        "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.",
+        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.",
+        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
@@ -2202,10 +2202,10 @@ return array(
     array(
       'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
       'a' => $L(
-        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
-        "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
-        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
-        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici sono affidati solo a personale qualificato e in regola; sicurezza e trasporti li organizziamo con partner autorizzati.",
+        "Bartenders and waiters, photo and video, technical crew and logistics. Technical roles go only to qualified, compliant staff; security and transport are arranged with authorised partners.",
+        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques ne sont confiés qu'à du personnel qualifié et en règle ; la sécurité et les transports sont organisés avec des partenaires autorisés.",
+        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos se confían solo a personal cualificado y en regla; la seguridad y el transporte los organizamos con socios autorizados."),
     ),
     array(
       'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),

@@ -1,7 +1,7 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=TEMA LP-FRANCIA
 FILE=toagency-theme/templates/page-landing-ads.php
 INIZIO=2026-10-19 15:06:25
-UPDATE=2026-10-19 15:06:25
+UPDATE=2026-10-19 15:40:13
 SHA1_ATTESO=078192c822f539d295e23ca4b7c58f872ab9ee68
-NOTA=Round 8: FAQ prezzo FR "a partire da 159 EUR" (decisione Marco 19/10).
+NOTA=Round 8 LIVE prod 19/10 verificato: FAQ prezzo FR a partire da 159 EUR.

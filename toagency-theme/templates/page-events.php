@@ -35,10 +35,10 @@ $t = array(
     'serv_heading' => array('it'=>"Tutto quello che serve al tuo evento",'en'=>"Everything your event needs",'fr'=>"Tout ce dont votre événement a besoin",'es'=>"Todo lo que necesita tu evento"),
     'serv_cta' => array('it'=>"Chiedi un preventivo",'en'=>"Ask for a quote",'fr'=>"Demander un devis",'es'=>"Pedir presupuesto"),
     'serv_foot' => array(
-        'it' => "Interpreti su richiesta. Security e mansioni tecniche solo con personale in regola con i requisiti di legge. Il trasporto di merci è eseguito solo da partner con licenza di autotrasporto per conto terzi. Foto illustrative.",
-        'en' => "Interpreters on request. Security and technical roles only with staff who meet the legal requirements. Goods are transported only by partners holding a for-hire road haulage licence. Illustrative photos.",
-        'fr' => "Interprètes sur demande. Sécurité et missions techniques uniquement avec du personnel en règle avec les exigences légales. Le transport de marchandises est assuré uniquement par des partenaires titulaires d'une licence de transport pour compte d'autrui. Photos illustratives.",
-        'es' => "Intérpretes bajo petición. Seguridad y tareas técnicas solo con personal que cumple los requisitos legales. El transporte de mercancías lo realizan únicamente partners con licencia de transporte por cuenta ajena. Fotos ilustrativas.",
+        'it' => "Interpreti su richiesta. Mansioni tecniche solo con personale in regola con i requisiti di legge; la security è eseguita da un operatore autorizzato, partner di TOA. Il trasporto di merci è eseguito solo da partner con licenza di autotrasporto per conto terzi. Foto illustrative.",
+        'en' => "Interpreters on request. Technical roles only with staff who meet the legal requirements; security is provided by an authorised operator, a TOA partner. Goods are transported only by partners holding a for-hire road haulage licence. Illustrative photos.",
+        'fr' => "Interprètes sur demande. Missions techniques uniquement avec du personnel en règle avec les exigences légales ; la sécurité est assurée par un opérateur agréé, partenaire de TOA. Le transport de marchandises est assuré uniquement par des partenaires titulaires d'une licence de transport pour compte d'autrui. Photos illustratives.",
+        'es' => "Intérpretes bajo petición. Tareas técnicas solo con personal que cumple los requisitos legales; la seguridad la presta un operador autorizado, socio de TOA. El transporte de mercancías lo realizan únicamente partners con licencia de transporte por cuenta ajena. Fotos ilustrativas.",
     ),
     'serv_more' => array('it'=>"Scopri le figure",'en'=>"See the roles",'fr'=>"Voir les profils",'es'=>"Ver los perfiles"),
     'serv_other' => array(
