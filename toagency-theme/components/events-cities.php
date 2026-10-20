@@ -1522,4 +1522,149 @@ return array(
   ),
 ),
 
+'firenze' => array(
+  'slug'  => $L("firenze", "florence", "florence", "florencia"),
+  'name'  => $L("Firenze", "Florence", "Florence", "Florencia"),
+  'seo_title' => $L(
+        "Staff per eventi a Firenze: Fortezza da Basso, Pitti, congressi | TOAgency",
+        "Event staff in Florence: Fortezza da Basso, Pitti, conferences | TOAgency",
+        "Personnel événementiel à Florence : Fortezza da Basso, Pitti, congrès | TOAgency",
+        "Personal para eventos en Florencia: Fortezza da Basso, Pitti, congresos | TOAgency"),
+  'seo_desc' => $L(
+        "Hostess, steward, bar, foto e video, crew e logistica per eventi a Firenze: Fortezza da Basso, Pitti, congressi. TOA Events: un referente, un preventivo.",
+        "Hostesses, stewards, bar, photo and video, crew and logistics for events in Florence: Fortezza da Basso, Pitti. TOA Events: one contact, one quote.",
+        "Hôtesses, stewards, bar, photo et vidéo, équipes et logistique pour événements à Florence : Fortezza da Basso, Pitti. TOA Events : un seul interlocuteur.",
+        "Azafatas, stewards, bar, foto y vídeo, equipos y logística para eventos en Florencia: Fortezza da Basso, Pitti. TOA Events: un solo presupuesto."),
+  'h1'    => $L("Staff e servizi per eventi a Firenze", "Event staff and services in Florence", "Personnel et services pour événements à Florence", "Personal y servicios para eventos en Florencia"),
+  'intro' => $L(
+        "Fiere, saloni internazionali e congressi: a Firenze e in tutta la Toscana, con un unico referente. Dalle hostess alla crew tecnica, un solo preventivo.",
+        "Trade shows, international exhibitions and conferences: in Florence and across Tuscany, with a single point of contact. From hostesses to technical crew, one quote.",
+        "Salons, expositions internationales et congrès : à Florence et dans toute la Toscane, avec un seul interlocuteur. Des hôtesses aux équipes techniques, un seul devis.",
+        "Ferias, salones internacionales y congresos: en Florencia y en toda la Toscana, con un único interlocutor. De las azafatas al equipo técnico, un único presupuesto."),
+
+  // Tariffa di partenza (Italia: €129 a persona al giorno). Avviso IVA in tutte le lingue (regola di Marco 19/10/2026).
+  'price' => $L(
+        "Hostess, steward e promoter a partire da €129 a persona al giorno (+ IVA per i clienti italiani soggetti a IVA). Altri profili su preventivo.",
+        "Hostesses, stewards and promoters from €129 per person per day (VAT is charged only to Italian clients subject to VAT). Other profiles on request.",
+        "Hôtesses, stewards et promoteurs à partir de 129 € par personne et par jour (TVA facturée uniquement aux clients italiens assujettis). Autres profils sur demande.",
+        "Azafatas, stewards y promotores desde 129 € por persona y día (IVA solo para clientes italianos sujetos a IVA). Otros perfiles bajo petición."),
+
+  'v_eyebrow' => $L("Le sedi", "Venues", "Les lieux", "Las sedes"),
+  'v_heading' => $L("Dove lavoriamo a Firenze", "Where we work in Florence", "Où nous intervenons à Florence", "Dónde trabajamos en Florencia"),
+  'v_sub'     => $L("Alcune sedi ed eventi della città, con le pagine di approfondimento.", "Some of the city's venues and events, with in-depth pages.", "Quelques lieux et événements de la ville, avec les pages détaillées.", "Algunas sedes y eventos de la ciudad, con sus páginas de detalle."),
+  'venues' => array(
+    array(
+      'n' => $L("Fortezza da Basso", "Fortezza da Basso", "Fortezza da Basso", "Fortezza da Basso"),
+      'd' => $L(
+        "Il quartiere fieristico di Firenze, sede di Pitti Immagine e Didacta Italia: stand e padiglioni da presidiare, accoglienza dei buyer, staff multilingue.",
+        "Florence's exhibition district, home of Pitti Immagine and Didacta Italia: booths and halls to staff, buyer reception, multilingual staff.",
+        "Le parc des expositions de Florence, siège de Pitti Immagine et de Didacta Italia : stands et pavillons à animer, accueil des acheteurs, personnel multilingue.",
+        "El recinto ferial de Florencia, sede de Pitti Immagine y Didacta Italia: stands y pabellones que atender, recepción de compradores, personal multilingüe."),
+      'own' => 'fiere',
+      'l'   => $L("Personale per fiere e saloni", "Trade show staff", "Personnel pour salons", "Personal para ferias"),
+    ),
+    array(
+      'n' => $L("Pitti Immagine e Pitti Fragranze", "Pitti Immagine and Pitti Fragranze", "Pitti Immagine et Pitti Fragranze", "Pitti Immagine y Pitti Fragranze"),
+      'd' => $L(
+        "Moda uomo e bambino, filati e profumeria: accoglienza allo stand, assistenza ai buyer internazionali, staff multilingue.",
+        "Menswear, childrenswear, yarns and fragrances: stand reception, support for international buyers, multilingual staff.",
+        "Mode homme et enfant, fils et parfumerie : accueil sur le stand, assistance aux acheteurs internationaux, personnel multilingue.",
+        "Moda masculina e infantil, hilados y perfumería: recepción en el stand, asistencia a compradores internacionales, personal multilingüe."),
+    ),
+    array(
+      'n' => $L("Mostra Internazionale dell'Artigianato", "International Crafts Exhibition", "Exposition internationale de l'artisanat", "Muestra Internacional de la Artesanía"),
+      'd' => $L(
+        "Il grande appuntamento dell'artigianato: accoglienza, informazioni al pubblico e supporto agli espositori.",
+        "The big crafts event: reception, visitor information and exhibitor support.",
+        "Le grand rendez-vous de l'artisanat : accueil, information du public et soutien aux exposants.",
+        "La gran cita de la artesanía: recepción, información al público y apoyo a los expositores."),
+    ),
+    array(
+      'n' => $L("Palazzo dei Congressi e Palazzo degli Affari", "Palazzo dei Congressi and Palazzo degli Affari", "Palazzo dei Congressi et Palazzo degli Affari", "Palazzo dei Congressi y Palazzo degli Affari"),
+      'd' => $L(
+        "Congressi e convention: registrazione, assistenza in sala, accoglienza di relatori e delegati.",
+        "Conferences and conventions: registration, room assistance, speaker and delegate reception.",
+        "Congrès et conventions : enregistrement, assistance en salle, accueil des intervenants et des délégués.",
+        "Congresos y convenciones: registro, asistencia en sala, recepción de ponentes y delegados."),
+      'own' => 'staff',
+      'l'   => $L("Staff per eventi e congressi", "Event and conference staff", "Personnel pour événements et congrès", "Personal para eventos y congresos"),
+    ),
+  ),
+
+  's_eyebrow' => $L("I servizi", "Services", "Les services", "Los servicios"),
+  's_heading' => $L("Tutto quello che serve per un evento a Firenze", "Everything you need for an event in Florence", "Tout ce qu'il faut pour un événement à Florence", "Todo lo que necesita un evento en Florencia"),
+
+  'x_eyebrow' => $L("Approfondimenti", "More on Florence", "Pour aller plus loin", "Más información"),
+  'x_hostess' => array(
+    'link' => 'agenzia-hostess-firenze',
+    'n'    => $L("Agenzia hostess a Firenze", "Hostess agency in Florence", "Agence d'hôtesses à Florence", "Agencia de azafatas en Florencia"),
+    'd'    => $L(
+        "La pagina TOAgency dedicata a hostess e steward in città: servizi, eventi e domande frequenti.",
+        "The TOAgency page dedicated to hostesses and stewards in the city: services, events and FAQ.",
+        "La page TOAgency consacrée aux hôtesses et stewards de la ville : services, événements et questions fréquentes.",
+        "La página de TOAgency dedicada a azafatas y stewards de la ciudad: servicios, eventos y preguntas frecuentes."),
+  ),
+
+  'f_eyebrow' => $L("Domande frequenti", "FAQ", "Questions fréquentes", "Preguntas frecuentes"),
+  'f_heading' => $L("Eventi a Firenze: le domande più comuni", "Events in Florence: common questions", "Événements à Florence : les questions courantes", "Eventos en Florencia: las preguntas más comunes"),
+  'faq' => array(
+    array(
+      'q' => $L("Per quali eventi a Firenze fornite personale?", "Which events in Florence do you provide staff for?", "Pour quels événements à Florence fournissez-vous du personnel ?", "¿Para qué eventos en Florencia proporcionáis personal?"),
+      'a' => $L(
+        "Per fiere e saloni, congressi e convention, eventi aziendali e presentazioni di prodotto. Dalla scelta delle figure alla gestione sul posto, ti segue un unico referente.",
+        "For trade shows and exhibitions, conferences and conventions, corporate events and product launches. From choosing the roles to running things on site, a single contact looks after you.",
+        "Pour les salons et expositions, congrès et conventions, événements d'entreprise et lancements de produit. Du choix des profils à la gestion sur place, un seul interlocuteur vous suit.",
+        "Para ferias y salones, congresos y convenciones, eventos corporativos y presentaciones de producto. Desde la elección de los perfiles hasta la gestión en el lugar, te acompaña un único interlocutor."),
+    ),
+    array(
+      'q' => $L("Quanto costa il personale per un evento a Firenze?", "How much does event staff cost in Florence?", "Combien coûte le personnel pour un événement à Florence ?", "¿Cuánto cuesta el personal para un evento en Florencia?"),
+      'a' => $L(
+        "Hostess, steward, promoter e supporto fiera: a partire da €129 a persona al giorno (+ IVA per i clienti italiani soggetti a IVA). Per camerieri, barman e altri profili qualificati dipende da mansioni, durata e livello di autonomia richiesto, e con più budget la scelta di profili si allarga. Se hai un budget diverso, indicalo pure e vediamo se possiamo venirti incontro.",
+        "Hostesses, stewards, promoters and trade show support: from €129 per person per day (VAT is charged only to Italian clients subject to VAT). For waiters, bartenders and other qualified profiles it depends on the tasks, the duration and the autonomy required, and a bigger budget widens the choice of profiles. If your budget is different, just tell us and we'll see how we can accommodate you.",
+        "Hôtesses, stewards, promoteurs et renfort sur salon : à partir de 129 € par personne et par jour (TVA facturée uniquement aux clients italiens assujettis). Pour les serveurs, barmans et autres profils qualifiés, cela dépend des missions, de la durée et de l'autonomie demandée, et un budget plus important élargit le choix des profils. Si votre budget est différent, dites-le-nous et nous verrons comment vous accompagner.",
+        "Azafatas, stewards, promotores y apoyo en feria: desde 129 € por persona y día (IVA solo para clientes italianos sujetos a IVA). Para camareros, barmans y otros perfiles cualificados depende de las tareas, la duración y la autonomía requerida, y con más presupuesto se amplía la elección de perfiles. Si tu presupuesto es distinto, indícalo y vemos cómo ayudarte."),
+    ),
+    array(
+      'q' => $L("Coprite solo Firenze?", "Do you only cover Florence?", "Intervenez-vous seulement à Florence ?", "¿Cubrís solo Florencia?"),
+      'a' => $L(
+        "No: copriamo Firenze e tutta la Toscana, con staff multilingue per i saloni internazionali. Se l'evento è altrove, formiamo la squadra giusta anche fuori Firenze.",
+        "No: we cover Florence and all of Tuscany, with multilingual staff for the international shows. If your event is elsewhere, we build the right team outside Florence too.",
+        "Non : nous couvrons Florence et toute la Toscane, avec du personnel multilingue pour les salons internationaux. Si l'événement a lieu ailleurs, nous constituons l'équipe qu'il faut hors de Florence aussi.",
+        "No: cubrimos Florencia y toda la Toscana, con personal multilingüe para los salones internacionales. Si el evento es en otro lugar, formamos el equipo adecuado también fuera de Florencia."),
+    ),
+    array(
+      'q' => $L("Oltre a hostess e steward, cosa potete fornire?", "Besides hostesses and stewards, what can you provide?", "Au-delà des hôtesses et stewards, que pouvez-vous fournir ?", "Además de azafatas y stewards, ¿qué podéis proporcionar?"),
+      'a' => $L(
+        "Barman e camerieri, foto e video, crew tecnica e logistica. I ruoli tecnici e di sicurezza sono affidati solo a personale qualificato e in regola; i trasporti li organizziamo con partner autorizzati.",
+        "Bartenders and waiters, photo and video, technical crew and logistics. Technical and security roles go only to qualified, compliant staff; transport is arranged with authorised partners.",
+        "Barmans et serveurs, photo et vidéo, équipes techniques et logistique. Les postes techniques et de sécurité ne sont confiés qu'à du personnel qualifié et en règle ; les transports sont organisés avec des partenaires autorisés.",
+        "Barmans y camareros, foto y vídeo, equipo técnico y logística. Los puestos técnicos y de seguridad se confían solo a personal cualificado y en regla; el transporte lo organizamos con socios autorizados."),
+    ),
+    array(
+      'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
+      'a' => $L(
+        "Sì, abbiamo staff multilingue per buyer, ospiti e stampa internazionali. Gli interpreti sono disponibili su richiesta, in base a lingua e disponibilità.",
+        "Yes, we have multilingual staff for international buyers, guests and press. Interpreters are available on request, depending on language and availability.",
+        "Oui, nous avons du personnel multilingue pour les acheteurs, invités et la presse internationale. Des interprètes sont disponibles sur demande, selon la langue et la disponibilité.",
+        "Sí, tenemos personal multilingüe para compradores, invitados y prensa internacionales. Los intérpretes están disponibles bajo petición, según el idioma y la disponibilidad."),
+    ),
+    array(
+      'q' => $L("Chi gestisce i contratti del personale?", "Who handles the staff's contracts?", "Qui gère les contrats du personnel ?", "¿Quién gestiona los contratos del personal?"),
+      'a' => $L(
+        "Li gestiamo noi: contratti e compensi del personale, con una sola fattura per il cliente.",
+        "We do: staff contracts and fees, with a single invoice for the client.",
+        "C'est nous : contrats et rémunérations du personnel, avec une seule facture pour le client.",
+        "Nos encargamos nosotros: contratos y honorarios del personal, con una sola factura para el cliente."),
+    ),
+    array(
+      'q' => $L("Quanto tempo ci vuole per avere una proposta?", "How long does it take to get a proposal?", "Combien de temps faut-il pour recevoir une proposition ?", "¿Cuánto se tarda en recibir una propuesta?"),
+      'a' => $L(
+        "Se è urgente, rispondiamo subito. Più dettagli ci dai (date, sede, numero di persone), più la proposta è precisa.",
+        "If it's urgent, we reply right away. The more detail you give us (dates, venue, number of people), the more precise the proposal.",
+        "Si c'est urgent, nous répondons tout de suite. Plus vous nous donnez de détails (dates, lieu, nombre de personnes), plus la proposition est précise.",
+        "Si es urgente, respondemos enseguida. Cuantos más detalles nos des (fechas, sede, número de personas), más precisa será la propuesta."),
+    ),
+  ),
+),
+
 );

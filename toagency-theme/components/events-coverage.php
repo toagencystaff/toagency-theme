@@ -20,6 +20,7 @@ $ec_groups = array(
     array("Emilia-Romagna","Emilia-Romagna","Émilie-Romagne","Emilia-Romaña"),
     array("Verona","Verona","Vérone","Verona",false,'verona'),
     array("Veneto","Veneto","Vénétie","Véneto"),
+    array("Firenze","Florence","Florence","Florencia",false,'firenze'),
     array("Toscana","Tuscany","Toscane","Toscana"),
     array("Napoli","Naples","Naples","Nápoles",false,'napoli'),
   ),
