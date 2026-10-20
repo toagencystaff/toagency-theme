@@ -29,6 +29,8 @@ $ec_groups = array(
     array("Costa Azzurra","French Riviera","Côte d'Azur","Costa Azul",false,'costa-azzurra'),
     array("Montecarlo","Monte Carlo","Monte-Carlo","Montecarlo",false,'montecarlo'),
     array("Lione","Lyon","Lyon","Lyon",false,'lione'),
+    array("Marsiglia","Marseille","Marseille","Marsella",false,'marsiglia'),
+    array("Bordeaux","Bordeaux","Bordeaux","Burdeos",false,'bordeaux'),
   ),
   'es' => array(
     array("Madrid","Madrid","Madrid","Madrid",false,'madrid'),
@@ -36,6 +38,7 @@ $ec_groups = array(
     array("Valencia","Valencia","Valence","Valencia",false,'valencia'),
     array("Siviglia","Seville","Séville","Sevilla",false,'siviglia'),
     array("Bilbao","Bilbao","Bilbao","Bilbao",false,'bilbao'),
+    array("Malaga","Malaga","Malaga","Málaga",false,'malaga'),
     array("Andalusia","Andalusia","Andalousie","Andalucía"),
   ),
   'en' => array(
