@@ -43,6 +43,8 @@ $t = array(
     'vedi_tutti' => array('it' => 'Vedi tutti i casting', 'en' => 'View all castings', 'fr' => 'Voir tous les castings', 'es' => 'Ver todos los castings'),
     'prev' => array('it' => 'Precedente', 'en' => 'Previous', 'fr' => 'Pr&eacute;c&eacute;dent', 'es' => 'Anterior'),
     'next' => array('it' => 'Successivo', 'en' => 'Next', 'fr' => 'Suivant', 'es' => 'Siguiente'),
+    // PATCH 2026-10-21 marco — ticket #706: link "Le mie candidature"
+    'my_apps' => array('it' => 'Hai già inviato candidature? Controllale o ritirale', 'en' => 'Already applied? Check or withdraw your applications', 'fr' => 'Vous avez déjà postulé ? Consultez ou retirez vos candidatures', 'es' => '¿Ya te has presentado? Consulta o retira tus candidaturas'),
     // PATCH 2026-05-22 marco — filtro lingua
     'filter_lingua_label' => array('it' => 'Lingua', 'en' => 'Language', 'fr' => 'Langue', 'es' => 'Idioma'),
     'filter_lingua_all'   => array('it' => 'Tutte le lingue', 'en' => 'All languages', 'fr' => 'Toutes langues', 'es' => 'Todos los idiomas'),
@@ -102,6 +104,8 @@ toa_component('header');
     letter-spacing: 0.5px;
 }
 /* SOCIAL BOX */
+.casting-my-apps { text-align: center; margin: 0 0 16px; font-size: 14px; }
+.casting-my-apps a { color: inherit; text-decoration: underline; }
 .social-box {
     background: var(--gray-1);
     border: 1px solid var(--gray-2);
@@ -467,6 +471,8 @@ toa_component('header');
         <h1><?php echo $_t($t['hero_title']); ?></h1>
         <p><?php echo $_t($t['hero_sub']); ?></p>
     </div>
+
+    <p class="casting-my-apps"><a href="https://toagency.it/crm_toagency/le-mie-candidature-richiedi.php?lang=<?php echo esc_attr($lang); ?>" rel="noopener"><?php echo $_t($t['my_apps']); ?> &rarr;</a></p>
 
     <!-- SOCIAL -->
     <div class="social-box">
