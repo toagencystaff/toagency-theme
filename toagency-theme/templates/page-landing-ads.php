@@ -61,7 +61,7 @@ $LOGO     = 'https://toagency.it/wp-content/uploads/2025/09/LogoToanew-150x150.p
 $COPY = [
   'casting-torino' => [
     'h1'  => ['it'=>'Agenzia casting e modelli a Torino per aziende e produzioni','en'=>'Casting and model agency in Turin for companies and productions','fr'=>'Agence de casting et mannequins à Turin pour entreprises et productions','es'=>'Agencia de casting y modelos en Turín para empresas y producciones'],
-    'sub' => ['it'=>'Modelli, hostess, attori e comparse selezionati per shooting, campagne ed eventi. Preventivo gratuito in 24 ore.','en'=>'Selected models, hostesses, actors and extras for shoots, campaigns and events. Free quote within 24 hours.','fr'=>'Mannequins, hôtesses, acteurs et figurants sélectionnés pour shootings, campagnes et événements. Devis gratuit sous 24 heures.','es'=>'Modelos, azafatas, actores y figurantes seleccionados para sesiones, campañas y eventos. Presupuesto gratuito en 24 horas.'],
+    'sub' => ['it'=>'Modelli, hostess, attori e comparse selezionati per shooting, campagne ed eventi. Preventivo gratuito. Se è urgente, rispondiamo subito.','en'=>'Selected models, hostesses, actors and extras for shoots, campaigns and events. Free quote. Urgent? We reply right away.','fr'=>'Mannequins, hôtesses, acteurs et figurants sélectionnés pour shootings, campagnes et événements. Devis gratuit. Urgent ? Nous répondons tout de suite.','es'=>'Modelos, azafatas, actores y figurantes seleccionados para sesiones, campañas y eventos. Presupuesto gratuito. ¿Urgente? Respondemos enseguida.'],
     'bul' => [
       'it'=>['20.000+ profili nel database','15+ anni di esperienza, sede a Torino','Operativi a Torino e in tutto il Piemonte','Casting gestiti in 4 lingue'],
       'en'=>['20,000+ profiles in our database','15+ years of experience, based in Turin','Active across Turin and the Piedmont region','Casting managed in 4 languages'],
@@ -71,7 +71,7 @@ $COPY = [
   ],
   'hostess-torino' => [
     'h1'  => ['it'=>'Agenzia hostess e steward a Torino per fiere, eventi e congressi','en'=>'Hostess and event staff agency in Turin for trade fairs, events and congresses','fr'=>'Agence d\'hôtesses et stewards à Turin pour salons, événements et congrès','es'=>'Agencia de azafatas y stewards en Turín para ferias, eventos y congresos'],
-    'sub' => ['it'=>'Personale qualificato e multilingue per fiere, congressi, stand e accoglienza. Preventivo gratuito in 24 ore.','en'=>'Qualified, multilingual hostesses and stewards for fairs, conferences, stands and reception. Free quote within 24 hours.','fr'=>'Personnel qualifié et multilingue pour salons, congrès, stands et accueil. Devis gratuit sous 24 heures.','es'=>'Personal cualificado y multilingüe para ferias, congresos, stands y recepción. Presupuesto gratuito en 24 horas.'],
+    'sub' => ['it'=>'Personale qualificato e multilingue per fiere, congressi, stand e accoglienza. Preventivo gratuito. Se è urgente, rispondiamo subito.','en'=>'Qualified, multilingual hostesses and stewards for fairs, conferences, stands and reception. Free quote. Urgent? We reply right away.','fr'=>'Personnel qualifié et multilingue pour salons, congrès, stands et accueil. Devis gratuit. Urgent ? Nous répondons tout de suite.','es'=>'Personal cualificado y multilingüe para ferias, congresos, stands y recepción. Presupuesto gratuito. ¿Urgente? Respondemos enseguida.'],
     'bul' => [
       'it'=>['Hostess e steward per fiere, saloni ed eventi','20.000+ profili nel database','15+ anni di esperienza, sede a Torino','Gestione in italiano, inglese, francese e spagnolo'],
       'en'=>['Hostesses and stewards for fairs, shows and events','20,000+ profiles in our database','15+ years of experience, based in Turin','Management in Italian, English, French and Spanish'],
@@ -81,7 +81,7 @@ $COPY = [
   ],
   'casting-roma' => [ // FIX 2026-06-22 marco — landing Ads Roma
     'h1'  => ['it'=>'Agenzia casting e modelli a Roma per aziende e produzioni','en'=>'Casting and model agency in Rome for companies and productions','fr'=>'Agence de casting et mannequins à Rome pour entreprises et productions','es'=>'Agencia de casting y modelos en Roma para empresas y producciones'],
-    'sub' => ['it'=>'Modelli, hostess, attori e comparse selezionati per shooting, campagne ed eventi. Preventivo gratuito in 24 ore.','en'=>'Selected models, hostesses, actors and extras for shoots, campaigns and events. Free quote within 24 hours.','fr'=>'Mannequins, hôtesses, acteurs et figurants sélectionnés pour shootings, campagnes et événements. Devis gratuit sous 24 heures.','es'=>'Modelos, azafatas, actores y figurantes seleccionados para sesiones, campañas y eventos. Presupuesto gratuito en 24 horas.'],
+    'sub' => ['it'=>'Modelli, hostess, attori e comparse selezionati per shooting, campagne ed eventi. Preventivo gratuito. Se è urgente, rispondiamo subito.','en'=>'Selected models, hostesses, actors and extras for shoots, campaigns and events. Free quote. Urgent? We reply right away.','fr'=>'Mannequins, hôtesses, acteurs et figurants sélectionnés pour shootings, campagnes et événements. Devis gratuit. Urgent ? Nous répondons tout de suite.','es'=>'Modelos, azafatas, actores y figurantes seleccionados para sesiones, campañas y eventos. Presupuesto gratuito. ¿Urgente? Respondemos enseguida.'],
     'bul' => [
       'it'=>['20.000+ profili nel database','15+ anni di esperienza, dal 2009','Operativi a Roma e in tutto il Lazio','Casting gestiti in 4 lingue'],
       'en'=>['20,000+ profiles in our database','15+ years of experience, since 2009','Active across Rome and the Lazio region','Casting managed in 4 languages'],
@@ -91,7 +91,7 @@ $COPY = [
   ],
   'hostess-roma' => [ // FIX 2026-06-22 marco — landing Ads Roma
     'h1'  => ['it'=>'Agenzia hostess e steward a Roma per fiere, eventi e congressi','en'=>'Hostess and event staff agency in Rome for trade fairs, events and congresses','fr'=>'Agence d\'hôtesses et stewards à Rome pour salons, événements et congrès','es'=>'Agencia de azafatas y stewards en Roma para ferias, eventos y congresos'],
-    'sub' => ['it'=>'Personale qualificato e multilingue per fiere, congressi, stand e accoglienza. Preventivo gratuito in 24 ore.','en'=>'Qualified, multilingual hostesses and stewards for fairs, conferences, stands and reception. Free quote within 24 hours.','fr'=>'Personnel qualifié et multilingue pour salons, congrès, stands et accueil. Devis gratuit sous 24 heures.','es'=>'Personal cualificado y multilingüe para ferias, congresos, stands y recepción. Presupuesto gratuito en 24 horas.'],
+    'sub' => ['it'=>'Personale qualificato e multilingue per fiere, congressi, stand e accoglienza. Preventivo gratuito. Se è urgente, rispondiamo subito.','en'=>'Qualified, multilingual hostesses and stewards for fairs, conferences, stands and reception. Free quote. Urgent? We reply right away.','fr'=>'Personnel qualifié et multilingue pour salons, congrès, stands et accueil. Devis gratuit. Urgent ? Nous répondons tout de suite.','es'=>'Personal cualificado y multilingüe para ferias, congresos, stands y recepción. Presupuesto gratuito. ¿Urgente? Respondemos enseguida.'],
     'bul' => [
       'it'=>['Hostess e steward per fiere, saloni ed eventi','20.000+ profili nel database','15+ anni di esperienza, dal 2009','Gestione in italiano, inglese, francese e spagnolo'],
       'en'=>['Hostesses and stewards for fairs, shows and events','20,000+ profiles in our database','15+ years of experience, since 2009','Management in Italian, English, French and Spanish'],
@@ -101,7 +101,7 @@ $COPY = [
   ],
   'casting-italia' => [
     'h1'  => ['it'=>'Agenzia casting e modelli in Italia per aziende e produzioni','en'=>'Casting and model agency in Italy for companies and productions','fr'=>'Agence de casting et mannequins en Italie pour entreprises et productions','es'=>'Agencia de casting y modelos en Italia para empresas y producciones'],
-    'sub' => ['it'=>'Modelli, attori, comparse e hostess per campagne, shooting e produzioni in tutta Italia. Preventivo gratuito in 24 ore.','en'=>'Models, actors, extras and hostesses for campaigns, shoots and productions across Italy. Free quote within 24 hours.','fr'=>'Mannequins, acteurs, figurants et hôtesses pour campagnes, shootings et productions partout en Italie. Devis gratuit sous 24 heures.','es'=>'Modelos, actores, figurantes y azafatas para campañas, sesiones y producciones en toda Italia. Presupuesto gratuito en 24 horas.'],
+    'sub' => ['it'=>'Modelli, attori, comparse e hostess per campagne, shooting e produzioni in tutta Italia. Preventivo gratuito. Se è urgente, rispondiamo subito.','en'=>'Models, actors, extras and hostesses for campaigns, shoots and productions across Italy. Free quote. Urgent? We reply right away.','fr'=>'Mannequins, acteurs, figurants et hôtesses pour campagnes, shootings et productions partout en Italie. Devis gratuit. Urgent ? Nous répondons tout de suite.','es'=>'Modelos, actores, figurantes y azafatas para campañas, sesiones y producciones en toda Italia. Presupuesto gratuito. ¿Urgente? Respondemos enseguida.'],
     'bul' => [
       'it'=>['20.000+ profili in tutte le regioni italiane','15+ anni di esperienza con brand, e-commerce e produzioni','Un solo contatto per casting a Milano, Roma, Torino e in tutta Italia','Gestione progetto in 4 lingue'],
       'en'=>['20,000+ profiles across every Italian region','15+ years of experience with brands, e-commerce and productions','Single point of contact for castings in Milan, Rome, Turin and all of Italy','Project management in 4 languages'],
@@ -111,7 +111,7 @@ $COPY = [
   ],
   'models-aziende' => [
     'h1'  => ['it'=>'Agenzia di modelle e modelli per aziende e produzioni','en'=>'Model agency for companies and productions','fr'=>'Agence de mannequins pour entreprises et productions','es'=>'Agencia de modelos para empresas y producciones'],
-    'sub' => ['it'=>'Modelle e modelli selezionati per shooting, campagne, spot ed eventi. Preventivo gratuito in 24 ore.','en'=>'Selected models for shoots, campaigns, commercials and events. Free quote within 24 hours.','fr'=>'Mannequins sélectionnés pour shootings, campagnes, spots et événements. Devis gratuit sous 24 heures.','es'=>'Modelos seleccionados para sesiones, campañas, spots y eventos. Presupuesto gratuito en 24 horas.'],
+    'sub' => ['it'=>'Modelle e modelli selezionati per shooting, campagne, spot ed eventi. Preventivo gratuito. Se è urgente, rispondiamo subito.','en'=>'Selected models for shoots, campaigns, commercials and events. Free quote. Urgent? We reply right away.','fr'=>'Mannequins sélectionnés pour shootings, campagnes, spots et événements. Devis gratuit. Urgent ? Nous répondons tout de suite.','es'=>'Modelos seleccionados para sesiones, campañas, spots y eventos. Presupuesto gratuito. ¿Urgente? Respondemos enseguida.'],
     'bul' => [
       'it'=>['20.000+ profili verificati nel database','15+ anni di esperienza, dal 2009','Operativi in tutta Italia','Casting gestiti in 4 lingue'],
       'en'=>['20,000+ verified profiles in our database','15+ years of experience, since 2009','Active throughout Italy','Casting managed in 4 languages'],
@@ -122,7 +122,7 @@ $COPY = [
   ],
   'hostess-eventi' => [
     'h1'  => ['it'=>'Agenzia hostess, steward e promoter per fiere ed eventi','en'=>'Hostess, steward and promoter agency for trade fairs and events','fr'=>'Agence d\'hôtesses, stewards et promoteurs pour salons et événements','es'=>'Agencia de azafatas, stewards y promotores para ferias y eventos'],
-    'sub' => ['it'=>'Personale selezionato per fiere, congressi ed eventi aziendali in tutta Italia. Team completi in 24 ore.','en'=>'Selected staff for trade fairs, congresses and corporate events throughout Italy. Full teams within 24 hours.','fr'=>'Personnel sélectionné pour salons, congrès et événements d\'entreprise partout en France. Devis gratuit sous 24 heures.','es'=>'Personal seleccionado para ferias, congresos y eventos corporativos en toda Italia. Equipos completos en 24 horas.'],
+    'sub' => ['it'=>'Personale selezionato per fiere, congressi ed eventi aziendali in tutta Italia. Team su misura per il tuo evento. Se è urgente, rispondiamo subito.','en'=>'Selected staff for trade fairs, congresses and corporate events throughout Italy. Teams tailored to your event. Urgent? We reply right away.','fr'=>'Personnel sélectionné pour salons, congrès et événements d\'entreprise partout en France. Devis gratuit. Urgent ? Nous répondons tout de suite.','es'=>'Personal seleccionado para ferias, congresos y eventos corporativos en toda Italia. Equipos a medida para tu evento. ¿Urgente? Respondemos enseguida.'],
     'bul' => [
       'it'=>['20.000+ profili verificati nel database','15+ anni di esperienza, dal 2009','Hostess e staff multilingue','Operativi in tutta Italia'],
       'en'=>['20,000+ verified profiles in our database','15+ years of experience, since 2009','Multilingual hostesses and staff','Active throughout Italy'],
@@ -133,7 +133,7 @@ $COPY = [
   ],
   'attori-produzioni' => [
     'h1'  => ['it'=>'Agenzia di attori e comparse per produzioni, spot e cinema','en'=>'Actors and extras agency for productions, commercials and film','fr'=>'Agence d\'acteurs et figurants pour productions, spots et cinéma','es'=>'Agencia de actores y figurantes para producciones, spots y cine'],
-    'sub' => ['it'=>'Attori, attrici e comparse selezionati per spot pubblicitari, cinema, serie TV e contenuti video. Preventivo gratuito in 24 ore.','en'=>'Selected actors, actresses and extras for commercials, film, TV series and video content. Free quote within 24 hours.','fr'=>'Acteurs, actrices et figurants sélectionnés pour spots publicitaires, cinéma, séries TV et contenus vidéo. Devis gratuit sous 24 heures.','es'=>'Actores, actrices y figurantes seleccionados para spots publicitarios, cine, series de TV y contenidos de vídeo. Presupuesto gratuito en 24 horas.'],
+    'sub' => ['it'=>'Attori, attrici e comparse selezionati per spot pubblicitari, cinema, serie TV e contenuti video. Preventivo gratuito. Se è urgente, rispondiamo subito.','en'=>'Selected actors, actresses and extras for commercials, film, TV series and video content. Free quote. Urgent? We reply right away.','fr'=>'Acteurs, actrices et figurants sélectionnés pour spots publicitaires, cinéma, séries TV et contenus vidéo. Devis gratuit. Urgent ? Nous répondons tout de suite.','es'=>'Actores, actrices y figurantes seleccionados para spots publicitarios, cine, series de TV y contenidos de vídeo. Presupuesto gratuito. ¿Urgente? Respondemos enseguida.'],
     'bul' => [
       'it'=>['20.000+ profili verificati nel database','15+ anni di esperienza, dal 2009','Attori, caratteristi e comparse per ogni ruolo','Operativi in tutta Italia'],
       'en'=>['20,000+ verified profiles in our database','15+ years of experience, since 2009','Actors, character actors and extras for every role','Active throughout Italy'],
@@ -144,7 +144,7 @@ $COPY = [
   ],
   'casting-produzioni' => [
     'h1'  => ['it'=>'Casting per produzioni, spot e campagne pubblicitarie','en'=>'Casting for productions, commercials and advertising campaigns','fr'=>'Casting pour productions, spots et campagnes publicitaires','es'=>'Casting para producciones, spots y campañas publicitarias'],
-    'sub' => ['it'=>'Selezioniamo e gestiamo modelli, attori, comparse e figuranti per le tue produzioni: spot, cinema, serie TV, campagne ed e-commerce. Preventivo gratuito in 24 ore.','en'=>'We select and manage models, actors, extras and background talent for your productions: commercials, film, TV series, campaigns and e-commerce. Free quote within 24 hours.','fr'=>'Nous sélectionnons et gérons mannequins, acteurs, figurants et silhouettes pour vos productions : spots, cinéma, séries TV, campagnes et e-commerce. Devis gratuit sous 24 heures.','es'=>'Seleccionamos y gestionamos modelos, actores, figurantes y comparsas para tus producciones: spots, cine, series de TV, campañas y e-commerce. Presupuesto gratuito en 24 horas.'],
+    'sub' => ['it'=>'Selezioniamo e gestiamo modelli, attori, comparse e figuranti per le tue produzioni: spot, cinema, serie TV, campagne ed e-commerce. Preventivo gratuito. Se è urgente, rispondiamo subito.','en'=>'We select and manage models, actors, extras and background talent for your productions: commercials, film, TV series, campaigns and e-commerce. Free quote. Urgent? We reply right away.','fr'=>'Nous sélectionnons et gérons mannequins, acteurs, figurants et silhouettes pour vos productions : spots, cinéma, séries TV, campagnes et e-commerce. Devis gratuit. Urgent ? Nous répondons tout de suite.','es'=>'Seleccionamos y gestionamos modelos, actores, figurantes y comparsas para tus producciones: spots, cine, series de TV, campañas y e-commerce. Presupuesto gratuito. ¿Urgente? Respondemos enseguida.'],
     'bul' => [
       'it'=>['20.000+ profili verificati nel database','15+ anni di esperienza, dal 2009','Casting mirato per ruolo, età, fisico e caratteristiche','Operativi in tutta Italia'],
       'en'=>['20,000+ verified profiles in our database','15+ years of experience, since 2009','Targeted casting by role, age, look and features','Active throughout Italy'],
@@ -162,7 +162,7 @@ $db_l      = ['it'=>'Visita il nostro database','en'=>'Browse our talent databas
 $DB_URL    = 'https://toagency.it' . ($lang !== 'it' ? '/' . $lang : '') . '/talent-database/'; // FIX 2026-06-20 marco — era toadatabase.it (sito vecchio) · FIX 2026-10-03 (TEMA LP-FRANCIA) — nella lingua della pagina
 
 // FIX 2026-06-24 marco — form protagonista + WhatsApp taggato (lead qualificabile)
-$formhead_l   = ['it'=>'Ricevi una selezione di profili e un preventivo gratuito in 24h','en'=>'Get a shortlist of profiles and a free quote within 24h','fr'=>'Recevez une sélection de profils et un devis gratuit sous 24 heures','es'=>'Recibe una selección de perfiles y un presupuesto gratuito en 24h'];
+$formhead_l   = ['it'=>'Ricevi una selezione di profili e un preventivo gratuito','en'=>'Get a shortlist of profiles and a free quote','fr'=>'Recevez une sélection de profils et un devis gratuit','es'=>'Recibe una selección de perfiles y un presupuesto gratuito'];
 $contacthint_l= ['it'=>'Preferisci sentirci subito?','en'=>'Prefer to talk now?','fr'=>'Vous préférez nous écrire ?','es'=>'¿Prefieres contactarnos ya?'];
 // FIX 2026-07-10 marco — WhatsApp card pari peso al form, con etichetta B2B integrata (evitare click di talent)
 $wabig_l      = ['it'=>'Preferisci scriverci subito?','en'=>'Prefer to message us right away?','fr'=>'Vous préférez nous écrire tout de suite ?','es'=>'¿Prefieres escribirnos ahora mismo?'];
@@ -361,10 +361,10 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
        'en'=>['t'=>'Tell us about your event','d'=>'Date, city, how many people, which languages, what they need to do. A couple of lines is enough.'],
        'fr'=>['t'=>'Parlez-nous de votre événement','d'=>'Date, ville, combien de personnes, quelles langues, quelles missions. Deux lignes suffisent.'],
        'es'=>['t'=>'Cuéntanos tu evento','d'=>'Fecha, ciudad, cuántas personas, qué idiomas, qué tienen que hacer. Bastan dos líneas.']],
-      ['it'=>['t'=>'Ricevi i profili in 24 ore','d'=>'Ti mandiamo una rosa con foto, esperienza e lingue parlate, insieme al preventivo. Scegli tu chi vuoi in squadra.'],
-       'en'=>['t'=>'Get profiles within 24 hours','d'=>'We send you a shortlist with photos, experience and languages, along with the quote. You pick your team.'],
-       'fr'=>['t'=>'Recevez les profils sous 24 heures','d'=>'Nous vous envoyons une sélection avec photos, expérience et langues parlées, ainsi que le devis. C\'est vous qui choisissez votre équipe.'],
-       'es'=>['t'=>'Recibe los perfiles en 24 horas','d'=>'Te enviamos una selección con fotos, experiencia e idiomas, junto al presupuesto. Eliges tú a tu equipo.']],
+      ['it'=>['t'=>'Ricevi i profili e il preventivo','d'=>'Ti mandiamo una rosa con foto, esperienza e lingue parlate, insieme al preventivo. Scegli tu chi vuoi in squadra.'],
+       'en'=>['t'=>'Get profiles and a quote','d'=>'We send you a shortlist with photos, experience and languages, along with the quote. You pick your team.'],
+       'fr'=>['t'=>'Recevez profils et devis','d'=>'Nous vous envoyons une sélection avec photos, expérience et langues parlées, ainsi que le devis. C\'est vous qui choisissez votre équipe.'],
+       'es'=>['t'=>'Recibe perfiles y presupuesto','d'=>'Te enviamos una selección con fotos, experiencia e idiomas, junto al presupuesto. Eliges tú a tu equipo.']],
       ['it'=>['t'=>'Al resto pensiamo noi','d'=>'Contratti, compensi e coordinamento sul posto sono a carico nostro. Un solo referente, una sola fattura.'],
        'en'=>['t'=>'We handle the rest','d'=>'Contracts, fees and on-site coordination are on us. One contact, one invoice.'],
        'fr'=>['t'=>'Un seul interlocuteur','d'=>'Vous échangez avec un seul interlocuteur et recevez une seule facture.'],
@@ -375,10 +375,10 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
        'en'=>['t'=>'Tell us about your project','d'=>"Location, date, type of shoot or campaign, what look you're after. A couple of lines is enough."],
        'fr'=>['t'=>'Parlez-nous de votre projet','d'=>'Lieu, date, type de shooting ou de campagne, quel style vous recherchez. Deux lignes suffisent.'],
        'es'=>['t'=>'Cuéntanos tu proyecto','d'=>'Localización, fecha, tipo de sesión o campaña, qué imagen buscas. Bastan dos líneas.']],
-      ['it'=>['t'=>'Ricevi i profili in 24 ore','d'=>'Ti mandiamo una selezione di modelle e modelli con foto, misure ed esperienza, insieme al preventivo. Scegli tu chi vuoi.'],
-       'en'=>['t'=>'Get profiles within 24 hours','d'=>'We send you a shortlist of models with photos, measurements and experience, along with the quote. You pick who you want.'],
-       'fr'=>['t'=>'Recevez les profils sous 24 heures','d'=>'Nous vous envoyons une sélection de mannequins avec photos, mensurations et expérience, ainsi que le devis. C\'est vous qui choisissez.'],
-       'es'=>['t'=>'Recibe los perfiles en 24 horas','d'=>'Te enviamos una selección de modelos con fotos, medidas y experiencia, junto al presupuesto. Eliges tú a quién quieres.']],
+      ['it'=>['t'=>'Ricevi i profili e il preventivo','d'=>'Ti mandiamo una selezione di modelle e modelli con foto, misure ed esperienza, insieme al preventivo. Scegli tu chi vuoi.'],
+       'en'=>['t'=>'Get profiles and a quote','d'=>'We send you a shortlist of models with photos, measurements and experience, along with the quote. You pick who you want.'],
+       'fr'=>['t'=>'Recevez profils et devis','d'=>'Nous vous envoyons une sélection de mannequins avec photos, mensurations et expérience, ainsi que le devis. C\'est vous qui choisissez.'],
+       'es'=>['t'=>'Recibe perfiles y presupuesto','d'=>'Te enviamos una selección de modelos con fotos, medidas y experiencia, junto al presupuesto. Eliges tú a quién quieres.']],
       ['it'=>['t'=>'Al resto pensiamo noi','d'=>'Contratti, liberatorie e compensi sono a carico nostro. Un solo referente, una sola fattura.'],
        'en'=>['t'=>'We handle the rest','d'=>'Contracts, releases and fees are on us. One contact, one invoice.'],
        'fr'=>['t'=>'Nous nous occupons du reste','d'=>'Contrats, autorisations et rémunérations sont à notre charge. Un seul interlocuteur, une seule facture.'],
@@ -389,10 +389,10 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
        'en'=>['t'=>'Tell us about your project','d'=>"Role you're casting, type of production, location, timeline. A couple of lines is enough."],
        'fr'=>['t'=>'Parlez-nous de votre projet','d'=>'Rôle recherché, type de production, lieu, calendrier. Deux lignes suffisent.'],
        'es'=>['t'=>'Cuéntanos tu proyecto','d'=>'Papel buscado, tipo de producción, localización, plazos. Bastan dos líneas.']],
-      ['it'=>['t'=>'Ricevi i profili in 24 ore','d'=>'Ti mandiamo una selezione di attori, attrici e comparse con foto e provini, insieme al preventivo. Scegli tu il cast.'],
-       'en'=>['t'=>'Get profiles within 24 hours','d'=>'We send you a shortlist of actors and extras with photos and audition tapes, along with the quote. You pick the cast.'],
-       'fr'=>['t'=>'Recevez les profils sous 24 heures','d'=>'Nous vous envoyons une sélection d\'acteurs et de figurants avec photos et bandes d\'essai, ainsi que le devis. C\'est vous qui choisissez le casting.'],
-       'es'=>['t'=>'Recibe los perfiles en 24 horas','d'=>'Te enviamos una selección de actores y figurantes con fotos y pruebas, junto al presupuesto. Eliges tú el reparto.']],
+      ['it'=>['t'=>'Ricevi i profili e il preventivo','d'=>'Ti mandiamo una selezione di attori, attrici e comparse con foto e provini, insieme al preventivo. Scegli tu il cast.'],
+       'en'=>['t'=>'Get profiles and a quote','d'=>'We send you a shortlist of actors and extras with photos and audition tapes, along with the quote. You pick the cast.'],
+       'fr'=>['t'=>'Recevez profils et devis','d'=>'Nous vous envoyons une sélection d\'acteurs et de figurants avec photos et bandes d\'essai, ainsi que le devis. C\'est vous qui choisissez le casting.'],
+       'es'=>['t'=>'Recibe perfiles y presupuesto','d'=>'Te enviamos una selección de actores y figurantes con fotos y pruebas, junto al presupuesto. Eliges tú el reparto.']],
       ['it'=>['t'=>'Al resto pensiamo noi','d'=>'Contratti, liberatorie e compensi sono a carico nostro. Un solo referente, una sola fattura.'],
        'en'=>['t'=>'We handle the rest','d'=>'Contracts, releases and fees are on us. One contact, one invoice.'],
        'fr'=>['t'=>'Nous nous occupons du reste','d'=>'Contrats, autorisations et rémunérations sont à notre charge. Un seul interlocuteur, une seule facture.'],
@@ -403,10 +403,10 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
        'en'=>['t'=>'Tell us about your production','d'=>"Type of production, roles you're casting (models, actors, extras...), location, timeline. A couple of lines is enough."],
        'fr'=>['t'=>'Parlez-nous de votre production','d'=>'Type de production, rôles recherchés (mannequins, acteurs, figurants...), lieu, calendrier. Deux lignes suffisent.'],
        'es'=>['t'=>'Cuéntanos tu producción','d'=>'Tipo de producción, papeles buscados (modelos, actores, figurantes...), localización, plazos. Bastan dos líneas.']],
-      ['it'=>['t'=>'Ricevi il cast in 24 ore','d'=>'Ti mandiamo una selezione di profili con foto e provini, insieme al preventivo. Scegli tu chi vuoi.'],
-       'en'=>['t'=>'Get your cast within 24 hours','d'=>'We send you a shortlist of profiles with photos and audition tapes, along with the quote. You pick who you want.'],
-       'fr'=>['t'=>'Recevez le casting sous 24 heures','d'=>'Nous vous envoyons une sélection de profils avec photos et bandes d\'essai, ainsi que le devis. C\'est vous qui choisissez.'],
-       'es'=>['t'=>'Recibe el reparto en 24 horas','d'=>'Te enviamos una selección de perfiles con fotos y pruebas, junto al presupuesto. Eliges tú a quién quieres.']],
+      ['it'=>['t'=>'Ricevi il cast e il preventivo','d'=>'Ti mandiamo una selezione di profili con foto e provini, insieme al preventivo. Scegli tu chi vuoi.'],
+       'en'=>['t'=>'Get your cast and a quote','d'=>'We send you a shortlist of profiles with photos and audition tapes, along with the quote. You pick who you want.'],
+       'fr'=>['t'=>'Recevez le casting et le devis','d'=>'Nous vous envoyons une sélection de profils avec photos et bandes d\'essai, ainsi que le devis. C\'est vous qui choisissez.'],
+       'es'=>['t'=>'Recibe el reparto y el presupuesto','d'=>'Te enviamos una selección de perfiles con fotos y pruebas, junto al presupuesto. Eliges tú a quién quieres.']],
       ['it'=>['t'=>'Al resto pensiamo noi','d'=>'Contratti, liberatorie e compensi sono a carico nostro. Un solo referente, una sola fattura.'],
        'en'=>['t'=>'We handle the rest','d'=>'Contracts, releases and fees are on us. One contact, one invoice.'],
        'fr'=>['t'=>'Nous nous occupons du reste','d'=>'Contrats, autorisations et rémunérations sont à notre charge. Un seul interlocuteur, une seule facture.'],
@@ -458,18 +458,18 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
   ];
   $__faq_map = [
     'hostess-eventi' => [
-      ['it'=>['q'=>'In quanto tempo ricevo il preventivo?','a'=>'Entro 24 ore lavorative, insieme ai profili disponibili. Gratuito e senza impegno.'],
-       'en'=>['q'=>'How soon will I get a quote?','a'=>'Within 24 working hours, together with the available profiles. Free, no commitment.'],
-       'fr'=>['q'=>'Sous quel délai vais-je recevoir le devis ?','a'=>'Sous 24 heures ouvrées, avec les profils disponibles. Gratuit et sans engagement.'],
-       'es'=>['q'=>'¿En cuánto tiempo recibo el presupuesto?','a'=>'En 24 horas laborables, junto con los perfiles disponibles. Gratis y sin compromiso.']],
+      ['it'=>['q'=>'In quanto tempo ricevo il preventivo?','a'=>'Se è urgente, rispondiamo subito. Ti mandiamo preventivo e profili disponibili, gratuito e senza impegno.'],
+       'en'=>['q'=>'How soon will I get a quote?','a'=>'Urgent? We reply right away. You get the quote and the available profiles, free and with no commitment.'],
+       'fr'=>['q'=>'Sous quel délai vais-je recevoir le devis ?','a'=>'Urgent ? Nous répondons tout de suite. Vous recevez le devis et les profils disponibles, gratuit et sans engagement.'],
+       'es'=>['q'=>'¿En cuánto tiempo recibo el presupuesto?','a'=>'¿Urgente? Respondemos enseguida. Recibes el presupuesto y los perfiles disponibles, gratis y sin compromiso.']],
       ['it'=>['q'=>'Quali zone coprite?','a'=>"Tutta Italia. Lavoriamo anche all'estero: Cannes, Parigi, Madrid, Monaco, Amsterdam."],
        'en'=>['q'=>'Which areas do you cover?','a'=>'All of Italy. We also work abroad: Cannes, Paris, Madrid, Monaco, Amsterdam.'],
        'fr'=>['q'=>'Quelles zones couvrez-vous ?','a'=>"Partout en France, ainsi que dans toute l'Italie. Nous intervenons aussi à l'étranger : Madrid, Monaco, Amsterdam."],
        'es'=>['q'=>'¿Qué zonas cubrís?','a'=>'Toda Italia. También trabajamos en el extranjero: Cannes, París, Madrid, Mónaco, Ámsterdam.']],
-      ['it'=>['q'=>'Quanto costa una hostess?','a'=>'Si parte da 139 € per una giornata piena; mezza giornata costa meno. Il prezzo dipende da città, durata, lingue e mansioni. Se hai già un budget, dicci la cifra: con oltre 20.000 profili costruiamo la squadra dentro quella.'],
-       'en'=>['q'=>'How much does a hostess cost?','a'=>'From €139 for a full day; half days cost less. The final price depends on city, duration, languages and duties. If you already have a budget, tell us the figure: with over 20,000 profiles we build the team within it.'],
-       'fr'=>['q'=>'Combien coûte une hôtesse ?','a'=>"À partir de 159 € pour une journée complète. Le prix final dépend de la ville, de la durée, des langues et des missions. Indiquez-nous vos dates et votre budget : avec plus de 20 000 profils, nous constituons l'équipe dans cette limite et vous envoyons un devis gratuit sous 24 heures."],
-       'es'=>['q'=>'¿Cuánto cuesta una azafata?','a'=>'Desde 139 € por una jornada completa; media jornada cuesta menos. El precio depende de la ciudad, la duración, los idiomas y las funciones. Si ya tienes un presupuesto, dinos la cifra: con más de 20.000 perfiles formamos el equipo dentro de esa cantidad.']],
+      ['it'=>['q'=>'Quanto costa una hostess?','a'=>'A partire da 129 € per una giornata piena (+ IVA per clienti italiani soggetti); mezza giornata costa meno. Il prezzo dipende da città, durata, lingue e mansioni. Se hai già un budget, dicci la cifra: con oltre 20.000 profili costruiamo la squadra dentro quella.'],
+       'en'=>['q'=>'How much does a hostess cost?','a'=>'From €129 for a full day (VAT applies to Italian VAT-registered clients only); half days cost less. The final price depends on city, duration, languages and duties. If you already have a budget, tell us the figure: with over 20,000 profiles we build the team within it.'],
+       'fr'=>['q'=>'Combien coûte une hôtesse ?','a'=>"À partir de 159 € pour une journée complète. Le prix final dépend de la ville, de la durée, des langues et des missions. Indiquez-nous vos dates et votre budget : avec plus de 20 000 profils, nous constituons l'équipe dans cette limite et vous envoyons un devis gratuit."],
+       'es'=>['q'=>'¿Cuánto cuesta una azafata?','a'=>'Desde 129 € por una jornada completa (IVA solo para clientes italianos sujetos a IVA); media jornada cuesta menos. El precio depende de la ciudad, la duración, los idiomas y las funciones. Si ya tienes un presupuesto, dinos la cifra: con más de 20.000 perfiles formamos el equipo dentro de esa cantidad.']],
       ['it'=>['q'=>'Con quanto preavviso devo prenotare?','a'=>'Nessun preavviso minimo. Ci attiviamo in qualsiasi momento, anche last minute.'],
        'en'=>['q'=>'How far in advance do I need to book?','a'=>'No minimum notice. We can step in at any time, including last minute.'],
        'fr'=>['q'=>"Combien de temps à l'avance faut-il réserver ?",'a'=>"Aucun délai minimum. Nous intervenons à tout moment, y compris en dernière minute."],

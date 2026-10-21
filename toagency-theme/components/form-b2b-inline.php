@@ -8,7 +8,7 @@
  * i18n via _ht() (helper locale a page-home.php). IDs prefissati "hq" per non collidere con #leadForm di /form-b2b/.
  */
 $hq_heading = array('it'=>'Chiedi un preventivo gratuito','en'=>'Request a free quote','fr'=>'Demandez un devis gratuit','es'=>'Solicita un presupuesto gratuito');
-$hq_sub     = array('it'=>'Risposta entro 24 ore lavorative','en'=>'Response within 24 working hours','fr'=>'Réponse sous 24 heures ouvrées','es'=>'Respuesta en 24 horas laborables');
+$hq_sub     = array('it'=>'Se è urgente, rispondiamo subito','en'=>'Urgent? We reply right away','fr'=>'Urgent ? Nous répondons tout de suite','es'=>'¿Urgente? Respondemos enseguida');
 
 $hq_services = array(
   'shooting'               => array('it'=>'Shooting / Servizio foto','en'=>'Photo shoot','fr'=>'Shooting photo','es'=>'Sesión de fotos'),
