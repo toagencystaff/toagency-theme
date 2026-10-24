@@ -1045,6 +1045,29 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<900000
     // MODAL TALENT
     // ═════════════════════════════════════════════════════════════════
 
+    // FIX 2026-10-24 marco (#722) — la copertina della card (album eventi, scelta dal CRM) deve essere anche la PRIMA foto
+    // della galleria: si riconosce dal media_id dentro l'URL. Se non c'e' o non e' nella lista, l'ordine resta quello del CRM.
+    function tdbCoverFirst(id, media, tal) {
+        try {
+            if (!media || media.length < 2) return media;
+            var i, cover = '';
+            for (i = 0; i < TD.results.length; i++) { if (parseInt(TD.results[i].id, 10) === id) { cover = TD.results[i].cover || ''; break; } }
+            if (!cover && tal && tal.cover) cover = tal.cover;
+            var m = String(cover).match(/media_id=(\d+)/);
+            if (!m) return media;
+            for (i = 0; i < media.length; i++) {
+                var mm = media[i] && media[i].url ? String(media[i].url).match(/media_id=(\d+)/) : null;
+                if (mm && mm[1] === m[1]) {
+                    if (i === 0) return media;
+                    var out = media.slice();
+                    out.unshift(out.splice(i, 1)[0]);
+                    return out;
+                }
+            }
+        } catch (e) {}
+        return media;
+    }
+
     // Apre il modal scheda: GET ?action=talent&id=ID, popola galleria + info, push URL.
     function tdOpenTalentModal(id) {
         id = parseInt(id, 10);
@@ -1066,6 +1089,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<900000
             .then(function (res) {
                 if (!res || !res.ok || !res.talent) throw new Error('talent not found');
                 var media = res.media || [];
+                media = tdbCoverFirst(id, media, res.talent);   // FIX 2026-10-24 marco (#722): la foto dell'album eventi (cover della card) apre la galleria
                 console.log('[GALLERY] Media ricevuti:', media.length, media);
                 TD.modalTalent = res.talent;
                 renderDetailModal(res.talent, media, res.creator, res.video);

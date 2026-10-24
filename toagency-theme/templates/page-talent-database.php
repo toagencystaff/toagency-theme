@@ -787,6 +787,8 @@ $hub_sections = array(
 <?php /* 2026-08-11 marco — v76 (HOSTESS EVENTI) + cache-buster filemtime: risolve la cache browser
          sul file statico segnalata da TEMA FOTO TALENT-DB (prima l'include era senza ?v=) */ ?>
 <script src="<?php echo esc_url($theme_uri . '/assets/talent-database-v76.js?v=' . filemtime(get_stylesheet_directory() . '/assets/talent-database-v76.js')); ?>" defer></script>
+<?php /* 2026-10-24 marco — #722: riquadro prezzi indicativi per citta (solo hostess/steward), file isolato; cifre dal CRM */ ?>
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-database-prezzi.js?v=' . filemtime(get_stylesheet_directory() . '/assets/talent-database-prezzi.js')); ?>" defer></script>
 
 <?php /* ═══ 2026-08-25 marco — SHORT-LINK FILTRI (chat TEMA LINK-FILTRI-CORTI) ═══
          Tutto isolato qui: NON tocca talent-database-v76.js, che resta com'era.
