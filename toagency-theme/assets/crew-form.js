@@ -1089,11 +1089,11 @@
                 crewTokenAfterRegister = res.token_profilo;
                 // Avvia upload sequenziale dei file caricati
                 uploadAllFiles(res.crew_id, res.token_profilo)
-                    .then(function() { showSuccess(); })
+                    .then(function() { showSuccess(res); })
                     .catch(function(err) {
                         console.error('[upload] error:', err);
                         // Profilo creato ma upload fallito → mostra success con avviso
-                        showSuccess();
+                        showSuccess(res);
                     });
             } else {
                 handleRegisterError(res);
@@ -1154,7 +1154,39 @@
         showStep(stepToGo);
     }
 
-    function showSuccess() {
+    // 2026-10-27 (ticket #739): riquadro "iscriviti anche come talent" — testi e link arrivano dal CRM (lib/invito_crew_talent.php), non si riscrivono qui
+    function mostraInvitoTalent(res) {
+        var old = document.getElementById('toaCrewInvitoTalent');
+        if (old && old.parentNode) old.parentNode.removeChild(old);
+        if (!res || !res.invito_talent_url || !/^https?:\/\//i.test(res.invito_talent_url)) return;
+        var t = res.invito_talent_testi || {};
+        var card = successModal.querySelector('.toa-crew-success-card');
+        var closeBtn = document.getElementById('toaCrewSuccessClose');
+        if (!card || !closeBtn) return;
+        var box = document.createElement('div');
+        box.id = 'toaCrewInvitoTalent';
+        box.style.cssText = 'margin:16px 0;padding:16px;border:1px solid #c8ff00;border-radius:10px;text-align:center;';
+        if (t.titolo) { var h = document.createElement('div'); h.style.cssText = 'font-weight:700;font-size:16px;margin-bottom:6px;'; h.textContent = t.titolo; box.appendChild(h); }
+        if (t.testo) { var p = document.createElement('p'); p.style.cssText = 'margin:0 0 12px;font-size:14px;line-height:1.4;'; p.textContent = t.testo; box.appendChild(p); }
+        var a = document.createElement('a');
+        a.href = res.invito_talent_url;
+        a.className = 'toa-crew-btn toa-crew-btn-primary';
+        a.style.cssText = 'display:block;padding:14px 16px;border-radius:8px;background:#c8ff00;color:#000;font-weight:700;text-decoration:none;';
+        a.textContent = t.btn || 'OK';
+        box.appendChild(a);
+        if (t.no) {
+            var no = document.createElement('a');
+            no.href = '#';
+            no.style.cssText = 'display:inline-block;margin-top:12px;font-size:13px;color:inherit;opacity:.7;text-decoration:underline;';
+            no.textContent = t.no;
+            no.addEventListener('click', function(e) { e.preventDefault(); box.parentNode && box.parentNode.removeChild(box); });
+            box.appendChild(no);
+        }
+        card.insertBefore(box, closeBtn);
+    }
+
+    function showSuccess(res) {
+        mostraInvitoTalent(res);
         successModal.classList.add('show');
         document.body.style.overflow = 'hidden';
     }

@@ -851,6 +851,31 @@ $theme_uri = get_stylesheet_directory_uri();
                 <div class="toa-talent-error-msg"></div>
             </div>
 
+            <!-- ═════════ 2026-10-27 (ticket #739) CONSENSO FACOLTATIVO "LAVORI CON L'AI" — testi = lib/consenso_ai.php del CRM (cai_testi: box_t / box_lbl / box_sub). Non obbligatorio, non spuntato, nascosto ai minorenni (talent-form-v40.js) ═════════ -->
+            <div class="toa-talent-field" id="toaTalentConsensoAi">
+                <div class="toa-talent-label" style="font-weight:700;margin-bottom:6px;"><?php echo _ht_talent_raw(array(
+                    'it'=>'Lavori con l\'intelligenza artificiale (facoltativo)',
+                    'en'=>'Work involving artificial intelligence (optional)',
+                    'fr'=>'Missions avec l\'intelligence artificielle (facultatif)',
+                    'es'=>'Trabajos con inteligencia artificial (opcional)',
+                )); ?></div>
+                <label class="toa-talent-checkbox">
+                    <input type="checkbox" name="consenso_ai" value="1">
+                    <span><?php echo _ht_talent_raw(array(
+                        'it'=>'Sì, proponetemi anche per lavori con l\'intelligenza artificiale: per esempio un mio «gemello digitale» per foto e video, la mia voce o l\'addestramento di sistemi AI.',
+                        'en'=>'Yes, you can also put me forward for AI projects: for example a “digital twin” of me for photo and video, my voice, or training AI systems.',
+                        'fr'=>'Oui, vous pouvez aussi me proposer pour des projets avec l\'IA : par exemple un « jumeau numérique » de moi pour la photo et la vidéo, ma voix ou l\'entraînement de systèmes d\'IA.',
+                        'es'=>'Sí, proponedme también para trabajos con inteligencia artificial: por ejemplo un «gemelo digital» mío para foto y vídeo, mi voz o el entrenamiento de sistemas de IA.',
+                    )); ?></span>
+                </label>
+                <div style="font-size:.8rem;opacity:.75;margin-top:6px;line-height:1.4;"><?php echo _ht_talent_raw(array(
+                    'it'=>'Non è obbligatorio e non cambia nulla per i casting normali. Nessuna tua foto o registrazione viene usata per l\'AI senza un accordo scritto per quel lavoro, con compenso, durata e usi indicati: ogni proposta la puoi rifiutare. Puoi cambiare idea quando vuoi. Solo per maggiorenni.',
+                    'en'=>'It’s not required and changes nothing for regular castings. None of your photos or recordings is used for AI without a written agreement for that specific job, stating the fee, duration and uses: you can turn down any proposal. You can change your mind at any time. Adults only.',
+                    'fr'=>'Ce n\'est pas obligatoire et cela ne change rien pour les castings habituels. Aucune de tes photos ou de tes enregistrements n\'est utilisé pour l\'IA sans un accord écrit propre à chaque mission, avec cachet, durée et usages précisés : tu peux refuser toute proposition. Tu peux changer d\'avis à tout moment. Réservé aux personnes majeures.',
+                    'es'=>'No es obligatorio y no cambia nada para los castings normales. Ninguna foto ni grabación tuya se usa para la IA sin un acuerdo por escrito para ese trabajo, con tarifa, duración y usos indicados: puedes rechazar cualquier propuesta. Puedes cambiar de opinión cuando quieras. Solo mayores de edad.',
+                )); ?></div>
+            </div>
+
             <div class="toa-talent-actions">
                 <span></span>
                 <button type="button" class="toa-talent-btn toa-talent-btn-primary" data-go="2"><?php echo _ht_talent(array('it'=>'Invia i tuoi dati','en'=>'Send your details','fr'=>'Envoie tes informations','es'=>'Envía tus datos')); ?> → <small style="display:block;font-weight:600;opacity:.75;font-size:.72rem;margin-top:2px;"><?php echo _ht_talent(array('it'=>'2 di 4','en'=>'2 of 4','fr'=>'2 sur 4','es'=>'2 de 4')); ?></small></button>
@@ -1748,7 +1773,7 @@ $theme_uri = get_stylesheet_directory_uri();
 <script src="<?php echo esc_url($theme_uri . '/assets/toa-video-reduce.js'); ?>?v=<?php echo $tvr_ver; ?>" defer></script>
 <script src="<?php echo esc_url($theme_uri . '/assets/toa-ruoli.js'); ?>?v=20261014r1" defer></script><!-- ticket #622: ruoli a icone dal CRM -->
 <script src="<?php echo esc_url($theme_uri . '/assets/contatti-conferma.js'); ?>?v=20261017r2" defer></script><!-- 2026-10-17 (ticket #665): Ripeti email/telefono + prefisso senza paese predefinito -->
-<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20261017r1" defer></script><!-- 2026-08-26 (TEMA-AREE-GEOGRAFICHE): bump v — tendina città grandi per i paesi senza elenco comuni (residenza+domicilio), città pubblica in *_provincia e posto preciso privato in *_city_name; 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
+<script src="<?php echo esc_url($theme_uri . '/assets/talent-form-v40.js'); ?>?v=20261027r1" defer></script><!-- 2026-08-26 (TEMA-AREE-GEOGRAFICHE): bump v — tendina città grandi per i paesi senza elenco comuni (residenza+domicilio), città pubblica in *_provincia e posto preciso privato in *_city_name; 2026-08-14 (TEMA REGISTRAZIONE TALENT): bump v — album portfolio attore, linguette su una riga sola, pulsante tondo aggiungi foto; album a linguette, cosi-si/cosi-no affiancati, link guida Pola per lingua, CTA WhatsApp fotografo; gallerie che scorrono nelle card album, card sempre visibili, testi più grandi; album foto per ruolo + barra completamento (upload per album dietro interruttore USE_ALBUM_UPLOAD); typeahead comuni, match iniziale in cima + limite 12->30 + trattini/spazi/accenti non vincolanti; FIX 2026-06-25 marco: bump v — foto retry + recupero + check email step1; FIX 2026-06-28 marco: bump v — blocco doppione nome+cognome+dob; 2026-07-12 marco: bump v — LEAD CAPTURE Step 1 (foto+gdpr+disclaimer in Step 1, POST registra-step1) -->
 
 <script>
 // FIX 2026-05-26 marco — mostra community block se paese=IT

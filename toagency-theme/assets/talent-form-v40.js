@@ -1048,6 +1048,13 @@
        2) il mese/anno dello scatto diventa obbligatorio su OGNI foto, non solo Pola e Dettagli */
     function aggiornaRegoleMinore() {
         var min = isMinore();
+        // #739: casella "lavori con l'AI" solo per maggiorenni
+        var caiBox = document.getElementById('toaTalentConsensoAi');
+        if (caiBox) {
+            caiBox.style.display = min ? 'none' : '';
+            var caiInp = caiBox.querySelector('input[name="consenso_ai"]');
+            if (caiInp && min) caiInp.checked = false;
+        }
         var tabEventi  = document.querySelector('.toa-alb-tab[data-tab="eventi"]');
         var cardEventi = document.querySelector('.toa-album-card[data-album="eventi"]');
         if (tabEventi) tabEventi.style.display = min ? 'none' : '';
@@ -1869,6 +1876,8 @@
     var STEP1_ENDPOINT = '/crm_toagency/actions/registra-step1.php';
     var step1Lead = { id: null, uuid: null, token: null, done: false, giaEsiste: false, inflight: false, photoUploaded: false, photoInflight: false };
     function _s1cb(name){ var el = form.querySelector('[name="'+name+'"]'); return (el && el.checked) ? '1' : ''; }
+    // #739: token ?t= (link Brevo / invito crew) rimandato al CRM per collegare la scheda crew al nuovo talent
+    function _prefillT(){ try { var t = new URLSearchParams(location.search).get('t'); return (t && /^[A-Za-z0-9_-]{10,}$/.test(t)) ? t : ''; } catch(e){ return ''; } }
     function _s1v(name){ var el = form.querySelector('[name="'+name+'"]'); return el ? (el.value||'').trim() : ''; }
     function saveStep1Lead(){
         if (step1Lead.inflight) return Promise.resolve(step1Lead);
@@ -1883,7 +1892,9 @@
             pubblicazione_immagini_consent: _s1cb('pubblicazione_immagini_consent'),
             disclaimer_consent: _s1cb('disclaimer_consent'),
             wa_consent: _s1cb('wa_consent'), sms_consent: _s1cb('sms_consent'),
-            honeypot_url: _s1v('honeypot_url')
+            honeypot_url: _s1v('honeypot_url'),
+            consenso_ai: (_s1cb('consenso_ai') && !isMinore()) ? '1' : '', // #739: facoltativo, mai per minorenni (il CRM comunque lo ignora)
+            prefill_t: _prefillT()
         };
         if (window.ToaContatti) { var _cf = ToaContatti.conferme(); for (var _k in _cf) body[_k] = _cf[_k]; } // #665: email_conferma, telefono_conferma
         return fetch(STEP1_ENDPOINT, {
@@ -2152,6 +2163,12 @@
 
         // Prepara FormData con TUTTI i campi del form
         var fd = new FormData(form);
+        // #739: consenso AI solo se spuntato e maggiorenne; prefill_t per collegare la scheda crew
+        fd.delete('consenso_ai');
+        var _cai = form.querySelector('[name="consenso_ai"]');
+        if (_cai && _cai.checked && !isMinore()) fd.append('consenso_ai', '1');
+        var _pt = _prefillT();
+        if (_pt) fd.append('prefill_t', _pt);
         /* 2026-08-15 — UGC dichiarato ma senza contenuti: il CRM lo segna come "potenziale UGC"
            e NON lo mette nel database UGC finché non arrivano i video. */
         var vuoleUgc = !!document.querySelector('#toaTalentCategoriesImmagine input[value="ugc_creator"]:checked');
