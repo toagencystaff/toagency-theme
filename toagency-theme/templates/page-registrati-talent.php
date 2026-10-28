@@ -855,24 +855,24 @@ $theme_uri = get_stylesheet_directory_uri();
             <div class="toa-talent-field" id="toaTalentConsensoAi">
                 <div class="toa-talent-label" style="font-weight:700;margin-bottom:6px;"><?php echo _ht_talent_raw(array(
                     'it'=>'Lavori con l\'intelligenza artificiale (facoltativo)',
-                    'en'=>'Work involving artificial intelligence (optional)',
-                    'fr'=>'Missions avec l\'intelligence artificielle (facultatif)',
-                    'es'=>'Trabajos con inteligencia artificial (opcional)',
+                    'en'=>'AI projects (optional)',
+                    'fr'=>'Projets avec l\'intelligence artificielle (facultatif)',
+                    'es'=>'Proyectos con inteligencia artificial (opcional)',
                 )); ?></div>
                 <label class="toa-talent-checkbox">
                     <input type="checkbox" name="consenso_ai" value="1">
                     <span><?php echo _ht_talent_raw(array(
                         'it'=>'Sì, proponetemi anche per lavori con l\'intelligenza artificiale: per esempio un mio «gemello digitale» per foto e video, la mia voce o l\'addestramento di sistemi AI.',
-                        'en'=>'Yes, you can also put me forward for AI projects: for example a “digital twin” of me for photo and video, my voice, or training AI systems.',
-                        'fr'=>'Oui, vous pouvez aussi me proposer pour des projets avec l\'IA : par exemple un « jumeau numérique » de moi pour la photo et la vidéo, ma voix ou l\'entraînement de systèmes d\'IA.',
-                        'es'=>'Sí, proponedme también para trabajos con inteligencia artificial: por ejemplo un «gemelo digital» mío para foto y vídeo, mi voz o el entrenamiento de sistemas de IA.',
+                        'en'=>'Yes, put me forward for AI projects too — for example a "digital twin" of me for photos and video, my voice, or training AI systems.',
+                        'fr'=>'Oui, proposez-moi aussi pour des projets avec l\'intelligence artificielle : par exemple un « jumeau numérique » de moi pour des photos et des vidéos, ma voix ou l\'entraînement de systèmes d\'IA.',
+                        'es'=>'Sí, proponedme también para proyectos con inteligencia artificial: por ejemplo un «gemelo digital» mío para fotos y vídeos, mi voz o el entrenamiento de sistemas de IA.',
                     )); ?></span>
                 </label>
                 <div style="font-size:.8rem;opacity:.75;margin-top:6px;line-height:1.4;"><?php echo _ht_talent_raw(array(
                     'it'=>'Non è obbligatorio e non cambia nulla per i casting normali. Nessuna tua foto o registrazione viene usata per l\'AI senza un accordo scritto per quel lavoro, con compenso, durata e usi indicati: ogni proposta la puoi rifiutare. Puoi cambiare idea quando vuoi. Solo per maggiorenni.',
-                    'en'=>'It’s not required and changes nothing for regular castings. None of your photos or recordings is used for AI without a written agreement for that specific job, stating the fee, duration and uses: you can turn down any proposal. You can change your mind at any time. Adults only.',
-                    'fr'=>'Ce n\'est pas obligatoire et cela ne change rien pour les castings habituels. Aucune de tes photos ou de tes enregistrements n\'est utilisé pour l\'IA sans un accord écrit propre à chaque mission, avec cachet, durée et usages précisés : tu peux refuser toute proposition. Tu peux changer d\'avis à tout moment. Réservé aux personnes majeures.',
-                    'es'=>'No es obligatorio y no cambia nada para los castings normales. Ninguna foto ni grabación tuya se usa para la IA sin un acuerdo por escrito para ese trabajo, con tarifa, duración y usos indicados: puedes rechazar cualquier propuesta. Puedes cambiar de opinión cuando quieras. Solo mayores de edad.',
+                    'en'=>'It\'s optional and changes nothing for regular castings. None of your photos or recordings is used for AI without a written agreement for that specific job, stating the fee, duration and uses — and you can turn down any offer. You can change your mind at any time. Adults only.',
+                    'fr'=>'C\'est facultatif et ça ne change rien pour les castings habituels. Aucune de tes photos ni de tes enregistrements n\'est utilisée pour l\'IA sans un accord écrit pour ce projet précis, avec la rémunération, la durée et les usages prévus — et tu peux refuser n\'importe quelle proposition. Tu peux changer d\'avis quand tu veux. Réservé aux majeurs.',
+                    'es'=>'Es opcional y no cambia nada en los castings normales. Ninguna de tus fotos ni grabaciones se usa para IA sin un acuerdo por escrito para ese trabajo concreto, con la remuneración, la duración y los usos indicados, y puedes rechazar cualquier propuesta. Puedes cambiar de opinión cuando quieras. Solo para mayores de edad.',
                 )); ?></div>
             </div>
 
