@@ -538,6 +538,9 @@
             // 2026-08-02 — Livello/esperienza per ruolo (task #18), solo se il crew ha 2+ ruoli
             setupRuoliPicker(crewRoles, d.ruoli_dati || (d.crew && d.crew.ruoli_dati) || {});
 
+            // 2026-10-28 (ticket #710): CV per bartender/cameriere/autista (crew-self-edit-load.php ora manda cv:{presente,nome,caricato,testo})
+            if (window.TOACrewCV) window.TOACrewCV.se.init({ roles: crewRoles, cv: d.cv || (d.crew && d.crew.cv) || null, uuid: UUID, token: TOKEN });
+
             var cons = $('f-consenso');
             if (cons) cons.checked = (String(d.consenso) === '1' || (d.crew && String(d.crew.consenso) === '1'));
 

@@ -187,6 +187,16 @@
         }
     }
 
+    // ─── 2026-10-28 (ticket #710): bio guidata / CV per bartender, cameriere, autista ───
+    function cvRoles() {
+        return Array.prototype.map.call(form.querySelectorAll('input[name="categorie[]"]:checked'), function (i) { return i.value; });
+    }
+    function cvSync() { if (window.TOACrewCV) window.TOACrewCV.reg.sync(cvRoles()); }
+    form.addEventListener('change', function (e) {
+        if (e.target && e.target.name === 'categorie[]') cvSync();
+    });
+    cvSync();
+
     // ─── 3. Categorie chip ───────────────────────────────────
     document.querySelectorAll('.toa-crew-category-chip').forEach(function(chip) {
         chip.addEventListener('click', function() {
@@ -871,6 +881,11 @@
                 }
                 ok = false;
             }
+            // ticket #710: per bartender/cameriere/autista basta la bio scritta OPPURE il CV
+            if (window.TOACrewCV) {
+                var bioEl = form.querySelector('[name="bio"]');
+                if (!window.TOACrewCV.reg.validate(cvRoles(), bioEl ? bioEl.value : '', document.getElementById('toaCvErr'))) ok = false;
+            }
         }
 
         if (n === 4) {
@@ -1089,7 +1104,15 @@
                 crewTokenAfterRegister = res.token_profilo;
                 // Avvia upload sequenziale dei file caricati
                 uploadAllFiles(res.crew_id, res.token_profilo)
-                    .then(function() { showSuccess(res); })
+                    .then(function() {
+                        // ticket #710: il CV si carica subito dopo (stesso schema delle foto), mai dentro registra-crew
+                        return window.TOACrewCV ? window.TOACrewCV.reg.afterRegister(cvRoles(), res.uuid, res.token_profilo) : { note: '' };
+                    })
+                    .then(function(cvRes) {
+                        var cvNote = document.getElementById('toaCrewCvNote');
+                        if (cvNote) { cvNote.textContent = (cvRes && cvRes.note) || ''; cvNote.hidden = !(cvRes && cvRes.note); }
+                        showSuccess(res);
+                    })
                     .catch(function(err) {
                         console.error('[upload] error:', err);
                         // Profilo creato ma upload fallito → mostra success con avviso
@@ -1201,6 +1224,7 @@
             if (videosThumbs) videosThumbs.innerHTML = '';
             updateCounters();
             document.querySelectorAll('.toa-crew-category-chip.checked').forEach(function(c){ c.classList.remove('checked'); });
+            if (window.TOACrewCV) window.TOACrewCV.reg.reset();
             showStep(1);
         });
     }

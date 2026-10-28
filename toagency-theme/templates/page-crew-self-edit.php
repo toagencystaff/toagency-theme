@@ -343,6 +343,7 @@ $token_get = $_GET['t']    ?? '';
                 <textarea id="f-bio" class="crew-edit-textarea" rows="4" maxlength="800" placeholder="<?= esc_attr($_t($T['bio_ph'])) ?>"></textarea>
                 <div class="crew-edit-hint"><?= esc_html($_t($T['bio_hint'])) ?></div>
                 <div class="crew-edit-hint" id="f-bio-counter">0 / 800</div>
+                <?php /* ticket #710: CV allegabile, solo per bartender/cameriere/autista (lo mostra crew-cv.js) */ require_once get_template_directory() . '/inc/crew-cv.php'; toa_crew_cv_render('se', $__l); ?>
             </div>
             <div id="f-livello-singolo-wrap">
                 <div class="crew-edit-field">
@@ -495,6 +496,7 @@ window.crewEditConfig = {
 </script>
 <link rel="stylesheet" href="<?= esc_url($theme_uri . '/assets/toa-ruoli.css') ?>?v=20261014r1"><!-- ticket #622 -->
 <script src="<?= esc_url($theme_uri . '/assets/toa-ruoli.js') ?>?v=20261014r1" defer></script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20261014r1" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-cv.js') ?>?v=20261028a1" defer></script><!-- ticket #710 -->
+<script src="<?= esc_url($theme_uri . '/assets/crew-self-edit.js') ?>?v=20261028a1" defer></script>
 
 <?php toa_component('footer'); ?>

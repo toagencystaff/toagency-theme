@@ -452,6 +452,8 @@ $theme_uri = get_stylesheet_directory_uri();
                 <label class="toa-crew-label"><?php echo _ht_crew(array('it'=>'Bio / Presentazione','en'=>'Bio / About you','fr'=>'Bio / Présentation','es'=>'Bio / Presentación')); ?></label>
                 <textarea name="bio" id="toaCrewBio" class="toa-crew-input" rows="4" maxlength="800" placeholder="<?php echo esc_attr(_ht_crew_raw(array('it'=>'Racconta chi sei e i 2-3 lavori più importanti che hai fatto.','en'=>'Tell us who you are and your 2-3 most important jobs.','fr'=>'Dis-nous qui tu es et tes 2-3 missions les plus importantes.','es'=>'Cuéntanos quién eres y tus 2-3 trabajos más importantes.'))); ?>"></textarea>
                 <div id="toaCrewBioCounter" style="font-size:12px;color:#9ca3af;margin-top:4px;">0 / 800</div>
+                <?php /* ticket #710: bio guidata + CV solo per bartender/cameriere/autista (il blocco si mostra da solo) */ require_once get_template_directory() . '/inc/crew-cv.php'; toa_crew_cv_render('reg', $__l); ?>
+                <div class="toa-crew-error-msg" id="toaCvErr"></div>
                 <script>(function(){var t=document.getElementById('toaCrewBio'),c=document.getElementById('toaCrewBioCounter');if(!t||!c)return;function u(){var n=t.value.length;c.textContent=n+' / 800'+(n<150?' \u00b7 consigliati almeno 150':'');c.style.color=(n>0&&n<150)?'#f59e0b':'#9ca3af';}t.addEventListener('input',u);u();})();</script>
             </div>
 
@@ -653,6 +655,7 @@ $theme_uri = get_stylesheet_directory_uri();
             'fr'=>'Merci pour ton inscription en tant que crew.',
             'es'=>'Gracias por registrarte como crew.',
         )); ?></p>
+        <p class="toa-crew-success-info" id="toaCrewCvNote" hidden></p>
         <div class="toa-crew-success-info">
             ✨ <?php echo _ht_crew(array(
                 'it'=>'Il nostro staff valuterà il tuo profilo. Una volta approvato, sarai contattato per opportunità di lavoro.',
@@ -678,7 +681,8 @@ $theme_uri = get_stylesheet_directory_uri();
 
 <script src="<?php echo esc_url($theme_uri . '/assets/toa-ruoli.js'); ?>?v=20261014r1" defer></script><!-- ticket #622: ruoli a icone dal CRM -->
 <script src="<?php echo esc_url($theme_uri . '/assets/contatti-conferma.js'); ?>?v=20261017r2" defer></script><!-- 2026-10-17 (ticket #665): Ripeti email/telefono + prefisso senza paese predefinito -->
-<script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.6-20261027c1" defer></script><!-- 2026-08-26 (TEMA-AREE-GEOGRAFICHE): tendina città grandi paesi esteri, residenza+domicilio; TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
+<script src="<?php echo esc_url($theme_uri . '/assets/crew-cv.js'); ?>?v=20261028a1" defer></script><!-- ticket #710 -->
+<script src="<?php echo esc_url($theme_uri . '/assets/crew-form.js'); ?>?v=3.7-20261028a1" defer></script><!-- 2026-08-26 (TEMA-AREE-GEOGRAFICHE): tendina città grandi paesi esteri, residenza+domicilio; TASK hardening-upload-crew 2026-06-04: bump v per forzare reload JS su prod/CDN -->
 
 <!-- ══════════════════════════════════════════════
      PREFILL — pre-compila campi se l'utente arriva da Student Program
