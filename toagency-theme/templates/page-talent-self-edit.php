@@ -36,6 +36,11 @@ $T = [
         'fr'=>'⏳ Modifications en attente.',
         'es'=>'⏳ Modificaciones pendientes.',
     ],
+    // 2026-10-29 TEMA ticket 774: nome e cognome correggibili dal talent
+    'section_nome'     => ['it'=>'Nome e cognome','en'=>'Your name','fr'=>'Nom et prénom','es'=>'Nombre y apellidos'],
+    'field_nome'       => ['it'=>'Nome','en'=>'First name','fr'=>'Prénom','es'=>'Nombre'],
+    'field_cognome'    => ['it'=>'Cognome','en'=>'Last name','fr'=>'Nom','es'=>'Apellidos'],
+    'nome_hint'        => ['it'=>'Correggi qui eventuali errori. Se hai già firmato un contratto, scrivi allo staff.','en'=>'Fix any typo here. If you have already signed a contract, please write to our staff.','fr'=>'Corrige ici toute faute de frappe. Si tu as déjà signé un contrat, écris à notre équipe.','es'=>'Corrige aquí cualquier error. Si ya has firmado un contrato, escribe a nuestro equipo.'],
     'section_contatti' => ['it'=>'Contatti & social','en'=>'Contacts & social','fr'=>'Contacts & social','es'=>'Contactos & social'],
     'section_misure'   => ['it'=>'Misure','en'=>'Measurements','fr'=>'Mensurations','es'=>'Medidas'],
     'section_aspetto'  => ['it'=>'Aspetto','en'=>'Appearance','fr'=>'Apparence','es'=>'Apariencia'],
@@ -677,6 +682,21 @@ $token_get = $_GET['t']    ?? '';
                 </div>
                 <div class="tse-compl-track"><div class="tse-compl-fill" id="tse-compl-fill" style="width:0%"></div></div>
                 <div id="tse-mancano" class="tse-manca-wrap" style="display:none;"></div>
+            </div>
+
+            <div class="tse-section">
+                <div class="tse-section-title">👤 <?= esc_html($_t($T['section_nome'])) ?></div>
+                <div class="tse-row">
+                    <div class="tse-field">
+                        <label class="tse-label" for="f-nome"><?= esc_html($_t($T['field_nome'])) ?></label>
+                        <input type="text" id="f-nome" class="tse-input" maxlength="80" autocomplete="given-name">
+                    </div>
+                    <div class="tse-field">
+                        <label class="tse-label" for="f-cognome"><?= esc_html($_t($T['field_cognome'])) ?></label>
+                        <input type="text" id="f-cognome" class="tse-input" maxlength="80" autocomplete="family-name">
+                    </div>
+                </div>
+                <div class="tse-hint" style="font-size:12px;color:#8a8a90;margin-top:6px;"><?= esc_html($_t($T['nome_hint'])) ?></div>
             </div>
 
             <div class="tse-section">

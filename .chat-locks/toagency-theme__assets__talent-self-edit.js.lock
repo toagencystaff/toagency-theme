@@ -1,7 +1,7 @@
-STATO=CLOSED
-CHAT=CRM Tema conferma contatti
+STATO=OPEN
+CHAT=TEMA ticket 774
 FILE=toagency-theme/assets/talent-self-edit.js
-INIZIO=2026-10-17 16:18:31
-UPDATE=2026-10-17 16:23:13
-SHA1_ATTESO=42fa742079ee3960335d58c02d80619ea70c962b
-NOTE=ticket #665 online preview+prod 17/10 16:25, commit 08b5e3997
+INIZIO=2026-10-29 18:19:37
+UPDATE=2026-10-29 18:19:37
+SHA1_ATTESO=8f4ed3891602b621cce0b0ec6a2e86feaa5d05f1
+NOTE=ticket #774 campi nome/cognome self-edit talent
