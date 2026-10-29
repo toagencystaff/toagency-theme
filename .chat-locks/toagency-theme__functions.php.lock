@@ -1,7 +1,7 @@
 STATO=CLOSED
-CHAT=TEMA EVENTS
+CHAT=CRM WhatsApp rif sito
 FILE=toagency-theme/functions.php
-INIZIO=2026-10-15 10:52:06
-UPDATE=2026-10-16 09:06:13
-SHA1_ATTESO=e4a36a0c9b87cbe039f03b47a0d17e22cfeb2e46
-NOTA=#637 registrazione template sottopagine TOA Events - chiuso, online (commit 5cfdaad52)
+INIZIO=2026-10-29 08:50:33
+UPDATE=2026-10-29 08:50:33
+SHA1_ATTESO=0bf45708e0acdb89ef085275c53edf0c004e9718
+NOTA=#756 link WhatsApp pagine talent -> numero casting, pronto al deploy

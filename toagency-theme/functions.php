@@ -1420,6 +1420,8 @@ add_action('wp_footer', function() { ?>
   var WA_CLICK_URL = 'https://toagency.it/crm_toagency/actions/wa-click.php';
   var NUM = {'393518468516':'casting','393517899225':'aziende'};
   var AL = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  // FIX 2026-10-29 marco (ticket 756): pagine dove scrivono i talent/crew (anche con prefisso lingua /en/ /fr/ /es/)
+  var TALENT_PAGE = /^\/(?:(?:en|fr|es)\/)?(?:registrati-talent|registrati-crew|talent-self-edit|crew-self-edit|collabora|become-model|registrazione-talenti|candidat[^\/]*|casting[^\/]*|category\/casting)(?:\/|$)/i;
   var GREET = {it:'Ciao, vengo dal sito TOAgency',en:"Hi, I'm visiting from the TOAgency website",fr:'Bonjour, je viens du site TOAgency',es:'Hola, vengo del sitio web de TOAgency'};
 
   // Attribuzione: stessa logica di /form-b2b/ (gclid/UTM last-touch, landing/referrer first-touch, cookie 90gg)
@@ -1470,6 +1472,9 @@ add_action('wp_footer', function() { ?>
       if (!m) return url;
       var hi = url.indexOf('#'), hash = hi > -1 ? url.slice(hi) : '', rest = hi > -1 ? url.slice(0, hi) : url;
       var qi = rest.indexOf('?'), base = qi > -1 ? rest.slice(0, qi) : rest, query = qi > -1 ? rest.slice(qi + 1) : '';
+      var num = m[1];
+      // FIX 2026-10-29 marco (ticket 756): sulle pagine dei talent/crew ogni link WhatsApp va al numero casting (Amelia), mai al numero di Marco
+      if (num === '393517899225' && TALENT_PAGE.test(location.pathname)) { num = '393518468516'; base = base.replace('393517899225', '393518468516'); }
       var text = new URLSearchParams(query).get('text') || '';
       text = text.replace(/\s*\(rif\. TOA-[A-Z0-9]{5}\)\s*$/, '');
       if (!text) { var l = (document.documentElement.lang || 'it').slice(0,2).toLowerCase(); text = GREET[l] || GREET.it; }
@@ -1479,7 +1484,7 @@ add_action('wp_footer', function() { ?>
       Object.keys(at).forEach(function(k){ o[k] = at[k]; });
       var fb = new URLSearchParams(location.search).get('fbclid');
       if (fb) o.fbclid = fb.slice(0,255);
-      o.rif = rif; o.numero = NUM[m[1]]; o.pagina = location.href.slice(0,500);
+      o.rif = rif; o.numero = NUM[num]; o.pagina = location.href.slice(0,500);
       send(o);
       window.toaLastRif = rif;
       return base + '?text=' + encodeURIComponent(text + ' (rif. ' + rif + ')') + hash;
