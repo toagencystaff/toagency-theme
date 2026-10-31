@@ -6,14 +6,21 @@
 $current_lang = toa_current_lang();
 
 // Menu translations
+// 2026-10-31 ticket 789 (TEMA Ticket #789) — nuovo assetto: Hostess/Promoter e Creator in primo piano,
+// Steward e Staff Pro, Comparse; Modelli/Attori/Visuals NON sono piu voci (pagine online, richiamate dal footer);
+// TALENTS -> Database (Modelli e Attori vivono nei filtri del Database).
+// Voce con 'urls' = URL per lingua (pagine TOA Events con slug tradotti); con 'q' = query (filtro Database).
 $menu_items = array(
-    array('slug' => '/models/',          'it' => 'Modelli',    'en' => 'Models',     'fr' => 'Modèles',    'es' => 'Modelos'),
-    array('slug' => '/hostess-steward/', 'it' => 'Hostess',    'en' => 'Hostess',    'fr' => 'Hôtesses',   'es' => 'Azafatas'),
-    array('slug' => '/actors/',          'it' => 'Attori',     'en' => 'Actors',     'fr' => 'Acteurs',    'es' => 'Actores'),
-    array('slug' => '/visuals/',         'it' => 'Visuals',    'en' => 'Visuals',    'fr' => 'Visuels',    'es' => 'Visuales'),
+    array('slug' => '/hostess-steward/', 'it' => 'Hostess / Promoter', 'en' => 'Hostesses & Promoters', 'fr' => 'Hôtesses & Promoteurs', 'es' => 'Azafatas y Promotoras'),
+    array('slug' => '/talent-database/', 'q' => 'ruolo=creator', 'it' => 'Creator', 'en' => 'Creators', 'fr' => 'Créateurs', 'es' => 'Creadores'),
+    array('urls' => array('it' => '/events/staff-eventi/', 'en' => '/en/events/event-staff/', 'fr' => '/fr/events/personnel-evenementiel/', 'es' => '/es/events/personal-eventos/'),
+          'it' => 'Steward', 'en' => 'Stewards', 'fr' => 'Stewards', 'es' => 'Stewards'),
+    array('urls' => array('it' => '/events/', 'en' => '/en/events/', 'fr' => '/fr/events/', 'es' => '/es/events/'),
+          'it' => 'Staff Pro', 'en' => 'Pro Staff', 'fr' => 'Staff Pro', 'es' => 'Staff Pro'),
+    array('slug' => '/extras/',          'it' => 'Comparse',   'en' => 'Extras',     'fr' => 'Figurants',  'es' => 'Extras'),
+    array('slug' => '/talent-database/', 'it' => 'Database',   'en' => 'Database',   'fr' => 'Base de talents', 'es' => 'Base de talentos'),
     array('slug' => '/b2bservices/',     'it' => 'Servizi',    'en' => 'Services',   'fr' => 'Services',   'es' => 'Servicios'),
     array('slug' => '/casting/',         'it' => 'Casting',    'en' => 'Casting',    'fr' => 'Casting',    'es' => 'Casting'),
-    array('slug' => '/talent-database/', 'it' => 'TALENTS', 'en' => 'TALENTS', 'fr' => 'TALENTS', 'es' => 'TALENTS'),
     array('slug' => '/about/',           'it' => 'About',      'en' => 'About',      'fr' => 'À propos',   'es' => 'Nosotros'),
     array('slug' => '/collabora/',       'it' => 'Collabora',  'en' => 'Join Us',    'fr' => 'Rejoignez',  'es' => 'Colabora'),
     array('slug' => '/student-program/', 'it' => 'Student',    'en' => 'Student',    'fr' => 'Student',    'es' => 'Student'),
@@ -23,6 +30,19 @@ $cta_item = array('slug' => '/form-b2b/', 'it' => 'Preventivo', 'en' => 'Get a Q
 $mobile_cta = array('it' => 'Richiedi Preventivo', 'en' => 'Request a Quote', 'fr' => 'Demander un Devis', 'es' => 'Solicitar Presupuesto');
 
 $lang = in_array($current_lang, array('it','en','fr','es')) ? $current_lang : 'it';
+
+// URL di una voce menu (slug semplice, URL per lingua, oppure slug + query)
+$toa_nav_href = function ($item) use ($lang) {
+    if (!empty($item['urls'])) {
+        return home_url(isset($item['urls'][$lang]) ? $item['urls'][$lang] : $item['urls']['it']);
+    }
+    $u = home_url($item['slug']);
+    if (!empty($item['q'])) {
+        parse_str($item['q'], $qa);
+        $u = add_query_arg($qa, $u);
+    }
+    return $u;
+};
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -32,6 +52,11 @@ $lang = in_array($current_lang, array('it','en','fr','es')) ? $current_lang : 'i
 <style>
 html,body{background:#08080a!important;color:#f5f5f3!important}
 a{color:inherit}
+/* 2026-10-31 ticket 789 — 12 voci + CTA: spaziatura fluida cosi il menu desktop sta in una riga */
+@media (min-width:1025px){
+.nav-links{gap:clamp(10px,1.25vw,28px)}
+.nav-links a{letter-spacing:1px}
+}
 /* ── Language Switcher Buttons ── */
 .nav-lang{display:flex;align-items:center;gap:4px}
 .nav-lang-item{
@@ -69,7 +94,7 @@ a{color:inherit}
     </a>
     <div class="nav-links">
         <?php foreach ($menu_items as $item) : ?>
-        <a href="<?php echo home_url($item['slug']); ?>"><?php echo esc_html($item[$lang]); ?></a>
+        <a href="<?php echo esc_url($toa_nav_href($item)); ?>"><?php echo esc_html($item[$lang]); ?></a>
         <?php endforeach; ?>
         <a href="<?php echo home_url($cta_item['slug']); ?>" class="nav-cta-btn"><?php echo esc_html($cta_item[$lang]); ?></a>
     </div>
@@ -115,7 +140,7 @@ a{color:inherit}
 <div class="mobile-menu" id="mobileMenu">
     <div class="mobile-menu-inner">
         <?php foreach ($menu_items as $item) : ?>
-        <a href="<?php echo home_url($item['slug']); ?>"><?php echo esc_html($item[$lang]); ?></a>
+        <a href="<?php echo esc_url($toa_nav_href($item)); ?>"><?php echo esc_html($item[$lang]); ?></a>
         <?php endforeach; ?>
         <div class="mobile-menu-cta">
             <a href="<?php echo home_url($cta_item['slug']); ?>" class="btn-hero btn-hero-primary"><?php echo esc_html($mobile_cta[$lang]); ?></a>
