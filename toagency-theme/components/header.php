@@ -18,7 +18,7 @@ $menu_items = array(
     array('urls' => array('it' => '/events/', 'en' => '/en/events/', 'fr' => '/fr/events/', 'es' => '/es/events/'),
           'it' => 'Staff Pro', 'en' => 'Pro Staff', 'fr' => 'Staff Pro', 'es' => 'Staff Pro'),
     array('slug' => '/extras/',          'it' => 'Comparse',   'en' => 'Extras',     'fr' => 'Figurants',  'es' => 'Extras'),
-    array('slug' => '/talent-database/', 'it' => 'Database',   'en' => 'Database',   'fr' => 'Base de talents', 'es' => 'Base de talentos'),
+    array('slug' => '/talent-database/', 'it' => 'Database',   'en' => 'Database',   'fr' => 'Base de talents', 'es' => 'Base de datos'),
     array('slug' => '/b2bservices/',     'it' => 'Servizi',    'en' => 'Services',   'fr' => 'Services',   'es' => 'Servicios'),
     array('slug' => '/casting/',         'it' => 'Casting',    'en' => 'Casting',    'fr' => 'Casting',    'es' => 'Casting'),
     array('slug' => '/about/',           'it' => 'About',      'en' => 'About',      'fr' => 'À propos',   'es' => 'Nosotros'),
@@ -52,11 +52,14 @@ $toa_nav_href = function ($item) use ($lang) {
 <style>
 html,body{background:#08080a!important;color:#f5f5f3!important}
 a{color:inherit}
-/* 2026-10-31 ticket 789 — 12 voci + CTA: spaziatura fluida cosi il menu desktop sta in una riga */
+/* 2026-10-31 ticket 789 — 12 voci + CTA: spaziatura fluida e righe senza a-capo; se in una lingua non sta
+   comunque in una riga lo script sotto aggiunge .nav-compact (menu a tendina) invece di tagliare lo switcher lingua */
 @media (min-width:1025px){
-.nav-links{gap:clamp(10px,1.25vw,28px)}
-.nav-links a{letter-spacing:1px}
+.nav .nav-links{gap:clamp(8px,1.05vw,22px)}
+.nav .nav-links a{white-space:nowrap;letter-spacing:.6px;font-size:.66rem}
 }
+.nav.nav-compact .nav-links{display:none}
+.nav.nav-compact .nav-hamburger{display:flex}
 /* ── Language Switcher Buttons ── */
 .nav-lang{display:flex;align-items:center;gap:4px}
 .nav-lang-item{
@@ -135,6 +138,21 @@ a{color:inherit}
         <span></span><span></span><span></span>
     </div>
 </nav>
+<script>
+/* 2026-10-31 ticket 789 — se il menu desktop non sta in una riga (lingua/larghezza), passa al menu a tendina */
+(function(){
+    var nav=document.getElementById('mainNav'); if(!nav) return;
+    function chk(){
+        nav.classList.remove('nav-compact');
+        if(nav.scrollWidth>nav.clientWidth+1) nav.classList.add('nav-compact');
+    }
+    chk();
+    window.addEventListener('resize',chk);
+    window.addEventListener('load',chk);
+    if(document.fonts&&document.fonts.ready) document.fonts.ready.then(chk);
+})();
+</script>
+
 
 <!-- Mobile Menu Overlay -->
 <div class="mobile-menu" id="mobileMenu">
