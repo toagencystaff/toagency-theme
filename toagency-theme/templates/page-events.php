@@ -146,8 +146,9 @@ toa_component('header');
         $ev_stage = array(); $ev_idx = array();
         foreach ($data as $sv) { foreach ($sv['roles'] as $rl) {
             $pk = $rl['p']; if (!$pk || !file_exists($ev_dir . $pk . '.jpg')) continue;
-            if (!isset($ev_idx[$pk])) { $ev_idx[$pk] = count($ev_stage); $ev_stage[] = array('p' => $pk, 'grp' => $_t($sv['title']), 'roles' => array()); }
-            $ev_stage[$ev_idx[$pk]]['roles'][] = $_t($rl['n']);
+            // 2026-10-31 ticket 790: una foto puo' valere per piu' figure/categorie, ma sotto la foto va UN solo nome
+            // (quello della categoria in cui la scheda compare per prima), non l'elenco con i doppioni.
+            if (!isset($ev_idx[$pk])) { $ev_idx[$pk] = count($ev_stage); $ev_stage[] = array('p' => $pk, 'grp' => $_t($sv['title']), 'roles' => array($_t($rl['n']))); }
         } }
         ?>
         <div class="toa-ev-wrap<?php echo $ev_has ? '' : ' nostage'; ?>">
