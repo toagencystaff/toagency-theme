@@ -17,7 +17,10 @@ $menu_items = array(
           'it' => 'Steward', 'en' => 'Stewards', 'fr' => 'Stewards', 'es' => 'Stewards'),
     array('urls' => array('it' => '/events/', 'en' => '/en/events/', 'fr' => '/fr/events/', 'es' => '/es/events/'),
           'it' => 'Staff Pro', 'en' => 'Pro Staff', 'fr' => 'Staff Pro', 'es' => 'Staff Pro'),
-    array('slug' => '/extras/',          'it' => 'Comparse',   'en' => 'Extras',     'fr' => 'Figurants',  'es' => 'Extras'),
+    // /extras/ esiste solo in italiano (EN/FR redirect all'IT, ES ha il testo italiano): fuori dall'italiano si va al Database filtrato su attori e comparse
+    array('urls' => array('it' => '/extras/', 'en' => '/talent-database/', 'fr' => '/talent-database/', 'es' => '/talent-database/'),
+          'qx' => array('en' => 'ruolo=actor', 'fr' => 'ruolo=actor', 'es' => 'ruolo=actor'),
+          'it' => 'Comparse', 'en' => 'Extras', 'fr' => 'Figurants', 'es' => 'Extras'),
     array('slug' => '/talent-database/', 'it' => 'Database',   'en' => 'Database',   'fr' => 'Base de talents', 'es' => 'Base de datos'),
     array('slug' => '/b2bservices/',     'it' => 'Servizi',    'en' => 'Services',   'fr' => 'Services',   'es' => 'Servicios'),
     array('slug' => '/casting/',         'it' => 'Casting',    'en' => 'Casting',    'fr' => 'Casting',    'es' => 'Casting'),
@@ -34,7 +37,12 @@ $lang = in_array($current_lang, array('it','en','fr','es')) ? $current_lang : 'i
 // URL di una voce menu (slug semplice, URL per lingua, oppure slug + query)
 $toa_nav_href = function ($item) use ($lang) {
     if (!empty($item['urls'])) {
-        return home_url(isset($item['urls'][$lang]) ? $item['urls'][$lang] : $item['urls']['it']);
+        $u = home_url(isset($item['urls'][$lang]) ? $item['urls'][$lang] : $item['urls']['it']);
+        if (!empty($item['qx'][$lang])) {
+            parse_str($item['qx'][$lang], $qa);
+            $u = add_query_arg($qa, $u);
+        }
+        return $u;
     }
     $u = home_url($item['slug']);
     if (!empty($item['q'])) {
