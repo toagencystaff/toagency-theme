@@ -1,7 +1,7 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=TEMA ticket 774
 FILE=toagency-theme/templates/page-talent-self-edit.php
 INIZIO=2026-10-29 18:19:37
-UPDATE=2026-10-29 18:19:37
+UPDATE=2026-10-29 18:34:37
 SHA1_ATTESO=55827604573fe0c027a70146165d6d2e999d1ba1
-NOTE=ticket #774 campi nome/cognome self-edit talent
+NOTE=ticket #774 online preview+prod 29/10 18:34, commit ae0b38e59
