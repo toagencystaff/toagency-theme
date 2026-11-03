@@ -162,3 +162,19 @@ body.tev-site{background:#FFFFFF!important;background-color:#FFFFFF!important;co
   .tev-lb__nv{top:auto;bottom:-60px;transform:none}
   .tev-lb__ft{padding-bottom:calc(16px + env(safe-area-inset-bottom))}
 }
+
+/* Il plugin Simple Custom CSS (sccss) impone a TUTTI i button: maiuscolo, padding 12/28, raggio 6, Inter, 14px (!important).
+   Qui si ripristinano solo i bottoni del mini sito, con la stessa forza. */
+.tev-site .tev-chip,.tev-site .tev-link,.tev-site .tev-card,.tev-site .tev-burger,.tev-site .tev-fbtn button,.tev-site .tev-lb__x,.tev-site .tev-lb__nv,.tev-site button.tev-btn{font-family:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif!important;text-transform:none!important;transition:none!important;letter-spacing:0!important}
+.tev-site .tev-chip{padding:0 12px!important;border-radius:999px!important;font-size:13px!important;font-weight:600!important}
+.tev-site .tev-chip[aria-pressed="true"],.tev-site .tev-chip--dash{font-weight:700!important}
+.tev-site .tev-chip--big{padding:0 16px!important;border-radius:10px!important;font-size:15px!important}
+.tev-site .tev-link{padding:4px 0!important;border-radius:0!important;font-size:13px!important;font-weight:400!important}
+.tev-site .tev-link[aria-pressed="true"]{font-weight:700!important}
+.tev-site .tev-card{padding:0!important;border-radius:14px!important;font-size:16px!important;font-weight:400!important}
+.tev-site .tev-burger{padding:0!important;border-radius:10px!important}
+.tev-site .tev-fbtn button{padding:0 16px!important;border-radius:10px!important;font-size:15px!important;font-weight:700!important}
+.tev-site .tev-lb__x{padding:0!important;border-radius:10px!important;font-size:22px!important}
+.tev-site .tev-lb__nv{padding:0!important;border-radius:999px!important;font-size:22px!important}
+.tev-site button.tev-btn{padding:12px 18px!important;border-radius:10px!important;font-size:15px!important;font-weight:700!important}
+@media(max-width:768px){.tev-site .tev-card{border-radius:12px!important}}
