@@ -243,9 +243,10 @@ body.tev-site{background:#FFFFFF!important;background-color:#FFFFFF!important;co
 .tev-gallery__g{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
 .tev-gallery__g img{width:calc(10% - 6px);aspect-ratio:1;object-fit:cover;border-radius:6px;background:#F5F5F3}
 .tev-pagehd{padding:56px 0 48px}
-.tev-svcs{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
-.tev-svc{border:1px solid #E6E6E1;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;background:#FFFFFF}
-.tev-svc__ph{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:50% 25%;display:block;background:#E2E2DB}
+/* foto delle figure verticali (3:4): la card mette la foto a sinistra intera, non tagliata in orizzontale (Marco 03/11) */
+.tev-svcs{display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:20px}
+.tev-svc{border:1px solid #E6E6E1;border-radius:16px;overflow:hidden;display:flex;flex-direction:row;background:#FFFFFF}
+.tev-svc__ph{flex:0 0 38%;width:38%;align-self:stretch;min-height:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 20%;display:block;background:#E2E2DB}
 .tev-svc__b{padding:20px;display:flex;flex-direction:column;gap:12px;flex:1}
 .tev-svc__t{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:28px;line-height:1.05;margin:0;text-transform:uppercase;color:#08080A}
 .tev-svc__d{margin:0;color:#3D3D39;font-size:15px;line-height:1.5}
@@ -284,6 +285,9 @@ body.tev-site{background:#FFFFFF!important;background-color:#FFFFFF!important;co
   .tev-feat__t{font-size:20px}
   .tev-price--home .tev-price__n{font-size:56px}
   .tev-svcs{grid-template-columns:1fr}
+  .tev-svc__ph{flex-basis:36%;width:36%}
+  .tev-svc__b{padding:14px;gap:10px}
+  .tev-svc__t{font-size:22px}
   .tev-fotos{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
   .tev-foto figcaption{font-size:12px}
   .tev-gallery__g img{width:calc(20% - 5px)}
