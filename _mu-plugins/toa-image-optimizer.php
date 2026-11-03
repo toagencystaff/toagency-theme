@@ -2,7 +2,7 @@
 /**
  * Plugin Name: TOA Image Optimizer
  * Description: Ottimizza in automatico ogni immagine caricata nella libreria media (lato lungo max 2000 px, JPEG q82, PNG con trasparenza → PNG o WebP sotto ~300 KB) e crea i gemelli .webp (nome.ext.webp) che SiteGround serve allo stesso URL. Nessun passaggio manuale per lo staff.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: TOAgency (chat TEMA Immagini automatiche, 01/11/2026)
  *
  * Regole (Marco, ripetute più volte):
@@ -11,6 +11,7 @@
  *  - risultato sempre sotto ~300 KB (se serve scende di qualità e poi di misura)
  *  - per originale e miniature crea nome.ext.webp: SiteGround lo manda allo stesso URL ai browser che accettano WebP
  *  - NON tocca: allegati WPForms (cartella wpforms/), file non immagine, GIF animate, immagini già piccole
+ *  - anteprime Facebook/WhatsApp (og:image di Yoast): PNG pesanti senza trasparenza → gemello JPEG nome.png.og.jpg (v1.1.0)
  *  - in caso di qualunque errore lascia il file com'era (mai un upload bloccato)
  * Codice sorgente versionato nel repo Toagency Theme: _mu-plugins/toa-image-optimizer.php
  * Installazione/aggiornamento: _scripts/imgopt_installa.sh (copia in wp-content/mu-plugins + prova vera + chmod 644)
@@ -41,13 +42,87 @@ add_filter('wp_handle_upload', 'toa_imgopt_on_upload', 5, 2);
 // 2) Gemelli .webp per originale + miniature, appena WordPress ha creato le miniature.
 add_filter('wp_generate_attachment_metadata', 'toa_imgopt_make_webp_siblings', 20, 2);
 
-// 3) Quando un'immagine viene cancellata dalla libreria, si cancella anche il suo gemello .webp.
+// 3) Quando un'immagine viene cancellata dalla libreria, si cancellano anche i suoi gemelli (.webp e .og.jpg).
 add_filter('wp_delete_file', function ($file) {
-    if (is_string($file) && preg_match('/\.(jpe?g|png)$/i', $file) && file_exists($file . '.webp')) {
-        @unlink($file . '.webp');
+    if (is_string($file) && preg_match('/\.(jpe?g|png)$/i', $file)) {
+        foreach (array('.webp', '.og.jpg') as $suf) {
+            if (file_exists($file . $suf)) {
+                @unlink($file . $suf);
+            }
+        }
     }
     return $file;
 });
+
+// 4) Anteprime Facebook/WhatsApp/X (og:image, twitter:image di Yoast): il lettore di Meta non accetta WebP,
+//    quindi riceveva i PNG originali interi (2-2,7 MB l'uno). Se l'immagine dell'anteprima è un PNG oltre 300 KB
+//    senza trasparenza, nell'anteprima si mette un gemello JPEG leggero (nome.png.og.jpg, stesse misure, q82),
+//    creato una volta sola alla prima richiesta. Il PNG originale e il suo URL restano dove sono.
+//    (v1.1.0, 03/11/2026)
+$GLOBALS['toa_imgopt_og_swapped'] = false;
+add_filter('wpseo_opengraph_image', function ($url) {
+    $new = toa_imgopt_og_twin_url($url);
+    $GLOBALS['toa_imgopt_og_swapped'] = ($new !== $url);
+    return $new;
+}, 20);
+add_filter('wpseo_opengraph_image_type', function ($type) {
+    if (!empty($GLOBALS['toa_imgopt_og_swapped'])) {
+        $GLOBALS['toa_imgopt_og_swapped'] = false;
+        return 'image/jpeg';
+    }
+    return $type;
+}, 20);
+add_filter('wpseo_twitter_image', 'toa_imgopt_og_twin_url', 20);
+
+function toa_imgopt_og_twin_url($url)
+{
+    try {
+        if (!is_string($url) || !preg_match('/\.png$/i', parse_url($url, PHP_URL_PATH) ?: '')) {
+            return $url;
+        }
+        $up   = wp_get_upload_dir();
+        $base = set_url_scheme($up['baseurl'], 'https');
+        $u    = set_url_scheme($url, 'https');
+        if (strpos($u, $base . '/') !== 0) {
+            return $url;
+        }
+        $rel  = rawurldecode(substr($u, strlen($base) + 1));
+        if (strpos($rel, '..') !== false || strpos($rel, 'wpforms/') === 0) {
+            return $url;
+        }
+        $file = trailingslashit($up['basedir']) . $rel;
+        if (!file_exists($file) || filesize($file) <= TOA_IMGOPT_LIMIT) {
+            return $url;
+        }
+        $twin = $file . '.og.jpg';
+        if (!file_exists($twin)) {
+            if (toa_imgopt_png_has_alpha($file) || !toa_imgopt_make_og_twin($file, $twin)) {
+                return $url;
+            }
+        }
+        return $url . '.og.jpg';
+    } catch (\Throwable $e) {
+        error_log('[toa-imgopt] og ' . $url . ': ' . $e->getMessage());
+        return $url;
+    }
+}
+
+function toa_imgopt_make_og_twin($file, $twin)
+{
+    if (function_exists('wp_raise_memory_limit')) {
+        wp_raise_memory_limit('image');
+    }
+    $tmp = toa_imgopt_encode($file, 'image/jpeg', dirname($file), basename($file) . '.og', 'jpg', false);
+    if (!$tmp || !file_exists($tmp['path'])) {
+        return false;
+    }
+    if (!@rename($tmp['path'], $twin)) {
+        @unlink($tmp['path']);
+        return false;
+    }
+    @chmod($twin, 0644);
+    return true;
+}
 
 function toa_imgopt_on_upload($upload, $context = 'upload')
 {

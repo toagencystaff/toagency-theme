@@ -61,11 +61,30 @@ done < "$TD/files.txt"
 echo "  file rimasti dopo la cancellazione: $LEFT"
 [ "$LEFT" -eq 0 ] || { echo "   ✗ restano file (miniature o webp non cancellati)"; FAIL=1; }
 rm -rf "$TD"
+echo
+echo "Anteprime Facebook (og:image): i PNG pesanti devono diventare un gemello JPEG leggero"
+UAFB='facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)'
+for r in 2026/10/Host-Elegante-in-Showroom-Moderno-2.png 2026/06/capelli.png 2026/08/apollonia.png 2026/10/Soggiorno-caldo-tra-amici-e-piante.png 2026/04/TOA-LOGO-BLACK.png; do
+  U="https://toagency.it/wp-content/uploads/$r"
+  N=$(wp eval "echo apply_filters('wpseo_opengraph_image', '$U');" 2>/dev/null)
+  if [ "$N" = "$U.og.jpg" ]; then
+    H=$(curl -s -o /dev/null -w '%{http_code} %{content_type} %{size_download}' -A "$UAFB" "$N?nc=$RANDOM")
+    echo "  $r -> .og.jpg | per Meta: $H"
+    case "$H" in "200 image/jpeg "*) ;; *) echo "   ✗ il gemello non risponde a Meta"; FAIL=1 ;; esac
+    S=${H##* }; [ "$S" -le 307200 ] 2>/dev/null || { echo "   ✗ gemello oltre 300 KB"; FAIL=1; }
+  else
+    echo "  $r -> resta: $N"
+    case "$r" in *TOA-LOGO-BLACK.png) ;; *) echo "   ✗ doveva passare al gemello JPEG"; FAIL=1 ;; esac
+  fi
+done
+if [ "$FAIL" -eq 0 ]; then wp sg purge >/dev/null 2>&1 && echo "Cache SiteGround svuotata (le pagine escono con la nuova anteprima)"; fi
 if [ "$FAIL" -eq 0 ]; then
   echo "ESITO: OK"
 else
   mv "$P" "$BK/toa-image-optimizer.php.TOLTO_$(date +%H%M%S)"
-  echo "Plugin TOLTO (prova fallita): il sito carica le immagini come prima."
+  PREV=$(ls -1t $BK/toa-image-optimizer.php.prima_* 2>/dev/null | head -1)
+  if [ -n "$PREV" ]; then cp "$PREV" "$P" && chmod 644 "$P" && echo "Prova fallita: rimessa la versione di prima ($PREV)."
+  else echo "Plugin TOLTO (prova fallita): il sito carica le immagini come prima."; fi
   echo "ESITO: FAIL"
   exit 1
 fi
