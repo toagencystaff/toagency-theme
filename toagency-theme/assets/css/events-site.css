@@ -258,9 +258,13 @@ body.tev-site{background:#FFFFFF!important;background-color:#FFFFFF!important;co
 .tev-cta-band__in p{margin:0;color:#CFCFC8;font-size:16px}
 .tev-cta-band__legal{padding-bottom:28px;font-size:13px;color:#A8A8A2}
 .tev-cards4{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:20px}
-.tev-card4{background:#FFFFFF;border:1px solid #E6E6E1;border-radius:14px;padding:22px}
-.tev-card4 h3{margin:0 0 6px;font-size:18px;font-weight:700;color:#08080A}
-.tev-card4 p{margin:0;color:#3D3D39;font-size:15px;line-height:1.5}
+/* box «Cosa guardano i clienti»: neri, icona lime, numero grande (Marco 03/11: quelli bianchi erano troppo basici) */
+.tev-card4{position:relative;overflow:hidden;background:#08080A;color:#F5F5F3;border-radius:16px;padding:26px 22px 24px;min-height:230px;transition:transform .2s ease,box-shadow .2s ease}
+.tev-card4:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(8,8,10,.18)}
+.tev-card4__ic{width:52px;height:52px;border-radius:12px;background:#C8FF00;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.tev-card4__n{position:absolute;top:12px;right:18px;font-family:Anton,Impact,sans-serif;font-size:64px;line-height:1;color:rgba(200,255,0,.16)}
+.tev-card4 h3{margin:0 0 10px;font-family:Anton,Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:24px;line-height:1.05;color:#FFFFFF}
+.tev-card4 p{margin:0;color:#CFCFC8;font-size:15px;line-height:1.55}
 .tev-fotos{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:18px}
 .tev-foto{margin:0}
 .tev-foto img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:10px;display:block;border:3px solid #15803D}
@@ -290,9 +294,19 @@ body.tev-site{background:#FFFFFF!important;background-color:#FFFFFF!important;co
   .tev-svc__t{font-size:22px}
   .tev-fotos{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
   .tev-foto figcaption{font-size:12px}
+  .tev-card4{min-height:0;padding:22px 18px}
+  .tev-card4__ic{width:44px;height:44px;margin-bottom:14px}
+  .tev-card4 h3{font-size:22px}
   .tev-gallery__g img{width:calc(20% - 5px)}
   .tev-where .tev-row{flex-wrap:wrap}
 }
 /* componenti del sito dentro le sezioni scure del mini sito: titoli nello stile TOA Events */
 .tev-dark .section-heading{font-family:Anton,Impact,sans-serif!important;font-weight:400!important;text-transform:uppercase;letter-spacing:0}
 .tev-dark .coverage-section,.tev-dark .toa-google-reviews{background:#08080A}
+
+/* fascia «Cerchi modelli, attori o comparse?» → TOAgency.it (piede del mini sito) */
+.tev-out{background:#F5F5F3;border-top:1px solid #E6E6E1}
+.tev-out__in{max-width:1280px;margin:0 auto;padding:36px 24px;display:flex;flex-wrap:wrap;gap:20px 40px;align-items:center;justify-content:space-between}
+.tev-out__h{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:30px;line-height:1.05;margin:0 0 6px;text-transform:uppercase;color:#08080A}
+.tev-out__p{margin:0 0 14px;color:#3D3D39;font-size:16px}
+@media(max-width:768px){.tev-out__in{padding:28px 16px}.tev-out__h{font-size:24px}.tev-out .tev-btn--lg{flex:1 1 100%}}

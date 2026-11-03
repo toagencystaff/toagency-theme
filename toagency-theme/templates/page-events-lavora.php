@@ -79,8 +79,21 @@ toa_component('events-site-head', array('tev_active' => 'lavora', 'tev_cta_url' 
       <h2 class="tev-h2"><?php echo esc_html($_t($t['look_h'])); ?></h2>
       <p class="tev-lead"><?php echo esc_html($_t($t['look_p'])); ?></p>
       <div class="tev-cards4">
-        <?php foreach ($t['look'] as $lk): ?>
-        <div class="tev-card4"><h3><?php echo esc_html($_t($lk[0])); ?></h3><p><?php echo esc_html($_t($lk[1])); ?></p></div>
+        <?php
+        // icone (camera, lingue, esperienza, zona) nello stesso ordine di $t['look']
+        $ic = array(
+          '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+          '<path d="M4 5h16v10H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
+          '<path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.2l5.9-.9z"/>',
+          '<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+        );
+        foreach ($t['look'] as $n => $lk): ?>
+        <div class="tev-card4">
+          <span class="tev-card4__ic" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#08080A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><?php echo $ic[$n]; ?></svg></span>
+          <span class="tev-card4__n" aria-hidden="true"><?php echo sprintf('%02d', $n + 1); ?></span>
+          <h3><?php echo esc_html($_t($lk[0])); ?></h3>
+          <p><?php echo esc_html($_t($lk[1])); ?></p>
+        </div>
         <?php endforeach; ?>
       </div>
     </div>

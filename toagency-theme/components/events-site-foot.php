@@ -22,6 +22,27 @@ $tevf_links = array(
 $tevf_privacy = function_exists('toa_privacy_url') ? toa_privacy_url() : 'https://toagency.it/privacy-policy-3/';
 $tevf_terms   = array('it'=>'Termini e condizioni','en'=>'Terms and conditions','fr'=>'Conditions générales','es'=>'Términos y condiciones');
 ?>
+<?php /* Marco 03/11: i ruoli che il mini sito non copre (modelli, attori, comparse...) riportano a TOAgency.it */
+$tevf_out = array(
+    array('/models/',          array('it'=>'Modelli','en'=>'Models','fr'=>'Mannequins','es'=>'Modelos')),
+    array('/actors/',          array('it'=>'Attori','en'=>'Actors','fr'=>'Acteurs','es'=>'Actores')),
+    array('/extras/',          array('it'=>'Comparse','en'=>'Extras','fr'=>'Figurants','es'=>'Figurantes')),
+    array('/talent-database/', array('it'=>'Talent database','en'=>'Talent database','fr'=>'Base de talents','es'=>'Base de talentos')),
+    array('/casting/',         array('it'=>'Casting','en'=>'Casting','fr'=>'Casting','es'=>'Casting')),
+);
+?>
+<section class="tev-out">
+  <div class="tev-out__in">
+    <div>
+      <h2 class="tev-out__h"><?php echo esc_html($tevf_tx(array('it'=>'Cerchi modelli, attori o comparse?','en'=>'Looking for models, actors or extras?','fr'=>'Vous cherchez des mannequins, des acteurs ou des figurants ?','es'=>'¿Buscas modelos, actores o figurantes?'))); ?></h2>
+      <p class="tev-out__p"><?php echo esc_html($tevf_tx(array('it'=>'Questi profili li trovi su TOAgency.','en'=>"You'll find them on TOAgency.",'fr'=>'Vous les trouverez sur TOAgency.','es'=>'Los encontrarás en TOAgency.'))); ?></p>
+      <div class="tev-row">
+        <?php foreach ($tevf_out as $o): ?><a class="tev-chip tev-chip--a" href="<?php echo esc_url($tevf_u($o[0])); ?>"><?php echo esc_html($tevf_tx($o[1])); ?></a><?php endforeach; ?>
+      </div>
+    </div>
+    <a class="tev-btn tev-btn--dark tev-btn--lg" href="<?php echo esc_url(apply_filters('wpml_home_url', untrailingslashit(get_option('home')) . '/')); ?>"><?php echo esc_html($tevf_tx(array('it'=>'Vai su TOAgency.it','en'=>'Go to TOAgency.it','fr'=>'Aller sur TOAgency.it','es'=>'Ir a TOAgency.it'))); ?> &rarr;</a>
+  </div>
+</section>
 <footer class="tev-foot">
   <div class="tev-foot__in">
     <div class="tev-foot__brand">
