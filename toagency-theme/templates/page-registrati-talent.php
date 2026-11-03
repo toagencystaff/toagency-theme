@@ -1900,4 +1900,26 @@ document.addEventListener('DOMContentLoaded', function() {
 })();
 </script>
 
+<script>
+// 2026-11-03 chat TEMA-Events (ticket #811, pagina «Lavora con noi» di TOA Events): con ?ruolo=<codice> il ruolo arriva gia' scelto
+// (stesso meccanismo del bottone «+ ruolo» negli album); con hostess si apre per primo l'album «Fiere e eventi». Senza parametro: nessun effetto.
+(function(){
+  var r = ''; try { r = (new URLSearchParams(location.search).get('ruolo') || '').toLowerCase(); } catch(e) {}
+  if (!/^[a-z_]{3,30}$/.test(r)) return;
+  function go(){
+    var cb = document.querySelector('#toaTalentCategoriesImmagine input[name="ruoli_immagine[]"][value="' + r + '"]');
+    if (!cb) return;
+    if (!cb.checked) {
+      cb.checked = true;
+      var chip = cb.closest('.toa-talent-category-chip'); if (chip) chip.classList.add('checked');
+      cb.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    var tab = (r === 'hostess') ? document.querySelector('.toa-alb-tab[data-tab="eventi"]') : null;
+    if (tab && tab.style.display !== 'none') tab.click();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(go, 0); });
+  else setTimeout(go, 0);
+})();
+</script>
+
 <?php toa_component('footer'); ?>

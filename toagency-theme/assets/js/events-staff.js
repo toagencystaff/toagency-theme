@@ -16,7 +16,7 @@
   var F = null;          // filtri del Paese corrente
   var FC = {};           // cache filtri per Paese
   var V = null;          // ultima risposta vetrina
-  var altriOpen = false, altreOpen = false, fOpen = false, ctrl = null, lastMsg = '';
+  var altriOpen = false, altreOpen = false, fOpen = false, ctrl = null, lastMsg = '', lastPl = '', lastLg = '';
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function fmt(s, o) { return String(s).replace(/\{(\w)\}/g, function (m, k) { return o[k] != null ? o[k] : ''; }); }
@@ -245,6 +245,11 @@
     if (S.esperienza !== 'tutte') lines.push(UI.mEsp + ': ' + nameOf(F.esperienza, S.esperienza));
     if (S.picks.length) lines.push(UI.mProf + ': ' + S.picks.join(', '));
     lastMsg = lines.join('\n'); ta.value = lastMsg;
+    // campi facoltativi del form (solo se vuoti: non si sovrascrive quello che ha scritto il cliente)
+    var pl = $('fe_place');
+    if (pl && (!pl.value.trim() || pl.value === lastPl)) { lastPl = cName + (S.zona ? ' — ' + S.zona : '') + ' (' + nameOf(F.paesi, S.paese) + ')'; pl.value = lastPl; }
+    var lg = $('fe_langs');
+    if (lg && (!lg.value.trim() || lg.value === lastLg)) { lastLg = (S.lingue || []).map(function (l) { return nameOf(F.lingue, l); }).join(', '); lg.value = lastLg; }
   }
   function goForm() { var f = $('preventivo'); if (f && f.scrollIntoView) f.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   document.addEventListener('click', function (e) {

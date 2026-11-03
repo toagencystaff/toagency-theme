@@ -104,6 +104,6 @@ toa_component('events-site-head', array('tev_active' => 'staff', 'tev_cta_url' =
 
 <script type="application/json" id="tevCfg"><?php echo wp_json_encode($cfg, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP); ?></script>
 
-<?php toa_component('form-eventi-inline', array('lang' => $lang, 'leadsrc' => 'Pagina TOA Events Staff e prezzi')); ?>
+<?php toa_component('form-eventi-inline', array('lang' => $lang, 'leadsrc' => 'Pagina TOA Events Staff e prezzi', 'extra' => true)); ?>
 
 <?php toa_component('events-site-foot', array('tev_wa' => false)); ?>

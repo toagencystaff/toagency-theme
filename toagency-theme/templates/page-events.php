@@ -6,6 +6,10 @@
  * Vincoli: nessun prezzo; nessuna promessa di numeri/copertura (interpreti, tour leader: 0 profili);
  * security e mansioni tecniche solo con personale in regola. Stampo: page-hostess-eventi20.php.
  */
+// 2026-11-03 (#811, chat TEMA-Events): anteprima della nuova home del mini sito TOA Events, SOLO per chi e' loggato
+// e puo' modificare le pagine, con ?nuova=1. I visitatori vedono questa pagina com'e'. Quando Marco approva,
+// la nuova home sostituisce questo file (stesso URL, stessi H1 e testi SEO).
+if (isset($_GET['nuova']) && current_user_can('edit_pages')) { include get_template_directory() . '/components/events-home.php'; return; }
 $lang = function_exists('toa_current_lang') ? toa_current_lang() : 'it';
 $_t = function($a) use ($lang) { return isset($a[$lang]) ? $a[$lang] : $a['it']; };
 

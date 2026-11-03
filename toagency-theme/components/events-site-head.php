@@ -23,7 +23,9 @@ if (!function_exists('toa_events_site_url')) {
         }
         if (!$id) return '';
         $st = get_post_status($id);
-        if ($st === 'publish' || ($st && current_user_can('edit_post', $id))) return get_permalink($id);
+        if ($st === 'publish') return get_permalink($id);
+        // bozza vista da chi la sta controllando: ?page_id= non porta la lingua, quindi la si aggiunge (?lang=, toa_current_lang)
+        if ($st && current_user_can('edit_post', $id)) return add_query_arg('lang', $lang, get_permalink($id));
         return '';
     }
 }
@@ -42,7 +44,7 @@ $tev_menu = array(
     'lavora'  => array('url' => $tev_url('lavora', untrailingslashit(get_option('home')) . $tev_reg[$tev_lang]),
                        'n' => array('it'=>'Lavora con noi','en'=>'Work with us','fr'=>'Travailler avec nous','es'=>'Trabaja con nosotros')),
 );
-$tev_cta_n   = array('it'=>'Richiedi una selezione','en'=>'Request a shortlist','fr'=>'Demander une sélection','es'=>'Pide una selección');
+$tev_cta_n   = (isset($tev_cta_label) && is_array($tev_cta_label)) ? $tev_cta_label : array('it'=>'Richiedi una selezione','en'=>'Request a shortlist','fr'=>'Demander une sélection','es'=>'Pide una selección');
 $tev_cta_url = isset($tev_cta_url) && $tev_cta_url ? $tev_cta_url : $tev_hub . '#preventivo';
 
 // lingue: solo traduzioni WPML reali della pagina (mai URL costruiti a mano)
@@ -66,6 +68,11 @@ if (function_exists('icl_get_languages')) {
 <?php wp_head(); ?>
 </head>
 <body <?php body_class('tev-site'); ?>>
+<?php /* Marco 03/11: in ogni pagina del mini sito un modo per tornare alla home di toagency.it */ ?>
+<div class="tev-back"><div class="tev-back__in">
+  <a href="<?php echo esc_url(apply_filters('wpml_home_url', untrailingslashit(get_option('home')) . '/')); ?>"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8FF00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="tev-back__toa">TOA</span><?php echo esc_html($tev_tx(array('it'=>'Torna a TOAgency.it','en'=>'Back to TOAgency.it','fr'=>'Retour sur TOAgency.it','es'=>'Volver a TOAgency.it'))); ?></a>
+  <span class="tev-back__note"><?php echo esc_html($tev_tx(array('it'=>'TOA Events è il servizio eventi di TOAgency','en'=>"TOA Events is TOAgency's events service",'fr'=>'TOA Events est le service événementiel de TOAgency','es'=>'TOA Events es el servicio de eventos de TOAgency'))); ?></span>
+</div></div>
 <header class="tev-top" id="tevTop">
   <div class="tev-top__in">
     <a class="tev-logo" href="<?php echo esc_url($tev_hub); ?>" aria-label="TOA Events">

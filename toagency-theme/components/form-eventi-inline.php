@@ -10,6 +10,9 @@
  */
 // 2026-10-14 (#637 TOA Events): sorgente lead personalizzabile con arg 'leadsrc' (default invariato per /hostess-steward/)
 $fe_leadsrc = (isset($leadsrc) && $leadsrc) ? $leadsrc : 'Pagina Servizi Eventi';
+// 2026-11-03 (#811 mini sito TOA Events): con 'extra' => true compaiono 5 campi facoltativi (citta' o fiera, data, orario, persone, lingue)
+// che finiscono in testa al messaggio inviato al CRM. Senza 'extra' il form resta identico (es. /hostess-steward/).
+$fe_extra = !empty($extra);
 $fe_heading = array('it'=>'Richiedi un preventivo gratuito','en'=>'Request a free quote','fr'=>'Demande un devis gratuit','es'=>'Solicita un presupuesto gratuito');
 $fe_sub     = array('it'=>'Raccontaci il tuo evento — ti ricontattiamo subito, prezzi trasparenti.','en'=>'Tell us about your event — we get back to you right away, transparent prices.','fr'=>'Parlez-nous de votre événement — on vous recontacte tout de suite, prix transparents.','es'=>'Cuéntanos tu evento — te contactamos enseguida, precios transparentes.');
 
@@ -70,6 +73,32 @@ $fe_js = array(
             <?php endforeach; ?>
           </select>
         </div>
+        <?php if ($fe_extra): ?>
+        <div class="iq-grid">
+          <div class="iq-field">
+            <label class="iq-label" for="fe_place"><?php echo _ht(array('it'=>'Città o fiera','en'=>'City or trade show','fr'=>'Ville ou salon','es'=>'Ciudad o feria')); ?></label>
+            <input type="text" id="fe_place" class="iq-input" maxlength="120" data-fe-x="<?php echo esc_attr(_ht(array('it'=>'Città o fiera','en'=>'City or trade show','fr'=>'Ville ou salon','es'=>'Ciudad o feria'))); ?>">
+          </div>
+          <div class="iq-field">
+            <label class="iq-label" for="fe_date"><?php echo _ht(array('it'=>'Data','en'=>'Date','fr'=>'Date','es'=>'Fecha')); ?></label>
+            <input type="date" id="fe_date" class="iq-input" data-fe-x="<?php echo esc_attr(_ht(array('it'=>'Data','en'=>'Date','fr'=>'Date','es'=>'Fecha'))); ?>">
+          </div>
+        </div>
+        <div class="iq-grid">
+          <div class="iq-field">
+            <label class="iq-label" for="fe_time"><?php echo _ht(array('it'=>'Orario','en'=>'Hours','fr'=>'Horaires','es'=>'Horario')); ?></label>
+            <input type="text" id="fe_time" class="iq-input" maxlength="60" placeholder="<?php echo esc_attr(_ht(array('it'=>'es. 9:00 – 15:00','en'=>'e.g. 9:00 – 15:00','fr'=>'ex. 9h – 15h','es'=>'p. ej. 9:00 – 15:00'))); ?>" data-fe-x="<?php echo esc_attr(_ht(array('it'=>'Orario','en'=>'Hours','fr'=>'Horaires','es'=>'Horario'))); ?>">
+          </div>
+          <div class="iq-field">
+            <label class="iq-label" for="fe_people"><?php echo _ht(array('it'=>'Quante persone','en'=>'How many people','fr'=>'Combien de personnes','es'=>'Cuántas personas')); ?></label>
+            <input type="number" id="fe_people" class="iq-input" min="1" max="999" inputmode="numeric" data-fe-x="<?php echo esc_attr(_ht(array('it'=>'Persone','en'=>'People','fr'=>'Personnes','es'=>'Personas'))); ?>">
+          </div>
+        </div>
+        <div class="iq-field">
+          <label class="iq-label" for="fe_langs"><?php echo _ht(array('it'=>'Lingue richieste','en'=>'Languages needed','fr'=>'Langues demandées','es'=>'Idiomas necesarios')); ?></label>
+          <input type="text" id="fe_langs" class="iq-input" maxlength="120" placeholder="<?php echo esc_attr(_ht(array('it'=>'es. inglese, tedesco','en'=>'e.g. English, German','fr'=>'ex. anglais, allemand','es'=>'p. ej. inglés, alemán'))); ?>" data-fe-x="<?php echo esc_attr(_ht(array('it'=>'Lingue','en'=>'Languages','fr'=>'Langues','es'=>'Idiomas'))); ?>">
+        </div>
+        <?php endif; ?>
         <div class="iq-field">
           <label class="iq-label" for="fe_message"><?php echo _ht(array('it'=>'Messaggio','en'=>'Message','fr'=>'Message','es'=>'Mensaje')); ?></label>
           <textarea id="fe_message" name="message" class="iq-input" placeholder="<?php echo esc_attr(_ht(array('it'=>'Che figure ti servono e per quale evento? (es. 4 hostess + 2 bartender per fiera a Milano)','en'=>'Which staff do you need and for which event?','fr'=>'De quel personnel avez-vous besoin et pour quel événement ?','es'=>'¿Qué personal necesitas y para qué evento?'))); ?>"></textarea>
@@ -167,7 +196,12 @@ $fe_js = array(
       email: v('fe_email'),
       phone: v('fe_phone'),
       event_type: v('fe_event_type'),
-      message: v('fe_message')
+      message: (function(){ // #811: campi facoltativi del mini sito TOA Events in testa al messaggio
+        var x = [];
+        Array.prototype.forEach.call(form.querySelectorAll('[data-fe-x]'), function(el){ var val = (el.value || '').trim(); if (val) x.push(el.getAttribute('data-fe-x') + ': ' + val); });
+        var m = v('fe_message');
+        return x.length ? x.join('\n') + (m ? '\n\n' + m : '') : m;
+      })()
     };
     Object.assign(payload, toaAttrCache);
 
