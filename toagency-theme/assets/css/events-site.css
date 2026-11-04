@@ -133,7 +133,11 @@ body.tev-site{background:#FFFFFF!important;background-color:#FFFFFF!important;co
 .tev-sk{border-radius:14px;background:#F5F5F3;aspect-ratio:4/6.2;animation:tevPulse 1.2s ease-in-out infinite}
 @keyframes tevPulse{50%{opacity:.5}}
 .tev-foot-note{font-size:13px;color:#5C5C57;margin:16px 0 0}
-.tev-examples{font-size:14px;line-height:1.45;color:#5C5C57;margin:0 0 14px}
+.tev-examples{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 16px;background:#F5F5F3;border:1px solid #E6E6E1;border-left:4px solid #C8FF00;border-radius:10px;padding:14px 16px}
+.tev-examples__t{display:flex;flex-direction:column;gap:4px;font-size:14px;line-height:1.45;color:#5C5C57}
+.tev-examples__t strong{font-size:16px;color:#08080A}
+.tev-grid + .tev-examples{margin:18px 0 0}
+@media(max-width:768px){.tev-examples{flex-direction:column;align-items:stretch}.tev-examples .tev-btn{width:100%}}
 .tev-div{grid-column:1/-1;margin-top:10px;padding-top:14px;border-top:1px solid #DCDCD6;font-size:14px;font-weight:600;color:#55554F}
 .tev-site .tev-lb__ed{margin-left:auto;background:transparent!important;color:#F5F5F3!important;border:1px solid #6A6A64!important}
 .tev-empty{grid-column:1/-1;padding:28px;text-align:center;background:#F5F5F3;border-radius:14px;font-size:15px}

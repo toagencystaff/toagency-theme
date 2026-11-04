@@ -175,6 +175,14 @@
     setAll('riassunto', esc([tx.unita, fName, cName].filter(Boolean).join(' · ')));
     setAll('cta', esc(tx.cta || ''));
     setAll('esempio', esc(tx.esempio || ''));
+    // ordine: prima chi parla le lingue richieste, poi le schede al prezzo «a partire da» (sono gli esempi che il cliente cerca), poi le altre; a parità resta l'ordine del CRM
+    if (d.profili && d.profili.length > 1) {
+      var minP = Math.min.apply(null, d.profili.map(function (p) { return p.prezzo == null ? 1e9 : p.prezzo; }));
+      d.profili = d.profili.map(function (p, i) { return { p: p, i: i }; }).sort(function (a, b) {
+        return ((a.p.match_lingue === false ? 1 : 0) - (b.p.match_lingue === false ? 1 : 0)) ||
+               ((a.p.prezzo === minP ? 0 : 1) - (b.p.prezzo === minP ? 0 : 1)) || (a.i - b.i);
+      }).map(function (x) { return x.p; });
+    }
     var n = (d.profili || []).length;
     setAll('conta', esc(n === 1 ? UI.conta1 : fmt(UI.conta, { n: n })));
     setAll('titolo', esc(naz ? fmt(UI.titoloNaz, { f: fName, c: cName.charAt(0).toLowerCase() + cName.slice(1) }) : fmt(UI.titolo, { f: fName, c: cName })));
@@ -293,6 +301,8 @@
     // su telefono il bottone resta fermo sotto la testata: aprendo i filtri si torna al pannello
     if (fOpen) { try { $('tevFpanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }
   });
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-tev-more]'), function (b) { b.addEventListener('click', function () { fillForm(); goForm(); }); });
 
   var bar = $('tevBar'), form = $('preventivo');
   if (bar && form && 'IntersectionObserver' in window) {
