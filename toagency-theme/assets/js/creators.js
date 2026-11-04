@@ -39,22 +39,42 @@
   function form(o) { if (window.tcrForm) window.tcrForm.set(o); }
   function packOf(code) { return (S.listino || []).filter(function (p) { return p.codice === code; })[0] || null; }
 
-  /* ───────── video: caricati solo vicino allo schermo, partono solo se visibili ───────── */
+  /* ───────── video: caricati solo vicino allo schermo, al massimo 3 alla volta (prima quelli visibili), partono solo se visibili ─────────
+   * I video passano dal proxy del CRM: scaricarne 20 insieme rallentava tutto (04/11). Un video senza immagine (solo audio o codec che
+   * il browser non legge: larghezza 0) o che va in errore fa sparire la card: mai un riquadro nero vuoto. */
+  var Q = [], attivi = 0, MAXV = 3;
+  function vidKo(v) { var c = v.closest('.tcr-cc'); if (c) c.style.display = 'none'; else { var a = v.closest('.tcr-ph'); if (a) a.style.visibility = 'hidden'; } }
+  function pump() {
+    while (attivi < MAXV && Q.length) {
+      var v = Q.shift();
+      if (!v.isConnected || v.getAttribute('src')) continue;
+      attivi++;
+      (function (v) {
+        var fatto = false;
+        function fine() { if (fatto) return; fatto = true; attivi--; pump(); }
+        v.addEventListener('loadedmetadata', function () { if (!v.videoWidth) vidKo(v); }, { once: true });
+        v.addEventListener('loadeddata', function () { var b = v.closest('.tcr-vid'); if (b) b.classList.add('ok'); bars(v); fine(); }, { once: true });
+        v.addEventListener('error', function () { vidKo(v); fine(); }, { once: true });
+        setTimeout(fine, 12000);
+        v.src = v.dataset.src + '#t=0.5';
+        if (v.dataset.vis === '1' && !RM) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+      })(v);
+    }
+  }
   var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
     es.forEach(function (e) {
       var v = e.target;
+      v.dataset.vis = e.isIntersecting ? '1' : '';
       if (e.isIntersecting) {
-        if (!v.getAttribute('src') && v.dataset.src) { v.src = v.dataset.src + '#t=0.5'; }
-        if (!RM) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+        if (!v.getAttribute('src')) { var i = Q.indexOf(v); if (i >= 0) Q.splice(i, 1); Q.unshift(v); pump(); }
+        else if (!RM) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
       } else if (!v.paused) v.pause();
     });
-  }, { rootMargin: '200px 0px', threshold: 0.01 }) : null;
+  }, { rootMargin: '150px 0px', threshold: 0.01 }) : null;
   function watch(root) {
     Array.prototype.forEach.call((root || document).querySelectorAll('video[data-src]'), function (v) {
       if (v.dataset.w) return; v.dataset.w = '1';
-      v.addEventListener('loadeddata', function () { bars(v); }, { once: true });
-      v.addEventListener('error', function () { var c = v.closest('.tcr-cc'); if (c) c.style.display = 'none'; }, { once: true });
-      if (io) io.observe(v); else { v.src = v.dataset.src + '#t=0.5'; }
+      if (io) io.observe(v); else { Q.push(v); pump(); }
     });
   }
   /* bande nere dentro alcuni video: misura le righe/colonne quasi nere ai bordi del primo fotogramma e ingrandisce quanto basta */
@@ -262,19 +282,19 @@
     var pool = list.slice();
     function nic(p) { return String(p.nicchia || 'Creator').split(' & ')[0]; }
     function ph(p) {
-      return '<video muted loop playsinline preload="metadata"' + (RM ? '' : ' autoplay') + ' src="' + esc(p.video) + '#t=0.5"></video>' +
+      return '<video muted loop playsinline preload="metadata"' + (RM ? '' : ' autoplay') + ' data-src="' + esc(p.video) + '"></video>' +
         '<em class="tcr-ph__nic">' + esc(nic(p)) + '</em><div class="tcr-ph__ov"><img class="tcr-av" alt="" src="' + esc(p.foto) + '">' +
         '<div class="tcr-who"><b>' + esc(p.nome) + '<i title="' + esc(U.verificato) + '">✓</i></b><small>' + esc((p.nicchia ? p.nicchia + ' · ' : '') + '#' + p.codice) + '</small></div>' +
         '<span class="tcr-ph__go">' + esc(U.scheda) + '</span></div>';
     }
     function fill(a, p) {
       a.href = p.link_scheda; a.title = p.testo_link; a.setAttribute('aria-label', p.testo_link); a.innerHTML = ph(p);
-      var v = a.querySelector('video');
-      v.addEventListener('loadeddata', function () { bars(v); }, { once: true });
-      v.addEventListener('error', function () { a.style.visibility = 'hidden'; }, { once: true });
+      a.style.visibility = '';
+      var v = a.querySelector('video'); v.dataset.vis = '1';
+      Q.unshift(v); pump();
     }
     box.innerHTML = '';
-    pool.slice(0, 3).forEach(function (p) { var a = document.createElement('a'); a.className = 'tcr-ph'; fill(a, p); box.appendChild(a); });
+    pool.slice(0, 3).forEach(function (p) { var a = document.createElement('a'); a.className = 'tcr-ph'; box.appendChild(a); fill(a, p); });
     if (RM || pool.length <= 3) return;
     var nx = 3, turno = 0;
     setInterval(function () {
@@ -282,7 +302,7 @@
       var r = box.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;   // fuori schermo: non si cambia
       var el = box.children[turno % 3], p = pool[nx % pool.length]; turno++; nx++;
       el.classList.add('cambia');
-      setTimeout(function () { el.style.visibility = ''; fill(el, p); var v = el.querySelector('video'); var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); el.classList.remove('cambia'); }, 450);
+      setTimeout(function () { fill(el, p); el.classList.remove('cambia'); }, 450);
     }, 3500);
   }
 
