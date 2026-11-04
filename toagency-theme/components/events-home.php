@@ -289,7 +289,7 @@ toa_component('events-site-head', array('tev_active' => '', 'tev_cta_url' => '#p
       if (!v || !v.ok || !v.testi) return;
       var t = v.testi, q = function(k){ return box.querySelector('[data-h="' + k + '"]'); };
       if (v.prezzo_da == null) { q('prezzo').textContent = t.su_richiesta || ''; q('prezzo').classList.add('is-text'); }
-      else { q('prezzo').textContent = v.prezzo_da + ' ' + (v.valuta || '€'); q('iva').textContent = v.iva ? (t.iva || '') : ''; }
+      else { q('prezzo').textContent = v.prezzo_da + ' ' + (v.valuta || '€'); /* IVA non in home (Marco 04/11): la nota «solo aziende italiane» è in Staff e prezzi */ }
       q('sum').textContent = [t.unita, (v.citta && v.citta.nome) || c.nome].filter(Boolean).join(' · ');
       box.hidden = false;
     });

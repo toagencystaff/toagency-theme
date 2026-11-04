@@ -166,6 +166,7 @@
     setAll('aPartire', esc(pt ? tx.a_partire : ''));
     setAll('prezzo', esc(pt || tx.su_richiesta || ''), !pt);
     setAll('iva', esc(pt && d.iva ? tx.iva : ''));
+    setAll('ivaNote', esc(pt && d.iva ? (UI.ivaNote || '') : ''));
     setAll('riassunto', esc([tx.unita, fName, cName].filter(Boolean).join(' · ')));
     setAll('cta', esc(tx.cta || ''));
     setAll('esempio', esc(tx.esempio || ''));
