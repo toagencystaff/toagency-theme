@@ -12,6 +12,7 @@
   var LCODE = { italiano: 'IT', inglese: 'EN', francese: 'FR', tedesco: 'DE', spagnolo: 'ES', portoghese: 'PT', russo: 'RU', cinese: 'ZH', arabo: 'AR', olandese: 'NL', giapponese: 'JA', polacco: 'PL', rumeno: 'RO', greco: 'EL', turco: 'TR', ucraino: 'UK' };
   var DEF_ORE = 6;
   var IT_DA = { 4: 109, 6: 119, 8: 129, 10: 139 }; // prezzo "a partire da" fisso per l'Italia, per durata
+  var IT_OFF = { 4: -10, 6: 0, 8: 10, 10: 10 }; // scarto tra «a partire da» fisso e minimo CRM nazionale: le schede usano la stessa scala, così c'è sempre un profilo d'esempio al prezzo dichiarato
 
   var S = { paese: '', citta: '', figura: 'hostess', lingue: null, livello: '', esperienza: 'tutte', ore: DEF_ORE, zona: '', picks: [] };
   var F = null;          // filtri del Paese corrente
@@ -190,7 +191,7 @@
         return '<span>' + esc((LCODE[l.lingua] || String(l.lingua).slice(0, 2).toUpperCase()) + ' ' + (l.livello === 'nativo' ? UI.nativo : l.livello)) + '</span>';
       }).join('');
       var media = (p.media && p.media.length) ? p.media.length : 0;
-      var pp = priceText(p.prezzo, d.valuta);
+      var pp = priceText(p.prezzo != null && S.paese === 'IT' && IT_OFF[S.ore] != null ? p.prezzo + IT_OFF[S.ore] : p.prezzo, d.valuta);
       return (i === divAt ? '<div class="tev-div">' + esc(tx.altre_proposte || '') + '</div>' : '') +
         '<button type="button" class="tev-card" data-i="' + i + '" aria-label="' + esc(p.nome + ' #' + p.codice + ' — ' + UI.foto) + '">' +
         '<span class="tev-card__ph">' + (p.foto ? '<img src="' + esc(p.foto) + '" alt="' + esc(p.nome + ' #' + p.codice) + '" loading="' + (i < 4 ? 'eager' : 'lazy') + '" decoding="async">' : '') +

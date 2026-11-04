@@ -133,6 +133,7 @@ body.tev-site{background:#FFFFFF!important;background-color:#FFFFFF!important;co
 .tev-sk{border-radius:14px;background:#F5F5F3;aspect-ratio:4/6.2;animation:tevPulse 1.2s ease-in-out infinite}
 @keyframes tevPulse{50%{opacity:.5}}
 .tev-foot-note{font-size:13px;color:#5C5C57;margin:16px 0 0}
+.tev-examples{font-size:14px;line-height:1.45;color:#5C5C57;margin:0 0 14px}
 .tev-div{grid-column:1/-1;margin-top:10px;padding-top:14px;border-top:1px solid #DCDCD6;font-size:14px;font-weight:600;color:#55554F}
 .tev-site .tev-lb__ed{margin-left:auto;background:transparent!important;color:#F5F5F3!important;border:1px solid #6A6A64!important}
 .tev-empty{grid-column:1/-1;padding:28px;text-align:center;background:#F5F5F3;border-radius:14px;font-size:15px}
