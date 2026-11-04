@@ -11,8 +11,6 @@
   var $ = function (id) { return document.getElementById(id); };
   var LCODE = { italiano: 'IT', inglese: 'EN', francese: 'FR', tedesco: 'DE', spagnolo: 'ES', portoghese: 'PT', russo: 'RU', cinese: 'ZH', arabo: 'AR', olandese: 'NL', giapponese: 'JA', polacco: 'PL', rumeno: 'RO', greco: 'EL', turco: 'TR', ucraino: 'UK' };
   var DEF_ORE = 6;
-  var IT_DA = { 4: 109, 6: 119, 8: 129, 10: 139 }; // prezzo "a partire da" fisso per l'Italia, per durata
-  var IT_OFF = { 4: -10, 6: 0, 8: 10, 10: 10 }; // scarto tra «a partire da» fisso e minimo CRM nazionale: le schede usano la stessa scala, così c'è sempre un profilo d'esempio al prezzo dichiarato
 
   var S = { paese: '', citta: '', figura: 'hostess', lingue: null, livello: '', esperienza: 'tutte', ore: DEF_ORE, zona: '', picks: [] };
   var F = null;          // filtri del Paese corrente
@@ -164,9 +162,8 @@
     var cName = (d.citta && d.citta.nome) || nameOf((F.citta_top || []).concat(F.citta_altre || []), S.citta);
     var fName = nameOf(F.figure, d.figura || S.figura);
     var naz = !!d.nazionale || S.citta === '';
-    // Italia: "a partire da" fisso per durata (decisione Marco, ticket 820); gli altri Paesi usano il prezzo del CRM
+    // «a partire da» e prezzi dei profili arrivano dal CRM così come sono (ticket 823): il tema non li ritocca
     var prDa = d.prezzo_da;
-    if (S.paese === 'IT' && IT_DA[S.ore]) prDa = IT_DA[S.ore];
     var pt = priceText(prDa, d.valuta || '€');
     setAll('aPartire', esc(pt ? tx.a_partire : ''));
     setAll('prezzo', esc(pt || tx.su_richiesta || ''), !pt);
@@ -175,12 +172,10 @@
     setAll('riassunto', esc([tx.unita, fName, cName].filter(Boolean).join(' · ')));
     setAll('cta', esc(tx.cta || ''));
     setAll('esempio', esc(tx.esempio || ''));
-    // ordine: prima chi parla le lingue richieste, poi le schede al prezzo «a partire da» (sono gli esempi che il cliente cerca), poi le altre; a parità resta l'ordine del CRM
+    // ordine: prima chi parla le lingue richieste (per il divisore), poi l'ordine del CRM invariato (ticket 823)
     if (d.profili && d.profili.length > 1) {
-      var minP = Math.min.apply(null, d.profili.map(function (p) { return p.prezzo == null ? 1e9 : p.prezzo; }));
       d.profili = d.profili.map(function (p, i) { return { p: p, i: i }; }).sort(function (a, b) {
-        return ((a.p.match_lingue === false ? 1 : 0) - (b.p.match_lingue === false ? 1 : 0)) ||
-               ((a.p.prezzo === minP ? 0 : 1) - (b.p.prezzo === minP ? 0 : 1)) || (a.i - b.i);
+        return ((a.p.match_lingue === false ? 1 : 0) - (b.p.match_lingue === false ? 1 : 0)) || (a.i - b.i);
       }).map(function (x) { return x.p; });
     }
     var n = (d.profili || []).length;
@@ -199,7 +194,7 @@
         return '<span>' + esc((LCODE[l.lingua] || String(l.lingua).slice(0, 2).toUpperCase()) + ' ' + (l.livello === 'nativo' ? UI.nativo : l.livello)) + '</span>';
       }).join('');
       var media = (p.media && p.media.length) ? p.media.length : 0;
-      var pp = priceText(p.prezzo != null && S.paese === 'IT' && IT_OFF[S.ore] != null ? p.prezzo + IT_OFF[S.ore] : p.prezzo, d.valuta);
+      var pp = priceText(p.prezzo, d.valuta);
       return (i === divAt ? '<div class="tev-div">' + esc(tx.altre_proposte || '') + '</div>' : '') +
         '<button type="button" class="tev-card" data-i="' + i + '" aria-label="' + esc(p.nome + ' #' + p.codice + ' — ' + UI.foto) + '">' +
         '<span class="tev-card__ph">' + (p.foto ? '<img src="' + esc(p.foto) + '" alt="' + esc(p.nome + ' #' + p.codice) + '" loading="' + (i < 4 ? 'eager' : 'lazy') + '" decoding="async">' : '') +
