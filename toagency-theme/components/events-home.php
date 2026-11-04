@@ -51,7 +51,9 @@ $t = array(
     'price_lab' => array('it'=>"Hostess a partire da",'en'=>"Hostesses from",'fr'=>"Hôtesses à partir de",'es'=>"Azafatas desde"),
     'roles_h'   => array('it'=>"Completa lo staff",'en'=>"Complete your team",'fr'=>"Complétez votre équipe",'es'=>"Completa tu equipo"),
     'roles_p'   => array('it'=>"Oltre alle hostess, tutte le figure del tuo evento in un solo preventivo: un referente, una fattura.",'en'=>"Beyond hostesses, every role your event needs in a single quote: one contact, one invoice.",'fr'=>"Au-delà des hôtesses, tous les profils de votre événement dans un seul devis : un interlocuteur, une facture.",'es'=>"Además de azafatas, todos los perfiles de tu evento en un solo presupuesto: un interlocutor, una factura."),
-    'roles_more'=> array('it'=>"Vedi tutti i servizi per eventi",'en'=>"See all event services",'fr'=>"Voir tous les services événementiels",'es'=>"Ver todos los servicios para eventos"),
+    'svc_open'  => array('it'=>"Mostra tutti i servizi",'en'=>"Show all services",'fr'=>"Voir tous les services",'es'=>"Ver todos los servicios"),
+    'svc_close' => array('it'=>"Mostra meno",'en'=>"Show less",'fr'=>"Voir moins",'es'=>"Ver menos"),
+    'svc_more'  => array('it'=>"Scopri di più",'en'=>"Find out more",'fr'=>"En savoir plus",'es'=>"Descubre más"),
     'how_h'     => array('it'=>"Come funziona",'en'=>"How it works",'fr'=>"Comment ça marche",'es'=>"Cómo funciona"),
     'how' => array(
         array(array('it'=>"Guardi gli esempi",'en'=>"Browse the examples",'fr'=>"Parcourez les exemples",'es'=>"Mira los ejemplos"),
@@ -95,22 +97,13 @@ usort($citta, function($a, $b) use ($pl) { return ($a[0] === $pl ? 0 : 1) - ($b[
 $paesi = array_merge(array($pl => $paesi[$pl]), $paesi);
 
 $CAT = include $tdir . '/components/events-catalog.php';
-$ruoli_home = array('steward','promoter','interprete','security','content_creator','fotografo','videomaker','bartender','cameriere','dj','runner','autista');
-// Ticket #820: descrizioni brevi (una riga) solo per le card della home; il catalogo completo resta per le pagine servizio.
-$ruoli_short = array(
-  'steward' => array('it'=>"Flussi di persone e indicazioni al pubblico.",'en'=>"Crowd flow and guidance for visitors.",'fr'=>"Gestion des flux et orientation du public.",'es'=>"Flujos de personas e indicaciones al público."),
-  'promoter' => array('it'=>"Promozione e sampling a contatto col pubblico.",'en'=>"Promotion and sampling, face to face.",'fr'=>"Promotion et sampling au contact du public.",'es'=>"Promoción y sampling cara al público."),
-  'interprete' => array('it'=>"Per stand internazionali e congressi.",'en'=>"For international stands and conferences.",'fr'=>"Pour stands internationaux et congrès.",'es'=>"Para stands internacionales y congresos."),
-  'security' => array('it'=>"Controllo accessi e accrediti, entro i limiti di legge.",'en'=>"Access and badge checks, within legal limits.",'fr'=>"Contrôle d'accès et badges, dans le cadre légal.",'es'=>"Control de accesos y acreditaciones, dentro de la ley."),
-  'content_creator' => array('it'=>"Video e storie pronti per i tuoi social.",'en'=>"Videos and stories ready for your socials.",'fr'=>"Vidéos et stories prêtes pour vos réseaux.",'es'=>"Vídeos y stories listos para tus redes."),
-  'fotografo' => array('it'=>"Foto dell'evento e ritratti per i social.",'en'=>"Event photos and portraits for social media.",'fr'=>"Photos d'événement et portraits pour les réseaux.",'es'=>"Fotos del evento y retratos para redes."),
-  'videomaker' => array('it'=>"Riprese e montaggio di reel e aftermovie.",'en'=>"Filming and editing of reels and aftermovies.",'fr'=>"Tournage et montage de reels et aftermovies.",'es'=>"Grabación y edición de reels y aftermovies."),
-  'bartender' => array('it'=>"Bar e cocktail per ricevimenti e stand.",'en'=>"Bar and cocktails for receptions and stands.",'fr'=>"Bar et cocktails pour réceptions et stands.",'es'=>"Bar y cócteles para recepciones y stands."),
-  'cameriere' => array('it'=>"Servizio in sala, buffet e catering.",'en'=>"Table, buffet and catering service.",'fr'=>"Service en salle, buffet et traiteur.",'es'=>"Servicio en sala, buffet y catering."),
-  'dj' => array('it'=>"Musica e set per aperitivi e serate.",'en'=>"Music and sets for aperitifs and parties.",'fr'=>"Musique et sets pour apéritifs et soirées.",'es'=>"Música y sets para aperitivos y fiestas."),
-  'runner' => array('it'=>"Commissioni e supporto veloce in produzione.",'en'=>"Errands and quick production support.",'fr'=>"Courses et soutien rapide à la production.",'es'=>"Recados y apoyo rápido a producción."),
-  'autista' => array('it'=>"Transfer per ospiti e staff.",'en'=>"Transfers for guests and staff.",'fr'=>"Transferts pour invités et équipe.",'es'=>"Traslados para invitados y personal."),
-);
+// Ticket #820 (giro 2): «Completa lo staff» = stesse card di «Tutti i servizi» (6 gruppi), le prime 2 visibili e il resto a tendina.
+// La foto del gruppo Accoglienza qui è diversa da quelle del mosaico in alto (niente foto ripetute).
+$home_foto = array('accoglienza' => 'accrediti');
+$ev_pages = get_option('toa_events_pages', array());
+$svc_url = function($k) use ($ev_pages, $lang) {
+    return (isset($ev_pages[$k][$lang]) && get_post_status((int) $ev_pages[$k][$lang]) === 'publish') ? get_permalink((int) $ev_pages[$k][$lang]) : '';
+};
 $hero_foto = array('hostess-fiera','steward','hostess','promoter','interprete','accoglienza');
 
 // pagine del mini sito (bozze/pubblicate) — funzione in events-site-head.php, qui serve prima della testata
@@ -208,17 +201,31 @@ toa_component('events-site-head', array('tev_active' => '', 'tev_cta_url' => '#p
     <div class="tev-wrap">
       <h2 class="tev-h2"><?php echo esc_html($_t($t['roles_h'])); ?></h2>
       <p class="tev-lead"><?php echo esc_html($_t($t['roles_p'])); ?></p>
-      <div class="tev-roles">
-        <?php foreach ($ruoli_home as $rc): if (empty($CAT['roles'][$rc])) continue; $ro = $CAT['roles'][$rc]; ?>
-        <div class="tev-role">
-          <?php if ($ro['p'] && file_exists($sdir . $ro['p'] . '.jpg')): ?>
-          <img class="tev-role__ph" src="<?php echo esc_url(get_template_directory_uri() . '/assets/staff/' . $ro['p'] . '.jpg'); ?>" alt="<?php echo esc_attr($_t($ro['n'])); ?>" loading="lazy" decoding="async" width="600" height="600">
-          <?php else: ?><span class="tev-role__ph tev-role__ph--ic" aria-hidden="true"></span><?php endif; ?>
-          <div class="tev-role__b"><div class="tev-role__n"><?php echo esc_html($_t($ro['n'])); ?></div><div class="tev-role__d"><?php echo esc_html($_t(isset($ruoli_short[$rc]) ? $ruoli_short[$rc] : $ro['d'])); ?></div></div>
-        </div>
-        <?php endforeach; ?>
+      <div class="tev-svcs tev-svcs--home" id="tevSvcs">
+        <?php $i = 0; foreach ($CAT['groups'] as $gk => $g): $u = $svc_url($g['svc']); $ph = isset($home_foto[$gk]) ? $home_foto[$gk] : $g['p']; ?>
+        <article class="tev-svc<?php echo $i >= 2 ? ' tev-svc--extra' : ''; ?>">
+          <?php if ($ph && file_exists($sdir . $ph . '.jpg')): ?>
+          <img class="tev-svc__ph" src="<?php echo esc_url(get_template_directory_uri() . '/assets/staff/' . $ph . '.jpg'); ?>" alt="<?php echo esc_attr($_t($g['t'])); ?>" loading="lazy" decoding="async" width="600" height="338">
+          <?php endif; ?>
+          <div class="tev-svc__b">
+            <h3 class="tev-svc__t"><?php echo esc_html($_t($g['t'])); ?></h3>
+            <p class="tev-svc__d"><?php echo esc_html($_t($g['d'])); ?></p>
+            <ul class="tev-svc__r">
+              <?php foreach ($g['r'] as $rc): if (empty($CAT['roles'][$rc])) continue; ?>
+              <li><?php echo esc_html($_t($CAT['roles'][$rc]['n'])); ?></li>
+              <?php endforeach; ?>
+            </ul>
+            <a class="tev-svc__a" href="<?php echo esc_url($u ? $u : '#preventivo'); ?>"><?php echo esc_html($_t($t['svc_more'])); ?> &rarr;</a>
+          </div>
+        </article>
+        <?php $i++; endforeach; ?>
       </div>
-      <a class="tev-btn tev-btn--line" href="<?php echo esc_url($servizi_url ? $servizi_url : '#preventivo'); ?>"><?php echo esc_html($_t($t['roles_more'])); ?></a>
+      <button type="button" class="tev-btn tev-btn--line tev-svcs__tg" id="tevSvcsTg" hidden aria-expanded="false" aria-controls="tevSvcs" data-open="<?php echo esc_attr($_t($t['svc_open'])); ?>" data-close="<?php echo esc_attr($_t($t['svc_close'])); ?>"><?php echo esc_html($_t($t['svc_open'])); ?></button>
+      <script>
+      (function(){var g=document.getElementById('tevSvcs'),b=document.getElementById('tevSvcsTg');if(!g||!b||!g.querySelector('.tev-svc--extra'))return;
+        g.classList.add('is-collapsed');b.hidden=false;
+        b.addEventListener('click',function(){var c=g.classList.toggle('is-collapsed');b.setAttribute('aria-expanded',c?'false':'true');b.textContent=c?b.getAttribute('data-open'):b.getAttribute('data-close');if(c){var s=document.getElementById('ruoli');if(s)s.scrollIntoView({block:'start'});}});})();
+      </script>
     </div>
   </section>
 
