@@ -96,6 +96,21 @@ $paesi = array_merge(array($pl => $paesi[$pl]), $paesi);
 
 $CAT = include $tdir . '/components/events-catalog.php';
 $ruoli_home = array('steward','promoter','interprete','security','content_creator','fotografo','videomaker','bartender','cameriere','dj','runner','autista');
+// Ticket #820: descrizioni brevi (una riga) solo per le card della home; il catalogo completo resta per le pagine servizio.
+$ruoli_short = array(
+  'steward' => array('it'=>"Flussi di persone e indicazioni al pubblico.",'en'=>"Crowd flow and guidance for visitors.",'fr'=>"Gestion des flux et orientation du public.",'es'=>"Flujos de personas e indicaciones al público."),
+  'promoter' => array('it'=>"Promozione e sampling a contatto col pubblico.",'en'=>"Promotion and sampling, face to face.",'fr'=>"Promotion et sampling au contact du public.",'es'=>"Promoción y sampling cara al público."),
+  'interprete' => array('it'=>"Per stand internazionali e congressi.",'en'=>"For international stands and conferences.",'fr'=>"Pour stands internationaux et congrès.",'es'=>"Para stands internacionales y congresos."),
+  'security' => array('it'=>"Controllo accessi e accrediti, entro i limiti di legge.",'en'=>"Access and badge checks, within legal limits.",'fr'=>"Contrôle d'accès et badges, dans le cadre légal.",'es'=>"Control de accesos y acreditaciones, dentro de la ley."),
+  'content_creator' => array('it'=>"Video e storie pronti per i tuoi social.",'en'=>"Videos and stories ready for your socials.",'fr'=>"Vidéos et stories prêtes pour vos réseaux.",'es'=>"Vídeos y stories listos para tus redes."),
+  'fotografo' => array('it'=>"Foto dell'evento e ritratti per i social.",'en'=>"Event photos and portraits for social media.",'fr'=>"Photos d'événement et portraits pour les réseaux.",'es'=>"Fotos del evento y retratos para redes."),
+  'videomaker' => array('it'=>"Riprese e montaggio di reel e aftermovie.",'en'=>"Filming and editing of reels and aftermovies.",'fr'=>"Tournage et montage de reels et aftermovies.",'es'=>"Grabación y edición de reels y aftermovies."),
+  'bartender' => array('it'=>"Bar e cocktail per ricevimenti e stand.",'en'=>"Bar and cocktails for receptions and stands.",'fr'=>"Bar et cocktails pour réceptions et stands.",'es'=>"Bar y cócteles para recepciones y stands."),
+  'cameriere' => array('it'=>"Servizio in sala, buffet e catering.",'en'=>"Table, buffet and catering service.",'fr'=>"Service en salle, buffet et traiteur.",'es'=>"Servicio en sala, buffet y catering."),
+  'dj' => array('it'=>"Musica e set per aperitivi e serate.",'en'=>"Music and sets for aperitifs and parties.",'fr'=>"Musique et sets pour apéritifs et soirées.",'es'=>"Música y sets para aperitivos y fiestas."),
+  'runner' => array('it'=>"Commissioni e supporto veloce in produzione.",'en'=>"Errands and quick production support.",'fr'=>"Courses et soutien rapide à la production.",'es'=>"Recados y apoyo rápido a producción."),
+  'autista' => array('it'=>"Transfer per ospiti e staff.",'en'=>"Transfers for guests and staff.",'fr'=>"Transferts pour invités et équipe.",'es'=>"Traslados para invitados y personal."),
+);
 $hero_foto = array('hostess-fiera','steward','hostess','promoter','interprete','accoglienza');
 
 // pagine del mini sito (bozze/pubblicate) — funzione in events-site-head.php, qui serve prima della testata
@@ -197,9 +212,9 @@ toa_component('events-site-head', array('tev_active' => '', 'tev_cta_url' => '#p
         <?php foreach ($ruoli_home as $rc): if (empty($CAT['roles'][$rc])) continue; $ro = $CAT['roles'][$rc]; ?>
         <div class="tev-role">
           <?php if ($ro['p'] && file_exists($sdir . $ro['p'] . '.jpg')): ?>
-          <img class="tev-role__ph" src="<?php echo esc_url(get_template_directory_uri() . '/assets/staff/' . $ro['p'] . '.jpg'); ?>" alt="<?php echo esc_attr($_t($ro['n'])); ?>" loading="lazy" decoding="async" width="56" height="56">
+          <img class="tev-role__ph" src="<?php echo esc_url(get_template_directory_uri() . '/assets/staff/' . $ro['p'] . '.jpg'); ?>" alt="<?php echo esc_attr($_t($ro['n'])); ?>" loading="lazy" decoding="async" width="600" height="600">
           <?php else: ?><span class="tev-role__ph tev-role__ph--ic" aria-hidden="true"></span><?php endif; ?>
-          <div><div class="tev-role__n"><?php echo esc_html($_t($ro['n'])); ?></div><div class="tev-role__d"><?php echo esc_html($_t($ro['d'])); ?></div></div>
+          <div class="tev-role__b"><div class="tev-role__n"><?php echo esc_html($_t($ro['n'])); ?></div><div class="tev-role__d"><?php echo esc_html($_t(isset($ruoli_short[$rc]) ? $ruoli_short[$rc] : $ro['d'])); ?></div></div>
         </div>
         <?php endforeach; ?>
       </div>
