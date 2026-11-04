@@ -223,8 +223,10 @@ toa_component('events-site-head', array('tev_active' => '', 'tev_cta_url' => '#p
       <button type="button" class="tev-btn tev-btn--line tev-svcs__tg" id="tevSvcsTg" hidden aria-expanded="false" aria-controls="tevSvcs" data-open="<?php echo esc_attr($_t($t['svc_open'])); ?>" data-close="<?php echo esc_attr($_t($t['svc_close'])); ?>"><?php echo esc_html($_t($t['svc_open'])); ?></button>
       <script>
       (function(){var g=document.getElementById('tevSvcs'),b=document.getElementById('tevSvcsTg');if(!g||!b||!g.querySelector('.tev-svc--extra'))return;
-        g.classList.add('is-collapsed');b.hidden=false;
-        b.addEventListener('click',function(){var c=g.classList.toggle('is-collapsed');b.setAttribute('aria-expanded',c?'false':'true');b.textContent=c?b.getAttribute('data-open'):b.getAttribute('data-close');if(c){var s=document.getElementById('ruoli');if(s)s.scrollIntoView({block:'start'});}});})();
+        var mob=window.matchMedia&&window.matchMedia('(max-width:768px)').matches;
+        function set(c){g.classList.toggle('is-collapsed',c);b.setAttribute('aria-expanded',c?'false':'true');b.textContent=c?b.getAttribute('data-open'):b.getAttribute('data-close');}
+        set(mob);b.hidden=false;
+        b.addEventListener('click',function(){var c=!g.classList.contains('is-collapsed');set(c);if(c){var s=document.getElementById('ruoli');if(s)s.scrollIntoView({block:'start'});}});})();
       </script>
     </div>
   </section>
