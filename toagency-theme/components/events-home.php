@@ -218,6 +218,26 @@ toa_component('events-site-head', array('tev_active' => '', 'tev_cta_url' => '#p
     </div>
   </section>
 
+  <?php // 2026-11-04 (ticket #807, TEMA Ticket 807): creator per eventi e stand → mini sito TOA Creators col pacchetto «Live coverage» gia' scelto.
+  // Solo se la pagina creator della lingua e' pubblicata (opzione toa_creators_site): mai un link verso una bozza.
+  $cr_map = get_option('toa_creators_site', array());
+  $cr_id  = isset($cr_map['home'][$lang]) ? (int) $cr_map['home'][$lang] : 0;
+  if ($cr_id && get_post_status($cr_id) === 'publish'): ?>
+  <section class="tev-cta-band" aria-label="TOA Creators">
+    <div class="tev-wrap tev-cta-band__in" style="padding-bottom:48px">
+      <div>
+        <h2 class="tev-h2" style="color:#FFFFFF;margin:0 0 8px"><?php echo esc_html($_t(array('it'=>'Creator per il tuo evento o stand','en'=>'Creators for your event or booth','fr'=>'Des créateurs pour votre événement ou votre stand','es'=>'Creadores para tu evento o stand'))); ?></h2>
+        <p><?php echo esc_html($_t(array(
+          'it'=>'Un creator sul posto racconta la tua fiera o il tuo evento in tempo reale, sui tuoi canali o sul suo profilo.',
+          'en'=>'A creator on site tells the story of your trade show or event as it happens, on your channels or on their own profile.',
+          'fr'=>'Un créateur sur place raconte votre salon ou votre événement en direct, sur vos réseaux ou sur son propre profil.',
+          'es'=>'Un creador en el lugar cuenta tu feria o tu evento en directo, en tus canales o en su propio perfil.'))); ?></p>
+      </div>
+      <a class="tev-btn tev-btn--lime" href="<?php echo esc_url(add_query_arg('pacchetto', 'coverage', get_permalink($cr_id))); ?>"><?php echo esc_html($_t(array('it'=>'Vedi creator e prezzi','en'=>'See creators and prices','fr'=>'Voir créateurs et prix','es'=>'Ver creadores y precios'))); ?> &rarr;</a>
+    </div>
+  </section>
+  <?php endif; ?>
+
   <div class="tev-dark"><?php toa_component('google-reviews'); ?></div>
   <div class="tev-dark"><?php toa_component('events-coverage', array('lang' => $lang)); ?></div>
 </main>
