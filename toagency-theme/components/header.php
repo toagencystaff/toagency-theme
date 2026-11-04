@@ -19,6 +19,12 @@ $menu_items = array(
     array('slug' => '/student-program/', 'it' => 'Student',    'en' => 'Student',    'fr' => 'Student',    'es' => 'Student'),
     array('slug' => '/contact-us/',      'it' => 'Contatti',   'en' => 'Contact',    'fr' => 'Contact',    'es' => 'Contacto'),
 );
+// 2026-11-04 (ticket #811, TEMA-Events): la voce «Hostess» porta al mini sito TOA Events (/events/ nella lingua), non piu' a /hostess-steward/
+// (la pagina /hostess-steward/ resta online com'e' per Google). Se l'hub non fosse pubblicato resta il link di prima.
+$toa_ev_hub = array('it' => 275542, 'en' => 275543, 'fr' => 275544, 'es' => 275545);
+if (isset($toa_ev_hub[$current_lang]) && get_post_status($toa_ev_hub[$current_lang]) === 'publish') {
+    $menu_items[1] = array('url' => get_permalink($toa_ev_hub[$current_lang]), 'it' => 'Hostess', 'en' => 'Hostess', 'fr' => 'Hôtesses', 'es' => 'Azafatas');
+}
 // 2026-11-04 (ticket #807, TEMA Ticket 807): voce «Creator» dopo Hostess, verso il mini sito /creators/ nella lingua.
 // Compare SOLO quando la pagina e' pubblicata (opzione toa_creators_site): mai una voce verso una bozza o una pagina che non c'e'.
 $toa_cr_map = get_option('toa_creators_site', array());
@@ -117,6 +123,17 @@ a{color:inherit}
         <span></span><span></span><span></span>
     </div>
 </nav>
+<?php /* 2026-11-04 (ticket #807, TEMA Ticket 807): fra 1025 e ~1580 px le voci del menu non stavano in una riga e tagliavano
+         lingue e «Preventivo». Se non ci stanno si passa al menu a tendina, a qualunque larghezza. */ ?>
+<style>.nav.nav-compact .nav-links{display:none!important}.nav.nav-compact .nav-hamburger{display:flex!important}</style>
+<script>
+(function(){
+    var nav = document.getElementById('mainNav'); if (!nav) return;
+    function chk(){ nav.classList.remove('nav-compact'); if (nav.scrollWidth > nav.clientWidth + 1) nav.classList.add('nav-compact'); }
+    chk(); window.addEventListener('resize', chk); window.addEventListener('load', chk);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(chk);
+})();
+</script>
 
 <!-- Mobile Menu Overlay -->
 <div class="mobile-menu" id="mobileMenu">
