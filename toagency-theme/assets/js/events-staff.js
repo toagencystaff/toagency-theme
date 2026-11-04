@@ -11,6 +11,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var LCODE = { italiano: 'IT', inglese: 'EN', francese: 'FR', tedesco: 'DE', spagnolo: 'ES', portoghese: 'PT', russo: 'RU', cinese: 'ZH', arabo: 'AR', olandese: 'NL', giapponese: 'JA', polacco: 'PL', rumeno: 'RO', greco: 'EL', turco: 'TR', ucraino: 'UK' };
   var DEF_ORE = 6;
+  var IT_DA = { 4: 109, 6: 119, 8: 129, 10: 139 }; // prezzo "a partire da" fisso per l'Italia, per durata
 
   var S = { paese: '', citta: '', figura: 'hostess', lingue: null, livello: '', esperienza: 'tutte', ore: DEF_ORE, zona: '', picks: [] };
   var F = null;          // filtri del Paese corrente
@@ -162,10 +163,13 @@
     var cName = (d.citta && d.citta.nome) || nameOf((F.citta_top || []).concat(F.citta_altre || []), S.citta);
     var fName = nameOf(F.figure, d.figura || S.figura);
     var naz = !!d.nazionale || S.citta === '';
-    var pt = priceText(d.prezzo_da, d.valuta);
+    // Italia: "a partire da" fisso per durata (decisione Marco, ticket 820); gli altri Paesi usano il prezzo del CRM
+    var prDa = d.prezzo_da;
+    if (S.paese === 'IT' && IT_DA[S.ore]) prDa = IT_DA[S.ore];
+    var pt = priceText(prDa, d.valuta || '€');
     setAll('aPartire', esc(pt ? tx.a_partire : ''));
     setAll('prezzo', esc(pt || tx.su_richiesta || ''), !pt);
-    setAll('iva', esc(pt && d.iva ? tx.iva : ''));
+    setAll('iva', ''); // niente "+ IVA" accanto al prezzo: l'IVA è spiegata nella nota sotto (solo aziende italiane)
     setAll('ivaNote', esc(pt && d.iva ? (UI.ivaNote || '') : ''));
     setAll('riassunto', esc([tx.unita, fName, cName].filter(Boolean).join(' · ')));
     setAll('cta', esc(tx.cta || ''));
