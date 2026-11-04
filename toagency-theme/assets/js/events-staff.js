@@ -16,6 +16,8 @@
   var F = null;          // filtri del Paese corrente
   var FC = {};           // cache filtri per Paese
   var V = null;          // ultima risposta vetrina
+  var INFRAME = (function () { try { return window.parent !== window; } catch (e) { return true; } })(); // anteprima dentro il CRM (#816)
+  function toCrm(m) { if (!INFRAME) return; try { window.parent.postMessage(m, location.origin); } catch (e) {} }
   var altriOpen = false, altreOpen = false, fOpen = false, ctrl = null, lastMsg = '', lastPl = '', lastLg = '';
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -159,6 +161,7 @@
     var d = V, tx = d.testi || {};
     var cName = (d.citta && d.citta.nome) || nameOf((F.citta_top || []).concat(F.citta_altre || []), S.citta);
     var fName = nameOf(F.figure, d.figura || S.figura);
+    var naz = !!d.nazionale || S.citta === '';
     var pt = priceText(d.prezzo_da, d.valuta);
     setAll('aPartire', esc(pt ? tx.a_partire : ''));
     setAll('prezzo', esc(pt || tx.su_richiesta || ''), !pt);
@@ -168,8 +171,11 @@
     setAll('esempio', esc(tx.esempio || ''));
     var n = (d.profili || []).length;
     setAll('conta', esc(n === 1 ? UI.conta1 : fmt(UI.conta, { n: n })));
-    setAll('titolo', esc(fmt(UI.titolo, { f: fName, c: cName })));
-    var av = $('tevAvviso'); av.textContent = d.avviso || ''; av.hidden = !d.avviso;
+    setAll('titolo', esc(naz ? fmt(UI.titoloNaz, { f: fName, c: cName.charAt(0).toLowerCase() + cName.slice(1) }) : fmt(UI.titolo, { f: fName, c: cName })));
+    var avT = [d.avviso, d.avviso_lingue].filter(Boolean).join(' ');
+    var av = $('tevAvviso'); av.textContent = avT; av.hidden = !avT;
+    var divAt = -1; // divisore prima del primo profilo che non parla tutte le lingue richieste (solo se qualcuno le parla)
+    if (d.n_match_lingue > 0) for (var k = 0; k < n; k++) if (d.profili[k].match_lingue === false) { divAt = k; break; }
 
     var g = $('tevGrid');
     g.classList.remove('is-loading');
@@ -180,7 +186,8 @@
       }).join('');
       var media = (p.media && p.media.length) ? p.media.length : 0;
       var pp = priceText(p.prezzo, d.valuta);
-      return '<button type="button" class="tev-card" data-i="' + i + '" aria-label="' + esc(p.nome + ' #' + p.codice + ' — ' + UI.foto) + '">' +
+      return (i === divAt ? '<div class="tev-div">' + esc(tx.altre_proposte || '') + '</div>' : '') +
+        '<button type="button" class="tev-card" data-i="' + i + '" aria-label="' + esc(p.nome + ' #' + p.codice + ' — ' + UI.foto) + '">' +
         '<span class="tev-card__ph">' + (p.foto ? '<img src="' + esc(p.foto) + '" alt="' + esc(p.nome + ' #' + p.codice) + '" loading="' + (i < 4 ? 'eager' : 'lazy') + '" decoding="async">' : '') +
           (p.livello_label ? '<span class="tev-card__lv">' + esc(p.livello_label) + '</span>' : '') +
           (media > 1 ? '<span class="tev-card__n">' + media + ' · ' + esc(UI.foto) + '</span>' : '') + '</span>' +
@@ -205,6 +212,7 @@
     $('tevLbAsk').textContent = UI.chiedi;
     $('tevLb').hidden = false; document.documentElement.style.overflow = 'hidden';
     showLb(); $('tevLbX').focus();
+    toCrm({ toa: 'vetrina-profilo', id: p.id, codice: p.codice, nome: p.nome });
   }
   function showLb() {
     var it = lb.items[lb.i], st = $('tevLbS'), many = lb.items.length > 1;
@@ -219,6 +227,7 @@
   function stepLb(d) { lb.i = (lb.i + d + lb.items.length) % lb.items.length; showLb(); }
   function closeLb() {
     $('tevLb').hidden = true; $('tevLbS').innerHTML = ''; document.documentElement.style.overflow = '';
+    toCrm({ toa: 'vetrina-profilo', id: 0 });
     if (lb.back && lb.back.focus) { try { lb.back.focus({ preventScroll: true }); } catch (e) {} }
   }
   $('tevLbX').addEventListener('click', closeLb);
@@ -227,6 +236,11 @@
     if ($('tevLb').hidden) return;
     if (e.key === 'Escape') closeLb(); else if (e.key === 'ArrowRight') stepLb(1); else if (e.key === 'ArrowLeft') stepLb(-1);
   });
+  if (INFRAME) { // solo nell'anteprima del CRM: il visitatore non lo vede mai
+    var ed = document.createElement('button'); ed.type = 'button'; ed.className = 'tev-btn tev-lb__ed'; ed.textContent = UI.modificaCrm;
+    ed.addEventListener('click', function () { if (lb.p) toCrm({ toa: 'vetrina-modifica', id: lb.p.id, codice: lb.p.codice }); });
+    $('tevLbAsk').parentNode.insertBefore(ed, $('tevLbAsk'));
+  }
   $('tevLbAsk').addEventListener('click', function () {
     var c = '#' + lb.p.codice; if (S.picks.indexOf(c) < 0) S.picks.push(c);
     lb.back = null; closeLb(); fillForm(); goForm();
@@ -236,10 +250,11 @@
   function fillForm() {
     var ta = $('fe_message'); if (!ta || !F) return;
     if (ta.value.trim() && ta.value !== lastMsg) return; // non sovrascrivere quello che ha scritto il cliente
-    var cName = (V && V.citta && V.citta.nome) || nameOf((F.citta_top || []).concat(F.citta_altre || []), S.citta);
+    var cName = S.citta === '' ? '' : ((V && V.citta && V.citta.nome) || nameOf((F.citta_top || []).concat(F.citta_altre || []), S.citta));
+    var pName = nameOf(F.paesi, S.paese), dove = [cName, S.zona].filter(Boolean).join(' — ');
     var lines = [UI.msg,
       UI.mFig + ': ' + nameOf(F.figure, S.figura),
-      UI.mDove + ': ' + cName + ' (' + nameOf(F.paesi, S.paese) + ')' + (S.zona ? ' — ' + S.zona : ''),
+      UI.mDove + ': ' + (dove ? dove + ' (' + pName + ')' : pName),
       UI.mOre + ': ' + S.ore];
     if (S.lingue && S.lingue.length) lines.push(UI.mLin + ': ' + S.lingue.map(function (l) { return nameOf(F.lingue, l); }).join(', ') + (S.livello && extraLingue().length ? ' (min. ' + S.livello + ')' : ''));
     if (S.esperienza !== 'tutte') lines.push(UI.mEsp + ': ' + nameOf(F.esperienza, S.esperienza));
@@ -247,7 +262,7 @@
     lastMsg = lines.join('\n'); ta.value = lastMsg;
     // campi facoltativi del form (solo se vuoti: non si sovrascrive quello che ha scritto il cliente)
     var pl = $('fe_place');
-    if (pl && (!pl.value.trim() || pl.value === lastPl)) { lastPl = cName + (S.zona ? ' — ' + S.zona : '') + ' (' + nameOf(F.paesi, S.paese) + ')'; pl.value = lastPl; }
+    if (pl && (!pl.value.trim() || pl.value === lastPl)) { lastPl = dove ? dove + ' (' + pName + ')' : ''; pl.value = lastPl; }
     var lg = $('fe_langs');
     if (lg && (!lg.value.trim() || lg.value === lastLg)) { lastLg = (S.lingue || []).map(function (l) { return nameOf(F.lingue, l); }).join(', '); lg.value = lastLg; }
   }
