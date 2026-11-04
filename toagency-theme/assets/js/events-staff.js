@@ -282,7 +282,11 @@
   $('tevFbtnL').textContent = UI.filtri;
   $('tevZona').placeholder = UI.zonaPh;
   $('tevZona').addEventListener('input', function () { S.zona = this.value.trim().slice(0, 80); var ok = $('tevZonaOk'); ok.textContent = UI.zonaOk; ok.hidden = !S.zona; });
-  $('tevFbtn').addEventListener('click', function () { fOpen = !fOpen; if (F) renderFiltri(); });
+  $('tevFbtn').addEventListener('click', function () {
+    fOpen = !fOpen; if (F) renderFiltri();
+    // su telefono il bottone resta fermo sotto la testata: aprendo i filtri si torna al pannello
+    if (fOpen) { try { $('tevFpanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }
+  });
 
   var bar = $('tevBar'), form = $('preventivo');
   if (bar && form && 'IntersectionObserver' in window) {

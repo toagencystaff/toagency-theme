@@ -41,7 +41,7 @@ $t = array(
     // blocchi nuovi (#811)
     'eyebrow' => array('it'=>"Hostess · Steward · Promoter · Staff per eventi",'en'=>"Hostesses · Stewards · Promoters · Event staff",'fr'=>"Hôtesses · Stewards · Promoteurs · Personnel événementiel",'es'=>"Azafatas · Stewards · Promotores · Personal para eventos"),
     'cta_staff' => array('it'=>"Vedi staff e prezzi",'en'=>"See staff & prices",'fr'=>"Voir le personnel et les tarifs",'es'=>"Ver personal y precios"),
-    'cta_sel'   => array('it'=>"Richiedi una selezione",'en'=>"Request a shortlist",'fr'=>"Demander une sélection",'es'=>"Pide una selección"),
+    'cta_sel'   => array('it'=>"Richiedi un preventivo",'en'=>"Get a quote",'fr'=>"Demander un devis",'es'=>"Pide presupuesto"),
     'rating'    => array('it'=>"4,7 su Google · 346 recensioni · dal 2009",'en'=>"4.7 on Google · 346 reviews · since 2009",'fr'=>"4,7 sur Google · 346 avis · depuis 2009",'es'=>"4,7 en Google · 346 reseñas · desde 2009"),
     'where_h'   => array('it'=>"Dove ti serve lo staff?",'en'=>"Where do you need staff?",'fr'=>"Où avez-vous besoin de personnel ?",'es'=>"¿Dónde necesitas personal?"),
     'where_p'   => array('it'=>"Scegli Paese e città: vedi subito le persone e il prezzo di partenza.",'en'=>"Pick a country and a city to see the people and the starting price straight away.",'fr'=>"Choisissez un pays et une ville : vous voyez tout de suite les profils et le prix de départ.",'es'=>"Elige país y ciudad: ves al momento los perfiles y el precio de partida."),

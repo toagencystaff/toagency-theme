@@ -4,6 +4,16 @@
    Caricato SOLO dai template del mini sito. Unita' in px: main.css porta html a 18px.
    ═══════════════════════════════════════════ */
 html.tev-html{background:#FFFFFF!important;font-size:16px}
+/* Scorrimento (Marco 04/11): resta ferma la testata intera (striscia «Torna a TOAgency.it» + menu + lingue + CTA preventivo);
+   su desktop nella pagina Staff resta ferma anche la colonna filtri; scorre solo il contenuto.
+   Su telefono resta ferma solo la testata compatta (la striscia scorre via, il link torna nel menu) + la barra CTA in basso.
+   --tev-ab = barra nera di WordPress per chi è loggato (32px desktop, 46px tablet, sotto 600px scorre via). */
+body.tev-site{--tev-ab:0px;--tev-hd:106px}
+body.tev-site.admin-bar{--tev-ab:32px}
+@media(max-width:782px){body.tev-site.admin-bar{--tev-ab:46px}}
+@media(max-width:600px){body.tev-site.admin-bar{--tev-ab:0px}}
+@media(max-width:768px){body.tev-site{--tev-hd:66px}}
+.tev-site [id]{scroll-margin-top:calc(var(--tev-ab) + var(--tev-hd) + 12px)}
 /* html e body con overflow-x:hidden (CSS globale) rompono position:sticky (testata e colonna filtri): clip non crea un contenitore di scorrimento */
 html.tev-html,html.tev-html body.tev-site{overflow:visible!important;overflow-x:clip!important}
 body.tev-site{background:#FFFFFF!important;background-color:#FFFFFF!important;color:#08080A!important;font-family:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:16px;line-height:1.5}
@@ -19,14 +29,14 @@ body.tev-site{background:#FFFFFF!important;background-color:#FFFFFF!important;co
 .tev-btn:hover{opacity:.88}
 
 /* striscia «Torna a TOAgency.it» */
-.tev-back{background:#08080A;color:#FFFFFF;font-size:13px}
-.tev-back__in{max-width:1280px;margin:0 auto;padding:0 24px;min-height:36px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.tev-back{background:#08080A;color:#FFFFFF;font-size:13px;position:sticky;top:var(--tev-ab);z-index:51}
+.tev-back__in{max-width:1280px;margin:0 auto;padding:0 24px;height:36px;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .tev-site .tev-back a{display:flex;align-items:center;gap:8px;color:#FFFFFF;text-decoration:none;font-weight:600;padding:8px 0}
 .tev-back__toa{background:#C8FF00;color:#08080A;font-family:Anton,Impact,sans-serif;font-size:11px;padding:2px 6px;border-radius:4px;line-height:1.2}
 .tev-back__note{color:#A8A8A2}
-@media(max-width:768px){.tev-back__in{padding:0 16px}.tev-back__note{display:none}}
+@media(max-width:768px){.tev-back{position:static}.tev-back__in{padding:0 16px}.tev-back__note{display:none}}
 /* testata */
-.tev-top{position:sticky;top:0;z-index:50;background:#FFFFFF;border-bottom:1px solid #E6E6E1}
+.tev-top{position:sticky;top:calc(var(--tev-ab) + 36px);z-index:50;background:#FFFFFF;border-bottom:1px solid #E6E6E1}
 .tev-top__in{max-width:1280px;margin:0 auto;padding:12px 24px;display:flex;gap:16px;align-items:center;justify-content:space-between}
 .tev-logo{display:inline-flex;align-items:center;gap:8px;text-decoration:none}
 .tev-logo__toa{background:#C8FF00;color:#08080A;font-family:Anton,Impact,sans-serif;font-size:17px;padding:5px 9px;border-radius:6px;line-height:1}
@@ -44,7 +54,10 @@ body.tev-site{background:#FFFFFF!important;background-color:#FFFFFF!important;co
 .tev-menu a{padding:12px 0;font-size:17px;font-weight:600;text-decoration:none;border-bottom:1px solid #EFEFEA}
 .tev-menu a.on{text-decoration:underline;text-decoration-color:#C8FF00;text-decoration-thickness:4px;text-underline-offset:6px}
 .tev-menu .tev-btn{margin-top:14px;border-bottom:0}
-@media(max-width:1020px){.tev-nav{display:none}.tev-burger{display:inline-flex}.tev-top__cta{display:none}}
+.tev-site .tev-menu a.tev-menu__back{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;color:#5C5C57;border-bottom:0;padding-top:16px}
+.tev-menu{max-height:calc(100vh - var(--tev-ab) - 70px);overflow-y:auto}
+@media(max-width:1020px){.tev-nav{display:none}.tev-burger{display:inline-flex}}
+@media(max-width:768px){.tev-top__cta{display:none}}
 @media(min-width:1021px){.tev-menu{display:none!important}}
 
 /* piede */
@@ -79,7 +92,7 @@ body.tev-site{background:#FFFFFF!important;background-color:#FFFFFF!important;co
 .tev-zona{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;margin-top:12px}
 .tev-zona input{height:42px;border:1px solid #CFCFC8;border-radius:8px;padding:0 10px;font-size:15px;background:#FFFFFF;color:#08080A;font-family:inherit}
 .tev-layout{display:flex;gap:28px;align-items:flex-start;margin-top:20px}
-.tev-aside{flex:0 0 340px;min-width:0;display:flex;flex-direction:column;gap:20px;position:sticky;top:84px;max-height:calc(100vh - 100px);overflow-y:auto;padding-bottom:8px;scrollbar-width:thin}
+.tev-aside{flex:0 0 340px;min-width:0;display:flex;flex-direction:column;gap:20px;position:sticky;top:calc(var(--tev-ab) + var(--tev-hd) + 16px);max-height:calc(100vh - var(--tev-ab) - var(--tev-hd) - 32px);overflow-y:auto;padding-bottom:8px;scrollbar-width:thin}
 .tev-flab{font-size:13px;font-weight:700;margin-bottom:8px}
 .tev-flab small{font-weight:500;color:#5C5C57}
 .tev-price{background:#08080A;color:#FFFFFF;border-radius:16px;padding:20px}
@@ -138,6 +151,7 @@ body.tev-site{background:#FFFFFF!important;background-color:#FFFFFF!important;co
 
 @media(max-width:768px){
   .tev-wrap{padding:0 16px}
+  .tev-top{top:var(--tev-ab)}
   .tev-top__in{padding:10px 16px}
   .tev-logo__ev{font-size:20px}.tev-logo__toa{font-size:15px}
   .tev-staff{padding:18px 0 24px}
@@ -151,7 +165,8 @@ body.tev-site{background:#FFFFFF!important;background-color:#FFFFFF!important;co
   .tev-aside .tev-price{display:none}
   .tev-fpanel{display:none;background:#F5F5F3;border:1px solid #E6E6E1;border-radius:14px;padding:14px;margin-bottom:14px;flex-direction:column;gap:14px}
   .tev-fpanel.is-open{display:flex}
-  .tev-fbtn{display:flex;align-items:center;gap:10px;margin:6px 0 12px}
+  .tev-site .tev-fpanel{scroll-margin-top:calc(var(--tev-ab) + var(--tev-hd) + 72px)}
+  .tev-fbtn{display:flex;align-items:center;gap:10px;margin:0 -16px 6px;padding:8px 16px;position:sticky;top:calc(var(--tev-ab) + var(--tev-hd));z-index:30;background:#FFFFFF}
   .tev-fbtn button{height:44px;padding:0 16px;border-radius:10px;border:1.5px solid #08080A;background:#FFFFFF;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:8px;cursor:pointer}
   .tev-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .tev-card{border-radius:12px}

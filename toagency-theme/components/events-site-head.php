@@ -44,7 +44,7 @@ $tev_menu = array(
     'lavora'  => array('url' => $tev_url('lavora', untrailingslashit(get_option('home')) . $tev_reg[$tev_lang]),
                        'n' => array('it'=>'Lavora con noi','en'=>'Work with us','fr'=>'Travailler avec nous','es'=>'Trabaja con nosotros')),
 );
-$tev_cta_n   = (isset($tev_cta_label) && is_array($tev_cta_label)) ? $tev_cta_label : array('it'=>'Richiedi una selezione','en'=>'Request a shortlist','fr'=>'Demander une sélection','es'=>'Pide una selección');
+$tev_cta_n   = (isset($tev_cta_label) && is_array($tev_cta_label)) ? $tev_cta_label : array('it'=>'Richiedi un preventivo','en'=>'Get a quote','fr'=>'Demander un devis','es'=>'Pide presupuesto');
 $tev_cta_url = isset($tev_cta_url) && $tev_cta_url ? $tev_cta_url : $tev_hub . '#preventivo';
 
 // lingue: solo traduzioni WPML reali della pagina (mai URL costruiti a mano)
@@ -103,5 +103,7 @@ if (function_exists('icl_get_languages')) {
     <a href="<?php echo esc_url($m['url']); ?>"<?php echo $k === $tev_active ? ' class="on"' : ''; ?>><?php echo esc_html($tev_tx($m['n'])); ?></a>
     <?php endforeach; ?>
     <a class="tev-btn tev-btn--lime" href="<?php echo esc_url($tev_cta_url); ?>"><?php echo esc_html($tev_tx($tev_cta_n)); ?></a>
+    <?php /* su telefono la striscia nera scorre via: il ritorno a TOAgency.it resta qui */ ?>
+    <a class="tev-menu__back" href="<?php echo esc_url(apply_filters('wpml_home_url', untrailingslashit(get_option('home')) . '/')); ?>"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><?php echo esc_html($tev_tx(array('it'=>'Torna a TOAgency.it','en'=>'Back to TOAgency.it','fr'=>'Retour sur TOAgency.it','es'=>'Volver a TOAgency.it'))); ?></a>
   </div>
 </header>
