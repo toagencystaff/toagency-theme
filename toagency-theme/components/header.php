@@ -19,6 +19,13 @@ $menu_items = array(
     array('slug' => '/student-program/', 'it' => 'Student',    'en' => 'Student',    'fr' => 'Student',    'es' => 'Student'),
     array('slug' => '/contact-us/',      'it' => 'Contatti',   'en' => 'Contact',    'fr' => 'Contact',    'es' => 'Contacto'),
 );
+// 2026-11-04 (ticket #807, TEMA Ticket 807): voce «Creator» dopo Hostess, verso il mini sito /creators/ nella lingua.
+// Compare SOLO quando la pagina e' pubblicata (opzione toa_creators_site): mai una voce verso una bozza o una pagina che non c'e'.
+$toa_cr_map = get_option('toa_creators_site', array());
+$toa_cr_id  = isset($toa_cr_map['home'][$current_lang]) ? (int) $toa_cr_map['home'][$current_lang] : 0;
+if ($toa_cr_id && get_post_status($toa_cr_id) === 'publish') {
+    array_splice($menu_items, 2, 0, array(array('url' => get_permalink($toa_cr_id), 'it' => 'Creator', 'en' => 'Creators', 'fr' => 'Créateurs', 'es' => 'Creadores')));
+}
 $cta_item = array('slug' => '/form-b2b/', 'it' => 'Preventivo', 'en' => 'Get a Quote', 'fr' => 'Devis', 'es' => 'Presupuesto');
 $mobile_cta = array('it' => 'Richiedi Preventivo', 'en' => 'Request a Quote', 'fr' => 'Demander un Devis', 'es' => 'Solicitar Presupuesto');
 
@@ -69,7 +76,7 @@ a{color:inherit}
     </a>
     <div class="nav-links">
         <?php foreach ($menu_items as $item) : ?>
-        <a href="<?php echo home_url($item['slug']); ?>"><?php echo esc_html($item[$lang]); ?></a>
+        <a href="<?php echo isset($item['url']) ? esc_url($item['url']) : home_url($item['slug']); ?>"><?php echo esc_html($item[$lang]); ?></a>
         <?php endforeach; ?>
         <a href="<?php echo home_url($cta_item['slug']); ?>" class="nav-cta-btn"><?php echo esc_html($cta_item[$lang]); ?></a>
     </div>
@@ -115,7 +122,7 @@ a{color:inherit}
 <div class="mobile-menu" id="mobileMenu">
     <div class="mobile-menu-inner">
         <?php foreach ($menu_items as $item) : ?>
-        <a href="<?php echo home_url($item['slug']); ?>"><?php echo esc_html($item[$lang]); ?></a>
+        <a href="<?php echo isset($item['url']) ? esc_url($item['url']) : home_url($item['slug']); ?>"><?php echo esc_html($item[$lang]); ?></a>
         <?php endforeach; ?>
         <div class="mobile-menu-cta">
             <a href="<?php echo home_url($cta_item['slug']); ?>" class="btn-hero btn-hero-primary"><?php echo esc_html($mobile_cta[$lang]); ?></a>

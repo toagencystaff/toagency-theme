@@ -463,6 +463,16 @@ $hub_sections = array(
                         <option value="creator"><?php echo esc_html($_t(array('it'=>'Creator e influencer','en'=>'Creator & Influencer','fr'=>'Créateurs & Influenceurs','es'=>'Creadores & Influencers'))); ?></option>
                     </select>
                 </div>
+                <?php
+                // 2026-11-04 (ticket #807, TEMA Ticket 807): con Categoria = Creator un link al mini sito /creators/ (pacchetti, prezzi, video).
+                // Solo se la pagina della lingua e' pubblicata (opzione toa_creators_site): mai un link verso una bozza.
+                $tdb_cr_map = get_option('toa_creators_site', array());
+                $tdb_cr_l   = function_exists('toa_current_lang') ? toa_current_lang() : 'it';
+                $tdb_cr_id  = isset($tdb_cr_map['home'][$tdb_cr_l]) ? (int) $tdb_cr_map['home'][$tdb_cr_l] : 0;
+                if ($tdb_cr_id && get_post_status($tdb_cr_id) === 'publish'): ?>
+                <a class="toa-tdb-creators" id="tdbCreatorsLink" href="<?php echo esc_url(get_permalink($tdb_cr_id)); ?>" hidden style="display:none;margin:4px 0 10px;padding:9px 12px;border:1px solid #3d4a12;background:#1a1f08;border-radius:10px;color:#c8ff00;font-size:13px;font-weight:600;text-decoration:none"><?php echo esc_html($_t(array('it'=>'Cerchi creator per il tuo brand? Pacchetti, prezzi e video su TOA Creators →','en'=>'Looking for creators for your brand? Packages, prices and videos on TOA Creators →','fr'=>'Vous cherchez des créateurs pour votre marque ? Formules, prix et vidéos sur TOA Creators →','es'=>'¿Buscas creadores para tu marca? Paquetes, precios y vídeos en TOA Creators →'))); ?></a>
+                <script>(function(){var s=document.getElementById('tdbFilterRuolo'),a=document.getElementById('tdbCreatorsLink');if(!s||!a)return;function f(){if(s.value==='creator'){a.removeAttribute('hidden');a.style.display='block';}else{a.setAttribute('hidden','');a.style.display='none';}}s.addEventListener('change',f);setTimeout(f,0);setTimeout(f,1500);})();</script>
+                <?php endif; ?>
 
                 <!-- 2026-08-11 marco — HOSTESS EVENTI: filtri lingua+automunito, visibili SOLO con Categoria=Hostess
                      (toggleHostessFilters in talent-database-v76.js; l'API accetta questi filtri solo con ruolo=hostess) -->
