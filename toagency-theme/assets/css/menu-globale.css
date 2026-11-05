@@ -31,9 +31,9 @@
 .tmg-on .tmg-btn--lime{background:var(--tmg-l)!important;color:var(--tmg-k)!important;border:1px solid var(--tmg-l)}
 .tmg-on .tmg-btn--lime:hover{background:#B6EA00!important}
 .tmg-on .tmg-btn--line{background:#FFFFFF!important;color:var(--tmg-k)!important;border:1px solid var(--tmg-k)}
-.tmg-on .tmg-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px!important;height:44px;padding:0 11px!important;border:1px solid var(--tmg-k)!important;border-radius:10px!important;background:#FFFFFF!important}
+.tmg-on .tmg-head .tmg-burger,.tmg-on .tmg-bar .tmg-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px!important;height:44px;padding:0 11px!important;border:1px solid var(--tmg-k)!important;border-radius:10px!important;background:#FFFFFF!important}
 .tmg-on .tmg-burger span{display:block;height:2px;background:var(--tmg-k);border-radius:2px}
-.tmg-on .tmg-burger--w{border-color:#FFFFFF!important;background:transparent!important;width:38px!important;height:32px;padding:0 9px!important;border-radius:8px!important;gap:4px}
+.tmg-on .tmg-bar .tmg-burger--w{border-color:#FFFFFF!important;background:transparent!important;width:38px!important;height:32px;padding:0 9px!important;border-radius:8px!important;gap:4px}
 .tmg-on .tmg-burger--w span{background:#FFFFFF}
 /* contenuto delle pagine: il nuovo header e' alto 80px (il vecchio ~88px), niente da spostare */
 
@@ -64,7 +64,7 @@
 /* ── pannello unico (sezioni a schede) ── */
 .tmg-on .tmg-panel{position:fixed;left:0;right:0;top:var(--tmg-top,80px);z-index:10012;background:#FFFFFF;color:var(--tmg-k);border-top:1px solid var(--tmg-line);box-shadow:0 24px 48px rgba(8,8,10,.16);max-height:calc(100vh - var(--tmg-top,80px));overflow-y:auto}
 .tmg-on .tmg-panel[hidden],.tmg-on .tmg-mob[hidden],.tmg-on .tmg-veil[hidden],.tmg-on .tmg-sec[hidden],.tmg-on .tmg-mob__list[hidden]{display:none!important}
-.tmg-on .tmg-panel__main{display:flex;min-height:400px}
+.tmg-on .tmg-panel__main{display:flex;min-height:400px;max-width:1680px;margin:0 auto}
 .tmg-on .tmg-tabs{flex:0 0 300px;background:var(--tmg-g);padding:20px 16px;display:flex;flex-direction:column;gap:6px}
 .tmg-on .tmg-tab{text-align:left!important;border:0!important;border-radius:12px!important;padding:14px 16px!important;background:transparent!important;color:var(--tmg-mut)!important;display:flex!important;flex-direction:column;align-items:flex-start;gap:3px;height:auto!important}
 .tmg-on .tmg-tab b{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:22px;letter-spacing:.5px;color:var(--tmg-k)}
@@ -91,15 +91,16 @@
 .tmg-on .tmg-cross b{font-size:16px;font-weight:700}
 .tmg-on .tmg-cross span{font-size:13px;color:#3A3A35}
 .tmg-on .tmg-cross:hover{background:var(--tmg-g)}
-.tmg-on .tmg-strip{border-top:1px solid var(--tmg-line);padding:12px 32px;display:flex;flex-wrap:wrap;align-items:center;gap:22px;font-size:14px}
+.tmg-on .tmg-strip{border-top:1px solid var(--tmg-line);padding:12px max(32px,calc((100% - 1680px)/2 + 32px));display:flex;flex-wrap:wrap;align-items:center;gap:22px;font-size:14px}
 .tmg-on .tmg-strip a{font-weight:600;color:var(--tmg-k)!important;text-decoration:none!important}
 .tmg-on .tmg-strip a:hover{text-decoration:underline!important}
 .tmg-on .tmg-strip__rev{margin-left:auto;color:var(--tmg-mut)}
-.tmg-on .tmg-x{width:44px!important;height:44px;padding:0!important;border:1px solid var(--tmg-k)!important;border-radius:999px!important;background:#FFFFFF!important;color:var(--tmg-k)!important;font-size:20px!important}
-.tmg-on .tmg-x--w{border-color:#FFFFFF!important;background:transparent!important;color:#FFFFFF!important}
+.tmg-on .tmg-panel .tmg-x{width:44px!important;min-width:44px!important;flex:0 0 44px;height:44px;padding:0!important;border:1px solid var(--tmg-k)!important;border-radius:999px!important;background:#FFFFFF!important;color:var(--tmg-k)!important;font-size:20px!important}
+.tmg-on .tmg-panel .tmg-x--w{border-color:#FFFFFF!important;background:transparent!important;color:#FFFFFF!important}
 
 /* ── pannello scuro «Lavora con noi» ── */
 .tmg-on .tmg-panel--dark{background:var(--tmg-k);color:#FFFFFF;border-top:0;box-shadow:0 24px 48px rgba(8,8,10,.25);padding:26px 32px 22px}
+.tmg-on .tmg-lav__h,.tmg-on .tmg-lav__grid{max-width:1616px;margin-left:auto;margin-right:auto}
 .tmg-on .tmg-lav__h{display:flex;align-items:center;gap:16px;margin-bottom:18px}
 .tmg-on .tmg-lav__t{font-family:Anton,Impact,sans-serif;font-size:30px;letter-spacing:.5px}
 .tmg-on .tmg-lav__s{font-size:14px;color:#D6D6D0}
@@ -158,10 +159,10 @@
 
 /* ── stretto: menu a tendina (lo attiva anche il JS se le voci non stanno in una riga) ── */
 .tmg-on.tmg-compact .tmg-nav,.tmg-on.tmg-compact .tmg-head__r .tmg-voce--lav,.tmg-on.tmg-compact .tmg-head__r .tmg-langs{display:none!important}
-.tmg-on.tmg-compact .tmg-burger{display:flex!important}
+.tmg-on.tmg-compact .tmg-head .tmg-burger,.tmg-on.tmg-compact .tmg-bar .tmg-burger{display:flex!important}
 @media (max-width:1024px){
   .tmg-on .tmg-nav,.tmg-on .tmg-head__r .tmg-voce--lav,.tmg-on .tmg-head__r .tmg-langs{display:none!important}
-  .tmg-on .tmg-burger{display:flex!important}
+  .tmg-on .tmg-head .tmg-burger,.tmg-on .tmg-bar .tmg-burger{display:flex!important}
   .tmg-on .tmg-panel{display:none!important}
   .tmg-on .tmg-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
   .tmg-on .tmg-foot__grid{grid-template-columns:repeat(3,minmax(0,1fr))}

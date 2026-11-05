@@ -91,7 +91,7 @@ function toa_mg_url($path, $lang = null, $alt = '', $lang_param = false) {
     $lang = $lang ? $lang : toa_mg_lang();
     $m = &$GLOBALS['toa_mg_url_map'];
     if (!isset($m[$lang])) {
-        $c = get_transient('toa_mg_url_v1_' . $lang);
+        $c = get_transient('toa_mg_url_v2_' . $lang);
         $m[$lang] = is_array($c) ? $c : array();
         $m[$lang]['__dirty'] = false;
     }
@@ -107,7 +107,7 @@ function toa_mg_url_save() {
     foreach ($GLOBALS['toa_mg_url_map'] as $lang => $m) {
         if (empty($m['__dirty'])) continue;
         unset($m['__dirty']);
-        set_transient('toa_mg_url_v1_' . $lang, $m, 6 * HOUR_IN_SECONDS);
+        set_transient('toa_mg_url_v2_' . $lang, $m, 6 * HOUR_IN_SECONDS);
     }
 }
 function toa_mg_page_it($base) {
@@ -133,7 +133,7 @@ function toa_mg_url_calc($path, $lang, $alt, $lang_param) {
     if (($h = strpos($path, '#')) !== false) { $frag = substr($path, $h); $path = substr($path, 0, $h); }
     if (($q = strpos($path, '?')) !== false) { $qs = substr($path, $q); $path = substr($path, 0, $q); }
     if (strpos($path, '/crm_toagency/') === 0) {   // pagine del CRM: la lingua va nel parametro
-        return untrailingslashit(get_option('home')) . $path . '?lang=' . $lang;
+        return 'https://toagency.it' . $path . '?lang=' . $lang;   // NON get_option('home'): WPML ci aggiunge /en/ e il CRM va in 404
     }
     $id = toa_mg_page_it($path);
     if (!$id) return '';
