@@ -18,7 +18,8 @@
  * Prezzi «da»: MAI scritti qui. Li legge assets/js/menu-globale.js dagli endpoint CRM (come la home di /events/).
  */
 if (!defined('ABSPATH')) exit;
-if (!defined('TOA_MENU_GLOBALE_PER_TUTTI')) define('TOA_MENU_GLOBALE_PER_TUTTI', false);
+// 05/11/2026 15:17 ok di Marco («kk» dopo l'anteprima): acceso per tutti. Per tornare al menu di prima: false + deploy di questo file.
+if (!defined('TOA_MENU_GLOBALE_PER_TUTTI')) define('TOA_MENU_GLOBALE_PER_TUTTI', true);
 
 /* ───────────── interruttore anteprima ───────────── */
 function toa_mg_param() {
