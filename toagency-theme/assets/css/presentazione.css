@@ -210,3 +210,5 @@ html.pr-html,html.pr-html body{background:#f5f5f3!important;color:#08080a!import
 .bw .b-sephora{font-size:1.4em;font-weight:900;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:-.5px}
 .bw .b-villacrespi{font-size:1.3em;font-weight:600;font-family:'Playfair Display',Georgia,serif;font-style:italic;letter-spacing:1px}
 .bw .b-laromana small{font-size:.55em;letter-spacing:3px;opacity:.85;margin-left:.35em}
+/* il tema aggiunge 80px sotto ogni pagina (barra CTA fissa): qui non c e, quindi niente striscia chiara sotto il footer */
+html.pr-html body.pr-page{padding-bottom:0!important}
