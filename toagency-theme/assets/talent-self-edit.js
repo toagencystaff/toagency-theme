@@ -407,6 +407,7 @@
                 renderStatusCard(d);
                 var st = $('tse-status'); if (st) st.style.display = 'none';
                 var card = $('tse-statuscard'); if (card) card.style.display = 'block';
+                reloadVideoElenco(); // ticket #836: i box video sono visibili già con la card, l'elenco va caricato subito (loadData lo fa solo ad aprire il modulo)
             })
             .catch(function () { loadData(); });
     }
