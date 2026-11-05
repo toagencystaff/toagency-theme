@@ -511,7 +511,7 @@
   "s3_t": "Confirmation",
   "s3_d": "Contracts with you and with the talent",
   "s4_t": "On Site",
-  "s4_d": "Briefed people · We stay your contact",
+  "s4_d": "Briefed team · We stay your point of contact",
   "s5_t": "One Invoice",
   "s5_d": "Contracts and fees handled by us",
   "cl_or": "Or choose yourself:",
@@ -530,7 +530,7 @@
    "Trade Fair Organisers"
   ],
   "ag_pts": [
-   "Link with your prices",
+   "Shareable link with your prices",
    "No talent contact details",
    "Dedicated quotation",
    "One single contact"
@@ -590,7 +590,7 @@
   "pz3_t": "Duration",
   "pz3_d": "Hours, days, campaign",
   "pz4_t": "Level",
-  "pz4_d": "Higher budget, higher profiles",
+  "pz4_d": "Bigger budget, top profiles",
   "pz_cta": "Events · Starting prices by city",
   "ct_h2": "Tell us about your project.",
   "ct_co": "Companies",
@@ -816,7 +816,7 @@
    "Chosen Profile"
   ],
   "pp_bar_t": "More Budget, More Choice.",
-  "pp_bar_d": "Different budget? Tell us the figure, we find the solution.",
+  "pp_bar_d": "Different budget? Tell us the number and we will make it work.",
   "pp_note": "Starting prices · VAT excluded, Italian VAT-liable clients only · Travel included for event staff · Free quote",
   "p4_eye": "Partners & Contact",
   "p4_h2": "We work with you, anywhere."
@@ -898,7 +898,7 @@
    "Influenceurs",
    "Live Coverage",
    "Campagnes Multi-Créateurs",
-   "Gestion Social & Ads"
+   "Gestion Réseaux Sociaux & Ads"
   ],
   "a3_l": "TOA Creators : packs et profils",
   "a4_t": "Photo, vidéo et équipe créative",
@@ -941,15 +941,15 @@
    "Organisateurs de Salons"
   ],
   "ag_pts": [
-   "Lien avec vos tarifs",
+   "Lien partageable avec vos tarifs",
    "Aucun contact des talents",
-   "Cotation dédiée",
+   "Devis dédié",
    "Un interlocuteur unique"
   ],
   "ag_pts_pdf": [
    "Sélection à vos tarifs",
    "Aucun contact des talents",
-   "Cotation dédiée",
+   "Devis dédié",
    "Interlocuteur unique"
   ],
   "dv_eye": "Où nous travaillons",
@@ -1001,7 +1001,7 @@
   "pz3_t": "Durée",
   "pz3_d": "Heures, jours, campagne",
   "pz4_t": "Niveau",
-  "pz4_d": "Plus de budget, profils plus élevés",
+  "pz4_d": "Plus de budget, profils plus recherchés",
   "pz_cta": "Événements · Tarifs de départ par ville",
   "ct_h2": "Parlez-nous de votre projet.",
   "ct_co": "Entreprises",
@@ -1131,7 +1131,7 @@
   "sv_b2_d": "Hôtesse, créateur et photographe en une seule commande",
   "sv_b3_t": "Talents Locaux",
   "sv_b3_d": "Dans toutes les villes d'Europe et au-delà",
-  "pp_h2": "Tarifs de Départ 2026",
+  "pp_h2": "Tarifs 2026 « À Partir De »",
   "pp_dep": "Le Tarif Dépend De",
   "pp_fact": [
    "Profil",
@@ -1352,15 +1352,15 @@
    "Organizadores de Ferias"
   ],
   "ag_pts": [
-   "Enlace con tus precios",
+   "Enlace compartible con tus precios",
    "Sin datos de contacto de los talentos",
-   "Cotización dedicada",
+   "Presupuesto dedicado",
    "Un único interlocutor"
   ],
   "ag_pts_pdf": [
    "Selección con tus precios",
    "Sin datos de contacto de los talentos",
-   "Cotización dedicada",
+   "Presupuesto dedicado",
    "Un único interlocutor"
   ],
   "dv_eye": "Dónde trabajamos",
@@ -1412,7 +1412,7 @@
   "pz3_t": "Duración",
   "pz3_d": "Horas, días, campaña",
   "pz4_t": "Nivel",
-  "pz4_d": "Más presupuesto, perfiles superiores",
+  "pz4_d": "Más presupuesto, perfiles top",
   "pz_cta": "Eventos · Precios de partida por ciudad",
   "ct_h2": "Cuéntanos tu proyecto.",
   "ct_co": "Empresas",
@@ -1540,9 +1540,9 @@
   "sv_b1_d": "De una sola azafata a un equipo completo",
   "sv_b2_t": "Varias Áreas a la Vez",
   "sv_b2_d": "Azafata, creator y fotógrafo en un solo pedido",
-  "sv_b3_t": "Gente del Lugar",
+  "sv_b3_t": "Talento Local",
   "sv_b3_d": "En cada ciudad de Europa y más allá",
-  "pp_h2": "Precios de Partida 2026",
+  "pp_h2": "Precios Desde 2026",
   "pp_dep": "El Precio Depende De",
   "pp_fact": [
    "Perfil",
@@ -1627,7 +1627,7 @@
    "Vídeo o Reels",
    "Postproducción",
    "Localización",
-   "Volúmenes Escalonados"
+   "Descuentos por Volumen"
   ],
   "pp_m_t": "Modelos, Actores y Figurantes",
   "pp_m_dep": [
@@ -1639,7 +1639,7 @@
   ],
   "pp_bar_t": "Más Presupuesto, Más Opciones.",
   "pp_bar_d": "¿Otro presupuesto? Dinos la cifra y encontramos la solución.",
-  "pp_note": "Precios de partida · IVA no incluido, solo para clientes italianos sujetos · Viaje incluido para el personal de eventos · Presupuesto gratuito",
+  "pp_note": "Precios «desde» · IVA no incluido, solo para clientes italianos sujetos · Viaje incluido para el personal de eventos · Presupuesto gratuito",
   "p4_eye": "Socios y Contacto",
   "p4_h2": "Trabajamos contigo, estés donde estés."
  }
