@@ -1,0 +1,212 @@
+/* Presentazione TOAgency (ticket #824) - pagina web. Tutto sotto .pr per non toccare il resto del sito. */
+html.pr-html,html.pr-html body{background:#f5f5f3!important;color:#08080a!important}
+.pr,.pr *{box-sizing:border-box}
+.pr{font-family:'Instrument Sans',-apple-system,'Segoe UI',sans-serif;color:#08080a;background:#f5f5f3;line-height:1.4;-webkit-font-smoothing:antialiased}
+.pr h1,.pr h2,.pr h3,.pr p,.pr ul,.pr dl,.pr dd{margin:0;padding:0}
+.pr ul{list-style:none}
+.pr a{color:#08080a;text-decoration:underline}
+.pr a:hover{color:#3a3a3a}
+.pr-wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+.pr-eye{font-size:12px;letter-spacing:4px;text-transform:uppercase;font-weight:600;margin:0 0 16px}
+.pr-eye--lime{color:#c8ff00}
+.pr-h2{font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:48px;line-height:1.08;margin:0 0 20px;text-wrap:balance}
+.pr-h2--mb{margin-bottom:48px}
+.pr-h2--xl{font-size:56px}
+.pr-h1{font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:76px;line-height:1.02;margin:0 0 28px;max-width:960px;text-wrap:balance}
+/* pillole */
+.pr-pills{display:flex;flex-wrap:wrap;gap:8px}
+.pr-pills li{font-size:14px;border:1px solid #c9c9c4;border-radius:999px;padding:6px 14px;color:#222;white-space:nowrap}
+.pr-pills--roles{gap:10px;margin:0 0 22px}
+.pr-pills--roles li{font-size:20px;font-weight:600;color:#f5f5f3;border:1.5px solid #5a5a5a;padding:10px 20px}
+.pr-pills--roles li:first-child{background:#c8ff00;border-color:#c8ff00;color:#08080a}
+.pr-pills--dark{margin-top:8px}
+.pr-pills--dark li{color:#f5f5f3;border-color:#5a5a5a;font-size:16px;padding:8px 18px}
+.pr-pills--lead li{font-size:16px;font-weight:600;padding:8px 18px;background:#fff}
+.pr-pts{display:flex;flex-wrap:wrap;gap:8px 28px;margin:0 0 44px}
+.pr-pts li{white-space:nowrap;font-size:16px;font-weight:600;letter-spacing:1px;color:#cfcfca;display:flex;align-items:center;gap:10px}
+.pr-pts li::before{content:"";width:8px;height:8px;background:#c8ff00;display:inline-block}
+/* bottoni */
+.pr-btns{display:flex;flex-wrap:wrap;gap:14px}
+.pr-btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none!important}
+.pr-btn--lime{background:#c8ff00;color:#08080a!important}
+.pr-btn--lime:hover{background:#b8ec00}
+.pr-btn--line{border:1.5px solid #f5f5f3;color:#f5f5f3!important}
+.pr-btn--line:hover{background:#f5f5f3;color:#08080a!important}
+.pr-btn--dark{background:#08080a;color:#f5f5f3!important;margin-top:12px}
+.pr-btn--dark:hover{background:#222}
+/* header */
+.pr-top{background:#08080a;color:#f5f5f3;border-bottom:1px solid #222}
+.pr-top__in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;min-height:72px}
+.pr .pr-logo{display:flex;align-items:baseline;gap:14px;color:#f5f5f3;text-decoration:none}
+.pr-logo__n{font-family:'Playfair Display',Georgia,serif;font-size:26px;font-weight:600;letter-spacing:1px}
+.pr-logo__t{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#b5b5b0}
+.pr-langs{display:flex;gap:6px;font-size:13px;font-weight:600}
+.pr .pr-langs a,.pr .pr-langs span{color:#f5f5f3;padding:6px 10px;text-decoration:none}
+.pr .pr-langs span.on{background:#f5f5f3;color:#08080a}
+/* hero */
+.pr-hero{background:#08080a;color:#f5f5f3;padding:112px 0 120px}
+/* stats */
+.pr-stats{border-bottom:1px solid #dcdcd8;background:#fff}
+.pr-stats__in{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.pr-stats__in>div{padding:36px 24px;border-right:1px solid #e6e6e2}
+.pr-stats__in>div:first-child{padding-left:0}
+.pr-stats__in>div:last-child{border-right:0}
+.pr-stats b{display:block;font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:52px;line-height:1}
+.pr-stats span{display:block;font-size:15px;color:#555;margin-top:8px}
+/* sezioni */
+.pr-sec{padding:104px 0 96px}
+.pr-sec--white{background:#fff;border-top:1px solid #dcdcd8;border-bottom:1px solid #dcdcd8;padding:96px 0}
+.pr-sec--dark{background:#08080a;color:#f5f5f3;padding:104px 0}
+.pr-two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:56px;align-items:start}
+.pr-two--end{align-items:end;gap:48px}
+/* card aree */
+.pr-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));gap:24px}
+.pr-card{background:#fff;border:1px solid #dcdcd8;padding:32px;display:flex;flex-direction:column;gap:16px}
+.pr-num{font-size:13px;font-weight:700;letter-spacing:2px;color:#08080a;background:#c8ff00;align-self:flex-start;padding:4px 10px;display:inline-block}
+.pr-card h3{font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:30px;line-height:1.15}
+.pr-card p{font-size:16px;line-height:1.6;color:#444}
+.pr .pr-more{margin-top:auto;font-size:15px;font-weight:600;text-decoration:none;border-bottom:2px solid #08080a;align-self:flex-start;padding-bottom:2px}
+/* passi */
+.pr-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;margin-top:48px}
+.pr-step{display:flex;flex-direction:column;gap:10px;border-top:2px solid #08080a;padding-top:20px}
+.pr-step b{font-size:13px;letter-spacing:2px;font-weight:700}
+.pr-step h3{font-size:21px;font-weight:600}
+.pr-step p{font-size:16px;line-height:1.55;color:#444}
+.pr-or{font-size:16px;color:#444;margin-top:48px!important}
+.pr-or a{font-weight:600}
+/* agenzie */
+.pr-list{border-top:1px solid #333}
+.pr-list li{padding:20px 0;border-bottom:1px solid #333;font-size:18px}
+/* citta */
+.pr-pills--cities{gap:10px;align-self:end}
+.pr-pills--cities li{font-size:16px;font-weight:500;padding:9px 16px;background:#fff;color:#08080a}
+.pr-pills--cities li.on{background:#08080a;color:#f5f5f3;border-color:#08080a;font-weight:600;display:inline-flex;align-items:center;gap:10px}
+.pr-pills--cities li.on small{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#c8ff00}
+.pr-pills--cities li.more{border:0;background:none;color:#555;padding:9px 6px}
+.pr-pills--lead{margin-top:8px}
+/* brand */
+.pr-bw{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid #dcdcd8;border-left:1px solid #dcdcd8}
+.pr-bw__cell{min-height:112px;display:flex;align-items:center;justify-content:center;border-right:1px solid #dcdcd8;border-bottom:1px solid #dcdcd8;font-size:25px;line-height:1.02;color:#08080a;text-align:center;overflow:hidden;padding:8px 12px}
+.pr-bw__cell>span{transition:opacity .22s ease,transform .22s ease;opacity:1;transform:none}
+.pr-bw__cell>span.bw-off{opacity:0;transform:translateY(10px)}
+@media (prefers-reduced-motion:reduce){.pr-bw__cell>span{transition:none}}
+/* prezzi */
+.pr-pzhead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:48px}
+.pr-pzhead .pr-h2{margin:0}
+.pr-pzsub{font-size:18px;color:#b5b5b0}
+.pr-pz{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid #333;border-left:1px solid #333}
+.pr-pz>div{border-right:1px solid #333;border-bottom:1px solid #333;padding:28px 24px 30px;display:flex;flex-direction:column;gap:10px}
+.pr-pz b{font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:38px;line-height:1.05}
+.pr-pz>div>span:last-child{font-size:15px;color:#b5b5b0}
+.pr .pr-pzcta{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:24px;padding:22px 28px;background:#c8ff00;color:#08080a;text-decoration:none;font-size:18px;font-weight:700;letter-spacing:.5px}
+.pr .pr-pzcta:hover{background:#b8ec00;color:#08080a}
+.pr-pzcta span:last-child{font-size:26px}
+/* contatti */
+.pr-contact{background:#c8ff00;padding:104px 0 96px}
+.pr-dl{display:grid;grid-template-columns:auto 1fr;gap:12px 24px;font-size:17px}
+.pr-dl dt{font-weight:700}
+.pr-dl a{text-decoration:underline}
+.pr-foot{background:#08080a;color:#b5b5b0;padding:32px 0;font-size:14px}
+.pr-foot__in{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+/* mobile */
+@media (max-width:768px){
+  .pr-wrap{padding:0 20px}
+  .pr-h2{font-size:34px}.pr-h2--xl{font-size:40px}
+  .pr-h1{font-size:40px}
+  .pr-hero{padding:64px 0 72px}
+  .pr-sec,.pr-sec--white,.pr-sec--dark,.pr-contact{padding:64px 0}
+  .pr-pills--roles li{font-size:16px;padding:8px 14px}
+  .pr-pts li{white-space:normal}
+  .pr-btn{width:100%}
+  .pr-card{padding:24px}
+  .pr-card h3{font-size:25px}
+  .pr-stats__in>div{border-right:0;padding:24px 12px 24px 0}
+  .pr-bw{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pr-bw__cell{min-height:84px;font-size:17px}
+  .pr-pz{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pr-pz b{font-size:28px}
+  .pr-pz>div{padding:20px 16px}
+  .pr-pills--cities li{font-size:14px;padding:7px 13px}
+  .pr-dl{grid-template-columns:1fr;gap:2px}
+  .pr-dl dd{margin-bottom:12px}
+  .pr-pzcta{font-size:16px;padding:18px 20px}
+}
+
+/* font e dimensioni dei brand: copia della griglia approvata (ogni nome ricorda il logo originale) */
+.bw .b-burberry{font-size:1.4em;font-weight:700;font-family:'Playfair Display',Georgia,serif;letter-spacing:5px;text-transform:uppercase}
+.bw .b-laromana{font-size:1.5em;font-weight:600;font-family:'Playfair Display',Georgia,serif;font-style:italic;letter-spacing:1px}
+.bw .b-crazypizza{font-size:1.5em;font-weight:400;font-family:'Anton',Impact,sans-serif;text-transform:uppercase;letter-spacing:1px}
+.bw .b-imperial{font-size:1.2em;font-weight:300;font-family:'Montserrat',sans-serif;letter-spacing:7px;text-transform:uppercase}
+.bw .b-patagonia{font-size:1.35em;font-weight:600;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1px}
+.bw .b-realmadrid{font-size:1.3em;font-weight:600;font-family:'EB Garamond',Georgia,serif;text-transform:uppercase;letter-spacing:3px}
+.bw .b-manutd{font-size:1.25em;font-weight:700;font-family:'Playfair Display',Georgia,serif;text-transform:uppercase;letter-spacing:2px}
+.bw .b-roma{font-size:1.4em;font-weight:800;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:0}
+.bw .b-novotel{font-size:1.2em;font-weight:600;font-family:'Montserrat',sans-serif;letter-spacing:2px;text-transform:uppercase}
+.bw .b-juventus{font-size:1.45em;font-weight:900;font-family:'Montserrat',sans-serif;letter-spacing:-.5px;text-transform:uppercase}
+.bw .b-ferrari{font-size:1.2em;font-weight:700;font-family:'EB Garamond',Georgia,serif;letter-spacing:4px;text-transform:uppercase}
+.bw .b-bmw{font-size:1.4em;font-weight:700;font-family:'Helvetica',Arial,sans-serif}
+.bw .b-samsung{font-size:1.1em;font-weight:600;font-family:'Instrument Sans','Helvetica Neue',sans-serif}
+.bw .b-redbull{font-size:1.35em;font-weight:900;font-family:'Montserrat',sans-serif;font-style:italic;text-transform:uppercase}
+.bw .b-mercedes{font-size:1.1em;font-weight:400;font-family:'Times New Roman',Georgia,serif;letter-spacing:3px}
+.bw .b-vogue{font-size:1.3em;font-weight:600;font-family:'Playfair Display',Georgia,serif;letter-spacing:4px;text-transform:uppercase}
+.bw .b-kappa{font-size:1.4em;font-weight:900;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:-.5px}
+.bw .b-sky{font-size:1.5em;font-weight:800;font-family:'Montserrat',sans-serif;letter-spacing:1px;text-transform:uppercase}
+.bw .b-maserati{font-size:1.2em;font-weight:600;font-family:'EB Garamond',Georgia,serif;letter-spacing:4px;text-transform:uppercase}
+.bw .b-fiat{font-size:1.4em;font-weight:800;font-family:'Helvetica Neue',Arial,sans-serif;font-style:italic}
+.bw .b-vodafone{font-size:1em;font-weight:600;font-family:'Helvetica Neue',Arial,sans-serif}
+.bw .b-audi{font-size:1.35em;font-weight:600;font-family:'Montserrat',sans-serif;letter-spacing:2px;text-transform:uppercase}
+.bw .b-jeep{font-size:1.4em;font-weight:700;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1px}
+.bw .b-michelin{font-size:1.2em;font-weight:900;font-family:'Helvetica',Arial,sans-serif;font-style:italic}
+.bw .b-kinder{font-size:1.1em;font-weight:800;font-family:'Gothic','Arial Black',sans-serif}
+.bw .b-loreal{font-size:1.15em;font-weight:300;font-family:'Montserrat',sans-serif;letter-spacing:4px;text-transform:uppercase}
+.bw .b-gq{font-size:1.5em;font-weight:900;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:-1px}
+.bw .b-alfaromeo{font-size:1.2em;font-weight:600;font-family:'EB Garamond',Georgia,serif;letter-spacing:2px;text-transform:uppercase}
+.bw .b-eataly{font-size:1.25em;font-weight:600;font-family:'EB Garamond',Georgia,serif;letter-spacing:3px;text-transform:uppercase}
+.bw .b-kway{font-size:1.2em;font-weight:700;font-family:'Gotham','Montserrat',sans-serif}
+.bw .b-formula1{font-size:1.35em;font-weight:700;font-family:'Oswald',sans-serif;font-style:italic;text-transform:uppercase;letter-spacing:1px}
+.bw .b-motogp{font-size:1.35em;font-weight:700;font-family:'Oswald',sans-serif;font-style:italic;text-transform:uppercase}
+.bw .b-luxottica{font-size:1.15em;font-weight:500;font-family:'Montserrat',sans-serif;letter-spacing:3px;text-transform:uppercase}
+.bw .b-sanremo{font-size:1.1em;font-weight:700;font-family:'Gotham','Montserrat',sans-serif}
+.bw .b-missuniverse{font-size:1em;font-weight:600;font-family:'Gotham','Montserrat',sans-serif;letter-spacing:1px}
+.bw .b-edison{font-size:1.2em;font-weight:600;font-family:'Montserrat',sans-serif;letter-spacing:1px;text-transform:uppercase}
+.bw .b-qcterme{font-size:1.15em;font-weight:400;font-family:'EB Garamond',Georgia,serif;letter-spacing:3px;text-transform:uppercase}
+.bw .b-police{font-size:1.15em;font-weight:600;font-family:'Montserrat',sans-serif;letter-spacing:4px;text-transform:uppercase}
+.bw .b-cisalfa{font-size:1.4em;font-weight:800;font-family:'Montserrat',sans-serif;font-style:italic;text-transform:uppercase;letter-spacing:-.5px}
+.bw .b-joma{font-size:1.4em;font-weight:700;font-family:'Oswald',sans-serif;font-style:italic;text-transform:uppercase}
+.bw .b-arena{font-size:1.4em;font-weight:700;font-family:'Oswald',sans-serif;font-style:italic;text-transform:uppercase;letter-spacing:1px}
+.bw .b-barcelona{font-size:1.35em;font-weight:700;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:1px}
+.bw .b-valencia{font-size:1.3em;font-weight:700;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:.5px}
+.bw .b-napoli{font-size:1.35em;font-weight:600;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.5px}
+.bw .b-dortmund{font-size:1.35em;font-weight:700;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1px}
+.bw .b-cooltra{font-size:1.3em;font-weight:700;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:-.5px}
+.bw .b-gritti{font-size:1.15em;font-weight:400;font-family:'EB Garamond',Georgia,serif;letter-spacing:3px;text-transform:uppercase}
+.bw .b-inter{font-size:1.1em;font-weight:700;font-family:'Helvetica Neue',Arial,sans-serif}
+.bw .b-wolt{font-size:1.3em;font-weight:700;font-family:'Helvetica Neue',Arial,sans-serif}
+.bw .b-axa{font-size:1.35em;font-weight:700;font-family:'Montserrat',sans-serif;letter-spacing:1px;text-transform:uppercase}
+.bw .b-seriea{font-size:1.1em;font-weight:700;font-family:'Gotham','Montserrat',sans-serif}
+.bw .b-loacker{font-size:1.3em;font-weight:700;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:-.5px}
+.bw .b-mediaset{font-size:1.2em;font-weight:700;font-family:'Montserrat',sans-serif;font-style:italic;text-transform:uppercase}
+.bw .b-pfw{font-size:1.1em;font-weight:600;font-family:'Gotham','Montserrat',sans-serif}
+.bw .b-salone{font-size:1.1em;font-weight:600;font-family:'Playfair Display',Georgia,serif;letter-spacing:2px;text-transform:uppercase}
+.bw .b-rinascente{font-size:1.15em;font-weight:600;font-family:'Playfair Display',Georgia,serif;letter-spacing:4px;text-transform:uppercase}
+.bw .b-expo{font-size:1.1em;font-weight:700;font-family:'Gotham Rounded','Montserrat',sans-serif}
+.bw .b-fieramilano{font-size:1.1em;font-weight:600;font-family:'Helvetica Neue',Arial,sans-serif}
+.bw .b-rimini{font-size:1.1em;font-weight:600;font-family:'Helvetica Neue',Arial,sans-serif}
+.bw .b-bologna{font-size:1.1em;font-weight:600;font-family:'Helvetica',Arial,sans-serif}
+.bw .b-teatro{font-size:1.15em;font-weight:500;font-family:'EB Garamond',Georgia,serif;font-style:italic;letter-spacing:2px;text-transform:uppercase}
+.bw .b-virgin{font-size:1.1em;font-weight:600;font-family:'Helvetica Neue',Arial,sans-serif}
+.bw .b-wrangler{font-size:1.1em;font-weight:700;font-family:'ITC Souvenir',Georgia,serif}
+.bw .b-fiorucci{font-size:1.25em;font-weight:600;font-family:'Playfair Display',Georgia,serif;font-style:italic;letter-spacing:1px}
+.bw .b-torino{font-size:1.1em;font-weight:700;font-family:'Times New Roman',Georgia,serif}
+.bw .b-algida{font-size:1.2em;font-weight:800;font-family:'Helvetica',Arial,sans-serif}
+.bw .b-mizuno{font-size:1.25em;font-weight:700;font-family:'Montserrat',sans-serif;font-style:italic;text-transform:uppercase}
+.bw .b-kingsleague{font-size:1.35em;font-weight:400;font-family:'Anton',Impact,sans-serif;text-transform:uppercase;letter-spacing:1px}
+.bw .b-aia{font-size:1.3em;font-weight:700;font-family:'Helvetica',Arial,sans-serif}
+.bw .b-revlon{font-size:1.2em;font-weight:600;font-family:'Playfair Display',Georgia,serif;letter-spacing:2px;text-transform:uppercase}
+.bw .b-coin{font-size:1.35em;font-weight:500;font-family:'Montserrat',sans-serif;letter-spacing:3px;text-transform:uppercase}
+.bw .b-nmlab{font-size:1.15em;font-weight:600;font-family:'Montserrat',sans-serif;letter-spacing:2px;text-transform:uppercase}
+.bw .b-danjohn{font-size:1.3em;font-weight:700;font-family:'Oswald',sans-serif;font-style:italic;text-transform:uppercase;letter-spacing:1px}
+.bw .b-garnier{font-size:1.3em;font-weight:800;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:1px}
+.bw .b-sephora{font-size:1.4em;font-weight:900;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:-.5px}
+.bw .b-villacrespi{font-size:1.3em;font-weight:600;font-family:'Playfair Display',Georgia,serif;font-style:italic;letter-spacing:1px}
+.bw .b-laromana small{font-size:.55em;letter-spacing:3px;opacity:.85;margin-left:.35em}
