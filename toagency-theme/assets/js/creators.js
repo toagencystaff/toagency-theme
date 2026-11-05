@@ -43,7 +43,13 @@
    * I video passano dal proxy del CRM: scaricarne 20 insieme rallentava tutto (04/11). Un video senza immagine (solo audio o codec che
    * il browser non legge: larghezza 0) o che va in errore fa sparire la card: mai un riquadro nero vuoto. */
   var Q = [], attivi = 0, MAXV = 3;
-  function vidKo(v) { var c = v.closest('.tcr-cc'); if (c) c.style.display = 'none'; else { var a = v.closest('.tcr-ph'); if (a) a.style.visibility = 'hidden'; } }
+  function vidKo(v) { var c = v.closest('.tcr-cc'); if (c) { c.style.display = 'none'; pari(c.parentNode); } else { var a = v.closest('.tcr-ph'); if (a) a.style.visibility = 'hidden'; } }
+  // FIX 2026-11-05 (TEMA Ticket 789): le fasce sono a 2 colonne; con un numero dispari di card restava un buco nero nella griglia → si nasconde l'ultima
+  function pari(g) {
+    if (!g || !g.classList || !g.classList.contains('tcr-grid')) return;
+    var vis = Array.prototype.filter.call(g.children, function (x) { return x.style.display !== 'none'; });
+    if (vis.length > 1 && vis.length % 2) vis[vis.length - 1].style.display = 'none';
+  }
   function pump() {
     while (attivi < MAXV && Q.length) {
       var v = Q.shift();
@@ -258,7 +264,7 @@
     } else {
       ['essenziale', 'pro', 'premium'].forEach(function (b) {
         var x = ((j.bande || {})[b] || []).slice(0, 6); shown = shown.concat(x);
-        $('tcrG' + b).innerHTML = x.map(card).join('');
+        $('tcrG' + b).innerHTML = x.map(card).join(''); pari($('tcrG' + b));
         var lab = x[0] && x[0].banda_label; if (lab) document.querySelector('[data-b="' + b + '"]').textContent = lab;
         var m = x.length ? Math.min.apply(null, x.map(function (p) { return p.prezzo_da || 1e9; })) : 0;
         $('tcrH' + b).innerHTML = m && m < 1e9 ? esc(S.testi ? S.testi.da : '') + ' ' + eur(m) + ' <span class="tcr-ivl"></span>' : '';

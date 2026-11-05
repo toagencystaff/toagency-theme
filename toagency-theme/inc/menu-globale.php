@@ -71,6 +71,7 @@ add_action('wp_enqueue_scripts', function () {
     wp_localize_script('toa-menu-globale', 'TOA_MG', array(
         'lang' => toa_mg_lang(),
         'da' => toa_mg_t($ui['da']), 'unita_h' => toa_mg_t($ui['unita_h']), 'unita_c' => toa_mg_t($ui['unita_c']),
+        'parole' => toa_mg_t($ui['parole']),
     ));
 }, 30);
 
@@ -91,7 +92,7 @@ function toa_mg_url($path, $lang = null, $alt = '', $lang_param = false) {
     $lang = $lang ? $lang : toa_mg_lang();
     $m = &$GLOBALS['toa_mg_url_map'];
     if (!isset($m[$lang])) {
-        $c = get_transient('toa_mg_url_v2_' . $lang);
+        $c = get_transient('toa_mg_url_v3_' . $lang);
         $m[$lang] = is_array($c) ? $c : array();
         $m[$lang]['__dirty'] = false;
     }
@@ -107,7 +108,7 @@ function toa_mg_url_save() {
     foreach ($GLOBALS['toa_mg_url_map'] as $lang => $m) {
         if (empty($m['__dirty'])) continue;
         unset($m['__dirty']);
-        set_transient('toa_mg_url_v2_' . $lang, $m, 6 * HOUR_IN_SECONDS);
+        set_transient('toa_mg_url_v3_' . $lang, $m, 6 * HOUR_IN_SECONDS);
     }
 }
 function toa_mg_page_it($base) {
@@ -165,31 +166,38 @@ function toa_mg_dati() {
     $d = array();
     $d['sezioni'] = array(
         'eventi' => array(
-            'n' => $T('Eventi e hostess', 'Events & hostesses', 'Événements et hôtesses', 'Eventos y azafatas'),
-            'tag' => $T('Hostess, steward, promoter e staff', 'Hostesses, stewards, promoters and staff', 'Hôtesses, stewards, promoteurs et staff', 'Azafatas, auxiliares, promotores y personal'),
+            'n' => $T('Staff per eventi', 'Event staff', 'Staff événementiel', 'Personal para eventos'),
+            'tag' => $T('Hostess, steward, bar, tecnici, foto e video', 'Hostesses, stewards, bar, technicians, photo & video', 'Hôtesses, stewards, bar, techniciens, photo et vidéo', 'Azafatas, auxiliares, bar, técnicos, foto y vídeo'),
             'brand' => 'TOA Events', 'hub' => '/events/',
             'hub_t' => $T('Vai a TOA Events', 'Go to TOA Events', 'Aller sur TOA Events', 'Ir a TOA Events'),
             'card' => array('tipo' => 'hostess', 'l' => $T('Hostess per eventi', 'Event hostesses', 'Hôtesses pour vos événements', 'Azafatas para eventos'),
                             'big' => $T('Staff e prezzi', 'Staff & prices', 'Personnel et tarifs', 'Personal y precios'),
                             'note' => $T('prezzi per città', 'prices by city', 'tarifs par ville', 'precios por ciudad')),
+            // 05/11 Marco: dal menu si va al sito TOA Events (figure e prezzi), non agli articoli SEO (quelli restano nel footer)
             'cols' => array(
-                array('t' => $T('Hostess per città', 'Hostesses by city', 'Hôtesses par ville', 'Azafatas por ciudad'), 'links' => array(
-                    $L('/agenzia-hostess-torino/', $T('Torino', 'Turin', 'Turin', 'Turín'), '/events/torino/'),
-                    $L('/agenzia-hostess-milano/', $T('Milano', 'Milan', 'Milan', 'Milán'), '/events/milano/'),
-                    $L('/agenzia-hostess-roma/', $T('Roma', 'Rome', 'Rome', 'Roma'), '/events/roma/'),
-                    $L('/agenzia-hostess-genova/', $T('Genova', 'Genoa', 'Gênes', 'Génova'), '/events/genova/'),
-                    $L('/agenzia-hostess-bologna/', $T('Bologna', 'Bologna', 'Bologne', 'Bolonia'), '/events/bologna/'),
-                    $L('/agenzia-hostess-verona/', $T('Verona', 'Verona', 'Vérone', 'Verona'), '/events/verona/'),
-                    $L('/events/staff-e-prezzi/', $T('Staff e prezzi in tutte le città', 'Staff and prices in every city', 'Personnel et tarifs dans toutes les villes', 'Personal y precios en todas las ciudades')),
+                array('t' => $T('Tutte le figure', 'Every role you need', 'Tous les profils', 'Todos los perfiles'), 'links' => array(
+                    $L('/events/staff-eventi/', $T('Hostess, steward e promoter', 'Hostesses, stewards and promoters', 'Hôtesses, stewards et promoteurs', 'Azafatas, auxiliares y promotores'), '',
+                       $T('anche interpreti e controllo accessi', 'plus interpreters and access control', 'aussi interprètes et contrôle d’accès', 'también intérpretes y control de accesos')),
+                    $L('/events/personale-fiere/', $T('Personale per fiere', 'Trade show staff', 'Personnel pour salons', 'Personal para ferias')),
+                    $L('/events/bar-sala-spettacolo-eventi/', $T('Bar, sala e spettacolo', 'Bar, service and entertainment', 'Bar, salle et spectacle', 'Bar, sala y espectáculo'), '',
+                       $T('bartender, camerieri, DJ, cantanti', 'bartenders, waiters, DJs, singers', 'barmans, serveurs, DJ, chanteurs', 'bartenders, camareros, DJ, cantantes')),
+                    $L('/events/foto-video-eventi/', $T('Foto, video e contenuti', 'Photo, video and content', 'Photo, vidéo et contenus', 'Foto, vídeo y contenidos'), '',
+                       $T('fotografi, videomaker, creator, make-up', 'photographers, videographers, creators, make-up', 'photographes, vidéastes, créateurs, maquillage', 'fotógrafos, videógrafos, creadores, maquillaje')),
+                    $L('/events/crew-tecnica-eventi/', $T('Crew tecnica', 'Technical crew', 'Équipe technique', 'Equipo técnico'), '',
+                       $T('luci, suono, runner, produzione', 'lighting, sound, runners, production', 'lumière, son, runners, production', 'luces, sonido, runners, producción')),
+                    $L('/events/logistica-eventi/', $T('Autisti e logistica', 'Drivers and logistics', 'Chauffeurs et logistique', 'Conductores y logística')),
+                    $L('/events/tutti-i-servizi/', $T('Tutti i servizi per eventi', 'All event services', 'Tous les services événementiels', 'Todos los servicios para eventos')),
                 )),
-                array('t' => $T('Fiere ed eventi', 'Trade shows & events', 'Salons et événements', 'Ferias y eventos'), 'links' => array(
-                    $L('/hostess-fiere/', $T('Hostess per fiere', 'Trade show hostesses', 'Hôtesses pour salons', 'Azafatas para ferias'), '/events/personale-fiere/'),
-                    $L('/hostess-atp-finals-torino/', $T('ATP Finals Torino', 'ATP Finals Turin', 'ATP Finals Turin', 'ATP Finals Turín')),
-                    $L('/hostess-eicma/', $T('EICMA Milano', 'EICMA Milan', 'EICMA Milan', 'EICMA Milán')),
-                    $L('/hostess-eima-bologna/', $T('EIMA Bologna', 'EIMA Bologna', 'EIMA Bologne', 'EIMA Bolonia')),
-                    $L('/hostess-francia/', $T('Hostess in Francia', 'Hostesses in France', 'Hôtesses en France', 'Azafatas en Francia'), '/events/parigi/'),
-                    $L('/events/tutti-i-servizi/', $T('Tutti i servizi per eventi', 'All event services', 'Tous les services événementiels', 'Todos los servicios para eventos'), '',
-                       $T('bar, musica, tecnica', 'bar, music, tech', 'bar, musique, technique', 'bar, música, técnica')),
+                array('t' => $T('Staff e prezzi per città', 'Staff and prices by city', 'Personnel et tarifs par ville', 'Personal y precios por ciudad'), 'links' => array(
+                    $L('/events/staff-e-prezzi/?paese=IT&citta=TO', $T('Torino', 'Turin', 'Turin', 'Turín')),
+                    $L('/events/staff-e-prezzi/?paese=IT&citta=MI', $T('Milano', 'Milan', 'Milan', 'Milán')),
+                    $L('/events/staff-e-prezzi/?paese=IT&citta=RM', $T('Roma', 'Rome', 'Rome', 'Roma')),
+                    $L('/events/staff-e-prezzi/?paese=IT&citta=NA', $T('Napoli', 'Naples', 'Naples', 'Nápoles')),
+                    $L('/events/staff-e-prezzi/?paese=IT&citta=BO', $T('Bologna', 'Bologna', 'Bologne', 'Bolonia')),
+                    $L('/events/staff-e-prezzi/?paese=IT&citta=GE', $T('Genova', 'Genoa', 'Gênes', 'Génova')),
+                    $L('/events/staff-e-prezzi/?paese=FR', $T('Francia', 'France', 'France', 'Francia')),
+                    $L('/events/staff-e-prezzi/?paese=ES', $T('Spagna', 'Spain', 'Espagne', 'España')),
+                    $L('/events/staff-e-prezzi/?paese=IT', $T('Tutta Italia', 'All of Italy', 'Toute l’Italie', 'Toda Italia')),
                 )),
             ),
             'cross' => array('p' => '/creators/?pacchetto=coverage', 't' => $T('Un creator allo stand', 'A creator at your stand', 'Un créateur sur votre stand', 'Un creador en tu stand'),
@@ -222,26 +230,28 @@ function toa_mg_dati() {
         'modelli' => array(
             'n' => $T('Modelli e attori', 'Models & actors', 'Mannequins et acteurs', 'Modelos y actores'),
             'tag' => $T('Moda, pubblicità, cinema, TV', 'Fashion, advertising, film, TV', 'Mode, publicité, cinéma, télé', 'Moda, publicidad, cine, TV'),
-            'brand' => $T('Modelli e attori', 'Models & actors', 'Mannequins et acteurs', 'Modelos y actores'), 'hub' => '/models/',
-            'hub_t' => $T('Vai a Modelli', 'Go to Models', 'Voir les mannequins', 'Ver modelos'),
+            'brand' => $T('Modelli e attori', 'Models & actors', 'Mannequins et acteurs', 'Modelos y actores'), 'hub' => '/talent-database/?ruolo=model',
+            'hub_t' => $T('Sfoglia i profili', 'Browse profiles', 'Voir les profils', 'Ver perfiles'),
             'card' => array('tipo' => 'testo', 'l' => $T('Shooting, campagne, set', 'Shoots, campaigns, sets', 'Shootings, campagnes, tournages', 'Sesiones, campañas, rodajes'),
                             'big' => $T('Su misura', 'Tailored', 'Sur mesure', 'A medida'),
                             'note' => $T('selezione e preventivo per ogni progetto', 'shortlist and quote for every project', 'sélection et devis pour chaque projet', 'selección y presupuesto para cada proyecto')),
             'cols' => array(
+                // 05/11 Marco: le voci aprono il Talent database gia' filtrato, non le pagine SEO (quelle restano nel footer)
                 array('t' => $T('Modelli', 'Models', 'Mannequins', 'Modelos'), 'links' => array(
-                    $L('/models/', $T('Modelli e modelle', 'Male & female models', 'Mannequins hommes et femmes', 'Modelos hombres y mujeres')),
-                    $L('/casting-modelle-over-50/', $T('Modelle over 50', 'Models over 50', 'Mannequins de plus de 50 ans', 'Modelos de más de 50 años')),
-                    $L('/children-kids/', $T('Bambini e ragazzi', 'Kids & teens', 'Enfants et ados', 'Niños y adolescentes')),
-                    $L('/agenzia-modelle-roma/', $T('Modelle a Roma', 'Models in Rome', 'Mannequins à Rome', 'Modelos en Roma')),
-                    $L('/agenzia-modelle-napoli/', $T('Modelle a Napoli', 'Models in Naples', 'Mannequins à Naples', 'Modelos en Nápoles')),
-                    $L('/agenzia-modelle-torino/', $T('Modelle a Torino', 'Models in Turin', 'Mannequins à Turin', 'Modelos en Turín')),
+                    $L('/talent-database/?ruolo=model', $T('Modelli e modelle', 'Male & female models', 'Mannequins hommes et femmes', 'Modelos hombres y mujeres')),
+                    $L('/talent-database/?ruolo=model&eta_min=50', $T('Modelli over 50', 'Models over 50', 'Mannequins de plus de 50 ans', 'Modelos de más de 50 años')),
+                    $L('/talent-database/?ruolo=kids', $T('Bambini e ragazzi', 'Kids & teens', 'Enfants et ados', 'Niños y adolescentes')),
+                    $L('/talent-database/?ruolo=model&province=Milano', $T('Modelli a Milano', 'Models in Milan', 'Mannequins à Milan', 'Modelos en Milán')),
+                    $L('/talent-database/?ruolo=model&province=Roma', $T('Modelli a Roma', 'Models in Rome', 'Mannequins à Rome', 'Modelos en Roma')),
+                    $L('/talent-database/?ruolo=model&province=Torino', $T('Modelli a Torino', 'Models in Turin', 'Mannequins à Turin', 'Modelos en Turín')),
                 )),
                 array('t' => $T('Attori e comparse', 'Actors & extras', 'Acteurs et figurants', 'Actores y figurantes'), 'links' => array(
-                    $L('/actors/', $T('Attori', 'Actors', 'Acteurs', 'Actores')),
-                    $L('/extras/', $T('Comparse', 'Extras', 'Figurants', 'Figurantes')),
-                    $L('/agenzia-comparse-milano/', $T('Comparse a Milano', 'Extras in Milan', 'Figurants à Milan', 'Figurantes en Milán')),
-                    $L('/agenzia-comparse-roma/', $T('Comparse a Roma', 'Extras in Rome', 'Figurants à Rome', 'Figurantes en Roma')),
-                    $L('/agenzia-comparse-torino/', $T('Comparse a Torino', 'Extras in Turin', 'Figurants à Turin', 'Figurantes en Turín')),
+                    $L('/talent-database/?ruolo=actor', $T('Attori e comparse', 'Actors and extras', 'Acteurs et figurants', 'Actores y figurantes')),
+                    $L('/talent-database/?ruolo=actor&province=Milano', $T('A Milano', 'In Milan', 'À Milan', 'En Milán')),
+                    $L('/talent-database/?ruolo=actor&province=Roma', $T('A Roma', 'In Rome', 'À Rome', 'En Roma')),
+                    $L('/talent-database/?ruolo=actor&province=Torino', $T('A Torino', 'In Turin', 'À Turin', 'En Turín')),
+                    $L('/talent-database/?ruolo=actor&province=Napoli', $T('A Napoli', 'In Naples', 'À Naples', 'En Nápoles')),
+                    $L('/casting/', $T('Casting aperti', 'Open castings', 'Castings ouverts', 'Castings abiertos')),
                 )),
             ),
             'cross' => array('p' => '/creators/?pacchetto=ugc', 't' => $T('Video UGC con i creator', 'UGC videos with creators', 'Vidéos UGC avec des créateurs', 'Vídeos UGC con creadores'),
@@ -249,26 +259,39 @@ function toa_mg_dati() {
         ),
         'foto' => array(
             'n' => $T('Foto e video', 'Photo & video', 'Photo et vidéo', 'Foto y vídeo'),
-            'tag' => $T('Shooting, e-commerce, crew', 'Shoots, e-commerce, crew', 'Shootings, e-commerce, équipes', 'Sesiones, e-commerce, equipo'),
-            'brand' => $T('Produzioni', 'Productions', 'Productions', 'Producciones'), 'hub' => '/visuals/',
-            'hub_t' => $T('Vai alle produzioni', 'See our productions', 'Voir nos productions', 'Ver producciones'),
-            'card' => array('tipo' => 'testo', 'l' => $T('Foto e video prodotto', 'Product photo & video', 'Photo et vidéo produit', 'Foto y vídeo de producto'),
-                            'big' => $T('Listino', 'Price list', 'Tarifs', 'Tarifas'),
-                            'note' => $T('e-commerce, sulla pagina Produzioni', 'e-commerce, on the Productions page', 'e-commerce, sur la page Productions', 'e-commerce, en la página Producciones')),
+            'tag' => $T('Shooting, AI, fotografi e stylist', 'Shoots, AI, photographers and stylists', 'Shootings, IA, photographes et stylistes', 'Sesiones, IA, fotógrafos y estilistas'),
+            'brand' => 'Creative Network', 'hub' => '/crew-database/', 'hub_lp' => true,
+            'hub_t' => $T('Apri il Creative Network', 'Open the Creative Network', 'Ouvrir le Creative Network', 'Abrir la Creative Network'),
+            'card' => array('tipo' => 'testo', 'l' => $T('Fotografi, videomaker, stylist', 'Photographers, videographers, stylists', 'Photographes, vidéastes, stylistes', 'Fotógrafos, videógrafos, estilistas'),
+                            'big' => $T('Portfolio', 'Portfolios', 'Portfolios', 'Portfolios'),
+                            'note' => $T('scegli tu i profili e chiedi un preventivo', 'pick the profiles and ask for a quote', 'choisissez les profils et demandez un devis', 'elige los perfiles y pide presupuesto')),
             'cols' => array(
-                array('t' => $T('Produzioni', 'Productions', 'Productions', 'Producciones'), 'links' => array(
+                array('t' => $T('Servizi', 'Services', 'Services', 'Servicios'), 'links' => array(
                     $L('/visuals/', $T('Foto e video prodotto', 'Product photo & video', 'Photo et vidéo produit', 'Foto y vídeo de producto'), '',
                        $T('listino e-commerce', 'e-commerce price list', 'tarifs e-commerce', 'tarifas e-commerce')),
                     $L('/events/foto-video-eventi/', $T('Foto e video per eventi', 'Event photo & video', 'Photo et vidéo d’événements', 'Foto y vídeo de eventos')),
+                    $L('/form-b2b/', $T('Foto e video con AI', 'AI photo & video', 'Photo et vidéo avec l’IA', 'Foto y vídeo con IA'), '',
+                       $T('su preventivo', 'on request', 'sur devis', 'bajo presupuesto')),
+                    $L('/creators/?pacchetto=ugc', $T('Video UGC con i creator', 'UGC videos with creators', 'Vidéos UGC avec des créateurs', 'Vídeos UGC con creadores')),
                 )),
-                array('t' => $T('Professionisti', 'Professionals', 'Professionnels', 'Profesionales'), 'links' => array(
+                array('t' => $T('Foto e video', 'Photo & video', 'Photo et vidéo', 'Foto y vídeo'), 'links' => array(
                     $L('/crew-database/?cat=fotografo', $T('Fotografi', 'Photographers', 'Photographes', 'Fotógrafos'), '', null, true),
                     $L('/crew-database/?cat=videomaker', $T('Videomaker', 'Videographers', 'Vidéastes', 'Videógrafos'), '', null, true),
-                    $L('/crew-database/?cat=makeup_artist', $T('Make-up artist', 'Make-up artists', 'Maquilleurs', 'Maquilladores'), '', null, true),
+                    $L('/crew-database/?cat=postproduzione', $T('Post-produzione foto', 'Photo post-production', 'Post-production photo', 'Postproducción fotográfica'), '', null, true),
+                    $L('/crew-database/?cat=video_editing', $T('Montaggio video', 'Video editing', 'Montage vidéo', 'Edición de vídeo'), '', null, true),
+                    $L('/crew-database/?cat=art_director', $T('Art director', 'Art directors', 'Directeurs artistiques', 'Directores de arte'), '', null, true),
                     $L('/crew-database/?cat=social_media', $T('Social media manager', 'Social media managers', 'Social media managers', 'Social media managers'), '', null, true),
                 )),
+                array('t' => $T('Stile, trucco e capelli', 'Styling, make-up and hair', 'Stylisme, maquillage et coiffure', 'Estilismo, maquillaje y peluquería'), 'links' => array(
+                    $L('/crew-database/?cat=makeup_artist', $T('Make-up artist', 'Make-up artists', 'Maquilleurs', 'Maquilladores'), '', null, true),
+                    $L('/crew-database/?cat=hairstylist', $T('Hair stylist', 'Hair stylists', 'Coiffeurs studio', 'Estilistas de peluquería'), '', null, true),
+                    $L('/crew-database/?cat=parrucchiere', $T('Parrucchieri', 'Hairdressers', 'Coiffeurs', 'Peluqueros'), '', null, true),
+                    $L('/crew-database/?cat=stylist', $T('Stylist', 'Stylists', 'Stylistes', 'Estilistas'), '', null, true),
+                    $L('/crew-database/?cat=fashion_designer', $T('Fashion designer', 'Fashion designers', 'Créateurs de mode', 'Diseñadores de moda'), '', null, true),
+                    $L('/crew-database/', $T('Tutti i professionisti', 'All professionals', 'Tous les professionnels', 'Todos los profesionales'), '', null, true),
+                )),
             ),
-            'cross' => array('p' => '/models/', 't' => $T('Modelli per lo shooting', 'Models for your shoot', 'Mannequins pour votre shooting', 'Modelos para tu sesión'),
+            'cross' => array('p' => '/talent-database/?ruolo=model', 't' => $T('Modelli per lo shooting', 'Models for your shoot', 'Mannequins pour votre shooting', 'Modelos para tu sesión'),
                              'd' => $T('Volti per catalogo e campagne.', 'Faces for catalogues and campaigns.', 'Des visages pour catalogues et campagnes.', 'Caras para catálogos y campañas.')),
         ),
         'database' => array(
@@ -288,9 +311,10 @@ function toa_mg_dati() {
                 )),
                 array('t' => $T('Cerca per', 'Search by', 'Rechercher par', 'Buscar por'), 'links' => array(
                     $L('/talent-database/?ruolo=hostess', $T('Hostess e steward', 'Hostesses & stewards', 'Hôtesses et stewards', 'Azafatas y auxiliares')),
-                    $L('/talent-database/?ruolo=creator', $T('Creator e influencer', 'Creators & influencers', 'Créateurs et influenceurs', 'Creadores e influencers')),
+                    $L('/talent-database/?ruolo=creator', $T('Creator', 'Creators', 'Créateurs', 'Creadores')),
                     $L('/talent-database/?ruolo=actor', $T('Attori e comparse', 'Actors & extras', 'Acteurs et figurants', 'Actores y figurantes')),
                     $L('/talent-database/?ruolo=model', $T('Modelli', 'Models', 'Mannequins', 'Modelos')),
+                    $L('/talent-database/?ruolo=kids', $T('Bambini e ragazzi', 'Kids & teens', 'Enfants et ados', 'Niños y adolescentes')),
                 )),
             ),
             'cross' => array('p' => '/form-b2b/', 't' => $T('Preferisci che scegliamo noi?', 'Rather we choose for you?', 'Vous préférez que l’on choisisse ?', '¿Prefieres que elijamos nosotros?'),
@@ -346,6 +370,13 @@ function toa_mg_dati() {
         'unita_h'  => $T('a persona, 4 ore', 'per person, 4 hours', 'par personne, 4 heures', 'por persona, 4 horas'),
         'unita_c'  => $T('video UGC', 'UGC video', 'vidéo UGC', 'vídeo UGC'),
         'wa'       => 'WhatsApp',
+        // 05/11 Marco: le parole che scorrono nel titolo della home, in ordine di cio' che vende di piu' (il titolo HTML per Google resta «Seleziona Modelli»)
+        'parole'   => array(
+            'it' => array('Hostess', 'Creator', 'Steward', 'Promoter', 'Comparse', 'Bartender', 'Fotografi', 'Videomaker', 'Modelli', 'Attori', 'Make-up artist', 'Tecnici', 'DJ'),
+            'en' => array('Hostesses', 'Creators', 'Stewards', 'Promoters', 'Extras', 'Bartenders', 'Photographers', 'Videographers', 'Models', 'Actors', 'Make-up artists', 'Technicians', 'DJs'),
+            'fr' => array('Hôtesses', 'Créateurs', 'Stewards', 'Promoteurs', 'Figurants', 'Barmans', 'Photographes', 'Vidéastes', 'Mannequins', 'Acteurs', 'Maquilleurs', 'Techniciens', 'DJ'),
+            'es' => array('Azafatas', 'Creadores', 'Auxiliares', 'Promotores', 'Figurantes', 'Bartenders', 'Fotógrafos', 'Videógrafos', 'Modelos', 'Actores', 'Maquilladores', 'Técnicos', 'DJ'),
+        ),
     );
     return $d;
 }
@@ -411,7 +442,7 @@ function toa_mg_pannelli() {
     }
     echo '</div>';
     foreach ($d['sezioni'] as $k => $s) {
-        $hub = toa_mg_url($s['hub']);
+        $hub = toa_mg_url($s['hub'], null, '', !empty($s['hub_lp']));
         echo '<div class="tmg-sec" data-tmg-sec="' . esc_attr($k) . '" hidden><div class="tmg-cols">';
         foreach ($s['cols'] as $c) {
             echo '<div class="tmg-col"><div class="tmg-col__t">' . esc_html(toa_mg_t($c['t'])) . '</div>';
@@ -452,7 +483,7 @@ function toa_mg_pannelli() {
        . '<button type="button" data-tmg-mtab="lv">' . esc_html(toa_mg_t($ui['lavoro'])) . '</button></div><div class="tmg-mob__list" data-tmg-mlist="az">';
     $first = true;
     foreach ($d['sezioni'] as $k => $s) {
-        $hub = toa_mg_url($s['hub']);
+        $hub = toa_mg_url($s['hub'], null, '', !empty($s['hub_lp']));
         echo '<details class="tmg-acc"' . ($first ? ' open' : '') . '><summary>' . esc_html(toa_mg_t($s['n'])) . '</summary><div class="tmg-acc__in">';
         foreach ($s['cols'] as $c) foreach ($c['links'] as $l) echo toa_mg_link_html($l, 'tmg-acc__a', false);
         if ($hub) echo '<a class="tmg-acc__hub" href="' . esc_url($hub) . '">' . esc_html(toa_mg_t($s['hub_t'])) . ' &rarr;</a>';
@@ -579,17 +610,17 @@ function toa_mg_home_cards() {
     $T = function ($it, $en, $fr, $es) { return array('it' => $it, 'en' => $en, 'fr' => $fr, 'es' => $es); };
     $cards = array(
         array('dark' => true, 'tipo' => 'hostess', 'brand' => 'TOA Events', 'p' => '/events/',
-              't' => $T('Hostess e staff per eventi', 'Hostesses and event staff', 'Hôtesses et staff événementiel', 'Azafatas y personal para eventos'),
-              'd' => $T('Hostess, steward, promoter e tutto lo staff.', 'Hostesses, stewards, promoters and all the staff you need.', 'Hôtesses, stewards, promoteurs et tout le staff.', 'Azafatas, auxiliares, promotores y todo el personal.'),
+              't' => $T('Tutto lo staff per i tuoi eventi', 'All the staff for your events', 'Tout le staff de vos événements', 'Todo el personal para tus eventos'),
+              'd' => $T('Hostess, steward, bar, tecnici, foto e video.', 'Hostesses, stewards, bar, technicians, photo and video.', 'Hôtesses, stewards, bar, techniciens, photo et vidéo.', 'Azafatas, auxiliares, bar, técnicos, foto y vídeo.'),
               'cta' => $T('Staff e prezzi', 'Staff & prices', 'Personnel et tarifs', 'Personal y precios')),
         array('dark' => true, 'tipo' => 'creator', 'brand' => 'TOA Creators', 'p' => '/creators/',
               't' => $T('Creator per il tuo brand', 'Creators for your brand', 'Des créateurs pour votre marque', 'Creadores para tu marca'),
               'd' => $T('Video UGC, contenuti sul profilo, eventi.', 'UGC videos, profile posts, events.', 'Vidéos UGC, contenus sur le profil, événements.', 'Vídeos UGC, contenido en el perfil, eventos.'),
               'cta' => $T('Pacchetti e prezzi', 'Packages & prices', 'Formules et tarifs', 'Paquetes y precios')),
-        array('dark' => false, 'tipo' => '', 'brand' => $T('Modelli e attori', 'Models & actors', 'Mannequins et acteurs', 'Modelos y actores'), 'p' => '/models/',
+        array('dark' => false, 'tipo' => '', 'brand' => $T('Modelli e attori', 'Models & actors', 'Mannequins et acteurs', 'Modelos y actores'), 'p' => '/talent-database/?ruolo=model',
               't' => $T('Modelli, attori e comparse', 'Models, actors and extras', 'Mannequins, acteurs et figurants', 'Modelos, actores y figurantes'),
               'd' => $T('Moda, pubblicità, cinema e TV.', 'Fashion, advertising, film and TV.', 'Mode, publicité, cinéma et télé.', 'Moda, publicidad, cine y TV.'),
-              'cta' => $T('Vai a Modelli', 'Go to Models', 'Voir les mannequins', 'Ver modelos')),
+              'cta' => $T('Sfoglia i profili', 'Browse profiles', 'Voir les profils', 'Ver perfiles')),
         array('dark' => false, 'tipo' => '', 'brand' => $T('Produzioni', 'Productions', 'Productions', 'Producciones'), 'p' => '/visuals/',
               't' => $T('Foto e video', 'Photo & video', 'Photo et vidéo', 'Foto y vídeo'),
               'd' => $T('Shooting prodotto, e-commerce ed eventi.', 'Product shoots, e-commerce and events.', 'Shootings produit, e-commerce et événements.', 'Sesiones de producto, e-commerce y eventos.'),

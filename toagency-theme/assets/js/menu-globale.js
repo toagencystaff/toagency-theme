@@ -114,6 +114,17 @@
     prezzoHostess().then(function (x) { scrivi('hostess', x, M.unita_h); }).catch(function () {});
     prezzoCreator().then(function (x) { scrivi('creator', x, M.unita_c); }).catch(function () {});
   }
+  // titolo della home: parole che scorrono in ordine di cio' che vende di piu' (05/11 Marco). L'HTML per Google non cambia.
+  // Lo span prende un altro id: cosi' la rotazione vecchia di main.js e la traduzione di page-home.php non lo toccano.
+  var rw = D.getElementById('rotatingWord'), W = M.parole || [];
+  if (rw && W.length) {
+    rw.id = 'rotatingWordMg';
+    var wi = -1;
+    setInterval(function () {
+      rw.style.opacity = '0';
+      setTimeout(function () { wi = (wi + 1) % W.length; rw.textContent = W[wi]; rw.style.opacity = '1'; }, 200);
+    }, 2200);
+  }
   // le card della home mostrano il prezzo appena la pagina e' pronta
   if (D.querySelector('.tmg-cards [data-tmg-price]')) prezzi();
 })();
