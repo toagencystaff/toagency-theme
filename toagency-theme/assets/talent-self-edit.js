@@ -569,6 +569,7 @@
 
             // S8.A: carica anche i media e mostra la sezione foto
             loadMedia();
+            renderVideoElenco(d.video_elenco); // ticket #836: elenco dei video già caricati
         })
         .catch(function (err) {
             console.error('[tse] load:', err);
@@ -1320,6 +1321,58 @@
         var g = $('f-ruoli'); var cb = g ? g.querySelector('input[value="model"]') : null;
         s.style.display = (cb && cb.checked) ? 'block' : 'none';
     }
+    // ─── ticket #836 (05/11/2026) — elenco dei video già caricati ───
+    // Dati: video_elenco di talent-self-edit-load.php {totale, online, rev, no, voci:[{id, album_nome, url, stato, doppio, data, mb}]}.
+    // L'url è firmato e vale 1 ora: l'elenco si ricarica ad ogni apertura e dopo ogni upload.
+    function velT(key, fallback) { var V = STR.videoElenco || {}; return V[key] || fallback || ''; }
+    function velN(tpl, n) { return String(tpl).replace('{n}', n); }
+    function renderVideoElenco(ve) {
+        var box = $('tse-video-elenco'), sum = $('tse-vel-summary'), grid = $('tse-vel-grid');
+        if (!box || !sum || !grid) return;
+        var voci = (ve && ve.voci && ve.voci.length) ? ve.voci : [];
+        grid.innerHTML = ''; sum.textContent = '';
+        if (!voci.length) { box.style.display = 'none'; return; }
+        var tot = voci.length, cnt = { online: 0, rev: 0, no: 0 };
+        voci.forEach(function (v) { if (cnt[v.stato] !== undefined) cnt[v.stato]++; });
+        var parts = [];
+        if (cnt.online) parts.push(velN(velT('online', '{n} online'), cnt.online));
+        if (cnt.rev)    parts.push(velN(velT('rev', '{n} in revisione'), cnt.rev));
+        if (cnt.no)     parts.push(cnt.no === 1 ? velT('no1', '1 non usato') : velN(velT('no', '{n} non usati'), cnt.no));
+        var head = tot === 1 ? velT('tot1', 'Hai 1 video') : velN(velT('tot', 'Hai {n} video'), tot);
+        sum.textContent = head + (parts.length ? ': ' + parts.join(', ') : '');
+        var stLabel = { online: velT('stOnline', 'Online'), rev: velT('stRev', 'In revisione'), no: velT('stNo', 'Non usato') };
+        voci.forEach(function (v) {
+            var item = document.createElement('div'); item.className = 'tse-vel-item';
+            var vid = document.createElement('video');
+            vid.muted = true; vid.setAttribute('muted', '');
+            vid.setAttribute('playsinline', ''); vid.setAttribute('webkit-playsinline', '');
+            vid.controls = true; vid.preload = 'metadata';
+            vid.src = String(v.url || '') + '#t=0.1'; // #t=0.1: senza, su iPhone/Safari resta un riquadro vuoto
+            vid.addEventListener('error', function () {
+                var np = document.createElement('div'); np.className = 'tse-vel-nopreview';
+                np.textContent = velT('noPrev', 'Anteprima non disponibile su questo telefono: il video è comunque salvato');
+                if (vid.parentNode) vid.parentNode.replaceChild(np, vid);
+            });
+            item.appendChild(vid);
+            var meta = document.createElement('div'); meta.className = 'tse-vel-meta';
+            var st = (v.stato === 'online' || v.stato === 'rev') ? v.stato : 'no';
+            var pill = document.createElement('span'); pill.className = 'tse-vel-pill ' + st; pill.textContent = stLabel[st];
+            meta.appendChild(pill);
+            if (v.doppio) { var dp = document.createElement('span'); dp.className = 'tse-vel-pill doppio'; dp.textContent = velT('doppio', 'Possibile doppione'); meta.appendChild(dp); }
+            item.appendChild(meta);
+            var capTxt = [v.album_nome, v.data, (v.mb !== undefined && v.mb !== null && v.mb !== '') ? (v.mb + ' MB') : ''].filter(function (x) { return x; }).join(' · ');
+            if (capTxt) { var cap = document.createElement('div'); cap.className = 'tse-vel-cap'; cap.textContent = capTxt; item.appendChild(cap); }
+            grid.appendChild(item);
+        });
+        box.style.display = 'block';
+    }
+    function reloadVideoElenco() {
+        if (!UUID || !TOKEN) return;
+        fetch(API_LOAD + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN) + '&lang=' + encodeURIComponent(cfg.lang || 'it') + '&_=' + Date.now(), { credentials: 'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (d) { if (d && d.success) renderVideoElenco(d.video_elenco); })
+            .catch(function () { /* l'elenco resta com'è */ });
+    }
     window.talentVideoChosen = function (input, key) {
         var f = (input.files && input.files[0]) ? input.files[0] : null;
         if (key === 'det') videoFileDet = f; else videoFile = f;
@@ -1361,6 +1414,7 @@
                     var fn = tseVidEl(key, 'fname'); if (fn) fn.textContent = '—';
                     var vi = tseVidEl(key, 'input'); if (vi) vi.value = '';
                     var h = tseVidEl(key, 'heavy'); if (h) h.style.display = 'none';
+                    reloadVideoElenco(); // ticket #836: aggiorna l'elenco dopo un upload riuscito
                 } else {
                     st.textContent = '✗ ' + (res.error === 'network' ? tseVideoT('network', 'Errore di rete') : tseVideoErr(res));
                     st.className = 'tse-upload-status err';

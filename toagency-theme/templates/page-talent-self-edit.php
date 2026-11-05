@@ -472,6 +472,21 @@ $token_get = $_GET['t']    ?? '';
 .tse-upload-status.ok { color:#c8ff00; }
 .tse-upload-status.err { color:#ef4444; }
 .tse-upload-status.loading { color:#9ca3af; }
+/* ticket #836 (05/11/2026): elenco dei video già caricati */
+.tse-vel-summary { font-size:13px; color:#cbd5e1; margin:0 0 12px; line-height:1.5; }
+.tse-vel-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
+.tse-vel-item { background:#0a0a0a; border:1px solid #2a2a2e; border-radius:8px; padding:8px; min-width:0; }
+.tse-vel-item video { display:block; width:100%; aspect-ratio:3/4; max-height:320px; object-fit:contain; background:#000; border-radius:6px; }
+.tse-vel-nopreview { display:flex; align-items:center; justify-content:center; width:100%; aspect-ratio:3/4; max-height:320px; box-sizing:border-box; padding:12px; background:#111; border-radius:6px; color:#9ca3af; font-size:12px; line-height:1.45; text-align:center; }
+.tse-vel-meta { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:8px; }
+.tse-vel-pill { display:inline-block; font-size:11px; font-weight:700; line-height:1; padding:4px 8px; border-radius:999px; border:1px solid #2a2a2e; color:#cbd5e1; }
+.tse-vel-pill.online { color:#c8ff00; border-color:#c8ff00; }
+.tse-vel-pill.rev { color:#f59e0b; border-color:#f59e0b; }
+.tse-vel-pill.no { color:#9ca3af; }
+.tse-vel-pill.doppio { color:#ff8a3d; border-color:#ff8a3d; }
+.tse-vel-cap { margin-top:6px; font-size:11px; color:#9ca3af; line-height:1.4; word-break:break-word; }
+@media (max-width:768px) { .tse-vel-grid { grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); } }
+@media (max-width:480px) { .tse-vel-grid { grid-template-columns:1fr 1fr; gap:8px; } .tse-vel-item { padding:6px; } }
 
 /* Disclaimer */
 .tse-legal-disclaimer { margin:10px 0; background:#1a1a1e; border:1px solid #2a2a2e; border-radius:6px; padding:10px; text-align:left; }
@@ -971,6 +986,13 @@ $token_get = $_GET['t']    ?? '';
         <!-- 2026-08-08 TEMA — Video di presentazione spostato qui (prima era in fondo, dentro tse-foto-section
              che parte display:none finché non caricano i media: risultato invisibile finché non arrivavano le foto).
              Facoltativo per tutti, ma prioritario per attori/self-tape → più rilievo e più in alto. -->
+        <!-- ticket #836 (05/11/2026): elenco dei video già caricati (dati: video_elenco di talent-self-edit-load.php, riempito da talent-self-edit.js) -->
+        <div id="tse-video-elenco" class="tse-section" style="margin-top:20px; display:none;">
+            <div class="tse-section-title">🎞️ <?= esc_html($_t(['it'=>'I tuoi video','en'=>'Your videos','fr'=>'Tes vidéos','es'=>'Tus vídeos'])) ?></div>
+            <div id="tse-vel-summary" class="tse-vel-summary"></div>
+            <div id="tse-vel-grid" class="tse-vel-grid"></div>
+        </div>
+
         <div id="tse-video-section" class="tse-section" style="margin-top:20px;">
             <div class="tse-section-title">🎥 <?= esc_html($_t(['it'=>'Video di presentazione','en'=>'Intro video','fr'=>'Vidéo de présentation','es'=>'Vídeo de presentación'])) ?></div>
             <p style="font-size:12px; color:#9ca3af; margin:0 0 8px; line-height:1.45;"><?= esc_html($_t(['it'=>'Facoltativo per tutti, ma molto utile per attori/attrici (self-tape) e creator (mostra come sei davanti alla camera). Basta anche un video girato con il telefono, bassa risoluzione ok · max 30MB.','en'=>'Optional for everyone, but great for actors (self-tape) and creators (shows how you come across on camera). A simple phone video is fine, low res ok · max 30MB.','fr'=>'Facultatif pour tous, mais très utile pour les acteurs/actrices (self-tape) et les créateurs de contenu (montre comment tu es à l’écran). Une simple vidéo au téléphone suffit, basse résolution ok · max 30 Mo.','es'=>'Opcional para todos, pero muy útil para actores/actrices (self-tape) y creadores de contenido (muestra cómo te desenvuelves en cámara). Basta un vídeo con el móvil, baja resolución ok · máx 30MB.'])) ?></p>
@@ -1141,6 +1163,20 @@ window.talentEditConfig = {
                 talent_non_importato: <?= json_encode($_t(['it'=>'Il tuo profilo non è ancora abilitato ai video. Scrivi ad Amelia nella chat.','en'=>'Your profile is not enabled for videos yet. Write to Amelia in the chat.','fr'=>"Ton profil n'est pas encore activé pour les vidéos. Écris à Amelia dans le chat.",'es'=>'Tu perfil aún no está habilitado para vídeos. Escribe a Amelia en el chat.'])) ?>,
                 invalid_link: <?= json_encode($_t(['it'=>'Link della scheda non valido o scaduto. Apri di nuovo il link che ti abbiamo mandato per email.','en'=>'Profile link invalid or expired. Open the link we emailed you again.','fr'=>"Lien de la fiche invalide ou expiré. Ouvre de nouveau le lien que nous t'avons envoyé par e-mail.",'es'=>'Enlace de la ficha no válido o caducado. Abre de nuevo el enlace que te enviamos por correo.'])) ?>,
             },
+        },
+        // ticket #836 (05/11/2026): testi dell'elenco video, 4 lingue (riscritti, non letterali)
+        videoElenco: {
+            tot:     <?= json_encode($_t(['it'=>'Hai {n} video','en'=>'You have {n} videos','fr'=>'Tu as {n} vidéos','es'=>'Tienes {n} vídeos'])) ?>,
+            tot1:    <?= json_encode($_t(['it'=>'Hai 1 video','en'=>'You have 1 video','fr'=>'Tu as 1 vidéo','es'=>'Tienes 1 vídeo'])) ?>,
+            online:  <?= json_encode($_t(['it'=>'{n} online','en'=>'{n} online','fr'=>'{n} en ligne','es'=>'{n} en línea'])) ?>,
+            rev:     <?= json_encode($_t(['it'=>'{n} in revisione','en'=>'{n} in review','fr'=>'{n} en révision','es'=>'{n} en revisión'])) ?>,
+            no:      <?= json_encode($_t(['it'=>'{n} non usati','en'=>'{n} not used','fr'=>'{n} non utilisées','es'=>'{n} sin usar'])) ?>,
+            no1:     <?= json_encode($_t(['it'=>'1 non usato','en'=>'1 not used','fr'=>'1 non utilisée','es'=>'1 sin usar'])) ?>,
+            stOnline:<?= json_encode($_t(['it'=>'Online','en'=>'Online','fr'=>'En ligne','es'=>'En línea'])) ?>,
+            stRev:   <?= json_encode($_t(['it'=>'In revisione','en'=>'In review','fr'=>'En révision','es'=>'En revisión'])) ?>,
+            stNo:    <?= json_encode($_t(['it'=>'Non usato','en'=>'Not used','fr'=>'Non utilisée','es'=>'Sin usar'])) ?>,
+            doppio:  <?= json_encode($_t(['it'=>'Possibile doppione','en'=>'Possible duplicate','fr'=>'Doublon possible','es'=>'Posible duplicado'])) ?>,
+            noPrev:  <?= json_encode($_t(['it'=>'Anteprima non disponibile su questo telefono: il video è comunque salvato','en'=>'Preview not available on this phone: the video is saved anyway','fr'=>'Aperçu indisponible sur ce téléphone : la vidéo est bien enregistrée','es'=>'Vista previa no disponible en este móvil: el vídeo está guardado igualmente'])) ?>,
         },
         mancanoTitolo:       <?= json_encode($_t($T['mancano_titolo'])) ?>,
         mancanoLabels: {
