@@ -53,6 +53,7 @@ if (function_exists('icl_get_languages')) {
 <?php wp_head(); ?>
 </head>
 <body <?php body_class('tcr-site'); ?>>
+<?php /* 2026-11-05 ticket #789: in anteprima la barra nera del menu globale sopra la barra creator */ if (function_exists('toa_mg_attivo') && toa_mg_attivo()) toa_mg_barra('creator'); ?>
 <header class="tcr-top" id="tcrTop">
   <div class="tcr-top__in">
     <a class="tcr-crumb" href="<?php echo esc_url($tcr_home_site); ?>" title="<?php echo esc_attr($tcr_tx(array('it'=>'Vai alla home di toagency.it','en'=>'Go to the toagency.it home page','fr'=>"Aller à l'accueil de toagency.it",'es'=>'Ir a la página de inicio de toagency.it'))); ?>">

@@ -105,6 +105,8 @@ if (!function_exists('_ht')) {
     <div class="section-eyebrow"><?php echo _ht(array('it'=>'Cosa facciamo','en'=>'What we do','fr'=>'Ce que nous faisons','es'=>'Lo que hacemos')); ?></div>
     <h2 class="section-heading"><?php echo _ht(array('it'=>'Ogni progetto ha il talento giusto','en'=>'Every project has the right talent','fr'=>'Chaque projet a le bon talent','es'=>'Cada proyecto tiene el talento adecuado')); ?></h2>
   </div>
+  <?php /* 2026-11-05 ticket #789: in anteprima le card delle sezioni (titolo e testi della home invariati) */
+  if (function_exists('toa_mg_attivo') && toa_mg_attivo()) : toa_mg_home_cards(); else : ?>
   <div class="services-grid">
     <a href="<?php echo home_url('/models/'); ?>" class="service-card">
       <div class="service-icon">◐</div>
@@ -137,6 +139,7 @@ if (!function_exists('_ht')) {
       <div class="service-desc"><?php echo _ht(array('it'=>'Selezione, logistica, gestione integrale','en'=>'Selection, logistics, full management','fr'=>'Sélection, logistique, gestion intégrale','es'=>'Selección, logística, gestión integral')); ?></div>
     </a>
   </div>
+  <?php endif; // ticket #789 ?>
 </section>
 
 <!-- ═══════════ FORM PREVENTIVO INLINE (sostituisce la vecchia CTA) ═══════════ -->

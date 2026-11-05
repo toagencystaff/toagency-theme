@@ -5,6 +5,8 @@
  */
 ?>
 <!-- Footer -->
+<?php // 2026-11-05 ticket #789 (TEMA Ticket 789): in anteprima il footer unico (inc/menu-globale.php), con tutti i link di questo
+if (function_exists('toa_mg_attivo') && toa_mg_attivo()) : toa_mg_footer(); $toa_lang = defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : 'it'; else : ?>
 <footer class="footer">
   <?php /* FIX 2026-08-22 marco — denominazione titolare corretta: ditta individuale TOA di Leonardi Marco (la vecchia dicitura indicava una società inesistente) */ ?>
   <p>TOAGENCY è un marchio di TOA di Leonardi Marco &mdash; Via Cavour 21, 10123 Torino (Italy) &mdash; P.IVA 11800210012</p>
@@ -86,6 +88,7 @@
   </div>
   <!-- END FIX 2026-05-31 marco — landing-links footer -->
 </footer>
+<?php endif; // ticket #789 ?>
 
 <!-- Sticky CTA Mobile -->
 <?php if (is_page()): ?>

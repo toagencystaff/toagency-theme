@@ -73,6 +73,8 @@ a{color:inherit}
 <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?> style="background:#08080a!important;color:#f5f5f3!important">
+<?php // 2026-11-05 ticket #789 (TEMA Ticket 789): in anteprima il menu globale prende il posto di tutto il menu qui sotto
+if (function_exists('toa_mg_attivo') && toa_mg_attivo()) { toa_mg_header_bar(); return; } ?>
 
 <!-- Navigation -->
 <nav class="nav" id="mainNav">

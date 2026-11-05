@@ -844,6 +844,8 @@ require_once get_template_directory() . '/inc/toa-shortlink.php';
 require_once get_template_directory() . '/inc/lp-fiere.php';
 // 2026-09-16 marco -- llms.txt virtuale per crawler AI (chat TEMA SEO-AI)
 require_once get_template_directory() . '/inc/llms-txt.php';
+// 2026-11-05 ticket #789 (TEMA Ticket 789) — menu globale fase 1, SOLO in anteprima (?anteprima=menu o admin loggato)
+require_once get_template_directory() . '/inc/menu-globale.php';
 
 // === FIX 2026-05-30 marco — google-reviews CSS ===
 add_action('wp_enqueue_scripts', function() {
