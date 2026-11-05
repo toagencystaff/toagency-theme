@@ -69,7 +69,7 @@ if (function_exists('icl_get_languages')) {
 </head>
 <body <?php body_class('tev-site'); ?>>
 <?php /* Marco 03/11: in ogni pagina del mini sito un modo per tornare alla home di toagency.it */ ?>
-<div class="tev-back"><?php /* 2026-11-05 ticket #789: in anteprima qui la barra nera del menu globale */ if (function_exists('toa_mg_attivo') && toa_mg_attivo()) toa_mg_barra('eventi'); ?><div class="tev-back__in">
+<div class="tev-back"><?php /* 2026-11-05 ticket #789: in anteprima qui la barra nera del menu globale */ if (function_exists('toa_mg_attivo') && toa_mg_attivo()) toa_mg_barra('eventi', $tev_hub . '#preventivo'); ?><div class="tev-back__in">
   <a href="<?php echo esc_url(apply_filters('wpml_home_url', untrailingslashit(get_option('home')) . '/')); ?>"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8FF00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="tev-back__toa">TOA</span><?php echo esc_html($tev_tx(array('it'=>'Torna a TOAgency.it','en'=>'Back to TOAgency.it','fr'=>'Retour sur TOAgency.it','es'=>'Volver a TOAgency.it'))); ?></a>
   <span class="tev-back__note"><?php echo esc_html($tev_tx(array('it'=>'TOA Events è il servizio eventi di TOAgency','en'=>"TOA Events is TOAgency's events service",'fr'=>'TOA Events est le service événementiel de TOAgency','es'=>'TOA Events es el servicio de eventos de TOAgency'))); ?></span>
 </div></div>

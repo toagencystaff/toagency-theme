@@ -509,31 +509,25 @@ function toa_mg_pannelli() {
     echo '<div class="tmg-veil" id="tmgVeil" hidden></div>';
 }
 
-/* ───────────── header del sito (al posto della <nav> di components/header.php) ───────────── */
-function toa_mg_header_bar() {
+/* ───────────── header: UGUALE su tutte le pagine (05/11 Marco: «non deve essere diverso da una pagina all'altra») ─────────────
+ * $cur = sezione in cui siamo (voce sottolineata in lime) · $cta = dove porta «Richiedi preventivo» (in TOA Events e TOA Creators
+ * il modulo della sezione) · $in = true dentro /events/ e /creators/: resta fisso in cima come sticky, sopra il menu della sezione. */
+function toa_mg_header_bar($cur = '', $cta = '', $in = false) {
     $d = toa_mg_dati(); $ui = $d['ui'];
-    echo '<header class="tmg-head" id="tmgHead"><div class="tmg-head__in">'
+    $cta = $cta ? $cta : toa_mg_url($ui['cta_url']);
+    echo '<header class="tmg-head' . ($in ? ' tmg-head--in' : '') . '" id="tmgHead"><div class="tmg-head__in">'
        . '<a class="tmg-logo" href="' . esc_url(toa_mg_home_url()) . '" aria-label="TOAgency">TOAGENCY</a>'
-       . '<nav class="tmg-nav" aria-label="TOAgency">' . toa_mg_voci_html() . '</nav>'
+       . '<nav class="tmg-nav" aria-label="TOAgency">' . toa_mg_voci_html($cur) . '</nav>'
        . '<div class="tmg-head__r"><button type="button" class="tmg-voce tmg-voce--lav" data-tmg-open="lavora" aria-expanded="false" aria-controls="tmgLavora">' . esc_html(toa_mg_t($d['lavora']['n'])) . '</button>'
-       . toa_mg_lingue_html() . '<a class="tmg-btn tmg-btn--lime tmg-head__cta" href="' . esc_url(toa_mg_url($ui['cta_url'])) . '">' . esc_html(toa_mg_t($ui['cta'])) . '</a>'
+       . toa_mg_lingue_html() . '<a class="tmg-btn tmg-btn--lime tmg-head__cta" href="' . esc_url($cta) . '">' . esc_html(toa_mg_t($ui['cta'])) . '</a>'
        . '<button type="button" class="tmg-burger" data-tmg-mob aria-label="' . esc_attr(toa_mg_t($ui['menu'])) . '" aria-expanded="false" aria-controls="tmgMob"><span></span><span></span><span></span></button></div>'
        . '</div></header>';
-    toa_mg_pannelli();
+    if ($in) add_action('wp_footer', 'toa_mg_pannelli', 5);   // dentro la striscia sticky di /events/ i pannelli resterebbero sotto il resto (z-index)
+    else toa_mg_pannelli();
 }
 
-/* ───────────── barra nera in cima a /events/ e /creators/ ───────────── */
-function toa_mg_barra($cur) {
-    $d = toa_mg_dati(); $ui = $d['ui'];
-    echo '<div class="tmg-bar" id="tmgHead"><div class="tmg-bar__in">'
-       . '<a class="tmg-logo tmg-logo--bar" href="' . esc_url(toa_mg_home_url()) . '" aria-label="TOAgency">TOAGENCY</a>'
-       . '<nav class="tmg-nav tmg-nav--bar" aria-label="TOAgency">' . toa_mg_voci_html($cur) . '</nav>'
-       . '<div class="tmg-head__r"><button type="button" class="tmg-voce tmg-voce--lav" data-tmg-open="lavora" aria-expanded="false" aria-controls="tmgLavora">' . esc_html(toa_mg_t($d['lavora']['n'])) . '</button>'
-       . toa_mg_lingue_html() . '<button type="button" class="tmg-burger tmg-burger--w" data-tmg-mob aria-label="' . esc_attr(toa_mg_t($ui['menu'])) . '" aria-expanded="false" aria-controls="tmgMob"><span></span><span></span><span></span></button></div>'
-       . '</div></div>';
-    // i pannelli vanno in fondo alla pagina: dentro la striscia sticky di /events/ resterebbero sotto il resto (z-index)
-    add_action('wp_footer', 'toa_mg_pannelli', 5);
-}
+/* ───────────── in cima a /events/ e /creators/: lo stesso header del sito ───────────── */
+function toa_mg_barra($cur, $cta = '') { toa_mg_header_bar($cur, $cta, true); }
 
 /* ───────────── footer unico (contiene TUTTI i link del footer di oggi) ───────────── */
 function toa_mg_footer_cols() {

@@ -31,8 +31,8 @@
 .tmg-on .tmg-btn--lime{background:var(--tmg-l)!important;color:var(--tmg-k)!important;border:1px solid var(--tmg-l)}
 .tmg-on .tmg-btn--lime:hover{background:#B6EA00!important}
 .tmg-on .tmg-btn--line{background:#FFFFFF!important;color:var(--tmg-k)!important;border:1px solid var(--tmg-k)}
-.tmg-on .tmg-head .tmg-burger,.tmg-on .tmg-bar .tmg-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px!important;height:44px;padding:0 11px!important;border:1px solid var(--tmg-k)!important;border-radius:10px!important;background:#FFFFFF!important}
-.tmg-on .tmg-burger span{display:block;height:2px;background:var(--tmg-k);border-radius:2px}
+.tmg-on .tmg-head .tmg-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px!important;height:44px;padding:0 11px!important;border:1px solid var(--tmg-k)!important;border-radius:10px!important;background:#FFFFFF!important}
+.tmg-on .tmg-burger span{display:block;width:100%;min-width:18px;height:2px;background:var(--tmg-k);border-radius:2px}
 .tmg-on .tmg-bar .tmg-burger--w{border-color:#FFFFFF!important;background:transparent!important;width:38px!important;height:32px;padding:0 9px!important;border-radius:8px!important;gap:4px}
 .tmg-on .tmg-burger--w span{background:#FFFFFF}
 /* contenuto delle pagine: il nuovo header e' alto 80px (il vecchio ~88px), niente da spostare */
@@ -40,26 +40,24 @@
 /* pagine dove il sito nasconde «Preventivo» (functions.php, toa-hide-quote-cta) */
 .tmg-on.toa-hide-quote-cta .tmg-head__cta,.tmg-on.toa-hide-quote-cta .tmg-mbar .tmg-btn--lime{display:none!important}
 
-/* ── barra nera sottile (/events/ e /creators/) ── */
-.tmg-on .tmg-bar{background:var(--tmg-k);color:#FFFFFF;position:relative;z-index:10010}
-.tmg-on .tmg-bar__in{height:36px;padding:0 24px;display:flex;align-items:center;gap:2px;max-width:none}
-.tmg-on .tmg-bar .tmg-nav{height:36px}
-.tmg-on .tmg-bar .tmg-voce{height:36px!important;padding:0 10px!important;border-top:0!important;border-bottom:3px solid transparent!important;color:#FFFFFF!important;font-size:13px!important}
-.tmg-on .tmg-bar .tmg-voce.is-cur,.tmg-on .tmg-bar .tmg-voce[aria-expanded="true"]{color:var(--tmg-l)!important}
-.tmg-on .tmg-bar .tmg-voce[aria-expanded="true"]{border-bottom-color:var(--tmg-l)!important}
-.tmg-on .tmg-bar .tmg-voce:hover{border-bottom-color:#3A3A35!important}
-.tmg-on .tmg-bar .tmg-voce--lav{color:#D6D6D0!important;font-size:13px!important}
-.tmg-on .tmg-bar .tmg-head__r{gap:10px}
-.tmg-on .tmg-bar .tmg-langs a,.tmg-on .tmg-bar .tmg-langs span{color:#A8A8A2!important;font-size:12px!important}
-.tmg-on .tmg-bar .tmg-langs .on{color:#FFFFFF!important}
-/* TOA Events: la barra prende il posto della striscia «Torna a TOAgency.it» (stesso box sticky, 36px) */
-.tmg-on.tev-site .tev-back{height:36px;position:sticky;top:var(--tev-ab)}
-.tmg-on.tev-site .tev-back .tmg-bar{position:static}
-.tmg-on.tev-site .tev-top{top:calc(var(--tev-ab) + 36px)!important}
+/* ── lo stesso header in cima a /events/ e /creators/ (05/11 Marco: uguale su tutte le pagine) ── */
+.tmg-on .tmg-head .tmg-voce.is-cur{border-bottom-color:var(--tmg-l)!important}
+.tmg-on .tmg-head--in{position:sticky;top:var(--tmg-ab)}
+/* TOA Events: l'header prende il posto della striscia «Torna a TOAgency.it» (stesso box sticky) */
+.tmg-on.tev-site{--tev-hd:calc(var(--tmg-hh) + 70px)}
+.tmg-on.tev-site .tev-back{height:auto;background:#FFFFFF;position:sticky;top:var(--tev-ab);z-index:52}
+.tmg-on.tev-site .tev-back .tmg-head{position:static}
+.tmg-on.tev-site .tev-back a.tmg-btn{display:inline-flex;padding:0 22px;color:var(--tmg-k)!important}
+.tmg-on.tev-site .tev-back a.tmg-logo{display:inline-block;padding:0}
+.tmg-on.tev-site .tev-top{top:calc(var(--tev-ab) + var(--tmg-hh))!important}
 .tmg-on.tev-site .tev-menu__back{display:none!important}
-/* TOA Creators: barra sticky sopra la sua barra scura */
-.tmg-on.tcr-site .tmg-bar{position:sticky;top:var(--tmg-ab)}
-.tmg-on.tcr-site .tcr-top{top:calc(var(--tmg-ab) + 36px)!important}
+/* TOA Creators: header sopra la sua barra scura */
+.tmg-on.tcr-site .tmg-head{z-index:60}
+.tmg-on.tcr-site .tcr-top{top:calc(var(--tmg-ab) + var(--tmg-hh))!important}
+/* un solo «Richiedi preventivo» in alto: quello dell'header porta al modulo della sezione (resta quello di «Lavora con noi», che porta all'iscrizione) */
+@media (min-width:769px){
+  .tmg-on .tev-top__cta[href$="#preventivo"],.tmg-on .tcr-top__cta[href$="#richiesta"]{display:none!important}
+}
 
 /* ── pannello unico (sezioni a schede) ── */
 .tmg-on .tmg-panel{position:fixed;left:0;right:0;top:var(--tmg-top,80px);z-index:10012;background:#FFFFFF;color:var(--tmg-k);border-top:1px solid var(--tmg-line);box-shadow:0 24px 48px rgba(8,8,10,.16);max-height:calc(100vh - var(--tmg-top,80px));overflow-y:auto}
@@ -174,11 +172,6 @@
   .tmg-on .tmg-head__cta{display:none!important}
   .tmg-on .tmg-head__r .tmg-langs{display:flex!important}
   .tmg-on .tmg-head__r{gap:8px}
-  .tmg-on .tmg-bar__in{height:40px;padding:0 12px}
-  .tmg-on.tev-site .tev-back{height:40px}
-  .tmg-on.tev-site .tev-top{top:calc(var(--tev-ab) + 40px)!important}
-  .tmg-on.tcr-site .tcr-top{top:calc(var(--tmg-ab) + 40px)!important}
-  .tmg-on .tmg-bar .tmg-head__r .tmg-langs{display:none!important}
   .tmg-on .tmg-mbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:10011;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:#FFFFFF;border-top:1px solid var(--tmg-line)}
   .tmg-on .tmg-mbar .tmg-btn{min-height:48px;padding:0 10px;font-size:15px}
   .tmg-on:not(.tev-site):not(.tcr-site) .sticky-cta-mobile,.tmg-on:not(.tev-site):not(.tcr-site) .toa-whatsapp-btn{display:none!important}
