@@ -49,7 +49,7 @@ $t = array(
     ),
     'steps_h' => array('it'=>"Tre passi",'en'=>"Three steps",'fr'=>"Trois étapes",'es'=>"Tres pasos"),
     'steps' => array(
-        array('it'=>"Nome, contatti e zona",'en'=>"Name, contact details and area",'fr'=>"Nom, coordonnées et zone",'es'=>"Nombre, contacto y zona"),
+        array('it'=>"Nome, contatti, zona e foto in primo piano",'en'=>"Name, contact details, area and a close-up photo",'fr'=>"Nom, coordonnées, zone et photo en gros plan",'es'=>"Nombre, contacto, zona y foto de primer plano"),
         array('it'=>"Foto in servizio, lingue ed esperienza",'en'=>"Work photos, languages and experience",'fr'=>"Photos en service, langues et expérience",'es'=>"Fotos trabajando, idiomas y experiencia"),
         array('it'=>"Ti avvisiamo dei lavori della tua zona",'en'=>"We let you know about jobs in your area",'fr'=>"Nous vous prévenons des missions près de chez vous",'es'=>"Te avisamos de los trabajos de tu zona"),
     ),

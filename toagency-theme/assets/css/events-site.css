@@ -290,7 +290,9 @@ body.tev-site{background:#FFFFFF!important;background-color:#FFFFFF!important;co
 .tev-card4 h3{margin:0 0 10px;font-family:Anton,Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:24px;line-height:1.05;color:#FFFFFF}
 .tev-card4 p{margin:0;color:#CFCFC8;font-size:15px;line-height:1.55}
 .tev-fotos{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:18px}
-.tev-foto{margin:0}
+.tev-foto{margin:0;position:relative}
+.tev-foto::after{content:"\2713";position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;background:#15803D;color:#fff;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font:700 20px/1 Inter,Arial,sans-serif;pointer-events:none}
+.tev-foto.is-no::after{content:"\2715";background:#B91C1C}
 .tev-foto img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:10px;display:block;border:3px solid #15803D}
 .tev-foto.is-no img{border-color:#B91C1C}
 .tev-foto figcaption{margin-top:8px;font-size:14px}
@@ -318,6 +320,7 @@ body.tev-site{background:#FFFFFF!important;background-color:#FFFFFF!important;co
   .tev-svc__t{font-size:22px}
   .tev-fotos{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
   .tev-foto figcaption{font-size:12px}
+  .tev-foto::after{top:6px;right:6px;width:26px;height:26px;font-size:15px}
   .tev-card4{min-height:0;padding:22px 18px}
   .tev-card4__ic{width:44px;height:44px;margin-bottom:14px}
   .tev-card4 h3{font-size:22px}
