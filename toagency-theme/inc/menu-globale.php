@@ -435,6 +435,12 @@ function toa_mg_voci_html($cur = '') {
     }
     return $h;
 }
+// 05/11 Marco: «non ci sono piu' i casting»: voce semplice «Casting» accanto a «Lavora con noi» (link diretto, niente pannello)
+function toa_mg_voce_casting() {
+    $u = toa_mg_url('/casting/');
+    if (!$u) return '';
+    return '<a class="tmg-voce tmg-voce--lav" href="' . esc_url($u) . '">Casting</a>';
+}
 function toa_mg_voce_lavora() {
     $d = toa_mg_dati(); $u = toa_mg_url('/collabora/');
     return '<a class="tmg-voce tmg-voce--lav" href="' . esc_url($u ? $u : '#') . '" data-tmg-open="lavora" aria-haspopup="true" aria-expanded="false" aria-controls="tmgLavora">' . esc_html(toa_mg_t($d['lavora']['n'])) . '</a>';
@@ -526,7 +532,7 @@ function toa_mg_header_bar($cur = '', $cta = '', $in = false) {
     echo '<header class="tmg-head' . ($in ? ' tmg-head--in' : '') . '" id="tmgHead"><div class="tmg-head__in">'
        . '<a class="tmg-logo" href="' . esc_url(toa_mg_home_url()) . '" aria-label="TOAgency">TOAGENCY</a>'
        . '<nav class="tmg-nav" aria-label="TOAgency">' . toa_mg_voci_html($cur) . '</nav>'
-       . '<div class="tmg-head__r">' . toa_mg_voce_lavora()
+       . '<div class="tmg-head__r">' . toa_mg_voce_casting() . toa_mg_voce_lavora()
        . toa_mg_lingue_html() . '<a class="tmg-btn tmg-btn--lime tmg-head__cta" href="' . esc_url($cta) . '">' . esc_html(toa_mg_t($ui['cta'])) . '</a>'
        . '<button type="button" class="tmg-burger" data-tmg-mob aria-label="' . esc_attr(toa_mg_t($ui['menu'])) . '" aria-expanded="false" aria-controls="tmgMob"><span></span><span></span><span></span></button></div>'
        . '</div></header>';
