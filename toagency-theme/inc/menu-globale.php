@@ -425,11 +425,18 @@ function toa_mg_home_url() { return apply_filters('wpml_home_url', untrailingsla
 
 /* ───────────── voci (header e barra) ───────────── */
 function toa_mg_voci_html($cur = '') {
+    // 05/11 Marco: il click su una voce apre la pagina della sezione E il pannello sopra (assets/js/menu-globale.js).
+    // Per questo ogni voce e' un vero link (si apre anche in una nuova scheda) con data-tmg-open per il pannello.
     $d = toa_mg_dati(); $h = '';
     foreach ($d['sezioni'] as $k => $s) {
-        $h .= '<button type="button" class="tmg-voce' . ($k === $cur ? ' is-cur' : '') . '" data-tmg-open="' . esc_attr($k) . '" aria-expanded="false" aria-controls="tmgPanel">' . esc_html(toa_mg_t($s['n'])) . '</button>';
+        $u = toa_mg_url($s['hub'], null, '', !empty($s['hub_lp']));
+        $h .= '<a class="tmg-voce' . ($k === $cur ? ' is-cur' : '') . '" href="' . esc_url($u ? $u : '#') . '" data-tmg-open="' . esc_attr($k) . '" aria-haspopup="true" aria-expanded="false" aria-controls="tmgPanel">' . esc_html(toa_mg_t($s['n'])) . '</a>';
     }
     return $h;
+}
+function toa_mg_voce_lavora() {
+    $d = toa_mg_dati(); $u = toa_mg_url('/collabora/');
+    return '<a class="tmg-voce tmg-voce--lav" href="' . esc_url($u ? $u : '#') . '" data-tmg-open="lavora" aria-haspopup="true" aria-expanded="false" aria-controls="tmgLavora">' . esc_html(toa_mg_t($d['lavora']['n'])) . '</a>';
 }
 
 /* ───────────── pannelli (uno solo per pagina) ───────────── */
@@ -518,7 +525,7 @@ function toa_mg_header_bar($cur = '', $cta = '', $in = false) {
     echo '<header class="tmg-head' . ($in ? ' tmg-head--in' : '') . '" id="tmgHead"><div class="tmg-head__in">'
        . '<a class="tmg-logo" href="' . esc_url(toa_mg_home_url()) . '" aria-label="TOAgency">TOAGENCY</a>'
        . '<nav class="tmg-nav" aria-label="TOAgency">' . toa_mg_voci_html($cur) . '</nav>'
-       . '<div class="tmg-head__r"><button type="button" class="tmg-voce tmg-voce--lav" data-tmg-open="lavora" aria-expanded="false" aria-controls="tmgLavora">' . esc_html(toa_mg_t($d['lavora']['n'])) . '</button>'
+       . '<div class="tmg-head__r">' . toa_mg_voce_lavora()
        . toa_mg_lingue_html() . '<a class="tmg-btn tmg-btn--lime tmg-head__cta" href="' . esc_url($cta) . '">' . esc_html(toa_mg_t($ui['cta'])) . '</a>'
        . '<button type="button" class="tmg-burger" data-tmg-mob aria-label="' . esc_attr(toa_mg_t($ui['menu'])) . '" aria-expanded="false" aria-controls="tmgMob"><span></span><span></span><span></span></button></div>'
        . '</div></header>';

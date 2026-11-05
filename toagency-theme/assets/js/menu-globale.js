@@ -43,7 +43,15 @@
   }
   D.addEventListener('click', function (e) {
     var t = e.target;
-    var v = t.closest('[data-tmg-open]'); if (v) { e.preventDefault(); open(v.getAttribute('data-tmg-open')); return; }
+    var v = t.closest('[data-tmg-open]');
+    if (v) {
+      // 05/11 Marco: la voce apre la pagina della sezione e, sopra, il pannello. Ctrl/Cmd+clic = nuova scheda, come un link normale.
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+      e.preventDefault();
+      var k = v.getAttribute('data-tmg-open'), href = v.getAttribute('href');
+      if (href && href !== '#' && !stessa(href)) { try { sessionStorage.setItem('tmg_open', k); } catch (x) {} if (openK !== k) open(k); location.href = href; return; }
+      open(k); return;
+    }
     var tb = t.closest('[data-tmg-tab]'); if (tb) { e.preventDefault(); openK = tb.getAttribute('data-tmg-tab'); aria(); return; }
     if (t.closest('[data-tmg-close]') || t === veil) { close(); return; }
     var bm = t.closest('[data-tmg-mob]'); if (bm) { e.preventDefault(); if (mob && mob.hidden) openMob(); else closeMob(); return; }
@@ -66,7 +74,15 @@
     if (window.innerWidth > 1024 && mob && !mob.hidden && !B.classList.contains('tmg-compact')) closeMob();
     if (openK) setTop();
   }
-  fit(); window.addEventListener('resize', fit); window.addEventListener('load', fit);
+  function stessa(h) {
+    try { var a = new URL(h, location.href); return a.pathname.replace(/\/+$/, '') === location.pathname.replace(/\/+$/, '') && a.search === location.search; } catch (x) { return false; }
+  }
+  fit(); window.addEventListener('resize', fit);
+  // arrivati dalla voce del menu: il pannello di quella sezione si apre sopra la pagina (solo da computer, dove c'e' il pannello)
+  try {
+    var k0 = sessionStorage.getItem('tmg_open');
+    if (k0) { sessionStorage.removeItem('tmg_open'); if (window.innerWidth > 1024 && !B.classList.contains('tmg-compact')) open(k0); }
+  } catch (x) {} window.addEventListener('load', fit);
   if (D.fonts && D.fonts.ready) D.fonts.ready.then(fit);
   window.addEventListener('scroll', function () { if (openK) setTop(); }, { passive: true });
 

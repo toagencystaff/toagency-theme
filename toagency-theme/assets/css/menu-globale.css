@@ -19,6 +19,7 @@
 .tmg-on .tmg-head__in{height:var(--tmg-hh);padding:0 32px;display:flex;align-items:center;gap:6px;max-width:none}
 .tmg-on .tmg-head .tmg-logo{margin-right:24px}
 .tmg-on .tmg-nav{display:flex;align-items:stretch;height:100%;gap:2px;flex:0 1 auto;min-width:0}
+.tmg-on a.tmg-voce{display:inline-flex;align-items:center;text-decoration:none!important;box-sizing:border-box;font-family:inherit;line-height:1.2}
 .tmg-on .tmg-voce{height:var(--tmg-hh)!important;padding:0 13px!important;border:0!important;border-bottom:4px solid transparent!important;border-top:4px solid transparent!important;border-radius:0!important;background:transparent!important;color:var(--tmg-k)!important;font-size:16px!important;font-weight:600!important;white-space:nowrap}
 .tmg-on .tmg-voce:hover{border-bottom-color:var(--tmg-line)!important}
 .tmg-on .tmg-voce[aria-expanded="true"]{border-bottom-color:var(--tmg-l)!important}
