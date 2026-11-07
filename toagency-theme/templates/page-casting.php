@@ -551,7 +551,7 @@ toa_component('header');
     };
 
     // Disponibilita': quali lingue e paesi hanno almeno un casting pubblicato (cache 10 minuti).
-    $toa_avail = get_transient('toa_casting_avail_v1');
+    $toa_avail = get_transient('toa_casting_avail_v2');
     if (!is_array($toa_avail)) {
         global $wpdb;
         $casting_tt = (int) $wpdb->get_var($wpdb->prepare(
@@ -584,6 +584,20 @@ toa_component('header');
         foreach ($valid_lingue as $lc) {
             $toa_avail['lingua'][$lc] = $toa_has(array('lingua-' . $lc));
         }
+        // PATCH 2026-11-07 marco — TEMA CASTING LINGUA: i casting NON hanno il tag lingua-*; senza tag = italiano.
+        // Quindi "Italiano" e' disponibile anche se esiste almeno un casting senza alcun tag lingua.
+        if (!$toa_avail['lingua']['it'] && $casting_tt) {
+            $lingua_tt_ids = $wpdb->get_col("SELECT tt.term_taxonomy_id FROM {$wpdb->term_taxonomy} tt
+                 INNER JOIN {$wpdb->terms} t ON t.term_id = tt.term_id
+                 WHERE tt.taxonomy = 'category' AND t.slug LIKE 'lingua-%'");
+            $excl = empty($lingua_tt_ids) ? '' : "AND p.ID NOT IN (SELECT tr2.object_id FROM {$wpdb->term_relationships} tr2 WHERE tr2.term_taxonomy_id IN (" . implode(',', array_map('intval', $lingua_tt_ids)) . "))";
+            $toa_avail['lingua']['it'] = (bool) $wpdb->get_var($wpdb->prepare(
+                "SELECT p.ID FROM {$wpdb->posts} p
+                 INNER JOIN {$wpdb->term_relationships} tr ON tr.object_id = p.ID AND tr.term_taxonomy_id = %d
+                 WHERE p.post_type = 'post' AND p.post_status = 'publish' $excl LIMIT 1",
+                $casting_tt
+            ));
+        }
         $paese_cats = array(
             'francia'        => array('francia'),
             'spagna'         => array('spagna'),
@@ -595,7 +609,7 @@ toa_component('header');
         foreach ($paese_cats as $pk => $cats) {
             $toa_avail['paese'][$pk] = $toa_has($cats);
         }
-        set_transient('toa_casting_avail_v1', $toa_avail, 600);
+        set_transient('toa_casting_avail_v2', $toa_avail, 600);
     }
 
     // Paesi nel menu: Italia sempre, gli altri solo se hanno casting (o sono gia' selezionati).
@@ -933,9 +947,18 @@ toa_component('header');
         $matched_ids = toa_casting_region_post_ids($region_mapping[$current_region], $lang);
 
         if ($current_lingua) {
+            // PATCH 2026-11-07 marco — TEMA CASTING LINGUA: nessun casting ha il tag lingua-*, quindi il filtro
+            // restituiva sempre vuoto. Lingua = tag lingua-* se c'e', altrimenti la lingua WPML del post (IT per gli originali).
             $matched_ids = array_values(array_filter($matched_ids, function ($pid) use ($current_lingua) {
                 $cats = wp_get_post_categories($pid, array('fields' => 'slugs'));
-                return in_array('lingua-' . $current_lingua, $cats, true);
+                $tagged = false;
+                foreach ($cats as $cs) {
+                    if (strpos($cs, 'lingua-') === 0) { $tagged = true; break; }
+                }
+                if ($tagged) return in_array('lingua-' . $current_lingua, $cats, true);
+                $ld = apply_filters('wpml_post_language_details', null, $pid);
+                $pl = (is_array($ld) && !empty($ld['language_code'])) ? $ld['language_code'] : 'it';
+                return $pl === $current_lingua;
             }));
         }
 
@@ -947,6 +970,17 @@ toa_component('header');
         $manual_mode      = true;
         $manual_max_pages = max(1, (int) ceil(count($manual_posts_all) / 12));
         $manual_posts     = array_slice($manual_posts_all, ($paged - 1) * 12, 12);
+    } elseif ($current_lingua === 'it') {
+        // PATCH 2026-11-07 marco — TEMA CASTING LINGUA: italiano = tag lingua-it oppure nessun tag lingua-*
+        $args['tax_query'] = array(
+            'relation' => 'AND',
+            array('taxonomy' => 'category', 'field' => 'slug', 'terms' => 'casting'),
+            array(
+                'relation' => 'OR',
+                array('taxonomy' => 'category', 'field' => 'slug', 'terms' => 'lingua-it'),
+                array('taxonomy' => 'category', 'field' => 'slug', 'terms' => array('lingua-it','lingua-en','lingua-fr','lingua-es','lingua-de','lingua-multi'), 'operator' => 'NOT IN'),
+            ),
+        );
     } elseif ($current_lingua) {
         $args['tax_query'] = array(
             'relation' => 'AND',
