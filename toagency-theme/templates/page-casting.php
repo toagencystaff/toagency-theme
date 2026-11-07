@@ -35,6 +35,12 @@ $t = array(
     'filter_estero' => array('it' => 'Estero', 'en' => 'International', 'fr' => 'International', 'es' => 'Internacional'),
     'filter_francia' => array('it' => 'Francia', 'en' => 'France', 'fr' => 'France', 'es' => 'Francia'),
     'filter_spagna' => array('it' => 'Spagna', 'en' => 'Spain', 'fr' => 'Espagne', 'es' => 'Espa&ntilde;a'),
+    // PATCH 2026-11-07 marco — TEMA CASTING FILTRI
+    'filter_italia' => array('it' => '&#127470;&#127481; Italia', 'en' => '&#127470;&#127481; Italy', 'fr' => '&#127470;&#127481; Italie', 'es' => '&#127470;&#127481; Italia'),
+    'filter_germania' => array('it' => '&#127465;&#127466; Germania', 'en' => '&#127465;&#127466; Germany', 'fr' => '&#127465;&#127466; Allemagne', 'es' => '&#127465;&#127466; Alemania'),
+    'filter_paese_label' => array('it' => 'Paese', 'en' => 'Country', 'fr' => 'Pays', 'es' => 'Pa&iacute;s'),
+    'filter_zona_label' => array('it' => 'Zona', 'en' => 'Area', 'fr' => 'Zone', 'es' => 'Zona'),
+    'badge_paese_germania' => array('it' => '&#127465;&#127466; Germania', 'en' => '&#127465;&#127466; Germany', 'fr' => '&#127465;&#127466; Allemagne', 'es' => '&#127465;&#127466; Alemania'),
     'filter_uk' => array('it' => 'Regno Unito', 'en' => 'United Kingdom', 'fr' => 'Royaume-Uni', 'es' => 'Reino Unido'),
     'filter_altri' => array('it' => 'Altri Paesi', 'en' => 'Other Countries', 'fr' => 'Autres Pays', 'es' => 'Otros Pa&iacute;ses'),
     'scopri' => array('it' => 'Scopri', 'en' => 'Discover', 'fr' => 'D&eacute;couvrir', 'es' => 'Descubrir'),
@@ -56,7 +62,7 @@ $t = array(
     'filter_lingua_multi' => array('it' => '🌐 Multilingua', 'en' => '🌐 Multilingual','fr' => '🌐 Multilingue', 'es' => '🌐 Multilingüe'),
     // PATCH 2026-09-11 marco — menu paese-di-casa per lingua (TEMA-CASTING-PAESE-LINGUA)
     'filter_svizzera'            => array('it' => 'Svizzera', 'en' => 'Switzerland', 'fr' => 'Suisse', 'es' => 'Suiza'),
-    'filter_tutti_paesi'         => array('it' => 'Tutti i casting', 'en' => 'All castings', 'fr' => 'Tous les castings', 'es' => 'Todos los castings'),
+    'filter_tutti_paesi'         => array('it' => 'Tutti i paesi', 'en' => 'All countries', 'fr' => 'Tous les pays', 'es' => 'Todos los pa&iacute;ses'),
     'filter_international_group'=> array('it' => 'Internazionale', 'en' => 'International', 'fr' => 'International', 'es' => 'Internacional'),
     'home_country_title'         => array('it' => '', 'en' => 'Castings in the UK', 'fr' => 'Castings en France', 'es' => 'Castings en España'),
     'home_country_empty'         => array('it' => '', 'en' => 'No active castings in the UK at the moment.', 'fr' => 'Aucun casting en France en ce moment.', 'es' => 'No hay castings en España en este momento.'),
@@ -146,12 +152,30 @@ toa_component('header');
 }
 /* FILTRO REGIONI */
 .region-filter-container {
-    text-align: center;
-    margin: 30px 8px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 14px 16px;
+    margin: 30px 8px 28px;
 }
-#regionFilter {
+.casting-filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1 1 220px;
+    max-width: 320px;
+    text-align: center;
+}
+.casting-filter-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray-4, #555);
+}
+.casting-select {
     width: 100%;
-    max-width: 400px;
     padding: 12px;
     font-size: 13px;
     border: 1px solid var(--gray-2);
@@ -168,11 +192,11 @@ toa_component('header');
     background-size: 16px;
     padding-right: 36px;
 }
-#regionFilter option {
+.casting-select option {
     background: var(--black);
     color: var(--white);
 }
-#regionFilter:focus {
+.casting-select:focus {
     outline: none;
     border-color: var(--accent);
 }
@@ -510,97 +534,140 @@ toa_component('header');
     $base_url = get_permalink();
 
     // PATCH 2026-09-11 marco — paese "di casa" per lingua di visualizzazione (TEMA-CASTING-PAESE-LINGUA)
-    // PATCH 2026-09-12 marco — aggiunto UK per l'inglese: ogni lingua ha il proprio paese di casa
-    // in evidenza (idem per tutte), tranne IT che vede il menu regioni italiane di sempre.
+    // (resta solo per il blocco "paese di casa" in cima alla griglia FR/ES/EN)
     $home_country_by_lang = array('fr' => 'francia', 'es' => 'spagna', 'en' => 'uk');
     $home_country = isset($home_country_by_lang[$lang]) ? $home_country_by_lang[$lang] : '';
 
-    // Etichette paese riusate sia dal menu (FR/ES/EN) sia, più sotto, dal badge sulle card.
-    $country_menu_labels = array(
-        'italia'         => '🇮🇹 ' . $_t($t['filter_all']),
-        'francia'        => '🇫🇷 ' . $_t($t['filter_francia']),
-        'spagna'         => '🇪🇸 ' . $_t($t['filter_spagna']),
-        'svizzera'       => '🇨🇭 ' . $_t($t['filter_svizzera']),
-        'uk'             => '🇬🇧 ' . $_t($t['filter_uk']),
-        'internazionale' => '🌍 ' . $_t($t['filter_altri']),
+    // PATCH 2026-11-07 marco — TEMA CASTING FILTRI: lingua + paese in alto (stessa riga), Italia con menu zone,
+    // niente voci vuote (lingue/paesi senza casting non compaiono), nessun paese "al centro".
+    $italian_regions = array('italia','nord-italia','centro-italia','sud-isole','lombardia','piemonte-liguria','triveneto','emilia-romagna','lazio','toscana','centro','campania','puglia','sud','sicilia','sardegna');
+    $in_italy        = in_array($current_region, $italian_regions, true);
+    $current_country = $in_italy ? 'italia' : $current_region;
+    $toa_filter_url  = function ($region, $lingua) use ($base_url) {
+        $q = array();
+        if ($region) $q['regione'] = $region;
+        if ($lingua) $q['lingua']  = $lingua;
+        return $q ? add_query_arg($q, $base_url) : $base_url;
+    };
+
+    // Disponibilita': quali lingue e paesi hanno almeno un casting pubblicato (cache 10 minuti).
+    $toa_avail = get_transient('toa_casting_avail_v1');
+    if (!is_array($toa_avail)) {
+        global $wpdb;
+        $casting_tt = (int) $wpdb->get_var($wpdb->prepare(
+            "SELECT tt.term_taxonomy_id FROM {$wpdb->term_taxonomy} tt
+             INNER JOIN {$wpdb->terms} t ON t.term_id = tt.term_id
+             WHERE tt.taxonomy = 'category' AND t.slug = %s LIMIT 1",
+            'casting'
+        ));
+        $toa_has = function ($slugs) use ($wpdb, $casting_tt) {
+            if (!$casting_tt) return false;
+            $ph     = implode(',', array_fill(0, count($slugs), '%s'));
+            $tt_ids = $wpdb->get_col($wpdb->prepare(
+                "SELECT tt.term_taxonomy_id FROM {$wpdb->term_taxonomy} tt
+                 INNER JOIN {$wpdb->terms} t ON t.term_id = tt.term_id
+                 WHERE tt.taxonomy = 'category' AND t.slug IN ($ph)",
+                $slugs
+            ));
+            if (empty($tt_ids)) return false;
+            $in = implode(',', array_map('intval', $tt_ids));
+            return (bool) $wpdb->get_var($wpdb->prepare(
+                "SELECT tr1.object_id FROM {$wpdb->term_relationships} tr1
+                 INNER JOIN {$wpdb->term_relationships} tr2 ON tr1.object_id = tr2.object_id
+                 INNER JOIN {$wpdb->posts} p ON p.ID = tr1.object_id
+                 WHERE tr1.term_taxonomy_id = %d AND tr2.term_taxonomy_id IN ($in)
+                 AND p.post_type = 'post' AND p.post_status = 'publish' LIMIT 1",
+                $casting_tt
+            ));
+        };
+        $toa_avail = array('lingua' => array(), 'paese' => array());
+        foreach ($valid_lingue as $lc) {
+            $toa_avail['lingua'][$lc] = $toa_has(array('lingua-' . $lc));
+        }
+        $paese_cats = array(
+            'francia'        => array('francia'),
+            'spagna'         => array('spagna'),
+            'uk'             => array('regno-unito', 'uk'),
+            'germania'       => array('germania', 'germany'),
+            'svizzera'       => array('svizzera'),
+            'internazionale' => array('internazionale', 'estero'),
+        );
+        foreach ($paese_cats as $pk => $cats) {
+            $toa_avail['paese'][$pk] = $toa_has($cats);
+        }
+        set_transient('toa_casting_avail_v1', $toa_avail, 600);
+    }
+
+    // Paesi nel menu: Italia sempre, gli altri solo se hanno casting (o sono gia' selezionati).
+    $country_flags = array('francia' => '🇫🇷', 'spagna' => '🇪🇸', 'uk' => '🇬🇧', 'svizzera' => '🇨🇭', 'internazionale' => '🌍');
+    $country_menu_labels = array('italia' => $_t($t['filter_italia']));
+    foreach (array('francia', 'spagna', 'uk', 'germania', 'svizzera', 'internazionale') as $pk) {
+        if (!empty($toa_avail['paese'][$pk]) || $current_country === $pk) {
+            $country_menu_labels[$pk] = (isset($country_flags[$pk]) ? $country_flags[$pk] . ' ' : '') . $_t($t['filter_' . ($pk === 'internazionale' ? 'altri' : $pk)]);
+        }
+    }
+
+    // Zone d'Italia (mostrate solo dopo aver scelto Italia).
+    $italy_zones = array(
+        array($t['filter_nord'], array(
+            'nord-italia' => $_t($t['filter_tutto_nord']), 'lombardia' => 'Lombardia',
+            'piemonte-liguria' => $_t($t['filter_piemonte_liguria']), 'triveneto' => 'Triveneto',
+            'emilia-romagna' => 'Emilia Romagna')),
+        array($t['filter_centro_label'], array(
+            'centro-italia' => $_t($t['filter_tutto_centro']), 'lazio' => 'Lazio', 'toscana' => 'Toscana',
+            'centro' => $_t($t['filter_marche_etc']))),
+        array($t['filter_sud_label'], array(
+            'sud-isole' => $_t($t['filter_tutto_sud']), 'campania' => 'Campania', 'puglia' => 'Puglia',
+            'sud' => $_t($t['filter_molise_etc']), 'sicilia' => 'Sicilia', 'sardegna' => 'Sardegna')),
     );
+
+    // Lingue nel menu: solo quelle con casting (o la selezionata).
+    $lingua_opts = array();
+    foreach ($valid_lingue as $lc) {
+        if (!empty($toa_avail['lingua'][$lc]) || $current_lingua === $lc) $lingua_opts[] = $lc;
+    }
     ?>
     <div class="region-filter-container">
-    <?php if ($lang === 'it') : ?>
-        <!-- IT: menu regioni italiane invariato -->
-        <select id="regionFilter" onchange="window.location.href=this.value">
-            <option value="<?php echo $base_url . ($current_lingua ? '?lingua=' . $current_lingua : ''); ?>" <?php echo !$current_region ? 'selected' : ''; ?>><?php echo $_t($t['filter_all']); ?></option>
-            <optgroup label="<?php echo esc_attr($_t($t['filter_nord'])); ?>">
-                <option value="<?php echo $base_url; ?>?regione=nord-italia<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'nord-italia' ? 'selected' : ''; ?>><?php echo $_t($t['filter_tutto_nord']); ?></option>
-                <option value="<?php echo $base_url; ?>?regione=lombardia<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'lombardia' ? 'selected' : ''; ?>>Lombardia</option>
-                <option value="<?php echo $base_url; ?>?regione=piemonte-liguria<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'piemonte-liguria' ? 'selected' : ''; ?>><?php echo $_t($t['filter_piemonte_liguria']); ?></option>
-                <option value="<?php echo $base_url; ?>?regione=triveneto<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'triveneto' ? 'selected' : ''; ?>>Triveneto</option>
-                <option value="<?php echo $base_url; ?>?regione=emilia-romagna<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'emilia-romagna' ? 'selected' : ''; ?>>Emilia Romagna</option>
-            </optgroup>
-            <optgroup label="<?php echo esc_attr($_t($t['filter_centro_label'])); ?>">
-                <option value="<?php echo $base_url; ?>?regione=centro-italia<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'centro-italia' ? 'selected' : ''; ?>><?php echo $_t($t['filter_tutto_centro']); ?></option>
-                <option value="<?php echo $base_url; ?>?regione=lazio<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'lazio' ? 'selected' : ''; ?>>Lazio</option>
-                <option value="<?php echo $base_url; ?>?regione=toscana<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'toscana' ? 'selected' : ''; ?>>Toscana</option>
-                <option value="<?php echo $base_url; ?>?regione=centro<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'centro' ? 'selected' : ''; ?>><?php echo $_t($t['filter_marche_etc']); ?></option>
-            </optgroup>
-            <optgroup label="<?php echo esc_attr($_t($t['filter_sud_label'])); ?>">
-                <option value="<?php echo $base_url; ?>?regione=sud-isole<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'sud-isole' ? 'selected' : ''; ?>><?php echo $_t($t['filter_tutto_sud']); ?></option>
-                <option value="<?php echo $base_url; ?>?regione=campania<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'campania' ? 'selected' : ''; ?>>Campania</option>
-                <option value="<?php echo $base_url; ?>?regione=puglia<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'puglia' ? 'selected' : ''; ?>>Puglia</option>
-                <option value="<?php echo $base_url; ?>?regione=sud<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'sud' ? 'selected' : ''; ?>><?php echo $_t($t['filter_molise_etc']); ?></option>
-                <option value="<?php echo $base_url; ?>?regione=sicilia<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'sicilia' ? 'selected' : ''; ?>>Sicilia</option>
-                <option value="<?php echo $base_url; ?>?regione=sardegna<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'sardegna' ? 'selected' : ''; ?>>Sardegna</option>
-            </optgroup>
-            <optgroup label="<?php echo esc_attr($_t($t['filter_estero'])); ?>">
-                <option value="<?php echo $base_url; ?>?regione=francia<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'francia' ? 'selected' : ''; ?>><?php echo $_t($t['filter_francia']); ?></option>
-                <option value="<?php echo $base_url; ?>?regione=spagna<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'spagna' ? 'selected' : ''; ?>><?php echo $_t($t['filter_spagna']); ?></option>
-                <option value="<?php echo $base_url; ?>?regione=uk<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'uk' ? 'selected' : ''; ?>><?php echo $_t($t['filter_uk']); ?></option>
-                <option value="<?php echo $base_url; ?>?regione=internazionale<?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region == 'internazionale' ? 'selected' : ''; ?>><?php echo $_t($t['filter_altri']); ?></option>
-            </optgroup>
-        </select>
-    <?php elseif ($home_country) : ?>
-        <!-- FR/ES: paese di casa in evidenza, poi gruppo "International" senza regioni italiane -->
-        <?php $other_countries = array_diff(array_keys($country_menu_labels), array($home_country)); ?>
-        <select id="regionFilter" onchange="window.location.href=this.value">
-            <option value="<?php echo $base_url . ($current_lingua ? '?lingua=' . $current_lingua : ''); ?>" <?php echo !$current_region ? 'selected' : ''; ?>><?php echo $_t($t['filter_tutti_paesi']); ?></option>
-            <option value="<?php echo $base_url; ?>?regione=<?php echo $home_country; ?><?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region === $home_country ? 'selected' : ''; ?> style="font-weight:700;color:var(--accent);"><?php echo $country_menu_labels[$home_country]; ?></option>
-            <optgroup label="<?php echo esc_attr($_t($t['filter_international_group'])); ?>">
-                <?php foreach ($other_countries as $slug) : ?>
-                <option value="<?php echo $base_url; ?>?regione=<?php echo $slug; ?><?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region === $slug ? 'selected' : ''; ?>><?php echo $country_menu_labels[$slug]; ?></option>
+        <!-- LINGUA (in alto, prima del paese) -->
+        <?php if (!empty($lingua_opts)) : ?>
+        <label class="casting-filter-field">
+            <span class="casting-filter-label"><?php echo $_t($t['filter_lingua_label']); ?></span>
+            <select id="linguaFilter" class="casting-select" onchange="window.location.href=this.value">
+                <option value="<?php echo esc_url($toa_filter_url($current_region, '')); ?>" <?php echo !$current_lingua ? 'selected' : ''; ?>><?php echo $_t($t['filter_lingua_all']); ?></option>
+                <?php foreach ($lingua_opts as $lc) : ?>
+                <option value="<?php echo esc_url($toa_filter_url($current_region, $lc)); ?>" <?php echo $current_lingua === $lc ? 'selected' : ''; ?>><?php echo $_t($t['filter_lingua_' . $lc]); ?></option>
                 <?php endforeach; ?>
-            </optgroup>
-        </select>
-    <?php else : ?>
-        <!-- EN (e altre lingue future): lista piatta di paesi, nessuno in evidenza, niente regioni italiane -->
-        <select id="regionFilter" onchange="window.location.href=this.value">
-            <option value="<?php echo $base_url . ($current_lingua ? '?lingua=' . $current_lingua : ''); ?>" <?php echo !$current_region ? 'selected' : ''; ?>><?php echo $_t($t['filter_tutti_paesi']); ?></option>
-            <?php foreach ($country_menu_labels as $slug => $label) : ?>
-                <option value="<?php echo $base_url; ?>?regione=<?php echo $slug; ?><?php echo $current_lingua ? '&lingua='.$current_lingua : ''; ?>" <?php echo $current_region === $slug ? 'selected' : ''; ?>><?php echo $label; ?></option>
-            <?php endforeach; ?>
-        </select>
-    <?php endif; ?>
-    </div>
+            </select>
+        </label>
+        <?php endif; ?>
 
-    <!-- PATCH 2026-05-22 marco — filtro lingua pill buttons -->
-    <?php
-    $lingua_opts = array('it','en','fr','es','de','multi');
-    // Costruisce URL preservando il filtro regione attivo
-    $qs_regione = $current_region ? '&regione=' . $current_region : '';
-    ?>
-    <div class="language-filter-wrap">
-        <span class="language-filter-label"><?php echo $_t($t['filter_lingua_label']); ?></span>
-        <div class="language-filter-pills">
-            <a href="<?php echo $base_url . ($current_region ? '?regione='.$current_region : ''); ?>"
-               class="langue-btn <?php echo !$current_lingua ? 'active' : ''; ?>">
-                <?php echo $_t($t['filter_lingua_all']); ?>
-            </a>
-            <?php foreach ($lingua_opts as $lc) : ?>
-            <a href="<?php echo $base_url . '?lingua=' . $lc . $qs_regione; ?>"
-               class="langue-btn <?php echo $current_lingua === $lc ? 'active' : ''; ?>">
-                <?php echo $_t($t['filter_lingua_' . $lc]); ?>
-            </a>
-            <?php endforeach; ?>
-        </div>
+        <!-- PAESE -->
+        <label class="casting-filter-field">
+            <span class="casting-filter-label"><?php echo $_t($t['filter_paese_label']); ?></span>
+            <select id="countryFilter" class="casting-select" onchange="window.location.href=this.value">
+                <option value="<?php echo esc_url($toa_filter_url('', $current_lingua)); ?>" <?php echo !$current_region ? 'selected' : ''; ?>><?php echo $_t($t['filter_tutti_paesi']); ?></option>
+                <?php foreach ($country_menu_labels as $slug => $label) : ?>
+                <option value="<?php echo esc_url($toa_filter_url($slug, $current_lingua)); ?>" <?php echo $current_country === $slug ? 'selected' : ''; ?>><?php echo $label; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </label>
+
+        <!-- ZONE D'ITALIA (solo con Italia selezionata) -->
+        <?php if ($in_italy) : ?>
+        <label class="casting-filter-field">
+            <span class="casting-filter-label"><?php echo $_t($t['filter_zona_label']); ?></span>
+            <select id="regionFilter" class="casting-select" onchange="window.location.href=this.value">
+                <option value="<?php echo esc_url($toa_filter_url('italia', $current_lingua)); ?>" <?php echo $current_region === 'italia' ? 'selected' : ''; ?>><?php echo $_t($t['filter_all']); ?></option>
+                <?php foreach ($italy_zones as $zone_group) : ?>
+                <optgroup label="<?php echo esc_attr($_t($zone_group[0])); ?>">
+                    <?php foreach ($zone_group[1] as $zslug => $zlabel) : ?>
+                    <option value="<?php echo esc_url($toa_filter_url($zslug, $current_lingua)); ?>" <?php echo $current_region === $zslug ? 'selected' : ''; ?>><?php echo $zlabel; ?></option>
+                    <?php endforeach; ?>
+                </optgroup>
+                <?php endforeach; ?>
+            </select>
+        </label>
+        <?php endif; ?>
     </div>
 
     <!-- GRIGLIA CASTING -->
@@ -629,6 +696,7 @@ toa_component('header');
         'spagna'         => array('spagna'),
         'svizzera'       => array('svizzera'),
         'uk'             => array('regno-unito', 'uk'),
+        'germania'       => array('germania', 'germany'),
         'internazionale' => array('internazionale', 'estero'),
         // PATCH 2026-09-11 marco — voce aggregata "Italia" per i menu FR/ES/EN (tutte le regioni)
         'italia'         => array('lombardia', 'piemonte', 'liguria', 'valle-daosta', 'veneto', 'trentino-alto-adige', 'fvg', 'emilia-romagna', 'lazio', 'toscana', 'marche', 'umbria', 'abruzzo', 'campania', 'puglia', 'molise', 'basilicata', 'calabria', 'sicilia', 'sardegna', 'tutta-italia'),
@@ -657,6 +725,8 @@ toa_component('header');
                 'svizzera'       => 'svizzera',
                 'regno-unito'    => 'uk',
                 'uk'             => 'uk',
+                'germania'       => 'germania',
+                'germany'        => 'germania',
                 'internazionale' => 'internazionale',
                 'estero'         => 'internazionale',
             );
