@@ -42,7 +42,8 @@
   /* ───────── video: caricati solo vicino allo schermo, al massimo 3 alla volta (prima quelli visibili), partono solo se visibili ─────────
    * I video passano dal proxy del CRM: scaricarne 20 insieme rallentava tutto (04/11). Un video senza immagine (solo audio o codec che
    * il browser non legge: larghezza 0) o che va in errore fa sparire la card: mai un riquadro nero vuoto. */
-  var Q = [], attivi = 0, MAXV = 3;
+  // 07/11 (ticket 857): le card usano l'anteprima leggera (~500 KB, 7 s) mandata dal CRM, non il video intero → 6 alla volta
+  var Q = [], attivi = 0, MAXV = 6;
   function vidKo(v) { var c = v.closest('.tcr-cc'); if (c) { c.style.display = 'none'; pari(c.parentNode); } else { var a = v.closest('.tcr-ph'); if (a) a.style.visibility = 'hidden'; } }
   // FIX 2026-11-05 (TEMA Ticket 789): le fasce sono a 2 colonne; con un numero dispari di card restava un buco nero nella griglia → si nasconde l'ultima
   function pari(g) {
@@ -210,7 +211,7 @@
     var on = window.tcrForm && window.tcrForm.has(p.codice);
     var da = S.testi ? S.testi.da : '';
     return '<div class="tcr-cc' + (on ? ' sel' : '') + '" data-c="' + esc(p.codice) + '" data-n="' + esc(p.nome) + '" role="button" tabindex="0" aria-pressed="' + !!on + '" aria-label="' + esc(p.nome + ' #' + p.codice + ' — ' + U.add) + '">' +
-      '<div class="tcr-vid"><video muted loop playsinline preload="metadata" data-src="' + esc(p.video) + '"></video><div class="tcr-vid__shade"></div>' +
+      '<div class="tcr-vid"><video muted loop playsinline preload="metadata" data-src="' + esc(p.anteprima || p.video) + '"></video><div class="tcr-vid__shade"></div>' +
       (chips.length ? '<div class="tcr-ins">' + chips.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div>' : '') +
       '<div class="tcr-who2"><img class="tcr-av" alt="" loading="lazy" src="' + esc(p.foto) + '"><div class="tcr-who"><b>' + esc(p.nome) + '<i title="' + esc(U.verificato) + '">✓</i></b><small>#' + esc(p.codice) + (p.fascia ? ' · ' + esc(p.fascia) : '') + '</small></div></div>' +
       '<span class="tcr-add" aria-hidden="true">' + (on ? '✓' : '+') + '</span></div>' +
@@ -256,14 +257,17 @@
   }
   function drawVetrina() {
     var j = S.v, shown = [];
+    S.rest = {}; S.mx = 0;   // «Vedi altri creator»: profili ancora da mostrare e passo (0 = niente, 1 = righe aperte, 2 = invito alla richiesta)
     var wide = j.allargato || [];
     $('tcrWide').hidden = !wide.length; $('tcrWide').textContent = wide.join(' ');
     if (S.settore) {
-      shown = (j.profili || []).slice(0, 8).sort(function (a, b) { return (a.prezzo_da || 0) - (b.prezzo_da || 0); });
+      var tutti = j.profili || [];
+      shown = tutti.slice(0, 8).sort(function (a, b) { return (a.prezzo_da || 0) - (b.prezzo_da || 0); });
+      S.rest.flat = tutti.slice(8).sort(function (a, b) { return (a.prezzo_da || 0) - (b.prezzo_da || 0); });
       $('tcrFlat').innerHTML = shown.map(card).join('');
     } else {
       ['essenziale', 'pro', 'premium'].forEach(function (b) {
-        var x = ((j.bande || {})[b] || []).slice(0, 6); shown = shown.concat(x);
+        var tuttiB = (j.bande || {})[b] || [], x = tuttiB.slice(0, 6); shown = shown.concat(x); S.rest[b] = tuttiB.slice(6);
         $('tcrG' + b).innerHTML = x.map(card).join(''); pari($('tcrG' + b));
         var lab = x[0] && x[0].banda_label; if (lab) document.querySelector('[data-b="' + b + '"]').textContent = lab;
         var m = x.length ? Math.min.apply(null, x.map(function (p) { return p.prezzo_da || 1e9; })) : 0;
@@ -273,13 +277,37 @@
     if (!S.kpi && !S.settore && !S.area && !S.contenuto) { S.kpi = true; $('tcrKpiTot').textContent = j.totale; }
     var st = S.settore && S.filtri ? (S.filtri.settori || []).filter(function (s) { return s.codice === S.settore; })[0] : null;
     var tot = st ? st.creator : j.totale;
+    S.tot = tot; S.nShown = shown.length;
     $('tcrAltri').hidden = !shown.length;
     $('tcrStack').innerHTML = shown.slice(0, 5).map(function (p) { return '<img alt="" loading="lazy" src="' + esc(p.foto) + '">'; }).join('') + '<span>+' + Math.max(tot - shown.length, 0) + '</span>';
     $('tcrAltriH').textContent = U.altriH; $('tcrAltriP').innerHTML = tpl(esc(U.altriP).replace(/&lt;(\/?)b&gt;/g, '<$1b>'), { n: esc(tot) }); $('tcrAltriB').textContent = U.altriB;
+    $('tcrAltriM').hidden = true; $('tcrAltriM').textContent = U.altriM || '';
     $('tcrDisc').innerHTML = '<span class="tcr-ivn"></span> ' + esc((S.testi ? S.testi.esempio : '') + ' ' + U.privacy);
     watch($('vetrina'));
     ivaShow();
   }
+
+  /* «Vedi altri creator» (ticket 857, 07/11/2026): 1° click = altre 3 righe di creator per fascia (le card in più arrivano già dal CRM),
+   * 2° click = messaggio che invita a mandare la richiesta, poi il bottone porta al modulo #richiesta. Senza altri profili si passa subito al messaggio. */
+  function colonne(el, dflt) { try { var n = getComputedStyle(el).gridTemplateColumns.split(/\s+/).filter(function (t) { return /^[\d.]+(px|fr|%)$/.test(t); }).length; return n > 0 ? n : dflt; } catch (e) { return dflt; } }
+  function altriApri() {
+    var gs = S.settore ? [['flat', $('tcrFlat')]] : ['essenziale', 'pro', 'premium'].map(function (b) { return [b, $('tcrG' + b)]; });
+    gs.forEach(function (g) {
+      var list = (S.rest || {})[g[0]] || [], add = list.splice(0, colonne(g[1], S.settore ? 4 : 2) * 3);
+      if (!add.length) return;
+      g[1].insertAdjacentHTML('beforeend', add.map(card).join(''));
+      pari(g[1]); S.nShown += add.length;
+    });
+    var sp = $('tcrStack').querySelector('span'); if (sp) sp.textContent = '+' + Math.max((S.tot || 0) - S.nShown, 0);
+    watch($('vetrina')); marks(); ivaShow();
+  }
+  $('tcrAltriB').addEventListener('click', function (e) {
+    if (S.mx >= 2) return;                       // dopo l'invito il bottone e' un link normale a #richiesta
+    e.preventDefault();
+    var resta = false; Object.keys(S.rest || {}).forEach(function (k) { if ((S.rest[k] || []).length) resta = true; });
+    if (S.mx === 0 && resta) { altriApri(); S.mx = 1; return; }
+    S.mx = 2; $('tcrAltriM').hidden = false; $('tcrAltriB').textContent = U.altriB2 || U.altriB;
+  });
 
   /* ───────── apertura: 3 telefoni che ruotano tra i creator in evidenza (sempre col loro credito) ───────── */
   function drawHero(list) {
@@ -288,7 +316,7 @@
     var pool = list.slice();
     function nic(p) { return String(p.nicchia || 'Creator').split(' & ')[0]; }
     function ph(p) {
-      return '<video muted loop playsinline preload="metadata"' + (RM ? '' : ' autoplay') + ' data-src="' + esc(p.video) + '"></video>' +
+      return '<video muted loop playsinline preload="metadata"' + (RM ? '' : ' autoplay') + ' data-src="' + esc(p.anteprima || p.video) + '"></video>' +
         '<em class="tcr-ph__nic">' + esc(nic(p)) + '</em><div class="tcr-ph__ov"><img class="tcr-av" alt="" src="' + esc(p.foto) + '">' +
         '<div class="tcr-who"><b>' + esc(p.nome) + '<i title="' + esc(U.verificato) + '">✓</i></b><small>' + esc((p.nicchia ? p.nicchia + ' · ' : '') + '#' + p.codice) + '</small></div>' +
         '<span class="tcr-ph__go">' + esc(U.scheda) + '</span></div>';

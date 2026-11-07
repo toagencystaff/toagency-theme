@@ -159,6 +159,8 @@ body.tcr-site .tcr-top__cta{padding:8px 14px!important;font-size:13px!important}
 .tcr-altri h3{font-size:19px!important;font-weight:800!important}
 .tcr-altri p{margin:6px 0 0;color:var(--mut);font-size:14px}
 .tcr-altri p b{color:var(--ink)}
+.tcr-altri p.tcr-altri__m{margin-top:10px;color:var(--ink);font-weight:600}
+.tcr-altri p.tcr-altri__m[hidden]{display:none}
 .tcr-stack{display:flex;flex:none}
 .tcr-stack img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid #141418;margin-left:-12px;background:#222}
 .tcr-stack img:first-child{margin-left:0}
