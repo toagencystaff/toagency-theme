@@ -66,6 +66,26 @@ $kit = array(
               'fr'=>'Avec une vidéo approuvée et des statistiques récentes, vous pouvez apparaître parmi les créateurs proposés aux marques sur toagency.it, sans jamais vos réseaux ni votre ville.',
               'es'=>'Con un vídeo aprobado y estadísticas recientes puedes aparecer entre los creadores que mostramos a las marcas en toagency.it, nunca con tus redes ni tu ciudad.')),
 );
+$faq_h = array('it'=>"Domande frequenti",'en'=>"Frequently asked questions",'fr'=>"Questions fréquentes",'es'=>"Preguntas frecuentes");
+$faq_items = array(
+    array('q'=>array('it'=>"Come divento creator con TOAgency?",'en'=>"How do I become a creator with TOAgency?",'fr'=>"Comment devenir créateur avec TOAgency ?",'es'=>"¿Cómo ser creador con TOAgency?"),
+          'a'=>array('it'=>"Ti iscrivi come talent con il ruolo «Influencer/Creator» già scelto: bastano pochi minuti e qualche foto. Il Kit Creator lo completi quando ti candidi a un casting.",'en'=>"Sign up as a talent with the «Influencer/Creator» role already selected: it takes a few minutes and a few photos. You complete the Creator Kit when you apply for a casting.",'fr'=>"Inscrivez-vous comme talent avec le rôle « Influenceur/Créateur » déjà coché : quelques minutes et quelques photos suffisent. Vous complétez le Kit Créateur quand vous postulez à un casting.",'es'=>"Regístrate como talent con el rol «Influencer/Creador» ya elegido: bastan unos minutos y algunas fotos. Completas el Kit Creador cuando te presentas a un casting.")),
+    array('q'=>array('it'=>"Che contenuti fanno i creator?",'en'=>"What kind of content do creators make?",'fr'=>"Quels contenus font les créateurs ?",'es'=>"¿Qué contenidos hacen los creadores?"),
+          'a'=>array('it'=>"Video UGC, contenuti sul tuo profilo, live coverage di eventi e stand.",'en'=>"UGC videos, posts on your own profile, live coverage of events and booths.",'fr'=>"Des vidéos UGC, des publications sur votre profil, de la couverture live d'événements et de stands.",'es'=>"Vídeos UGC, publicaciones en tu perfil, cobertura en directo de eventos y stands.")),
+    array('q'=>array('it'=>"Cosa guardano i brand?",'en'=>"What do brands look at?",'fr'=>"Que regardent les marques ?",'es'=>"¿Qué miran las marcas?"),
+          'a'=>array('it'=>"Video originali senza watermark di TikTok o di altre app, statistiche recenti del tuo profilo e una nicchia chiara.",'en'=>"Original videos with no TikTok or other app watermarks, recent stats from your profile and a clear niche.",'fr'=>"Des vidéos originales sans filigrane TikTok ni d'une autre appli, les statistiques récentes de votre profil et une thématique claire.",'es'=>"Vídeos originales sin marca de agua de TikTok ni de otras apps, estadísticas recientes de tu perfil y una temática clara.")),
+    array('q'=>array('it'=>"Cos'è il Kit Creator?",'en'=>"What is the Creator Kit?",'fr'=>"Qu'est-ce que le Kit Créateur ?",'es'=>"¿Qué es el Kit Creador?"),
+          'a'=>array('it'=>"Quando ti candidi a un casting per creator ti chiediamo le statistiche (dagli screenshot) e almeno due video originali. Lo staff li controlla prima di pubblicarli.",'en'=>"When you apply for a creator casting, we ask for your stats (from screenshots) and at least two original videos. Our team checks them before they go live.",'fr'=>"Quand vous postulez à un casting créateur, nous vous demandons vos statistiques (en captures) et au moins deux vidéos originales. Notre équipe les vérifie avant de les publier.",'es'=>"Cuando te presentas a un casting de creadores te pedimos tus estadísticas (en capturas) y al menos dos vídeos originales. El equipo los revisa antes de publicarlos.")),
+    array('q'=>array('it'=>"Chi decide il compenso?",'en'=>"Who sets the fee?",'fr'=>"Qui fixe le tarif ?",'es'=>"¿Quién fija el caché?"),
+          'a'=>array('it'=>"In ogni casting per creator indichi tu quanto chiedi.",'en'=>"For every creator casting, you set the fee you're asking for.",'fr'=>"Pour chaque casting créateur, vous indiquez vous-même votre tarif.",'es'=>"En cada casting de creadores indicas tú el caché que pides.")),
+    array('q'=>array('it'=>"I brand vedono i miei social o la mia città?",'en'=>"Can brands see my socials or my city?",'fr'=>"Les marques voient-elles mes réseaux ou ma ville ?",'es'=>"¿Las marcas ven mis redes o mi ciudad?"),
+          'a'=>array('it'=>"No. Nella vetrina dei brand su toagency.it non compaiono i tuoi social né la tua città.",'en'=>"No. In the brand showcase on toagency.it your socials and your city never appear.",'fr'=>"Non. Dans la vitrine des marques sur toagency.it, ni vos réseaux ni votre ville n'apparaissent.",'es'=>"No. En el escaparate de marcas de toagency.it nunca aparecen tus redes ni tu ciudad.")),
+    array('q'=>array('it'=>"Ho già una scheda TOAgency: devo iscrivermi di nuovo?",'en'=>"I already have a TOAgency profile: do I sign up again?",'fr'=>"J'ai déjà une fiche TOAgency : dois-je me réinscrire ?",'es'=>"Ya tengo ficha en TOAgency: ¿me registro otra vez?"),
+          'a'=>array('it'=>"No. Recupera il link della tua scheda e aggiungi il ruolo creator.",'en'=>"No. Get the link to your profile back and add the creator role.",'fr'=>"Non. Récupérez le lien de votre fiche et ajoutez le rôle créateur.",'es'=>"No. Recupera el enlace de tu ficha y añade el rol de creador.")),
+    array('q'=>array('it'=>"Iscriversi garantisce collaborazioni?",'en'=>"Does signing up guarantee collaborations?",'fr'=>"L'inscription garantit-elle des collaborations ?",'es'=>"¿Registrarse garantiza colaboraciones?"),
+          'a'=>array('it'=>"No. Sei tu a scegliere a quali casting candidarti; noi ti proponiamo ai brand giusti.",'en'=>"No. You choose which castings to apply for, and we put you forward to the right brands.",'fr'=>"Non. Vous choisissez les castings auxquels postuler, et nous vous présentons aux bonnes marques.",'es'=>"No. Tú eliges a qué castings presentarte y nosotros te proponemos a las marcas adecuadas.")),
+);
+
 $home_cr = function_exists('toa_creators_url') ? toa_creators_url('home', $lang) : '';
 
 toa_component('creators-site-head', array('tcr_active' => 'diventa'));
@@ -97,6 +117,11 @@ if (!$home_cr && function_exists('toa_creators_url')) $home_cr = toa_creators_ur
 
     <section class="tcr-sec">
       <div class="tcr-dv-note"><span><?php echo wp_kses($_t($T['gia']), array('b' => array())); ?></span><a class="tcr-btn tcr-btn--s" href="<?php echo esc_url($recupera); ?>"><?php echo esc_html($_t($T['giab'])); ?></a></div>
+    </section>
+
+    <section class="tcr-sec" id="faq">
+      <div class="tcr-sh"><h2 class="tcr-h2"><?php echo esc_html($_t($faq_h)); ?></h2></div>
+      <?php toa_component('toa-faq', array('toafaq_items' => $faq_items)); ?>
     </section>
 
     <?php if ($home_cr): ?>
