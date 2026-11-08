@@ -492,6 +492,45 @@ toa_component('header');
     endif; ?>
     <!-- END FIX 2026-10-07 marco — link contestuali hostess/steward -->
 
+    <!-- BEGIN 2026-11-08 TEMA GEO AI — box generico «Lavora con TOAgency» (chi cerca lavoro arriva anche sulle guide per aziende, es. ATP Finals: 143 clic in 3 mesi).
+         Generico per scelta di Marco: nessuna promessa sul singolo evento. -->
+    <?php if ( ! $sl_is_casting ) :
+        $toa_wl = toa_current_lang();
+        $toa_wl_url = home_url( '/collabora/' );
+        $__c = get_page_by_path( 'collabora' );
+        if ( $__c ) {
+            $__cid = $__c->ID;
+            if ( has_filter( 'wpml_object_id' ) ) {
+                $__ct = apply_filters( 'wpml_object_id', $__cid, 'page', true, $toa_wl );
+                if ( $__ct ) { $__cid = $__ct; }
+            }
+            $toa_wl_url = get_permalink( $__cid );
+        }
+        $toa_wl_ruoli = array(
+            'it' => array( 'Hostess', 'Steward', 'Promoter', 'Creator', 'Modelli', 'Attori', 'Comparse', 'Crew' ),
+            'en' => array( 'Hostesses', 'Stewards', 'Promoters', 'Creators', 'Models', 'Actors', 'Extras', 'Crew' ),
+            'fr' => array( 'Hôtesses', 'Stewards', 'Promoteurs', 'Créateurs', 'Mannequins', 'Acteurs', 'Figurants', 'Équipes Techniques' ),
+            'es' => array( 'Azafatas', 'Auxiliares', 'Promotores', 'Creadores', 'Modelos', 'Actores', 'Figurantes', 'Equipo Técnico' ),
+        );
+        $toa_wl_r = $toa_wl_ruoli[ $toa_wl ] ?? $toa_wl_ruoli['it'];
+    ?>
+    <aside class="toa-sl-worklink" aria-label="<?php echo esc_attr( _ht(['it'=>'Lavora con TOAgency','en'=>'Work with TOAgency','fr'=>'Travailler avec TOAgency','es'=>'Trabaja con TOAgency']) ); ?>">
+        <style>
+            .toa-sl-worklink{max-width:760px;margin:16px auto 0;padding:24px 28px;border:1px solid #2a2a2a;background:#fff;color:#111;display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px}
+            .toa-sl-worklink strong{flex:1 1 100%;font-size:18px;color:#111}
+            .toa-sl-worklink__ruoli{flex:1 1 320px;display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+            .toa-sl-worklink__ruoli li{border:1px solid #111;padding:4px 10px;font-size:13px;line-height:1.3}
+            .toa-sl-worklink a{flex:0 0 auto;background:#111;color:#fff;padding:12px 22px;text-decoration:none;font-weight:600}
+            .toa-sl-worklink a:hover{background:#000}
+            @media(max-width:768px){.toa-sl-worklink{margin:16px 16px 0;padding:20px}.toa-sl-worklink a{flex:1 1 100%;text-align:center}}
+        </style>
+        <strong><?php echo _ht(['it'=>'Lavora con TOAgency','en'=>'Work with TOAgency','fr'=>'Travailler avec TOAgency','es'=>'Trabaja con TOAgency']); ?></strong>
+        <ul class="toa-sl-worklink__ruoli"><?php foreach ( $toa_wl_r as $__r ) { echo '<li>' . esc_html( $__r ) . '</li>'; } ?></ul>
+        <a href="<?php echo esc_url( $toa_wl_url ); ?>" data-toa-track="worklink_iscriviti"><?php echo _ht(['it'=>'Iscriviti','en'=>'Sign Up','fr'=>'S’inscrire','es'=>'Regístrate']); ?></a>
+    </aside>
+    <?php endif; ?>
+    <!-- END 2026-11-08 TEMA GEO AI — box Lavora con TOAgency -->
+
     <!-- LEGGI ANCHE -->
     <?php
     $sl_rel_args = array(
