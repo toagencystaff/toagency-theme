@@ -5,7 +5,7 @@
  *
  * 1) wpseo_schema_organization → arricchisce il grafo Yoast (address, phone, email, priceRange, areaServed, contactPoint)
  * 2) wp_head Service           → nodo Service su 5 pagine servizio
- * 3) wp_head JobPosting        → JobPosting su /collabora/ (feed Google Jobs gratuito)
+ * 3) (tolto 08/11/2026) JobPosting generico su /collabora/ — i JobPosting veri sono sui singoli casting
  *
  * NON duplica Organization: si aggancia al grafo Yoast esistente via filtro.
  *
@@ -126,33 +126,8 @@ add_action( 'wp_head', function () {
 }, 20 );
 
 
-// === 3) JOB POSTING — /collabora/ ===
-add_action( 'wp_head', function () {
-    if ( is_admin() ) return;
-    if ( _toa_schema_tpl() !== 'page-collabora.php' ) return;
-
-    $schema = [
-        '@context'       => 'https://schema.org',
-        '@type'          => 'JobPosting',
-        'title'          => 'Talent TOAgency — Modello, Hostess, Steward, Attore',
-        'description'    => '<p>TOAgency seleziona continuativamente talent per collaborazioni con brand nazionali e internazionali.</p><p>Cerchiamo: modelli, hostess, steward, attori, promoter e personale eventi. Esperienza non necessaria per alcune figure. Lavoro flessibile su tutto il territorio italiano e in Europa.</p><p>Invia la candidatura: il team valuterà il profilo e contatterà i candidati idonei.</p>',
-        'datePosted'     => gmdate( 'Y-m-d' ),
-        'validThrough'   => gmdate( 'Y', strtotime( '+1 year' ) ) . '-12-31',
-        'employmentType' => 'CONTRACTOR',
-        'applicantLocationRequirements' => [
-            '@type' => 'Country',
-            'name'  => 'Italy',
-        ],
-        'jobLocationType'    => 'TELECOMMUTE',
-        'hiringOrganization' => [
-            '@type'  => 'Organization',
-            '@id'    => 'https://toagency.it/#organization',
-            'name'   => 'TOAgency',
-            'sameAs' => 'https://toagency.it',
-        ],
-    ];
-
-    echo '<script type="application/ld+json">' . "\n"
-        . wp_json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT )
-        . "\n</script>\n";
-}, 20 );
+// === 3) JOB POSTING — /collabora/ TOLTO 08/11/2026 (chat TEMA GEO AI) ===
+// Era un annuncio generico «cerchiamo sempre talent» con datePosted = oggi e lavoro da remoto:
+// Google Jobs vieta annunci non legati a una posizione reale e date di pubblicazione rinnovate,
+// con rischio di penalizzare anche gli annunci veri. I JobPosting veri sono sui singoli casting
+// (meta toa_jobposting, scritto dal CRM).
