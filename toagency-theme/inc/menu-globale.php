@@ -475,7 +475,7 @@ function toa_mg_pannelli() {
         if ($cu) echo '<a class="tmg-cross" href="' . esc_url($cu) . '"><small>' . esc_html(toa_mg_t($ui['anche'])) . '</small><b>' . esc_html(toa_mg_t($s['cross']['t'])) . ' &rarr;</b><span>' . esc_html(toa_mg_t($s['cross']['d'])) . '</span></a>';
         echo '</div></div>';
     }
-    echo '</div><div class="tmg-strip"><span class="tmg-logo tmg-logo--s">TOAGENCY</span>';
+    echo '</div><div class="tmg-strip"><span class="tmg-logo tmg-lg tmg-lg--s" role="img" aria-label="TOAgency"></span>';
     foreach ($d['agenzia'] as $l) echo toa_mg_link_html($l);
     echo '<span class="tmg-strip__rev">' . esc_html(toa_mg_t($ui['recens'])) . '</span>'
        . '<button type="button" class="tmg-x" data-tmg-close aria-label="' . esc_attr(toa_mg_t($ui['chiudi'])) . '">&times;</button></div></div>';
@@ -530,7 +530,7 @@ function toa_mg_header_bar($cur = '', $cta = '', $in = false) {
     $d = toa_mg_dati(); $ui = $d['ui'];
     $cta = $cta ? $cta : toa_mg_url($ui['cta_url']);
     echo '<header class="tmg-head' . ($in ? ' tmg-head--in' : '') . '" id="tmgHead"><div class="tmg-head__in">'
-       . '<a class="tmg-logo" href="' . esc_url(toa_mg_home_url()) . '" aria-label="TOAgency">TOAGENCY</a>'
+       . '<a class="tmg-logo tmg-lg" href="' . esc_url(toa_mg_home_url()) . '" aria-label="TOAgency"></a>'
        . '<nav class="tmg-nav" aria-label="TOAgency">' . toa_mg_voci_html($cur) . '</nav>'
        . '<div class="tmg-head__r">' . toa_mg_voce_casting() . toa_mg_voce_lavora()
        . toa_mg_lingue_html() . '<a class="tmg-btn tmg-btn--lime tmg-head__cta" href="' . esc_url($cta) . '">' . esc_html(toa_mg_t($ui['cta'])) . '</a>'
@@ -602,7 +602,7 @@ function toa_mg_footer() {
     $priv = array('en' => 'https://toagency.it/en/gdpr-privacy-policy/', 'fr' => 'https://toagency.it/fr/gdpr-privacy-policy/', 'es' => 'https://toagency.it/es/gdpr-politica-de-privacidad/');
     $priv_u = isset($priv[$lang]) ? $priv[$lang] : 'https://toagency.it/privacy-policy-3/';
     $terms = array('it' => 'Termini e Condizioni', 'en' => 'Terms and Conditions', 'fr' => 'Conditions Générales', 'es' => 'Términos y Condiciones');
-    echo '</div><div class="tmg-foot__legal"><span class="tmg-logo tmg-logo--foot">TOAGENCY</span>'
+    echo '</div><div class="tmg-foot__legal"><span class="tmg-logo tmg-lg tmg-lg--w tmg-logo--foot" role="img" aria-label="TOAgency"></span>'
        . '<p>TOAGENCY è un marchio di TOA di Leonardi Marco &mdash; Via Cavour 21, 10123 Torino (Italy) &mdash; P.IVA 11800210012</p>'
        . '<p class="toa-footer-recover">' . _ht(array('it' => 'Hai già una scheda con noi?', 'en' => 'Already have a profile with us?', 'fr' => 'Tu as déjà une fiche chez nous ?', 'es' => '¿Ya tienes una ficha con nosotros?'))
        . ' <a href="' . esc_url('https://toagency.it/crm_toagency/recupera-link.php?lang=' . $lang) . '">' . _ht(array('it' => 'Recuperala qui', 'en' => 'Recover it here', 'fr' => 'Récupère-la ici', 'es' => 'Recúperala aquí')) . '</a></p>'

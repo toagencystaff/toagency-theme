@@ -11,6 +11,12 @@
 
 /* ── logo ── */
 .tmg-on .tmg-logo{font-family:Anton,Impact,sans-serif!important;font-size:30px;letter-spacing:1.5px;color:var(--tmg-k)!important;text-decoration:none!important;line-height:1;white-space:nowrap;flex:0 0 auto}
+/* logo vero (08/11 Marco: «manca il logo»): PNG trasparente 1080x1080 già in libreria, ritagliato col CSS sul disegno (nessun file nuovo).
+ * Riquadro 814x298 px dentro l'immagine, a partire da (134,391): --h = altezza del riquadro. Bianco su sfondo scuro (.tmg-lg--w). */
+.tmg-on .tmg-lg{--h:42px;display:block;flex:0 0 auto;width:calc(var(--h)*2.7315);height:var(--h);background:url(/wp-content/uploads/2025/09/LogoToanewBlack.png) no-repeat;background-size:calc(var(--h)*3.6242) calc(var(--h)*3.6242);background-position:calc(var(--h)*-.4497) calc(var(--h)*-1.3121)}
+.tmg-on .tmg-lg--w{background-image:url(/wp-content/uploads/2025/09/LogoToanew.png)}
+.tmg-on .tmg-lg--s{--h:26px}
+.tmg-on .tmg-lg.tmg-logo--foot{--h:36px;margin-bottom:12px}
 .tmg-on .tmg-logo--bar{font-size:17px;color:#FFFFFF!important;margin-right:14px}
 .tmg-on .tmg-logo--s{font-size:16px;letter-spacing:1px}
 
@@ -170,6 +176,7 @@
   .tmg-on{--tmg-hh:60px}
   .tmg-on .tmg-head__in{padding:0 16px}
   .tmg-on .tmg-head .tmg-logo{font-size:22px;margin-right:0}
+  .tmg-on .tmg-head .tmg-lg{--h:34px}
   .tmg-on .tmg-head__cta{display:none!important}
   .tmg-on .tmg-head__r .tmg-langs{display:flex!important}
   .tmg-on .tmg-head__r{gap:8px}
