@@ -328,8 +328,8 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<900000
 
     // True se almeno uno dei modal principali è aperto (per gestire body.overflow).
     function anyOtherModalOpen() {
-        var m1 = $('#tdbTalentModal'), m2 = $('#tdbRequestModal'), m3 = $('#tdbSuccess'), m4 = $('#tdbLockedModal');
-        return (m1 && !m1.hidden) || (m2 && !m2.hidden) || (m3 && !m3.hidden) || (m4 && !m4.hidden);
+        var m1 = $('#tdbTalentModal'), m2 = $('#tdbRequestModal'), m3 = $('#tdbSuccess'), m4 = $('#tdbLockedModal'), m5 = $('#tdbGoneModal');
+        return (m1 && !m1.hidden) || (m2 && !m2.hidden) || (m3 && !m3.hidden) || (m4 && !m4.hidden) || (m5 && !m5.hidden);
     }
 
     // 2026-06-05 marco — modale "database in arrivo" per chip categoria bloccate (cliccabili).
@@ -343,6 +343,20 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<900000
     function closeLockedModal() {
         var m = $('#tdbLockedModal');
         if (m) m.hidden = true;
+    }
+
+    // 2026-11-16 marco — ticket #969: avviso "profilo non disponibile" (link ?tid= di un talent non pubblico).
+    // Nessun dato del talent nel messaggio (privacy). Testi nel template (#tdbGoneModal, 4 lingue).
+    function openGoneModal() {
+        var m = $('#tdbGoneModal');
+        if (!m) return;
+        m.hidden = false;
+        document.body.style.overflow = 'hidden';
+    }
+    function closeGoneModal() {
+        var m = $('#tdbGoneModal');
+        if (m) m.hidden = true;
+        if (!anyOtherModalOpen()) document.body.style.overflow = '';
     }
 
     // ═════════════════════════════════════════════════════════════════
@@ -1098,6 +1112,14 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<900000
             })
             .catch(function (err) {
                 console.error('[tdb] modal error', err);
+                // 2026-11-16 marco — ticket #969: profilo non pubblico/eliminato/inesistente (404 o "non trovato")
+                // -> niente scheda vuota: chiude il riquadro, toglie ?tid= e mostra l'avviso cortese.
+                // Errore di rete vero (fetch fallito, 500) resta "Errore nel caricamento".
+                if (err && (err.message === 'HTTP 404' || err.message === 'talent not found')) {
+                    tdCloseTalentModal();
+                    openGoneModal();
+                    return;
+                }
                 $('#tdbModalName').textContent = '—';
                 $('#tdbModalFields').innerHTML = '<div class="toa-tdb-modal-load-error">Errore nel caricamento. Riprova.</div>';
             });
@@ -2122,8 +2144,9 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<900000
         });
         document.body.addEventListener('click', function (e) {
             if (!e.target.dataset || e.target.dataset.tdbClose !== '1') return;
-            var m1 = $('#tdbTalentModal'), m2 = $('#tdbRequestModal'), m3 = $('#tdbSuccess'), m4 = $('#tdbLockedModal');
-            if (m1 && !m1.hidden && e.target.closest('#tdbTalentModal'))     tdCloseTalentModal();
+            var m1 = $('#tdbTalentModal'), m2 = $('#tdbRequestModal'), m3 = $('#tdbSuccess'), m4 = $('#tdbLockedModal'), m5 = $('#tdbGoneModal');
+            if (m5 && !m5.hidden && e.target.closest('#tdbGoneModal'))        closeGoneModal();
+            else if (m1 && !m1.hidden && e.target.closest('#tdbTalentModal'))     tdCloseTalentModal();
             else if (m2 && !m2.hidden && e.target.closest('#tdbRequestModal')) closeRequestModal();
             else if (m3 && !m3.hidden && e.target.closest('#tdbSuccess'))      closeSuccess();
             else if (m4 && !m4.hidden && e.target.closest('#tdbLockedModal'))  closeLockedModal();
@@ -2137,7 +2160,9 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<900000
             if (e.key !== 'Escape') return;
             var s = $('#tdbSuccess'), r = $('#tdbRequestModal');
             var l = $('#tdbLockedModal');
+            var g = $('#tdbGoneModal');
             var sb = $('#tdbSidebar');
+            if (g && !g.hidden)  { closeGoneModal(); return; }
             if (l && !l.hidden)  { closeLockedModal(); return; }
             if (s && !s.hidden)  { closeSuccess(); return; }
             if (r && !r.hidden)  { closeRequestModal(); return; }

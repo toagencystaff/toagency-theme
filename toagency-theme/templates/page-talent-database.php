@@ -679,6 +679,27 @@ $hub_sections = array(
     </div>
 </div>
 
+<!-- ═════ Modal profilo non disponibile — 2026-11-16 marco, ticket #969 (link ?tid= di un talent non pubblico) ═════ -->
+<div class="toa-tdb-modal" id="tdbGoneModal" role="dialog" aria-modal="true" aria-labelledby="tdbGoneTitle" hidden>
+    <div class="toa-tdb-modal-overlay" data-tdb-close="1"></div>
+    <div class="toa-tdb-modal-card toa-tdb-modal-card-narrow toa-tdb-locked-card">
+        <button type="button" class="toa-tdb-modal-close" aria-label="<?php echo esc_attr($_t($T['modal_close'])); ?>" data-tdb-close="1">✕</button>
+        <div class="toa-tdb-locked-body">
+            <h2 id="tdbGoneTitle"><?php echo esc_html($_t(array('it'=>'Profilo non disponibile','en'=>'Profile unavailable','fr'=>'Profil indisponible','es'=>'Perfil no disponible'))); ?></h2>
+            <p><?php echo esc_html($_t(array(
+                'it'=>'Questo profilo non è più nel database. Scrivici: ti proponiamo subito profili simili.',
+                'en'=>'This profile is no longer in the database. Get in touch and we suggest similar profiles right away.',
+                'fr'=>'Ce profil n’est plus dans la base. Contactez-nous : nous vous proposons aussitôt des profils similaires.',
+                'es'=>'Este perfil ya no está en la base de datos. Escríbenos y te proponemos enseguida perfiles similares.'
+            ))); ?></p>
+            <div class="toa-tdb-locked-actions">
+                <a href="<?php echo esc_url(home_url('/form-b2b/')); ?>" class="toa-tdb-btn toa-tdb-btn-primary"><?php echo esc_html($_t(array('it'=>'Richiedi preventivo','en'=>'Request a quote','fr'=>'Demander un devis','es'=>'Solicita presupuesto'))); ?></a>
+                <button type="button" class="toa-tdb-btn toa-tdb-btn-ghost" data-tdb-close="1"><?php echo esc_html($_t(array('it'=>'Vedi i talent','en'=>'Browse talents','fr'=>'Voir les talents','es'=>'Ver talents'))); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ═════ Carrello fluttuante ═════ -->
 <div class="toa-tdb-cart" id="tdbCart" hidden>
     <!-- Stato vuoto: invito (solo desktop, vedi CSS) -->
