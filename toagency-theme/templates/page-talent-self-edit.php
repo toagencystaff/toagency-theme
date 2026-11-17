@@ -472,6 +472,11 @@ $token_get = $_GET['t']    ?? '';
 .tse-upload-status.ok { color:#c8ff00; }
 .tse-upload-status.err { color:#ef4444; }
 .tse-upload-status.loading { color:#9ca3af; }
+/* ticket #864 (09/11/2026): contatore video per sezione + riga Creator (dati: video_sezioni di talent-self-edit-load.php) */
+.tse-vlim { display:none; font-size:12px; color:#cbd5e1; margin:0 0 10px; line-height:1.5; }
+.tse-vlim .tse-vlim-n { display:inline-block; font-weight:700; color:#c8ff00; }
+.tse-vlim.pieno .tse-vlim-n { color:#f59e0b; }
+.tse-vlim .tse-vlim-cr { display:block; margin-top:4px; color:#9ca3af; }
 /* ticket #836 (05/11/2026): elenco dei video già caricati */
 .tse-vel-summary { font-size:13px; color:#cbd5e1; margin:0 0 12px; line-height:1.5; }
 .tse-vel-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
@@ -995,6 +1000,7 @@ $token_get = $_GET['t']    ?? '';
 
         <div id="tse-video-section" class="tse-section" style="margin-top:20px;">
             <div class="tse-section-title">🎥 <?= esc_html($_t(['it'=>'Video di presentazione','en'=>'Intro video','fr'=>'Vidéo de présentation','es'=>'Vídeo de presentación'])) ?></div>
+            <div id="tse-video-lim" class="tse-vlim"></div> <!-- ticket #864 -->
             <p style="font-size:12px; color:#9ca3af; margin:0 0 8px; line-height:1.45;"><?= esc_html($_t(['it'=>'Facoltativo per tutti, ma molto utile per attori/attrici (self-tape) e creator (mostra come sei davanti alla camera). Basta anche un video girato con il telefono, bassa risoluzione ok · max 30MB.','en'=>'Optional for everyone, but great for actors (self-tape) and creators (shows how you come across on camera). A simple phone video is fine, low res ok · max 30MB.','fr'=>'Facultatif pour tous, mais très utile pour les acteurs/actrices (self-tape) et les créateurs de contenu (montre comment tu es à l’écran). Une simple vidéo au téléphone suffit, basse résolution ok · max 30 Mo.','es'=>'Opcional para todos, pero muy útil para actores/actrices (self-tape) y creadores de contenido (muestra cómo te desenvuelves en cámara). Basta un vídeo con el móvil, baja resolución ok · máx 30MB.'])) ?></p>
             <p style="font-size:12px; color:#f5b942; margin:0 0 12px; line-height:1.45;"><?= esc_html($_t($T['no_watermark_warning'])) ?></p>
             <!-- FIX 2026-09-23 marco ticket-239: come si carica il video, in 4 lingue (stesse parole delle schede di Amelia #204/#205) -->
@@ -1026,7 +1032,8 @@ $token_get = $_GET['t']    ?? '';
              Stesse regole del video di presentazione: max 30 MB, riduzione nel browser, in attesa di approvazione. -->
         <div id="tse-videodet-section" class="tse-section" style="margin-top:20px; display:none;">
             <div class="tse-section-title">🔍 <?= esc_html($_t(['it'=>'Video dettagli','en'=>'Detail videos','fr'=>'Vidéos de détail','es'=>'Vídeos de detalle'])) ?></div>
-            <p style="font-size:12px; color:#9ca3af; margin:0 0 12px; line-height:1.45;"><?= esc_html($_t(['it'=>'Brevi video dei tuoi dettagli (mani, occhi, profilo, sorriso…), anche girati con il telefono. Fino a 3 video · max 30 MB ciascuno.','en'=>'Short videos of your details (hands, eyes, profile, smile…), phone footage is fine. Up to 3 videos · max 30 MB each.','fr'=>'Courtes vidéos de tes détails (mains, yeux, profil, sourire…), même filmées au téléphone. Jusqu’à 3 vidéos · max 30 Mo chacune.','es'=>'Vídeos cortos de tus detalles (manos, ojos, perfil, sonrisa…), vale grabarlos con el móvil. Hasta 3 vídeos · máx. 30 MB cada uno.'])) ?></p>
+            <div id="tse-videodet-lim" class="tse-vlim"></div> <!-- ticket #864 -->
+            <p style="font-size:12px; color:#9ca3af; margin:0 0 12px; line-height:1.45;"><?= esc_html($_t(['it'=>'Brevi video dei tuoi dettagli (mani, occhi, profilo, sorriso…), anche girati con il telefono. Max 30 MB ciascuno.','en'=>'Short videos of your details (hands, eyes, profile, smile…), phone footage is fine. Max 30 MB each.','fr'=>'Courtes vidéos de tes détails (mains, yeux, profil, sourire…), même filmées au téléphone. Max 30 Mo chacune.','es'=>'Vídeos cortos de tus detalles (manos, ojos, perfil, sonrisa…), vale grabarlos con el móvil. Máx. 30 MB cada uno.'])) ?></p>
             <div class="tse-upload-box">
                 <label class="tse-legal-checkbox">
                     <input type="checkbox" id="tse-videodet-legal">
@@ -1163,6 +1170,13 @@ window.talentEditConfig = {
                 talent_non_importato: <?= json_encode($_t(['it'=>'Il tuo profilo non è ancora abilitato ai video. Scrivi ad Amelia nella chat.','en'=>'Your profile is not enabled for videos yet. Write to Amelia in the chat.','fr'=>"Ton profil n'est pas encore activé pour les vidéos. Écris à Amelia dans le chat.",'es'=>'Tu perfil aún no está habilitado para vídeos. Escribe a Amelia en el chat.'])) ?>,
                 invalid_link: <?= json_encode($_t(['it'=>'Link della scheda non valido o scaduto. Apri di nuovo il link che ti abbiamo mandato per email.','en'=>'Profile link invalid or expired. Open the link we emailed you again.','fr'=>"Lien de la fiche invalide ou expiré. Ouvre de nouveau le lien que nous t'avons envoyé par e-mail.",'es'=>'Enlace de la ficha no válido o caducado. Abre de nuevo el enlace que te enviamos por correo.'])) ?>,
             },
+        },
+        // ticket #864 (09/11/2026): contatore video per sezione e riga Creator, 4 lingue (riscritti, non letterali). I numeri arrivano dal CRM (video_sezioni), mai scritti qui.
+        videoLimiti: {
+            cnt:        <?= json_encode($_t(['it'=>'Video caricati: {n} su {max}','en'=>'Videos uploaded: {n} of {max}','fr'=>'Vidéos chargées : {n} sur {max}','es'=>'Vídeos subidos: {n} de {max}'])) ?>,
+            pieno:      <?= json_encode($_t(['it'=>'Posti finiti','en'=>'No slots left','fr'=>'Plus de place','es'=>'Sin plazas'])) ?>,
+            creator:    <?= json_encode($_t(['it'=>'Sezione Creator: qui puoi caricare fino a {max} video. Le altre sezioni ne accettano meno.','en'=>'Creator section: upload up to {max} videos here. Other sections accept fewer.','fr'=>'Section Creator : tu peux charger jusqu’à {max} vidéos ici. Les autres sections en acceptent moins.','es'=>'Sección Creator: aquí puedes subir hasta {max} vídeos. Las demás secciones admiten menos.'])) ?>,
+            capCreator: <?= json_encode($_t(['it'=>' Per i video dei contenuti usa la sezione Creator («Video di presentazione»): lì fino a {max}.','en'=>' For content videos use the Creator section (“Intro video”): up to {max} there.','fr'=>' Pour les vidéos de contenu, utilise la section Creator (« Vidéo de présentation ») : jusqu’à {max} là-bas.','es'=>' Para los vídeos de contenido usa la sección Creator («Vídeo de presentación»): allí hasta {max}.'])) ?>,
         },
         // ticket #836 (05/11/2026): testi dell'elenco video, 4 lingue (riscritti, non letterali)
         videoElenco: {

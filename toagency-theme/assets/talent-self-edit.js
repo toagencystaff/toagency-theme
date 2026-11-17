@@ -571,6 +571,7 @@
             // S8.A: carica anche i media e mostra la sezione foto
             loadMedia();
             renderVideoElenco(d.video_elenco); // ticket #836: elenco dei video già caricati
+            renderVideoLimiti(d.video_sezioni); // ticket #864: contatori «X su Y» (limiti dal CRM)
         })
         .catch(function (err) {
             console.error('[tse] load:', err);
@@ -1290,7 +1291,7 @@
     // il server manda solo il codice d'errore (res.error). Se STR.video manca, restano i testi italiani di riserva.
     var VSTR = STR.video || {};
     function tseVideoT(key, fallback) { return VSTR[key] || fallback || ''; }
-    function tseVideoErr(res) {
+    function tseVideoErr(res, key) {
         var code = (res && res.error) || '';
         var E = VSTR.err || {};
         var map = { too_big_server: 'too_big', invalid_mime: 'invalid_file', not_a_video: 'invalid_file', invalid_token: 'invalid_link', not_found: 'invalid_link', deleted: 'invalid_link', method_not_allowed: 'invalid_link' };
@@ -1299,7 +1300,13 @@
             var msg = String((res && res.message) || '');
             var n = (msg.match(/\d+/) || [''])[0];
             var tpl = E[/total/i.test(msg) ? 'cap_tot' : 'cap_album'] || '';
-            if (tpl) return tpl.replace('{n}', n);
+            if (tpl) {
+                var out = tpl.replace('{n}', n);
+                // ticket #864: sezione piena (Video dettagli) ma il talent ha la sezione Creator → suggerisco di usarla
+                var cr = videoSez && videoSez.creator;
+                if (key === 'det' && cr && cr.abilitato && cr.limite && VLSTR2.capCreator) out += VLSTR2.capCreator.replace('{max}', cr.limite);
+                return out;
+            }
         }
         if (E[key]) return E[key];
         return (VSTR.generic || (res && res.message) || 'Errore upload') + (code ? ' (' + code + ')' : '');
@@ -1321,6 +1328,27 @@
         var s = $('tse-videodet-section'); if (!s) return;
         var g = $('f-ruoli'); var cb = g ? g.querySelector('input[value="model"]') : null;
         s.style.display = (cb && cb.checked) ? 'block' : 'none';
+    }
+    // ─── ticket #864 (09/11/2026) — contatore «Video caricati: X su Y» per ogni box video ───
+    // Dati: video_sezioni di talent-self-edit-load.php {generale:{album,limite,n,creator}, creator:{limite,n,abilitato}, dettaglio:{album,limite,n}, totale}.
+    // Il limite è quello vero del CRM (lo stesso dell'upload): nel tema non c'è nessun numero scritto a mano. Se il CRM non manda il campo, i contatori restano nascosti.
+    var VLSTR2 = STR.videoLimiti || {};
+    var videoSez = null;
+    function vlFill(tpl, n, max) { return String(tpl || '').replace('{n}', n).replace('{max}', max); }
+    function vlBox(id, sez, creator) {
+        var el = $(id); if (!el) return;
+        var max = sez ? parseInt(sez.limite, 10) : 0;
+        if (!sez || !(max > 0) || sez.n === undefined || sez.n === null || !VLSTR2.cnt) { el.style.display = 'none'; el.innerHTML = ''; return; }
+        var n = parseInt(sez.n, 10) || 0, pieno = n >= max;
+        el.className = 'tse-vlim' + (pieno ? ' pieno' : '');
+        var html = '<span class="tse-vlim-n">' + escapeHtml(vlFill(VLSTR2.cnt, n, max)) + '</span>' + (pieno && VLSTR2.pieno ? ' · ' + escapeHtml(VLSTR2.pieno) : '');
+        if (creator && VLSTR2.creator) html += '<span class="tse-vlim-cr">' + escapeHtml(vlFill(VLSTR2.creator, n, max)) + '</span>';
+        el.innerHTML = html; el.style.display = 'block';
+    }
+    function renderVideoLimiti(vs) {
+        videoSez = (vs && typeof vs === 'object') ? vs : null;
+        vlBox('tse-video-lim', videoSez && videoSez.generale, !!(videoSez && videoSez.generale && videoSez.generale.creator));
+        vlBox('tse-videodet-lim', videoSez && videoSez.dettaglio, false);
     }
     // ─── ticket #836 (05/11/2026) — elenco dei video già caricati ───
     // Dati: video_elenco di talent-self-edit-load.php {totale, online, rev, no, voci:[{id, album_nome, url, stato, doppio, data, mb}]}.
@@ -1371,7 +1399,7 @@
         if (!UUID || !TOKEN) return;
         fetch(API_LOAD + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN) + '&lang=' + encodeURIComponent(cfg.lang || 'it') + '&_=' + Date.now(), { credentials: 'same-origin' })
             .then(function (r) { return r.json(); })
-            .then(function (d) { if (d && d.success) renderVideoElenco(d.video_elenco); })
+            .then(function (d) { if (d && d.success) { renderVideoElenco(d.video_elenco); renderVideoLimiti(d.video_sezioni); } })
             .catch(function () { /* l'elenco resta com'è */ });
     }
     window.talentVideoChosen = function (input, key) {
@@ -1417,7 +1445,7 @@
                     var h = tseVidEl(key, 'heavy'); if (h) h.style.display = 'none';
                     reloadVideoElenco(); // ticket #836: aggiorna l'elenco dopo un upload riuscito
                 } else {
-                    st.textContent = '✗ ' + (res.error === 'network' ? tseVideoT('network', 'Errore di rete') : tseVideoErr(res));
+                    st.textContent = '✗ ' + (res.error === 'network' ? tseVideoT('network', 'Errore di rete') : tseVideoErr(res, key));
                     st.className = 'tse-upload-status err';
                     if (res.error === 'too_big' || res.error === 'too_big_server') tseVideoShowHeavy(key);
                 }

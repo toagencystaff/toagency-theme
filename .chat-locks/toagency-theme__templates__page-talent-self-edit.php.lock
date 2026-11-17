@@ -1,7 +1,7 @@
-STATO=CLOSED
-CHAT=TEMA ticket 774
+STATO=OPEN
+CHAT=TEMA Ticket 864
 FILE=toagency-theme/templates/page-talent-self-edit.php
-INIZIO=2026-10-29 18:19:37
-UPDATE=2026-10-29 18:34:37
-SHA1_ATTESO=55827604573fe0c027a70146165d6d2e999d1ba1
-NOTE=ticket #774 online preview+prod 29/10 18:34, commit ae0b38e59
+INIZIO=2026-11-09 12:36:07
+UPDATE=2026-11-09 12:38:06
+SHA1_ATTESO=f760424814e25143d0244d35a1101fd1905ceb13
+NOTE=ticket #864 contatori video per sezione (dati da video_sezioni del CRM, ticket CRM #868); non ancora in prod

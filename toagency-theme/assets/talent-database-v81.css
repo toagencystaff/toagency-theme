@@ -2396,3 +2396,7 @@ body.tdb-drawer-open::before{display:none !important;}
 /* nota "province vicine" sopra la griglia (creata dal JS, non esiste nel template) */
 .toa-tdb-nearnote { margin:0 0 14px; padding:10px 14px; border-left:3px solid #c8ff00; background:rgba(200,255,0,.06); color:rgba(255,255,255,.8); font-size:14px; line-height:1.45; }
 .toa-tdb-nearnote[hidden] { display:none !important; }
+/* FIX 2026-11-17 marco — «Profilo completo» nel modale scheda (link alla pagina pubblica del talent); il bottone «Aggiungi» resta in fondo */
+.toa-tdb-detail-profile-btn { margin-top: auto; text-decoration: none; width: 100%; box-sizing: border-box; }
+.toa-tdb-detail-profile-btn[hidden] { display: none !important; }
+.toa-tdb-detail-profile-btn + .toa-tdb-detail-add-btn { margin-top: 10px; }

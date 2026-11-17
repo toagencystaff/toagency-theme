@@ -111,6 +111,8 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<900000
             es: 'Las imágenes de los menores de 18 años están protegidas y no son visibles públicamente. Para recibir una selección de perfiles disponibles, contacta con TOAgency.'
         },
         minor_cta:     { it: 'Richiedi info', en: 'Request info', fr: 'Demander des infos', es: 'Solicitar info' },
+        // FIX 2026-11-17 marco (CRM Pagina pubblica talent): bottone del modale verso la pagina pubblica del talent (profilo_url dell'API)
+        profile_full:  { it: 'Profilo completo', en: 'Full profile', fr: 'Profil complet', es: 'Perfil completo' },
         form_error: {
             it: 'Errore nell\'invio. Riprova oppure scrivi a info@toagency.it',
             en: 'Send error. Try again or write to info@toagency.it',
@@ -1099,7 +1101,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<900000
         var galleryImg = $('#tdbGalleryImage');
         if (galleryImg) { galleryImg.src = ''; galleryImg.style.opacity = ''; }
 
-        return fetchJson(API_URL + '?action=talent&id=' + encodeURIComponent(id))
+        return fetchJson(API_URL + '?action=talent&id=' + encodeURIComponent(id) + '&lang=' + encodeURIComponent(LANG))   // FIX 2026-11-17 marco: lingua per il link profilo_url
             .then(function (res) {
                 if (!res || !res.ok || !res.talent) throw new Error('talent not found');
                 var media = res.media || [];
@@ -1108,6 +1110,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<900000
                 TD.modalTalent = res.talent;
                 renderDetailModal(res.talent, media, res.creator, res.video);
                 updateModalAddBtn();
+                updateModalProfileBtn(res.talent);
                 pushUrlTalent(id);
             })
             .catch(function (err) {
@@ -1297,6 +1300,27 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<900000
     }
 
     // Aggiorna il testo del pulsante "+ Aggiungi / ✓ Selezionato" del modal.
+    // FIX 2026-11-17 marco (CRM Pagina pubblica talent) — «Profilo completo»: link fisso alla pagina pubblica del talent (t.profilo_url dall'API,
+    // presente solo per schede pubbliche e maggiorenni). Senza profilo_url il bottone non c'e'. Si apre in una nuova scheda.
+    function updateModalProfileBtn(t) {
+        var add = $('#tdbModalAdd');
+        if (!add) return;
+        var btn = $('#tdbModalProfile');
+        var url = t && typeof t.profilo_url === 'string' && /^https:\/\/toagency\.it\/p\//.test(t.profilo_url) ? t.profilo_url : '';
+        if (!url) { if (btn) btn.hidden = true; return; }
+        if (!btn) {
+            btn = document.createElement('a');
+            btn.id = 'tdbModalProfile';
+            btn.className = 'toa-tdb-btn toa-tdb-btn-ghost toa-tdb-detail-profile-btn';
+            btn.target = '_blank';
+            btn.rel = 'noopener';
+            add.parentNode.insertBefore(btn, add);
+        }
+        btn.href = url;
+        btn.textContent = i18n('profile_full');
+        btn.hidden = false;
+    }
+
     function updateModalAddBtn() {
         if (!TD.modalTalent) return;
         var btn = $('#tdbModalAdd');

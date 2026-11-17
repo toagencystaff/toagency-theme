@@ -1,7 +1,7 @@
 STATO=CLOSED
-CHAT=CRM WhatsApp rif sito
+CHAT=TEMA GEO AI
 FILE=toagency-theme/functions.php
-INIZIO=2026-10-29 08:50:33
-UPDATE=2026-10-29 08:50:33
-SHA1_ATTESO=0bf45708e0acdb89ef085275c53edf0c004e9718
-NOTA=#756 link WhatsApp pagine talent -> numero casting, pronto al deploy
+INIZIO=2026-11-08 16:54:24
+UPDATE=2026-11-08 21:02:00
+SHA1_ATTESO=eb8393b2ce0d3283ae167dc37806a496920fe61b
+NOTA=IndexNow LIVE 08/11 commit 9414d29c6 (TEMA GEO AI)
