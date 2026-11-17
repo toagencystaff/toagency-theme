@@ -1,7 +1,7 @@
 STATO=OPEN
-CHAT=TEMA Ticket 864
+CHAT=TEMA Pagina pubblica talent
 FILE=toagency-theme/assets/talent-self-edit.js
-INIZIO=2026-11-09 12:36:07
-UPDATE=2026-11-09 12:38:06
-SHA1_ATTESO=a82341642a0fbc4cef8642fa6fe4f481e32b845a
-NOTE=ticket #864 contatori video per sezione (dati da video_sezioni del CRM, ticket CRM #868); non ancora in prod
+INIZIO=2026-11-17 15:25:25
+UPDATE=2026-11-17 15:25:53
+SHA1_ATTESO=c8819aabe48f7b78c9b5fdd5be4e31574a1caa3d
+NOTE=riga La tua pagina pubblica nella card di stato dell area talent (pagina_pubblica dal CRM)

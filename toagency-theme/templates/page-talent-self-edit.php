@@ -472,6 +472,15 @@ $token_get = $_GET['t']    ?? '';
 .tse-upload-status.ok { color:#c8ff00; }
 .tse-upload-status.err { color:#ef4444; }
 .tse-upload-status.loading { color:#9ca3af; }
+/* FIX 2026-11-17 marco (CRM Pagina pubblica talent): «La tua pagina pubblica» nella card di stato */
+.tse-pagepub { margin:14px 0 6px; padding:14px; background:#141418; border:1px solid #2a2a2e; border-radius:8px; }
+.tse-pagepub[hidden] { display:none; }
+.tse-pagepub .tse-pp-title { font-size:13px; font-weight:700; color:#fff; margin:0 0 4px; }
+.tse-pagepub .tse-pp-text { font-size:12px; color:#9ca3af; margin:0 0 10px; line-height:1.45; }
+.tse-pagepub .tse-pp-row { display:flex; gap:8px; flex-wrap:wrap; }
+.tse-pagepub .tse-pp-url { flex:1 1 220px; min-width:0; padding:10px 12px; background:#0a0a0c; border:1px solid #3a3a42; border-radius:6px; color:#e5e7eb; font-size:13px; font-family:inherit; }
+.tse-pagepub .tse-pp-btn { flex:0 0 auto; padding:10px 16px; border-radius:6px; border:1px solid #3a3a42; background:#1a1a1e; color:#e5e7eb; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; text-decoration:none; text-align:center; }
+.tse-pagepub .tse-pp-copy { background:#c8ff00; border-color:#c8ff00; color:#0a0a0a; }
 /* ticket #864 (09/11/2026): contatore video per sezione + riga Creator (dati: video_sezioni di talent-self-edit-load.php) */
 .tse-vlim { display:none; font-size:12px; color:#cbd5e1; margin:0 0 10px; line-height:1.5; }
 .tse-vlim .tse-vlim-n { display:inline-block; font-weight:700; color:#c8ff00; }
@@ -578,6 +587,7 @@ $token_get = $_GET['t']    ?? '';
         <!-- FIX 2026-09-15 marco — card di stato (Step 2 pagina-stato): prima cosa visibile, prima del form pesante -->
         <div id="tse-statuscard" class="tse-statuscard" style="display:none;">
             <div id="tse-statuscard-rows"></div>
+            <div id="tse-pagepub" class="tse-pagepub" hidden></div><!-- FIX 2026-11-17 marco (CRM Pagina pubblica talent): link fisso della pagina pubblica, riempito dal JS se la scheda e' pubblica -->
             <button type="button" class="tse-btn-save tse-btn-foto" style="margin-top:6px;" onclick="talentShowForm('foto')"><?= esc_html($_t($T2['btn_foto'])) ?></button><!-- FIX 2026-09-22 marco -->
             <button type="button" class="tse-btn-save" style="margin-top:8px;" onclick="talentShowForm()"><?= esc_html($_t($T['btn_modifica_scheda'])) ?></button>
         </div>
@@ -1172,6 +1182,14 @@ window.talentEditConfig = {
             },
         },
         // ticket #864 (09/11/2026): contatore video per sezione e riga Creator, 4 lingue (riscritti, non letterali). I numeri arrivano dal CRM (video_sezioni), mai scritti qui.
+        // FIX 2026-11-17 marco (CRM Pagina pubblica talent): riga «La tua pagina pubblica», 4 lingue (riscritti, non letterali)
+        paginaPubblica: {
+            titolo: <?= json_encode($_t(['it'=>'La tua pagina pubblica','en'=>'Your public page','fr'=>'Ta page publique','es'=>'Tu página pública'])) ?>,
+            testo:  <?= json_encode($_t(['it'=>'Il link è fisso e non scade: condividilo con chi vuoi.','en'=>'Your link is permanent and never expires: share it with anyone.','fr'=>'Ton lien est fixe et n’expire jamais : partage-le avec qui tu veux.','es'=>'Tu enlace es fijo y no caduca: compártelo con quien quieras.'])) ?>,
+            copia:  <?= json_encode($_t(['it'=>'Copia link','en'=>'Copy link','fr'=>'Copier le lien','es'=>'Copiar enlace'])) ?>,
+            copiato:<?= json_encode($_t(['it'=>'Copiato','en'=>'Copied','fr'=>'Copié','es'=>'Copiado'])) ?>,
+            apri:   <?= json_encode($_t(['it'=>'Apri','en'=>'Open','fr'=>'Ouvrir','es'=>'Abrir'])) ?>,
+        },
         videoLimiti: {
             cnt:        <?= json_encode($_t(['it'=>'Video caricati: {n} su {max}','en'=>'Videos uploaded: {n} of {max}','fr'=>'Vidéos chargées : {n} sur {max}','es'=>'Vídeos subidos: {n} de {max}'])) ?>,
             pieno:      <?= json_encode($_t(['it'=>'Posti finiti','en'=>'No slots left','fr'=>'Plus de place','es'=>'Sin plazas'])) ?>,

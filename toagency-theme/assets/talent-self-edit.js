@@ -572,6 +572,7 @@
             loadMedia();
             renderVideoElenco(d.video_elenco); // ticket #836: elenco dei video già caricati
             renderVideoLimiti(d.video_sezioni); // ticket #864: contatori «X su Y» (limiti dal CRM)
+            renderPaginaPubblica(d.pagina_pubblica); // 2026-11-17: link fisso pagina pubblica
         })
         .catch(function (err) {
             console.error('[tse] load:', err);
@@ -1329,6 +1330,26 @@
         var g = $('f-ruoli'); var cb = g ? g.querySelector('input[value="model"]') : null;
         s.style.display = (cb && cb.checked) ? 'block' : 'none';
     }
+    // ─── FIX 2026-11-17 marco (CRM Pagina pubblica talent) — «La tua pagina pubblica» nella card di stato ───
+    // d.pagina_pubblica = {url} dal CRM (link fisso toagency.it/p/nome-CODICE/lingua) solo per schede pubbliche e maggiorenni; altrimenti la riga resta nascosta.
+    var PPSTR = STR.paginaPubblica || {};
+    function renderPaginaPubblica(pp) {
+        var box = $('tse-pagepub'); if (!box) return;
+        var url = pp && typeof pp.url === 'string' && /^https:\/\/toagency\.it\/p\//.test(pp.url) ? pp.url : '';
+        if (!url || !PPSTR.titolo) { box.hidden = true; box.innerHTML = ''; return; }
+        box.innerHTML = '<div class="tse-pp-title">' + escapeHtml(PPSTR.titolo) + '</div>' +
+            '<div class="tse-pp-text">' + escapeHtml(PPSTR.testo || '') + '</div>' +
+            '<div class="tse-pp-row"><input type="text" class="tse-pp-url" readonly value="' + escapeHtml(url) + '" onclick="this.select()">' +
+            '<button type="button" class="tse-pp-btn tse-pp-copy">' + escapeHtml(PPSTR.copia || '') + '</button>' +
+            '<a class="tse-pp-btn" href="' + escapeHtml(url) + '" target="_blank" rel="noopener">' + escapeHtml(PPSTR.apri || '') + '</a></div>';
+        var btn = box.querySelector('.tse-pp-copy'), inp = box.querySelector('.tse-pp-url');
+        btn.addEventListener('click', function () {
+            function ok() { btn.textContent = PPSTR.copiato || ''; setTimeout(function () { btn.textContent = PPSTR.copia || ''; }, 2000); }
+            function fallback() { try { inp.focus(); inp.select(); document.execCommand('copy'); ok(); } catch (e) { /* il link resta selezionato */ } }
+            if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(ok, fallback); else fallback();
+        });
+        box.hidden = false;
+    }
     // ─── ticket #864 (09/11/2026) — contatore «Video caricati: X su Y» per ogni box video ───
     // Dati: video_sezioni di talent-self-edit-load.php {generale:{album,limite,n,creator}, creator:{limite,n,abilitato}, dettaglio:{album,limite,n}, totale}.
     // Il limite è quello vero del CRM (lo stesso dell'upload): nel tema non c'è nessun numero scritto a mano. Se il CRM non manda il campo, i contatori restano nascosti.
@@ -1399,7 +1420,7 @@
         if (!UUID || !TOKEN) return;
         fetch(API_LOAD + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN) + '&lang=' + encodeURIComponent(cfg.lang || 'it') + '&_=' + Date.now(), { credentials: 'same-origin' })
             .then(function (r) { return r.json(); })
-            .then(function (d) { if (d && d.success) { renderVideoElenco(d.video_elenco); renderVideoLimiti(d.video_sezioni); } })
+            .then(function (d) { if (d && d.success) { renderVideoElenco(d.video_elenco); renderVideoLimiti(d.video_sezioni); renderPaginaPubblica(d.pagina_pubblica); } })
             .catch(function () { /* l'elenco resta com'è */ });
     }
     window.talentVideoChosen = function (input, key) {
