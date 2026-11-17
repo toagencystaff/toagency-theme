@@ -1316,7 +1316,8 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<900000
             btn.rel = 'noopener';
             add.parentNode.insertBefore(btn, add);
         }
-        btn.href = url;
+        // FIX 2026-11-17 marco: from=db fa comparire sulla pagina pubblica la barra «Torna al database»
+        btn.href = url + (url.indexOf('?') < 0 ? '?' : '&') + 'from=db';
         btn.textContent = i18n('profile_full');
         btn.hidden = false;
     }
