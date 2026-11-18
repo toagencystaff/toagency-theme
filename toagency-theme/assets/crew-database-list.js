@@ -92,9 +92,23 @@
         TE:'Teramo',TR:'Terni',TO:'Torino',TP:'Trapani',TN:'Trento',TV:'Treviso',TS:'Trieste',UD:'Udine',VA:'Varese',
         VE:'Venezia',VB:'Verbano-Cusio-Ossola',VC:'Vercelli',VR:'Verona',VV:'Vibo Valentia',VI:'Vicenza',VT:'Viterbo'
     };
+    // 2026-11-18 — nomi province nella lingua del sito (solo quelle che cambiano; le altre restano uguali)
+    var PROV_L = {
+        en: { TO:'Turin', MI:'Milan', RM:'Rome', NA:'Naples', FI:'Florence', VE:'Venice', GE:'Genoa', MN:'Mantua', PD:'Padua', SI:'Siena' },
+        fr: { TO:'Turin', MI:'Milan', RM:'Rome', NA:'Naples', FI:'Florence', VE:'Venise', GE:'Gênes', MN:'Mantoue', PD:'Padoue' },
+        es: { TO:'Turín', MI:'Milán', NA:'Nápoles', FI:'Florencia', VE:'Venecia', GE:'Génova', MN:'Mantua', PD:'Padua' }
+    };
     function provName(code) {
         var c = String(code || '').toUpperCase().trim();
-        return PROV[c] || code;
+        var loc = PROV_L[cfg.lang || 'it'];
+        return (loc && loc[c]) || PROV[c] || code;
+    }
+    // 2026-11-18 — livello (professionista / semi-pro / amatoriale) nella lingua del sito
+    function levelLabel(raw) {
+        var k = String(raw || '').toLowerCase().trim();
+        var map = STR.levels || {};
+        if (map[k]) return map[k];
+        return k ? k.charAt(0).toUpperCase() + k.slice(1) : '';
     }
 
     // 2026-08-25 — bandiera del paese nella scheda profilo (richiesta Marco).
@@ -476,7 +490,7 @@
         .then(function (r) { return r.json(); })
         .then(function (d) {
             if (!d.success) {
-                $('#crew-grid').innerHTML = '<div class="crew-pub-empty">Errore caricamento.</div>';
+                $('#crew-grid').innerHTML = '<div class="crew-pub-empty">' + escapeHtml(STR.errLoad || 'Errore caricamento.') + '</div>';
                 $('#results-count').textContent = '—';
                 return;
             }
@@ -518,7 +532,7 @@
         })
         .catch(function (err) {
             console.error('[crew-pub] load error:', err);
-            $('#crew-grid').innerHTML = '<div class="crew-pub-empty">Errore rete.</div>';
+            $('#crew-grid').innerHTML = '<div class="crew-pub-empty">' + escapeHtml(STR.errNet || 'Errore di rete.') + '</div>';
             $('#results-count').textContent = '—';
         });
     }
@@ -629,7 +643,12 @@
             cats.className = 'crew-pub-categories';
             // 2026-07-26 — testo pulito "Beauty • Hair" con le etichette leggibili invece dei codici grezzi
             var catLabels = cfg.catLabels || {};
-            cats.textContent = c.categorie.slice(0, 3).map(function (cat) { return catLabels[cat] || cat; }).join(' • ');
+            c.categorie.slice(0, 3).forEach(function (cat) {
+                var pill = document.createElement('span');
+                pill.className = 'crew-pub-role';
+                pill.textContent = catLabels[cat] || cat;
+                cats.appendChild(pill);
+            });
             body.appendChild(cats);
         }
 
@@ -640,10 +659,10 @@
         // anche in crew-public-search.php, prima disponibili solo nel profilo)
         if (c.livello) {
             var annoRif = (c.pro_dal != null) ? c.pro_dal : c.attivita_dal;
-            var livelloTxt = c.livello.charAt(0).toUpperCase() + c.livello.slice(1);
+            var livelloTxt = levelLabel(c.livello);
             if (annoRif != null) {
                 var nAnniGrid = new Date().getFullYear() - parseInt(annoRif, 10);
-                if (nAnniGrid >= 1) livelloTxt += ' da ' + nAnniGrid + ' anni';
+                if (nAnniGrid >= 1) livelloTxt += ' ' + (STR.levelFor || 'da') + ' ' + nAnniGrid + ' ' + (STR.yearsLabel || 'anni');
             }
             metaParts.push(livelloTxt);
         }
@@ -865,6 +884,7 @@
         // 2026-08-01 — bio nella lingua corrente del sito (task #17), il CRM traduce/uniforma via AI in "bio"
         fetch(API_PROFILE + '?uuid=' + encodeURIComponent(uuid) + '&lang=' + encodeURIComponent(cfg.lang || 'it'), { credentials: 'same-origin' })
             .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+            .then(checkPosters)
             .then(function (d) { renderProfile(d, avatar); })
             .catch(function (err) {
                 console.error('[crew-pub] profile error:', err);
@@ -970,14 +990,14 @@
             ruoliConDati.forEach(function (ruolo) {
                 var rd = ruoliDati[ruolo];
                 var roleLabel = labels[ruolo] || ruolo;
-                var livTxt = rd.livello.charAt(0).toUpperCase() + rd.livello.slice(1);
+                var livTxt = levelLabel(rd.livello);
                 if (rd.anni != null && rd.anni >= 1) livTxt += ' · ' + rd.anni + ' ' + (STR.yearsLabel || 'anni');
                 html += '<div class="crew-pf-ruolo-livello"><strong>' + escapeHtml(roleLabel) + ':</strong> <span>' + escapeHtml(livTxt) + '</span></div>';
             });
             html += '</div>';
         } else if (d.livello) {
             // 2026-07-31 — badge singolo (invariato): crew con 1 ruolo o senza ruoli_dati ancora compilato
-            var livelloCap = d.livello.charAt(0).toUpperCase() + d.livello.slice(1);
+            var livelloCap = levelLabel(d.livello);
             html += '<div class="crew-pf-livello">' + escapeHtml(livelloCap) + '</div>';
         }
         // Età + anzianità (2026-07-23) — privacy: solo numeri dall'endpoint (mai data_nascita/P.IVA)
@@ -1237,6 +1257,55 @@
     // 2026-08-10 CREW-REDESIGN: crew-public-profile.php restituisce GIÀ cover_url (scelta dal crew
     // nel self-edit): va in testa alla lista e la card parte sempre da quella. Fallback invariato:
     // prima foto portfolio → foto profilo. Riusa la stessa cache (card._cnMedia) delle frecce Fase 3.
+    // 2026-11-18 (TEMA CREW-DATABASE) — poster video mancanti: il CRM risponde 404 con un segnaposto nero
+    // (immagine valida, quindi <img>/<video poster> lo mostrano senza errori → card nera col play).
+    // Prima di usare i poster li verifichiamo con una HEAD (cache per URL) e togliamo quelli che
+    // non esistono: la card salta quel video, il tile della scheda torna all'anteprima dal video stesso.
+    var __posterOk = {};
+    function posterExists(url) {
+        if (__posterOk[url] !== undefined) return Promise.resolve(__posterOk[url]);
+        return fetch(url, { method: 'HEAD', credentials: 'omit' })
+            .then(function (r) {
+                var ok = r.ok && /^image\/(jpeg|png|webp)/i.test(r.headers.get('content-type') || '');
+                __posterOk[url] = ok;
+                return ok;
+            })
+            .catch(function () { return true; }); // errore di rete: non penalizzare, si prova comunque
+    }
+    function checkPosters(d) {
+        var map = d && d.posters;
+        if (!map) return Promise.resolve(d);
+        var vids = Object.keys(map);
+        if (!vids.length) return Promise.resolve(d);
+        return Promise.all(vids.map(function (v) { return posterExists(map[v]); })).then(function (res) {
+            var clean = {};
+            vids.forEach(function (v, i) { if (res[i]) clean[v] = map[v]; });
+            d.posters = clean;
+            return d;
+        });
+    }
+    function firstVideoUrl(d) {
+        var albums = (d && d.albums) || {};
+        var ks = Object.keys(albums);
+        for (var i = 0; i < ks.length; i++) {
+            var arr = albums[ks[i]] || [];
+            for (var j = 0; j < arr.length; j++) if (VIDEO_RE.test(arr[j])) return arr[j];
+        }
+        return '';
+    }
+    // crew con soli video senza poster: copertina = frame del video (preload=metadata, #t=0.5)
+    function applyVideoFrameCover(card, photo, vurl) {
+        if (!vurl || photo.querySelector('.crew-pub-vidcover')) return;
+        var ph = photo.querySelector('.crew-pub-ph'); if (ph) ph.remove();
+        var v = document.createElement('video');
+        v.className = 'crew-pub-vidcover';
+        v.muted = true; v.setAttribute('playsinline', ''); v.preload = 'metadata';
+        v.src = encodeURI(vurl) + '#t=0.5';
+        photo.insertBefore(v, photo.firstChild);
+        var b = document.createElement('span'); b.className = 'crew-pub-playbadge'; b.textContent = '▶';
+        photo.appendChild(b);
+        card._cnMedia = []; // evita i retry di sweepMissingCovers
+    }
     function loadRandomCover(card, photo, uuid) {
         if (__coverCache[uuid]) {
             applyCover(card, photo, __coverCache[uuid]);
@@ -1245,8 +1314,14 @@
         // v2.5 — ritorna la promise: serve a sweepMissingCovers per limitare i fetch concorrenti
         return fetch(API_PROFILE + '?uuid=' + encodeURIComponent(uuid), { credentials: 'same-origin' })
             .then(function (r) { return r.json(); })
+            .then(checkPosters)
             .then(function (d) {
-                __coverCache[uuid] = coverFirstMedia(d);
+                var m = coverFirstMedia(d);
+                if (!m.length) {
+                    var vu = firstVideoUrl(d);
+                    if (vu) { applyVideoFrameCover(card, photo, vu); return; }
+                }
+                __coverCache[uuid] = m;
                 applyCover(card, photo, __coverCache[uuid]);
             })
             .catch(function () { /* silenzioso: resta il placeholder come fallback */ });
@@ -1480,6 +1555,7 @@
         btn.disabled = true;
         fetch(API_PROFILE + '?uuid=' + encodeURIComponent(card.dataset.uuid), { credentials: 'same-origin' })
             .then(function (r) { return r.json(); })
+            .then(checkPosters)
             .then(function (d) {
                 var curMatch = /url\(["']?([^"')]+)["']?\)/.exec(photo.style.backgroundImage || '');
                 var cur = curMatch ? curMatch[1] : '';

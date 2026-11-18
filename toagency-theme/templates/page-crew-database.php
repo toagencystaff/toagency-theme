@@ -140,6 +140,13 @@ $T = [
     'since_label'     => ['it'=>'Nel settore da','en'=>'In the field for','fr'=>'Dans le métier depuis','es'=>'En el sector desde hace'],
     'years_label'     => ['it'=>'anni','en'=>'years','fr'=>'ans','es'=>'años'],
     'pro_label'       => ['it'=>'professionista da','en'=>'professional for','fr'=>'professionnel depuis','es'=>'profesional desde hace'],
+    // 2026-11-18 (TEMA CREW-DATABASE) — livello e "da N anni" in griglia/scheda erano sempre in italiano
+    'level_for'       => ['it'=>'da','en'=>'for','fr'=>'depuis','es'=>'desde hace'],
+    'lvl_professionista' => ['it'=>'Professionista','en'=>'Professional','fr'=>'Professionnel','es'=>'Profesional'],
+    'lvl_semipro'     => ['it'=>'Semi-pro','en'=>'Semi-pro','fr'=>'Semi-pro','es'=>'Semiprofesional'],
+    'lvl_amatoriale'  => ['it'=>'Amatoriale','en'=>'Amateur','fr'=>'Amateur','es'=>'Aficionado'],
+    'err_load'        => ['it'=>'Errore caricamento.','en'=>'Loading error.','fr'=>'Erreur de chargement.','es'=>'Error de carga.'],
+    'err_net'         => ['it'=>'Errore di rete.','en'=>'Network error.','fr'=>'Erreur réseau.','es'=>'Error de red.'],
     // 2026-08-26 (TEMA-AREE-GEOGRAFICHE) — label mostrate SOLO quando residenza e domicilio sono diversi
     'loc_residenza'   => ['it'=>'R','en'=>'R','fr'=>'R','es'=>'R'],
     'loc_domicilio'   => ['it'=>'D','en'=>'D','fr'=>'D','es'=>'D'],
@@ -297,7 +304,11 @@ if ($crew_seo_items === false) {
 /* 2026-07-26 — codice pill (allineato al trattamento talent .toa-tdb-card-code): maiuscolo, senza #, visibile quanto il nome */
 .crew-pub-uuid { font-family:monospace; font-size:13px; font-weight:700; background:rgba(200,255,0,.22); color:#c8ff00; padding:2px 8px; border-radius:5px; letter-spacing:.04em; }
 /* 2026-07-26 — categorie come testo pulito ("Beauty • Hair") invece di pillole colorate, consiglio ChatGPT */
-.crew-pub-categories { color:#c8ff00; font-size:12.5px; font-weight:600; margin-top:9px; letter-spacing:.02em; }
+.crew-pub-categories { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+/* 2026-11-18 — ruoli piu' evidenti: pillole (feedback Marco), non piu' riga con puntini */
+.crew-pub-role { display:inline-block; color:#c8ff00; background:rgba(200,255,0,.12); border:1px solid rgba(200,255,0,.5); border-radius:999px; padding:4px 11px; font-size:13px; font-weight:700; line-height:1.2; letter-spacing:.01em; }
+.crew-pub-role:first-child { background:#c8ff00; color:#0a0a0a; border-color:#c8ff00; }
+.crew-pub-vidcover { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; background:#0a0a0a; }
 /* 2026-07-31 — tolto text-transform:capitalize: ora la riga contiene anche "da X anni",
    capitalize metteva maiuscola pure a "Da"/"Anni". Livello capitalizzato via JS invece. */
 .crew-pub-meta { font-size:12px; color:#9ca3af; margin-top:8px; }
@@ -610,6 +621,10 @@ window.crewPubConfig = {
         sinceLabel: <?= json_encode($_t($T['since_label'])) ?>,
         yearsLabel: <?= json_encode($_t($T['years_label'])) ?>,
         proLabel: <?= json_encode($_t($T['pro_label'])) ?>,
+        levelFor: <?= json_encode($_t($T['level_for'])) ?>,
+        levels: <?= json_encode(['professionista'=>$_t($T['lvl_professionista']),'semi-pro'=>$_t($T['lvl_semipro']),'semipro'=>$_t($T['lvl_semipro']),'amatoriale'=>$_t($T['lvl_amatoriale'])]) ?>,
+        errLoad: <?= json_encode($_t($T['err_load'])) ?>,
+        errNet: <?= json_encode($_t($T['err_net'])) ?>,
         locResidenza: <?= json_encode($_t($T['loc_residenza'])) ?>,
         locDomicilio: <?= json_encode($_t($T['loc_domicilio'])) ?>,
         worksCount: <?= json_encode($_t($T['works_count'])) ?>,
@@ -620,7 +635,7 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.9-grid3" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.10-ruoli-lingue-video" defer></script>
 
 <?php /* 2026-08-25 marco — SHORT-LINK FILTRI su /crew-database/ (chat TEMA LINK-FILTRI-CORTI).
          Stesso motore di /talent-database/ (inc/toa-shortlink.php): il pulsante legge l'URL
