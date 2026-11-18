@@ -530,7 +530,7 @@ function toa_mg_header_bar($cur = '', $cta = '', $in = false) {
     $d = toa_mg_dati(); $ui = $d['ui'];
     $cta = $cta ? $cta : toa_mg_url($ui['cta_url']);
     echo '<header class="tmg-head' . ($in ? ' tmg-head--in' : '') . '" id="tmgHead"><div class="tmg-head__in">'
-       . '<a class="tmg-logo tmg-brand" href="' . esc_url(toa_mg_home_url()) . '" aria-label="TOAgency"><span class="tmg-mark" aria-hidden="true"></span><span class="tmg-brand__t">TOAgency</span></a>'
+       . '<a class="tmg-logo tmg-brand" href="' . esc_url(toa_mg_home_url()) . '" aria-label="TOAgency"><span class="tmg-mark" aria-hidden="true"></span><span class="tmg-brand__t">Toagency</span></a>'
        . '<nav class="tmg-nav" aria-label="TOAgency">' . toa_mg_voci_html($cur) . '</nav>'
        . '<div class="tmg-head__r">' . toa_mg_voce_casting() . toa_mg_voce_lavora()
        . toa_mg_lingue_html() . '<a class="tmg-btn tmg-btn--lime tmg-head__cta" href="' . esc_url($cta) . '">' . esc_html(toa_mg_t($ui['cta'])) . '</a>'
