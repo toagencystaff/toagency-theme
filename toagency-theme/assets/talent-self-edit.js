@@ -320,6 +320,20 @@
         if (!isIT && esteroInput && hidden && !esteroInput.dataset.userEdited) esteroInput.value = hidden.value || '';
     }
 
+    // 2026-11-18 (TEMA SCHEDA LINK): dal menu «Modifica la tua scheda» si arriva senza codice personale.
+    // Senza uuid/token non si mostra un errore: si porta la persona a recuperare il link via email.
+    function recoverUrl() { return 'https://toagency.it/crm_toagency/recupera-link.php?lang=' + encodeURIComponent(cfg.lang || 'it'); }
+    function showInvalidLink(msg) {
+        if (!UUID || !TOKEN) { window.location.replace(recoverUrl()); return; }
+        showError(msg);
+        var st = $('tse-status');
+        var lbl = { it: 'Recupera il link', en: 'Get your link back', fr: 'Récupérer ton lien', es: 'Recuperar tu enlace' }[cfg.lang || 'it'] || 'Recupera il link';
+        var a = document.createElement('a');
+        a.href = recoverUrl(); a.textContent = lbl;
+        a.style.cssText = 'display:block;margin-top:14px;color:#c8ff00;font-weight:700;text-decoration:underline;';
+        st.appendChild(a);
+    }
+
     function showError(msg) {
         $('tse-status').textContent = msg;
         $('tse-status').classList.add('error');
@@ -399,7 +413,7 @@
     // Prima cosa che si vede: card leggera (stato pubblico, foto in attesa, % completezza) invece del form pesante.
     // Se qualcosa va storto qui, si cade sempre sul comportamento di prima (form diretto) — mai un vicolo cieco.
     function loadStatusCard() {
-        if (!UUID || !TOKEN) { showError(STR.invalidLink || 'Link non valido'); return; }
+        if (!UUID || !TOKEN) { showInvalidLink(STR.invalidLink || 'Link non valido'); return; }
         fetch(API_STATO + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN) + '&lang=' + encodeURIComponent(cfg.lang || 'it') + '&_=' + Date.now(), { credentials:'same-origin' })
             .then(function (r) { return r.json(); })
             .then(function (d) {
@@ -437,14 +451,14 @@
     }
 
     function loadData() {
-        if (!UUID || !TOKEN) { showError(STR.invalidLink || 'Link non valido'); return; }
+        if (!UUID || !TOKEN) { showInvalidLink(STR.invalidLink || 'Link non valido'); return; }
         fetch(API_LOAD + '?uuid=' + encodeURIComponent(UUID) + '&t=' + encodeURIComponent(TOKEN) + '&lang=' + encodeURIComponent(cfg.lang || 'it'), { // FIX 2026-10-14 marco (#622): lingua per i ruoli
             method: 'GET',
             credentials: 'same-origin'
         })
         .then(function (r) { return r.json(); })
         .then(function (d) {
-            if (!d.success) { showError(STR.invalidLink || 'Link non valido'); return; }
+            if (!d.success) { showInvalidLink(STR.invalidLink || 'Link non valido'); return; }
             if (d.redirect_to) { var __rsep = d.redirect_to.indexOf('?') > -1 ? '&' : '?'; window.location.href = d.redirect_to + __rsep + 'lang=' + encodeURIComponent(cfg.lang || 'it'); return; } // FIX 2026-09-19 marco - redirect verso completa-scheda.php non portava lang, pagina tornava italiano
             $('tse-uuid-display').textContent = '#' + (d.uuid_short || UUID.substring(0,8));
             $('tse-name-display').innerHTML = 'Stai modificando il profilo di <strong>' +

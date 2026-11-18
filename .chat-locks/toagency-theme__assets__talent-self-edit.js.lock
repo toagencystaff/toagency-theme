@@ -1,9 +1,7 @@
-STATO=CLOSED
-CHAT=TEMA Pagina pubblica talent
+STATO=OPEN
+CHAT=TEMA SCHEDA LINK
 FILE=toagency-theme/assets/talent-self-edit.js
-INIZIO=2026-11-17 15:25:25
-UPDATE=2026-11-17 15:27:19
-SHA1_ATTESO=c8819aabe48f7b78c9b5fdd5be4e31574a1caa3d
-NOTE=riga La tua pagina pubblica nella card di stato dell area talent (pagina_pubblica dal CRM)
-CHIUSO=2026-11-17 15:27:19
-DEPLOY=FATTO 585af6b7f (prod)
+INIZIO=2026-11-18 21:11:51
+UPDATE=2026-11-18 21:11:56
+SHA1_ATTESO=132c887128de12655aa652689cdc32de5c15126d
+NOTE=menu Modifica la tua scheda senza codice -> rimanda a recupera-link
