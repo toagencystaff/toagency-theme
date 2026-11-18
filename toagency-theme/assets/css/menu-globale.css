@@ -15,6 +15,10 @@
  * Riquadro 814x298 px dentro l'immagine, a partire da (134,391): --h = altezza del riquadro. Bianco su sfondo scuro (.tmg-lg--w). */
 .tmg-on .tmg-lg{--h:42px;display:block;flex:0 0 auto;width:calc(var(--h)*2.7315);height:var(--h);background:url(/wp-content/uploads/2025/09/LogoToanewBlack.png) no-repeat;background-size:calc(var(--h)*3.6242) calc(var(--h)*3.6242);background-position:calc(var(--h)*-.4497) calc(var(--h)*-1.3121)}
 .tmg-on .tmg-lg--w{background-image:url(/wp-content/uploads/2025/09/LogoToanew.png)}
+/* header (18/11 Marco): solo la O centrale del logo (286x287 px a partire da (398,397) nello stesso PNG) + scritta TOAgency accanto. --m = lato della O. */
+.tmg-on .tmg-brand{display:flex;align-items:center;gap:10px}
+.tmg-on .tmg-mark{--m:40px;display:block;flex:0 0 auto;width:var(--m);height:var(--m);background:url(/wp-content/uploads/2025/09/LogoToanewBlack.png) no-repeat;background-size:calc(var(--m)*3.7631) calc(var(--m)*3.7631);background-position:calc(var(--m)*-1.3868) calc(var(--m)*-1.3832)}
+.tmg-on .tmg-brand__t{font-family:Inter,system-ui,sans-serif!important;font-weight:800;font-size:23px;letter-spacing:-.01em;line-height:1}
 .tmg-on .tmg-lg--s{--h:26px}
 .tmg-on .tmg-lg.tmg-logo--foot{--h:36px;margin-bottom:12px}
 .tmg-on .tmg-logo--bar{font-size:17px;color:#FFFFFF!important;margin-right:14px}
@@ -177,6 +181,8 @@
   .tmg-on .tmg-head__in{padding:0 16px}
   .tmg-on .tmg-head .tmg-logo{font-size:22px;margin-right:0}
   .tmg-on .tmg-head .tmg-lg{--h:34px}
+  .tmg-on .tmg-head .tmg-mark{--m:32px}
+  .tmg-on .tmg-head .tmg-brand__t{font-size:19px}
   .tmg-on .tmg-head__cta{display:none!important}
   .tmg-on .tmg-head__r .tmg-langs{display:flex!important}
   .tmg-on .tmg-head__r{gap:8px}
