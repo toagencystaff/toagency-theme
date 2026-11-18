@@ -195,3 +195,66 @@
   .tmg-on .tmg-cards{grid-template-columns:1fr;padding:0 20px}
   .tmg-on .tmg-card{min-height:0}
 }
+
+/* ═════════ RESTYLING HEADER (18/11/2026, chat «TEMA LOGO HEADER», Marco: «estetica estrema, spettacolare») ═════════
+ * Solo estetica, nessun cambio a voci/link. Vetro smerigliato, linea lime di avanzamento pagina, evidenziatore lime
+ * sulla voce aperta/attuale, voci che si spengono attorno a quella sotto il mouse, lingue a pillola, CTA con riflesso.
+ * Chi ha «riduci movimento» attivo nel sistema vede tutto fermo. */
+.tmg-on .tmg-head{background:rgba(255,255,255,.96);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(8,8,10,.08)}
+.tmg-on .tmg-head::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,#C8FF00 0%,#E4FF7A 70%,#C8FF00 100%);transform-origin:0 50%;transform:scaleX(0);pointer-events:none}
+@supports (animation-timeline:scroll()){
+  .tmg-on .tmg-head{animation:tmgOmbra linear both;animation-timeline:scroll(root);animation-range:0 160px}
+  .tmg-on .tmg-head::after{animation:tmgAvanza linear both;animation-timeline:scroll(root)}
+}
+@keyframes tmgOmbra{to{box-shadow:0 14px 40px -18px rgba(8,8,10,.45)}}
+@keyframes tmgAvanza{to{transform:scaleX(1)}}
+
+/* marchio: la O ruota un poco al passaggio del mouse */
+.tmg-on .tmg-brand__t{font-size:21px;letter-spacing:.035em}
+.tmg-on .tmg-mark{transition:transform .55s cubic-bezier(.34,1.56,.64,1)}
+.tmg-on .tmg-brand:hover .tmg-mark{transform:rotate(-16deg) scale(1.1)}
+
+/* voci: sottolineatura che cresce dal centro; voce aperta o pagina attuale = evidenziatore lime dietro il testo */
+.tmg-on .tmg-voce{position:relative;letter-spacing:-.01em;transition:opacity .25s,color .25s}
+.tmg-on .tmg-voce::after{content:'';position:absolute;left:13px;right:13px;bottom:25px;height:2px;border-radius:2px;background:var(--tmg-k);transform:scaleX(0);transition:transform .4s cubic-bezier(.2,.8,.2,1),height .25s,bottom .25s,background-color .25s;z-index:-1}
+.tmg-on .tmg-voce:hover,.tmg-on .tmg-voce:focus-visible,.tmg-on .tmg-voce[aria-expanded="true"],.tmg-on .tmg-head .tmg-voce.is-cur{border-bottom-color:transparent!important}
+.tmg-on .tmg-voce:hover::after,.tmg-on .tmg-voce:focus-visible::after{transform:scaleX(1)}
+.tmg-on .tmg-voce[aria-expanded="true"]::after,.tmg-on .tmg-head .tmg-voce.is-cur::after{transform:scaleX(1);background:var(--tmg-l);height:11px;bottom:30px;left:9px;right:9px;border-radius:3px}
+.tmg-on .tmg-nav:hover .tmg-voce:not(:hover):not([aria-expanded="true"]){opacity:.38}
+.tmg-on .tmg-voce--lav::after{left:6px;right:6px}
+.tmg-on .tmg-voce--lav:hover{color:var(--tmg-k)!important}
+
+/* lingue a pillola */
+.tmg-on .tmg-head .tmg-langs{background:#F1F1EE;border-radius:999px;padding:3px;gap:0}
+.tmg-on .tmg-head .tmg-langs a,.tmg-on .tmg-head .tmg-langs span{padding:5px 8px!important;border-radius:999px!important;line-height:1!important;transition:color .2s,background-color .2s}
+.tmg-on .tmg-head .tmg-langs a:hover{color:var(--tmg-k)!important;background:#FFFFFF!important}
+.tmg-on .tmg-head .tmg-langs .on{background:var(--tmg-k)!important;color:#FFFFFF!important;text-decoration:none!important}
+
+/* «Richiedi preventivo»: freccia, alone lime e un riflesso che passa ogni tanto */
+.tmg-on .tmg-head__cta{position:relative;overflow:hidden;isolation:isolate;gap:8px;padding:0 20px 0 22px;box-shadow:0 6px 20px -8px rgba(160,210,0,.75);transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
+.tmg-on .tmg-head__cta::after{content:'\2192';font-size:17px;font-weight:700;line-height:1;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.tmg-on .tmg-head__cta::before{content:'';position:absolute;top:0;bottom:0;left:-60%;width:45%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent);transform:skewX(-20deg);z-index:-1;animation:tmgRiflesso 6s ease-in-out 1.5s infinite}
+.tmg-on .tmg-head__cta:hover{transform:translateY(-1px);box-shadow:0 12px 28px -8px rgba(160,210,0,.95)}
+.tmg-on .tmg-head__cta:hover::after{transform:translateX(4px)}
+@keyframes tmgRiflesso{0%,72%{left:-60%}100%{left:130%}}
+
+/* pannelli: entrano scivolando, lo sfondo dietro si sfoca */
+.tmg-on .tmg-panel{animation:tmgScende .32s cubic-bezier(.2,.8,.2,1)}
+.tmg-on .tmg-veil{-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);animation:tmgAppare .3s ease}
+@keyframes tmgScende{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+@keyframes tmgAppare{from{opacity:0}to{opacity:1}}
+
+/* menu a tendina (telefono/schermi stretti): pulsante nero rotondo che diventa una X */
+.tmg-on .tmg-head .tmg-burger{border:0!important;border-radius:999px!important;background:var(--tmg-k)!important;padding:0 13px!important;transition:transform .2s}
+.tmg-on .tmg-head .tmg-burger span{background:#FFFFFF;transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .2s}
+.tmg-on .tmg-head .tmg-burger:active{transform:scale(.94)}
+.tmg-on .tmg-head .tmg-burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.tmg-on .tmg-head .tmg-burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.tmg-on .tmg-head .tmg-burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+@media (max-width:768px){
+  .tmg-on .tmg-head .tmg-brand__t{font-size:18px}
+  .tmg-on .tmg-head .tmg-langs a,.tmg-on .tmg-head .tmg-langs span{padding:5px 6px!important}
+}
+@media (prefers-reduced-motion:reduce){
+  .tmg-on .tmg-head,.tmg-on .tmg-head *,.tmg-on .tmg-head::after,.tmg-on .tmg-head *::before,.tmg-on .tmg-head *::after,.tmg-on .tmg-panel,.tmg-on .tmg-veil{animation:none!important;transition:none!important}
+}
