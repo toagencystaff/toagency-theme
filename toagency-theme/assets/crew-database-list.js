@@ -103,6 +103,10 @@
         var loc = PROV_L[cfg.lang || 'it'];
         return (loc && loc[c]) || PROV[c] || code;
     }
+    // 2026-11-18 — «1 anno» / «2 anni» (EN: 1 year / 2 years, ecc.)
+    function yearsWord(n) {
+        return (n === 1) ? (STR.yearOne || 'anno') : (STR.yearsLabel || 'anni');
+    }
     // 2026-11-18 — livello (professionista / semi-pro / amatoriale) nella lingua del sito
     function levelLabel(raw) {
         var k = String(raw || '').toLowerCase().trim();
@@ -662,7 +666,7 @@
             var livelloTxt = levelLabel(c.livello);
             if (annoRif != null) {
                 var nAnniGrid = new Date().getFullYear() - parseInt(annoRif, 10);
-                if (nAnniGrid >= 1) livelloTxt += ' ' + (STR.levelFor || 'da') + ' ' + nAnniGrid + ' ' + (STR.yearsLabel || 'anni');
+                if (nAnniGrid >= 1) livelloTxt += ' ' + (STR.levelFor || 'da') + ' ' + nAnniGrid + ' ' + yearsWord(nAnniGrid);
             }
             metaParts.push(livelloTxt);
         }
@@ -991,7 +995,7 @@
                 var rd = ruoliDati[ruolo];
                 var roleLabel = labels[ruolo] || ruolo;
                 var livTxt = levelLabel(rd.livello);
-                if (rd.anni != null && rd.anni >= 1) livTxt += ' · ' + rd.anni + ' ' + (STR.yearsLabel || 'anni');
+                if (rd.anni != null && rd.anni >= 1) livTxt += ' · ' + rd.anni + ' ' + yearsWord(rd.anni);
                 html += '<div class="crew-pf-ruolo-livello"><strong>' + escapeHtml(roleLabel) + ':</strong> <span>' + escapeHtml(livTxt) + '</span></div>';
             });
             html += '</div>';
@@ -1008,11 +1012,11 @@
         }
         if (d.attivita_dal != null) {
             var nAtt = yNow - parseInt(d.attivita_dal, 10);
-            if (nAtt >= 1) senParts.push(escapeHtml(STR.sinceLabel || 'Nel settore da') + ' ' + nAtt + ' ' + escapeHtml(STR.yearsLabel || 'anni'));
+            if (nAtt >= 1) senParts.push(escapeHtml(STR.sinceLabel || 'Nel settore da') + ' ' + nAtt + ' ' + escapeHtml(yearsWord(nAtt)));
         }
         if (d.pro_dal != null) {
             var nPro = yNow - parseInt(d.pro_dal, 10);
-            if (nPro >= 1) senParts.push(escapeHtml(STR.proLabel || 'professionista da') + ' ' + nPro + ' ' + escapeHtml(STR.yearsLabel || 'anni'));
+            if (nPro >= 1) senParts.push(escapeHtml(STR.proLabel || 'professionista da') + ' ' + nPro + ' ' + escapeHtml(yearsWord(nPro)));
         }
         if (senParts.length) html += '<div class="crew-pf-seniority">' + senParts.join(' · ') + '</div>';
         html += '</div>'; // .crew-pf-headinfo

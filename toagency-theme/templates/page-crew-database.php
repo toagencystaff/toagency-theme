@@ -139,6 +139,7 @@ $T = [
     'age_suffix'      => ['it'=>'anni','en'=>'years old','fr'=>'ans','es'=>'años'],
     'since_label'     => ['it'=>'Nel settore da','en'=>'In the field for','fr'=>'Dans le métier depuis','es'=>'En el sector desde hace'],
     'years_label'     => ['it'=>'anni','en'=>'years','fr'=>'ans','es'=>'años'],
+    'year_one'        => ['it'=>'anno','en'=>'year','fr'=>'an','es'=>'año'],
     'pro_label'       => ['it'=>'professionista da','en'=>'professional for','fr'=>'professionnel depuis','es'=>'profesional desde hace'],
     // 2026-11-18 (TEMA CREW-DATABASE) — livello e "da N anni" in griglia/scheda erano sempre in italiano
     'level_for'       => ['it'=>'da','en'=>'for','fr'=>'depuis','es'=>'desde hace'],
@@ -620,6 +621,7 @@ window.crewPubConfig = {
         ageSuffix: <?= json_encode($_t($T['age_suffix'])) ?>,
         sinceLabel: <?= json_encode($_t($T['since_label'])) ?>,
         yearsLabel: <?= json_encode($_t($T['years_label'])) ?>,
+        yearOne: <?= json_encode($_t($T['year_one'])) ?>,
         proLabel: <?= json_encode($_t($T['pro_label'])) ?>,
         levelFor: <?= json_encode($_t($T['level_for'])) ?>,
         levels: <?= json_encode(['professionista'=>$_t($T['lvl_professionista']),'semi-pro'=>$_t($T['lvl_semipro']),'semipro'=>$_t($T['lvl_semipro']),'amatoriale'=>$_t($T['lvl_amatoriale'])]) ?>,
@@ -635,7 +637,7 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.10-ruoli-lingue-video" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.11-anno-singolare" defer></script>
 
 <?php /* 2026-08-25 marco — SHORT-LINK FILTRI su /crew-database/ (chat TEMA LINK-FILTRI-CORTI).
          Stesso motore di /talent-database/ (inc/toa-shortlink.php): il pulsante legge l'URL
