@@ -258,3 +258,7 @@
 @media (prefers-reduced-motion:reduce){
   .tmg-on .tmg-head,.tmg-on .tmg-head *,.tmg-on .tmg-head::after,.tmg-on .tmg-head *::before,.tmg-on .tmg-head *::after,.tmg-on .tmg-panel,.tmg-on .tmg-veil{animation:none!important;transition:none!important}
 }
+
+/* 2026-11-18 (TEMA CREW-DATABASE) — con il menu globale le lingue stanno solo nell'header in alto:
+   niente secondo selettore nella barra di TOA Events / TOA Creators (Marco: «doppia così è assurda») */
+.tmg-on .tev-top .tev-langs,.tmg-on .tcr-top .tcr-langs,.tmg-on .tcr-langs--foot{display:none!important}

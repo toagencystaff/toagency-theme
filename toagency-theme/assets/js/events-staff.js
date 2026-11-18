@@ -67,7 +67,7 @@
   // ── chiamate CRM ──
   function getJSON(params, signal) {
     var u = EP + '?' + new URLSearchParams(params).toString();
-    return fetch(u, { credentials: 'omit', signal: signal }).then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); });
+    return fetch(u, { credentials: 'same-origin', signal: signal }).then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); });
   }
   function loadFiltri(paese) {
     if (paese && FC[paese]) return Promise.resolve(FC[paese]);

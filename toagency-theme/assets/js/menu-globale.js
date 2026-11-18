@@ -94,7 +94,7 @@
     try { var c = JSON.parse(localStorage.getItem(key) || 'null'); if (c && c.t > Date.now() - ms) return Promise.resolve(c.v); } catch (x) {}
     return fn().then(function (v) { try { localStorage.setItem(key, JSON.stringify({ t: Date.now(), v: v })); } catch (x) {} return v; });
   }
-  function getJ(u) { return fetch(u, { credentials: 'omit' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }); }
+  function getJ(u) { return fetch(u, { credentials: 'same-origin' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }); }
   function prezzoHostess() {
     var EP = '/actions/hostess-vetrina-public.php';
     return cache('h', 36e5, function () {

@@ -22,7 +22,7 @@
   function get(action, params) {
     var q = new URLSearchParams(Object.assign({ action: action, lang: L }, params || {}));
     Object.keys(params || {}).forEach(function (k) { if (!params[k]) q.delete(k); });
-    return fetch(EP + '?' + q.toString(), { credentials: 'omit' })
+    return fetch(EP + '?' + q.toString(), { credentials: 'same-origin' })
       .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
       .then(function (j) { return j && j.ok ? j : Promise.reject('ko'); });
   }

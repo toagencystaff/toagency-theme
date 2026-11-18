@@ -97,7 +97,7 @@
     function load() {
         if (loadState !== 0) return;
         loadState = 1;
-        fetch(ENDPOINT, { credentials: 'omit' }).then(function (r) { return r.json(); }).then(function (d) {
+        fetch(ENDPOINT, { credentials: 'same-origin' }).then(function (r) { return r.json(); }).then(function (d) {
             if (d && d.success && d.citta && d.citta.length && d.testi) { data = d; loadState = 2; } else { loadState = 3; }
             refresh();
         }).catch(function () { loadState = 3; refresh(); });

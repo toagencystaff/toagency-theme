@@ -1268,7 +1268,7 @@
     var __posterOk = {};
     function posterExists(url) {
         if (__posterOk[url] !== undefined) return Promise.resolve(__posterOk[url]);
-        return fetch(url, { method: 'HEAD', credentials: 'omit' })
+        return fetch(url, { method: 'HEAD', credentials: 'same-origin' })
             .then(function (r) {
                 var ok = r.ok && /^image\/(jpeg|png|webp)/i.test(r.headers.get('content-type') || '');
                 __posterOk[url] = ok;
