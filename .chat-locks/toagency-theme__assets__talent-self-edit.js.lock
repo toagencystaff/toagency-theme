@@ -1,7 +1,9 @@
-STATO=OPEN
+STATO=CLOSED
 CHAT=TEMA SCHEDA LINK
 FILE=toagency-theme/assets/talent-self-edit.js
 INIZIO=2026-11-18 21:11:51
-UPDATE=2026-11-18 21:11:56
+UPDATE=2026-11-18 21:19:36
 SHA1_ATTESO=132c887128de12655aa652689cdc32de5c15126d
 NOTE=menu Modifica la tua scheda senza codice -> rimanda a recupera-link
+CHIUSO=2026-11-18 21:19:36
+DEPLOY=FATTO (prod) 18/11 21:19
