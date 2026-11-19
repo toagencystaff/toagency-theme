@@ -400,10 +400,8 @@ if ($crew_seo_items === false) {
 .admin-bar .crew-pf-overlay { top:var(--wp-admin--admin-bar--height,32px); }
 .tmg-on .crew-pf-overlay { top:calc(var(--tmg-ab,0px) + var(--tmg-hh,80px)); padding-top:16px; }
 .crew-pf-code { display:inline-flex; align-items:center; gap:8px; pointer-events:auto; }
-.crew-pf-code-v { -webkit-user-select:all; user-select:all; cursor:text; }
-.crew-pf-card .crew-pf-copy { background:rgba(200,255,0,.18)!important; color:#c8ff00!important; border:1px solid rgba(200,255,0,.45)!important; border-radius:999px!important; padding:3px 11px!important; font:600 12px/1.3 system-ui,-apple-system,sans-serif!important; letter-spacing:.02em!important; text-transform:none!important; cursor:pointer; width:auto!important; min-width:0!important; box-shadow:none!important; }
-.crew-pf-card .crew-pf-copy:hover { background:rgba(200,255,0,.3)!important; }
-.crew-pf-card .crew-pf-copy.is-done { background:#c8ff00!important; color:#0a0a0a!important; }
+.crew-pf-code-v { -webkit-user-select:all; user-select:all; cursor:pointer; }
+.crew-pf-code-v.is-done::after { content:" \2713"; color:#c8ff00; }
 .crew-pf-card a.crew-pf-crm { display:inline-block; background:#fff; color:#0a0a0a!important; border-radius:999px; padding:3px 11px; font:600 12px/1.3 system-ui,-apple-system,sans-serif; text-decoration:none!important; }
 /* 2026-07-26 — layout affiancato: avatar a sinistra (un po' piu' grande), info a destra (ottimizza lo spazio, richiesta Marco) */
 .crew-pf-headrow { display:flex; align-items:flex-start; gap:18px; }
@@ -667,7 +665,7 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.14-copia-codice" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.15-codice-clic" defer></script>
 
 <?php /* 2026-08-25 marco — SHORT-LINK FILTRI su /crew-database/ (chat TEMA LINK-FILTRI-CORTI).
          Stesso motore di /talent-database/ (inc/toa-shortlink.php): il pulsante legge l'URL

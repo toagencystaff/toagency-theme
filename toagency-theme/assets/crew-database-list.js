@@ -923,8 +923,7 @@
         // 2026-11-19 ticket 1021 — codice selezionabile (un clic lo seleziona tutto) + bottone Copia (4 lingue, stringhe da cfg.strings)
         var __cs = (cfg && cfg.strings) || {};
         var codice = d.codice
-            ? '<span class="crew-pf-code">· <span class="crew-pf-code-v">' + escapeHtml(d.codice) + '</span>'
-              + '<button type="button" class="crew-pf-copy" data-code="' + escapeHtml(d.codice) + '" data-done="' + escapeHtml(__cs.copiedCode || 'OK') + '">' + escapeHtml(__cs.copyCode || 'Copy') + '</button>'
+            ? '<span class="crew-pf-code">· <span class="crew-pf-code-v crew-pf-copy" title="' + escapeHtml(__cs.copyCode || 'Copy') + '" data-code="' + escapeHtml(d.codice) + '">' + escapeHtml(d.codice) + '</span>'
               // solo staff: cfg.staffCrmUrl e' vuoto per i visitatori (deciso lato server), vedi page-crew-database.php
               + ((cfg.staffCrmUrl && currentProfileUuid) ? '<a class="crew-pf-crm" target="_blank" rel="noopener" href="' + escapeHtml(cfg.staffCrmUrl + encodeURIComponent(currentProfileUuid)) + '">' + escapeHtml(__cs.openInCrm || 'CRM') + '</a>' : '')
               + '</span>'
@@ -1191,7 +1190,7 @@
     document.addEventListener('click', function (e) {
         if (e.target && e.target.id === 'crew-profile-overlay') window.crewPubCloseProfile();
     });
-    // 2026-11-19 ticket 1021 — bottone «Copia» accanto al codice crew (clipboard + fallback per browser/iframe senza permesso)
+    // 2026-11-19 ticket 1021 — un clic sul codice crew lo copia (nessuna scritta; feedback = spunta) (clipboard + fallback per browser/iframe senza permesso)
     document.addEventListener('click', function (e) {
         var b = e.target && e.target.closest ? e.target.closest('.crew-pf-copy') : null;
         if (!b) return;
@@ -1199,11 +1198,8 @@
         var code = b.getAttribute('data-code') || '';
         if (!code) return;
         function done() {
-            var idle = b.getAttribute('data-idle') || b.textContent;
-            b.setAttribute('data-idle', idle);
-            b.textContent = b.getAttribute('data-done') || 'OK';
             b.classList.add('is-done');
-            setTimeout(function () { b.textContent = idle; b.classList.remove('is-done'); }, 1800);
+            setTimeout(function () { b.classList.remove('is-done'); }, 1500);
         }
         function fallback() {
             var ta = document.createElement('textarea');
