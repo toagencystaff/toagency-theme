@@ -400,6 +400,7 @@ if ($crew_seo_items === false) {
 .admin-bar .crew-pf-overlay { top:var(--wp-admin--admin-bar--height,32px); }
 .tmg-on .crew-pf-overlay { top:calc(var(--tmg-ab,0px) + var(--tmg-hh,80px)); padding-top:16px; }
 .crew-pf-code { display:inline-flex; align-items:center; gap:8px; pointer-events:auto; }
+.crew-pf-code { color:#fff; font-weight:700; font-size:18px; letter-spacing:1px; text-shadow:0 2px 10px rgba(0,0,0,.75); }
 .crew-pf-code-v { -webkit-user-select:all; user-select:all; cursor:pointer; }
 .crew-pf-code-v.is-done::after { content:" \2713"; color:#c8ff00; }
 .crew-pf-card a.crew-pf-crm { display:inline-block; background:#fff; color:#0a0a0a!important; border-radius:999px; padding:3px 11px; font:600 12px/1.3 system-ui,-apple-system,sans-serif; text-decoration:none!important; }
@@ -665,7 +666,7 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.15-codice-clic" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.16-codice-bianco" defer></script>
 
 <?php /* 2026-08-25 marco — SHORT-LINK FILTRI su /crew-database/ (chat TEMA LINK-FILTRI-CORTI).
          Stesso motore di /talent-database/ (inc/toa-shortlink.php): il pulsante legge l'URL
