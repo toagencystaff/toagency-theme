@@ -155,6 +155,10 @@ $T = [
     'works_count'     => ['it'=>'lavori','en'=>'works','fr'=>'travaux','es'=>'trabajos'],
     // 2026-08-10 CREW-REDESIGN — bottone esplicito sulla card ("Portfolio" è invariato nelle 4 lingue)
     'portfolio_btn'   => ['it'=>'Portfolio','en'=>'Portfolio','fr'=>'Portfolio','es'=>'Portfolio'],
+    // 2026-11-19 ticket 1021 — bottone copia accanto al codice crew nella scheda
+    'copy_code'       => ['it'=>'Copia','en'=>'Copy','fr'=>'Copier','es'=>'Copiar'],
+    'copied_code'     => ['it'=>'Copiato','en'=>'Copied','fr'=>'Copié','es'=>'Copiado'],
+    'open_in_crm'     => ['it'=>'Apri scheda nel CRM','en'=>'Open card in CRM','fr'=>'Ouvrir la fiche dans le CRM','es'=>'Abrir ficha en el CRM'],
     // 2026-08-11 CREATIVE-HOME Fase 2 — ricerca testuale in evidenza (placeholder = anche aria-label)
     'search_ph'       => ['it'=>'Cerca nome, categoria o provincia…','en'=>'Search name, category or province…','fr'=>'Chercher nom, catégorie ou province…','es'=>'Buscar nombre, categoría o provincia…'],
     // 2026-08-11 CREATIVE-HOME Fase 2 — strisce editoriali "In evidenza" + titolo catalogo
@@ -390,6 +394,17 @@ if ($crew_seo_items === false) {
 .crew-pf-hero-name { color:#fff; font-size:34px; font-weight:800; letter-spacing:-.5px; margin:0; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; text-shadow:0 2px 12px rgba(0,0,0,.6); }
 @media (max-width:640px){ .crew-pf-hero{ width:calc(100% + 32px); margin:-22px -16px 16px; } .crew-pf-hero-slideshow{ height:clamp(180px,54vw,300px); } .crew-pf-hero-overlay{ padding:32px 16px 14px; } .crew-pf-hero-name{ font-size:26px; } }
 .crew-pf-code { color:#6b7280; font-weight:500; font-size:15px; letter-spacing:.5px; font-family:monospace; }
+/* 2026-11-19 ticket 1021 — (1) il menu fisso (z 10010, 80px / 60px sotto 768px, + barra admin WP) copriva la parte alta
+   della copertina: la scheda parte SOTTO l'header (variabili del menu --tmg-hh / --tmg-ab). (2) il codice crew stava dentro
+   .crew-pf-hero-overlay che ha pointer-events:none: non si poteva selezionare. Ora si seleziona con un clic e c'e' il bottone Copia. */
+.admin-bar .crew-pf-overlay { top:var(--wp-admin--admin-bar--height,32px); }
+.tmg-on .crew-pf-overlay { top:calc(var(--tmg-ab,0px) + var(--tmg-hh,80px)); padding-top:16px; }
+.crew-pf-code { display:inline-flex; align-items:center; gap:8px; pointer-events:auto; }
+.crew-pf-code-v { -webkit-user-select:all; user-select:all; cursor:text; }
+.crew-pf-card .crew-pf-copy { background:rgba(200,255,0,.18)!important; color:#c8ff00!important; border:1px solid rgba(200,255,0,.45)!important; border-radius:999px!important; padding:3px 11px!important; font:600 12px/1.3 system-ui,-apple-system,sans-serif!important; letter-spacing:.02em!important; text-transform:none!important; cursor:pointer; width:auto!important; min-width:0!important; box-shadow:none!important; }
+.crew-pf-card .crew-pf-copy:hover { background:rgba(200,255,0,.3)!important; }
+.crew-pf-card .crew-pf-copy.is-done { background:#c8ff00!important; color:#0a0a0a!important; }
+.crew-pf-card a.crew-pf-crm { display:inline-block; background:#fff; color:#0a0a0a!important; border-radius:999px; padding:3px 11px; font:600 12px/1.3 system-ui,-apple-system,sans-serif; text-decoration:none!important; }
 /* 2026-07-26 — layout affiancato: avatar a sinistra (un po' piu' grande), info a destra (ottimizza lo spazio, richiesta Marco) */
 .crew-pf-headrow { display:flex; align-items:flex-start; gap:18px; }
 .crew-pf-avatar { flex-shrink:0; width:92px; height:92px; border-radius:50%; background:#2a2a2e center/cover no-repeat; border:3px solid #2a2a2e; }
@@ -593,8 +608,20 @@ if ($crew_seo_items === false) {
     </div>
 </section>
 
+<?php
+/* 2026-11-19 ticket 1021 — bottone «Apri scheda nel CRM» SOLO per lo staff. Controllo lato SERVER (admin WordPress loggato):
+   ai visitatori il link non viene nemmeno scritto nella pagina. Nessun token: il link e' /crm_toagency/apri-crew.php?uuid=
+   (pagina CRM, ticket #1022) che entra con la sessione CRM dello staff. Finche' quel file non esiste sul server il bottone
+   non compare (nessun link rotto). */
+$crew_staff_crm_url = '';
+if (function_exists('is_user_logged_in') && is_user_logged_in() && current_user_can('manage_options')
+    && file_exists(rtrim(ABSPATH, '/') . '/crm_toagency/apri-crew.php')) {
+    $crew_staff_crm_url = '/crm_toagency/apri-crew.php?uuid=';
+}
+?>
 <script>
 window.crewPubConfig = {
+    staffCrmUrl: <?= json_encode($crew_staff_crm_url) ?>,
     apiSearch: '/crm_toagency/actions/crew-public-search.php',
     apiLead:   '/crm_toagency/actions/crew-lead.php',
     apiProfile:'/crm_toagency/actions/crew-public-profile.php',
@@ -631,13 +658,16 @@ window.crewPubConfig = {
         locDomicilio: <?= json_encode($_t($T['loc_domicilio'])) ?>,
         worksCount: <?= json_encode($_t($T['works_count'])) ?>,
         portfolioBtn: <?= json_encode($_t($T['portfolio_btn'])) ?>,
+        copyCode: <?= json_encode($_t($T['copy_code'])) ?>,
+        copiedCode: <?= json_encode($_t($T['copied_code'])) ?>,
+        openInCrm: <?= json_encode($_t($T['open_in_crm'])) ?>,
         featuredAll: <?= json_encode($_t($T['featured_all'])) ?>,
         emptySearch: <?= json_encode($_t($T['no_results_search'])) ?>,
         nearFallback: <?= json_encode($_t($T['no_results_near'])) ?>,
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.13-anteprime" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.14-copia-codice" defer></script>
 
 <?php /* 2026-08-25 marco — SHORT-LINK FILTRI su /crew-database/ (chat TEMA LINK-FILTRI-CORTI).
          Stesso motore di /talent-database/ (inc/toa-shortlink.php): il pulsante legge l'URL

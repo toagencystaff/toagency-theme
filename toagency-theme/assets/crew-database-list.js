@@ -920,7 +920,15 @@
         pfPosters = d.posters || {};
         collectAnteprime(d); // ticket 1020
         var bio = d.bio_ruoli || {};
-        var codice = d.codice ? '<span class="crew-pf-code">· ' + escapeHtml(d.codice) + '</span>' : '';
+        // 2026-11-19 ticket 1021 — codice selezionabile (un clic lo seleziona tutto) + bottone Copia (4 lingue, stringhe da cfg.strings)
+        var __cs = (cfg && cfg.strings) || {};
+        var codice = d.codice
+            ? '<span class="crew-pf-code">· <span class="crew-pf-code-v">' + escapeHtml(d.codice) + '</span>'
+              + '<button type="button" class="crew-pf-copy" data-code="' + escapeHtml(d.codice) + '" data-done="' + escapeHtml(__cs.copiedCode || 'OK') + '">' + escapeHtml(__cs.copyCode || 'Copy') + '</button>'
+              // solo staff: cfg.staffCrmUrl e' vuoto per i visitatori (deciso lato server), vedi page-crew-database.php
+              + ((cfg.staffCrmUrl && currentProfileUuid) ? '<a class="crew-pf-crm" target="_blank" rel="noopener" href="' + escapeHtml(cfg.staffCrmUrl + encodeURIComponent(currentProfileUuid)) + '">' + escapeHtml(__cs.openInCrm || 'CRM') + '</a>' : '')
+              + '</span>'
+            : '';
         // 2026-07-31 — Hero slideshow (richiesta Marco, sostituisce il mosaico statico: le foto restano
         // grandi/cliccabili nella galleria sotto invece di essere "consumate" dall'hero). Fino a 5 foto
         // del portfolio (cover_url scelta dal crew per prima, se presente), dissolvenza + zoom via CSS,
@@ -1182,6 +1190,31 @@
 
     document.addEventListener('click', function (e) {
         if (e.target && e.target.id === 'crew-profile-overlay') window.crewPubCloseProfile();
+    });
+    // 2026-11-19 ticket 1021 — bottone «Copia» accanto al codice crew (clipboard + fallback per browser/iframe senza permesso)
+    document.addEventListener('click', function (e) {
+        var b = e.target && e.target.closest ? e.target.closest('.crew-pf-copy') : null;
+        if (!b) return;
+        e.preventDefault(); e.stopPropagation();
+        var code = b.getAttribute('data-code') || '';
+        if (!code) return;
+        function done() {
+            var idle = b.getAttribute('data-idle') || b.textContent;
+            b.setAttribute('data-idle', idle);
+            b.textContent = b.getAttribute('data-done') || 'OK';
+            b.classList.add('is-done');
+            setTimeout(function () { b.textContent = idle; b.classList.remove('is-done'); }, 1800);
+        }
+        function fallback() {
+            var ta = document.createElement('textarea');
+            ta.value = code; ta.setAttribute('readonly', '');
+            ta.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+            document.body.appendChild(ta); ta.select();
+            try { if (document.execCommand('copy')) done(); } catch (err) {}
+            document.body.removeChild(ta);
+        }
+        if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(code).then(done, fallback);
+        else fallback();
     });
     document.addEventListener('keydown', function (e) {
         var lb = $('#crew-lightbox');
