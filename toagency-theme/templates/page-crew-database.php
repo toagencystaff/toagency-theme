@@ -637,7 +637,7 @@ window.crewPubConfig = {
     }
 };
 </script>
-<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.12-same-origin" defer></script>
+<script src="<?= esc_url($theme_uri . '/assets/crew-database-list.js') ?>?v=6.13-anteprime" defer></script>
 
 <?php /* 2026-08-25 marco — SHORT-LINK FILTRI su /crew-database/ (chat TEMA LINK-FILTRI-CORTI).
          Stesso motore di /talent-database/ (inc/toa-shortlink.php): il pulsante legge l'URL

@@ -1,5 +1,8 @@
 /**
- * crew-database-list.js — v2.17 (2026-08-11)
+ * crew-database-list.js — v2.18 (2026-11-19)
+ * v2.18: ticket 1020 — anteprime leggere dei video crew (chiave `anteprime` di crew-public-profile):
+ *        usate in hover sulle card, nei tile della scheda e nella cover dei crew con soli video;
+ *        il video pieno resta solo nel lightbox. Senza anteprima: comportamento di prima.
  * v2.17: fallback province vicine — ricerca/filtro geografico a 0 risultati riprova con le
  *        province vicine (PROV_NEAR, generata da _scripts/gen_prov_near.py: ≤130km, max 5,
  *        le isole restano isole) e mostra un avviso sopra la griglia. Copre sia la ricerca
@@ -428,6 +431,16 @@
     var __coverCache = {};
     // 2026-08-10 v2.7 — mappa poster JPG -> URL video originale (per l'hover-to-play sulle card)
     var __videoByPoster = {};
+    // 2026-11-19 (ticket 1020) — mappa url_video_originale -> mp4 leggero (540px, 5s) dalla chiave
+    // `anteprime` di crew-public-profile. Usata al posto del video pieno in hover sulle card, nei tile
+    // della scheda e nella cover dei crew con soli video. Senza anteprima: comportamento di prima.
+    var __anteprime = {};
+    function anteprimaUrl(vurl) { var a = __anteprime[vurl]; return (typeof a === 'string' && /^https:\/\//i.test(a)) ? a : ''; }
+    function collectAnteprime(d) {
+        var m = d && d.anteprime;
+        if (!m || typeof m !== 'object') return;
+        Object.keys(m).forEach(function (k) { if (typeof m[k] === 'string' && m[k]) __anteprime[k] = m[k]; });
+    }
     // 2026-07-31 — le richieste "cover random" partivano TUTTE insieme al render della griglia (~20+
     // in parallelo), rallentando anche l'apertura di una scheda profilo in corso (feedback Marco).
     // Con IntersectionObserver si caricano solo le card che stanno per entrare in vista.
@@ -839,12 +852,13 @@
     function videoTag(url, idx) {
         var safe = encodeURI(url);
         var poster = pfPosters[url] || '';
+        var lite = anteprimaUrl(url); // ticket 1020 — mp4 leggero per il tile; il pieno resta in data-src (lightbox)
         if (poster) {
             // 2026-08-04: con il poster JPG il video non va toccato finche' non si clicca:
             // niente '#t=0.5' (serviva solo a strappare un frame dal video stesso) e
             // preload="none". Il seek in wireVideos e' escluso sui tile con poster.
             return '<button type="button" class="crew-pf-vthumb" data-src="' + safe + '" data-idx="' + idx + '">' +
-                '<video class="crew-pf-vpreview" src="' + safe + '" poster="' + encodeURI(poster) + '" preload="none" muted playsinline></video>' +
+                '<video class="crew-pf-vpreview" src="' + (lite ? encodeURI(lite) : safe) + '" poster="' + encodeURI(poster) + '" preload="none" muted playsinline></video>' +
                 '<span class="crew-pf-play">▶</span></button>';
         }
         // 2026-08-03: anteprima reale (primo frame, preload=metadata) al posto del box nero — feedback Marco
@@ -854,7 +868,7 @@
             // del primo, che su alcuni video e' nero (tile nero segnalato da Marco). Il proxy CRM
             // supporta le range request (206 + accept-ranges verificato 04/08), quindi scarica solo
             // il pezzetto necessario. Nel lightbox il video parte comunque da 0.
-            '<video class="crew-pf-vpreview" src="' + safe + '#t=0.5" preload="metadata" muted playsinline></video>' +
+            '<video class="crew-pf-vpreview" src="' + (lite ? encodeURI(lite) : safe) + '#t=0.5" preload="metadata" muted playsinline></video>' +
             '<span class="crew-pf-play">▶</span></button>';
     }
 
@@ -904,6 +918,7 @@
         var albums = d.albums || {};
         // 2026-08-04: se il CRM non manda `posters` resta {} e i tile tornano al vecchio comportamento
         pfPosters = d.posters || {};
+        collectAnteprime(d); // ticket 1020
         var bio = d.bio_ruoli || {};
         var codice = d.codice ? '<span class="crew-pf-code">· ' + escapeHtml(d.codice) + '</span>' : '';
         // 2026-07-31 — Hero slideshow (richiesta Marco, sostituisce il mosaico statico: le foto restano
@@ -1304,7 +1319,7 @@
         var v = document.createElement('video');
         v.className = 'crew-pub-vidcover';
         v.muted = true; v.setAttribute('playsinline', ''); v.preload = 'metadata';
-        v.src = encodeURI(vurl) + '#t=0.5';
+        v.src = encodeURI(anteprimaUrl(vurl) || vurl) + '#t=0.5'; // ticket 1020
         photo.insertBefore(v, photo.firstChild);
         var b = document.createElement('span'); b.className = 'crew-pub-playbadge'; b.textContent = '▶';
         photo.appendChild(b);
@@ -1323,7 +1338,7 @@
                 var m = coverFirstMedia(d);
                 if (!m.length) {
                     var vu = firstVideoUrl(d);
-                    if (vu) { applyVideoFrameCover(card, photo, vu); return; }
+                    if (vu) { collectAnteprime(d); applyVideoFrameCover(card, photo, vu); return; }
                 }
                 __coverCache[uuid] = m;
                 applyCover(card, photo, __coverCache[uuid]);
@@ -1449,7 +1464,7 @@
         v.className = 'crew-pub-hovervid';
         v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'auto';
         v.poster = encodeURI(posterUrl); // v2.7.1 — poster visibile durante il buffering (niente card nera)
-        v.src = encodeURI(vurl);
+        v.src = encodeURI(anteprimaUrl(vurl) || vurl); // ticket 1020 — anteprima leggera se c'e'
         photo.appendChild(v);
         card._cnHoverVid = v;
         v.play().catch(function () {});
@@ -1510,6 +1525,7 @@
     function cardMediaFromAlbums(d) {
         var albums = d.albums || {};
         var posters = (d && d.posters) || {};
+        collectAnteprime(d); // ticket 1020
         var keys = Object.keys(albums).filter(function (k) { return k !== 'generale'; });
         if (albums.generale) keys.push('generale');
         var media = [];
