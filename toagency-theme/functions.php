@@ -875,13 +875,26 @@ function toa_is_registrati_page() {
     $slug = get_post_field('post_name', get_queried_object_id());
     return $slug && strpos($slug, 'registrati') === 0; // registrati-talent, registrati-crew, ...
 }
+// FIX 2026-11-20 marco (ticket 1033) — sui casting arrivano i TALENT, non i clienti: niente «Richiedi preventivo» e niente WhatsApp «vorrei un preventivo»
+// (togliavano clic a «Candidati ora»; ticket 840: 14 lavori finti in 24 ore dal bottone). Vale per l'annuncio singolo (categoria casting, stesso test di single.php,
+// quindi anche sulle traduzioni WPML) e per la lista /casting/ (template page-casting.php).
+function toa_is_casting_ctx() {
+    if (is_singular('post')) {
+        foreach ((array) get_the_category(get_queried_object_id()) as $c) {
+            if (stripos($c->slug, 'casting') !== false || stripos($c->name, 'casting') !== false) return true;
+        }
+        return false;
+    }
+    return is_page_template('templates/page-casting.php');
+}
 add_filter('body_class', function($classes) {
-    if (toa_is_registrati_page()) $classes[] = 'toa-hide-quote-cta';
+    if (toa_is_registrati_page() || toa_is_casting_ctx()) $classes[] = 'toa-hide-quote-cta';
+    if (toa_is_casting_ctx()) $classes[] = 'toa-casting-ctx';
     return $classes;
 });
 add_action('wp_head', function() {
-    if (!toa_is_registrati_page()) return;
-    echo '<style id="toa-hide-quote-cta-css">body.toa-hide-quote-cta .nav-cta-btn,body.toa-hide-quote-cta .sticky-cta-mobile,body.toa-hide-quote-cta .mobile-menu-cta{display:none!important}</style>' . "\n";
+    if (!toa_is_registrati_page() && !toa_is_casting_ctx()) return;
+    echo '<style id="toa-hide-quote-cta-css">body.toa-hide-quote-cta .nav-cta-btn,body.toa-hide-quote-cta .sticky-cta-mobile,body.toa-hide-quote-cta .mobile-menu-cta{display:none!important}body.toa-casting-ctx .tmg-mbar,body.toa-casting-ctx .tmg-head__cta{display:none!important}</style>' . "\n";
 });
 
 // === BEGIN 2026-06-03 marco — LOGHI + GRIGLIA TALENT su landing casting (CRO) ===

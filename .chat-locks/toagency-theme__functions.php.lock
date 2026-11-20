@@ -1,7 +1,7 @@
-STATO=CLOSED
-CHAT=TEMA GEO AI
+STATO=OPEN
+CHAT=CRM Pulsanti casting (ticket 1033)
 FILE=toagency-theme/functions.php
-INIZIO=2026-11-08 16:54:24
-UPDATE=2026-11-08 21:02:00
+INIZIO=2026-11-20 10:57:03
+UPDATE=2026-11-20 10:57:29
 SHA1_ATTESO=eb8393b2ce0d3283ae167dc37806a496920fe61b
-NOTA=IndexNow LIVE 08/11 commit 9414d29c6 (TEMA GEO AI)
+NOTA=ticket 1033: modifica fatta e php -l OK, in attesa deploy prod (nuovo sha1 7d4de44b2fcdd665dddf1b68f3a9ce9d87415503)
