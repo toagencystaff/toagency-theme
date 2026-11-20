@@ -126,7 +126,7 @@ $ui_l = array(); foreach ($ui as $k => $v) $ui_l[$k] = $_t($v);
 
 $cfg = array(
     'lang' => $__l,
-    'ep' => array('talent' => '/actions/api-talent-database.php', 'crew' => '/crm_toagency/actions/crew-public-search.php', 'creator' => '/actions/creator-vetrina-public.php'),
+    'ep' => array('talent' => '/actions/api-talent-database.php', 'crew' => '/crm_toagency/actions/crew-public-search.php', 'crewProfile' => '/crm_toagency/actions/crew-public-profile.php', 'creator' => '/actions/creator-vetrina-public.php'),
     'base' => array('talent' => $u_tal, 'crew' => $u_crew),
     'few' => 3,
     'groups' => $groups,

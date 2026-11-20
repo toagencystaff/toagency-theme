@@ -94,3 +94,7 @@
 .tdh-ask[hidden]{display:none!important}
 .tdh-ask__h{margin:0;font-size:19px;font-weight:700;color:#fff}
 .tdh-ask p{margin:0 0 10px;color:#a9a9a4;font-size:15px;line-height:1.5;max-width:560px}
+
+/* video creator: la foto resta solo come segnaposto finche' il video non e' pronto */
+.tdh-vid{opacity:0;transition:opacity .4s}
+.tdh-vid.ok{opacity:1}

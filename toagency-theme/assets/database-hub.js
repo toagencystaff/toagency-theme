@@ -79,39 +79,109 @@
     var prov = c.provincia ? String(c.provincia) : '';
     if (c.paese && c.paese !== 'IT') prov = (prov ? prov + ' · ' : '') + c.paese;
     var ini = String(c.nome || '?').charAt(0).toUpperCase();
-    return '<a class="tdh-c' + (c.foto_profilo_url ? '' : ' tdh-c--ph') + '" href="' + esc(href) + '">' +
+    return '<a class="tdh-c' + (c.foto_profilo_url ? '' : ' tdh-c--ph') + '" href="' + esc(href) + '"' + (S.g && S.g.k === 'foto' && c.uuid ? ' data-w="' + esc(c.uuid) + '"' : '') + '>' +
       (c.foto_profilo_url ? imgTag(encodeURI(c.foto_profilo_url), c.nome || '', '', i) : '<span class="tdh-ini">' + esc(ini) + '</span>') +
       (c.n_video > 0 ? '<span class="tdh-play" aria-hidden="true">▶</span>' : '') +
       '<div class="tdh-m"><b>' + esc(c.nome || '') + '</b><span>' + esc(labs.slice(0, 2).join(' · ')) + (prov ? '<em>' + esc(prov) + '</em>' : '') + '</span></div></a>';
   }
   function cardCreator(p, i) {
     var href = addq(BASE.talent, 'tid=' + (parseInt(p.id, 10) || 0));
-    return '<a class="tdh-c tdh-c--v" href="' + esc(href) + '" data-prev="' + esc(p.anteprima || '') + '">' + imgTag(p.foto ? p.foto + '&w=400' : '', p.nome || '', '', i) +
-      '<span class="tdh-play" aria-hidden="true">▶</span>' +
+    return '<a class="tdh-c tdh-c--v" href="' + esc(href) + '">' + imgTag(p.foto ? p.foto + '&w=400' : '', p.nome || '', '', i) +
+      '<video class="tdh-vid" muted loop playsinline preload="metadata" data-src="' + esc(p.anteprima || p.video) + '"></video>' +
       '<div class="tdh-m"><b>' + esc(p.nome || '') + '</b><span>' + esc((p.nicchie && p.nicchie[0]) || 'Creator') + '</span></div></a>';
   }
   var CARD = { talent: cardTalent, crew: cardCrew, creator: cardCreator };
 
-  /* anteprima video dei creator: solo col mouse sopra (mai sul telefono: banda), muta, si toglie appena si esce */
-  function hoverBind(card) {
-    var u = card.getAttribute('data-prev');
-    if (!u || !HOVER || RM) return;
-    var v = null;
-    card.addEventListener('mouseenter', function () {
-      v = document.createElement('video'); v.className = 'tdh-vid'; v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true; v.src = u;
-      card.insertBefore(v, card.firstChild); var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
-    });
-    card.addEventListener('mouseleave', function () { if (v) { v.pause(); v.removeAttribute('src'); v.load(); if (v.parentNode) v.parentNode.removeChild(v); v = null; } });
+  /* Foto, Video & Beauty: sulla card si vedono i LAVORI (copertina o prima foto del portfolio), non il volto.
+   * Una chiamata per profilo, solo quando la card sta per entrare nello schermo, max 3 alla volta. Senza lavori resta la foto profilo. */
+  var covCache = {}, covQ = [], covRun = 0, covIO = null, VIDEO_RE = /\.(mp4|mov|webm|m4v)(\?|$)/i;
+  function covW(u) { return /crew-photo-public\.php/i.test(u) ? u + (u.indexOf('?') >= 0 ? '&' : '?') + 'w=500' : u; }
+  function covPick(d) {
+    if (!d) return '';
+    if (d.cover_url) return covW(d.cover_url);
+    var al = d.albums || {}, ps = d.posters || {}, keys = Object.keys(al).filter(function (k) { return k !== 'generale'; });
+    if (al.generale) keys.push('generale');
+    for (var i = 0; i < keys.length; i++) {
+      var arr = al[keys[i]] || [];
+      for (var j = 0; j < arr.length; j++) { var u = arr[j]; if (VIDEO_RE.test(u)) { if (ps[u]) return covW(ps[u]); } else return covW(u); }
+    }
+    return '';
+  }
+  function covApply(card, url) {
+    if (!url || !card.isConnected) return;
+    var im = card.querySelector('.tdh-img');
+    if (!im) { im = document.createElement('img'); im.className = 'tdh-img'; im.decoding = 'async'; card.insertBefore(im, card.firstChild); }
+    im.removeAttribute('style'); im.alt = (card.querySelector('b') || {}).textContent || ''; im.src = url;
+    card.classList.remove('tdh-c--ph'); var ini = card.querySelector('.tdh-ini'); if (ini) ini.parentNode.removeChild(ini);
+  }
+  function covNext() {
+    while (covRun < 3 && covQ.length) {
+      var card = covQ.shift(), id = card.getAttribute('data-w');
+      if (!card.isConnected) continue;
+      covRun++;
+      (function (card, id) {
+        var done = function () { covRun--; covNext(); };
+        if (covCache[id] !== undefined) { covApply(card, covCache[id]); return done(); }
+        jget(EP.crewProfile + '?uuid=' + encodeURIComponent(id)).then(function (d) { covCache[id] = covPick(d); covApply(card, covCache[id]); }).catch(function () {}).then(done);
+      })(card, id);
+    }
+  }
+  function covWatch() {
+    var cards = grid.querySelectorAll('.tdh-c[data-w]:not([data-cv])');
+    if (!cards.length) return;
+    Array.prototype.forEach.call(cards, function (c) { c.setAttribute('data-cv', '1'); });
+    if (!('IntersectionObserver' in window)) { Array.prototype.forEach.call(cards, function (c) { covQ.push(c); }); return covNext(); }
+    if (!covIO) covIO = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { covIO.unobserve(e.target); covQ.push(e.target); } }); covNext(); }, { rootMargin: '300px' });
+    Array.prototype.forEach.call(cards, function (c) { covIO.observe(c); });
+  }
+
+  /* Creator: il video (anteprima leggera dal CRM) parte da solo, muto e in loop, solo per le card visibili, max 6 alla volta
+   * (stesso schema della pagina TOA Creators). Un video che non si legge o va in errore fa sparire la card: mai un riquadro vuoto. */
+  var vQ = [], vAct = 0, vGen = 0, VMAX = 6, vIO = null;
+  function vKo(v) { var c = v.closest ? v.closest('.tdh-c') : null; if (c) c.style.display = 'none'; }
+  function vPlay(v) { if (RM) return; var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+  function vPump() {
+    while (vAct < VMAX && vQ.length) {
+      var v = vQ.shift();
+      if (!v.isConnected || v.getAttribute('src')) continue;
+      vAct++;
+      (function (v, g) {
+        var f = false;
+        function fine() { if (f) return; f = true; if (g === vGen) { vAct--; vPump(); } }
+        v.addEventListener('loadedmetadata', function () { if (!v.videoWidth) vKo(v); }, { once: true });
+        v.addEventListener('loadeddata', function () { v.classList.add('ok'); fine(); }, { once: true });
+        v.addEventListener('error', function () { vKo(v); fine(); }, { once: true });
+        setTimeout(fine, 12000);
+        v.src = v.getAttribute('data-src') + '#t=0.5';
+        if (v.getAttribute('data-vis') === '1') vPlay(v);
+      })(v, vGen);
+    }
+  }
+  function vWatch() {
+    var vs = grid.querySelectorAll('video.tdh-vid[data-src]:not([data-w])');
+    Array.prototype.forEach.call(vs, function (v) { v.setAttribute('data-w', '1'); });
+    if (!('IntersectionObserver' in window)) { Array.prototype.forEach.call(vs, function (v) { vQ.push(v); }); return vPump(); }
+    if (!vIO) vIO = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        var v = e.target;
+        v.setAttribute('data-vis', e.isIntersecting ? '1' : '');
+        if (e.isIntersecting) {
+          if (!v.getAttribute('src')) { var i = vQ.indexOf(v); if (i >= 0) vQ.splice(i, 1); vQ.unshift(v); vPump(); } else vPlay(v);
+        } else if (!v.paused) v.pause();
+      });
+    }, { rootMargin: '150px 0px', threshold: 0.01 });
+    Array.prototype.forEach.call(vs, function (v) { vIO.observe(v); });
   }
 
   /* ───────── disegno ───────── */
   function showMsg(t) { msg.textContent = t || ''; msg.hidden = !t; }
-  function skeleton() { var h = ''; for (var i = 0; i < 8; i++) h += '<div class="tdh-sk" aria-hidden="true"></div>'; grid.innerHTML = h; showMsg(''); more.hidden = true; if (ask) ask.hidden = true; }
+  function skeleton() { var h = ''; for (var i = 0; i < 8; i++) h += '<div class="tdh-sk" aria-hidden="true"></div>'; grid.innerHTML = h; covQ = []; vQ = []; vAct = 0; vGen++; showMsg(''); more.hidden = true; if (ask) ask.hidden = true; }
   function appendCards(list, from, src) {
     var h = '', fn = CARD[src];
     list.forEach(function (x, j) { h += fn(x, from + j); });
     grid.insertAdjacentHTML('beforeend', h);
-    if (src === 'creator') Array.prototype.forEach.call(grid.querySelectorAll('.tdh-c--v:not([data-b])'), function (c) { c.setAttribute('data-b', '1'); hoverBind(c); });
+    if (src === 'crew') covWatch();
+    if (src === 'creator') vWatch();
   }
   function setAll(role, total) {
     allEl.href = role.all || '#';
