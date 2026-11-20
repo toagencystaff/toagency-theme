@@ -12,8 +12,10 @@ $lang = in_array($lang, array('it','en','fr','es'), true) ? $lang : 'it';
 $_t = function($a) use ($lang) { return isset($a[$lang]) ? $a[$lang] : $a['it']; };
 
 $tdir = get_template_directory();
+wp_enqueue_style('toa-scheda', get_template_directory_uri() . '/assets/css/toa-scheda.css', array(), (string) @filemtime($tdir . '/assets/css/toa-scheda.css'));
+wp_enqueue_script('toa-scheda', get_template_directory_uri() . '/assets/js/toa-scheda.js', array(), (string) @filemtime($tdir . '/assets/js/toa-scheda.js'), true);
 wp_enqueue_style('toa-events-site', get_template_directory_uri() . '/assets/css/events-site.css', array(), (string) @filemtime($tdir . '/assets/css/events-site.css'));
-wp_enqueue_script('toa-events-staff', get_template_directory_uri() . '/assets/js/events-staff.js', array(), (string) @filemtime($tdir . '/assets/js/events-staff.js'), true);
+wp_enqueue_script('toa-events-staff', get_template_directory_uri() . '/assets/js/events-staff.js', array('toa-scheda'), (string) @filemtime($tdir . '/assets/js/events-staff.js'), true);
 
 $t = array(
     'h1'   => array('it'=>'Staff per eventi in tutta Europa','en'=>'Event staff across Europe','fr'=>'Du personnel événementiel partout en Europe','es'=>'Personal para eventos en toda Europa'),

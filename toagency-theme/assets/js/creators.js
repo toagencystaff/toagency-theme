@@ -204,7 +204,10 @@
     if (p.pubblico && p.pubblico.length) return '<b>' + esc(U.pubblico) + ':</b> ' + esc(p.pubblico.join(' · '));
     return esc(U.noStat);
   }
+  var CP = {};
+  var TXC = { it: 'Nicchie e contenuti', en: 'Niches & content', fr: 'Niches et contenus', es: 'Nichos y contenidos' };
   function card(p) {
+    CP[p.codice] = p;
     var i = p.insight || {}, chips = [i.piattaforma, i.views ? '▶ ' + i.views : '', i.engagement ? 'ER ' + i.engagement : ''].filter(Boolean);
     var tags = (p.nicchie || []).slice(0, 2).map(function (x) { return '<span class="tcr-tg">' + esc(x) + '</span>'; }).join('') +
       ((p.contenuti || [])[0] ? '<span class="tcr-tg tcr-tg--g">' + esc(p.contenuti[0]) + '</span>' : '') +
@@ -233,8 +236,30 @@
     });
   }
   document.addEventListener('tcr:sel', marks);
-  $('vetrina').addEventListener('click', function (e) { var c = e.target.closest('.tcr-cc'); if (c) toggle(c); });
-  $('vetrina').addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('tcr-cc')) { e.preventDefault(); toggle(e.target); } });
+  /* 20/11/2026 marco: il clic sulla card apre la scheda del creator (video, foto, dati, «Profilo completo»); il «+» in alto a destra aggiunge alla richiesta */
+  function scheda(el) {
+    var p = CP[el.getAttribute('data-c')];
+    if (!p || !window.toaScheda) { toggle(el); return; }
+    var i = p.insight || {}, ti = S.testi || {};
+    window.toaScheda.open({
+      lang: L, id: p.id, nome: p.nome, codice: p.codice, foto: p.foto,
+      media: [p.video ? { t: 'v', u: p.video } : null, p.foto ? { t: 'i', u: p.foto } : null].filter(Boolean),
+      mediaFromApi: true, videoFirst: true,
+      badges: [p.fascia, i.piattaforma, i.views ? '▶ ' + i.views : '', i.engagement ? 'ER ' + i.engagement : ''].filter(Boolean),
+      rows: p.prezzo_da ? [[ucf(ti.da || ''), eur(p.prezzo_da)]] : [],
+      tagsTitle: TXC[L] || TXC.it, tags: (p.nicchie || []).concat(p.contenuti || []),
+      ask: { label: (window.tcrForm && window.tcrForm.has(p.codice)) ? U.added : U.add, on: function () {
+        if (!window.tcrForm) return null;
+        var added = window.tcrForm.toggle({ c: p.codice, n: pcn(p.nome) }); marks();
+        return added ? U.added : U.add;
+      } }
+    });
+  }
+  $('vetrina').addEventListener('click', function (e) {
+    var c = e.target.closest('.tcr-cc'); if (!c) return;
+    if (e.target.closest('.tcr-add')) toggle(c); else scheda(c);
+  });
+  $('vetrina').addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('tcr-cc')) { e.preventDefault(); scheda(e.target); } });
 
   /* ───────── vetrina ───────── */
   var seq = 0;

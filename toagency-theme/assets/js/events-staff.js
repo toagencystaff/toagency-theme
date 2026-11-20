@@ -215,8 +215,28 @@
 
   // ── galleria profilo ──
   var lb = { p: null, i: 0, items: [], back: null };
+  var TXP = { it: 'Esperienza', en: 'Experience', fr: 'Expérience', es: 'Experiencia' };
+  // 20/11/2026 marco: il clic su una foto apre la scheda del profilo (galleria + dati + «Profilo completo»); nell'anteprima del CRM resta la vecchia galleria
+  function openScheda(p) {
+    var media = (p.media && p.media.length) ? p.media.map(function (m) { return { t: m.t === 'v' ? 'v' : 'i', u: m.u2 || m.u }; }) : [];
+    var lingue = (p.lingue_liv || []).filter(function (l) { return l.livello === 'nativo' || /^(B1|B2|C1|C2)$/.test(l.livello); }).map(function (l) {
+      return { n: nameOf(F.lingue, l.lingua) || l.lingua, l: l.livello === 'nativo' ? UI.nativo : l.livello };
+    });
+    window.toaScheda.open({
+      lang: LANG, id: p.id, nome: p.nome, codice: p.codice, foto: p.foto, media: media,
+      badges: [p.livello_label, p.consigliato_label].filter(Boolean),
+      langs: lingue, tagsTitle: TXP[LANG] || TXP.it, tags: p.esperienza || [],
+      ask: { label: UI.chiedi, on: function () {
+        var c = '#' + p.codice; if (S.picks.indexOf(c) < 0) S.picks.push(c);
+        window.toaScheda.close(); fillForm(); goForm(); return null;
+      } },
+      onClose: function () { toCrm({ toa: 'vetrina-profilo', id: 0 }); }
+    });
+    toCrm({ toa: 'vetrina-profilo', id: p.id, codice: p.codice, nome: p.nome });
+  }
   function openLb(idx) {
     var p = V.profili[idx]; if (!p) return;
+    if (window.toaScheda && !INFRAME) { openScheda(p); return; }
     lb.p = p; lb.i = 0; lb.back = document.activeElement;
     lb.items = (p.media && p.media.length) ? p.media.map(function (m) { return { t: m.t, u: m.u2 || m.u }; }) : [{ t: 'i', u: p.foto }];
     $('tevLbT').innerHTML = '<b>' + esc(p.nome) + '</b> #' + esc(p.codice) + (p.livello_label ? ' · ' + esc(p.livello_label) : '');
