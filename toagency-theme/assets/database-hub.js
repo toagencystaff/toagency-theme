@@ -368,7 +368,11 @@
     } else if (role.src === 'contact') {
       grid.innerHTML = ''; more.hidden = true; if (ask) ask.hidden = false;
     } else if (role.src === 'crew') {
-      crewLoad().then(function (all) { fin(crewOf(role, all)); }).catch(fail);
+      crewLoad().then(function (all) {
+        var l = crewOf(role, all);
+        if (S.g && S.g.k === 'foto') l = l.filter(function (c) { return (c.n_foto || 0) >= 2; }).concat(l.filter(function (c) { return (c.n_foto || 0) < 2; }));   // Foto, Video & Beauty: in cima chi ha piu' lavori da far scorrere, chi ha 0-1 foto in fondo (nessuno sparisce)
+        fin(l);
+      }).catch(fail);
     } else {
       creatorLoad().then(function (all) {
         fin(role.niche ? all.filter(function (p) { return (p.nicchie || []).indexOf(role.niche) > -1; }) : all);
