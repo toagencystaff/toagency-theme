@@ -9,9 +9,9 @@
  *   Creator          /actions/creator-vetrina-public.php?action=vetrina (solo creator con video: mai creator con la sola foto)
  * Regole: solo provincia (mai comune), minorenni senza foto, nessun prezzo scritto qui, nessun URL SEO esistente toccato.
  * Render: assets/database-hub.js · Stile: assets/database-hub.css
- * NOINDEX finche' Marco non approva: per accendere l'indicizzazione mettere TOA_DATABASE_HUB_INDEX a true (una riga).
+ * INDICIZZATA dal 20/11/2026 (ok di Marco). Per spegnere: TOA_DATABASE_HUB_INDEX a false (una riga) = torna noindex.
  */
-if (!defined('TOA_DATABASE_HUB_INDEX')) define('TOA_DATABASE_HUB_INDEX', false);
+if (!defined('TOA_DATABASE_HUB_INDEX')) define('TOA_DATABASE_HUB_INDEX', true);
 if (!TOA_DATABASE_HUB_INDEX) {
     add_filter('wp_robots', function ($r) { $r['noindex'] = true; $r['nofollow'] = true; unset($r['index'], $r['follow']); return $r; }, 1000);
 }
