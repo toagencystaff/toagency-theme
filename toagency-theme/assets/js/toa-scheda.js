@@ -7,10 +7,10 @@
   'use strict';
   var API = '/actions/api-talent-database.php';
   var T = {
-    it: { eta: 'Età', anni: 'anni', alt: 'Altezza', tg: 'Taglia', sc: 'Scarpe', zona: 'Zona', lin: 'Lingue', prof: 'Profilo completo', x: 'Chiudi', foto: 'Foto', vid: 'Video', prec: 'Precedente', succ: 'Successivo' },
-    en: { eta: 'Age', anni: 'years', alt: 'Height', tg: 'Size', sc: 'Shoes', zona: 'Area', lin: 'Languages', prof: 'Full profile', x: 'Close', foto: 'Photo', vid: 'Video', prec: 'Previous', succ: 'Next' },
-    fr: { eta: 'Âge', anni: 'ans', alt: 'Taille', tg: 'Taille vêtements', sc: 'Pointure', zona: 'Zone', lin: 'Langues', prof: 'Profil complet', x: 'Fermer', foto: 'Photo', vid: 'Vidéo', prec: 'Précédent', succ: 'Suivant' },
-    es: { eta: 'Edad', anni: 'años', alt: 'Altura', tg: 'Talla', sc: 'Calzado', zona: 'Zona', lin: 'Idiomas', prof: 'Perfil completo', x: 'Cerrar', foto: 'Foto', vid: 'Vídeo', prec: 'Anterior', succ: 'Siguiente' }
+    it: { eta: 'Età', anni: 'anni', alt: 'Altezza', tg: 'Taglia', sc: 'Scarpe', zona: 'Zona', lin: 'Lingue', prof: 'Profilo completo', x: 'Chiudi', foto: 'Foto', vid: 'Video', prec: 'Precedente', errv: 'Video non disponibile', succ: 'Successivo' },
+    en: { eta: 'Age', anni: 'years', alt: 'Height', tg: 'Size', sc: 'Shoes', zona: 'Area', lin: 'Languages', prof: 'Full profile', x: 'Close', foto: 'Photo', vid: 'Video', prec: 'Previous', errv: 'Video unavailable', succ: 'Next' },
+    fr: { eta: 'Âge', anni: 'ans', alt: 'Taille', tg: 'Taille vêtements', sc: 'Pointure', zona: 'Zone', lin: 'Langues', prof: 'Profil complet', x: 'Fermer', foto: 'Photo', vid: 'Vidéo', prec: 'Précédent', errv: 'Vidéo indisponible', succ: 'Suivant' },
+    es: { eta: 'Edad', anni: 'años', alt: 'Altura', tg: 'Talla', sc: 'Calzado', zona: 'Zona', lin: 'Idiomas', prof: 'Perfil completo', x: 'Cerrar', foto: 'Foto', vid: 'Vídeo', prec: 'Anterior', errv: 'Vídeo no disponible', succ: 'Siguiente' }
   };
   var S = null; // stato della scheda aperta
   var root = null;
@@ -41,9 +41,15 @@
     var st = root.querySelector('.toas__st'), it = S.items[S.i], many = S.items.length > 1, L = tr();
     if (!it) { st.innerHTML = ''; return; }
     st.innerHTML = (it.t === 'v'
-      ? '<video src="' + esc(it.u) + '" poster="' + esc(sz(S.o.foto, 900)) + '" controls playsinline preload="metadata"></video>'
+      ? '<video src="' + esc(it.u) + '" poster="' + esc(sz(S.o.foto, 900)) + '" controls playsinline muted autoplay preload="auto"></video><span class="toas__er" hidden>' + esc(L.errv) + '</span>'
       : '<img src="' + esc(sz(it.u, 1100)) + '" alt="' + esc(S.nome + ' #' + S.codice) + '">') +
       (many ? '<button type="button" class="toas__nv toas__nv--p" aria-label="' + esc(L.prec) + '">&#8249;</button><button type="button" class="toas__nv toas__nv--n" aria-label="' + esc(L.succ) + '">&#8250;</button><span class="toas__cn">' + (S.i + 1) + ' / ' + S.items.length + '</span>' : '');
+    var vd = st.querySelector('video');
+    if (vd) {
+      var er = st.querySelector('.toas__er');
+      vd.addEventListener('error', function () { if (er) er.hidden = false; });
+      var pr = vd.play && vd.play(); if (pr && pr.catch) pr.catch(function () {}); // parte da solo (muto); se il browser lo blocca resta il tasto play
+    }
     if (many) {
       st.querySelector('.toas__nv--p').addEventListener('click', function () { step(-1); });
       st.querySelector('.toas__nv--n').addEventListener('click', function () { step(1); });
