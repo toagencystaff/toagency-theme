@@ -262,3 +262,8 @@
 /* 2026-11-18 (TEMA CREW-DATABASE) — con il menu globale le lingue stanno solo nell'header in alto:
    niente secondo selettore nella barra di TOA Events / TOA Creators (Marco: «doppia così è assurda») */
 .tmg-on .tev-top .tev-langs,.tmg-on .tcr-top .tcr-langs,.tmg-on .tcr-langs--foot{display:none!important}
+
+/* 20/11/2026 TEMA DATABASE-MENU: link al database di ruolo, in cima al primo elenco di ogni pannello */
+.tmg-on .tmg-col a.tmg-dbl{background:var(--tmg-g);border-radius:10px;padding:9px 12px;margin-bottom:8px;font-weight:700}
+.tmg-on .tmg-col a.tmg-dbl:hover span{text-decoration:underline}
+.tmg-on .tmg-acc__a.tmg-dbl{font-weight:700}

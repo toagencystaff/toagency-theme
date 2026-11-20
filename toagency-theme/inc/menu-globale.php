@@ -112,6 +112,24 @@ function toa_mg_url_save() {
         set_transient('toa_mg_url_v3_' . $lang, $m, 6 * HOUR_IN_SECONDS);
     }
 }
+/* ───────────── pagina «Database» (20/11/2026, TEMA DATABASE-MENU) ─────────────
+ * Il pannello Database nuovo e i link ai database di ogni sezione compaiono SOLO quando la pagina /database/ e' pubblicata.
+ * Finche' e' in bozza li vede solo un amministratore loggato (anteprima); i visitatori vedono il menu di sempre. */
+function toa_mg_db_admin() { return function_exists('is_user_logged_in') && is_user_logged_in() && current_user_can('manage_options'); }
+function toa_mg_db_nuovo() {
+    static $v = null;
+    if ($v !== null) return $v;
+    $cur = apply_filters('wpml_current_language', null);
+    if ($cur && $cur !== 'it') do_action('wpml_switch_language', 'it');
+    $p = get_page_by_path('database', OBJECT, 'page');
+    if ($cur && $cur !== 'it') do_action('wpml_switch_language', $cur);
+    if (!$p) return $v = false;
+    return $v = ($p->post_status === 'publish') || ($p->post_status === 'draft' && toa_mg_db_admin());
+}
+function toa_mg_pub($id, $path = '') {
+    $st = get_post_status($id);
+    return $st === 'publish' || ($st === 'draft' && trim($path, '/') === 'database' && toa_mg_db_admin());
+}
 function toa_mg_page_it($base) {
     $slug = trim($base, '/');
     if ($slug === '') return (int) get_option('page_on_front');
@@ -120,7 +138,7 @@ function toa_mg_page_it($base) {
     $p = get_page_by_path($slug, OBJECT, 'page');
     if (!$p) $p = get_page_by_path($slug, OBJECT, 'post');
     if ($cur && $cur !== 'it') do_action('wpml_switch_language', $cur);
-    return ($p && $p->post_status === 'publish') ? (int) $p->ID : 0;
+    return ($p && ($p->post_status === 'publish' || ($slug === 'database' && $p->post_status === 'draft' && toa_mg_db_admin()))) ? (int) $p->ID : 0;
 }
 function toa_mg_permalink_it($id) {
     $cur = apply_filters('wpml_current_language', null);
@@ -143,7 +161,7 @@ function toa_mg_url_calc($path, $lang, $alt, $lang_param) {
     $url = '';
     if ($lang !== 'it') {
         $tid = (int) apply_filters('wpml_object_id', $id, $type, false, $lang);
-        if ($tid && $tid !== $id && get_post_status($tid) === 'publish') $url = get_permalink($tid);
+        if ($tid && $tid !== $id && toa_mg_pub($tid, $path)) $url = get_permalink($tid);
         if (!$url && $alt) {
             $aid = toa_mg_page_it($alt);
             $atid = $aid ? (int) apply_filters('wpml_object_id', $aid, get_post_type($aid), false, $lang) : 0;
@@ -155,6 +173,7 @@ function toa_mg_url_calc($path, $lang, $alt, $lang_param) {
         if ($lang !== 'it' && $lang_param) $qs = ($qs ? $qs . '&' : '?') . 'lang=' . $lang;
     }
     if (!$url) return '';
+    if ($qs !== '' && strpos($url, '?') !== false) $qs = '&' . ltrim($qs, '?');
     return $url . $qs . $frag;
 }
 
@@ -322,6 +341,44 @@ function toa_mg_dati() {
                              'd' => $T('Ti mandiamo una selezione su misura.', 'We’ll send you a tailored shortlist.', 'Nous vous envoyons une sélection sur mesure.', 'Te enviamos una selección a medida.')),
         ),
     );
+    // 20/11/2026 Marco (TEMA DATABASE-MENU): pannello «Database» = i 4 gruppi della pagina /database/ + i due database completi;
+    // ogni pannello di sezione ha in cima il link al database di quel ruolo. Solo a pagina /database/ pubblicata (o anteprima admin).
+    if (toa_mg_db_nuovo()) {
+        $DB = function ($g, $n, $sub) { return array('p' => '/database/?gruppo=' . $g, 'n' => $n, 'alt' => '', 'sub' => $sub, 'lp' => false, 'db' => true); };
+        $first = function (&$sez, $link) { array_unshift($sez['cols'][0]['links'], $link); };
+        $first($d['sezioni']['eventi'], $DB('eventi',
+            $T('Sfoglia il database dello staff', 'Browse the staff database', 'Parcourir la base du staff', 'Explorar la base del personal'),
+            $T('hostess, DJ, tecnici', 'hostesses, DJs, technicians', 'hôtesses, DJ, techniciens', 'azafatas, DJ, técnicos')));
+        $first($d['sezioni']['creator'], $DB('creator',
+            $T('Sfoglia il database dei creator', 'Browse the creator database', 'Parcourir la base des créateurs', 'Explorar la base de creadores'),
+            $T('con i loro video', 'with their videos', 'avec leurs vidéos', 'con sus vídeos')));
+        $first($d['sezioni']['modelli'], $DB('modelli',
+            $T('Sfoglia il database di modelli e attori', 'Browse the models & actors database', 'Parcourir la base des mannequins et acteurs', 'Explorar la base de modelos y actores'),
+            $T('foto e schede', 'photos and profiles', 'photos et fiches', 'fotos y fichas')));
+        $first($d['sezioni']['foto'], $DB('foto',
+            $T('Sfoglia il database di foto e video', 'Browse the photo & video database', 'Parcourir la base photo et vidéo', 'Explorar la base de foto y vídeo'),
+            $T('i loro lavori', 'their work', 'leurs réalisations', 'sus trabajos')));
+        $d['sezioni']['database']['hub'] = '/database/';
+        $d['sezioni']['database']['brand'] = 'TOAgency';
+        $d['sezioni']['database']['cols'] = array(
+            array('t' => $T('Scegli il ruolo', 'Pick a role', 'Choisissez un rôle', 'Elige un rol'), 'links' => array(
+                $DB('eventi', $T('Staff eventi', 'Event staff', 'Staff événementiel', 'Personal para eventos'),
+                    $T('hostess, steward, DJ, tecnici', 'hostesses, stewards, DJs, technicians', 'hôtesses, stewards, DJ, techniciens', 'azafatas, auxiliares, DJ, técnicos')),
+                $DB('modelli', $T('Modelli e attori', 'Models & actors', 'Mannequins et acteurs', 'Modelos y actores'),
+                    $T('bambini, over 50, comparse', 'kids, over 50, extras', 'enfants, plus de 50 ans, figurants', 'niños, más de 50, figurantes')),
+                $DB('creator', $T('Creator', 'Creators', 'Créateurs', 'Creadores'),
+                    $T('con i loro video', 'with their videos', 'avec leurs vidéos', 'con sus vídeos')),
+                $DB('foto', $T('Foto, video e beauty', 'Photo, video & beauty', 'Photo, vidéo et beauty', 'Foto, vídeo y beauty'),
+                    $T('fotografi, make-up, stylist', 'photographers, make-up, stylists', 'photographes, maquillage, stylistes', 'fotógrafos, maquillaje, estilistas')),
+            )),
+            array('t' => $T('Database completi', 'Full databases', 'Bases complètes', 'Bases completas'), 'links' => array(
+                $L('/talent-database/', $T('Talent database', 'Talent database', 'Base de talents', 'Base de talentos'), '',
+                   $T('modelli, hostess, creator, attori', 'models, hostesses, creators, actors', 'mannequins, hôtesses, créateurs, acteurs', 'modelos, azafatas, creadores, actores')),
+                $L('/crew-database/', $T('Creative Network', 'Creative Network', 'Creative Network', 'Creative Network'), '',
+                   $T('fotografi, make-up, tecnici', 'photographers, make-up, technicians', 'photographes, maquillage, techniciens', 'fotógrafos, maquillaje, técnicos'), true),
+            )),
+        );
+    }
     $d['lavora'] = array(
         'n' => $T('Lavora con noi', 'Work with us', 'Travailler avec nous', 'Trabaja con nosotros'),
         'sub' => $T('Per modelli, hostess, creator, attori, crew e studenti', 'For models, hostesses, creators, actors, crew and students', 'Pour mannequins, hôtesses, créateurs, acteurs, techniciens et étudiants', 'Para modelos, azafatas, creadores, actores, equipo técnico y estudiantes'),
@@ -387,6 +444,7 @@ function toa_mg_link_html($l, $cls = '', $sub = true) {
     $u = toa_mg_url($l['p'], null, $l['alt'], $l['lp']);
     if ($u === '') return '';
     $s = ($sub && !empty($l['sub'])) ? ' <small>' . esc_html(toa_mg_t($l['sub'])) . '</small>' : '';
+    if (!empty($l['db'])) $cls = trim($cls . ' tmg-dbl');
     return '<a' . ($cls ? ' class="' . esc_attr($cls) . '"' : '') . ' href="' . esc_url($u) . '"><span>' . esc_html(toa_mg_t($l['n'])) . '</span>' . $s . '</a>';
 }
 function toa_mg_lingue() {
