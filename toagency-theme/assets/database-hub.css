@@ -88,3 +88,9 @@
   .tdh-btn{width:100%;text-align:center}
 }
 @media (prefers-reduced-motion:reduce){.tdh *{animation:none!important;transition:none!important}}
+
+/* ruolo con pochi profili o senza: «contattaci» */
+.tdh-ask{margin:22px 0 0;padding:26px clamp(18px,3vw,34px);border:1px dashed #3a3a40;border-radius:14px;background:#101013;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.tdh-ask[hidden]{display:none!important}
+.tdh-ask__h{margin:0;font-size:19px;font-weight:700;color:#fff}
+.tdh-ask p{margin:0 0 10px;color:#a9a9a4;font-size:15px;line-height:1.5;max-width:560px}

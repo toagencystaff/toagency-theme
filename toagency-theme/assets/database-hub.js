@@ -13,7 +13,8 @@
   var L = C.lang || 'it', U = C.ui || {}, GR = C.groups || [], EP = C.ep || {}, BASE = C.base || {};
   var PER = 24;
   var LOC = { it: 'it-IT', en: 'en-GB', fr: 'fr-FR', es: 'es-ES' }[L] || 'it-IT';
-  var nf = new Intl.NumberFormat(LOC);
+  var nf = new Intl.NumberFormat(LOC, { useGrouping: 'always' });
+  var FEW = C.few || 3, ask = $('tdhAsk');
   var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var HOVER = window.matchMedia && matchMedia('(hover: hover)').matches;
   function $(id) { return document.getElementById(id); }
@@ -105,7 +106,7 @@
 
   /* ───────── disegno ───────── */
   function showMsg(t) { msg.textContent = t || ''; msg.hidden = !t; }
-  function skeleton() { var h = ''; for (var i = 0; i < 8; i++) h += '<div class="tdh-sk" aria-hidden="true"></div>'; grid.innerHTML = h; showMsg(''); more.hidden = true; }
+  function skeleton() { var h = ''; for (var i = 0; i < 8; i++) h += '<div class="tdh-sk" aria-hidden="true"></div>'; grid.innerHTML = h; showMsg(''); more.hidden = true; if (ask) ask.hidden = true; }
   function appendCards(list, from, src) {
     var h = '', fn = CARD[src];
     list.forEach(function (x, j) { h += fn(x, from + j); });
@@ -130,7 +131,6 @@
 
   /* ───────── ruoli (pillole) ───────── */
   function buildRoles(g) {
-    var hasCrew = g.roles.some(function (r) { return r.src === 'crew'; });
     if (g.k === 'creator') {
       return creatorLoad().then(function (list) {
         var seen = {}, out = [{ k: 'tutti', n: U.tutti, src: 'creator', niche: '', all: g.roles[0].all }];
@@ -138,10 +138,7 @@
         return out.length > 2 ? out : out.slice(0, 1);
       });
     }
-    if (!hasCrew) return Promise.resolve(g.roles);
-    return crewLoad().then(function (list) {
-      return g.roles.filter(function (r) { return r.src !== 'crew' || crewOf(r, list).length >= Math.max(r.min, 1); });
-    });
+    return Promise.resolve(g.roles);   // tutti i ruoli, anche senza profili: sotto i FEW profili compare «contattaci»
   }
   function renderPills(roles) {
     rolesEl.innerHTML = roles.map(function (r) {
@@ -178,7 +175,8 @@
     var fin = function (list, total) {
       if (gen !== S.gen) return;
       grid.innerHTML = '';
-      if (!list.length) { showMsg(U.empty); more.hidden = true; return; }
+      if (ask) ask.hidden = !(role.src === 'crew' && list.length < FEW);   // pochi profili: si mostrano e sotto c'e' «contattaci»
+      if (!list.length) { more.hidden = true; return; }
       S.items = list; S.shown = Math.min(PER, list.length);
       appendCards(list.slice(0, S.shown), 0, role.src);
       more.hidden = !(S.shown < list.length);
@@ -196,6 +194,8 @@
         appendCards(list, 0, 'talent');
         more.hidden = !(S.page < S.pages);
       }).catch(fail);
+    } else if (role.src === 'contact') {
+      grid.innerHTML = ''; more.hidden = true; if (ask) ask.hidden = false;
     } else if (role.src === 'crew') {
       crewLoad().then(function (all) { fin(crewOf(role, all)); }).catch(fail);
     } else {

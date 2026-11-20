@@ -51,6 +51,7 @@ $R = array(
     'kids'          => array($X('Bambini e Ragazzi', 'Kids & Teens', 'Enfants & Ados', 'Niños y Jóvenes'), 'talent', array('eta_max' => 17), $addq($u_tal, 'ruolo=kids')),
     'actor'         => array($X('Attori', 'Actors', 'Acteurs', 'Actores'), 'talent', array('ruolo' => 'actor'), $addq($u_tal, 'ruolo=actor')),
     'comparsa'      => array($X('Comparse', 'Extras', 'Figurants', 'Figurantes'), 'talent', array('ruolo' => 'comparsa'), $addq($u_tal, 'ruolo=comparsa')),
+    'promoter'      => array($X('Promoter', 'Promoters', 'Promoteurs', 'Promotores'), 'contact', array(), ''),
     'creator'       => array($X('Creator', 'Creators', 'Créateurs', 'Creadores'), 'creator', array(), $u_cr . '#vetrina'),
     'fotografo'     => array($X('Fotografi', 'Photographers', 'Photographes', 'Fotógrafos'), 'crew', array('fotografo'), $addq($u_crew, 'cat=fotografo')),
     'videomaker'    => array($X('Videomaker', 'Videographers', 'Vidéastes', 'Videógrafos'), 'crew', array('videomaker'), $addq($u_crew, 'cat=videomaker')),
@@ -68,7 +69,7 @@ $R = array(
 $G = array(
     'eventi'  => array($X('Staff Eventi', 'Event Staff', 'Staff Événementiel', 'Personal para Eventos'),
                        $X('Hostess, Steward, DJ, Tecnici', 'Hostesses, Stewards, DJs, Technicians', 'Hôtesses, Stewards, DJ, Techniciens', 'Azafatas, Auxiliares, DJ, Técnicos'),
-                       array('hostess' => 0, 'dj' => 2, 'bartender' => 2, 'cameriere' => 2, 'security' => 2, 'tecnici' => 2)),
+                       array('hostess' => 0, 'promoter' => 0, 'dj' => 0, 'bartender' => 0, 'cameriere' => 0, 'security' => 0, 'tecnici' => 0)),
     'modelli' => array($X('Modelli & Attori', 'Models & Actors', 'Mannequins & Acteurs', 'Modelos y Actores'),
                        $X('Modelli, Bambini, Over 50, Attori, Comparse', 'Models, Kids, Over 50, Actors, Extras', 'Mannequins, Enfants, Plus de 50 ans, Acteurs, Figurants', 'Modelos, Niños, Más de 50, Actores, Figurantes'),
                        array('model' => 0, 'over50' => 0, 'kids' => 0, 'actor' => 0, 'comparsa' => 0)),
@@ -77,8 +78,8 @@ $G = array(
                        array('creator' => 0)),
     'foto'    => array($X('Foto, Video & Beauty', 'Photo, Video & Beauty', 'Photo, Vidéo & Beauty', 'Foto, Vídeo & Beauty'),
                        $X('Fotografi, Videomaker, Make-up, Stylist', 'Photographers, Videographers, Make-up, Stylists', 'Photographes, Vidéastes, Maquillage, Stylistes', 'Fotógrafos, Videógrafos, Maquillaje, Estilistas'),
-                       array('fotografo' => 1, 'videomaker' => 1, 'postproduzione' => 1, 'video_editing' => 1, 'art_director' => 1, 'social_media' => 1,
-                             'makeup_artist' => 1, 'hairstylist' => 1, 'parrucchiere' => 1, 'stylist' => 1, 'fashion_designer' => 1)),
+                       array('fotografo' => 0, 'videomaker' => 0, 'postproduzione' => 0, 'video_editing' => 0, 'art_director' => 0, 'social_media' => 0,
+                             'makeup_artist' => 0, 'hairstylist' => 0, 'parrucchiere' => 0, 'stylist' => 0, 'fashion_designer' => 0)),
 );
 
 $groups = array();
@@ -114,6 +115,12 @@ $ui = array(
     'years'  => $X('anni', 'yrs', 'ans', 'años'),
     'tutti'  => $X('Tutti i Creator', 'All Creators', 'Tous les Créateurs', 'Todos los Creadores'),
     'video'  => $X('Con video', 'With video', 'Avec vidéo', 'Con vídeo'),
+    'cH'     => $X('Profili su richiesta', 'Profiles on request', 'Profils sur demande', 'Perfiles bajo petición'),
+    'cP'     => $X('Per questo ruolo i profili non sono ancora online. Scrivici cosa ti serve e ti mandiamo una selezione.',
+                   'Profiles for this role aren’t online yet. Tell us what you need and we’ll send you a shortlist.',
+                   'Les profils de ce rôle ne sont pas encore en ligne. Dites-nous ce qu’il vous faut et nous vous envoyons une sélection.',
+                   'Los perfiles de este rol aún no están en línea. Cuéntanos qué necesitas y te enviamos una selección.'),
+    'cB'     => $X('Contattaci', 'Contact us', 'Nous contacter', 'Contáctanos'),
 );
 $ui_l = array(); foreach ($ui as $k => $v) $ui_l[$k] = $_t($v);
 
@@ -121,6 +128,7 @@ $cfg = array(
     'lang' => $__l,
     'ep' => array('talent' => '/actions/api-talent-database.php', 'crew' => '/crm_toagency/actions/crew-public-search.php', 'creator' => '/actions/creator-vetrina-public.php'),
     'base' => array('talent' => $u_tal, 'crew' => $u_crew),
+    'few' => 3,
     'groups' => $groups,
     'ui' => $ui_l,
 );
@@ -151,6 +159,11 @@ toa_component('header');
       <a class="tdh-all" id="tdhAll" href="#"><?php echo esc_html($ui_l['all']); ?> →</a>
     </div>
     <div class="tdh-grid" id="tdhGrid"></div>
+    <div class="tdh-ask" id="tdhAsk" hidden>
+      <h3 class="tdh-ask__h"><?php echo esc_html($ui_l['cH']); ?></h3>
+      <p><?php echo esc_html($ui_l['cP']); ?></p>
+      <a class="tdh-btn" id="tdhAskB" href="<?php echo esc_url($u_form); ?>"><?php echo esc_html($ui_l['cB']); ?></a>
+    </div>
     <p class="tdh-msg" id="tdhMsg" hidden></p>
     <button type="button" class="tdh-more" id="tdhMore" hidden><?php echo esc_html($ui_l['more']); ?></button>
   </section>
