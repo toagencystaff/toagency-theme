@@ -40,6 +40,9 @@
 .tdh-img,.tdh-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
 .tdh-vid{z-index:1}
 .tdh-img.is-ko{opacity:0}
+.tdh-img{transition:opacity .9s ease}
+.tdh-img.tdh-in{opacity:0}
+@media (prefers-reduced-motion:reduce){.tdh-img{transition:none}}
 .tdh-m{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:34px 12px 12px;background:linear-gradient(to top,rgba(8,8,10,.92),rgba(8,8,10,0));display:flex;flex-direction:column;gap:3px}
 .tdh-m b{font-size:15px;font-weight:700;color:#fff;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tdh-m span{font-size:12px;color:#c4c4bf;line-height:1.3;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

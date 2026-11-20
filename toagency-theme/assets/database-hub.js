@@ -158,7 +158,7 @@
       if (m.length < 2) return;
       var i = parseInt(card.getAttribute('data-i') || '-1', 10);
       if (i < 0) { i = m.indexOf(im.getAttribute('src') || ''); if (i < 0) i = 0; }
-      i = (i + dir + m.length) % m.length; card.setAttribute('data-i', i); im.classList.remove('is-ko'); im.src = m[i];
+      i = (i + dir + m.length) % m.length; card.setAttribute('data-i', i); fade(card, m[i]);
     });
   }
   grid.addEventListener('click', function (e) {
@@ -176,6 +176,56 @@
       sc = null;
     }, { passive: true });
   })();
+
+  /* Scorrimento automatico lento (autoplay): ogni card visibile cambia foto con una dissolvenza, una dopo l'altra (mai tutte insieme).
+   * Si ferma col mouse sopra, dopo un tocco/swipe, a scheda nascosta e con "riduci animazioni". Le foto extra dei talent si scaricano solo al primo giro. */
+  var AP_MS = 4200, apSet = [], apIO = null, apTimer = 0, apBusy = 0;
+  function apUrl(u) { return /foto-talent-public/i.test(u) && !/[?&]w=/.test(u) ? u + (u.indexOf('?') >= 0 ? '&' : '?') + 'w=500' : u; }
+  function fade(card, url) {
+    var cur = card.querySelectorAll('.tdh-img'), last = cur[cur.length - 1];
+    if (!last || RM) { if (last) { last.classList.remove('is-ko'); last.src = url; } return; }
+    var n = new Image(); n.className = 'tdh-img tdh-in'; n.alt = last.alt || ''; n.decoding = 'async';
+    n.onload = function () {
+      if (!card.isConnected) return;
+      card.insertBefore(n, card.querySelector('.tdh-nav') || null);
+      Array.prototype.forEach.call(card.querySelectorAll('.tdh-img'), function (x) { if (x !== n) { x.style.zIndex = '0'; } });
+      n.getBoundingClientRect(); n.classList.remove('tdh-in');
+      setTimeout(function () { Array.prototype.forEach.call(card.querySelectorAll('.tdh-img'), function (x) { if (x !== n && x.parentNode) x.parentNode.removeChild(x); }); }, 1100);
+    };
+    n.onerror = function () {};
+    n.src = url;
+  }
+  function apStep(card) {
+    if (!card.isConnected || card._hov || (card._pz && Date.now() < card._pz)) return;
+    if (card._m && card._m.length > 1) { card._m = card._m.map(apUrl); return navGo(card, 1); }
+    if (card._apLoad || apBusy >= 2) return;
+    card._apLoad = 1; apBusy++;
+    navMedia(card, function (m) { card._m = (m || []).map(apUrl); apBusy--; if (card._m.length > 1) navGo(card, 1); });
+  }
+  function apTick() {
+    if (document.hidden) return;
+    var vis = apSet.filter(function (c) { return c.isConnected; }).slice(0, 10);
+    vis.forEach(function (c, i) { setTimeout(function () { apStep(c); }, i * 450); });
+  }
+  function apWatch() {
+    if (RM || !('IntersectionObserver' in window)) return;
+    var cards = grid.querySelectorAll('.tdh-c[data-nav]:not([data-ap])');
+    if (!cards.length) return;
+    if (!apIO) apIO = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        var c = e.target, i = apSet.indexOf(c);
+        if (e.isIntersecting && i < 0) apSet.push(c); else if (!e.isIntersecting && i >= 0) apSet.splice(i, 1);
+      });
+    }, { threshold: 0.6 });
+    Array.prototype.forEach.call(cards, function (c) {
+      c.setAttribute('data-ap', '1');
+      c.addEventListener('mouseenter', function () { c._hov = 1; });
+      c.addEventListener('mouseleave', function () { c._hov = 0; });
+      c.addEventListener('touchstart', function () { c._pz = Date.now() + 9000; }, { passive: true });
+      apIO.observe(c);
+    });
+    if (!apTimer) apTimer = setInterval(apTick, AP_MS);
+  }
 
   /* Creator: il video (anteprima leggera dal CRM) parte da solo, muto e in loop, solo per le card visibili, max 6 alla volta
    * (stesso schema della pagina TOA Creators). Un video che non si legge o va in errore fa sparire la card: mai un riquadro vuoto. */
@@ -222,7 +272,7 @@
     var h = '', fn = CARD[src];
     list.forEach(function (x, j) { h += fn(x, from + j); });
     grid.insertAdjacentHTML('beforeend', h);
-    if (src !== 'creator') navAdd();
+    if (src !== 'creator') { navAdd(); apWatch(); }
     if (src === 'crew') covWatch();
     if (src === 'creator') vWatch();
   }
