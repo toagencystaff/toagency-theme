@@ -115,7 +115,7 @@ function toa_mg_url_save() {
 /* ───────────── pagina «Database» (20/11/2026, TEMA DATABASE-MENU) ─────────────
  * Il pannello Database nuovo e i link ai database di ogni sezione compaiono SOLO quando la pagina /database/ e' pubblicata.
  * Finche' e' in bozza li vede solo un amministratore loggato (anteprima); i visitatori vedono il menu di sempre. */
-function toa_mg_db_admin() { return function_exists('is_user_logged_in') && is_user_logged_in() && current_user_can('manage_options'); }
+function toa_mg_db_admin() { return function_exists('is_user_logged_in') && is_user_logged_in() && current_user_can('edit_others_pages'); }
 function toa_mg_db_nuovo() {
     static $v = null;
     if ($v !== null) return $v;
