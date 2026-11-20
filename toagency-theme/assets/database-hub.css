@@ -98,3 +98,10 @@
 /* video creator: la foto resta solo come segnaposto finche' il video non e' pronto */
 .tdh-vid{opacity:0;transition:opacity .4s}
 .tdh-vid.ok{opacity:1}
+
+/* frecce per scorrere le foto dalla griglia (stesso gesto del Talent Database) */
+.tdh .tdh-nav{all:unset;box-sizing:border-box;position:absolute;top:calc(50% - 20px);z-index:4;width:36px;height:36px;border-radius:50%!important;background:rgba(8,8,10,.62)!important;color:#fff!important;font-size:24px!important;line-height:34px;text-align:center;cursor:pointer;padding:0!important;text-transform:none!important;opacity:.9;transition:opacity .15s,background .15s}
+.tdh .tdh-nav--p{left:8px}
+.tdh .tdh-nav--n{right:8px}
+.tdh .tdh-nav:hover{background:#c8ff00!important;color:#08080a!important}
+@media (hover:hover){.tdh .tdh-nav{opacity:0}.tdh .tdh-c:hover .tdh-nav{opacity:1}}

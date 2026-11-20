@@ -69,7 +69,7 @@
     var src = t.cover || (t.foto ? t.foto + '&w=400' : '/actions/foto-talent-public.php?id=' + encodeURIComponent(id) + '&w=400');
     var rot = parseInt(t.foto_rotazione, 10) || 0, pos = (typeof t.foto_position === 'string' && /^\d{1,3}%\s+\d{1,3}%$/.test(t.foto_position.trim())) ? t.foto_position.trim() : '';
     var st = []; if (rot) st.push('transform:rotate(' + rot + 'deg) scale(' + ((rot === 90 || rot === 270) ? 1.35 : 1) + ')'); if (pos) st.push('object-position:' + pos);
-    return '<a class="tdh-c" href="' + esc(href) + '">' + imgTag(src, t.nome || '', st.join(';'), i) +
+    return '<a class="tdh-c" data-nav="t:' + id + '" href="' + esc(href) + '">' + imgTag(src, t.nome || '', st.join(';'), i) +
       '<div class="tdh-m"><b>' + esc(t.nome || '') + '</b><span>' + meta.join(' · ') + '</span></div></a>';
   }
   function cardCrew(c, i) {
@@ -79,7 +79,7 @@
     var prov = c.provincia ? String(c.provincia) : '';
     if (c.paese && c.paese !== 'IT') prov = (prov ? prov + ' · ' : '') + c.paese;
     var ini = String(c.nome || '?').charAt(0).toUpperCase();
-    return '<a class="tdh-c' + (c.foto_profilo_url ? '' : ' tdh-c--ph') + '" href="' + esc(href) + '"' + (S.g && S.g.k === 'foto' && c.uuid ? ' data-w="' + esc(c.uuid) + '"' : '') + '>' +
+    return '<a class="tdh-c' + (c.foto_profilo_url ? '' : ' tdh-c--ph') + '" href="' + esc(href) + '"' + (S.g && S.g.k === 'foto' && c.uuid ? ' data-w="' + esc(c.uuid) + '" data-nav="c:' + esc(c.uuid) + '"' : '') + '>' +
       (c.foto_profilo_url ? imgTag(encodeURI(c.foto_profilo_url), c.nome || '', '', i) : '<span class="tdh-ini">' + esc(ini) + '</span>') +
       (c.n_video > 0 ? '<span class="tdh-play" aria-hidden="true">▶</span>' : '') +
       '<div class="tdh-m"><b>' + esc(c.nome || '') + '</b><span>' + esc(labs.slice(0, 2).join(' · ')) + (prov ? '<em>' + esc(prov) + '</em>' : '') + '</span></div></a>';
@@ -96,16 +96,15 @@
    * Una chiamata per profilo, solo quando la card sta per entrare nello schermo, max 3 alla volta. Senza lavori resta la foto profilo. */
   var covCache = {}, covQ = [], covRun = 0, covIO = null, VIDEO_RE = /\.(mp4|mov|webm|m4v)(\?|$)/i;
   function covW(u) { return /crew-photo-public\.php/i.test(u) ? u + (u.indexOf('?') >= 0 ? '&' : '?') + 'w=500' : u; }
-  function covPick(d) {
-    if (!d) return '';
-    if (d.cover_url) return covW(d.cover_url);
+  function covList(d) {
+    var out = [];
+    if (!d) return out;
+    function add(u) { u = covW(u); if (u && out.indexOf(u) < 0) out.push(u); }
+    if (d.cover_url) add(d.cover_url);
     var al = d.albums || {}, ps = d.posters || {}, keys = Object.keys(al).filter(function (k) { return k !== 'generale'; });
     if (al.generale) keys.push('generale');
-    for (var i = 0; i < keys.length; i++) {
-      var arr = al[keys[i]] || [];
-      for (var j = 0; j < arr.length; j++) { var u = arr[j]; if (VIDEO_RE.test(u)) { if (ps[u]) return covW(ps[u]); } else return covW(u); }
-    }
-    return '';
+    keys.forEach(function (k) { (al[k] || []).forEach(function (u) { if (VIDEO_RE.test(u)) { if (ps[u]) add(ps[u]); } else add(u); }); });
+    return out.slice(0, 8);
   }
   function covApply(card, url) {
     if (!url || !card.isConnected) return;
@@ -121,8 +120,8 @@
       covRun++;
       (function (card, id) {
         var done = function () { covRun--; covNext(); };
-        if (covCache[id] !== undefined) { covApply(card, covCache[id]); return done(); }
-        jget(EP.crewProfile + '?uuid=' + encodeURIComponent(id)).then(function (d) { covCache[id] = covPick(d); covApply(card, covCache[id]); }).catch(function () {}).then(done);
+        if (covCache[id] !== undefined) { card._m = covCache[id]; covApply(card, covCache[id][0]); return done(); }
+        jget(EP.crewProfile + '?uuid=' + encodeURIComponent(id)).then(function (d) { covCache[id] = covList(d); card._m = covCache[id]; covApply(card, covCache[id][0]); }).catch(function () {}).then(done);
       })(card, id);
     }
   }
@@ -134,6 +133,49 @@
     if (!covIO) covIO = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { covIO.unobserve(e.target); covQ.push(e.target); } }); covNext(); }, { rootMargin: '300px' });
     Array.prototype.forEach.call(cards, function (c) { covIO.observe(c); });
   }
+
+  /* Frecce e swipe per scorrere le foto direttamente dalla griglia (come nel Talent Database): le foto si caricano al primo uso, poi si scorre subito.
+   * Talent: foto del profilo · Foto, Video & Beauty: i lavori del portfolio. Il click sulla card apre sempre la scheda. */
+  function navAdd() {
+    Array.prototype.forEach.call(grid.querySelectorAll('.tdh-c[data-nav]:not([data-nv])'), function (c) {
+      c.setAttribute('data-nv', '1');
+      [-1, 1].forEach(function (d) {
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'tdh-nav ' + (d < 0 ? 'tdh-nav--p' : 'tdh-nav--n'); b.setAttribute('data-d', d);
+        b.setAttribute('aria-label', d < 0 ? (U.prev || '‹') : (U.next || '›')); b.textContent = d < 0 ? '‹' : '›'; c.appendChild(b);
+      });
+    });
+  }
+  function navMedia(card, cb) {
+    if (card._m && card._m.length) return cb(card._m);
+    var k = (card.getAttribute('data-nav') || '').split(':'), id = k.slice(1).join(':'), im = card.querySelector('.tdh-img'), cur = im ? im.getAttribute('src') || '' : '';
+    var fin = function (m) { m = (m || []).filter(Boolean); if (!m.length) m = cur ? [cur] : []; card._m = m; m.forEach(function (u) { var x = new Image(); x.src = u; }); cb(m); };
+    if (k[0] === 't') jget(EP.talent + '?action=talent&id=' + encodeURIComponent(id)).then(function (d) { fin(((d && d.media) || []).map(function (x) { return x.url; })); }).catch(function () { fin([]); });
+    else jget(EP.crewProfile + '?uuid=' + encodeURIComponent(id)).then(function (d) { fin(covList(d)); }).catch(function () { fin([]); });
+  }
+  function navGo(card, dir) {
+    var im = card.querySelector('.tdh-img'); if (!im) return;
+    navMedia(card, function (m) {
+      if (m.length < 2) return;
+      var i = parseInt(card.getAttribute('data-i') || '-1', 10);
+      if (i < 0) { i = m.indexOf(im.getAttribute('src') || ''); if (i < 0) i = 0; }
+      i = (i + dir + m.length) % m.length; card.setAttribute('data-i', i); im.classList.remove('is-ko'); im.src = m[i];
+    });
+  }
+  grid.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.tdh-nav') : null;
+    var c = e.target.closest ? e.target.closest('.tdh-c') : null;
+    if (b) { e.preventDefault(); e.stopPropagation(); navGo(b.parentNode, parseInt(b.getAttribute('data-d'), 10) || 1); return; }
+    if (c && c._sw && Date.now() - c._sw < 450) { e.preventDefault(); e.stopPropagation(); }
+  }, true);
+  (function () {
+    var sx = 0, sy = 0, sc = null;
+    grid.addEventListener('touchstart', function (e) { var t = e.touches[0]; sx = t.clientX; sy = t.clientY; sc = e.target.closest ? e.target.closest('.tdh-c[data-nav]') : null; }, { passive: true });
+    grid.addEventListener('touchend', function (e) {
+      if (!sc) return; var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { sc._sw = Date.now(); navGo(sc, dx < 0 ? 1 : -1); }
+      sc = null;
+    }, { passive: true });
+  })();
 
   /* Creator: il video (anteprima leggera dal CRM) parte da solo, muto e in loop, solo per le card visibili, max 6 alla volta
    * (stesso schema della pagina TOA Creators). Un video che non si legge o va in errore fa sparire la card: mai un riquadro vuoto. */
@@ -180,6 +222,7 @@
     var h = '', fn = CARD[src];
     list.forEach(function (x, j) { h += fn(x, from + j); });
     grid.insertAdjacentHTML('beforeend', h);
+    if (src !== 'creator') navAdd();
     if (src === 'crew') covWatch();
     if (src === 'creator') vWatch();
   }

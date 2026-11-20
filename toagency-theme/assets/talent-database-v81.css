@@ -2400,3 +2400,7 @@ body.tdb-drawer-open::before{display:none !important;}
 .toa-tdb-detail-profile-btn { margin-top: auto; text-decoration: none; width: 100%; box-sizing: border-box; }
 .toa-tdb-detail-profile-btn[hidden] { display: none !important; }
 .toa-tdb-detail-profile-btn + .toa-tdb-detail-add-btn { margin-top: 10px; }
+/* 20/11/2026 marco (TEMA DATABASE-MENU) — «Profilo completo» ben evidente: pieno lime, piu' grande, con freccia; «Aggiungi» resta sotto */
+.toa-tdb-detail-profile-btn { background:#c8ff00 !important; color:#0a0a0a !important; border-color:#c8ff00 !important; font-weight:800 !important; font-size:15px !important; padding:15px 20px !important; letter-spacing:.02em; text-align:center; display:flex; align-items:center; justify-content:center; gap:8px; }
+.toa-tdb-detail-profile-btn::after { content:"\2192"; font-weight:700; }
+.toa-tdb-detail-profile-btn:hover { background:#fff !important; border-color:#fff !important; color:#0a0a0a !important; }

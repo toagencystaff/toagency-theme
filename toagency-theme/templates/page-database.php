@@ -115,6 +115,8 @@ $ui = array(
     'years'  => $X('anni', 'yrs', 'ans', 'años'),
     'tutti'  => $X('Tutti i Creator', 'All Creators', 'Tous les Créateurs', 'Todos los Creadores'),
     'video'  => $X('Con video', 'With video', 'Avec vidéo', 'Con vídeo'),
+    'prev'   => $X('Foto precedente', 'Previous photo', 'Photo précédente', 'Foto anterior'),
+    'next'   => $X('Foto successiva', 'Next photo', 'Photo suivante', 'Foto siguiente'),
     'cH'     => $X('Profili su richiesta', 'Profiles on request', 'Profils sur demande', 'Perfiles bajo petición'),
     'cP'     => $X('Per questo ruolo i profili non sono ancora online. Scrivici cosa ti serve e ti mandiamo una selezione.',
                    'Profiles for this role aren’t online yet. Tell us what you need and we’ll send you a shortlist.',
