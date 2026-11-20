@@ -62,9 +62,10 @@
     var box = root.querySelector('.toas__th');
     if (S.items.length < 2) { box.innerHTML = ''; box.hidden = true; return; }
     box.hidden = false;
+    var vn = 0;
     box.innerHTML = S.items.map(function (it, k) {
-      return '<button type="button" class="toas__t' + (k === S.i ? ' on' : '') + '" data-k="' + k + '" aria-label="' + esc((it.t === 'v' ? tr().vid : tr().foto) + ' ' + (k + 1)) + '">' +
-        (it.t === 'v' ? '<span class="toas__pl">&#9654;</span>' : '<img src="' + esc(sz(it.u, 160)) + '" alt="" loading="lazy" decoding="async">') + '</button>';
+      return '<button type="button" class="toas__t' + (it.t === 'v' ? ' toas__t--v' : '') + (k === S.i ? ' on' : '') + '" data-k="' + k + '" aria-label="' + esc((it.t === 'v' ? tr().vid : tr().foto) + ' ' + (k + 1)) + '">' +
+        (it.t === 'v' ? (S.o.foto ? '<img src="' + esc(sz(S.o.foto, 160)) + '" alt="" loading="lazy" decoding="async">' : '') + '<span class="toas__pl">&#9654;</span><i class="toas__ix">' + (++vn) + '</i>' : '<img src="' + esc(sz(it.u, 160)) + '" alt="" loading="lazy" decoding="async">') + '</button>';
     }).join('');
     Array.prototype.forEach.call(box.querySelectorAll('.toas__t'), function (b) {
       b.addEventListener('click', function () { S.i = +b.getAttribute('data-k'); show(); });
@@ -85,6 +86,25 @@
     var el = root.querySelector('.toas__in'); el.innerHTML = h;
     var a = el.querySelector('#toasAsk');
     if (a) a.addEventListener('click', function () { var r = o.ask.on(); if (typeof r === 'string') a.textContent = r; });
+  }
+
+  // Il CRM può elencare più volte lo stesso file video: si tolgono i doppioni (stessa dimensione in byte), si legge solo l'intestazione.
+  function dedupe(items, done) {
+    var vids = items.filter(function (v) { return v.t === 'v'; });
+    if (vids.length < 2) { done(items); return; }
+    var sizes = [], left = vids.length;
+    vids.forEach(function (v, k) {
+      var ac = window.AbortController ? new AbortController() : null;
+      fetch(v.u, { headers: { Range: 'bytes=0-0' }, credentials: 'same-origin', signal: ac ? ac.signal : undefined })
+        .then(function (r) { var cr = r.headers.get('content-range') || ''; var n = cr.split('/')[1] || r.headers.get('content-length') || ''; if (ac) ac.abort(); return n; })
+        .catch(function () { return ''; })
+        .then(function (n) {
+          sizes[k] = n || ('u' + k);
+          if (--left) return;
+          var seen = {}, keep = vids.filter(function (x, i) { if (seen[sizes[i]]) return false; seen[sizes[i]] = 1; return true; });
+          done(items.filter(function (it) { return it.t !== 'v' || keep.indexOf(it) >= 0; }));
+        });
+    });
   }
 
   function load() {
@@ -111,7 +131,10 @@
           var lead = (my.o.media || []).filter(function (m) { return m.t === 'v' && !vd.some(function (v) { return v.u === m.u; }); });
           vd = lead.concat(vd); // il video scelto dalla pagina resta il primo
           var all = my.o.videoFirst ? vd.concat(ph) : ph.concat(vd);
-          if (all.length > my.items.length || (all.length && !my.items.length)) { my.items = all; my.i = 0; thumbs(); show(); }
+          dedupe(all, function (list) {
+            if (S !== my) return;
+            if (list.length > my.items.length || (list.length && !my.items.length)) { my.items = list; my.i = 0; thumbs(); show(); }
+          });
         }
         info();
       }).catch(function () {});
