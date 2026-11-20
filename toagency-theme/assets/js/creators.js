@@ -14,6 +14,7 @@
   var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   function $(id) { return document.getElementById(id); }
   function pcn(n) { return String(n == null ? '' : n).toLowerCase().replace(/(^|[\s'\-])([a-zà-ÿ])/g, function (m, sep, ch) { return sep + ch.toUpperCase(); }); }   // 20/11/2026 regola Marco: nomi con la sola iniziale maiuscola
+  function tcode(c) { var n = /^\d+$/.test(String(c)) ? parseInt(c, 10) : 0; if (n <= 0) return String(c == null ? '' : c); if (n < 9000000) return String(n); if (n >= 88888802) return 'A' + (n - 88888802 + 1705); return 'A' + (n - 9000000); }   // 20/11/2026 regola Marco: stesso codice A… del Talent Database e del CRM
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function tpl(s, o) { return String(s || '').replace(/\{(\w+)\}/g, function (m, k) { return o[k] != null ? o[k] : m; }); }
   var nf0 = new Intl.NumberFormat(LOC, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0, minimumFractionDigits: 0 });
@@ -207,7 +208,7 @@
   var CP = {};
   var TXC = { it: 'Nicchie e contenuti', en: 'Niches & content', fr: 'Niches et contenus', es: 'Nichos y contenidos' };
   function card(p) {
-    CP[p.codice] = p;
+    p.codice = tcode(p.codice); CP[p.codice] = p;
     var i = p.insight || {}, chips = [i.piattaforma, i.views ? '▶ ' + i.views : '', i.engagement ? 'ER ' + i.engagement : ''].filter(Boolean);
     var tags = (p.nicchie || []).slice(0, 2).map(function (x) { return '<span class="tcr-tg">' + esc(x) + '</span>'; }).join('') +
       ((p.contenuti || [])[0] ? '<span class="tcr-tg tcr-tg--g">' + esc(p.contenuti[0]) + '</span>' : '') +
@@ -344,7 +345,7 @@
     function ph(p) {
       return '<video muted loop playsinline preload="metadata"' + (RM ? '' : ' autoplay') + ' data-src="' + esc(p.anteprima || p.video) + '"></video>' +
         '<em class="tcr-ph__nic">' + esc(nic(p)) + '</em><div class="tcr-ph__ov"><img class="tcr-av" alt="" src="' + esc(p.foto) + '">' +
-        '<div class="tcr-who"><b>' + esc(pcn(p.nome)) + '<i title="' + esc(U.verificato) + '">✓</i></b><small>' + esc((p.nicchia ? p.nicchia + ' · ' : '') + '#' + p.codice) + '</small></div>' +
+        '<div class="tcr-who"><b>' + esc(pcn(p.nome)) + '<i title="' + esc(U.verificato) + '">✓</i></b><small>' + esc((p.nicchia ? p.nicchia + ' · ' : '') + '#' + tcode(p.codice)) + '</small></div>' +
         '<span class="tcr-ph__go">' + esc(U.scheda) + '</span></div>';
     }
     function fill(a, p) {
