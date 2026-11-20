@@ -179,7 +179,7 @@
 
   /* Scorrimento automatico lento (autoplay): ogni card visibile cambia foto con una dissolvenza, una dopo l'altra (mai tutte insieme).
    * Si ferma col mouse sopra, dopo un tocco/swipe, a scheda nascosta e con "riduci animazioni". Le foto extra dei talent si scaricano solo al primo giro. */
-  var AP_MS = 4200, apPos = 0, apSet = [], apIO = null, apTimer = 0, apBusy = 0;
+  var AP_MS = 4200, AP_FOTO = 2800, apPos = 0, apSet = [], apIO = null, apTimer = 0, apBusy = 0;
   function apUrl(u) { return /foto-talent-public/i.test(u) && !/[?&]w=/.test(u) ? u + (u.indexOf('?') >= 0 ? '&' : '?') + 'w=500' : u; }
   function fade(card, url) {
     var cur = card.querySelectorAll('.tdh-img'), last = cur[cur.length - 1];
@@ -213,8 +213,9 @@
     var n = Math.min(all.length, 12), vis = [];
     for (var j = 0; j < n; j++) vis.push(all[(apPos + j) % all.length]);   // a rotazione: a ogni giro tocca ad altre card, cosi' cambiano tutte
     apPos = (apPos + n) % all.length;
-    vis.forEach(function (c, i) { setTimeout(function () { apStep(c); }, i * 330); });
+    vis.forEach(function (c, i) { setTimeout(function () { apStep(c); }, i * 220); });
   }
+  function apLoop() { apTick(); apTimer = setTimeout(apLoop, (S.g && S.g.k === 'foto') ? AP_FOTO : AP_MS); }   // Foto, Video & Beauty (backstage): un po' piu' veloce
   function apWatch() {
     if (RM || !('IntersectionObserver' in window)) return;
     var cards = grid.querySelectorAll('.tdh-c[data-nav]:not([data-ap])');
@@ -232,7 +233,7 @@
       c.addEventListener('touchstart', function () { c._pz = Date.now() + 9000; }, { passive: true });
       apIO.observe(c);
     });
-    if (!apTimer) apTimer = setInterval(apTick, AP_MS);
+    if (!apTimer) apTimer = setTimeout(apLoop, AP_MS);
   }
 
   /* Creator: il video (anteprima leggera dal CRM) parte da solo, muto e in loop, solo per le card visibili, max 6 alla volta
