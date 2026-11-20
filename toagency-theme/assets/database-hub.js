@@ -179,24 +179,28 @@
 
   /* Scorrimento automatico lento (autoplay): ogni card visibile cambia foto con una dissolvenza, una dopo l'altra (mai tutte insieme).
    * Si ferma col mouse sopra, dopo un tocco/swipe, a scheda nascosta e con "riduci animazioni". Le foto extra dei talent si scaricano solo al primo giro. */
-  var AP_MS = 4200, apSet = [], apIO = null, apTimer = 0, apBusy = 0;
+  var AP_MS = 4200, apPos = 0, apSet = [], apIO = null, apTimer = 0, apBusy = 0;
   function apUrl(u) { return /foto-talent-public/i.test(u) && !/[?&]w=/.test(u) ? u + (u.indexOf('?') >= 0 ? '&' : '?') + 'w=500' : u; }
   function fade(card, url) {
     var cur = card.querySelectorAll('.tdh-img'), last = cur[cur.length - 1];
     if (!last || RM) { if (last) { last.classList.remove('is-ko'); last.src = url; } return; }
     var n = new Image(); n.className = 'tdh-img tdh-in'; n.alt = last.alt || ''; n.decoding = 'async';
+    card._fd = Date.now() + 15000;   // dissolvenza in corso: l'autoplay aspetta
     n.onload = function () {
       if (!card.isConnected) return;
-      card.insertBefore(n, card.querySelector('.tdh-nav') || null);
-      Array.prototype.forEach.call(card.querySelectorAll('.tdh-img'), function (x) { if (x !== n) { x.style.zIndex = '0'; } });
+      card.insertBefore(n, card.querySelector('.tdh-nav') || null);   // la nuova e' sempre l'ultima: sta sopra
       n.getBoundingClientRect(); n.classList.remove('tdh-in');
-      setTimeout(function () { Array.prototype.forEach.call(card.querySelectorAll('.tdh-img'), function (x) { if (x !== n && x.parentNode) x.parentNode.removeChild(x); }); }, 1100);
+      setTimeout(function () {   // si tolgono solo le vecchie, mai l'ultima: la card non resta mai senza foto
+        var all = card.querySelectorAll('.tdh-img');
+        for (var i = 0; i < all.length - 1; i++) if (all[i].parentNode) all[i].parentNode.removeChild(all[i]);
+        card._fd = 0;
+      }, 1100);
     };
-    n.onerror = function () {};
+    n.onerror = function () { card._fd = 0; };
     n.src = url;
   }
   function apStep(card) {
-    if (!card.isConnected || card._hov || (card._pz && Date.now() < card._pz)) return;
+    if (!card.isConnected || card._hov || (card._fd && Date.now() < card._fd) || (card._pz && Date.now() < card._pz)) return;
     if (card._m && card._m.length > 1) { card._m = card._m.map(apUrl); return navGo(card, 1); }
     if (card._apLoad || apBusy >= 2) return;
     card._apLoad = 1; apBusy++;
@@ -204,8 +208,12 @@
   }
   function apTick() {
     if (document.hidden) return;
-    var vis = apSet.filter(function (c) { return c.isConnected; }).slice(0, 10);
-    vis.forEach(function (c, i) { setTimeout(function () { apStep(c); }, i * 450); });
+    var all = apSet.filter(function (c) { return c.isConnected; });
+    if (!all.length) return;
+    var n = Math.min(all.length, 12), vis = [];
+    for (var j = 0; j < n; j++) vis.push(all[(apPos + j) % all.length]);   // a rotazione: a ogni giro tocca ad altre card, cosi' cambiano tutte
+    apPos = (apPos + n) % all.length;
+    vis.forEach(function (c, i) { setTimeout(function () { apStep(c); }, i * 330); });
   }
   function apWatch() {
     if (RM || !('IntersectionObserver' in window)) return;
