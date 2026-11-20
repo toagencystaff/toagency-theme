@@ -20,6 +20,7 @@
   function toCrm(m) { if (!INFRAME) return; try { window.parent.postMessage(m, location.origin); } catch (e) {} }
   var altriOpen = false, altreOpen = false, fOpen = false, ctrl = null, lastMsg = '', lastPl = '', lastLg = '';
 
+  function pcn(n) { return String(n == null ? '' : n).toLowerCase().replace(/(^|[\s'\-])([a-zà-ÿ])/g, function (m, sep, ch) { return sep + ch.toUpperCase(); }); }   // 20/11/2026 regola Marco: nomi con la sola iniziale maiuscola
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function fmt(s, o) { return String(s).replace(/\{(\w)\}/g, function (m, k) { return o[k] != null ? o[k] : ''; }); }
   function setAll(key, html, isText) {
@@ -173,6 +174,7 @@
     setAll('cta', esc(tx.cta || ''));
     setAll('esempio', esc(tx.esempio || ''));
     // ordine: prima chi parla le lingue richieste (per il divisore), poi l'ordine del CRM invariato (ticket 823)
+    (d.profili || []).forEach(function (p) { if (p && p.nome) p.nome = pcn(p.nome); });
     if (d.profili && d.profili.length > 1) {
       d.profili = d.profili.map(function (p, i) { return { p: p, i: i }; }).sort(function (a, b) {
         return ((a.p.match_lingue === false ? 1 : 0) - (b.p.match_lingue === false ? 1 : 0)) || (a.i - b.i);

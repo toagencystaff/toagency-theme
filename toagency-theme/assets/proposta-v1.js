@@ -32,6 +32,7 @@
     function t(k) { return I18N[k] || k; }
     function $(s) { return document.querySelector(s); }
 
+    function pcn(n) { return String(n == null ? '' : n).toLowerCase().replace(/(^|[\s'\-])([a-zà-ÿ])/g, function (m, sep, ch) { return sep + ch.toUpperCase(); }); }   // 20/11/2026 regola Marco: nomi con la sola iniziale maiuscola
     function escapeHtml(s) {
         return String(s == null ? '' : s)
             .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -266,7 +267,7 @@
 
     // ─── Card (stesse classi di talent-database-v81.css) ─────────────
     function cardHtml(c) {
-        var name = escapeHtml(c.nome || '—');
+        var name = escapeHtml(pcn(c.nome) || '—');
 
         var info = [];
         var eta = parseInt(c.eta, 10) || 0;

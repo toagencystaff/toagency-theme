@@ -13,6 +13,7 @@
   var LOC = { it: 'it-IT', en: 'en-GB', fr: 'fr-FR', es: 'es-ES' }[L] || 'it-IT';
   var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   function $(id) { return document.getElementById(id); }
+  function pcn(n) { return String(n == null ? '' : n).toLowerCase().replace(/(^|[\s'\-])([a-zà-ÿ])/g, function (m, sep, ch) { return sep + ch.toUpperCase(); }); }   // 20/11/2026 regola Marco: nomi con la sola iniziale maiuscola
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function tpl(s, o) { return String(s || '').replace(/\{(\w+)\}/g, function (m, k) { return o[k] != null ? o[k] : m; }); }
   var nf0 = new Intl.NumberFormat(LOC, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0, minimumFractionDigits: 0 });
@@ -210,10 +211,10 @@
       (p.pubblicita ? '<span class="tcr-tg tcr-tg--g">' + esc(U.ads) + '</span>' : '');
     var on = window.tcrForm && window.tcrForm.has(p.codice);
     var da = S.testi ? S.testi.da : '';
-    return '<div class="tcr-cc' + (on ? ' sel' : '') + '" data-c="' + esc(p.codice) + '" data-n="' + esc(p.nome) + '" role="button" tabindex="0" aria-pressed="' + !!on + '" aria-label="' + esc(p.nome + ' #' + p.codice + ' — ' + U.add) + '">' +
+    return '<div class="tcr-cc' + (on ? ' sel' : '') + '" data-c="' + esc(p.codice) + '" data-n="' + esc(pcn(p.nome)) + '" role="button" tabindex="0" aria-pressed="' + !!on + '" aria-label="' + esc(pcn(p.nome) + ' #' + p.codice + ' — ' + U.add) + '">' +
       '<div class="tcr-vid"><video muted loop playsinline preload="metadata" data-src="' + esc(p.anteprima || p.video) + '"></video><div class="tcr-vid__shade"></div>' +
       (chips.length ? '<div class="tcr-ins">' + chips.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div>' : '') +
-      '<div class="tcr-who2"><img class="tcr-av" alt="" loading="lazy" src="' + esc(p.foto) + '"><div class="tcr-who"><b>' + esc(p.nome) + '<i title="' + esc(U.verificato) + '">✓</i></b><small>#' + esc(p.codice) + (p.fascia ? ' · ' + esc(p.fascia) : '') + '</small></div></div>' +
+      '<div class="tcr-who2"><img class="tcr-av" alt="" loading="lazy" src="' + esc(p.foto) + '"><div class="tcr-who"><b>' + esc(pcn(p.nome)) + '<i title="' + esc(U.verificato) + '">✓</i></b><small>#' + esc(p.codice) + (p.fascia ? ' · ' + esc(p.fascia) : '') + '</small></div></div>' +
       '<span class="tcr-add" aria-hidden="true">' + (on ? '✓' : '+') + '</span></div>' +
       '<div class="tcr-cb"><div class="tcr-tags">' + tags + '</div><div class="tcr-aud">' + pubblico(p) + '</div>' +
       '<div class="tcr-price">' + (p.prezzo_da ? esc(da) + ' ' + eur(p.prezzo_da) + ' <small class="tcr-ivl"></small>' : esc(ucf(U.preventivo))) + '</div></div></div>';
@@ -318,7 +319,7 @@
     function ph(p) {
       return '<video muted loop playsinline preload="metadata"' + (RM ? '' : ' autoplay') + ' data-src="' + esc(p.anteprima || p.video) + '"></video>' +
         '<em class="tcr-ph__nic">' + esc(nic(p)) + '</em><div class="tcr-ph__ov"><img class="tcr-av" alt="" src="' + esc(p.foto) + '">' +
-        '<div class="tcr-who"><b>' + esc(p.nome) + '<i title="' + esc(U.verificato) + '">✓</i></b><small>' + esc((p.nicchia ? p.nicchia + ' · ' : '') + '#' + p.codice) + '</small></div>' +
+        '<div class="tcr-who"><b>' + esc(pcn(p.nome)) + '<i title="' + esc(U.verificato) + '">✓</i></b><small>' + esc((p.nicchia ? p.nicchia + ' · ' : '') + '#' + p.codice) + '</small></div>' +
         '<span class="tcr-ph__go">' + esc(U.scheda) + '</span></div>';
     }
     function fill(a, p) {

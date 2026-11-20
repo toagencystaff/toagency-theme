@@ -191,6 +191,7 @@ if ($crew_seo_items === false) {
                 foreach ($CREW_CATEGORIES as $cat) { $catLabelsByCode[$cat['code']] = $_t($cat['label']); }
                 foreach (array_slice($seo_data['results'], 0, 60) as $c) {
                     $nome = trim((string)($c['nome'] ?? ''));
+                    $nome = preg_replace_callback('/(^|[\s\'\-])(\p{L})/u', function ($m) { return $m[1] . mb_strtoupper($m[2], 'UTF-8'); }, mb_strtolower($nome, 'UTF-8'));   // 20/11/2026 regola Marco: nomi con la sola iniziale maiuscola
                     $uuid = trim((string)($c['uuid'] ?? ''));
                     if ($nome === '' || $uuid === '') continue;
                     // FIX 2026-08-11 marco — 'categorie' torna un ARRAY dall'API (["content_creator"]), non una

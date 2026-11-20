@@ -1,5 +1,6 @@
 // FIX 2026-07-03 marco — codice talent a video: A687 invece di 9000687 (id>=9M), legacy invariati; solo display, DB intatto
 // #657 — stessa regola di lib/codice_talent.php del CRM: se cambia, cambiare entrambi
+function tdPC(n){return String(n||'').toLowerCase().replace(/(^|[\s'\-])([a-zà-ÿ])/g,function(m,sep,ch){return sep+ch.toUpperCase();});} // 2026-11-20 marco: nomi sempre Prima Maiuscola e resto minuscolo, per tutti
 function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<9000000)return String(id);if(id>=88888802)return 'A'+(id-88888802+1705);return 'A'+(id-9000000);}
 /**
  * TOAgency — Talent Database (pagina pubblica)
@@ -378,7 +379,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<900000
                 } else if (item && typeof item.id === 'number') {
                     TD.selectedIds.add(item.id);
                     // 2026-08-11 marco — MINI-PANNELLO: is_minor null = selezione vecchia senza flag → niente foto (prudenza)
-                    TD.selectedTalents.set(item.id, { id: item.id, nome: item.nome || '', talent_id: item.talent_id || 0, is_minor: (item.is_minor === undefined ? null : item.is_minor) });
+                    TD.selectedTalents.set(item.id, { id: item.id, nome: tdPC(item.nome || ''), talent_id: item.talent_id || 0, is_minor: (item.is_minor === undefined ? null : item.is_minor) });
                 }
             });
         } catch (e) { /* ignore */ }
@@ -819,6 +820,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<900000
                 if (!res || !res.ok) throw new Error('search not ok');
                 TD.total = res.total || 0;
                 TD.pages = res.pages || 1;
+                (res.results || []).forEach(function (r) { if (r && r.nome) r.nome = tdPC(r.nome); });   // 2026-11-20 marco: nomi con la sola iniziale maiuscola
                 if (append) {
                     TD.results = TD.results.concat(res.results || []);
                 } else {
@@ -1107,6 +1109,7 @@ function tdCodeDisplay(id){id=parseInt(id,10)||0;if(id<=0)return '';if(id<900000
                 var media = res.media || [];
                 media = tdbCoverFirst(id, media, res.talent);   // FIX 2026-10-24 marco (#722): la foto dell'album eventi (cover della card) apre la galleria
                 console.log('[GALLERY] Media ricevuti:', media.length, media);
+                if (res.talent.nome) res.talent.nome = tdPC(res.talent.nome);   // 2026-11-20 marco
                 TD.modalTalent = res.talent;
                 renderDetailModal(res.talent, media, res.creator, res.video);
                 updateModalAddBtn();

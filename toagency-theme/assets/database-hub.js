@@ -57,6 +57,10 @@
     if (!src) return '';
     return '<img class="tdh-img" src="' + esc(src) + '" alt="' + esc(alt) + '"' + (idx < 8 ? '' : ' loading="lazy"') + ' decoding="async"' + (style ? ' style="' + style + '"' : '') + '>';
   }
+  /* Nomi: sempre Prima Maiuscola e resto minuscolo, seguiti dal codice (regola di Marco 20/11/2026, vale per tutti). */
+  function pc(n) { return String(n || '').toLowerCase().replace(/(^|[\s'\-])([a-zà-ÿ])/g, function (m, sep, ch) { return sep + ch.toUpperCase(); }); }
+  function tcode(id) { id = parseInt(id, 10) || 0; if (id <= 0) return ''; if (id < 9000000) return String(id); if (id >= 88888802) return 'A' + (id - 88888802 + 1705); return 'A' + (id - 9000000); }   // stessa regola del Talent Database e del CRM
+  function nm(n, code) { return '<b>' + esc(pc(n)) + (code ? '<i>#' + esc(String(code).toUpperCase()) + '</i>' : '') + '</b>'; }
   function cardTalent(t, i) {
     var id = parseInt(t.id, 10) || 0, href = addq(BASE.talent, 'tid=' + id);
     var meta = [];
@@ -64,13 +68,13 @@
     if (t.provincia) meta.push(esc(t.provincia));
     if (t.is_minor) {
       return '<a class="tdh-c tdh-c--lock" href="' + esc(href) + '"><div class="tdh-lock"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>' + esc(U.lock) + '</span></div>' +
-        '<div class="tdh-m"><b>' + esc(t.nome || '') + '</b><span>' + meta.join(' · ') + '</span></div></a>';
+        '<div class="tdh-m">' + nm(t.nome, tcode(id)) + '<span>' + meta.join(' · ') + '</span></div></a>';
     }
     var src = t.cover || (t.foto ? t.foto + '&w=400' : '/actions/foto-talent-public.php?id=' + encodeURIComponent(id) + '&w=400');
     var rot = parseInt(t.foto_rotazione, 10) || 0, pos = (typeof t.foto_position === 'string' && /^\d{1,3}%\s+\d{1,3}%$/.test(t.foto_position.trim())) ? t.foto_position.trim() : '';
     var st = []; if (rot) st.push('transform:rotate(' + rot + 'deg) scale(' + ((rot === 90 || rot === 270) ? 1.35 : 1) + ')'); if (pos) st.push('object-position:' + pos);
-    return '<a class="tdh-c" data-nav="t:' + id + '" href="' + esc(href) + '">' + imgTag(src, t.nome || '', st.join(';'), i) +
-      '<div class="tdh-m"><b>' + esc(t.nome || '') + '</b><span>' + meta.join(' · ') + '</span></div></a>';
+    return '<a class="tdh-c" data-nav="t:' + id + '" href="' + esc(href) + '">' + imgTag(src, pc(t.nome), st.join(';'), i) +
+      '<div class="tdh-m">' + nm(t.nome, tcode(id)) + '<span>' + meta.join(' · ') + '</span></div></a>';
   }
   function cardCrew(c, i) {
     var href = addq(BASE.crew, 'uuid=' + encodeURIComponent(c.uuid || ''));
@@ -80,15 +84,15 @@
     if (c.paese && c.paese !== 'IT') prov = (prov ? prov + ' · ' : '') + c.paese;
     var ini = String(c.nome || '?').charAt(0).toUpperCase();
     return '<a class="tdh-c' + (c.foto_profilo_url ? '' : ' tdh-c--ph') + '" href="' + esc(href) + '"' + (S.g && S.g.k === 'foto' && c.uuid ? ' data-w="' + esc(c.uuid) + '" data-nav="c:' + esc(c.uuid) + '"' : '') + '>' +
-      (c.foto_profilo_url ? imgTag(encodeURI(c.foto_profilo_url), c.nome || '', '', i) : '<span class="tdh-ini">' + esc(ini) + '</span>') +
+      (c.foto_profilo_url ? imgTag(encodeURI(c.foto_profilo_url), pc(c.nome), '', i) : '<span class="tdh-ini">' + esc(ini) + '</span>') +
       (c.n_video > 0 ? '<span class="tdh-play" aria-hidden="true">▶</span>' : '') +
-      '<div class="tdh-m"><b>' + esc(c.nome || '') + '</b><span>' + esc(labs.slice(0, 2).join(' · ')) + (prov ? '<em>' + esc(prov) + '</em>' : '') + '</span></div></a>';
+      '<div class="tdh-m">' + nm(c.nome, c.uuid_short || (c.uuid ? String(c.uuid).substring(0, 8) : '')) + '<span>' + esc(labs.slice(0, 2).join(' · ')) + (prov ? '<em>' + esc(prov) + '</em>' : '') + '</span></div></a>';
   }
   function cardCreator(p, i) {
     var href = addq(BASE.talent, 'tid=' + (parseInt(p.id, 10) || 0));
-    return '<a class="tdh-c tdh-c--v" href="' + esc(href) + '">' + imgTag(p.foto ? p.foto + '&w=400' : '', p.nome || '', '', i) +
+    return '<a class="tdh-c tdh-c--v" href="' + esc(href) + '">' + imgTag(p.foto ? p.foto + '&w=400' : '', pc(p.nome), '', i) +
       '<video class="tdh-vid" muted loop playsinline preload="metadata" data-src="' + esc(p.anteprima || p.video) + '"></video>' +
-      '<div class="tdh-m"><b>' + esc(p.nome || '') + '</b><span>' + esc((p.nicchie && p.nicchie[0]) || 'Creator') + '</span></div></a>';
+      '<div class="tdh-m">' + nm(p.nome, tcode(p.id)) + '<span>' + esc((p.nicchie && p.nicchie[0]) || 'Creator') + '</span></div></a>';
   }
   var CARD = { talent: cardTalent, crew: cardCrew, creator: cardCreator };
 
@@ -110,7 +114,7 @@
     if (!url || !card.isConnected) return;
     var im = card.querySelector('.tdh-img');
     if (!im) { im = document.createElement('img'); im.className = 'tdh-img'; im.decoding = 'async'; card.insertBefore(im, card.firstChild); }
-    im.removeAttribute('style'); im.alt = (card.querySelector('b') || {}).textContent || ''; im.src = url;
+    im.removeAttribute('style'); im.alt = ((card.querySelector('b') || {}).firstChild || {}).textContent || ''; im.src = url;
     card.classList.remove('tdh-c--ph'); var ini = card.querySelector('.tdh-ini'); if (ini) ini.parentNode.removeChild(ini);
   }
   function covNext() {
