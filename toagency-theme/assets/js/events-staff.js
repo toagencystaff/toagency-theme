@@ -223,7 +223,7 @@
       return { n: nameOf(F.lingue, l.lingua) || l.lingua, l: l.livello === 'nativo' ? UI.nativo : l.livello };
     });
     window.toaScheda.open({
-      lang: LANG, id: p.id, nome: p.nome, codice: p.codice, foto: p.foto, media: media,
+      lang: LANG, id: p.id, nome: p.nome, codice: p.codice, foto: p.foto, media: media, view: 'hostess',
       badges: [p.livello_label, p.consigliato_label].filter(Boolean),
       langs: lingue, tagsTitle: TXP[LANG] || TXP.it, tags: p.esperienza || [],
       ask: { label: UI.chiedi, on: function () {

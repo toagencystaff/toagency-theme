@@ -102,7 +102,7 @@
           if (t.scarpe) rows.push([L.sc, t.scarpe]);
           var pv = t.provincia_dom || t.provincia; // mai il comune
           if (pv) rows.push([L.zona, pc(pv)]);
-          if (/^https:\/\/toagency\.it\/p\//.test(t.profilo_url || '')) my.profilo = t.profilo_url;
+          if (/^https:\/\/toagency\.it\/p\//.test(t.profilo_url || '')) my.profilo = t.profilo_url + (my.o.view ? '?v=' + encodeURIComponent(my.o.view) : ''); // apre direttamente la vista del ruolo (hostess, creator…)
         }
         my.rows = rows;
         if (my.o.mediaFromApi && !t.is_minor) {

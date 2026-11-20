@@ -243,7 +243,7 @@
     if (!p || !window.toaScheda) { toggle(el); return; }
     var i = p.insight || {}, ti = S.testi || {};
     window.toaScheda.open({
-      lang: L, id: p.id, nome: p.nome, codice: p.codice, foto: p.foto,
+      lang: L, id: p.id, nome: p.nome, codice: p.codice, foto: p.foto, view: 'creator',
       media: [p.video ? { t: 'v', u: p.video } : null, p.foto ? { t: 'i', u: p.foto } : null].filter(Boolean),
       mediaFromApi: true, videoFirst: true,
       badges: [p.fascia, i.piattaforma, i.views ? '▶ ' + i.views : '', i.engagement ? 'ER ' + i.engagement : ''].filter(Boolean),
