@@ -130,6 +130,9 @@ toa_component('header');
             <?php foreach ($data as $dk => $dv): $u = $own_url($dk); if (!$u) continue; ?>
             <a href="<?php echo esc_url($u); ?>"><?php echo esc_html($_t($dv['title'])); ?></a>
             <?php endforeach; ?>
+            <?php /* 23/11/2026 ticket #1066: sezione Artisti e performer */ $pf_site = get_option('toa_events_site', array()); $pf_id = isset($pf_site['performer'][$lang]) ? (int) $pf_site['performer'][$lang] : 0;
+            $pf_u = ($pf_id && get_post_status($pf_id) === 'publish') ? get_permalink($pf_id) : '';
+            if ($pf_u): ?><a href="<?php echo esc_url($pf_u); ?>"><?php echo esc_html($_t(array('it'=>"Artisti e performer",'en'=>"Artists and performers",'fr'=>"Artistes et performeurs",'es'=>"Artistas y performers"))); ?></a><?php endif; ?>
             <?php $hub = $own_url('hub'); if ($hub): ?><a class="hub" href="<?php echo esc_url($hub); ?>"><?php echo esc_html($_t($t['o_hub'])); ?> &rarr;</a><?php endif; ?>
         </div>
         <?php $xh = $old_url($c['x_hostess']['link']); if ($xh): ?>

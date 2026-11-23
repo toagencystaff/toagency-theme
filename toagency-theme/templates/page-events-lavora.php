@@ -143,6 +143,12 @@ toa_component('events-site-head', array('tev_active' => 'lavora', 'tev_cta_url' 
       </div>
       <a class="tev-btn tev-btn--lime tev-btn--lg" href="<?php echo esc_url($reg_url); ?>"><?php echo esc_html($_t($t['start'])); ?></a>
       <p class="tev-note" style="margin-top:12px"><?php echo esc_html($_t($t['start_n'])); ?></p>
+      <?php /* 23/11/2026 ticket #1066: gli artisti di spettacolo hanno il loro percorso (sezione Artisti e performer, CTA «Iscriviti» per specialita') */
+      $pf_site = get_option('toa_events_site', array()); $pf_id = isset($pf_site['performer'][$lang]) ? (int) $pf_site['performer'][$lang] : 0;
+      if ($pf_id && get_post_status($pf_id) === 'publish'): ?>
+      <p class="tev-note" style="margin-top:18px"><?php echo esc_html($_t(array('it'=>"Sei un artista di spettacolo?",'en'=>"Are you a performing artist?",'fr'=>"Vous êtes artiste de spectacle ?",'es'=>"¿Eres artista de espectáculos?"))); ?>
+        <a href="<?php echo esc_url(get_permalink($pf_id)); ?>" style="font-weight:800;color:#08080A;border-bottom:2px solid #C8FF00;text-decoration:none"><?php echo esc_html($_t(array('it'=>"Artisti e performer",'en'=>"Artists and performers",'fr'=>"Artistes et performeurs",'es'=>"Artistas y performers"))); ?> &rarr;</a></p>
+      <?php endif; ?>
     </div>
   </section>
   <section class="tev-sec tev-sec--grey" id="faq">

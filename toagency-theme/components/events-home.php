@@ -219,6 +219,18 @@ toa_component('events-site-head', array('tev_active' => '', 'tev_cta_url' => '#p
           </div>
         </article>
         <?php $i++; endforeach; ?>
+        <?php /* 23/11/2026 ticket #1066 (TEMA Artisti Performer): Artisti e performer, solo se la pagina indice e' pubblicata */
+        $pf_id = !empty($ev_site['performer'][$lang]) ? (int) $ev_site['performer'][$lang] : 0;
+        if ($pf_id && get_post_status($pf_id) === 'publish'): $PD = include $tdir . '/components/events-performer-data.php'; ?>
+        <article class="tev-svc tev-svc--extra">
+          <div class="tev-svc__b">
+            <h3 class="tev-svc__t"><?php echo esc_html($_t($PD['index']['n'])); ?></h3>
+            <p class="tev-svc__d"><?php echo esc_html($_t(array('it'=>"Circo, strada e spettacolo per stupire i tuoi ospiti.",'en'=>"Circus, street and stage acts to amaze your guests.",'fr'=>"Cirque, rue et spectacle pour surprendre vos invités.",'es'=>"Circo, calle y espectáculo para sorprender a tus invitados."))); ?></p>
+            <ul class="tev-svc__r"><?php foreach ($PD['acts'] as $a): ?><li><?php echo esc_html($_t($a['n'])); ?></li><?php endforeach; ?></ul>
+            <a class="tev-svc__a" href="<?php echo esc_url(get_permalink($pf_id)); ?>"><?php echo esc_html($_t($t['svc_more'])); ?> &rarr;</a>
+          </div>
+        </article>
+        <?php endif; ?>
       </div>
       <button type="button" class="tev-btn tev-btn--line tev-svcs__tg" id="tevSvcsTg" hidden aria-expanded="false" aria-controls="tevSvcs" data-open="<?php echo esc_attr($_t($t['svc_open'])); ?>" data-close="<?php echo esc_attr($_t($t['svc_close'])); ?>"><?php echo esc_html($_t($t['svc_open'])); ?></button>
       <script>

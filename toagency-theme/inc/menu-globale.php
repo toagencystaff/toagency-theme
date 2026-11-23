@@ -201,6 +201,9 @@ function toa_mg_dati() {
                     $L('/events/personale-fiere/', $T('Personale per fiere', 'Trade show staff', 'Personnel pour salons', 'Personal para ferias')),
                     $L('/events/bar-sala-spettacolo-eventi/', $T('Bar, sala e spettacolo', 'Bar, service and entertainment', 'Bar, salle et spectacle', 'Bar, sala y espectáculo'), '',
                        $T('bartender, camerieri, DJ, cantanti', 'bartenders, waiters, DJs, singers', 'barmans, serveurs, DJ, chanteurs', 'bartenders, camareros, DJ, cantantes')),
+                    // 23/11/2026 ticket #1066 (TEMA Artisti Performer)
+                    $L('/events/artisti-performer/', $T('Artisti e performer', 'Artists and performers', 'Artistes et performeurs', 'Artistas y performers'), '',
+                       $T('mangiafuoco, trampolieri, maghi, ballerini', 'fire acts, stilt walkers, magicians, dancers', 'cracheurs de feu, échassiers, magiciens, danseurs', 'tragafuegos, zancudos, magos, bailarines')),
                     $L('/events/foto-video-eventi/', $T('Foto, video e contenuti', 'Photo, video and content', 'Photo, vidéo et contenus', 'Foto, vídeo y contenidos'), '',
                        $T('fotografi, videomaker, creator, make-up', 'photographers, videographers, creators, make-up', 'photographes, vidéastes, créateurs, maquillage', 'fotógrafos, videógrafos, creadores, maquillaje')),
                     $L('/events/crew-tecnica-eventi/', $T('Crew tecnica', 'Technical crew', 'Équipe technique', 'Equipo técnico'), '',

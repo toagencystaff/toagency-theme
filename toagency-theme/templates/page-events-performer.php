@@ -103,7 +103,8 @@ a.tpf-card:hover{border-color:#08080A;transform:translateY(-2px)}
 <main class="tev-performer">
   <section class="tev-sec tev-sec--grey tev-pagehd">
     <div class="tev-wrap">
-      <?php if ($act && $idx_url): ?><p class="tpf-crumb"><a href="<?php echo esc_url($idx_url); ?>"><?php echo esc_html($_t($PD['index']['n'])); ?></a></p><?php endif; ?>
+      <?php $hub_u = function_exists('toa_events_site_url') ? toa_events_site_url('hub', $lang) : ''; ?>
+      <p class="tpf-crumb"><?php if ($hub_u): ?><a href="<?php echo esc_url($hub_u); ?>">TOA Events</a> / <?php endif; ?><?php if ($act && $idx_url): ?><a href="<?php echo esc_url($idx_url); ?>"><?php echo esc_html($_t($PD['index']['n'])); ?></a><?php elseif (!$act): echo esc_html($_t($PD['index']['n'])); endif; ?></p>
       <h1 class="tev-h1 tev-h1--xl"><?php echo esc_html($h1); ?></h1>
       <p class="tev-lead tev-lead--hero"><?php echo esc_html($intro); ?></p>
       <div class="tpf-ctas">
