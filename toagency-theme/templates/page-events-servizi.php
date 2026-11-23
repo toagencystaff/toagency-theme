@@ -61,6 +61,20 @@ toa_component('events-site-head', array('tev_active' => 'servizi', 'tev_cta_url'
         </div>
       </article>
       <?php $i++; endforeach; ?>
+      <?php /* 23/11/2026 ticket #1066 (TEMA Artisti Performer): gruppo Artisti e performer → pagina indice della sezione (solo se esiste) */
+      $pf_u = function_exists('toa_events_site_url') ? toa_events_site_url('performer', $lang) : '';
+      if ($pf_u): $PD = include $tdir . '/components/events-performer-data.php'; ?>
+      <article class="tev-svc" id="artisti">
+        <div class="tev-svc__b">
+          <h2 class="tev-svc__t"><?php echo esc_html($_t($PD['index']['n'])); ?></h2>
+          <p class="tev-svc__d"><?php echo esc_html($_t(array('it'=>"Circo, strada e spettacolo per stupire i tuoi ospiti.",'en'=>"Circus, street and stage acts to amaze your guests.",'fr'=>"Cirque, rue et spectacle pour surprendre vos invités.",'es'=>"Circo, calle y espectáculo para sorprender a tus invitados."))); ?></p>
+          <ul class="tev-svc__r">
+            <?php foreach ($PD['acts'] as $a): ?><li><?php echo esc_html($_t($a['n'])); ?></li><?php endforeach; ?>
+          </ul>
+          <a class="tev-svc__a" href="<?php echo esc_url($pf_u); ?>"><?php echo esc_html($_t($t['more'])); ?> &rarr;</a>
+        </div>
+      </article>
+      <?php endif; ?>
     </div>
   </section>
   <section class="tev-cta-band">

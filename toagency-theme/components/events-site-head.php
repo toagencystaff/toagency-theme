@@ -39,11 +39,15 @@ $tev_menu = array(
                        'n' => array('it'=>'Staff e prezzi','en'=>'Staff & prices','fr'=>'Personnel et tarifs','es'=>'Personal y precios')),
     'servizi' => array('url' => $tev_url('servizi', $tev_hub . '#servizi'),
                        'n' => array('it'=>'Tutti i servizi','en'=>'All services','fr'=>'Tous les services','es'=>'Todos los servicios')),
+    // 23/11/2026 ticket #1066 (TEMA Artisti Performer): sezione Artisti e performer; la voce compare solo quando la pagina indice esiste
+    'performer' => array('url' => toa_events_site_url('performer', $tev_lang),
+                       'n' => array('it'=>'Artisti','en'=>'Artists','fr'=>'Artistes','es'=>'Artistas')),
     'come'    => array('url' => $tev_hub . '#come-funziona',
                        'n' => array('it'=>'Come funziona','en'=>'How it works','fr'=>'Comment ça marche','es'=>'Cómo funciona')),
     'lavora'  => array('url' => $tev_url('lavora', untrailingslashit(get_option('home')) . $tev_reg[$tev_lang]),
                        'n' => array('it'=>'Lavora con noi','en'=>'Work with us','fr'=>'Travailler avec nous','es'=>'Trabaja con nosotros')),
 );
+if (empty($tev_menu['performer']['url'])) unset($tev_menu['performer']);
 $tev_cta_n   = (isset($tev_cta_label) && is_array($tev_cta_label)) ? $tev_cta_label : array('it'=>'Richiedi un preventivo','en'=>'Get a quote','fr'=>'Demander un devis','es'=>'Pide presupuesto');
 $tev_cta_url = isset($tev_cta_url) && $tev_cta_url ? $tev_cta_url : $tev_hub . '#preventivo';
 
