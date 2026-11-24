@@ -205,12 +205,77 @@ if ($__fiera) {
     $serv            = $__fiera['serv'];
     $default_service = 'fiera-salone'; // preseleziona il servizio nel form preventivo
 }
+
+// FIX 2026-11-24 (TEMA Ticket #1083) — testo con la CITTÀ CERCATA, solo su hostess-eventi.
+// Legge in ordine ?citta=, utm_term, kw; riconosce la città da una lista chiusa (nomi nelle 4 lingue,
+// senza accenti). Il valore grezzo NON viene mai stampato: in pagina esce solo il nome preso dalla lista.
+// Se non trova nulla resta il testo di prima. Lista estendibile: aggiungere una riga in $__cities.
+if ($key === 'hostess-eventi') {
+    $__cities = [
+        'milano'  => ['it'=>'Milano','en'=>'Milan','fr'=>'Milan','es'=>'Milán',             'a'=>['milano','milan']],
+        'roma'    => ['it'=>'Roma','en'=>'Rome','fr'=>'Rome','es'=>'Roma',                   'a'=>['roma','rome']],
+        'torino'  => ['it'=>'Torino','en'=>'Turin','fr'=>'Turin','es'=>'Turín',              'a'=>['torino','turin']],
+        'bologna' => ['it'=>'Bologna','en'=>'Bologna','fr'=>'Bologne','es'=>'Bolonia',       'a'=>['bologna','bologne','bolonia']],
+        'rimini'  => ['it'=>'Rimini','en'=>'Rimini','fr'=>'Rimini','es'=>'Rímini',           'a'=>['rimini']],
+        'genova'  => ['it'=>'Genova','en'=>'Genoa','fr'=>'Gênes','es'=>'Génova',             'a'=>['genova','genoa','genes']],
+        'napoli'  => ['it'=>'Napoli','en'=>'Naples','fr'=>'Naples','es'=>'Nápoles',          'a'=>['napoli','naples','napoles']],
+        'firenze' => ['it'=>'Firenze','en'=>'Florence','fr'=>'Florence','es'=>'Florencia',   'a'=>['firenze','florence','florencia']],
+        'verona'  => ['it'=>'Verona','en'=>'Verona','fr'=>'Vérone','es'=>'Verona',           'a'=>['verona','verone']],
+        'padova'  => ['it'=>'Padova','en'=>'Padua','fr'=>'Padoue','es'=>'Padua',             'a'=>['padova','padua','padoue']],
+        'bari'    => ['it'=>'Bari','en'=>'Bari','fr'=>'Bari','es'=>'Bari',                   'a'=>['bari']],
+        'venezia' => ['it'=>'Venezia','en'=>'Venice','fr'=>'Venise','es'=>'Venecia',         'a'=>['venezia','venice','venise','venecia']],
+        'parma'   => ['it'=>'Parma','en'=>'Parma','fr'=>'Parme','es'=>'Parma',               'a'=>['parma','parme']],
+    ];
+    $__city_found = '';
+    foreach (['citta', 'utm_term', 'kw'] as $__p) {
+        if (empty($_GET[$__p]) || !is_string($_GET[$__p])) continue;
+        $__norm = strtolower(remove_accents(substr(wp_unslash($_GET[$__p]), 0, 200)));
+        foreach ($__cities as $__ck => $__cv) {
+            foreach ($__cv['a'] as $__al) {
+                if (preg_match('/(^|[^a-z])' . preg_quote($__al, '/') . '([^a-z]|$)/', $__norm)) { $__city_found = $__ck; break 3; }
+            }
+        }
+    }
+    if ($__city_found !== '') {
+        $__cn = $__cities[$__city_found][$lang] ?? $__cities[$__city_found]['it'];
+        $__h1_city = [
+            'it' => 'Agenzia hostess e steward per fiere ed eventi a ' . $__cn,
+            'en' => 'Hostess and steward agency for trade fairs and events in ' . $__cn,
+            'fr' => "Agence d'hôtesses et stewards pour salons et événements à " . $__cn,
+            'es' => 'Agencia de azafatas y stewards para ferias y eventos en ' . $__cn,
+        ];
+        $__sub_city = [
+            'it' => 'Personale selezionato a ' . $__cn . ' e in tutta Italia, per fiere, congressi ed eventi aziendali. Team su misura per il tuo evento. Se è urgente, rispondiamo subito.',
+            'en' => 'Selected staff in ' . $__cn . ' and across Italy for trade fairs, congresses and corporate events. Teams tailored to your event. Urgent? We reply right away.',
+            'fr' => 'Personnel sélectionné à ' . $__cn . " et dans toute l'Italie pour salons, congrès et événements d'entreprise. Équipes sur mesure pour votre événement. Urgent ? Nous répondons tout de suite.",
+            'es' => 'Personal seleccionado en ' . $__cn . ' y en toda Italia para ferias, congresos y eventos corporativos. Equipos a medida para tu evento. ¿Urgente? Respondemos enseguida.',
+        ];
+        $h1  = $__h1_city[$lang] ?? $__h1_city['it'];
+        $sub = $__sub_city[$lang] ?? $__sub_city['it'];
+    }
+}
+
+// FIX 2026-11-24 (TEMA Ticket #1083) — meta description (mancava: SEO 58 su PageSpeed). Titolo + sottotitolo, tagliati a ~158 caratteri.
+$__meta_desc = trim($h1 . '. ' . $sub);
+if (function_exists('mb_strimwidth')) { $__meta_desc = mb_strimwidth($__meta_desc, 0, 158, '…', 'UTF-8'); }
+
+// FIX 2026-11-24 (TEMA Ticket #1083) — velocità mobile: widget chat Amelia dopo la prima interazione o dopo 4 s.
+// Il widget arriva da uno snippet fuori dal tema, quindi si riscrive il suo <script> nell'HTML finale
+// (il buffer si chiude in fondo alla pagina). Se il tag non si trova, la pagina resta com'era.
+ob_start(function ($__html) {
+    return preg_replace_callback('#<script\b[^>]*amelia-loader-v2\.js[^>]*></script>#i', function ($__m) {
+        if (!preg_match('/\bsrc=["\']([^"\']+)["\']/i', $__m[0], $__s)) return $__m[0];
+        $__ctx = preg_match('/\bdata-context=["\']([^"\']*)["\']/i', $__m[0], $__c) ? $__c[1] : '';
+        return '<script type="text/plain" data-toa-late="1" data-src="' . esc_attr($__s[1]) . '" data-context="' . esc_attr($__ctx) . '"></script>';
+    }, $__html);
+});
 ?><!DOCTYPE html>
 <html lang="<?php echo esc_attr($lang); ?>">
 <head>
 <meta charset="<?php bloginfo('charset'); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="description" content="<?php echo esc_attr($__meta_desc); ?>">
 <?php wp_head(); ?>
 <style>
 /* Landing Ads — tema NERO on-brand, scoped. body.toa-ads-lp + !important per battere il CSS del tema. */
@@ -302,7 +367,7 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
 <body class="toa-ads-lp">
 <div class="toa-ads-wrap">
 
-  <img class="toa-ads-logo" src="<?php echo esc_url($LOGO); ?>" alt="TOAgency" loading="eager">
+  <img class="toa-ads-logo" src="<?php echo esc_url($LOGO); ?>" alt="TOAgency" width="38" height="38" decoding="async">
 
   <div class="toa-ads-grid">
     <!-- COLONNA SINISTRA: messaggio + contatti -->
@@ -566,7 +631,8 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
     <div class="toa-ads-gallery-lab"><?php echo _ht(['it'=>'Alcuni dei nostri eventi','en'=>'Some of our events','fr'=>'Quelques-uns de nos événements','es'=>'Algunos de nuestros eventos']); ?></div>
     <div class="toa-ads-gallery-grid">
       <?php foreach ($__gallery as $__g): ?>
-      <img src="<?php echo esc_url(get_theme_file_uri('assets/gallery/'.$__g.'.jpg')); ?>" alt="TOAgency staff evento" loading="lazy" width="500" height="500">
+      <?php /* FIX 2026-11-24 (#1083) — miniatura 240px WebP (era il JPG 500px mostrato a 120px) */ ?>
+      <picture><source type="image/webp" srcset="<?php echo esc_url(get_theme_file_uri('assets/gallery/t/'.$__g.'.webp')); ?>"><img src="<?php echo esc_url(get_theme_file_uri('assets/gallery/'.$__g.'.jpg')); ?>" alt="TOAgency staff evento" loading="lazy" decoding="async" width="120" height="120"></picture>
       <?php endforeach; ?>
     </div>
   </section>
@@ -579,7 +645,8 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
       <?php foreach ($__roles as $__r): ?>
       <?php if (!empty($__r['img'])): ?>
       <div class="toa-ads-role-card">
-        <img src="<?php echo esc_url(get_theme_file_uri('assets/staff/'.$__r['img'])); ?>" alt="<?php echo esc_attr(_ht($__r['label'])); ?>" loading="lazy" width="600" height="800">
+        <?php /* FIX 2026-11-24 (#1083) — miniatura 180x240 WebP (era il JPG 600x800 mostrato a 90x120) */ ?>
+        <picture><source type="image/webp" srcset="<?php echo esc_url(get_theme_file_uri('assets/staff/t/'.preg_replace('/\.jpg$/', '.webp', $__r['img']))); ?>"><img src="<?php echo esc_url(get_theme_file_uri('assets/staff/'.$__r['img'])); ?>" alt="<?php echo esc_attr(_ht($__r['label'])); ?>" loading="lazy" decoding="async" width="90" height="120"></picture>
         <span><?php echo _ht($__r['label']); ?></span>
       </div>
       <?php else: ?>
@@ -624,5 +691,23 @@ function toaLpTrack(ch){
 </script>
 
 <?php wp_footer(); ?>
+<script>
+/* FIX 2026-11-24 (TEMA Ticket #1083) — widget chat (Amelia) caricato alla prima interazione o dopo 4 s: non pesa sul primo caricamento */
+(function(){
+  var done=0;
+  function go(){
+    if(done)return; done=1;
+    var n=document.querySelectorAll('script[data-toa-late]');
+    for(var i=0;i<n.length;i++){
+      var s=document.createElement('script'); s.src=n[i].getAttribute('data-src'); s.defer=true;
+      var c=n[i].getAttribute('data-context'); if(c){s.setAttribute('data-context',c);}
+      document.body.appendChild(s);
+    }
+  }
+  ['pointerdown','keydown','scroll','touchstart'].forEach(function(e){window.addEventListener(e,go,{once:true,passive:true});});
+  setTimeout(function(){ if(window.requestIdleCallback){requestIdleCallback(go,{timeout:1500});}else{go();} },4000);
+})();
+</script>
 </body>
 </html>
+<?php if (ob_get_level() > 0) { ob_end_flush(); } ?>

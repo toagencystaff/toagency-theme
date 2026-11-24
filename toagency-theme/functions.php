@@ -73,13 +73,12 @@ add_filter('theme_page_templates', 'toagency_page_templates');
 // ═══════════════════════════════════════════
 function toagency_head_tracking() {
     ?>
-    <!-- Google Ads Global Site Tag -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-624589019"></script>
+    <!-- FIX 2026-11-24 (TEMA Ticket #1083) — gtag.js AW-624589019 caricato due volte (tema + GTM): tolto quello del tema (~185 KB).
+         Verificato in GTM GTM-K75MWH8L: «Tag Google - Google Ads» (Initialization - All Pages) + «Linker conversioni Google ADS» (All Pages).
+         Resta solo la funzione gtag() che mette gli eventi in dataLayer (la usano whatsapp-button e quick-contacts). -->
     <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'AW-624589019');
     </script>
     <!-- Facebook Pixel -->
     <script>
@@ -1313,6 +1312,9 @@ add_action('wp_enqueue_scripts', function() {
     }
     // jquery-migrate: nessun codice legacy sulla LP
     wp_dequeue_script('jquery-migrate');
+    // FIX 2026-11-24 (TEMA Ticket #1083) — menu globale: la LP non ha menu, via CSS (25 KB bloccante) e JS
+    wp_dequeue_style('toa-menu-globale');
+    wp_dequeue_script('toa-menu-globale');
 }, 100); // prio 100 = dopo che i plugin hanno accodato
 // === END 2026-07-22 marco — LP Ads dequeue ===
 
