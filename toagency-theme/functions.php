@@ -1340,6 +1340,16 @@ add_filter('style_loader_tag', function ($tag, $handle, $href) {
 }, 10, 3);
 // === END 2026-09-08 marco — LP Ads font non bloccanti ===
 
+// FIX 2026-11-24 (TEMA Ticket #1083) — LP Ads: CSS delle recensioni Google non bloccante. Le recensioni stanno sotto la piega,
+// quindi il foglio si carica con media="print" e passa a "all" all'onload (noscript = fallback). Solo sulla LP.
+add_filter('style_loader_tag', function ($tag, $handle, $href) {
+    if ($handle !== 'toa-google-reviews') return $tag;
+    if (!is_page_template('templates/page-landing-ads.php')) return $tag;
+    $u = esc_url($href);
+    return '<link rel="stylesheet" id="toa-google-reviews-css" href="' . $u . '" media="print" onload="this.media=\'all\';this.onload=null;">' . "\n"
+         . '<noscript><link rel="stylesheet" href="' . $u . '" media="all"></noscript>' . "\n";
+}, 10, 3);
+
 // === BEGIN 2026-08-22 marco — informativa privacy interna nei form ===
 // I form del sito linkavano https://www.iubenda.com/privacy-policy/58462877,
 // che iubenda ha DISATTIVATO ("questa Privacy Policy non è più attiva"):

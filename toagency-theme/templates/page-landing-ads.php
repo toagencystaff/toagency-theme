@@ -263,6 +263,14 @@ if (function_exists('mb_strimwidth')) { $__meta_desc = mb_strimwidth($__meta_des
 // Il widget arriva da uno snippet fuori dal tema, quindi si riscrive il suo <script> nell'HTML finale
 // (il buffer si chiude in fondo alla pagina). Se il tag non si trova, la pagina resta com'era.
 ob_start(function ($__html) {
+    // FIX 2026-11-24 (TEMA Ticket #1083) — il CSS personalizzato del sito (<style id="sccss">, plugin Simple Custom CSS) apre con
+    // @import del font Inter: catena che blocca il disegno della pagina (PageSpeed: 750 ms). Sulla sola LP l'@import esce dal CSS
+    // e Inter si carica con un <link> non bloccante (media=print -> all). Stesso font, stesso display=swap.
+    $__html = preg_replace("#@import\\s+url\\(\\s*['\"]https://fonts\\.googleapis\\.com/css2\\?family=Inter[^'\")]*['\"]\\s*\\)\\s*;#i", '', $__html, 1, $__n_imp);
+    if (!empty($__n_imp)) {
+        $__inter = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap';
+        $__html = preg_replace('#</head>#i', '<link rel="stylesheet" href="' . $__inter . '" media="print" onload="this.media=\'all\';this.onload=null;"><noscript><link rel="stylesheet" href="' . $__inter . '"></noscript></head>', $__html, 1);
+    }
     return preg_replace_callback('#<script\b[^>]*amelia-loader-v2\.js[^>]*></script>#i', function ($__m) {
         if (!preg_match('/\bsrc=["\']([^"\']+)["\']/i', $__m[0], $__s)) return $__m[0];
         $__ctx = preg_match('/\bdata-context=["\']([^"\']*)["\']/i', $__m[0], $__c) ? $__c[1] : '';
