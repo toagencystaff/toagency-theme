@@ -330,6 +330,16 @@ body.toa-ads-lp .toa-ads-gallery-lab{font-size:11px;letter-spacing:2px;text-tran
 body.toa-ads-lp .toa-ads-gallery-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
 body.toa-ads-lp .toa-ads-gallery-grid img{width:120px;height:120px;object-fit:cover;border-radius:8px;opacity:.75;transition:opacity .2s}
 body.toa-ads-lp .toa-ads-gallery-grid img:hover{opacity:1}
+/* FIX 2026-11-25 (#1083) - sezione foto vere eventi (hostess-eventi): apertura larga + griglia, WebP/JPG 480-960, brand dei clienti sfocati */
+body.toa-ads-lp .toa-ads-evph{max-width:960px;margin:0 auto;padding:28px 16px 8px}
+body.toa-ads-lp .toa-ads-evph-lab{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#777!important;margin:0 0 14px;text-align:center}
+body.toa-ads-lp .toa-ads-evph figure{margin:0}
+body.toa-ads-lp .toa-ads-evph img{display:block;width:100%;height:auto;border-radius:10px;background:#1a1a1a}
+body.toa-ads-lp .toa-ads-evph figcaption{font-size:12px;color:#8a8a8a;margin:6px 2px 0;line-height:1.35}
+body.toa-ads-lp .toa-ads-evph-hero{margin-bottom:10px}
+body.toa-ads-lp .toa-ads-evph-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+body.toa-ads-lp .toa-ads-evph-grid img{aspect-ratio:3/4;object-fit:cover}
+@media(min-width:768px){body.toa-ads-lp .toa-ads-evph-grid{grid-template-columns:repeat(4,1fr)}}
 /* FIX 2026-08-31 marco — ruoli offerti (griglia, quanti ne servono) */
 body.toa-ads-lp .toa-ads-roles{padding:28px 0 0;text-align:center}
 body.toa-ads-lp .toa-ads-roles-lab{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#777!important;margin:0 0 14px}
@@ -609,6 +619,7 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
   <?php if (in_array($key, $__extra_keys, true)):
     $__how     = $__how_map[$key] ?? [];
     $__gallery = $__gallery_map[$key] ?? [];
+    if ($key === 'hostess-eventi') { $__gallery = []; } /* FIX 2026-11-25 (#1083) - le foto vere sostituiscono la mini-gallery */
     $__roles   = $__roles_map[$key] ?? [];
     $__faq     = $__faq_map[$key] ?? [];
     // FIX 2026-10-03 (TEMA LP-FRANCIA) — su /fr/ sospese 2 FAQ (rimpiazzo immediato, nessun preavviso minimo) finche' Marco non conferma che valgono per la Francia (richiesta ADS FRANCIA)
@@ -626,6 +637,48 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
         <p><?php echo esc_html($__c['d']); ?></p>
       </div>
       <?php endforeach; ?>
+    </div>
+  </section>
+  <?php endif; ?>
+
+  <?php if ($key === 'hostess-eventi'):
+    /* FIX 2026-11-25 (#1083) - foto vere degli eventi. Solo didascalie senza nome cliente. Il primo scatto non e' lazy. */
+    $__evph = [
+      ['f'=>'evento-gruppo-stand','w'=>960,'h'=>540,'w2'=>480,'h2'=>270,
+       'cap'=>['it'=>'Evento beauty, Milano 2026','en'=>'Beauty event, Milan 2026','fr'=>'Événement beauté, Milan 2026','es'=>'Evento de belleza, Milán 2026'],
+       'alt'=>['it'=>'Quattro hostess in divisa davanti a uno stand all\'aperto a Milano','en'=>'Four hostesses in uniform in front of an outdoor stand in Milan','fr'=>'Quatre hôtesses en uniforme devant un stand en plein air à Milan','es'=>'Cuatro azafatas de uniforme delante de un stand al aire libre en Milán']],
+      ['f'=>'evento-di-spalle','w'=>720,'h'=>960,'w2'=>360,'h2'=>480,
+       'cap'=>['it'=>'Il team allo stand','en'=>'The team at the stand','fr'=>'L\'équipe sur le stand','es'=>'El equipo en el stand'],
+       'alt'=>['it'=>'Quattro hostess di spalle al bancone di uno stand','en'=>'Four hostesses seen from behind at a stand counter','fr'=>'Quatre hôtesses de dos au comptoir d\'un stand','es'=>'Cuatro azafatas de espaldas en el mostrador de un stand']],
+      ['f'=>'evento-ritratto','w'=>731,'h'=>960,'w2'=>366,'h2'=>480,
+       'cap'=>['it'=>'Accoglienza al banco','en'=>'Welcome at the counter','fr'=>'Accueil au comptoir','es'=>'Recepción en el mostrador'],
+       'alt'=>['it'=>'Hostess sorridente dietro il bancone di uno stand','en'=>'Smiling hostess behind a stand counter','fr'=>'Hôtesse souriante derrière le comptoir d\'un stand','es'=>'Azafata sonriente detrás del mostrador de un stand']],
+      ['f'=>'evento-stand','w'=>678,'h'=>960,'w2'=>339,'h2'=>480,
+       'cap'=>['it'=>'Hostess in servizio','en'=>'Hostess on duty','fr'=>'Hôtesse en service','es'=>'Azafata en servicio'],
+       'alt'=>['it'=>'Hostess seduta su uno sgabello davanti al bancone dello stand','en'=>'Hostess sitting on a stool in front of the stand counter','fr'=>'Hôtesse assise sur un tabouret devant le comptoir du stand','es'=>'Azafata sentada en un taburete delante del mostrador del stand']],
+      ['f'=>'evento-briefing','w'=>720,'h'=>960,'w2'=>360,'h2'=>480,
+       'cap'=>['it'=>'Briefing prima dell\'evento','en'=>'Briefing before the event','fr'=>'Briefing avant l\'événement','es'=>'Briefing antes del evento'],
+       'alt'=>['it'=>'Quattro hostess in divisa si preparano in una sala prima dell\'evento','en'=>'Four hostesses in uniform getting ready in a room before the event','fr'=>'Quatre hôtesses en uniforme se préparent dans une salle avant l\'événement','es'=>'Cuatro azafatas de uniforme se preparan en una sala antes del evento']],
+    ];
+    $__evph_u = function($f, $sz, $ext){ return esc_url(get_theme_file_uri('assets/lp-eventi/'.$f.'-'.$sz.'.'.$ext)); };
+  ?>
+  <section class="toa-ads-evph">
+    <div class="toa-ads-evph-lab"><?php echo _ht(['it'=>'Eventi veri, staff vero','en'=>'Real events, real staff','fr'=>'De vrais événements, un vrai staff','es'=>'Eventos reales, personal real']); ?></div>
+    <?php foreach ($__evph as $__k => $__p):
+      $__alt = $__p['alt'][$lang] ?? $__p['alt']['it'];
+      $__cap = $__p['cap'][$lang] ?? $__p['cap']['it'];
+      $__sz  = ($__k === 0) ? '(max-width: 768px) 100vw, 960px' : '(max-width: 768px) 50vw, 230px';
+      $__ld  = ($__k === 0) ? 'eager' : 'lazy';
+      if ($__k === 1) echo '<div class="toa-ads-evph-grid">';
+    ?>
+    <figure<?php echo $__k === 0 ? ' class="toa-ads-evph-hero"' : ''; ?>>
+      <picture>
+        <source type="image/webp" srcset="<?php echo $__evph_u($__p['f'],480,'webp'); ?> <?php echo (int)$__p['w2']; ?>w, <?php echo $__evph_u($__p['f'],960,'webp'); ?> <?php echo (int)$__p['w']; ?>w" sizes="<?php echo esc_attr($__sz); ?>">
+        <img src="<?php echo $__evph_u($__p['f'],960,'jpg'); ?>" srcset="<?php echo $__evph_u($__p['f'],480,'jpg'); ?> <?php echo (int)$__p['w2']; ?>w, <?php echo $__evph_u($__p['f'],960,'jpg'); ?> <?php echo (int)$__p['w']; ?>w" sizes="<?php echo esc_attr($__sz); ?>" alt="<?php echo esc_attr($__alt); ?>" width="<?php echo (int)$__p['w']; ?>" height="<?php echo (int)$__p['h']; ?>" loading="<?php echo $__ld; ?>" decoding="async">
+      </picture>
+      <figcaption><?php echo esc_html($__cap); ?></figcaption>
+    </figure>
+    <?php endforeach; ?>
     </div>
   </section>
   <?php endif; ?>
