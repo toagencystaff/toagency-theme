@@ -339,7 +339,7 @@ body.toa-ads-lp .toa-ads-evph figcaption{font-size:12px;color:#8a8a8a;margin:6px
 body.toa-ads-lp .toa-ads-evph-hero{margin-bottom:10px}
 body.toa-ads-lp .toa-ads-evph-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 body.toa-ads-lp .toa-ads-evph-grid img{aspect-ratio:3/4;object-fit:cover}
-@media(min-width:768px){body.toa-ads-lp .toa-ads-evph-grid{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:768px){body.toa-ads-lp .toa-ads-evph-grid{grid-template-columns:repeat(3,1fr)}}
 /* FIX 2026-08-31 marco — ruoli offerti (griglia, quanti ne servono) */
 body.toa-ads-lp .toa-ads-roles{padding:28px 0 0;text-align:center}
 body.toa-ads-lp .toa-ads-roles-lab{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#777!important;margin:0 0 14px}
@@ -659,6 +659,12 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
       ['f'=>'evento-briefing','w'=>720,'h'=>960,'w2'=>360,'h2'=>480,
        'cap'=>['it'=>'Briefing prima dell\'evento','en'=>'Briefing before the event','fr'=>'Briefing avant l\'événement','es'=>'Briefing antes del evento'],
        'alt'=>['it'=>'Quattro hostess in divisa si preparano in una sala prima dell\'evento','en'=>'Four hostesses in uniform getting ready in a room before the event','fr'=>'Quatre hôtesses en uniforme se préparent dans une salle avant l\'événement','es'=>'Cuatro azafatas de uniforme se preparan en una sala antes del evento']],
+      ['f'=>'evento-fiera','w'=>720,'h'=>960,'w2'=>360,'h2'=>480,
+       'cap'=>['it'=>'Hostess in fiera','en'=>'Hostesses at a trade fair','fr'=>'Hôtesses en salon','es'=>'Azafatas en feria'],
+       'alt'=>['it'=>'Tre hostess sorridenti allo stand di una fiera','en'=>'Three smiling hostesses at a trade fair stand','fr'=>'Trois hôtesses souriantes sur un stand de salon','es'=>'Tres azafatas sonrientes en un stand de feria']],
+      ['f'=>'evento-insegna','w'=>540,'h'=>960,'w2'=>270,'h2'=>480,
+       'cap'=>['it'=>'Dietro le quinte','en'=>'Behind the scenes','fr'=>'Dans les coulisses','es'=>'Entre bastidores'],
+       'alt'=>['it'=>'Quattro hostess in divisa si fanno un selfie nella vetrina di uno stand','en'=>'Four hostesses in uniform taking a selfie in a stand window','fr'=>'Quatre hôtesses en uniforme prennent un selfie dans la vitrine d\'un stand','es'=>'Cuatro azafatas de uniforme se hacen un selfie en el escaparate de un stand']],
     ];
     $__evph_u = function($f, $sz, $ext){ return esc_url(get_theme_file_uri('assets/lp-eventi/'.$f.'-'.$sz.'.'.$ext)); };
   ?>
@@ -667,7 +673,7 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
     <?php foreach ($__evph as $__k => $__p):
       $__alt = $__p['alt'][$lang] ?? $__p['alt']['it'];
       $__cap = $__p['cap'][$lang] ?? $__p['cap']['it'];
-      $__sz  = ($__k === 0) ? '(max-width: 768px) 100vw, 960px' : '(max-width: 768px) 50vw, 230px';
+      $__sz  = ($__k === 0) ? '(max-width: 768px) 100vw, 960px' : '(max-width: 768px) 50vw, 310px';
       $__ld  = ($__k === 0) ? 'eager' : 'lazy';
       if ($__k === 1) echo '<div class="toa-ads-evph-grid">';
     ?>
