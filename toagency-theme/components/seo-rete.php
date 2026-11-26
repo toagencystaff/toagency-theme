@@ -49,10 +49,10 @@ if (!function_exists('toa_rete_data')) {
             'hostess-montecarlo'              => array('montecarlo', 'MC', 'Monte Carlo'),
             'hostess-cannes-francia'          => array('costa-azzurra', 'FR', 'Cannes'),
             'hostess-fiere-barcellona'        => array('barcellona', 'ES', $N('Fiere Barcellona', 'Barcelona trade fairs', 'Salons Barcelone', 'Ferias Barcelona')),
-            'hostess-fiere-monaco-di-baviera' => array('', 'DE', $N('Fiere Monaco di Baviera', 'Munich trade fairs', 'Salons Munich', 'Ferias Múnich')),
-            'hostess-fiere-francoforte'       => array('', 'DE', $N('Fiere Francoforte', 'Frankfurt trade fairs', 'Salons Francfort', 'Ferias Fráncfort')),
-            'hostess-fiere-dusseldorf'        => array('', 'DE', $N('Fiere Düsseldorf', 'Düsseldorf trade fairs', 'Salons Düsseldorf', 'Ferias Düsseldorf')),
-            'hostess-fiere-berlino'           => array('', 'DE', $N('Fiere Berlino', 'Berlin trade fairs', 'Salons Berlin', 'Ferias Berlín')),
+            'hostess-fiere-monaco-di-baviera' => array('monaco-di-baviera', 'DE', $N('Fiere Monaco di Baviera', 'Munich trade fairs', 'Salons Munich', 'Ferias Múnich')),
+            'hostess-fiere-francoforte'       => array('francoforte', 'DE', $N('Fiere Francoforte', 'Frankfurt trade fairs', 'Salons Francfort', 'Ferias Fráncfort')),
+            'hostess-fiere-dusseldorf'        => array('dusseldorf', 'DE', $N('Fiere Düsseldorf', 'Düsseldorf trade fairs', 'Salons Düsseldorf', 'Ferias Düsseldorf')),
+            'hostess-fiere-berlino'           => array('berlino', 'DE', $N('Fiere Berlino', 'Berlin trade fairs', 'Salons Berlin', 'Ferias Berlín')),
             'hostess-fiere-bruxelles'         => array('', 'BE', $N('Fiere Bruxelles', 'Brussels trade fairs', 'Salons Bruxelles', 'Ferias Bruselas')),
             'hostess-fiere-ginevra'           => array('', 'CH', $N('Fiere Ginevra', 'Geneva trade fairs', 'Salons Genève', 'Ferias Ginebra')),
         );
@@ -63,7 +63,9 @@ if (!function_exists('toa_rete_data')) {
             'verona' => 'verona', 'firenze' => 'firenze', 'genova' => 'genova', 'napoli' => 'napoli', 'parigi' => 'parigi',
             'lione' => 'lione', 'marsiglia' => 'marsiglia', 'bordeaux' => 'bordeaux', 'montecarlo' => 'montecarlo',
             'cannes' => 'costa-azzurra', 'saint-tropez' => 'costa-azzurra', 'madrid' => 'madrid', 'barcellona' => 'barcellona',
-            'valencia' => 'valencia', 'siviglia' => 'siviglia', 'bilbao' => 'bilbao', 'malaga' => 'malaga');
+            'valencia' => 'valencia', 'siviglia' => 'siviglia', 'bilbao' => 'bilbao', 'malaga' => 'malaga',
+            'londra' => 'londra', 'monaco-di-baviera' => 'monaco-di-baviera', 'francoforte' => 'francoforte', 'dusseldorf' => 'dusseldorf',
+            'colonia' => 'colonia', 'berlino' => 'berlino');
     }
     // URL nella lingua di una pagina/articolo esistente dato lo slug IT ('' se non pubblicata o non tradotta)
     function toa_rete_url_slug($slug, $lang) {

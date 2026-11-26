@@ -2663,4 +2663,406 @@ return array(
   ),
 ),
 
+// ===== 26/11/2026 chat TEMA SEO AI EVENTI — 6 città nuove (Regno Unito e Germania). Prezzo: base del Paese non ancora decisa nel CRM → su preventivo.
+// Personale: «selezione e coordinamento, con personale locale o in trasferta» (decisione chat, nessuna promessa di copertura). Sedi: solo poli reali e noti.
+
+'londra' => array(
+  'slug'  => $L("londra", "london", "londres", "londres"),
+  'name'  => $L("Londra", "London", "Londres", "Londres"),
+  'seo_title' => $L("Staff per eventi a Londra: fiere, congressi, aperture | TOAgency", "Event staff in London: trade shows, conferences, store openings | TOAgency", "Personnel événementiel à Londres : salons, congrès, ouvertures | TOAgency", "Personal para eventos en Londres: ferias, congresos, aperturas | TOAgency"),
+  'seo_desc' => $L("Hostess, steward, promoter, bar, foto e video per eventi a Londra: ExCeL, Olympia, aperture di negozi. Un referente, un preventivo, una fattura.", "Hostesses, stewards, promoters, bar, photo and video for events in London: ExCeL, Olympia, store openings. One contact, one quote, one invoice.", "Hôtesses, stewards, promoteurs, bar, photo et vidéo pour vos événements à Londres : ExCeL, Olympia, ouvertures de boutiques. Un seul interlocuteur.", "Azafatas, stewards, promotores, bar, foto y vídeo para eventos en Londres: ExCeL, Olympia, aperturas de tiendas. Un interlocutor, una factura."),
+  'h1'    => $L("Staff e servizi per eventi a Londra", "Event staff and services in London", "Personnel et services pour événements à Londres", "Personal y servicios para eventos en Londres"),
+  'intro' => $L("Fiere internazionali, congressi, aperture di negozi e brand activation a Londra: selezioniamo e coordiniamo lo staff, con personale locale o in trasferta. Un solo referente, un solo preventivo.", "International trade shows, conferences, store openings and brand activations in London: we select and coordinate your staff, local or travelling from our network. One contact, one quote.", "Salons internationaux, congrès, ouvertures de boutiques et brand activations à Londres : nous sélectionnons et coordonnons votre équipe, sur place ou venue de notre réseau. Un seul interlocuteur, un seul devis.", "Ferias internacionales, congresos, aperturas de tiendas y activaciones de marca en Londres: seleccionamos y coordinamos el personal, local o desplazado desde nuestra red. Un único interlocutor, un único presupuesto."),
+  'price' => $L("Hostess, steward e promoter su preventivo: il prezzo dipende da date, durata e lingue richieste.", "Hostesses, stewards and promoters on quotation: the price depends on dates, hours and languages required.", "Hôtesses, stewards et promoteurs sur devis : le prix dépend des dates, de la durée et des langues demandées.", "Azafatas, stewards y promotores bajo presupuesto: el precio depende de las fechas, la duración y los idiomas."),
+  'v_eyebrow' => $L("Le sedi", "Venues", "Les lieux", "Las sedes"),
+  'v_heading' => $L("Dove si svolgono gli eventi a Londra", "Where events take place in London", "Où se déroulent les événements à Londres", "Dónde se celebran los eventos en Londres"),
+  'v_sub'     => $L("Alcune sedi della città.", "Some of the city's venues.", "Quelques lieux de la ville.", "Algunas sedes de la ciudad."),
+  'venues' => array(
+    array(
+      'n' => $L("ExCeL London", "ExCeL London", "ExCeL London", "ExCeL London"),
+      'd' => $L("Il grande polo fieristico dei Docklands (tra le altre, WTM): stand da presidiare, accoglienza buyer, staff multilingue.", "The large Docklands exhibition centre (WTM among others): booths to staff, buyer reception, multilingual staff.", "Le grand parc des expositions des Docklands (dont le WTM) : stands à animer, accueil des acheteurs, personnel multilingue.", "El gran recinto ferial de los Docklands (entre otras, WTM): stands que atender, recepción de compradores, personal multilingüe."),
+      'own' => 'fiere',
+      'l'   => $L("Personale per fiere e saloni", "Trade show staff", "Personnel pour salons", "Personal para ferias"),
+    ),
+    array(
+      'n' => $L("Olympia London", "Olympia London", "Olympia London", "Olympia London"),
+      'd' => $L("Saloni e fiere di settore a Kensington: accoglienza, registrazione e supporto allo stand.", "Trade and consumer shows in Kensington: welcome desk, registration and stand support.", "Salons professionnels et grand public à Kensington : accueil, enregistrement et soutien sur le stand.", "Salones profesionales y de público en Kensington: recepción, registro y apoyo en el stand."),
+    ),
+    array(
+      'n' => $L("QEII Centre", "QEII Centre", "QEII Centre", "QEII Centre"),
+      'd' => $L("Congressi e conferenze a Westminster: registrazione dei delegati, assistenza in sala.", "Conferences in Westminster: delegate registration, room assistance.", "Congrès et conférences à Westminster : enregistrement des participants, assistance en salle.", "Congresos y conferencias en Westminster: registro de delegados, asistencia en sala."),
+      'own' => 'staff',
+      'l'   => $L("Staff per eventi e congressi", "Event and conference staff", "Personnel pour événements et congrès", "Personal para eventos y congresos"),
+    ),
+    array(
+      'n' => $L("Aperture e brand activation", "Openings and brand activations", "Ouvertures et brand activations", "Aperturas y activaciones de marca"),
+      'd' => $L("Inaugurazioni di boutique, lanci di prodotto, sampling: hostess, modelle immagine e promoter.", "Boutique openings, product launches, sampling: hostesses, image models and promoters.", "Inaugurations de boutiques, lancements de produit, sampling : hôtesses, mannequins image et promoteurs.", "Inauguraciones de boutiques, lanzamientos de producto, sampling: azafatas, modelos de imagen y promotores."),
+    ),
+  ),
+  's_eyebrow' => $L("I servizi", "Services", "Les services", "Los servicios"),
+  's_heading' => $L("Tutto quello che serve per un evento a Londra", "Everything you need for an event in London", "Tout ce qu'il faut pour un événement à Londres", "Todo lo que necesita un evento en Londres"),
+  'x_eyebrow' => $L("Approfondimenti", "More on the UK", "Pour aller plus loin", "Más información"),
+  'x_hostess' => array(
+    'link' => 'hostess-regno-unito',
+    'n'    => $L("Hostess e steward nel Regno Unito", "Hostesses and stewards in the UK", "Hôtesses et stewards au Royaume-Uni", "Azafatas y stewards en el Reino Unido"),
+    'd'    => $L("La pagina TOAgency dedicata a hostess e steward: servizi, eventi e domande frequenti.", "The TOAgency page dedicated to hostesses and stewards: services, events and FAQ.", "La page TOAgency consacrée aux hôtesses et stewards : services, événements et questions fréquentes.", "La página de TOAgency dedicada a azafatas y stewards: servicios, eventos y preguntas frecuentes."),
+  ),
+  'f_eyebrow' => $L("Domande frequenti", "FAQ", "Questions fréquentes", "Preguntas frecuentes"),
+  'f_heading' => $L("Eventi a Londra: le domande più comuni", "Events in London: common questions", "Événements à Londres : les questions courantes", "Eventos en Londres: las preguntas más comunes"),
+  'faq' => array(
+    array(
+      'q' => $L("Per quali eventi a Londra fornite personale?", "Which events in London do you provide staff for?", "Pour quels événements à Londres fournissez-vous du personnel ?", "¿Para qué eventos en Londres proporcionáis personal?"),
+      'a' => $L("Fiere internazionali, congressi, eventi aziendali, aperture di negozi e brand activation. Dalla scelta delle figure alla gestione sul posto, ti segue un unico referente.", "International trade shows, conferences, corporate events, store openings and brand activations. From choosing the roles to running things on site, a single contact looks after you.", "Salons internationaux, congrès, événements d'entreprise, ouvertures de boutiques et brand activations. Du choix des profils à la gestion sur place, un seul interlocuteur vous suit.", "Ferias internacionales, congresos, eventos corporativos, aperturas de tiendas y activaciones de marca. Desde la elección de los perfiles hasta la gestión en el lugar, te acompaña un único interlocutor."),
+    ),
+    array(
+      'q' => $L("Quanto costa il personale per un evento a Londra?", "How much does event staff cost in London?", "Combien coûte le personnel pour un événement à Londres ?", "¿Cuánto cuesta el personal para un evento en Londres?"),
+      'a' => $L("A Londra il prezzo è su preventivo: dipende da date, ore, numero di persone e lingue richieste. Indicaci anche il tuo budget e ti proponiamo la soluzione migliore.", "In London the price is quoted case by case: it depends on dates, hours, headcount and languages. Share your budget too and we'll propose the best option.", "À Londres, le prix est établi sur devis : il dépend des dates, des horaires, du nombre de personnes et des langues. Indiquez aussi votre budget et nous vous proposerons la meilleure solution.", "En Londres el precio va bajo presupuesto: depende de las fechas, las horas, el número de personas y los idiomas. Indícanos también tu presupuesto y te propondremos la mejor opción."),
+    ),
+    array(
+      'q' => $L("Il personale è di Londra?", "Is the staff based in London?", "Le personnel est-il basé à Londres ?", "¿El personal es de Londres?"),
+      'a' => $L("Selezioniamo e coordiniamo lo staff con personale locale o in trasferta dalla nostra rete europea, in base a lingue e profilo richiesti.", "We select and coordinate the team with local staff or people travelling from our European network, depending on the languages and profile you need.", "Nous sélectionnons et coordonnons l'équipe avec du personnel local ou venu de notre réseau européen, selon les langues et le profil demandés.", "Seleccionamos y coordinamos el equipo con personal local o desplazado desde nuestra red europea, según los idiomas y el perfil que necesites."),
+    ),
+    array(
+      'q' => $L("Lo staff parla lingue straniere?", "Does the staff speak foreign languages?", "Le personnel parle-t-il des langues étrangères ?", "¿El personal habla idiomas?"),
+      'a' => $L("Sì: inglese sempre, e su richiesta italiano, francese, spagnolo, tedesco, russo, arabo e altre lingue per i tuoi buyer.", "Yes: English always, and on request Italian, French, Spanish, German, Russian, Arabic and other languages for your buyers.", "Oui : l'anglais toujours et, sur demande, italien, français, espagnol, allemand, russe, arabe et d'autres langues pour vos acheteurs.", "Sí: inglés siempre y, bajo petición, italiano, francés, español, alemán, ruso, árabe y otros idiomas para tus compradores."),
+    ),
+    array(
+      'q' => $L("Chi gestisce contratti e pagamenti del personale?", "Who handles the staff's contracts and payments?", "Qui gère les contrats et les paiements du personnel ?", "¿Quién gestiona los contratos y pagos del personal?"),
+      'a' => $L("Ti segue un unico referente e ricevi una sola fattura; contratti e compensi del personale li organizziamo noi, con partner locali dove serve.", "One contact looks after you and you receive a single invoice; staff contracts and pay are organised by us, with local partners where needed.", "Un seul interlocuteur vous suit et vous recevez une seule facture ; les contrats et la rémunération du personnel sont organisés par nos soins, avec des partenaires locaux si nécessaire.", "Te acompaña un único interlocutor y recibes una sola factura; los contratos y pagos del personal los organizamos nosotros, con socios locales cuando hace falta."),
+    ),
+    array(
+      'q' => $L("Quanto tempo ci vuole per avere una proposta?", "How long does it take to get a proposal?", "Combien de temps faut-il pour recevoir une proposition ?", "¿Cuánto se tarda en recibir una propuesta?"),
+      'a' => $L("Se è urgente, rispondiamo subito. Più dettagli ci dai (date, sede, numero di persone, lingue), più la proposta è precisa.", "If it's urgent, we reply right away. The more detail you give us (dates, venue, headcount, languages), the more precise the proposal.", "Si c'est urgent, nous répondons tout de suite. Plus vous nous donnez de détails (dates, lieu, nombre de personnes, langues), plus la proposition est précise.", "Si es urgente, respondemos enseguida. Cuantos más detalles nos des (fechas, sede, número de personas, idiomas), más precisa será la propuesta."),
+    ),
+  ),
+),
+
+'monaco-di-baviera' => array(
+  'slug'  => $L("monaco-di-baviera", "munich", "munich", "munich"),
+  'name'  => $L("Monaco di Baviera", "Munich", "Munich", "Múnich"),
+  'seo_title' => $L("Staff per eventi a Monaco di Baviera: fiere, congressi | TOAgency", "Event staff in Munich: trade shows, conferences | TOAgency", "Personnel événementiel à Munich : salons, congrès | TOAgency", "Personal para eventos en Múnich: ferias, congresos | TOAgency"),
+  'seo_desc' => $L("Hostess, steward e staff multilingue per fiere ed eventi a Monaco di Baviera: Messe München, ICM. Un referente, un preventivo, una fattura.", "Hostesses, stewards and multilingual staff for trade shows and events in Munich: Messe München, ICM. One contact, one quote, one invoice.", "Hôtesses, stewards et personnel multilingue pour salons et événements à Munich : Messe München, ICM. Un seul interlocuteur, une seule facture.", "Azafatas, stewards y personal multilingüe para ferias y eventos en Múnich: Messe München, ICM. Un interlocutor, una factura."),
+  'h1'    => $L("Staff e servizi per eventi a Monaco di Baviera", "Event staff and services in Munich", "Personnel et services pour événements à Munich", "Personal y servicios para eventos en Múnich"),
+  'intro' => $L("Grandi fiere B2B e congressi a Monaco di Baviera: selezioniamo e coordiniamo lo staff per il tuo stand, con personale locale o in trasferta e lingue su misura per i tuoi buyer. Un solo referente.", "Major B2B trade shows and conferences in Munich: we select and coordinate the staff for your booth, local or travelling from our network, with the languages your buyers speak. One contact.", "Grands salons B2B et congrès à Munich : nous sélectionnons et coordonnons l'équipe de votre stand, sur place ou venue de notre réseau, avec les langues de vos acheteurs. Un seul interlocuteur.", "Grandes ferias B2B y congresos en Múnich: seleccionamos y coordinamos el personal de tu stand, local o desplazado desde nuestra red, con los idiomas de tus compradores. Un único interlocutor."),
+  'price' => $L("Hostess, steward e promoter su preventivo: il prezzo dipende da date, durata e lingue richieste.", "Hostesses, stewards and promoters on quotation: the price depends on dates, hours and languages required.", "Hôtesses, stewards et promoteurs sur devis : le prix dépend des dates, de la durée et des langues demandées.", "Azafatas, stewards y promotores bajo presupuesto: el precio depende de las fechas, la duración y los idiomas."),
+  'v_eyebrow' => $L("Le sedi", "Venues", "Les lieux", "Las sedes"),
+  'v_heading' => $L("Dove si svolgono gli eventi a Monaco di Baviera", "Where events take place in Munich", "Où se déroulent les événements à Munich", "Dónde se celebran los eventos en Múnich"),
+  'v_sub'     => $L("Alcune sedi della città.", "Some of the city's venues.", "Quelques lieux de la ville.", "Algunas sedes de la ciudad."),
+  'venues' => array(
+    array(
+      'n' => $L("Messe München", "Messe München", "Messe München", "Messe München"),
+      'd' => $L("Uno dei poli fieristici più grandi d'Europa (tra gli altri, BAU ed electronica): stand, accoglienza buyer, staff in tedesco e inglese.", "One of Europe's largest exhibition centres (BAU and electronica among others): booths, buyer reception, German and English-speaking staff.", "L'un des plus grands parcs des expositions d'Europe (dont BAU et electronica) : stands, accueil des acheteurs, personnel germanophone et anglophone.", "Uno de los mayores recintos feriales de Europa (entre otras, BAU y electronica): stands, recepción de compradores, personal en alemán e inglés."),
+      'own' => 'fiere',
+      'l'   => $L("Personale per fiere e saloni", "Trade show staff", "Personnel pour salons", "Personal para ferias"),
+    ),
+    array(
+      'n' => $L("ICM – Internationales Congress Center München", "ICM – Internationales Congress Center München", "ICM – Internationales Congress Center München", "ICM – Internationales Congress Center München"),
+      'd' => $L("Congressi e convention accanto alla fiera: registrazione, assistenza in sala, accoglienza dei delegati.", "Conferences and conventions next to the trade fair: registration, room assistance, delegate reception.", "Congrès et conventions à côté du parc des expositions : enregistrement, assistance en salle, accueil des délégués.", "Congresos y convenciones junto a la feria: registro, asistencia en sala, recepción de delegados."),
+      'own' => 'staff',
+      'l'   => $L("Staff per eventi e congressi", "Event and conference staff", "Personnel pour événements et congrès", "Personal para eventos y congresos"),
+    ),
+    array(
+      'n' => $L("MOC Event Center", "MOC Event Center", "MOC Event Center", "MOC Event Center"),
+      'd' => $L("Saloni, eventi aziendali e presentazioni: accoglienza e supporto allo stand.", "Shows, corporate events and presentations: welcome and stand support.", "Salons, événements d'entreprise et présentations : accueil et soutien sur le stand.", "Salones, eventos corporativos y presentaciones: recepción y apoyo en el stand."),
+    ),
+  ),
+  's_eyebrow' => $L("I servizi", "Services", "Les services", "Los servicios"),
+  's_heading' => $L("Tutto quello che serve per un evento a Monaco di Baviera", "Everything you need for an event in Munich", "Tout ce qu'il faut pour un événement à Munich", "Todo lo que necesita un evento en Múnich"),
+  'x_eyebrow' => $L("Approfondimenti", "More on Munich", "Pour aller plus loin", "Más información"),
+  'x_hostess' => array(
+    'link' => 'hostess-fiere-monaco-di-baviera',
+    'n'    => $L("Hostess per le fiere di Monaco di Baviera", "Hostesses for Munich trade fairs", "Hôtesses pour les salons de Munich", "Azafatas para las ferias de Múnich"),
+    'd'    => $L("La pagina TOAgency dedicata alle fiere della città.", "The TOAgency page dedicated to the city's trade fairs.", "La page TOAgency consacrée aux salons de la ville.", "La página de TOAgency dedicada a las ferias de la ciudad."),
+  ),
+  'f_eyebrow' => $L("Domande frequenti", "FAQ", "Questions fréquentes", "Preguntas frecuentes"),
+  'f_heading' => $L("Eventi a Monaco di Baviera: le domande più comuni", "Events in Munich: common questions", "Événements à Munich : les questions courantes", "Eventos en Múnich: las preguntas más comunes"),
+  'faq' => array(
+    array(
+      'q' => $L("Per quali eventi a Monaco di Baviera fornite personale?", "Which events in Munich do you provide staff for?", "Pour quels événements à Munich fournissez-vous du personnel ?", "¿Para qué eventos en Múnich proporcionáis personal?"),
+      'a' => $L("Soprattutto fiere B2B e congressi, ma anche eventi aziendali e presentazioni di prodotto. Dalla scelta delle figure alla gestione sul posto, ti segue un unico referente.", "Mainly B2B trade shows and conferences, but also corporate events and product launches. From choosing the roles to running things on site, a single contact looks after you.", "Surtout des salons B2B et des congrès, mais aussi des événements d'entreprise et des lancements de produit. Du choix des profils à la gestion sur place, un seul interlocuteur vous suit.", "Sobre todo ferias B2B y congresos, pero también eventos corporativos y presentaciones de producto. Desde la elección de los perfiles hasta la gestión en el lugar, te acompaña un único interlocutor."),
+    ),
+    array(
+      'q' => $L("Quanto costa il personale per una fiera a Monaco di Baviera?", "How much does trade show staff cost in Munich?", "Combien coûte le personnel pour un salon à Munich ?", "¿Cuánto cuesta el personal para una feria en Múnich?"),
+      'a' => $L("Il prezzo è su preventivo: dipende da giorni di fiera, ore, numero di persone e lingue richieste. Indicaci anche il tuo budget e ti proponiamo la soluzione migliore.", "The price is quoted case by case: it depends on show days, hours, headcount and languages. Share your budget too and we'll propose the best option.", "Le prix est établi sur devis : il dépend des jours de salon, des horaires, du nombre de personnes et des langues. Indiquez aussi votre budget et nous vous proposerons la meilleure solution.", "El precio va bajo presupuesto: depende de los días de feria, las horas, el número de personas y los idiomas. Indícanos también tu presupuesto y te propondremos la mejor opción."),
+    ),
+    array(
+      'q' => $L("Il personale è di Monaco?", "Is the staff based in Munich?", "Le personnel est-il basé à Munich ?", "¿El personal es de Múnich?"),
+      'a' => $L("Selezioniamo e coordiniamo lo staff con personale locale o in trasferta dalla nostra rete europea, in base a lingue e profilo richiesti.", "We select and coordinate the team with local staff or people travelling from our European network, depending on the languages and profile you need.", "Nous sélectionnons et coordonnons l'équipe avec du personnel local ou venu de notre réseau européen, selon les langues et le profil demandés.", "Seleccionamos y coordinamos el equipo con personal local o desplazado desde nuestra red europea, según los idiomas y el perfil que necesites."),
+    ),
+    array(
+      'q' => $L("Lo staff parla tedesco?", "Does the staff speak German?", "Le personnel parle-t-il allemand ?", "¿El personal habla alemán?"),
+      'a' => $L("Sì, su richiesta: tedesco, inglese e le lingue dei tuoi buyer (italiano, francese, spagnolo e altre). Indica il livello che ti serve.", "Yes, on request: German, English and your buyers' languages (Italian, French, Spanish and more). Tell us the level you need.", "Oui, sur demande : allemand, anglais et les langues de vos acheteurs (italien, français, espagnol et d'autres). Précisez le niveau souhaité.", "Sí, bajo petición: alemán, inglés y los idiomas de tus compradores (italiano, francés, español y otros). Indícanos el nivel que necesitas."),
+    ),
+    array(
+      'q' => $L("Chi gestisce contratti e pagamenti del personale?", "Who handles the staff's contracts and payments?", "Qui gère les contrats et les paiements du personnel ?", "¿Quién gestiona los contratos y pagos del personal?"),
+      'a' => $L("Ti segue un unico referente e ricevi una sola fattura; contratti e compensi del personale li organizziamo noi, con partner locali dove serve.", "One contact looks after you and you receive a single invoice; staff contracts and pay are organised by us, with local partners where needed.", "Un seul interlocuteur vous suit et vous recevez une seule facture ; les contrats et la rémunération du personnel sont organisés par nos soins, avec des partenaires locaux si nécessaire.", "Te acompaña un único interlocutor y recibes una sola factura; los contratos y pagos del personal los organizamos nosotros, con socios locales cuando hace falta."),
+    ),
+    array(
+      'q' => $L("Con quanto anticipo prenotare per una fiera?", "How far ahead should I book for a trade show?", "Combien de temps à l'avance réserver pour un salon ?", "¿Con cuánta antelación reservar para una feria?"),
+      'a' => $L("Prima è meglio, soprattutto per profili con lingue specifiche. Se è urgente, rispondiamo subito.", "The earlier the better, especially for profiles with specific languages. If it's urgent, we reply right away.", "Le plus tôt est le mieux, surtout pour des profils avec des langues spécifiques. Si c'est urgent, nous répondons tout de suite.", "Cuanto antes mejor, sobre todo para perfiles con idiomas concretos. Si es urgente, respondemos enseguida."),
+    ),
+  ),
+),
+
+'francoforte' => array(
+  'slug'  => $L("francoforte", "frankfurt", "francfort", "francfort"),
+  'name'  => $L("Francoforte", "Frankfurt", "Francfort", "Fráncfort"),
+  'seo_title' => $L("Staff per eventi a Francoforte: fiere, congressi | TOAgency", "Event staff in Frankfurt: trade shows, conferences | TOAgency", "Personnel événementiel à Francfort : salons, congrès | TOAgency", "Personal para eventos en Fráncfort: ferias, congresos | TOAgency"),
+  'seo_desc' => $L("Hostess, steward e staff multilingue per fiere ed eventi a Francoforte: Messe Frankfurt, Kap Europa. Un referente, un preventivo, una fattura.", "Hostesses, stewards and multilingual staff for trade shows and events in Frankfurt: Messe Frankfurt, Kap Europa. One contact, one quote, one invoice.", "Hôtesses, stewards et personnel multilingue pour salons et événements à Francfort : Messe Frankfurt, Kap Europa. Un seul interlocuteur.", "Azafatas, stewards y personal multilingüe para ferias y eventos en Fráncfort: Messe Frankfurt, Kap Europa. Un interlocutor, una factura."),
+  'h1'    => $L("Staff e servizi per eventi a Francoforte", "Event staff and services in Frankfurt", "Personnel et services pour événements à Francfort", "Personal y servicios para eventos en Fráncfort"),
+  'intro' => $L("Fiere internazionali e congressi a Francoforte: selezioniamo e coordiniamo lo staff per il tuo stand, con personale locale o in trasferta e le lingue dei tuoi buyer. Un solo referente.", "International trade shows and conferences in Frankfurt: we select and coordinate your booth staff, local or travelling from our network, with your buyers' languages. One contact.", "Salons internationaux et congrès à Francfort : nous sélectionnons et coordonnons l'équipe de votre stand, sur place ou venue de notre réseau, avec les langues de vos acheteurs. Un seul interlocuteur.", "Ferias internacionales y congresos en Fráncfort: seleccionamos y coordinamos el personal de tu stand, local o desplazado desde nuestra red, con los idiomas de tus compradores. Un único interlocutor."),
+  'price' => $L("Hostess, steward e promoter su preventivo: il prezzo dipende da date, durata e lingue richieste.", "Hostesses, stewards and promoters on quotation: the price depends on dates, hours and languages required.", "Hôtesses, stewards et promoteurs sur devis : le prix dépend des dates, de la durée et des langues demandées.", "Azafatas, stewards y promotores bajo presupuesto: el precio depende de las fechas, la duración y los idiomas."),
+  'v_eyebrow' => $L("Le sedi", "Venues", "Les lieux", "Las sedes"),
+  'v_heading' => $L("Dove si svolgono gli eventi a Francoforte", "Where events take place in Frankfurt", "Où se déroulent les événements à Francfort", "Dónde se celebran los eventos en Fráncfort"),
+  'v_sub'     => $L("Alcune sedi della città.", "Some of the city's venues.", "Quelques lieux de la ville.", "Algunas sedes de la ciudad."),
+  'venues' => array(
+    array(
+      'n' => $L("Messe Frankfurt", "Messe Frankfurt", "Messe Frankfurt", "Messe Frankfurt"),
+      'd' => $L("Fiere internazionali come Ambiente, Light + Building e la Buchmesse: stand, accoglienza buyer, staff multilingue.", "International shows such as Ambiente, Light + Building and the Book Fair: booths, buyer reception, multilingual staff.", "Salons internationaux comme Ambiente, Light + Building et la Foire du livre : stands, accueil des acheteurs, personnel multilingue.", "Ferias internacionales como Ambiente, Light + Building y la Feria del Libro: stands, recepción de compradores, personal multilingüe."),
+      'own' => 'fiere',
+      'l'   => $L("Personale per fiere e saloni", "Trade show staff", "Personnel pour salons", "Personal para ferias"),
+    ),
+    array(
+      'n' => $L("Kap Europa", "Kap Europa", "Kap Europa", "Kap Europa"),
+      'd' => $L("Il centro congressi accanto alla fiera: registrazione, assistenza in sala, accoglienza dei delegati.", "The congress centre next to the fairground: registration, room assistance, delegate reception.", "Le centre de congrès à côté du parc des expositions : enregistrement, assistance en salle, accueil des délégués.", "El centro de congresos junto a la feria: registro, asistencia en sala, recepción de delegados."),
+      'own' => 'staff',
+      'l'   => $L("Staff per eventi e congressi", "Event and conference staff", "Personnel pour événements et congrès", "Personal para eventos y congresos"),
+    ),
+    array(
+      'n' => $L("Eventi aziendali in città", "Corporate events in the city", "Événements d'entreprise en ville", "Eventos corporativos en la ciudad"),
+      'd' => $L("Gala, presentazioni e incontri con clienti: accoglienza ospiti, guardaroba, supporto in sala.", "Galas, presentations and client meetings: guest welcome, cloakroom, room support.", "Galas, présentations et rencontres clients : accueil des invités, vestiaire, soutien en salle.", "Galas, presentaciones y encuentros con clientes: recepción de invitados, guardarropa, apoyo en sala."),
+    ),
+  ),
+  's_eyebrow' => $L("I servizi", "Services", "Les services", "Los servicios"),
+  's_heading' => $L("Tutto quello che serve per un evento a Francoforte", "Everything you need for an event in Frankfurt", "Tout ce qu'il faut pour un événement à Francfort", "Todo lo que necesita un evento en Fráncfort"),
+  'x_eyebrow' => $L("Approfondimenti", "More on Frankfurt", "Pour aller plus loin", "Más información"),
+  'x_hostess' => array(
+    'link' => 'hostess-fiere-francoforte',
+    'n'    => $L("Hostess per le fiere di Francoforte", "Hostesses for Frankfurt trade fairs", "Hôtesses pour les salons de Francfort", "Azafatas para las ferias de Fráncfort"),
+    'd'    => $L("La pagina TOAgency dedicata alle fiere della città.", "The TOAgency page dedicated to the city's trade fairs.", "La page TOAgency consacrée aux salons de la ville.", "La página de TOAgency dedicada a las ferias de la ciudad."),
+  ),
+  'f_eyebrow' => $L("Domande frequenti", "FAQ", "Questions fréquentes", "Preguntas frecuentes"),
+  'f_heading' => $L("Eventi a Francoforte: le domande più comuni", "Events in Frankfurt: common questions", "Événements à Francfort : les questions courantes", "Eventos en Fráncfort: las preguntas más comunes"),
+  'faq' => array(
+    array(
+      'q' => $L("Per quali eventi a Francoforte fornite personale?", "Which events in Frankfurt do you provide staff for?", "Pour quels événements à Francfort fournissez-vous du personnel ?", "¿Para qué eventos en Fráncfort proporcionáis personal?"),
+      'a' => $L("Soprattutto fiere internazionali e congressi, ma anche eventi aziendali e gala. Dalla scelta delle figure alla gestione sul posto, ti segue un unico referente.", "Mainly international trade shows and conferences, but also corporate events and galas. From choosing the roles to running things on site, a single contact looks after you.", "Surtout des salons internationaux et des congrès, mais aussi des événements d'entreprise et des galas. Du choix des profils à la gestion sur place, un seul interlocuteur vous suit.", "Sobre todo ferias internacionales y congresos, pero también eventos corporativos y galas. Desde la elección de los perfiles hasta la gestión en el lugar, te acompaña un único interlocutor."),
+    ),
+    array(
+      'q' => $L("Quanto costa il personale per una fiera a Francoforte?", "How much does trade show staff cost in Frankfurt?", "Combien coûte le personnel pour un salon à Francfort ?", "¿Cuánto cuesta el personal para una feria en Fráncfort?"),
+      'a' => $L("Il prezzo è su preventivo: dipende da giorni di fiera, ore, numero di persone e lingue richieste. Indicaci anche il tuo budget e ti proponiamo la soluzione migliore.", "The price is quoted case by case: it depends on show days, hours, headcount and languages. Share your budget too and we'll propose the best option.", "Le prix est établi sur devis : il dépend des jours de salon, des horaires, du nombre de personnes et des langues. Indiquez aussi votre budget et nous vous proposerons la meilleure solution.", "El precio va bajo presupuesto: depende de los días de feria, las horas, el número de personas y los idiomas. Indícanos también tu presupuesto y te propondremos la mejor opción."),
+    ),
+    array(
+      'q' => $L("Il personale è di Francoforte?", "Is the staff based in Frankfurt?", "Le personnel est-il basé à Francfort ?", "¿El personal es de Fráncfort?"),
+      'a' => $L("Selezioniamo e coordiniamo lo staff con personale locale o in trasferta dalla nostra rete europea, in base a lingue e profilo richiesti.", "We select and coordinate the team with local staff or people travelling from our European network, depending on the languages and profile you need.", "Nous sélectionnons et coordonnons l'équipe avec du personnel local ou venu de notre réseau européen, selon les langues et le profil demandés.", "Seleccionamos y coordinamos el equipo con personal local o desplazado desde nuestra red europea, según los idiomas y el perfil que necesites."),
+    ),
+    array(
+      'q' => $L("Lo staff parla tedesco?", "Does the staff speak German?", "Le personnel parle-t-il allemand ?", "¿El personal habla alemán?"),
+      'a' => $L("Sì, su richiesta: tedesco, inglese e le lingue dei tuoi buyer (italiano, francese, spagnolo e altre). Indica il livello che ti serve.", "Yes, on request: German, English and your buyers' languages (Italian, French, Spanish and more). Tell us the level you need.", "Oui, sur demande : allemand, anglais et les langues de vos acheteurs (italien, français, espagnol et d'autres). Précisez le niveau souhaité.", "Sí, bajo petición: alemán, inglés y los idiomas de tus compradores (italiano, francés, español y otros). Indícanos el nivel que necesitas."),
+    ),
+    array(
+      'q' => $L("Chi gestisce contratti e pagamenti del personale?", "Who handles the staff's contracts and payments?", "Qui gère les contrats et les paiements du personnel ?", "¿Quién gestiona los contratos y pagos del personal?"),
+      'a' => $L("Ti segue un unico referente e ricevi una sola fattura; contratti e compensi del personale li organizziamo noi, con partner locali dove serve.", "One contact looks after you and you receive a single invoice; staff contracts and pay are organised by us, with local partners where needed.", "Un seul interlocuteur vous suit et vous recevez une seule facture ; les contrats et la rémunération du personnel sont organisés par nos soins, avec des partenaires locaux si nécessaire.", "Te acompaña un único interlocutor y recibes una sola factura; los contratos y pagos del personal los organizamos nosotros, con socios locales cuando hace falta."),
+    ),
+    array(
+      'q' => $L("Con quanto anticipo prenotare per una fiera?", "How far ahead should I book for a trade show?", "Combien de temps à l'avance réserver pour un salon ?", "¿Con cuánta antelación reservar para una feria?"),
+      'a' => $L("Prima è meglio, soprattutto per profili con lingue specifiche. Se è urgente, rispondiamo subito.", "The earlier the better, especially for profiles with specific languages. If it's urgent, we reply right away.", "Le plus tôt est le mieux, surtout pour des profils avec des langues spécifiques. Si c'est urgent, nous répondons tout de suite.", "Cuanto antes mejor, sobre todo para perfiles con idiomas concretos. Si es urgente, respondemos enseguida."),
+    ),
+  ),
+),
+
+'dusseldorf' => array(
+  'slug'  => $L("dusseldorf", "dusseldorf", "dusseldorf", "dusseldorf"),
+  'name'  => $L("Düsseldorf", "Düsseldorf", "Düsseldorf", "Düsseldorf"),
+  'seo_title' => $L("Staff per eventi a Düsseldorf: fiere, congressi | TOAgency", "Event staff in Düsseldorf: trade shows, conferences | TOAgency", "Personnel événementiel à Düsseldorf : salons, congrès | TOAgency", "Personal para eventos en Düsseldorf: ferias, congresos | TOAgency"),
+  'seo_desc' => $L("Hostess, steward e staff multilingue per fiere ed eventi a Düsseldorf: Messe Düsseldorf, CCD. Un referente, un preventivo, una fattura.", "Hostesses, stewards and multilingual staff for trade shows and events in Düsseldorf: Messe Düsseldorf, CCD. One contact, one quote, one invoice.", "Hôtesses, stewards et personnel multilingue pour salons et événements à Düsseldorf : Messe Düsseldorf, CCD. Un seul interlocuteur.", "Azafatas, stewards y personal multilingüe para ferias y eventos en Düsseldorf: Messe Düsseldorf, CCD. Un interlocutor, una factura."),
+  'h1'    => $L("Staff e servizi per eventi a Düsseldorf", "Event staff and services in Düsseldorf", "Personnel et services pour événements à Düsseldorf", "Personal y servicios para eventos en Düsseldorf"),
+  'intro' => $L("Grandi fiere internazionali a Düsseldorf: selezioniamo e coordiniamo lo staff per il tuo stand, con personale locale o in trasferta e le lingue dei tuoi buyer. Un solo referente, un solo preventivo.", "Major international trade shows in Düsseldorf: we select and coordinate your booth staff, local or travelling from our network, with your buyers' languages. One contact, one quote.", "Grands salons internationaux à Düsseldorf : nous sélectionnons et coordonnons l'équipe de votre stand, sur place ou venue de notre réseau, avec les langues de vos acheteurs. Un seul interlocuteur, un seul devis.", "Grandes ferias internacionales en Düsseldorf: seleccionamos y coordinamos el personal de tu stand, local o desplazado desde nuestra red, con los idiomas de tus compradores. Un único interlocutor, un único presupuesto."),
+  'price' => $L("Hostess, steward e promoter su preventivo: il prezzo dipende da date, durata e lingue richieste.", "Hostesses, stewards and promoters on quotation: the price depends on dates, hours and languages required.", "Hôtesses, stewards et promoteurs sur devis : le prix dépend des dates, de la durée et des langues demandées.", "Azafatas, stewards y promotores bajo presupuesto: el precio depende de las fechas, la duración y los idiomas."),
+  'v_eyebrow' => $L("Le sedi", "Venues", "Les lieux", "Las sedes"),
+  'v_heading' => $L("Dove si svolgono gli eventi a Düsseldorf", "Where events take place in Düsseldorf", "Où se déroulent les événements à Düsseldorf", "Dónde se celebran los eventos en Düsseldorf"),
+  'v_sub'     => $L("Alcune sedi della città.", "Some of the city's venues.", "Quelques lieux de la ville.", "Algunas sedes de la ciudad."),
+  'venues' => array(
+    array(
+      'n' => $L("Messe Düsseldorf", "Messe Düsseldorf", "Messe Düsseldorf", "Messe Düsseldorf"),
+      'd' => $L("Fiere come MEDICA, boot e drupa: stand, accoglienza buyer, staff multilingue per giornate lunghe.", "Shows such as MEDICA, boot and drupa: booths, buyer reception, multilingual staff for long days.", "Salons comme MEDICA, boot et drupa : stands, accueil des acheteurs, personnel multilingue pour de longues journées.", "Ferias como MEDICA, boot y drupa: stands, recepción de compradores, personal multilingüe para jornadas largas."),
+      'own' => 'fiere',
+      'l'   => $L("Personale per fiere e saloni", "Trade show staff", "Personnel pour salons", "Personal para ferias"),
+    ),
+    array(
+      'n' => $L("CCD Congress Center Düsseldorf", "CCD Congress Center Düsseldorf", "CCD Congress Center Düsseldorf", "CCD Congress Center Düsseldorf"),
+      'd' => $L("Congressi e convention: registrazione, assistenza in sala, accoglienza dei delegati.", "Conferences and conventions: registration, room assistance, delegate reception.", "Congrès et conventions : enregistrement, assistance en salle, accueil des délégués.", "Congresos y convenciones: registro, asistencia en sala, recepción de delegados."),
+      'own' => 'staff',
+      'l'   => $L("Staff per eventi e congressi", "Event and conference staff", "Personnel pour événements et congrès", "Personal para eventos y congresos"),
+    ),
+  ),
+  's_eyebrow' => $L("I servizi", "Services", "Les services", "Los servicios"),
+  's_heading' => $L("Tutto quello che serve per un evento a Düsseldorf", "Everything you need for an event in Düsseldorf", "Tout ce qu'il faut pour un événement à Düsseldorf", "Todo lo que necesita un evento en Düsseldorf"),
+  'x_eyebrow' => $L("Approfondimenti", "More on Düsseldorf", "Pour aller plus loin", "Más información"),
+  'x_hostess' => array(
+    'link' => 'hostess-fiere-dusseldorf',
+    'n'    => $L("Hostess per le fiere di Düsseldorf", "Hostesses for Düsseldorf trade fairs", "Hôtesses pour les salons de Düsseldorf", "Azafatas para las ferias de Düsseldorf"),
+    'd'    => $L("La pagina TOAgency dedicata alle fiere della città.", "The TOAgency page dedicated to the city's trade fairs.", "La page TOAgency consacrée aux salons de la ville.", "La página de TOAgency dedicada a las ferias de la ciudad."),
+  ),
+  'f_eyebrow' => $L("Domande frequenti", "FAQ", "Questions fréquentes", "Preguntas frecuentes"),
+  'f_heading' => $L("Eventi a Düsseldorf: le domande più comuni", "Events in Düsseldorf: common questions", "Événements à Düsseldorf : les questions courantes", "Eventos en Düsseldorf: las preguntas más comunes"),
+  'faq' => array(
+    array(
+      'q' => $L("Per quali eventi a Düsseldorf fornite personale?", "Which events in Düsseldorf do you provide staff for?", "Pour quels événements à Düsseldorf fournissez-vous du personnel ?", "¿Para qué eventos en Düsseldorf proporcionáis personal?"),
+      'a' => $L("Soprattutto fiere internazionali e congressi, ma anche eventi aziendali. Dalla scelta delle figure alla gestione sul posto, ti segue un unico referente.", "Mainly international trade shows and conferences, but also corporate events. From choosing the roles to running things on site, a single contact looks after you.", "Surtout des salons internationaux et des congrès, mais aussi des événements d'entreprise. Du choix des profils à la gestion sur place, un seul interlocuteur vous suit.", "Sobre todo ferias internacionales y congresos, pero también eventos corporativos. Desde la elección de los perfiles hasta la gestión en el lugar, te acompaña un único interlocutor."),
+    ),
+    array(
+      'q' => $L("Quanto costa il personale per una fiera a Düsseldorf?", "How much does trade show staff cost in Düsseldorf?", "Combien coûte le personnel pour un salon à Düsseldorf ?", "¿Cuánto cuesta el personal para una feria en Düsseldorf?"),
+      'a' => $L("Il prezzo è su preventivo: dipende da giorni di fiera, ore, numero di persone e lingue richieste. Indicaci anche il tuo budget e ti proponiamo la soluzione migliore.", "The price is quoted case by case: it depends on show days, hours, headcount and languages. Share your budget too and we'll propose the best option.", "Le prix est établi sur devis : il dépend des jours de salon, des horaires, du nombre de personnes et des langues. Indiquez aussi votre budget et nous vous proposerons la meilleure solution.", "El precio va bajo presupuesto: depende de los días de feria, las horas, el número de personas y los idiomas. Indícanos también tu presupuesto y te propondremos la mejor opción."),
+    ),
+    array(
+      'q' => $L("Il personale è di Düsseldorf?", "Is the staff based in Düsseldorf?", "Le personnel est-il basé à Düsseldorf ?", "¿El personal es de Düsseldorf?"),
+      'a' => $L("Selezioniamo e coordiniamo lo staff con personale locale o in trasferta dalla nostra rete europea, in base a lingue e profilo richiesti.", "We select and coordinate the team with local staff or people travelling from our European network, depending on the languages and profile you need.", "Nous sélectionnons et coordonnons l'équipe avec du personnel local ou venu de notre réseau européen, selon les langues et le profil demandés.", "Seleccionamos y coordinamos el equipo con personal local o desplazado desde nuestra red europea, según los idiomas y el perfil que necesites."),
+    ),
+    array(
+      'q' => $L("Lo staff parla tedesco?", "Does the staff speak German?", "Le personnel parle-t-il allemand ?", "¿El personal habla alemán?"),
+      'a' => $L("Sì, su richiesta: tedesco, inglese e le lingue dei tuoi buyer (italiano, francese, spagnolo e altre). Indica il livello che ti serve.", "Yes, on request: German, English and your buyers' languages (Italian, French, Spanish and more). Tell us the level you need.", "Oui, sur demande : allemand, anglais et les langues de vos acheteurs (italien, français, espagnol et d'autres). Précisez le niveau souhaité.", "Sí, bajo petición: alemán, inglés y los idiomas de tus compradores (italiano, francés, español y otros). Indícanos el nivel que necesitas."),
+    ),
+    array(
+      'q' => $L("Chi gestisce contratti e pagamenti del personale?", "Who handles the staff's contracts and payments?", "Qui gère les contrats et les paiements du personnel ?", "¿Quién gestiona los contratos y pagos del personal?"),
+      'a' => $L("Ti segue un unico referente e ricevi una sola fattura; contratti e compensi del personale li organizziamo noi, con partner locali dove serve.", "One contact looks after you and you receive a single invoice; staff contracts and pay are organised by us, with local partners where needed.", "Un seul interlocuteur vous suit et vous recevez une seule facture ; les contrats et la rémunération du personnel sont organisés par nos soins, avec des partenaires locaux si nécessaire.", "Te acompaña un único interlocutor y recibes una sola factura; los contratos y pagos del personal los organizamos nosotros, con socios locales cuando hace falta."),
+    ),
+    array(
+      'q' => $L("Con quanto anticipo prenotare per una fiera?", "How far ahead should I book for a trade show?", "Combien de temps à l'avance réserver pour un salon ?", "¿Con cuánta antelación reservar para una feria?"),
+      'a' => $L("Prima è meglio, soprattutto per profili con lingue specifiche. Se è urgente, rispondiamo subito.", "The earlier the better, especially for profiles with specific languages. If it's urgent, we reply right away.", "Le plus tôt est le mieux, surtout pour des profils avec des langues spécifiques. Si c'est urgent, nous répondons tout de suite.", "Cuanto antes mejor, sobre todo para perfiles con idiomas concretos. Si es urgente, respondemos enseguida."),
+    ),
+  ),
+),
+
+'colonia' => array(
+  'slug'  => $L("colonia", "cologne", "cologne", "colonia"),
+  'name'  => $L("Colonia", "Cologne", "Cologne", "Colonia"),
+  'seo_title' => $L("Staff per eventi a Colonia: fiere, congressi | TOAgency", "Event staff in Cologne: trade shows, conferences | TOAgency", "Personnel événementiel à Cologne : salons, congrès | TOAgency", "Personal para eventos en Colonia: ferias, congresos | TOAgency"),
+  'seo_desc' => $L("Hostess, steward e staff multilingue per fiere ed eventi a Colonia: Koelnmesse, gamescom, Anuga. Un referente, un preventivo, una fattura.", "Hostesses, stewards and multilingual staff for trade shows and events in Cologne: Koelnmesse, gamescom, Anuga. One contact, one quote, one invoice.", "Hôtesses, stewards et personnel multilingue pour salons et événements à Cologne : Koelnmesse, gamescom, Anuga. Un seul interlocuteur.", "Azafatas, stewards y personal multilingüe para ferias y eventos en Colonia: Koelnmesse, gamescom, Anuga. Un interlocutor, una factura."),
+  'h1'    => $L("Staff e servizi per eventi a Colonia", "Event staff and services in Cologne", "Personnel et services pour événements à Cologne", "Personal y servicios para eventos en Colonia"),
+  'intro' => $L("Fiere internazionali e grandi eventi a Colonia: selezioniamo e coordiniamo lo staff per il tuo stand, con personale locale o in trasferta e le lingue dei tuoi buyer. Un solo referente.", "International trade shows and major events in Cologne: we select and coordinate your booth staff, local or travelling from our network, with your buyers' languages. One contact.", "Salons internationaux et grands événements à Cologne : nous sélectionnons et coordonnons l'équipe de votre stand, sur place ou venue de notre réseau, avec les langues de vos acheteurs. Un seul interlocuteur.", "Ferias internacionales y grandes eventos en Colonia: seleccionamos y coordinamos el personal de tu stand, local o desplazado desde nuestra red, con los idiomas de tus compradores. Un único interlocutor."),
+  'price' => $L("Hostess, steward e promoter su preventivo: il prezzo dipende da date, durata e lingue richieste.", "Hostesses, stewards and promoters on quotation: the price depends on dates, hours and languages required.", "Hôtesses, stewards et promoteurs sur devis : le prix dépend des dates, de la durée et des langues demandées.", "Azafatas, stewards y promotores bajo presupuesto: el precio depende de las fechas, la duración y los idiomas."),
+  'v_eyebrow' => $L("Le sedi", "Venues", "Les lieux", "Las sedes"),
+  'v_heading' => $L("Dove si svolgono gli eventi a Colonia", "Where events take place in Cologne", "Où se déroulent les événements à Cologne", "Dónde se celebran los eventos en Colonia"),
+  'v_sub'     => $L("Alcune sedi della città.", "Some of the city's venues.", "Quelques lieux de la ville.", "Algunas sedes de la ciudad."),
+  'venues' => array(
+    array(
+      'n' => $L("Koelnmesse", "Koelnmesse", "Koelnmesse", "Koelnmesse"),
+      'd' => $L("Fiere come gamescom e Anuga: stand ad alta affluenza, accoglienza buyer, promoter e staff multilingue.", "Shows such as gamescom and Anuga: high-traffic booths, buyer reception, promoters and multilingual staff.", "Salons comme gamescom et Anuga : stands très fréquentés, accueil des acheteurs, promoteurs et personnel multilingue.", "Ferias como gamescom y Anuga: stands con mucho público, recepción de compradores, promotores y personal multilingüe."),
+      'own' => 'fiere',
+      'l'   => $L("Personale per fiere e saloni", "Trade show staff", "Personnel pour salons", "Personal para ferias"),
+    ),
+    array(
+      'n' => $L("LANXESS arena", "LANXESS arena", "LANXESS arena", "LANXESS arena"),
+      'd' => $L("Concerti, sport e grandi eventi: accoglienza, hospitality e supporto agli ingressi.", "Concerts, sport and major events: welcome, hospitality and entrance support.", "Concerts, sport et grands événements : accueil, hospitalité et soutien aux entrées.", "Conciertos, deporte y grandes eventos: recepción, hospitality y apoyo en los accesos."),
+      'own' => 'staff',
+      'l'   => $L("Staff per eventi", "Event staff", "Personnel événementiel", "Personal para eventos"),
+    ),
+  ),
+  's_eyebrow' => $L("I servizi", "Services", "Les services", "Los servicios"),
+  's_heading' => $L("Tutto quello che serve per un evento a Colonia", "Everything you need for an event in Cologne", "Tout ce qu'il faut pour un événement à Cologne", "Todo lo que necesita un evento en Colonia"),
+  'x_eyebrow' => $L("Approfondimenti", "More on Europe", "Pour aller plus loin", "Más información"),
+  'x_hostess' => array(
+    'link' => 'hostess-europa',
+    'n'    => $L("Hostess e steward in Europa", "Hostesses and stewards in Europe", "Hôtesses et stewards en Europe", "Azafatas y stewards en Europa"),
+    'd'    => $L("La pagina TOAgency dedicata a hostess e steward nei paesi europei.", "The TOAgency page dedicated to hostesses and stewards across Europe.", "La page TOAgency consacrée aux hôtesses et stewards en Europe.", "La página de TOAgency dedicada a azafatas y stewards en Europa."),
+  ),
+  'f_eyebrow' => $L("Domande frequenti", "FAQ", "Questions fréquentes", "Preguntas frecuentes"),
+  'f_heading' => $L("Eventi a Colonia: le domande più comuni", "Events in Cologne: common questions", "Événements à Cologne : les questions courantes", "Eventos en Colonia: las preguntas más comunes"),
+  'faq' => array(
+    array(
+      'q' => $L("Per quali eventi a Colonia fornite personale?", "Which events in Cologne do you provide staff for?", "Pour quels événements à Cologne fournissez-vous du personnel ?", "¿Para qué eventos en Colonia proporcionáis personal?"),
+      'a' => $L("Fiere internazionali, grandi eventi e attività promozionali in fiera. Dalla scelta delle figure alla gestione sul posto, ti segue un unico referente.", "International trade shows, major events and promotional activities at shows. From choosing the roles to running things on site, a single contact looks after you.", "Salons internationaux, grands événements et animations promotionnelles sur salon. Du choix des profils à la gestion sur place, un seul interlocuteur vous suit.", "Ferias internacionales, grandes eventos y acciones promocionales en feria. Desde la elección de los perfiles hasta la gestión en el lugar, te acompaña un único interlocutor."),
+    ),
+    array(
+      'q' => $L("Quanto costa il personale per una fiera a Colonia?", "How much does trade show staff cost in Cologne?", "Combien coûte le personnel pour un salon à Cologne ?", "¿Cuánto cuesta el personal para una feria en Colonia?"),
+      'a' => $L("Il prezzo è su preventivo: dipende da giorni di fiera, ore, numero di persone e lingue richieste. Indicaci anche il tuo budget e ti proponiamo la soluzione migliore.", "The price is quoted case by case: it depends on show days, hours, headcount and languages. Share your budget too and we'll propose the best option.", "Le prix est établi sur devis : il dépend des jours de salon, des horaires, du nombre de personnes et des langues. Indiquez aussi votre budget et nous vous proposerons la meilleure solution.", "El precio va bajo presupuesto: depende de los días de feria, las horas, el número de personas y los idiomas. Indícanos también tu presupuesto y te propondremos la mejor opción."),
+    ),
+    array(
+      'q' => $L("Il personale è di Colonia?", "Is the staff based in Cologne?", "Le personnel est-il basé à Cologne ?", "¿El personal es de Colonia?"),
+      'a' => $L("Selezioniamo e coordiniamo lo staff con personale locale o in trasferta dalla nostra rete europea, in base a lingue e profilo richiesti.", "We select and coordinate the team with local staff or people travelling from our European network, depending on the languages and profile you need.", "Nous sélectionnons et coordonnons l'équipe avec du personnel local ou venu de notre réseau européen, selon les langues et le profil demandés.", "Seleccionamos y coordinamos el equipo con personal local o desplazado desde nuestra red europea, según los idiomas y el perfil que necesites."),
+    ),
+    array(
+      'q' => $L("Lo staff parla tedesco?", "Does the staff speak German?", "Le personnel parle-t-il allemand ?", "¿El personal habla alemán?"),
+      'a' => $L("Sì, su richiesta: tedesco, inglese e le lingue dei tuoi buyer (italiano, francese, spagnolo e altre). Indica il livello che ti serve.", "Yes, on request: German, English and your buyers' languages (Italian, French, Spanish and more). Tell us the level you need.", "Oui, sur demande : allemand, anglais et les langues de vos acheteurs (italien, français, espagnol et d'autres). Précisez le niveau souhaité.", "Sí, bajo petición: alemán, inglés y los idiomas de tus compradores (italiano, francés, español y otros). Indícanos el nivel que necesitas."),
+    ),
+    array(
+      'q' => $L("Chi gestisce contratti e pagamenti del personale?", "Who handles the staff's contracts and payments?", "Qui gère les contrats et les paiements du personnel ?", "¿Quién gestiona los contratos y pagos del personal?"),
+      'a' => $L("Ti segue un unico referente e ricevi una sola fattura; contratti e compensi del personale li organizziamo noi, con partner locali dove serve.", "One contact looks after you and you receive a single invoice; staff contracts and pay are organised by us, with local partners where needed.", "Un seul interlocuteur vous suit et vous recevez une seule facture ; les contrats et la rémunération du personnel sont organisés par nos soins, avec des partenaires locaux si nécessaire.", "Te acompaña un único interlocutor y recibes una sola factura; los contratos y pagos del personal los organizamos nosotros, con socios locales cuando hace falta."),
+    ),
+    array(
+      'q' => $L("Con quanto anticipo prenotare per una fiera?", "How far ahead should I book for a trade show?", "Combien de temps à l'avance réserver pour un salon ?", "¿Con cuánta antelación reservar para una feria?"),
+      'a' => $L("Prima è meglio, soprattutto per profili con lingue specifiche. Se è urgente, rispondiamo subito.", "The earlier the better, especially for profiles with specific languages. If it's urgent, we reply right away.", "Le plus tôt est le mieux, surtout pour des profils avec des langues spécifiques. Si c'est urgent, nous répondons tout de suite.", "Cuanto antes mejor, sobre todo para perfiles con idiomas concretos. Si es urgente, respondemos enseguida."),
+    ),
+  ),
+),
+
+'berlino' => array(
+  'slug'  => $L("berlino", "berlin", "berlin", "berlin"),
+  'name'  => $L("Berlino", "Berlin", "Berlin", "Berlín"),
+  'seo_title' => $L("Staff per eventi a Berlino: fiere, congressi, brand activation | TOAgency", "Event staff in Berlin: trade shows, conferences, brand activations | TOAgency", "Personnel événementiel à Berlin : salons, congrès, activations | TOAgency", "Personal para eventos en Berlín: ferias, congresos, activaciones | TOAgency"),
+  'seo_desc' => $L("Hostess, steward, promoter e staff multilingue per eventi a Berlino: Messe Berlin, CityCube, Station Berlin. Un referente, un preventivo.", "Hostesses, stewards, promoters and multilingual staff for events in Berlin: Messe Berlin, CityCube, Station Berlin. One contact, one quote.", "Hôtesses, stewards, promoteurs et personnel multilingue pour vos événements à Berlin : Messe Berlin, CityCube, Station Berlin. Un seul interlocuteur.", "Azafatas, stewards, promotores y personal multilingüe para eventos en Berlín: Messe Berlin, CityCube, Station Berlin. Un interlocutor."),
+  'h1'    => $L("Staff e servizi per eventi a Berlino", "Event staff and services in Berlin", "Personnel et services pour événements à Berlin", "Personal y servicios para eventos en Berlín"),
+  'intro' => $L("Fiere, congressi e brand activation a Berlino: selezioniamo e coordiniamo lo staff, con personale locale o in trasferta e le lingue dei tuoi ospiti. Un solo referente, un solo preventivo.", "Trade shows, conferences and brand activations in Berlin: we select and coordinate your staff, local or travelling from our network, with your guests' languages. One contact, one quote.", "Salons, congrès et brand activations à Berlin : nous sélectionnons et coordonnons votre équipe, sur place ou venue de notre réseau, avec les langues de vos invités. Un seul interlocuteur, un seul devis.", "Ferias, congresos y activaciones de marca en Berlín: seleccionamos y coordinamos el personal, local o desplazado desde nuestra red, con los idiomas de tus invitados. Un único interlocutor, un único presupuesto."),
+  'price' => $L("Hostess, steward e promoter su preventivo: il prezzo dipende da date, durata e lingue richieste.", "Hostesses, stewards and promoters on quotation: the price depends on dates, hours and languages required.", "Hôtesses, stewards et promoteurs sur devis : le prix dépend des dates, de la durée et des langues demandées.", "Azafatas, stewards y promotores bajo presupuesto: el precio depende de las fechas, la duración y los idiomas."),
+  'v_eyebrow' => $L("Le sedi", "Venues", "Les lieux", "Las sedes"),
+  'v_heading' => $L("Dove si svolgono gli eventi a Berlino", "Where events take place in Berlin", "Où se déroulent les événements à Berlin", "Dónde se celebran los eventos en Berlín"),
+  'v_sub'     => $L("Alcune sedi della città.", "Some of the city's venues.", "Quelques lieux de la ville.", "Algunas sedes de la ciudad."),
+  'venues' => array(
+    array(
+      'n' => $L("Messe Berlin", "Messe Berlin", "Messe Berlin", "Messe Berlin"),
+      'd' => $L("Fiere come ITB Berlin, IFA e Fruit Logistica: stand, accoglienza buyer, staff multilingue.", "Shows such as ITB Berlin, IFA and Fruit Logistica: booths, buyer reception, multilingual staff.", "Salons comme ITB Berlin, IFA et Fruit Logistica : stands, accueil des acheteurs, personnel multilingue.", "Ferias como ITB Berlin, IFA y Fruit Logistica: stands, recepción de compradores, personal multilingüe."),
+      'own' => 'fiere',
+      'l'   => $L("Personale per fiere e saloni", "Trade show staff", "Personnel pour salons", "Personal para ferias"),
+    ),
+    array(
+      'n' => $L("CityCube Berlin", "CityCube Berlin", "CityCube Berlin", "CityCube Berlin"),
+      'd' => $L("Congressi e convention accanto alla fiera: registrazione, assistenza in sala, accoglienza dei delegati.", "Conferences and conventions next to the fairground: registration, room assistance, delegate reception.", "Congrès et conventions à côté du parc des expositions : enregistrement, assistance en salle, accueil des délégués.", "Congresos y convenciones junto a la feria: registro, asistencia en sala, recepción de delegados."),
+      'own' => 'staff',
+      'l'   => $L("Staff per eventi e congressi", "Event and conference staff", "Personnel pour événements et congrès", "Personal para eventos y congresos"),
+    ),
+    array(
+      'n' => $L("Station Berlin", "Station Berlin", "Station Berlin", "Station Berlin"),
+      'd' => $L("Eventi di moda, tech e brand activation: hostess, modelle immagine e promoter.", "Fashion, tech and brand activation events: hostesses, image models and promoters.", "Événements mode, tech et brand activations : hôtesses, mannequins image et promoteurs.", "Eventos de moda, tecnología y activaciones de marca: azafatas, modelos de imagen y promotores."),
+    ),
+  ),
+  's_eyebrow' => $L("I servizi", "Services", "Les services", "Los servicios"),
+  's_heading' => $L("Tutto quello che serve per un evento a Berlino", "Everything you need for an event in Berlin", "Tout ce qu'il faut pour un événement à Berlin", "Todo lo que necesita un evento en Berlín"),
+  'x_eyebrow' => $L("Approfondimenti", "More on Berlin", "Pour aller plus loin", "Más información"),
+  'x_hostess' => array(
+    'link' => 'hostess-fiere-berlino',
+    'n'    => $L("Hostess per le fiere di Berlino", "Hostesses for Berlin trade fairs", "Hôtesses pour les salons de Berlin", "Azafatas para las ferias de Berlín"),
+    'd'    => $L("La pagina TOAgency dedicata alle fiere della città.", "The TOAgency page dedicated to the city's trade fairs.", "La page TOAgency consacrée aux salons de la ville.", "La página de TOAgency dedicada a las ferias de la ciudad."),
+  ),
+  'f_eyebrow' => $L("Domande frequenti", "FAQ", "Questions fréquentes", "Preguntas frecuentes"),
+  'f_heading' => $L("Eventi a Berlino: le domande più comuni", "Events in Berlin: common questions", "Événements à Berlin : les questions courantes", "Eventos en Berlín: las preguntas más comunes"),
+  'faq' => array(
+    array(
+      'q' => $L("Per quali eventi a Berlino fornite personale?", "Which events in Berlin do you provide staff for?", "Pour quels événements à Berlin fournissez-vous du personnel ?", "¿Para qué eventos en Berlín proporcionáis personal?"),
+      'a' => $L("Fiere internazionali, congressi, eventi aziendali e brand activation. Dalla scelta delle figure alla gestione sul posto, ti segue un unico referente.", "International trade shows, conferences, corporate events and brand activations. From choosing the roles to running things on site, a single contact looks after you.", "Salons internationaux, congrès, événements d'entreprise et brand activations. Du choix des profils à la gestion sur place, un seul interlocuteur vous suit.", "Ferias internacionales, congresos, eventos corporativos y activaciones de marca. Desde la elección de los perfiles hasta la gestión en el lugar, te acompaña un único interlocutor."),
+    ),
+    array(
+      'q' => $L("Quanto costa il personale per un evento a Berlino?", "How much does event staff cost in Berlin?", "Combien coûte le personnel pour un événement à Berlin ?", "¿Cuánto cuesta el personal para un evento en Berlín?"),
+      'a' => $L("Il prezzo è su preventivo: dipende da date, ore, numero di persone e lingue richieste. Indicaci anche il tuo budget e ti proponiamo la soluzione migliore.", "The price is quoted case by case: it depends on dates, hours, headcount and languages. Share your budget too and we'll propose the best option.", "Le prix est établi sur devis : il dépend des dates, des horaires, du nombre de personnes et des langues. Indiquez aussi votre budget et nous vous proposerons la meilleure solution.", "El precio va bajo presupuesto: depende de las fechas, las horas, el número de personas y los idiomas. Indícanos también tu presupuesto y te propondremos la mejor opción."),
+    ),
+    array(
+      'q' => $L("Il personale è di Berlino?", "Is the staff based in Berlin?", "Le personnel est-il basé à Berlin ?", "¿El personal es de Berlín?"),
+      'a' => $L("Selezioniamo e coordiniamo lo staff con personale locale o in trasferta dalla nostra rete europea, in base a lingue e profilo richiesti.", "We select and coordinate the team with local staff or people travelling from our European network, depending on the languages and profile you need.", "Nous sélectionnons et coordonnons l'équipe avec du personnel local ou venu de notre réseau européen, selon les langues et le profil demandés.", "Seleccionamos y coordinamos el equipo con personal local o desplazado desde nuestra red europea, según los idiomas y el perfil que necesites."),
+    ),
+    array(
+      'q' => $L("Lo staff parla tedesco?", "Does the staff speak German?", "Le personnel parle-t-il allemand ?", "¿El personal habla alemán?"),
+      'a' => $L("Sì, su richiesta: tedesco, inglese e le lingue dei tuoi ospiti (italiano, francese, spagnolo e altre). Indica il livello che ti serve.", "Yes, on request: German, English and your guests' languages (Italian, French, Spanish and more). Tell us the level you need.", "Oui, sur demande : allemand, anglais et les langues de vos invités (italien, français, espagnol et d'autres). Précisez le niveau souhaité.", "Sí, bajo petición: alemán, inglés y los idiomas de tus invitados (italiano, francés, español y otros). Indícanos el nivel que necesitas."),
+    ),
+    array(
+      'q' => $L("Chi gestisce contratti e pagamenti del personale?", "Who handles the staff's contracts and payments?", "Qui gère les contrats et les paiements du personnel ?", "¿Quién gestiona los contratos y pagos del personal?"),
+      'a' => $L("Ti segue un unico referente e ricevi una sola fattura; contratti e compensi del personale li organizziamo noi, con partner locali dove serve.", "One contact looks after you and you receive a single invoice; staff contracts and pay are organised by us, with local partners where needed.", "Un seul interlocuteur vous suit et vous recevez une seule facture ; les contrats et la rémunération du personnel sont organisés par nos soins, avec des partenaires locaux si nécessaire.", "Te acompaña un único interlocutor y recibes una sola factura; los contratos y pagos del personal los organizamos nosotros, con socios locales cuando hace falta."),
+    ),
+    array(
+      'q' => $L("Quanto tempo ci vuole per avere una proposta?", "How long does it take to get a proposal?", "Combien de temps faut-il pour recevoir une proposition ?", "¿Cuánto se tarda en recibir una propuesta?"),
+      'a' => $L("Se è urgente, rispondiamo subito. Più dettagli ci dai (date, sede, numero di persone, lingue), più la proposta è precisa.", "If it's urgent, we reply right away. The more detail you give us (dates, venue, headcount, languages), the more precise the proposal.", "Si c'est urgent, nous répondons tout de suite. Plus vous nous donnez de détails (dates, lieu, nombre de personnes, langues), plus la proposition est précise.", "Si es urgente, respondemos enseguida. Cuantos más detalles nos des (fechas, sede, número de personas, idiomas), más precisa será la propuesta."),
+    ),
+  ),
+),
+
+
 );
