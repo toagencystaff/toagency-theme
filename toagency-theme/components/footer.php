@@ -91,7 +91,7 @@ if (function_exists('toa_mg_attivo') && toa_mg_attivo()) : toa_mg_footer(); $toa
 <?php endif; // ticket #789 ?>
 
 <!-- Sticky CTA Mobile -->
-<?php if (is_page()): ?>
+<?php if (is_page() && !(function_exists('toa_is_talent_page') && toa_is_talent_page())): // ticket 1096: sulle pagine talent niente barra Preventivo ?>
 <div class="sticky-cta-mobile">
   <?php
   $toa_cta_labels = array('en' => 'Get a Quote', 'fr' => 'Devis', 'es' => 'Presupuesto');

@@ -888,14 +888,33 @@ function toa_is_casting_ctx() {
     }
     return is_page_template('templates/page-casting.php');
 }
+// FIX 2026-11-26 marco (ticket 1096) — stessa regola del 1033 su TUTTE le pagine dove arrivano solo talent/crew (collabora, iscrizioni, area personale):
+// niente «Richiedi preventivo» ne WhatsApp «vorrei un preventivo» (6 talent su ~17 invii del form clienti dal 16 al 24/11).
+// Si riconoscono dal TEMPLATE (uguale in IT/EN/FR/ES, gli slug WPML cambiano); in piu' un controllo sul percorso per le pagine senza template dedicato (become-model...).
+function toa_is_talent_page() {
+    static $v = null;
+    if ($v !== null) return $v;
+    if (!is_page()) return $v = false;
+    if (is_page_template(array('templates/page-collabora.php', 'templates/page-registrati-talent.php', 'templates/page-registrati-crew.php',
+        'templates/page-talent-self-edit.php', 'templates/page-crew-self-edit.php', 'templates/page-completa-profilo.php', 'templates/page-mia-agenda.php'))) return $v = true;
+    $path = isset($_SERVER['REQUEST_URI']) ? (string) parse_url(wp_unslash($_SERVER['REQUEST_URI']), PHP_URL_PATH) : '';
+    return $v = (bool) preg_match('#^/(?:(?:en|fr|es)/)?(?:collabora|registrati-talent|registrati-crew|become-model|registrazione-talenti|candidati[^/]*)(?:/|$)#i', $path);
+}
+// Su queste pagine la barra mobile ha UN solo bottone «Iscriviti gratis»; sulle pagine di iscrizione e area personale non serve (si e' gia' dentro).
+function toa_talent_barra_iscriviti() {
+    if (!toa_is_talent_page()) return false;
+    return !is_page_template(array('templates/page-registrati-talent.php', 'templates/page-registrati-crew.php', 'templates/page-talent-self-edit.php',
+        'templates/page-crew-self-edit.php', 'templates/page-completa-profilo.php', 'templates/page-mia-agenda.php'));
+}
 add_filter('body_class', function($classes) {
-    if (toa_is_registrati_page() || toa_is_casting_ctx()) $classes[] = 'toa-hide-quote-cta';
+    if (toa_is_registrati_page() || toa_is_casting_ctx() || toa_is_talent_page()) $classes[] = 'toa-hide-quote-cta';
     if (toa_is_casting_ctx()) $classes[] = 'toa-casting-ctx';
+    if (toa_is_talent_page()) $classes[] = 'toa-talent-ctx';
     return $classes;
 });
 add_action('wp_head', function() {
-    if (!toa_is_registrati_page() && !toa_is_casting_ctx()) return;
-    echo '<style id="toa-hide-quote-cta-css">body.toa-hide-quote-cta .nav-cta-btn,body.toa-hide-quote-cta .sticky-cta-mobile,body.toa-hide-quote-cta .mobile-menu-cta{display:none!important}body.toa-casting-ctx .tmg-mbar,body.toa-casting-ctx .tmg-head__cta{display:none!important}</style>' . "\n";
+    if (!toa_is_registrati_page() && !toa_is_casting_ctx() && !toa_is_talent_page()) return;
+    echo '<style id="toa-hide-quote-cta-css">body.toa-hide-quote-cta .nav-cta-btn,body.toa-hide-quote-cta .sticky-cta-mobile,body.toa-hide-quote-cta .mobile-menu-cta{display:none!important}body.toa-casting-ctx .tmg-mbar,body.toa-casting-ctx .tmg-head__cta{display:none!important}body.toa-talent-ctx .tmg-head__cta{display:none!important}.tmg-azienda{font-size:13px;line-height:1;white-space:nowrap;color:inherit;opacity:.75;text-decoration:underline;text-underline-offset:3px}.tmg-azienda:hover{opacity:1}@media(max-width:768px){.tmg-azienda{display:none}}</style>' . "\n";
 });
 
 // === BEGIN 2026-06-03 marco — LOGHI + GRIGLIA TALENT su landing casting (CRO) ===

@@ -444,6 +444,7 @@ function toa_mg_dati() {
 
 /* ───────────── piccoli render ───────────── */
 function toa_mg_link_html($l, $cls = '', $sub = true) {
+    if (function_exists('toa_is_talent_page') && toa_is_talent_page() && strpos($l['p'], '/form-b2b') === 0) return '';   // ticket 1096: sulle pagine talent niente link al form clienti
     $u = toa_mg_url($l['p'], null, $l['alt'], $l['lp']);
     if ($u === '') return '';
     $s = ($sub && !empty($l['sub'])) ? ' <small>' . esc_html(toa_mg_t($l['sub'])) . '</small>' : '';
@@ -532,7 +533,7 @@ function toa_mg_pannelli() {
            . '<span class="tmg-price__big" data-tmg-p="big">' . esc_html(toa_mg_t($cd['big'])) . '</span>'
            . '<span class="tmg-price__note" data-tmg-p="note">' . esc_html(toa_mg_t($cd['note'])) . '</span>'
            . '<span class="tmg-price__go">' . esc_html(toa_mg_t($s['hub_t'])) . ' &rarr;</span></a>';
-        $cu = toa_mg_url($s['cross']['p']);
+        $cu = (function_exists('toa_is_talent_page') && toa_is_talent_page() && strpos($s['cross']['p'], '/form-b2b') === 0) ? '' : toa_mg_url($s['cross']['p']);   // ticket 1096
         if ($cu) echo '<a class="tmg-cross" href="' . esc_url($cu) . '"><small>' . esc_html(toa_mg_t($ui['anche'])) . '</small><b>' . esc_html(toa_mg_t($s['cross']['t'])) . ' &rarr;</b><span>' . esc_html(toa_mg_t($s['cross']['d'])) . '</span></a>';
         echo '</div></div>';
     }
@@ -579,8 +580,16 @@ function toa_mg_pannelli() {
 
     // barra fissa in basso (telefono): preventivo + WhatsApp (stesso numero del bottone WhatsApp del sito)
     $wa = 'https://wa.me/393518468516?text=' . rawurlencode(toa_mg_t(array('it' => 'Ciao TOAgency, vorrei un preventivo', 'en' => 'Hi TOAgency, I would like a quote', 'fr' => 'Bonjour TOAgency, je voudrais un devis', 'es' => 'Hola TOAgency, quisiera un presupuesto')));
+    if (function_exists('toa_is_talent_page') && toa_is_talent_page()) {
+        // ticket 1096: pagine talent = un solo invito («Iscriviti gratis»), niente preventivo ne WhatsApp cliente; sulle pagine di iscrizione/area personale nessuna barra
+        if (toa_talent_barra_iscriviti()) {
+            $isc = toa_mg_t(array('it' => 'Iscriviti gratis', 'en' => 'Join for free', 'fr' => 'Inscription gratuite', 'es' => 'Regístrate gratis'));
+            echo '<div class="tmg-mbar" style="grid-template-columns:1fr"><a class="tmg-btn tmg-btn--lime" href="' . esc_url(toa_mg_url('/registrati-talent/')) . '">' . esc_html($isc) . '</a></div>';
+        }
+    } else {
     echo '<div class="tmg-mbar"><a class="tmg-btn tmg-btn--lime" href="' . esc_url(toa_mg_url($ui['cta_url'])) . '">' . esc_html(toa_mg_t($ui['cta'])) . '</a>'
        . '<a class="tmg-btn tmg-btn--line" href="' . esc_url($wa) . '" target="_blank" rel="noopener">' . esc_html($ui['wa']) . '</a></div>';
+    }
     echo '<div class="tmg-veil" id="tmgVeil" hidden></div>';
 }
 
@@ -594,7 +603,9 @@ function toa_mg_header_bar($cur = '', $cta = '', $in = false) {
        . '<a class="tmg-logo tmg-brand" href="' . esc_url(toa_mg_home_url()) . '" aria-label="TOAgency"><span class="tmg-mark" aria-hidden="true"></span><span class="tmg-brand__t">TOAGENCY</span></a>'
        . '<nav class="tmg-nav" aria-label="TOAgency">' . toa_mg_voci_html($cur) . '</nav>'
        . '<div class="tmg-head__r">' . toa_mg_voce_casting() . toa_mg_voce_lavora()
-       . toa_mg_lingue_html() . '<a class="tmg-btn tmg-btn--lime tmg-head__cta" href="' . esc_url($cta) . '">' . esc_html(toa_mg_t($ui['cta'])) . '</a>'
+       . toa_mg_lingue_html() . ((function_exists('toa_is_talent_page') && toa_is_talent_page())
+          ? '<a class="tmg-azienda" href="' . esc_url(toa_mg_home_url()) . '">' . esc_html(toa_mg_t(array('it' => 'Sei un’azienda?', 'en' => 'Are you a company?', 'fr' => 'Vous êtes une entreprise ?', 'es' => '¿Eres una empresa?'))) . '</a>'
+          : '<a class="tmg-btn tmg-btn--lime tmg-head__cta" href="' . esc_url($cta) . '">' . esc_html(toa_mg_t($ui['cta'])) . '</a>')
        . '<button type="button" class="tmg-burger" data-tmg-mob aria-label="' . esc_attr(toa_mg_t($ui['menu'])) . '" aria-expanded="false" aria-controls="tmgMob"><span></span><span></span><span></span></button></div>'
        . '</div></header>';
     if ($in) add_action('wp_footer', 'toa_mg_pannelli', 5);   // dentro la striscia sticky di /events/ i pannelli resterebbero sotto il resto (z-index)
