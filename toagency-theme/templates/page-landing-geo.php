@@ -119,9 +119,11 @@ if (have_posts()) the_post(); // setup postdata per the_title()/the_content()
       <p class="toa-landing-form-sub">
         <?php echo _ht(['it'=>'Se è urgente, rispondiamo subito.','en'=>'If it\'s urgent, we reply right away.','fr'=>'Si c\'est urgent, nous répondons tout de suite.','es'=>'Si es urgente, respondemos enseguida.']); ?>
       </p>
-      <p class="toa-landing-form-talent-note">
-        <?php echo _ht(['it'=>'Sei un talent (hostess, modello/a, promoter)? Questo modulo è per le aziende — ','en'=>'Are you a talent (hostess, model, promoter)? This form is for companies — ','fr'=>'Vous êtes un talent (hôtesse, mannequin, promoteur) ? Ce formulaire est pour les entreprises — ','es'=>'¿Eres un talent (azafata, modelo, promotor)? Este formulario es para empresas — ']); ?><a href="<?php echo home_url('/registrati-talent/'); ?>"><?php echo _ht(['it'=>'candidati qui','en'=>'apply here','fr'=>'postulez ici','es'=>'postúlate aquí']); ?> &rarr;</a>
-      </p>
+      <?php // 26/11/2026 ticket #1096: chi cerca «agenzia comparse / casting» e' spesso un talent: invito ben visibile sopra il form clienti ?>
+      <div class="toa-landing-form-talent-note" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;margin:0 0 24px;padding:16px 20px;border:2px solid #111;border-radius:8px;background:#f3f6f5">
+        <strong style="font-size:17px;line-height:1.3"><?php echo _ht(['it'=>'Vuoi lavorare come comparsa, modello/a o hostess?','en'=>'Want to work as an extra, model or hostess?','fr'=>'Vous voulez travailler comme figurant, mannequin ou hôtesse ?','es'=>'¿Quieres trabajar como extra, modelo o azafata?']); ?></strong>
+        <a href="<?php echo esc_url(home_url('/registrati-talent/')); ?>" style="display:inline-block;padding:12px 22px;background:#111;color:#fff;border-radius:6px;font-weight:700;text-decoration:none;white-space:nowrap"><?php echo _ht(['it'=>'Iscriviti gratis','en'=>'Join for free','fr'=>'Inscription gratuite','es'=>'Regístrate gratis']); ?> &rarr;</a>
+      </div>
       <?php toa_component('form-b2b-inline'); ?>
     </div>
   </section>
