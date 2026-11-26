@@ -41,6 +41,8 @@ $hq_js = array(
       <h2 class="section-heading"><?php echo _ht($hq_heading); ?></h2>
       <p class="inline-quote-sub"><?php echo _ht($hq_sub); ?></p>
 
+      <?php toa_component('b2b-intent-gate', array('form_id' => 'hqForm')); /* #672: azienda / cerco lavoro */ ?>
+
       <form id="hqForm" method="post" novalidate>
         <div class="iq-grid">
           <div class="iq-field">
