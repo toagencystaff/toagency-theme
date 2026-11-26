@@ -53,6 +53,22 @@ if (!function_exists('toa_rete_data')) {
             'hostess-fiere-francoforte'       => array('francoforte', 'DE', $N('Fiere Francoforte', 'Frankfurt trade fairs', 'Salons Francfort', 'Ferias Fráncfort')),
             'hostess-fiere-dusseldorf'        => array('dusseldorf', 'DE', $N('Fiere Düsseldorf', 'Düsseldorf trade fairs', 'Salons Düsseldorf', 'Ferias Düsseldorf')),
             'hostess-fiere-berlino'           => array('berlino', 'DE', $N('Fiere Berlino', 'Berlin trade fairs', 'Salons Berlin', 'Ferias Berlín')),
+            // 26/11/2026 fase 3b: fiere internazionali nuove
+            'hostess-sigma-world-roma'        => array('roma', 'IT', 'SiGMA World'),
+            'hostess-ice-barcellona'          => array('barcellona', 'ES', 'ICE Barcelona'),
+            'hostess-mwc-barcellona'          => array('barcellona', 'ES', 'MWC Barcelona'),
+            'hostess-ise-barcellona'          => array('barcellona', 'ES', 'ISE'),
+            'hostess-smart-city-expo-barcellona' => array('barcellona', 'ES', 'Smart City Expo'),
+            'hostess-maison-objet-parigi'     => array('parigi', 'FR', 'Maison&Objet'),
+            'hostess-vivatech-parigi'         => array('parigi', 'FR', 'VivaTech'),
+            'hostess-mipim-cannes'            => array('costa-azzurra', 'FR', 'MIPIM'),
+            'hostess-cannes-lions'            => array('costa-azzurra', 'FR', 'Cannes Lions'),
+            'hostess-monaco-yacht-show'       => array('montecarlo', 'MC', 'Monaco Yacht Show'),
+            'hostess-wtm-londra'              => array('londra', 'GB', 'WTM London'),
+            'hostess-medica-dusseldorf'       => array('dusseldorf', 'DE', 'MEDICA'),
+            'hostess-ifa-berlino'             => array('berlino', 'DE', 'IFA'),
+            'hostess-itb-berlino'             => array('berlino', 'DE', 'ITB Berlin'),
+            'hostess-web-summit-lisbona'      => array('', 'PT', 'Web Summit'),
             'hostess-fiere-bruxelles'         => array('', 'BE', $N('Fiere Bruxelles', 'Brussels trade fairs', 'Salons Bruxelles', 'Ferias Bruselas')),
             'hostess-fiere-ginevra'           => array('', 'CH', $N('Fiere Ginevra', 'Geneva trade fairs', 'Salons Genève', 'Ferias Ginebra')),
         );
@@ -106,7 +122,7 @@ $rete_cname = function ($key) use ($rete_cities, $rt) { return isset($rete_citie
 
 // Ordine dei paesi: prima quello della lingua della pagina, poi gli altri (respiro europeo, mai solo Italia)
 $rete_first = array('it' => 'IT', 'fr' => 'FR', 'es' => 'ES', 'en' => 'IT');
-$rete_order = array('IT', 'FR', 'MC', 'ES', 'DE', 'BE', 'CH');
+$rete_order = array('IT', 'FR', 'MC', 'ES', 'DE', 'GB', 'BE', 'CH', 'PT');
 usort($rete_order, function ($a, $b) use ($rete_first, $rl) { return ($b === $rete_first[$rl]) - ($a === $rete_first[$rl]); });
 
 // Link fiera (nome · città)
