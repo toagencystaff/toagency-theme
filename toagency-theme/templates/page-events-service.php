@@ -138,6 +138,7 @@ toa_component('header');
     </div>
 </section>
 
+<?php if ($key === 'fiere') { toa_component('seo-rete', array('rete_mode' => 'fiere')); } // 26/11/2026 TEMA SEO AI EVENTI: tutte le pagine fiera ?>
 <?php toa_component('events-coverage', array('lang' => $lang)); ?>
 
 <?php toa_component('form-eventi-inline', array('lang' => $lang, 'leadsrc' => 'Pagina TOA Events - ' . $leadnames[$key])); ?>

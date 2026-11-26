@@ -53,7 +53,7 @@ if (have_posts()) the_post(); // setup postdata per the_title()/the_content()
       <span>20.000+ <?php echo _ht(['it'=>'profili','en'=>'profiles','fr'=>'profils','es'=>'perfiles']); ?></span>
       <span>15+ <?php echo _ht(['it'=>'anni di esperienza','en'=>'years of experience','fr'=>'ans d\'expérience','es'=>'años de experiencia']); ?></span>
       <span>4 <?php echo _ht(['it'=>'lingue','en'=>'languages','fr'=>'langues','es'=>'idiomas']); ?></span>
-      <span><?php echo _ht(['it'=>'Risposta in 24h','en'=>'Response in 24h','fr'=>'Réponse en 24h','es'=>'Respuesta en 24h']); ?></span>
+      <span><?php echo _ht(['it'=>'Un referente, una fattura','en'=>'One contact, one invoice','fr'=>'Un interlocuteur, une facture','es'=>'Un interlocutor, una factura']); ?></span><?php /* 26/11/2026 TEMA SEO AI EVENTI: niente promesse sui tempi di risposta (regola Marco 20/10) */ ?>
     </div>
   </section>
 
@@ -107,6 +107,9 @@ if (have_posts()) the_post(); // setup postdata per the_title()/the_content()
     </div>
   </section>
 
+  <?php // 26/11/2026 TEMA SEO AI EVENTI: rete TOA Events (città, fiere, staff e prezzi) — collega questa pagina alla struttura eventi
+  toa_component('seo-rete'); ?>
+
   <!-- FORM PREVENTIVO -->
   <section id="toa-form-anchor" class="toa-landing-form-section">
     <div class="toa-container">
@@ -114,7 +117,7 @@ if (have_posts()) the_post(); // setup postdata per the_title()/the_content()
         <?php echo _ht(['it'=>'Chiedi un preventivo gratuito','en'=>'Request a free quote','fr'=>'Demandez un devis gratuit','es'=>'Solicita presupuesto gratuito']); ?>
       </h2>
       <p class="toa-landing-form-sub">
-        <?php echo _ht(['it'=>'Risposta entro 24 ore lavorative.','en'=>'Response within 24 business hours.','fr'=>'Réponse sous 24 heures ouvrées.','es'=>'Respuesta en 24 horas hábiles.']); ?>
+        <?php echo _ht(['it'=>'Se è urgente, rispondiamo subito.','en'=>'If it\'s urgent, we reply right away.','fr'=>'Si c\'est urgent, nous répondons tout de suite.','es'=>'Si es urgente, respondemos enseguida.']); ?>
       </p>
       <p class="toa-landing-form-talent-note">
         <?php echo _ht(['it'=>'Sei un talent (hostess, modello/a, promoter)? Questo modulo è per le aziende — ','en'=>'Are you a talent (hostess, model, promoter)? This form is for companies — ','fr'=>'Vous êtes un talent (hôtesse, mannequin, promoteur) ? Ce formulaire est pour les entreprises — ','es'=>'¿Eres un talent (azafata, modelo, promotor)? Este formulario es para empresas — ']); ?><a href="<?php echo home_url('/registrati-talent/'); ?>"><?php echo _ht(['it'=>'candidati qui','en'=>'apply here','fr'=>'postulez ici','es'=>'postúlate aquí']); ?> &rarr;</a>

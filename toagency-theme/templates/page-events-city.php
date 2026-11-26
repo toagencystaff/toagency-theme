@@ -182,6 +182,9 @@ toa_component('header');
 </section>
 <script type="application/ld+json"><?php echo wp_json_encode($faq_ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
 
+<?php // 26/11/2026 TEMA SEO AI EVENTI: le fiere di questa città (senza ripetere quelle già nelle sedi)
+$__skip = array(); foreach ((array) ($c['venues'] ?? array()) as $__v) { if (!empty($__v['link'])) $__skip[] = $__v['link']; }
+toa_component('seo-rete', array('rete_mode' => 'citta', 'rete_city' => $ckey, 'rete_skip' => $__skip)); ?>
 <?php toa_component('events-coverage', array('lang' => $lang)); ?>
 
 <?php toa_component('form-eventi-inline', array('lang' => $lang, 'leadsrc' => 'Pagina TOA Events - ' . $c['name']['it'])); ?>

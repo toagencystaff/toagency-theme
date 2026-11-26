@@ -492,6 +492,12 @@ toa_component('header');
     endif; ?>
     <!-- END FIX 2026-10-07 marco — link contestuali hostess/steward -->
 
+    <?php // 26/11/2026 TEMA SEO AI EVENTI: guide per aziende (categoria 2877 e traduzioni) collegate alla rete TOA Events
+    if ( ! $sl_is_casting ) {
+        $__g = (int) apply_filters( 'wpml_object_id', 2877, 'category', true );
+        if ( $__g && in_category( $__g ) ) { toa_component( 'seo-rete' ); }
+    } ?>
+
     <!-- BEGIN 2026-11-08 TEMA GEO AI — box generico «Lavora con TOAgency» (chi cerca lavoro arriva anche sulle guide per aziende, es. ATP Finals: 143 clic in 3 mesi).
          Generico per scelta di Marco: nessuna promessa sul singolo evento. -->
     <?php if ( ! $sl_is_casting ) :

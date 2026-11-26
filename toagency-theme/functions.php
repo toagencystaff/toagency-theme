@@ -847,6 +847,8 @@ require_once get_template_directory() . '/inc/llms-txt.php';
 require_once get_template_directory() . '/inc/indexnow.php';
 // 2026-11-05 ticket #789 (TEMA Ticket 789) — menu globale fase 1, SOLO in anteprima (?anteprima=menu o admin loggato)
 require_once get_template_directory() . '/inc/menu-globale.php';
+// 2026-11-26 TEMA SEO AI EVENTI -- 301 doppioni, noindex pagine di prova, niente cache su llms.txt e sitemap
+require_once get_template_directory() . '/inc/seo-struttura.php';
 
 // === FIX 2026-05-30 marco — google-reviews CSS ===
 add_action('wp_enqueue_scripts', function() {
