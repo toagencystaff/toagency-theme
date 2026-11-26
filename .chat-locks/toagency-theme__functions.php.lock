@@ -1,7 +1,7 @@
-STATO=OPEN
-CHAT=CRM Pulsanti casting (ticket 1033)
+STATO=CLOSED
+CHAT=TEMA Ticket #1104
 FILE=toagency-theme/functions.php
-INIZIO=2026-11-20 10:57:03
-UPDATE=2026-11-20 10:57:29
-SHA1_ATTESO=eb8393b2ce0d3283ae167dc37806a496920fe61b
-NOTA=ticket 1033: modifica fatta e php -l OK, in attesa deploy prod (nuovo sha1 7d4de44b2fcdd665dddf1b68f3a9ce9d87415503)
+INIZIO=2026-11-26 15:12:25
+UPDATE=2026-11-26 15:12:25
+SHA1_ATTESO=d877d9fd4f877459297ba1c8f38e3c7d106a543c
+NOTA=#1104 casella consenso Google Ads pronta per deploy (preview poi prod)

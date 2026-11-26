@@ -1,7 +1,7 @@
 STATO=CLOSED
-CHAT=TEMA LANDING-HOSTESS-QS
+CHAT=TEMA Ticket #1104
 FILE=toagency-theme/components/form-b2b-inline.php
-INIZIO=2026-10-21 12:01:54
-UPDATE=2026-10-21 12:01:54
-SHA1_ATTESO=63e9b1ee44fbeb541b573a17a89cd575bee2f761
-NOTA=129 + niente promessa 24 ore (21/10), pronto per deploy
+INIZIO=2026-11-26 15:12:25
+UPDATE=2026-11-26 15:12:25
+SHA1_ATTESO=009c4137c000cbd8be64a2c18bafef2b0bc80977
+NOTA=#1104 casella consenso Google Ads pronta per deploy (preview poi prod)

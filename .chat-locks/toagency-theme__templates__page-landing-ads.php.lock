@@ -1,7 +1,7 @@
 STATO=CLOSED
-CHAT=TEMA LANDING-HOSTESS-QS
+CHAT=TEMA Ticket #1083
 FILE=toagency-theme/templates/page-landing-ads.php
-INIZIO=2026-10-21 12:01:54
-UPDATE=2026-10-21 12:01:54
-SHA1_ATTESO=74498c33541ff349a1a8e63ffdc5a185a1f27abd
-NOTA=129 + niente promessa 24 ore (21/10), pronto per deploy
+INIZIO=2026-11-25 13:23:33
+UPDATE=2026-11-25 13:29:21
+SHA1_ATTESO=dc78d6969e9c3005e06d4d1a719d0ed333916d18
+NOTA=ticket 1083: foto fiera e insegna deployate (0a793737e). Chiuso.

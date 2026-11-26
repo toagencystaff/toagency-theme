@@ -247,6 +247,9 @@ add_action('wp_footer', function() {
       if(checks[j].id !== "consent") roles.push(checks[j].value || checks[j].name);
     }
     d.roles = roles;
+    var ca = document.getElementById("consent_ads");
+    d.consenso_ads = (ca && ca.checked) ? "1" : "0";
+    d.lang = "' . toa_ads_consent_lang() . '";
     d.form_type = "b2b";
     d.page_url = window.location.href;
     d.timestamp = new Date().toISOString();
@@ -1219,7 +1222,7 @@ add_action('wp_footer', function() {
             '<div class="iq-field"><label class="iq-label" for="tm_phone">'+esc(ft.phone)+'</label><input type="tel" id="tm_phone" name="phone" class="iq-input"></div></div>'+
             '<div class="iq-field"><label class="iq-label" for="tm_event_type">'+esc(ft.service)+'</label><select id="tm_event_type" name="event_type" required class="iq-input"><option value="">'+esc(ft.select)+'</option>'+svcOpts+'</select></div>'+
             '<div class="iq-field"><label class="iq-label" for="tm_message">'+esc(ft.message)+'</label><textarea id="tm_message" name="message" class="iq-input" placeholder="'+esc(ft.msgph)+'"></textarea></div>'+
-            '<label class="inline-quote-consent" for="tm_consent"><input type="checkbox" id="tm_consent" required> <span>'+esc(ft.consent)+' <a href="<?php echo esc_url(toa_privacy_url()); ?>" target="_blank" rel="noopener">'+esc(ft.privacy)+'</a></span></label>'+
+            '<label class="inline-quote-consent" for="tm_consent"><input type="checkbox" id="tm_consent" required> <span>'+esc(ft.consent)+' <a href="<?php echo esc_url(toa_privacy_url()); ?>" target="_blank" rel="noopener">'+esc(ft.privacy)+'</a></span></label>'+<?php echo json_encode(toa_ads_consent_html('tm_ads'), JSON_UNESCAPED_UNICODE); ?>+
             '<button type="submit" class="btn-hero btn-hero-primary iq-submit" id="tmSubmit"><span class="iq-spinner" id="tmSpinner" style="display:none"></span><span id="tmSubmitText">'+esc(ft.submit)+'</span></button>'+
           '<p style="text-align:center;font-size:12px;color:rgba(255,255,255,.5);margin:10px 0 0">'+esc(ft.microcopy)+'</p>'+
           '</form></div></div>';
@@ -1236,7 +1239,7 @@ add_action('wp_footer', function() {
           btn.disabled=true; if(sp)sp.style.display='inline-block'; txt.textContent=ft.sending;
           function v(id){var el=document.getElementById(id);return el?el.value.trim():'';}
           var isMobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-          var payload={source:isMobile?'Form Models Mobile':'Form Models Desktop',company:v('tm_company'),contact:v('tm_contact'),email:v('tm_email'),phone:v('tm_phone'),event_type:v('tm_event_type'),message:v('tm_message')};
+          var payload={source:isMobile?'Form Models Mobile':'Form Models Desktop',company:v('tm_company'),contact:v('tm_contact'),email:v('tm_email'),phone:v('tm_phone'),event_type:v('tm_event_type'),message:v('tm_message'),consenso_ads:(document.getElementById('tm_ads')&&document.getElementById('tm_ads').checked)?'1':'0',lang:<?php echo json_encode(toa_ads_consent_lang()); ?>};
           var ok=false;
           for(var i=0;i<3 && !ok;i++){
             try{ var r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','X-Lead-Token':TOKEN},body:JSON.stringify(payload)}); var d=await r.json(); if(d&&d.success)ok=true; }
@@ -1387,6 +1390,30 @@ function toa_privacy_url() {
     return isset($map[$lang]) ? $map[$lang] : 'https://toagency.it/privacy-policy-3/';
 }
 // === END 2026-08-22 marco — informativa privacy interna nei form ===
+
+// === BEGIN 2026-11-26 — casella consenso Google Ads nei moduli clienti (ticket #1104) ===
+// Testi ESATTI = quelli che il CRM salva come prova (lib/consenso_ads.php cads_testi). Casella separata, NON pre-spuntata, facoltativa.
+function toa_ads_consent_lang() {
+    global $__l;
+    $l = (!empty($__l) && in_array($__l, array('it','en','fr','es'), true)) ? $__l : (function_exists('toa_current_lang') ? toa_current_lang() : 'it');
+    return in_array($l, array('it','en','fr','es'), true) ? $l : 'it';
+}
+function toa_ads_consent_html($id, $variant = 'inline') {
+    $t = array(
+        'it' => array("Acconsento che TOAgency condivida con Google Ads la mia email e il mio numero di telefono, in forma non leggibile (hash SHA-256), per misurare quanto funzionano i suoi annunci. È facoltativo e posso revocarlo quando voglio.", 'Informativa privacy', 'https://toagency.it/privacy-policy-3/'),
+        'en' => array("I agree that TOAgency may share my email address and phone number with Google Ads in unreadable form (SHA-256 hash), to measure how well its ads perform. This is optional and I can withdraw it at any time.", 'Privacy policy', 'https://toagency.it/en/gdpr-privacy-policy/'),
+        'fr' => array("J'accepte que TOAgency partage mon adresse e-mail et mon numéro de téléphone avec Google Ads sous une forme illisible (hachage SHA-256), afin de mesurer l'efficacité de ses annonces. C'est facultatif et je peux le retirer à tout moment.", 'Politique de confidentialité', 'https://toagency.it/fr/gdpr-privacy-policy/'),
+        'es' => array("Acepto que TOAgency comparta mi correo electrónico y mi número de teléfono con Google Ads de forma ilegible (hash SHA-256), para medir la eficacia de sus anuncios. Es opcional y puedo retirarlo cuando quiera.", 'Política de privacidad', 'https://toagency.it/es/gdpr-politica-de-privacidad/'),
+    );
+    $c = $t[toa_ads_consent_lang()];
+    $id = esc_attr($id);
+    $link = '<a href="' . esc_url($c[2]) . '" target="_blank" rel="noopener">' . esc_html($c[1]) . '</a>';
+    if ($variant === 'b2bpage') {
+        return '<div style="margin:16px 0;padding:12px;border:1px solid var(--gray-2)"><label style="display:flex;align-items:flex-start;gap:8px;font-size:0.75rem;opacity:0.5;cursor:pointer" for="' . $id . '"><input type="checkbox" id="' . $id . '" style="width:16px;height:16px;margin-top:1px;accent-color:var(--white)"><span>' . esc_html($c[0]) . ' ' . str_replace('<a ', '<a style="color:var(--white);text-decoration:underline" ', $link) . '</span></label></div>';
+    }
+    return '<label class="inline-quote-consent" for="' . $id . '"><input type="checkbox" id="' . $id . '"><span>' . esc_html($c[0]) . ' ' . $link . '</span></label>';
+}
+// === END 2026-11-26 — consenso Google Ads (#1104) ===
 
 // === BEGIN 2026-08-25 marco — /agenzia-area/ fuori dall'indice (chat TEMA LINK-FILTRI-CORTI) ===
 // L'area riservata delle agenzie partner rispondeva a Google con "index, follow".

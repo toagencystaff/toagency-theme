@@ -82,6 +82,7 @@ $hq_js = array(
           <input type="checkbox" id="hq_consent" required>
           <span><?php echo _ht(array('it'=>'Accetto il trattamento dei dati secondo la','en'=>'I accept the processing of my data according to the','fr'=>'J\'accepte le traitement de mes données selon la','es'=>'Acepto el tratamiento de mis datos según la')); ?> <a href="<?php echo esc_url(toa_privacy_url()); ?>" target="_blank" rel="noopener"><?php echo _ht(array('it'=>'Privacy Policy','en'=>'Privacy Policy','fr'=>'Politique de confidentialité','es'=>'Política de privacidad')); ?></a></span>
         </label>
+        <?php echo toa_ads_consent_html('hq_ads'); /* #1104 consenso Google Ads, facoltativo */ ?>
 
         <button type="submit" class="btn-hero btn-hero-primary iq-submit" id="hqSubmit">
           <span class="iq-spinner" id="hqSpinner"></span>
@@ -176,6 +177,7 @@ $hq_js = array(
       message: v('hq_message')
     };
     Object.assign(payload, toaAttrCache); // FIX 2026-07-11 — gclid/UTM al CRM (fonte Ads)
+    payload.consenso_ads = (document.getElementById('hq_ads') && document.getElementById('hq_ads').checked) ? '1' : '0'; payload.lang = '<?php echo esc_js(toa_ads_consent_lang()); ?>'; // #1104
 
     var result = await sendToCRM(payload, 3);
     if (result.success) {

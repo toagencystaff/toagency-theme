@@ -206,6 +206,7 @@ $b2bw_dir  = array('b2bw-a', 'b2bw-b');
           <span><?php echo toa_t('form_b2b', 'privacy_text'); ?> <a href="<?php echo esc_url(toa_privacy_url()); ?>" target="_blank" style="color:var(--white);text-decoration:underline"><?php echo toa_t('form_b2b', 'privacy_link'); ?></a></span>
         </label>
       </div>
+      <?php echo toa_ads_consent_html('consent_ads', 'b2bpage'); /* #1104 consenso Google Ads, facoltativo */ ?>
 
       <!-- Submit -->
       <button type="submit" class="btn-hero btn-hero-primary" id="submitBtn" style="width:100%;padding:18px;font-size:1rem;border:none">
@@ -377,6 +378,7 @@ document.getElementById('leadForm').addEventListener('submit', async function(e)
     duration: (document.getElementById('duration') || {}).value || '',
     details: (document.getElementById('details') || {}).value || ''
   };
+  payload.consenso_ads = (document.getElementById('consent_ads') && document.getElementById('consent_ads').checked) ? '1' : '0'; payload.lang = '<?php echo esc_js(toa_ads_consent_lang()); ?>'; // #1104
   Object.assign(payload, toaAttrCache); // FIX 2026-07-07 marco — fonte lead (gclid/UTM/first-touch), cache v2 10/07
 
   try { sessionStorage.setItem('toa_lead', JSON.stringify({ company: payload.company, contact: payload.contact })); } catch(e) {}

@@ -90,6 +90,7 @@ $fc_packs = array(
         <input type="checkbox" id="fc_consent" required>
         <span><?php echo _ht($fc_t['consent']); ?> <a href="<?php echo esc_url(toa_privacy_url()); ?>" target="_blank" rel="noopener"><?php echo _ht($fc_t['privacy']); ?></a></span>
       </label>
+      <?php echo toa_ads_consent_html('fc_ads'); /* #1104 consenso Google Ads, facoltativo */ ?>
       <button type="submit" class="tcr-btn tcr-btn--p tcr-btn--lg iq-submit" id="fcSubmit">
         <span class="iq-spinner" id="fcSpinner"></span>
         <span id="fcSubmitText"><?php echo _ht($fc_js['submit']); ?></span>
@@ -189,6 +190,7 @@ $fc_packs = array(
       message: head.join('\n') + (m ? '\n\n' + m : '')
     };
     Object.assign(payload, attr);
+    payload.consenso_ads = (document.getElementById('fc_ads') && document.getElementById('fc_ads').checked) ? '1' : '0'; payload.lang = '<?php echo esc_js(toa_ads_consent_lang()); ?>'; // #1104
     if (await sendToCRM(payload)) { window.location.href = THANKYOU; return; }
     alert(STR.error);
     btn.disabled = false; sp.style.display = 'none'; txt.textContent = STR.submit;
