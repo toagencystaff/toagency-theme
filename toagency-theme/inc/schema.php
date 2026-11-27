@@ -33,13 +33,22 @@ add_filter( 'wpseo_schema_organization', function ( $data ) {
     if ( ! $__toa_nophone ) { $data['telephone'] = '+39 351 789 9225'; }
     $data['email']      = 'info@toagency.it';
     $data['priceRange'] = '€€€';
+    // 27/11/2026 TEMA SEO AI EVENTI 2 (fase 4): due sedi (Torino e Parigi) e anno di fondazione, come nella presentazione agenzia («dal 2009 · Torino e Parigi»)
+    $data['foundingDate'] = '2009';
     $data['address']    = [
-        '@type'           => 'PostalAddress',
-        'streetAddress'   => 'Via Cavour, 21',
-        'addressLocality' => 'Torino',
-        'addressRegion'   => 'TO',
-        'postalCode'      => '10123',
-        'addressCountry'  => 'IT',
+        [
+            '@type'           => 'PostalAddress',
+            'streetAddress'   => 'Via Cavour, 21',
+            'addressLocality' => 'Torino',
+            'addressRegion'   => 'TO',
+            'postalCode'      => '10123',
+            'addressCountry'  => 'IT',
+        ],
+        [
+            '@type'           => 'PostalAddress',
+            'addressLocality' => 'Paris',
+            'addressCountry'  => 'FR',
+        ],
     ];
     $data['areaServed'] = [
         [ '@type' => 'Country', 'name' => 'Italy' ],
@@ -47,6 +56,10 @@ add_filter( 'wpseo_schema_organization', function ( $data ) {
         [ '@type' => 'Country', 'name' => 'Spain' ],
         [ '@type' => 'Country', 'name' => 'United Kingdom' ],
         [ '@type' => 'Country', 'name' => 'Germany' ],
+        [ '@type' => 'Country', 'name' => 'Monaco' ],
+        [ '@type' => 'Country', 'name' => 'Belgium' ],
+        [ '@type' => 'Country', 'name' => 'Switzerland' ],
+        [ '@type' => 'Country', 'name' => 'Portugal' ],
     ];
     $data['contactPoint'] = [ array_merge( [
         '@type'             => 'ContactPoint',
