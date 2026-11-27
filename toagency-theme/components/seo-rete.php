@@ -73,6 +73,15 @@ if (!function_exists('toa_rete_data')) {
             'hostess-fiere-ginevra'           => array('', 'CH', $N('Fiere Ginevra', 'Geneva trade fairs', 'Salons Genève', 'Ferias Ginebra')),
         );
     }
+    // 27/11/2026 fase 3c: pagine settore (slug IT => nome 4 lingue)
+    function toa_rete_settori() {
+        return array(
+            'staff-eventi-tech-innovazione'        => array('it' => 'Tech & Innovazione', 'en' => 'Tech & Innovation', 'fr' => 'Tech & Innovation', 'es' => 'Tech e Innovación'),
+            'staff-eventi-lusso-moda'              => array('it' => 'Lusso & Moda', 'en' => 'Luxury & Fashion', 'fr' => 'Luxe & Mode', 'es' => 'Lujo y Moda'),
+            'staff-eventi-corporate-istituzionali' => array('it' => 'Corporate & Istituzioni', 'en' => 'Corporate & Institutions', 'fr' => 'Corporate & Institutions', 'es' => 'Corporativo e Instituciones'),
+            'staff-retail-inaugurazioni'           => array('it' => 'Retail & Inaugurazioni', 'en' => 'Retail & Store Openings', 'fr' => 'Retail & Inaugurations', 'es' => 'Retail e Inauguraciones'),
+        );
+    }
     // Parola nello slug IT -> chiave pagina città TOA Events
     function toa_rete_city_words() {
         return array('torino' => 'torino', 'milano' => 'milano', 'roma' => 'roma', 'bologna' => 'bologna', 'rimini' => 'rimini',
@@ -150,9 +159,11 @@ $tx = array(
     'f_city'  => array('it' => 'Fiere a %s', 'en' => 'Trade shows in %s', 'fr' => 'Salons à %s', 'es' => 'Ferias en %s'),
     'f_all'   => array('it' => 'Fiere dove lavoriamo', 'en' => 'Trade shows we staff', 'fr' => 'Salons où nous intervenons', 'es' => 'Ferias en las que trabajamos'),
     'f_sub'   => array('it' => 'Una pagina per fiera: figure, lingue, come prenotare.', 'en' => 'One page per show: roles, languages, how to book.', 'fr' => 'Une page par salon : profils, langues, réservation.', 'es' => 'Una página por feria: perfiles, idiomas, cómo reservar.'),
+    's_sub'   => array('it' => 'Settori', 'en' => 'Sectors', 'fr' => 'Secteurs', 'es' => 'Sectores'),
 );
 
 $pills = array();   // link principali
+$sects = array();   // link pagine settore (fase 3c)
 $fairs = array();   // link fiere
 $fairs_title = '';
 $heading = $rt($tx['h']);
@@ -192,9 +203,13 @@ if ($rete_mode === 'fiere') {
         $fairs = array_slice($rete_fair_links(function ($s, $f) use ($ckey) { return $f[0] === $ckey; }), 0, 8);
         if ($fairs) $fairs_title = sprintf($rt($tx['f_city']), $rete_cname($ckey));
     }
+    foreach (toa_rete_settori() as $ss => $sn) {
+        if ($ss === $slug) continue;
+        if ($u = toa_rete_url_slug($ss, $rl)) $sects[] = array('u' => $u, 'n' => $rt($sn));
+    }
 }
 
-if (!$pills && !$fairs) return;
+if (!$pills && !$fairs && !$sects) return;
 ?>
 <section class="toa-rete" aria-label="<?php echo esc_attr($heading); ?>">
   <style>
@@ -224,6 +239,14 @@ if (!$pills && !$fairs) return;
   <ul class="toa-rete__list">
     <?php foreach ($fairs as $f): ?>
     <li><a href="<?php echo esc_url($f['u']); ?>"><?php echo esc_html($f['n']); ?><?php if ($f['c'] && $rete_mode === 'fiere'): ?><small><?php echo esc_html($f['c']); ?></small><?php endif; ?></a></li>
+    <?php endforeach; ?>
+  </ul>
+  <?php endif; ?>
+  <?php if ($sects): ?>
+  <p class="toa-rete__sub"><?php echo esc_html($rt($tx['s_sub'])); ?></p>
+  <ul class="toa-rete__list">
+    <?php foreach ($sects as $p): ?>
+    <li><a href="<?php echo esc_url($p['u']); ?>"><?php echo esc_html($p['n']); ?></a></li>
     <?php endforeach; ?>
   </ul>
   <?php endif; ?>

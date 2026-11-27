@@ -31,6 +31,35 @@ if (!function_exists('toa_seo_redirect_map')) {
             271893 => array('to' => 270188),                         // /hostess-lineapelle-milano-guida/ (0) -> /hostess-lineapelle/
             271923 => array('to' => 270224),                         // /hostess-cosmoprof-bologna-guida/ (0) -> /hostess-cosmoprof/
             271865 => array('to' => 270198),                         // /hostess-marmomac-verona-guida/ (1) -> /hostess-marmomac-verona/
+            // 27/11/2026 fase 3c (chat TEMA SEO AI EVENTI 2): articoli «staff-…-italia» a 0-1 clic in 16 mesi -> pagina settore o articolo più forte dello stesso settore.
+            // 'to' come testo = slug IT di una pagina settore (finché non è pubblicata, nessun redirect). Restano com'erano i 13 articoli con 2+ clic.
+            272022 => array('to' => 'staff-eventi-tech-innovazione'),        // tech-startup-demo-day (0 clic, 18 impr.)
+            272166 => array('to' => 'staff-eventi-tech-innovazione'),        // tech-b2b-enterprise-conferenze-summit (0, 3)
+            272148 => array('to' => 'staff-eventi-tech-innovazione'),        // crypto-blockchain-web3-conferenze (0, 3)
+            271936 => array('to' => 'staff-eventi-tech-innovazione'),        // staff-fiere-tecnologia (0, 3)
+            272202 => array('to' => 'staff-eventi-tech-innovazione'),        // energia-rinnovabili-transizione-energetica (0, 1)
+            272247 => array('to' => 'staff-eventi-lusso-moda'),              // circular-fashion-upcycling-moda-sostenibile (0, 10)
+            272168 => array('to' => 'staff-eventi-lusso-moda'),              // moda-sostenibile-green-fashion (0, 1)
+            272233 => array('to' => 'staff-eventi-lusso-moda'),              // immobiliare-luxury-real-estate-premium (0, 3)
+            272215 => array('to' => 'staff-eventi-corporate-istituzionali'), // finanziari-banche-assicurazioni (1, 12)
+            272063 => array('to' => 'staff-eventi-corporate-istituzionali'), // b2b-networking-business-matching (0, 42)
+            272047 => array('to' => 'staff-eventi-corporate-istituzionali'), // staff-career-day-recruiting-fair-universita (0, 24)
+            272105 => array('to' => 'staff-eventi-corporate-istituzionali'), // staff-open-day-universita-orientamento-scolastico (0, 0)
+            272055 => array('to' => 'staff-eventi-corporate-istituzionali'), // staff-congressi-legali-notarili-consulenza (0, 0)
+            272178 => array('to' => 'staff-eventi-corporate-istituzionali'), // hr-people-management-future-of-work (0, 3)
+            272075 => array('to' => 'staff-eventi-corporate-istituzionali'), // istituzionali-pubblica-amministrazione (0, 10)
+            272043 => array('to' => 'staff-eventi-corporate-istituzionali'), // charity-gala-beneficenza (0, 3)
+            272119 => array('to' => 'staff-eventi-corporate-istituzionali'), // staff-expo-padiglioni-istituzionali-rappresentanze-nazionali (0, 1)
+            271954 => array('to' => 'staff-retail-inaugurazioni'),           // staff-inaugurazioni-aperture-negozio (0, 18)
+            272020 => array('to' => 'staff-retail-inaugurazioni'),           // staff-grandi-inaugurazioni-hotel-centri-commerciali-flagship (0, 0)
+            272000 => array('to' => 272115), // enogastronomici-showcooking-degustazioni (1) -> enoturismo-wine-tourism (8 clic)
+            272095 => array('to' => 271944), // sportivi-outdoor-trail-ciclismo-triathlon (1) -> staff-eventi-sportivi (3)
+            272209 => array('to' => 272079), // automotive-luxury-salone-auto (1) -> automotive-outdoor-raduni-test-drive (3)
+            272002 => array('to' => 272079), // staff-modelle-automotive-showroom-test-drive (0) -> automotive-outdoor-raduni-test-drive (3)
+            271992 => array('to' => 272192), // staff-congressi-medici-ecm-convention-scientifiche (1) -> farmaceutici-congressi-medici (2 clic, 300 impr.)
+            271929 => array('to' => 275581), // hospitality-staff-eventi-hotel (0, 30) -> /events/staff-eventi/
+            272239 => array('to' => 275585), // staff-fiere-edilizia-costruzioni (0, 9) -> /events/personale-fiere/
+            272227 => array('to' => 275585), // staff-fiere-agricoltura-agroalimentare (0, 5) -> /events/personale-fiere/
         );
     }
 }
@@ -47,8 +76,15 @@ if (!function_exists('toa_seo_redirect_target')) {
         $det = apply_filters('wpml_post_language_details', null, $id);
         $lang = (is_array($det) && !empty($det['language_code'])) ? $det['language_code'] : 'it';
         if (!empty($map[$it]['skip']) && in_array($lang, $map[$it]['skip'], true)) return '';
-        $to = (int) apply_filters('wpml_object_id', (int) $map[$it]['to'], 'page', true, $lang);
-        return ($to && get_post_status($to) === 'publish') ? get_permalink($to) : '';
+        $dest = $map[$it]['to'];
+        if (is_string($dest)) { // slug IT di una pagina
+            $pg = get_page_by_path($dest, OBJECT, 'page');
+            if (!$pg) return '';
+            $dest = (int) $pg->ID;
+        }
+        $dpt = get_post_type((int) $dest) ?: 'page';
+        $to = (int) apply_filters('wpml_object_id', (int) $dest, $dpt, true, $lang);
+        return ($to && $to !== $id && get_post_status($to) === 'publish') ? get_permalink($to) : '';
     }
 }
 add_action('template_redirect', function () {
