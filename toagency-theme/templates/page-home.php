@@ -89,7 +89,7 @@ if (!function_exists('_ht')) {
     <div class="feature-card">
       <div class="feature-number">03</div>
       <h3 class="feature-title"><?php echo _ht(array('it'=>'Database verificato','en'=>'Verified database','fr'=>'Base de données vérifiée','es'=>'Base de datos verificada')); ?></h3>
-      <p class="feature-text"><?php echo _ht(array('it'=>'20.000+ profili aggiornati ogni giorno. Polaroid e self-tape in 24 ore. Disponibilità in tempo reale, anche per casting urgenti.','en'=>'20,000+ profiles updated daily. Polaroids and self-tapes in 24 hours. Real-time availability, even for urgent castings.','fr'=>'Plus de 20 000 profils mis à jour chaque jour. Polaroids et self-tapes en 24 heures. Disponibilité en temps réel, même pour les castings urgents.','es'=>'Más de 20.000 perfiles actualizados a diario. Polaroids y self-tapes en 24 horas. Disponibilidad en tiempo real, incluso para castings urgentes.')); ?></p>
+      <p class="feature-text"><?php echo _ht(array('it'=>'20.000+ profili aggiornati ogni giorno. Polaroid e self-tape in tempi rapidi. Disponibilità in tempo reale, anche per casting urgenti.','en'=>'20,000+ profiles updated daily. Fast polaroids and self-tapes. Real-time availability, even for urgent castings.','fr'=>'Plus de 20 000 profils mis à jour chaque jour. Polaroids et self-tapes rapides. Disponibilité en temps réel, même pour les castings urgents.','es'=>'Más de 20.000 perfiles actualizados a diario. Polaroids y self-tapes rápidos. Disponibilidad en tiempo real, incluso para castings urgentes.')); ?></p>
     </div>
     <div class="feature-card">
       <div class="feature-number">04</div>

@@ -80,17 +80,17 @@ function toa_lp_fiere_comune() {
         ],
         // sottotitolo con le date: usato finche' la fiera non e' passata
         'sub' => [
-            'it' => 'Personale selezionato per il tuo {SPAZIO} {LUOGO}, {DATE}. Ti mandiamo i profili in 24 ore, con foto e lingue parlate.',
-            'en' => 'Selected staff for your {SPAZIO} {LUOGO}, {DATE}. We send you the profiles within 24 hours, with photos and languages spoken.',
-            'fr' => 'Personnel sélectionné pour votre {SPAZIO} {LUOGO}, {DATE}. Nous vous envoyons les profils sous 24 heures, avec photos et langues parlées.',
-            'es' => 'Personal seleccionado para tu {SPAZIO} {LUOGO}, {DATE}. Te enviamos los perfiles en 24 horas, con fotos e idiomas hablados.',
+            'it' => 'Personale selezionato per il tuo {SPAZIO} {LUOGO}, {DATE}. Ti mandiamo i profili con foto e lingue parlate.',
+            'en' => 'Selected staff for your {SPAZIO} {LUOGO}, {DATE}. We send you the profiles with photos and languages spoken.',
+            'fr' => 'Personnel sélectionné pour votre {SPAZIO} {LUOGO}, {DATE}. Nous vous envoyons les profils avec photos et langues parlées.',
+            'es' => 'Personal seleccionado para tu {SPAZIO} {LUOGO}, {DATE}. Te enviamos los perfiles con fotos e idiomas hablados.',
         ],
         // sottotitolo neutro: subentra da solo il giorno dopo la fine della fiera
         'sub_scaduta' => [
-            'it' => 'Personale selezionato per il tuo {SPAZIO} {LUOGO}. Ti mandiamo i profili in 24 ore, con foto e lingue parlate.',
-            'en' => 'Selected staff for your {SPAZIO} {LUOGO}. We send you the profiles within 24 hours, with photos and languages spoken.',
-            'fr' => 'Personnel sélectionné pour votre {SPAZIO} {LUOGO}. Nous vous envoyons les profils sous 24 heures, avec photos et langues parlées.',
-            'es' => 'Personal seleccionado para tu {SPAZIO} {LUOGO}. Te enviamos los perfiles en 24 horas, con fotos e idiomas hablados.',
+            'it' => 'Personale selezionato per il tuo {SPAZIO} {LUOGO}. Ti mandiamo i profili con foto e lingue parlate.',
+            'en' => 'Selected staff for your {SPAZIO} {LUOGO}. We send you the profiles with photos and languages spoken.',
+            'fr' => 'Personnel sélectionné pour votre {SPAZIO} {LUOGO}. Nous vous envoyons les profils avec photos et langues parlées.',
+            'es' => 'Personal seleccionado para tu {SPAZIO} {LUOGO}. Te enviamos los perfiles con fotos e idiomas hablados.',
         ],
         // i due bullet uguali per tutte
         'bul_fissi' => [

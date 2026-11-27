@@ -435,10 +435,10 @@ if (!function_exists('toa_get_translations')) {
                     'es' => 'SOPORTE CONTINUO',
                 ),
                 'how_tagline' => array(
-                    'it' => 'Book in 24 ore &bull; Misure certificate &bull; Contratti CCNL &bull; Fatturazione unica',
-                    'en' => 'Books in 24 hours &bull; Certified measurements &bull; CCNL contracts &bull; Single invoicing',
-                    'fr' => 'Books en 24 heures &bull; Mensurations certifi&eacute;es &bull; Contrats CCNL &bull; Facturation unique',
-                    'es' => 'Books en 24 horas &bull; Medidas certificadas &bull; Contratos CCNL &bull; Facturaci&oacute;n &uacute;nica',
+                    'it' => 'Book aggiornati &bull; Misure certificate &bull; Contratti CCNL &bull; Fatturazione unica',
+                    'en' => 'Up-to-date books &bull; Certified measurements &bull; CCNL contracts &bull; Single invoicing',
+                    'fr' => 'Books &agrave; jour &bull; Mensurations certifi&eacute;es &bull; Contrats CCNL &bull; Facturation unique',
+                    'es' => 'Books actualizados &bull; Medidas certificadas &bull; Contratos CCNL &bull; Facturaci&oacute;n &uacute;nica',
                 ),
             ),
 
@@ -501,10 +501,10 @@ if (!function_exists('toa_get_translations')) {
                     'es' => 'SOPORTE CONTINUO',
                 ),
                 'how_tagline' => array(
-                    'it' => 'Self-tape in 24 ore &bull; Showreel professionali &bull; Contratti ENPALS',
-                    'en' => 'Self-tapes in 24 hours &bull; Professional showreels &bull; ENPALS contracts',
-                    'fr' => 'Self-tapes en 24 heures &bull; Showreels professionnels &bull; Contrats ENPALS',
-                    'es' => 'Self-tapes en 24 horas &bull; Showreels profesionales &bull; Contratos ENPALS',
+                    'it' => 'Self-tape rapidi &bull; Showreel professionali &bull; Contratti ENPALS',
+                    'en' => 'Fast self-tapes &bull; Professional showreels &bull; ENPALS contracts',
+                    'fr' => 'Self-tapes rapides &bull; Showreels professionnels &bull; Contrats ENPALS',
+                    'es' => 'Self-tapes r&aacute;pidos &bull; Showreels profesionales &bull; Contratos ENPALS',
                 ),
             ),
 
@@ -718,10 +718,10 @@ if (!function_exists('toa_get_translations')) {
                     'es' => 'Base de datos verificada',
                 ),
                 'feat3_text' => array(
-                    'it' => '20.000+ profili aggiornati ogni giorno. Polaroid e self-tape in 24 ore. Disponibilit&agrave; in tempo reale, anche per casting urgenti.',
-                    'en' => '20,000+ profiles updated daily. Polaroids and self-tapes within 24 hours. Real-time availability, even for urgent castings.',
-                    'fr' => '20&nbsp;000+ profils mis &agrave; jour chaque jour. Polaroids et self-tapes en 24 heures. Disponibilit&eacute; en temps r&eacute;el, m&ecirc;me pour les castings urgents.',
-                    'es' => 'M&aacute;s de 20.000 perfiles actualizados cada d&iacute;a. Polaroids y self-tapes en 24 horas. Disponibilidad en tiempo real, incluso para castings urgentes.',
+                    'it' => '20.000+ profili aggiornati ogni giorno. Polaroid e self-tape in tempi rapidi. Disponibilit&agrave; in tempo reale, anche per casting urgenti.',
+                    'en' => '20,000+ profiles updated daily. Fast polaroids and self-tapes. Real-time availability, even for urgent castings.',
+                    'fr' => '20&nbsp;000+ profils mis &agrave; jour chaque jour. Polaroids et self-tapes rapides. Disponibilit&eacute; en temps r&eacute;el, m&ecirc;me pour les castings urgents.',
+                    'es' => 'M&aacute;s de 20.000 perfiles actualizados cada d&iacute;a. Polaroids y self-tapes r&aacute;pidos. Disponibilidad en tiempo real, incluso para castings urgentes.',
                 ),
                 'feat4_title' => array(
                     'it' => 'Risposta in 30 minuti',

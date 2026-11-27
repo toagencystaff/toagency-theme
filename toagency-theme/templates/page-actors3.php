@@ -38,7 +38,7 @@ $t = array(
     'how_step2'=>array('it'=>'TI RISPONDIAMO','en'=>'WE REPLY','fr'=>'NOUS R&Eacute;PONDONS','es'=>'TE RESPONDEMOS'),
     'how_step3'=>array('it'=>'HAI I SELF-TAPE','en'=>'GET THE SELF-TAPES','fr'=>'RECEVEZ LES SELF-TAPES','es'=>'RECIBE LOS SELF-TAPES'),
     'how_step4'=>array('it'=>'SUPPORTO CONTINUO','en'=>'ONGOING SUPPORT','fr'=>'SUPPORT CONTINU','es'=>'SOPORTE CONTINUO'),
-    'how_tagline'=>array('it'=>'Self-tape in 24 ore &bull; Showreel professionali &bull; Contratti ENPALS','en'=>'Self-tapes in 24 hours &bull; Professional showreels &bull; ENPALS contracts','fr'=>'Self-tapes en 24 heures &bull; Showreels pro &bull; Contrats ENPALS','es'=>'Self-tapes en 24 horas &bull; Showreels pro &bull; Contratos ENPALS'),
+    'how_tagline'=>array('it'=>'Self-tape rapidi &bull; Showreel professionali &bull; Contratti ENPALS','en'=>'Fast self-tapes &bull; Professional showreels &bull; ENPALS contracts','fr'=>'Self-tapes rapides &bull; Showreels pro &bull; Contrats ENPALS','es'=>'Self-tapes r&aacute;pidos &bull; Showreels pro &bull; Contratos ENPALS'),
     'cov_eyebrow'=>array('it'=>'Dove operiamo','en'=>'Where we operate','fr'=>'O&ugrave; nous intervenons','es'=>'D&oacute;nde operamos'),
     'cov_heading'=>array('it'=>'Casting in tutta Europa','en'=>'Casting across Europe','fr'=>'Casting partout en Europe','es'=>'Casting en toda Europa'),
     'cov_sub'=>array('it'=>'Cinema, TV, pubblicit&agrave; e produzioni digitali nelle principali citt&agrave; europee &mdash; Italia, Spagna, Francia, UK, Germania e tutta Europa.','en'=>'Film, TV, advertising and digital productions in every major European city &mdash; Italy, Spain, France, UK, Germany and all of Europe.','fr'=>'Cin&eacute;ma, TV, publicit&eacute; et productions num&eacute;riques dans toutes les grandes villes europ&eacute;ennes &mdash; Italie, Espagne, France, UK, Allemagne et toute l\'Europe.','es'=>'Cine, TV, publicidad y producciones digitales en las principales ciudades europeas &mdash; Italia, Espa&ntilde;a, Francia, UK, Alemania y toda Europa.'),
@@ -156,7 +156,7 @@ toa_component('header');
         <div class="toa-cast-hd">
             <h2><?php echo $_t(array('it'=>'Alcuni dei nostri attori','en'=>'Some of our actors','fr'=>'Quelques-uns de nos acteurs','es'=>'Algunos de nuestros actores')); ?></h2>
             <p><?php echo $_t(array('it'=>'Cast selezionato &middot; 3.000+ profili','en'=>'Selected cast &middot; 3,000+ profiles','fr'=>'Casting s&eacute;lectionn&eacute; &middot; 3 000+ profils','es'=>'Casting seleccionado &middot; 3.000+ perfiles')); ?></p>
-            <p class="desc"><?php echo $_t(array('it'=>'Protagonisti, caratteristi, comparse, bambini e senior: il volto giusto per ogni ruolo, con self-tape in 24 ore.','en'=>'Leads, character actors, extras, children and seniors: the right face for every role, with self-tapes in 24 hours.','fr'=>'R&ocirc;les principaux, personnages, figurants, enfants et seniors : le bon visage pour chaque r&ocirc;le.','es'=>'Protagonistas, car&aacute;cter, figurantes, ni&ntilde;os y seniors: el rostro adecuado para cada papel.')); ?></p>
+            <p class="desc"><?php echo $_t(array('it'=>'Protagonisti, caratteristi, comparse, bambini e senior: il volto giusto per ogni ruolo, con self-tape in tempi rapidi.','en'=>'Leads, character actors, extras, children and seniors: the right face for every role, with fast self-tapes.','fr'=>'R&ocirc;les principaux, personnages, figurants, enfants et seniors : le bon visage pour chaque r&ocirc;le.','es'=>'Protagonistas, car&aacute;cter, figurantes, ni&ntilde;os y seniors: el rostro adecuado para cada papel.')); ?></p>
         </div>
         <div class="toa-cast-grid">
             <?php foreach ($cast as $p): ?>
@@ -206,7 +206,7 @@ toa_component('header');
     'steps'  => array(
         array('time' => "1'", 'label' => $_t($t['how_step1'])),
         array('time' => 'SUBITO', 'label' => $_t($t['how_step2'])),
-        array('time' => '24h', 'label' => $_t($t['how_step3'])),
+        array('time' => 'PRESTO', 'label' => $_t($t['how_step3'])),
         array('time' => 'H24', 'label' => $_t($t['how_step4'])),
     ),
     'tagline' => $_t($t['how_tagline']),
