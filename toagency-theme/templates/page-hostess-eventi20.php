@@ -296,7 +296,7 @@ $covMore = array('it'=>'Vedi altre citt&agrave;','en'=>'See more cities','fr'=>'
 ?>
     <div class="coverage-grid container">
         <div class="coverage-country">
-            <h4><a href="/hostess-fiere/"><?php echo $_t(array('it'=>'Italia','en'=>'Italy','fr'=>'Italie','es'=>'Italia')); ?></a></h4>
+            <h4><?php echo $_t(array('it'=>'Italia','en'=>'Italy','fr'=>'Italie','es'=>'Italia')); ?></h4><?php /* 27/11/2026: niente link a /hostess-fiere/ (301 verso questa stessa pagina) */ ?>
             <p class="cov-princ"><?php echo $covList(array(
                 array(array('it'=>'Milano','en'=>'Milan','fr'=>'Milan','es'=>'Mil&aacute;n'),'/agenzia-hostess-milano/'),
                 array(array('it'=>'Roma','en'=>'Rome','fr'=>'Rome','es'=>'Roma'),'/agenzia-hostess-roma/'),

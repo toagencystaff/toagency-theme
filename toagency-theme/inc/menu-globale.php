@@ -634,7 +634,7 @@ function toa_mg_footer_cols() {
             $L('/agenzia-hostess-milano/', $T('Hostess Milano', 'Hostesses in Milan', 'Hôtesses à Milan', 'Azafatas en Milán'), '/events/milano/'),
             $L('/agenzia-hostess-roma/', $T('Hostess Roma', 'Hostesses in Rome', 'Hôtesses à Rome', 'Azafatas en Roma'), '/events/roma/'),
             $L('/hostess-atp-finals-torino/', $T('ATP Finals Torino', 'ATP Finals Turin', 'ATP Finals Turin', 'ATP Finals Turín')),
-            $L('/hostess-fiere/', $T('Hostess fiere', 'Trade show hostesses', 'Hôtesses pour salons', 'Azafatas para ferias'), '/events/personale-fiere/'),
+            $L('/events/personale-fiere/', $T('Hostess fiere', 'Trade show hostesses', 'Hôtesses pour salons', 'Azafatas para ferias')), // 27/11/2026: /hostess-fiere/ ha un 301, link diretto
             $L('/hostess-eicma/', $T('Hostess EICMA', 'EICMA hostesses', 'Hôtesses EICMA', 'Azafatas EICMA')),
         )),
         array('t' => $T('Modelli e comparse', 'Models & extras', 'Mannequins et figurants', 'Modelos y figurantes'), 'links' => array(
