@@ -748,7 +748,7 @@ body.toa-ads-lp .toa-ads-faq-item p{font-size:13.5px;line-height:1.55;color:#a9a
 /* tracciamento click contatti (GTM/Ads possono creare conversioni da questi eventi) */
 window.dataLayer = window.dataLayer || [];
 function toaLpTrack(ch){
-  try { var ev={event:'lp_contact_click', lp_channel:ch, lp_key:<?php echo json_encode($key); ?>}; if (ch==='whatsapp' && window.toaLastRif) { ev.lp_rif=window.toaLastRif; } window.dataLayer.push(ev); } catch(e){} /* #625: lp_rif = codice TOA-xxxxx del click WhatsApp */
+  try { var ev={event:'lp_contact_click', lp_channel:ch, lp_key:<?php echo json_encode($key); ?>}; if ((ch==='whatsapp' || ch==='email') && window.toaLastRif) { ev.lp_rif=window.toaLastRif; } window.dataLayer.push(ev); } catch(e){} /* #625/#1124: lp_rif = codice TOA-xxxxx del click WhatsApp o email */
 }
 /* pre-seleziona il servizio in base alla landing */
 (function(){

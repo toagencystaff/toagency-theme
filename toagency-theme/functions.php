@@ -1568,14 +1568,45 @@ add_action('wp_footer', function() { ?>
     } catch(e) { return url; }
   };
 
+  // #1124 — landing Ads (/lp/): i link mailto: ricevono l'oggetto precompilato «Richiesta preventivo – rif. TOA-xxxxx»
+  // con lo stesso tipo di codice dei pulsanti WhatsApp; il click (gclid/UTM) va al CRM con lo stesso beacon.
+  // Il CRM collega l'email in arrivo leggendo il codice TOA-xxxxx dall'oggetto. Fuori da /lp/ i mailto restano identici.
+  var SUBJ = {it:'Richiesta preventivo \u2013 rif. ',en:'Quote request \u2013 ref. ',fr:'Demande de devis \u2013 r\u00e9f. ',es:'Solicitud de presupuesto \u2013 ref. '};
+  window.toaMailUrl = function(url) {
+    try {
+      if (!/^mailto:/i.test(url || '') || !/\/lp\//.test(location.pathname)) return url;
+      var hi = url.indexOf('#'), hash = hi > -1 ? url.slice(hi) : '', rest = hi > -1 ? url.slice(0, hi) : url;
+      var qi = rest.indexOf('?'), base = qi > -1 ? rest.slice(0, qi) : rest, query = qi > -1 ? rest.slice(qi + 1) : '';
+      var qp = new URLSearchParams(query);
+      qp.delete('subject');
+      var l = (document.documentElement.lang || 'it').slice(0,2).toLowerCase();
+      var rif = newRif();
+      var o = {};
+      var at = (typeof window.toaAttr === 'function') ? window.toaAttr() : {};
+      Object.keys(at).forEach(function(k){ o[k] = at[k]; });
+      var fb = new URLSearchParams(location.search).get('fbclid');
+      if (fb) o.fbclid = fb.slice(0,255);
+      o.rif = rif; o.numero = 'aziende'; o.canale = 'email'; o.pagina = location.href.slice(0,500);
+      send(o);
+      window.toaLastRif = rif;
+      var rest2 = qp.toString().replace(/\+/g, '%20');
+      return base + '?subject=' + encodeURIComponent((SUBJ[l] || SUBJ.it) + rif) + (rest2 ? '&' + rest2 : '') + hash;
+    } catch(e) { return url; }
+  };
+
   function onClick(e) {
     try {
       var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
       if (!a) return;
       var h = a.getAttribute('href');
-      if (!h || h.indexOf('wa.me/') < 0) return;
-      var n = window.toaWaUrl(h);
-      if (n !== h) a.setAttribute('href', n);
+      if (!h) return;
+      if (h.indexOf('wa.me/') > -1) {
+        var n = window.toaWaUrl(h);
+        if (n !== h) a.setAttribute('href', n);
+      } else if (h.slice(0,7).toLowerCase() === 'mailto:') {
+        var m = window.toaMailUrl(h);
+        if (m !== h) a.setAttribute('href', m);
+      }
     } catch(x) {}
   }
   document.addEventListener('click', onClick, true);

@@ -1,7 +1,7 @@
-STATO=CLOSED
-CHAT=TEMA Ticket #1104
+STATO=OPEN
+CHAT=TEMA PRIVACY ADS
 FILE=toagency-theme/functions.php
-INIZIO=2026-11-26 15:12:25
-UPDATE=2026-11-26 15:12:25
-SHA1_ATTESO=d877d9fd4f877459297ba1c8f38e3c7d106a543c
-NOTA=#1104 casella consenso Google Ads pronta per deploy (preview poi prod)
+INIZIO=2026-11-28 09:02:37
+UPDATE=2026-11-28 09:03:07
+SHA1_ATTESO=a79d7a8e4d8f31ba13ee83920faa89057b916047
+NOTA=ticket 1124: mailto con codice TOA su /lp/ pronto, in attesa deploy preview
